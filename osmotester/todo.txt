@@ -1,0 +1,17 @@
+-traceability matrix, which test case covers which requirement
+-read requirement list from code
+-kattavuuksia, onko vaatimus katettu otetaanko mukaan, onko transitiot katettu, otetaanko mukaan? tuoko uutta? otetaanko mukaan?
+-input ja output arvojen huomiointi
+-haarakohtien käyntimäärä, coverage guided, tämän kautta optimointi
+-jos on käyty jossain tilassa niin käydään toisessa joka on vapaa, muuten random
+-skripterin tekeminen, jota voi parametrisoida
+-logien kirjoittelu tarkemmiksi, eli että mitä testejä on luomassa jne
+-parametrisointia invarianttien pohjalta
+-polkujen suorituksen ohjausta perustuen invarianttien historiaan
+-logien eri tasot, ei vain debuggi
+-webbisivu jossa issue tracker jne
+-mallien jako osamalleihin ja mallien lisääminen tyyliin addModel()
+-generoinnin parametrien raportointi testikohtaisesti
+-tiloille pre- ja post-conditionit invariantti objekteilla. eli että voi oraclessa verrata tilan arvoja niihin mitkä oli ennen transitiota
+-testi jossa object settiin lisataan ja poistetaan tavaraa lennosta
+-data generointia partitioiden boundareille, sekä niiden yhteisille osille, jne.
