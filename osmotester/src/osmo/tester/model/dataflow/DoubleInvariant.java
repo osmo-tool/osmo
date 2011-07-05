@@ -13,7 +13,7 @@ public class DoubleInvariant extends NumericInvariant<Double> {
   @Override
   public Double input() {
     validate();
-    Partition i = nextPartition();
+    ValuePartition i = nextPartition();
     double min = i.min().doubleValue();
     double max = i.max().doubleValue();
     double value = cDouble(min, max);

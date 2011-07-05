@@ -19,7 +19,7 @@ import static osmo.tester.TestUtils.oneOf;
 public abstract class NumericInvariant<T extends Number> {
   private static final Logger log = new Logger(NumericInvariant.class);
   /** The different partitions in the domain. */
-  private ObjectSetInvariant<Partition> partitions = new ObjectSetInvariant<Partition>();
+  private ObjectSetInvariant<ValuePartition> partitions = new ObjectSetInvariant<ValuePartition>();
   /** The strategy for input data generation. */
   private InputStrategy strategy = InputStrategy.RANDOM;
   /** Keeps a history of all the data values created as input from this invariant. */
@@ -46,7 +46,7 @@ public abstract class NumericInvariant<T extends Number> {
     if (min.doubleValue() > max.doubleValue()) {
       throw new IllegalArgumentException("Minimum value cannot be greater than maximum value.");
     }
-    partitions.addOption(new Partition(min, max));
+    partitions.addOption(new ValuePartition(min, max));
   }
 
   /**
@@ -58,7 +58,7 @@ public abstract class NumericInvariant<T extends Number> {
    */
   public void removePartition(T min, T max) {
     log.debug("Removing partition min("+min+") max("+max+")");
-    partitions.removeOption(new Partition(min, max));
+    partitions.removeOption(new ValuePartition(min, max));
   }
 
   /**
@@ -66,9 +66,9 @@ public abstract class NumericInvariant<T extends Number> {
    *
    * @return The partition to generate data from.
    */
-  public Partition nextPartition() {
+  public ValuePartition nextPartition() {
     if (strategy != InputStrategy.OPTIMIZED_RANDOM) {
-      Partition partition = partitions.input();
+      ValuePartition partition = partitions.input();
       log.debug("Next interval "+partition);
       return partition;
     }
@@ -80,16 +80,16 @@ public abstract class NumericInvariant<T extends Number> {
    *
    * @return The chosen partition.
    */
-  private Partition optimizedRandomPartition() {
+  private ValuePartition optimizedRandomPartition() {
     log.debug("Optimized random partition choice start");
-    Collection<Partition> options = partitions.getAll();
+    Collection<ValuePartition> options = partitions.getAll();
     if (options.size() == 1) {
-      Partition partition = options.iterator().next();
+      ValuePartition partition = options.iterator().next();
       log.debug("Single partition found, returning it:"+partition);
       return partition;
     }
     int min = Integer.MAX_VALUE;
-    for (Partition option : options) {
+    for (ValuePartition option : options) {
       int count = coverageFor(option);
       log.debug("Coverage for "+option+":"+count);
       if (count < min) {
@@ -97,8 +97,8 @@ public abstract class NumericInvariant<T extends Number> {
       }
     }
     log.debug("Min coverage:"+min);
-    Collection<Partition> currentOptions = new ArrayList<Partition>();
-    for (Partition option : options) {
+    Collection<ValuePartition> currentOptions = new ArrayList<ValuePartition>();
+    for (ValuePartition option : options) {
       int count = coverageFor(option);
       log.debug("Coverage for current option "+option+":"+count);
       if (count == min) {
@@ -115,7 +115,7 @@ public abstract class NumericInvariant<T extends Number> {
    * @param partition The partition to check the coverage for.
    * @return The number of values generated so far for the given partition.
    */
-  private int coverageFor(Partition partition) {
+  private int coverageFor(ValuePartition partition) {
     int count = 0;
     for (Number value : history) {
       if (partition.contains(value)) {
@@ -185,9 +185,9 @@ public abstract class NumericInvariant<T extends Number> {
    * @return True if the value fits in the defined partitions, false otherwise.
    */
   public boolean evaluate(T value) {
-    Collection<Partition> partitions = this.partitions.getAll();
+    Collection<ValuePartition> partitions = this.partitions.getAll();
     log.debug("Evaluating value:"+value);
-    for (Partition partition : partitions) {
+    for (ValuePartition partition : partitions) {
       log.debug("Checking partition:"+partition);
       if (partition.contains(value)) {
         log.debug("Found match");

@@ -198,6 +198,24 @@ public class NumericInvariantTests {
     ni.addPartition(10d, 100d);
     ni.addPartition(150d, 200d);
     ni.addPartition(250d, 300d);
+    assertInvariantContains(10d, ni);
+    assertInvariantContains(100d, ni);
+    assertInvariantContains(150d, ni);
+    assertInvariantContains(200d, ni);
+    assertInvariantContains(250d, ni);
+    assertInvariantContains(275d, ni);
+    assertInvariantContains(300d, ni);
+
+    assertInvariantDoesNotContain(9.9d, ni);
+    assertInvariantDoesNotContain(0d, ni);
+    assertInvariantDoesNotContain(100.1d, ni);
+    assertInvariantDoesNotContain(149.9d, ni);
+    assertInvariantDoesNotContain(145d, ni);
+    assertInvariantDoesNotContain(200.1d, ni);
+    assertInvariantDoesNotContain(249.9d, ni);
+    assertInvariantDoesNotContain(300.1d, ni);
+    assertInvariantDoesNotContain(400d, ni);
+    assertInvariantDoesNotContain(-400d, ni);
   }
 
   @Test
@@ -207,5 +225,25 @@ public class NumericInvariantTests {
     ni.addPartition(150d, 200d);
     ni.addPartition(250d, 300d);
     ni.addPartition(50d, 120d);
+    assertInvariantContains(10d, ni);
+    assertInvariantContains(100d, ni);
+    assertInvariantContains(119.9d, ni);
+    assertInvariantContains(120d, ni);
+    assertInvariantContains(150d, ni);
+    assertInvariantContains(200d, ni);
+    assertInvariantContains(250d, ni);
+    assertInvariantContains(275d, ni);
+    assertInvariantContains(300d, ni);
+
+    assertInvariantDoesNotContain(9.9d, ni);
+    assertInvariantDoesNotContain(0d, ni);
+    assertInvariantDoesNotContain(120.1d, ni);
+    assertInvariantDoesNotContain(149.9d, ni);
+    assertInvariantDoesNotContain(145d, ni);
+    assertInvariantDoesNotContain(200.1d, ni);
+    assertInvariantDoesNotContain(249.9d, ni);
+    assertInvariantDoesNotContain(300.1d, ni);
+    assertInvariantDoesNotContain(400d, ni);
+    assertInvariantDoesNotContain(-400d, ni);
   }
 }

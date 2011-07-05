@@ -3,14 +3,14 @@ package osmo.tester.model.dataflow;
 /**
  * @author Teemu Kanstren
  */
-public class Partition {
+public class ValuePartition {
   private double min = Double.MIN_VALUE;
   private double max = Double.MAX_VALUE;
 
-  public Partition() {
+  public ValuePartition() {
   }
 
-  public Partition(Number min, Number max) {
+  public ValuePartition(Number min, Number max) {
     this.min = min.doubleValue();
     this.max = max.doubleValue();
   }
@@ -36,7 +36,7 @@ public class Partition {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    Partition interval = (Partition) o;
+    ValuePartition interval = (ValuePartition) o;
 
     if (Double.compare(interval.max, max) != 0) return false;
     if (Double.compare(interval.min, min) != 0) return false;
