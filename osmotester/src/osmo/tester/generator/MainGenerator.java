@@ -79,10 +79,10 @@ public class MainGenerator {
     suite = fsm.getTestSuite();
     log.debug("Starting test suite generation");
     beforeSuite(fsm);
-    while (!suiteStrategy.exitNow(suite, true)) {
+    while (!suiteStrategy.exitNow(fsm, true)) {
       log.debug("Starting new test generation");
       beforeTest(fsm);
-      while (!testStrategy.exitNow(suite, false)) {
+      while (!testStrategy.exitNow(fsm, false)) {
         List<FSMTransition> enabled = getEnabled(fsm);
         FSMTransition next = algorithm.choose(suite, enabled);
         log.debug("Taking transition "+next.getName());

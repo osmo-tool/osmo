@@ -2,6 +2,7 @@ package osmo.tester.generator.strategy;
 
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.log.Logger;
+import osmo.tester.model.FSM;
 
 /**
  * A simple strategy to stop test case generation when a number of test steps has been generated,
@@ -27,11 +28,12 @@ public class LengthStrategy implements ExitStrategy {
   }
 
   @Override
-  public boolean exitNow(TestSuite testLog, boolean evaluateSuite) {
-    log.debug("e:"+evaluateSuite+" h:"+testLog.getHistory().size()+" c:"+testLog.currentSteps());
+  public boolean exitNow(FSM fsm, boolean evaluateSuite) {
+    TestSuite suite = fsm.getTestSuite();
+    log.debug("e:"+evaluateSuite+" h:"+suite.getHistory().size()+" c:"+suite.currentSteps());
     if (evaluateSuite) {
-      return testLog.getHistory().size() >= length;
+      return suite.getHistory().size() >= length;
     }
-    return testLog.currentSteps() >= length;
+    return suite.currentSteps() >= length;
   }
 }

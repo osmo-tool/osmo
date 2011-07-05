@@ -2,6 +2,7 @@ package osmo.tester.generator.strategy;
 
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.log.Logger;
+import osmo.tester.model.FSM;
 
 import java.util.Random;
 
@@ -32,7 +33,7 @@ public class ProbabilityStrategy implements ExitStrategy {
   }
 
   @Override
-  public boolean exitNow(TestSuite testLog, boolean evaluateSuite) {
+  public boolean exitNow(FSM fsm, boolean evaluateSuite) {
     double v = random.nextDouble();
     log.debug("value "+v+" threshold "+threshold);
     return v >= threshold;
