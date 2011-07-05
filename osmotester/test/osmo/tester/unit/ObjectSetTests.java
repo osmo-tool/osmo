@@ -3,7 +3,7 @@ package osmo.tester.unit;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.model.dataflow.InputStrategy;
-import osmo.tester.model.dataflow.ObjectSetInvariant;
+import osmo.tester.model.dataflow.ObjectSet;
 
 import static junit.framework.Assert.*;
 
@@ -11,11 +11,11 @@ import static junit.framework.Assert.*;
  * @author Teemu Kanstren
  */
 public class ObjectSetTests {
-  private ObjectSetInvariant<String> inv = null;
+  private ObjectSet<String> inv = null;
 
   @Before
   public void setup() {
-    inv = new ObjectSetInvariant<String>();
+    inv = new ObjectSet<String>();
     inv.addOption("one");
     inv.addOption("two");
     inv.addOption("three");
@@ -63,7 +63,7 @@ public class ObjectSetTests {
     String v6 = null;
     boolean diff = false;
     for (int i = 0 ; i < 10 ; i++) {
-      inv = new ObjectSetInvariant<String>();
+      inv = new ObjectSet<String>();
       inv.setStrategy(InputStrategy.OPTIMIZED_RANDOM);
       inv.addOption("one");
       inv.addOption("two");
