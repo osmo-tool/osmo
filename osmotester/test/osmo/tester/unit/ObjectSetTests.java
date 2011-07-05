@@ -2,7 +2,7 @@ package osmo.tester.unit;
 
 import org.junit.Before;
 import org.junit.Test;
-import osmo.tester.model.dataflow.InputStrategy;
+import osmo.tester.model.dataflow.GenerationStrategy;
 import osmo.tester.model.dataflow.ObjectSet;
 
 import static junit.framework.Assert.*;
@@ -23,7 +23,7 @@ public class ObjectSetTests {
 
   @Test
   public void orderedTest() {
-    inv.setStrategy(InputStrategy.ORDERED_LOOP);
+    inv.setStrategy(GenerationStrategy.ORDERED_LOOP);
     inv.addOption("one");
     inv.addOption("two");
     inv.addOption("three");
@@ -38,7 +38,7 @@ public class ObjectSetTests {
   @Test
   public void randomizedTest() {
     //leaving this out also tests the default behaviour and expectations for that
-//    inv.setStrategy(InputStrategy.RANDOM);
+//    inv.setStrategy(GenerationStrategy.RANDOM);
     String v1 = inv.input();
     String v2 = inv.input();
     String v3 = inv.input();
@@ -64,7 +64,7 @@ public class ObjectSetTests {
     boolean diff = false;
     for (int i = 0 ; i < 10 ; i++) {
       inv = new ObjectSet<String>();
-      inv.setStrategy(InputStrategy.OPTIMIZED_RANDOM);
+      inv.setStrategy(GenerationStrategy.OPTIMIZED_RANDOM);
       inv.addOption("one");
       inv.addOption("two");
       inv.addOption("three");
@@ -90,7 +90,7 @@ public class ObjectSetTests {
 
   @Test
   public void evaluationTest() {
-    inv.setStrategy(InputStrategy.ORDERED_LOOP);
+    inv.setStrategy(GenerationStrategy.ORDERED_LOOP);
     assertTrue("Should find \"one\" in the set of objects.", inv.evaluate("one"));
     assertTrue("Should find \"two\" in the set of objects.", inv.evaluate("two"));
     assertTrue("Should find \"three\" in the set of objects.", inv.evaluate("three"));
@@ -99,7 +99,7 @@ public class ObjectSetTests {
 
   @Test
   public void addAndRemoveOrderedTest() {
-    inv.setStrategy(InputStrategy.ORDERED_LOOP);
+    inv.setStrategy(GenerationStrategy.ORDERED_LOOP);
     assertEquals("one", inv.input());
     assertEquals("two", inv.input());
     inv.removeOption("one");

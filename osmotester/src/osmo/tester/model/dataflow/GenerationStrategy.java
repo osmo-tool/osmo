@@ -6,7 +6,7 @@ package osmo.tester.model.dataflow;
  *
  * @author Teemu Kanstren
  */
-public enum InputStrategy {
+public enum GenerationStrategy {
   /** Completely random pick. */
   RANDOM,
   /** Pick a value on random but favor previously uncovered partitions or objects. */

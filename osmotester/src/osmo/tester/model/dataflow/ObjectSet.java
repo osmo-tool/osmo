@@ -17,7 +17,7 @@ public class ObjectSet<T> {
   /** The options for data generation and evaluation. */
   private List<T> options = new ArrayList<T>();
   /** The input strategy to choose an object. */
-  private InputStrategy strategy = InputStrategy.RANDOM;
+  private GenerationStrategy strategy = GenerationStrategy.RANDOM;
   /** index for next item if using ORDERED_LOOP. Using this instead of iterator to allow modification of options in runtime. */
   private int next = 0;
   /** The history of chosen input value objects for this invariant. */
@@ -26,7 +26,7 @@ public class ObjectSet<T> {
   public ObjectSet() {
   }
 
-  public ObjectSet(InputStrategy strategy) {
+  public ObjectSet(GenerationStrategy strategy) {
     this.strategy = strategy;
   }
 
@@ -35,7 +35,7 @@ public class ObjectSet<T> {
    *
    * @param strategy The new strategy.
    */
-  public void setStrategy(InputStrategy strategy) {
+  public void setStrategy(GenerationStrategy strategy) {
     this.strategy = strategy;
   }
 
@@ -84,7 +84,7 @@ public class ObjectSet<T> {
     if (currentOptions.size() == 0) {
       throw new IllegalStateException("No value to provide (add some options).");
     }
-    if (strategy == InputStrategy.ORDERED_LOOP) {
+    if (strategy == GenerationStrategy.ORDERED_LOOP) {
       if (next >= currentOptions.size()) {
         next = 0;
       }
@@ -92,7 +92,7 @@ public class ObjectSet<T> {
       history.add(input);
       return input;
     }
-    if (strategy == InputStrategy.OPTIMIZED_RANDOM) {
+    if (strategy == GenerationStrategy.OPTIMIZED_RANDOM) {
       currentOptions.removeAll(history);
       if (currentOptions.size() == 0) {
         currentOptions = options;

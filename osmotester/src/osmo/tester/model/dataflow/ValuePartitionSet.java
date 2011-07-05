@@ -16,12 +16,12 @@ import static osmo.tester.TestUtils.*;
  *
  * @author Teemu Kanstren
  */
-public class ValuePartitionSet<T extends Number> {
+public class ValuePartitionSet {
   private static final Logger log = new Logger(ValuePartitionSet.class);
   /** The different partitions in the domain. */
   private ObjectSet<ValuePartition> partitions = new ObjectSet<ValuePartition>();
   /** The strategy for input data generation. */
-  private InputStrategy strategy = InputStrategy.RANDOM;
+  private GenerationStrategy strategy = GenerationStrategy.RANDOM;
   /** Keeps a history of all the data values created as input from this invariant. */
   protected Collection<Number> history = new ArrayList<Number>();
 
@@ -30,7 +30,7 @@ public class ValuePartitionSet<T extends Number> {
    *
    * @param strategy The new strategy.
    */
-  public void setStrategy(InputStrategy strategy) {
+  public void setStrategy(GenerationStrategy strategy) {
     this.strategy = strategy;
     partitions.setStrategy(strategy);
   }
@@ -41,9 +41,9 @@ public class ValuePartitionSet<T extends Number> {
    * @param min Lower bound (minimum value) of the partition.
    * @param max Upper bound (maximum value) of the partition.
    */
-  public void addPartition(T min, T max) {
+  public void addPartition(double min, double max) {
     log.debug("Adding partition min("+min+") max("+max+")");
-    if (min.doubleValue() > max.doubleValue()) {
+    if (min > max) {
       throw new IllegalArgumentException("Minimum value cannot be greater than maximum value.");
     }
     partitions.addOption(new ValuePartition(min, max));
@@ -56,7 +56,7 @@ public class ValuePartitionSet<T extends Number> {
    * @param min Lower bound (minimum value) of the partition.
    * @param max Upper bound (maximum value) of the partition.
    */
-  public void removePartition(T min, T max) {
+  public void removePartition(double min, double max) {
     log.debug("Removing partition min("+min+") max("+max+")");
     partitions.removeOption(new ValuePartition(min, max));
   }
@@ -67,7 +67,7 @@ public class ValuePartitionSet<T extends Number> {
    * @return The partition to generate data from.
    */
   public ValuePartition nextPartition() {
-    if (strategy != InputStrategy.OPTIMIZED_RANDOM) {
+    if (strategy != GenerationStrategy.OPTIMIZED_RANDOM) {
       ValuePartition partition = partitions.input();
       log.debug("Next interval "+partition);
       return partition;
@@ -185,7 +185,7 @@ public class ValuePartitionSet<T extends Number> {
    * @param value The value to check.
    * @return True if the value fits in the defined partitions, false otherwise.
    */
-  public boolean evaluate(T value) {
+  public boolean evaluate(double value) {
     Collection<ValuePartition> partitions = this.partitions.getAll();
     log.debug("Evaluating value:"+value);
     for (ValuePartition partition : partitions) {
