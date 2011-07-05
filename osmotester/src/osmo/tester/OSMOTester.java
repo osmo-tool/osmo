@@ -5,8 +5,8 @@ import osmo.tester.generator.GenerationListenerList;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.algorithm.GenerationAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
-import osmo.tester.generator.strategy.ExitStrategy;
-import osmo.tester.generator.strategy.ProbabilityStrategy;
+import osmo.tester.generator.endcondition.EndCondition;
+import osmo.tester.generator.endcondition.ProbabilityCondition;
 import osmo.tester.log.Logger;
 import osmo.tester.model.FSM;
 import osmo.tester.parser.MainParser;
@@ -28,9 +28,9 @@ public class OSMOTester {
   /** The set of test model objects, given by the user. */
   private final Collection<Object> modelObjects = new ArrayList<Object>();
   /** When do we stop generating the overall test suite? (stopping all test generation)*/
-  private ExitStrategy suiteStrategy = new ProbabilityStrategy(0.95d);
+  private EndCondition suiteStrategy = new ProbabilityCondition(0.95d);
   /** When do we stop generating individual tests and start a new one? */
-  private ExitStrategy testStrategy = new ProbabilityStrategy(0.9d);
+  private EndCondition testStrategy = new ProbabilityCondition(0.9d);
   /** The algorithm to traverse the test model to generate test steps. */
   private GenerationAlgorithm algorithm = new RandomAlgorithm();
   /** Listeners to be notified about test generation events. */
@@ -77,21 +77,21 @@ public class OSMOTester {
   }
 
   /**
-   * Set the strategy for stopping the generation of whole test suite.
+   * Add a condition for stopping the generation of whole test suite.
    *
-   * @param suiteStrategy The new strategy to stop overall suite generation.
+   * @param condition The new condition to stop overall suite generation.
    */
-  public void setSuiteStrategy(ExitStrategy suiteStrategy) {
-    this.suiteStrategy = suiteStrategy;
+  public void addSuiteEndCondition(EndCondition condition) {
+    this.suiteStrategy = condition;
   }
 
   /**
-   * Set the strategy for stopping the generation of individual test cases.
+   * Add a condition for stopping the generation of individual test cases.
    *
-   * @param testStrategy The new strategy to stop individual test generation.
+   * @param condition The new condition to stop individual test generation.
    */
-  public void setTestStrategy(ExitStrategy testStrategy) {
-    this.testStrategy = testStrategy;
+  public void addTestEndCondition(EndCondition condition) {
+    this.testStrategy = condition;
   }
 
   /**

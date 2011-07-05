@@ -3,7 +3,7 @@ package osmo.tester.generation;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOTester;
-import osmo.tester.generator.strategy.LengthStrategy;
+import osmo.tester.generator.endcondition.LengthCondition;
 import osmo.tester.model.Requirements;
 import osmo.tester.testmodels.ValidTestModel1;
 import osmo.tester.testmodels.ValidTestModel2;
@@ -32,10 +32,10 @@ public class ListenerTests {
   public void noEnabledTransition() {
     listener.addExpected("suite-start", "start", "g:kitted(epixx)", "g:listCheck(world)");
     osmo.addModelObject(new ValidTestModel1());
-    LengthStrategy length3 = new LengthStrategy(3);
-    LengthStrategy length1 = new LengthStrategy(1);
-    osmo.setTestStrategy(length3);
-    osmo.setSuiteStrategy(length1);
+    LengthCondition length3 = new LengthCondition(3);
+    LengthCondition length1 = new LengthCondition(1);
+    osmo.addTestEndCondition(length3);
+    osmo.addSuiteEndCondition(length1);
     try {
       osmo.generate();
       fail("Generation without available transitions should fail.");
@@ -55,10 +55,10 @@ public class ListenerTests {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
     osmo.addModelObject(new ValidTestModel2(new Requirements(), ps));
-    LengthStrategy length3 = new LengthStrategy(3);
-    LengthStrategy length1 = new LengthStrategy(1);
-    osmo.setTestStrategy(length3);
-    osmo.setSuiteStrategy(length1);
+    LengthCondition length3 = new LengthCondition(3);
+    LengthCondition length1 = new LengthCondition(1);
+    osmo.addTestEndCondition(length3);
+    osmo.addSuiteEndCondition(length1);
     osmo.generate();
     listener.validate("Generated sequence for test model 2");
   }

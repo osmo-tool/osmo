@@ -28,7 +28,6 @@ import static junit.framework.Assert.*;
 public class ParserTests {
   @Before
   public void setup() {
-    Logger.debug = true;
   }
 
   @Test

@@ -1,9 +1,9 @@
-package osmo.tester.strategies;
+package osmo.tester.endconditions;
 
 import org.junit.Test;
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.CalculatorModel;
-import osmo.tester.generator.strategy.LengthStrategy;
+import osmo.tester.generator.endcondition.LengthCondition;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 
@@ -24,9 +24,9 @@ public class LengthTests {
   private void testWithLength(int expectedLength) {
     CalculatorModel calculator = new CalculatorModel();
     OSMOTester tester = new OSMOTester(calculator);
-    LengthStrategy testStrategy = new LengthStrategy(expectedLength);
-    tester.setTestStrategy(testStrategy);
-    tester.setSuiteStrategy(testStrategy);
+    LengthCondition testStrategy = new LengthCondition(expectedLength);
+    tester.addTestEndCondition(testStrategy);
+    tester.addSuiteEndCondition(testStrategy);
     tester.generate();
     TestSuite testLog = calculator.getHistory();
     List<TestCase> history = testLog.getHistory();

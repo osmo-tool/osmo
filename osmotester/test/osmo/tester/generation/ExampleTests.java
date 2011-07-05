@@ -5,7 +5,7 @@ import osmo.tester.OSMOTester;
 import osmo.tester.examples.CalculatorModel;
 import osmo.tester.examples.CalculatorModel2;
 import osmo.tester.examples.VendingExample;
-import osmo.tester.generator.strategy.LengthStrategy;
+import osmo.tester.generator.endcondition.LengthCondition;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -25,10 +25,10 @@ public class ExampleTests {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
     OSMOTester osmo = new OSMOTester(new CalculatorModel(ps));
-    LengthStrategy length3 = new LengthStrategy(3);
-    LengthStrategy length2 = new LengthStrategy(2);
-    osmo.setTestStrategy(length3);
-    osmo.setSuiteStrategy(length2);
+    LengthCondition length3 = new LengthCondition(3);
+    LengthCondition length2 = new LengthCondition(2);
+    osmo.addTestEndCondition(length3);
+    osmo.addSuiteEndCondition(length2);
     osmo.generate();
     String expected = "first" + ln +
             "Starting new test case 1" + ln +
@@ -51,10 +51,10 @@ public class ExampleTests {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
     OSMOTester osmo = new OSMOTester(new CalculatorModel2(ps));
-    LengthStrategy length3 = new LengthStrategy(3);
-    LengthStrategy length2 = new LengthStrategy(2);
-    osmo.setTestStrategy(length3);
-    osmo.setSuiteStrategy(length2);
+    LengthCondition length3 = new LengthCondition(3);
+    LengthCondition length2 = new LengthCondition(2);
+    osmo.addTestEndCondition(length3);
+    osmo.addSuiteEndCondition(length2);
     osmo.generate();
     String expected = "first" + ln +
             "Starting new test case 1" + ln +
@@ -77,10 +77,10 @@ public class ExampleTests {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
     OSMOTester osmo = new OSMOTester(new VendingExample(ps));
-    LengthStrategy length3 = new LengthStrategy(3);
-    LengthStrategy length2 = new LengthStrategy(2);
-    osmo.setTestStrategy(length3);
-    osmo.setSuiteStrategy(length2);
+    LengthCondition length3 = new LengthCondition(3);
+    LengthCondition length2 = new LengthCondition(2);
+    osmo.addTestEndCondition(length3);
+    osmo.addSuiteEndCondition(length2);
     osmo.generate();
     String expected = "Starting test:1" + ln +
             "INSERT 50" + ln +

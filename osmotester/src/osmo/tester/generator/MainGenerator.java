@@ -1,7 +1,7 @@
 package osmo.tester.generator;
 
 import osmo.tester.generator.algorithm.GenerationAlgorithm;
-import osmo.tester.generator.strategy.ExitStrategy;
+import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.log.Logger;
 import osmo.tester.model.FSM;
@@ -26,9 +26,9 @@ public class MainGenerator {
   /** The set of enabled transitions in the current state is passed to this algorithm to pick one to execute. */
   private GenerationAlgorithm algorithm;
   /** Defines when test suite generation should be stopped. Invoked between each test case. */
-  private ExitStrategy suiteStrategy;
+  private EndCondition suiteStrategy;
   /** Defines when test case generation should be stopped. Invoked between each test step. */
-  private ExitStrategy testStrategy;
+  private EndCondition testStrategy;
   /** The list of listeners to be notified of new events as generation progresses. */
   private GenerationListenerList listeners;
 
@@ -50,7 +50,7 @@ public class MainGenerator {
    *
    * @param suiteStrategy Defines when test suite generation should be stopped. Invoked between each test case.
    */
-  public void setSuiteStrategy(ExitStrategy suiteStrategy) {
+  public void setSuiteStrategy(EndCondition suiteStrategy) {
     this.suiteStrategy = suiteStrategy;
   }
 
@@ -58,7 +58,7 @@ public class MainGenerator {
    *
    * @param testStrategy Defines when test case generation should be stopped. Invoked between each test step.
    */
-  public void setTestStrategy(ExitStrategy testStrategy) {
+  public void setTestStrategy(EndCondition testStrategy) {
     this.testStrategy = testStrategy;
   }
 
@@ -79,10 +79,10 @@ public class MainGenerator {
     suite = fsm.getTestSuite();
     log.debug("Starting test suite generation");
     beforeSuite(fsm);
-    while (!suiteStrategy.exitNow(fsm, true)) {
+    while (!suiteStrategy.endNow(fsm, true)) {
       log.debug("Starting new test generation");
       beforeTest(fsm);
-      while (!testStrategy.exitNow(fsm, false)) {
+      while (!testStrategy.endNow(fsm, false)) {
         List<FSMTransition> enabled = getEnabled(fsm);
         FSMTransition next = algorithm.choose(suite, enabled);
         log.debug("Taking transition "+next.getName());

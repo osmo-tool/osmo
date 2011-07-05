@@ -2,7 +2,7 @@ package osmo.tester.generation;
 
 import org.junit.Test;
 import osmo.tester.OSMOTester;
-import osmo.tester.generator.strategy.LengthStrategy;
+import osmo.tester.generator.endcondition.LengthCondition;
 import osmo.tester.model.Requirements;
 import osmo.tester.testmodels.ValidTestModel2;
 
@@ -19,8 +19,8 @@ public class RequirementsTests {
     req.add(ValidTestModel2.REQ_HELLO);
     req.add(ValidTestModel2.REQ_WORLD);
     OSMOTester osmo = new OSMOTester(new ValidTestModel2(req));
-    osmo.setTestStrategy(new LengthStrategy(3));
-    osmo.setSuiteStrategy(new LengthStrategy(1));
+    osmo.addTestEndCondition(new LengthCondition(3));
+    osmo.addSuiteEndCondition(new LengthCondition(1));
     osmo.generate();
     assertEquals(3, req.getCovered().size());
     assertEquals(3, req.getRequirements().size());
@@ -32,8 +32,8 @@ public class RequirementsTests {
     Requirements req = new Requirements();
     req.add(ValidTestModel2.REQ_EPIX);
     OSMOTester osmo = new OSMOTester(new ValidTestModel2(req));
-    osmo.setTestStrategy(new LengthStrategy(3));
-    osmo.setSuiteStrategy(new LengthStrategy(1));
+    osmo.addTestEndCondition(new LengthCondition(3));
+    osmo.addSuiteEndCondition(new LengthCondition(1));
     osmo.generate();
     assertEquals(3, req.getCovered().size());
     assertEquals(1, req.getRequirements().size());
@@ -44,8 +44,8 @@ public class RequirementsTests {
   public void fullExcessCoverage() {
     Requirements req = new Requirements();
     OSMOTester osmo = new OSMOTester(new ValidTestModel2(req));
-    osmo.setTestStrategy(new LengthStrategy(3));
-    osmo.setSuiteStrategy(new LengthStrategy(1));
+    osmo.addTestEndCondition(new LengthCondition(3));
+    osmo.addSuiteEndCondition(new LengthCondition(1));
     osmo.generate();
     assertEquals(3, req.getCovered().size());
     assertEquals(0, req.getRequirements().size());
@@ -60,8 +60,8 @@ public class RequirementsTests {
     req.add(ValidTestModel2.REQ_WORLD);
     req.add("undefined");
     OSMOTester osmo = new OSMOTester(new ValidTestModel2(req));
-    osmo.setTestStrategy(new LengthStrategy(3));
-    osmo.setSuiteStrategy(new LengthStrategy(1));
+    osmo.addTestEndCondition(new LengthCondition(3));
+    osmo.addSuiteEndCondition(new LengthCondition(1));
     osmo.generate();
     assertEquals(3, req.getCovered().size());
     assertEquals(4, req.getRequirements().size());
