@@ -34,44 +34,10 @@ public class TestSuite {
    * End the current test case and moves it to the suite "history".
    */
   public void endTest() {
+    coveredRequirements.addAll(current.getAddedRequirementsCoverage());
+    coveredTransitions.addAll(current.getAddedTransitionCoverage());
     testCases.add(current);
     current = null;
-  }
-
-  /**
-   * Calculates the difference between the requirements and transitions covered in previous test cases
-   * (stored in \code{testCases}) and the current (last) generated test case. Stores the differences in
-   * the test case object for the currently generated test case.
-   */
-  private void computeAddedCoverage() {
-    //first we create a list of requirements covered by the previous test cases
-    Collection<String> oldRequirementCoverage = new ArrayList<String>();
-    //and the same for the transitions
-    Collection<FSMTransition> oldTransitionCoverage = new ArrayList<FSMTransition>();
-    for (TestCase testCase : testCases) {
-      List<TestStep> steps = testCase.getSteps();
-      for (TestStep step : steps) {
-        oldRequirementCoverage.addAll(step.getCoveredRequirements());
-        oldTransitionCoverage.add(step.getTransition());
-      }
-    }
-
-    //now we find the difference to the new coverage in the current test case
-    List<TestStep> steps = current.getSteps();
-    Collection<String> newRequirementCoverage = new ArrayList<String>();
-    Collection<FSMTransition> newTransitionCoverage = new ArrayList<FSMTransition>();
-    for (TestStep step : steps) {
-      Collection<String> covered = step.getCoveredRequirements();
-      newRequirementCoverage.addAll(covered);
-      newTransitionCoverage.add(step.getTransition());
-    }
-    //At this point we have a list of all covered requirements/transitions for the current test case, including those
-    //already covered by the previous test cases. So we retain only the diff.
-    newRequirementCoverage.removeAll(oldRequirementCoverage);
-    newTransitionCoverage.removeAll(oldTransitionCoverage);
-
-    current.setAddedRequirementsCoverage(newRequirementCoverage);
-    current.setAddedTransitionCoverage(newTransitionCoverage);
   }
 
   /**
@@ -81,6 +47,9 @@ public class TestSuite {
    */
   public void add(FSMTransition transition) {
     current.addTransition(transition);
+    if (!coveredTransitions.contains(transition)) {
+      current.addAddedTransitionCoverage(transition);
+    }
   }
 
   /**
@@ -90,6 +59,9 @@ public class TestSuite {
    */
   public void covered(String requirement) {
     current.covered(requirement);
+    if (!coveredRequirements.contains(requirement)) {
+      current.addAddedRequirementsCoverage(requirement);
+    }
   }
 
   /**

@@ -54,19 +54,28 @@ public class TestCase {
     return steps;
   }
 
+  /**
+   * Clear list of added transitions and requirements coverage.
+   * Useful in test suite optimization when these lists need to be updated.
+   */
+  public void resetCoverage() {
+    addedRequirementsCoverage.clear();
+    addedTransitionCoverage.clear();
+  }
+
   public Collection<FSMTransition> getAddedTransitionCoverage() {
     return addedTransitionCoverage;
   }
 
-  public void setAddedTransitionCoverage(Collection<FSMTransition> addedTransitionCoverage) {
-    this.addedTransitionCoverage = addedTransitionCoverage;
+  public void addAddedTransitionCoverage(FSMTransition transition) {
+    addedTransitionCoverage.add(transition);
   }
 
   public Collection<String> getAddedRequirementsCoverage() {
     return addedRequirementsCoverage;
   }
 
-  public void setAddedRequirementsCoverage(Collection<String> addedRequirementsCoverage) {
-    this.addedRequirementsCoverage = addedRequirementsCoverage;
+  public void addAddedRequirementsCoverage(String requirement) {
+    addedRequirementsCoverage.add(requirement);
   }
 }
