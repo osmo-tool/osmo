@@ -22,7 +22,7 @@ public class RequirementsCoverageCondition implements EndCondition {
    */
   public RequirementsCoverageCondition(double threshold) {
     if (threshold < 0 || threshold > 1) {
-      throw new IllegalArgumentException(ProbabilityCondition.class.getSimpleName()+" threshold must be between 0 and 1. Was "+threshold+".");
+      throw new IllegalArgumentException(RequirementsCoverageCondition.class.getSimpleName()+" threshold must be between 0 and 1. Was "+threshold+".");
     }
     this.threshold = threshold;
   }
@@ -36,11 +36,13 @@ public class RequirementsCoverageCondition implements EndCondition {
 
     double percentage = 0;
     if(total == 0) {
-      return false;
+      //always end if no requirements are defined, otherwise it is an infinite loop
+      log.debug("No requirements defined, condition is always false.");
+      return true;
     } else {
       percentage = covered/total;
     }
     log.debug("threshold:"+threshold+" covered:"+percentage);
-    return threshold <= percentage;
+    return percentage >= threshold;
   }
 }

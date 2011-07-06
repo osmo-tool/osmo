@@ -30,9 +30,9 @@ public class LengthCondition implements EndCondition {
   @Override
   public boolean endNow(FSM fsm, boolean evaluateSuite) {
     TestSuite suite = fsm.getTestSuite();
-    log.debug("e:"+evaluateSuite+" h:"+suite.getHistory().size()+" c:"+suite.currentSteps());
+    log.debug("e:"+evaluateSuite+" h:"+suite.getTestCases().size()+" c:"+suite.currentSteps());
     if (evaluateSuite) {
-      return suite.getHistory().size() >= length;
+      return suite.getTestCases().size() >= length;
     }
     return suite.currentSteps() >= length;
   }
