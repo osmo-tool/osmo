@@ -45,7 +45,7 @@ public class OptimizedRandomAlgorithm implements GenerationAlgorithm {
 
   private Map<FSMTransition, Integer> countCoverage(TestSuite history) {
     Map<FSMTransition, Integer> coverage = new HashMapWithDefaultValue<FSMTransition, Integer>(0);
-    List<TestCase> tests = history.getAll();
+    List<TestCase> tests = history.getAllTestCases();
     for (TestCase test : tests) {
       List<TestStep> steps = test.getSteps();
       for (TestStep step : steps) {

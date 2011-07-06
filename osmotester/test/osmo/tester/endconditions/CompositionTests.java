@@ -8,12 +8,10 @@ import osmo.tester.generator.endcondition.LengthCondition;
 import osmo.tester.generator.endcondition.OrComposition;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.model.FSMTransition;
 
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.*;
 
 /**
  * @author Teemu Kanstren
@@ -31,7 +29,7 @@ public class CompositionTests {
     tester.addSuiteEndCondition(length2);
     tester.generate();
     TestSuite testLog = calculator.getHistory();
-    List<TestCase> history = testLog.getHistory();
+    List<TestCase> history = testLog.getTestCases();
     assertEquals("Number of tests generated", 2, history.size());
     for (TestCase test : history) {
       assertEquals("Number of steps in a test case", 4, test.getSteps().size());
@@ -51,7 +49,7 @@ public class CompositionTests {
     tester.addSuiteEndCondition(length2);
     tester.generate();
     TestSuite testLog = calculator.getHistory();
-    List<TestCase> history = testLog.getHistory();
+    List<TestCase> history = testLog.getTestCases();
     assertEquals("Number of tests generated", 2, history.size());
     for (TestCase test : history) {
       assertEquals("Number of steps in a test case", 6, test.getSteps().size());
@@ -71,7 +69,7 @@ public class CompositionTests {
     tester.addSuiteEndCondition(length2);
     tester.generate();
     TestSuite testLog = calculator.getHistory();
-    List<TestCase> history = testLog.getHistory();
+    List<TestCase> history = testLog.getTestCases();
     assertEquals("Number of tests generated", 2, history.size());
     for (TestCase test : history) {
       assertEquals("Number of steps in a test case", 2, test.getSteps().size());
@@ -91,7 +89,7 @@ public class CompositionTests {
     tester.addSuiteEndCondition(and);
     tester.generate();
     TestSuite testLog = calculator.getHistory();
-    List<TestCase> history = testLog.getHistory();
+    List<TestCase> history = testLog.getTestCases();
     assertEquals("Number of tests generated", 6, history.size());
     for (TestCase test : history) {
       assertEquals("Number of steps in a test case", 6, test.getSteps().size());

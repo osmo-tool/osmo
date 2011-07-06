@@ -3,11 +3,16 @@ package osmo.tester.generator.testsuite;
 import osmo.tester.model.FSMTransition;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
  * This class describes a single test case and all test steps that it contains.
- * 
+ * This also includes a list of added coverage for model transitions and requirements.
+ * Note that this coverage information may or may not hold in current testing. If offline test mode is applied and
+ * test suite content or ordering is optimized after generation, this information is likely invalid
+ * (unless optimization updates this information in the test case objects).
+ *
  * @author Teemu Kanstren
  */
 public class TestCase {
@@ -15,6 +20,10 @@ public class TestCase {
   private List<TestStep> steps = new ArrayList<TestStep>();
   /** The latest test step (being/having been generated). */
   private TestStep currentStep = null;
+  /** Newly covered transitions in relation to generation history. See constructor for notes. */
+  private Collection<FSMTransition> addedTransitionCoverage = new ArrayList<FSMTransition>();
+  /** Newly covered requirements in relation to generation history. See constructor for notes. */
+  private Collection<String> addedRequirementsCoverage = new ArrayList<String>();
 
   /**
    * Adds a new test step.
@@ -43,5 +52,21 @@ public class TestCase {
    */
   public List<TestStep> getSteps() {
     return steps;
+  }
+
+  public Collection<FSMTransition> getAddedTransitionCoverage() {
+    return addedTransitionCoverage;
+  }
+
+  public void setAddedTransitionCoverage(Collection<FSMTransition> addedTransitionCoverage) {
+    this.addedTransitionCoverage = addedTransitionCoverage;
+  }
+
+  public Collection<String> getAddedRequirementsCoverage() {
+    return addedRequirementsCoverage;
+  }
+
+  public void setAddedRequirementsCoverage(Collection<String> addedRequirementsCoverage) {
+    this.addedRequirementsCoverage = addedRequirementsCoverage;
   }
 }

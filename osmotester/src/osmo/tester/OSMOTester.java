@@ -72,7 +72,7 @@ public class OSMOTester {
     MainParser parser = new MainParser();
     FSM fsm = parser.parse(modelObjects);
     generator.generate(fsm);
-    System.out.println("generated " + fsm.getTestSuite().getHistory().size() + " tests.\n");
+    System.out.println("generated " + fsm.getTestSuite().getTestCases().size() + " tests.\n");
     System.out.println(fsm.getRequirements().printCoverage());
   }
 
