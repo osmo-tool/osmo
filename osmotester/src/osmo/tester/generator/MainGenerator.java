@@ -26,9 +26,9 @@ public class MainGenerator {
   /** The set of enabled transitions in the current state is passed to this algorithm to pick one to execute. */
   private GenerationAlgorithm algorithm;
   /** Defines when test suite generation should be stopped. Invoked between each test case. */
-  private EndCondition suiteStrategy;
+  private Collection<EndCondition> suiteEndConditions;
   /** Defines when test case generation should be stopped. Invoked between each test step. */
-  private EndCondition testStrategy;
+  private Collection<EndCondition> testCaseEndConditions;
   /** The list of listeners to be notified of new events as generation progresses. */
   private GenerationListenerList listeners;
 
@@ -48,18 +48,18 @@ public class MainGenerator {
 
   /**
    *
-   * @param suiteStrategy Defines when test suite generation should be stopped. Invoked between each test case.
+   * @param suiteEndConditions Defines when test suite generation should be stopped. Invoked between each test case.
    */
-  public void setSuiteStrategy(EndCondition suiteStrategy) {
-    this.suiteStrategy = suiteStrategy;
+  public void setSuiteEndConditions(Collection<EndCondition> suiteEndConditions) {
+    this.suiteEndConditions = suiteEndConditions;
   }
 
   /**
    *
-   * @param testStrategy Defines when test case generation should be stopped. Invoked between each test step.
+   * @param testCaseEndConditions Defines when test case generation should be stopped. Invoked between each test step.
    */
-  public void setTestStrategy(EndCondition testStrategy) {
-    this.testStrategy = testStrategy;
+  public void setTestCaseEndConditions(Collection<EndCondition> testCaseEndConditions) {
+    this.testCaseEndConditions = testCaseEndConditions;
   }
 
   /**
@@ -79,15 +79,15 @@ public class MainGenerator {
     suite = fsm.getTestSuite();
     log.debug("Starting test suite generation");
     beforeSuite(fsm);
-    while (!suiteStrategy.endNow(fsm, true)) {
+    while (!checkSuiteEndConditions(fsm)) {
       log.debug("Starting new test generation");
       beforeTest(fsm);
-      while (!testStrategy.endNow(fsm, false)) {
+      while (!checkTestCaseEndConditions(fsm)) {
         List<FSMTransition> enabled = getEnabled(fsm);
         FSMTransition next = algorithm.choose(suite, enabled);
         log.debug("Taking transition "+next.getName());
         execute(next);
-        if (checkEndConditions(fsm)) {
+        if (checkModelEndConditions(fsm)) {
           //stop this test case generation if any end condition returns true
           break;
         }
@@ -99,13 +99,31 @@ public class MainGenerator {
     log.debug("Finished test suite generation");
   }
 
+  private boolean checkSuiteEndConditions(FSM fsm) {
+    for (EndCondition ec : suiteEndConditions) {
+      if (ec.endNow(fsm, true)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean checkTestCaseEndConditions(FSM fsm) {
+    for (EndCondition ec : testCaseEndConditions) {
+      if (ec.endNow(fsm, false)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   /**
    * Calls every defind end condition and if any return true, also returns true. Otherwise, false.
    *
    * @param fsm The model object on which to invoke the methods.
    * @return true if current test case (not suite) generation should be stopped.
    */
-  private boolean checkEndConditions(FSM fsm) {
+  private boolean checkModelEndConditions(FSM fsm) {
     Collection<InvocationTarget> endConditions = fsm.getEndConditions();
     for (InvocationTarget ec : endConditions) {
       Boolean result = (Boolean)ec.invoke();

@@ -28,9 +28,9 @@ public class OSMOTester {
   /** The set of test model objects, given by the user. */
   private final Collection<Object> modelObjects = new ArrayList<Object>();
   /** When do we stop generating the overall test suite? (stopping all test generation)*/
-  private EndCondition suiteStrategy = new ProbabilityCondition(0.95d);
+  private Collection<EndCondition> suiteEndConditions = new ArrayList<EndCondition>();
   /** When do we stop generating individual tests and start a new one? */
-  private EndCondition testStrategy = new ProbabilityCondition(0.9d);
+  private Collection<EndCondition> testCaseEndConditions = new ArrayList<EndCondition>();
   /** The algorithm to traverse the test model to generate test steps. */
   private GenerationAlgorithm algorithm = new RandomAlgorithm();
   /** Listeners to be notified about test generation events. */
@@ -66,8 +66,14 @@ public class OSMOTester {
   public void generate() {
     MainGenerator generator = new MainGenerator();
     generator.setAlgorithm(algorithm);
-    generator.setSuiteStrategy(suiteStrategy);
-    generator.setTestStrategy(testStrategy);
+    if (suiteEndConditions.size() == 0) {
+      addSuiteEndCondition(new ProbabilityCondition(0.95d));
+    }
+    if (testCaseEndConditions.size() == 0) {
+      addTestEndCondition(new ProbabilityCondition(0.9d));
+    }
+    generator.setSuiteEndConditions(suiteEndConditions);
+    generator.setTestCaseEndConditions(testCaseEndConditions);
     generator.setListeners(listeners);
     MainParser parser = new MainParser();
     FSM fsm = parser.parse(modelObjects);
@@ -82,7 +88,7 @@ public class OSMOTester {
    * @param condition The new condition to stop overall suite generation.
    */
   public void addSuiteEndCondition(EndCondition condition) {
-    this.suiteStrategy = condition;
+    suiteEndConditions.add(condition);
   }
 
   /**
@@ -91,7 +97,7 @@ public class OSMOTester {
    * @param condition The new condition to stop individual test generation.
    */
   public void addTestEndCondition(EndCondition condition) {
-    this.testStrategy = condition;
+    testCaseEndConditions.add(condition);
   }
 
   /**
