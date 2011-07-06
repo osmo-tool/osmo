@@ -4,6 +4,8 @@ import org.junit.Test;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
 
+import java.util.jar.Attributes;
+
 import static org.junit.Assert.*;
 
 /**
@@ -40,4 +42,5 @@ public class HistoryTests {
     assertTrue(suite.contains(new FSMTransition("bob")));
     assertFalse(suite.contains(new FSMTransition("bob4")));
   }
+
 }

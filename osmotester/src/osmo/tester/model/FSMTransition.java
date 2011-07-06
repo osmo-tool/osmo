@@ -13,8 +13,10 @@ import java.util.Collection;
  * @author Teemu Kanstren
  */
 public class FSMTransition {
-  /** Name of the transition, from @Transition("name"). */
+  /** Name of the transition, from @Transition("name") or (name="name") or (value="name"). Fails if undefined or empty ("").*/
   private final String name;
+  /** Weight of the transitions, from @Transition(weight=x), defaults to 1. */
+  private int weight = 1;
   /** The set of guards defining when this transition can be taken. */
   private final Collection<InvocationTarget> guards = new ArrayList<InvocationTarget>();
   /** The method that needs to be invoked when the transition should be actually taken. */
@@ -36,6 +38,19 @@ public class FSMTransition {
 
   public String getName() {
     return name;
+  }
+
+  public int getWeight() {
+    return weight;
+  }
+
+  public void setWeight(int weight) {
+    //weight is -1 for oracles and guards, which should not impact this as weight is only defined for a transition
+    //but guards and oracles are also associated with transitions and can sometimes create them
+    if (weight <= 0) {
+      return;
+    }
+    this.weight = weight;
   }
 
   public Collection<InvocationTarget> getGuards() {
@@ -76,5 +91,13 @@ public class FSMTransition {
     result = 31 * result + (transition != null ? transition.hashCode() : 0);
     result = 31 * result + (oracles != null ? oracles.hashCode() : 0);
     return result;
+  }
+
+  @Override
+  public String toString() {
+    return "FSMTransition{" +
+            "name='" + name + '\'' +
+            ", weight=" + weight +
+            '}';
   }
 }

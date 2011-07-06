@@ -46,18 +46,24 @@ public class FSM {
 
   /**
    * Returns an existing object for the requested transition name or creates a new one if one was not previously
-   * fount existing.
+   * found existing.
    *
-   * @param name The name of the transition. Taken from @Transition("name")
+   * @param name The name of the transition. Taken from @Transition("name").
+   * @param weight The weight of the transition. Taken from @Transition(weight=x).
    * @return A transition object for the requested name.
    */
-  public FSMTransition createTransition(String name) {
-    log.debug("Creating transition: "+name);
+  public FSMTransition createTransition(String name, int weight) {
+    log.debug("Creating transition: "+name+" weight:"+weight);
     FSMTransition transition = transitions.get(name);
     if (transition != null) {
+      //we can come here from guard, oracle, or transition creation. however, only transitions define weights
+      //so we have to set it here if it was previously not defined
+      //note that transition.setWeight will do nothing in case of negative value as in guards and oracles
+      transition.setWeight(weight);
       return transition;
     }
     transition = new FSMTransition(name);
+    transition.setWeight(weight);
     transitions.put(name, transition);
     log.debug("Transition created");
     return transition;

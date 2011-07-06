@@ -7,7 +7,10 @@ import osmo.tester.model.InvocationTarget;
 
 /**
  * Parses {@link Transition} annotations from the given model object.
- * 
+ //since they both have default values of "" this is used as an indicator of undefined name
+ //however, missing name is not taken as an error to allow leaving transitions unnamed if no guards or
+ //oracles need to be associated to one
+ *
  * @author Teemu Kanstren
  */
 public class TransitionParser implements AnnotationParser {
@@ -16,8 +19,16 @@ public class TransitionParser implements AnnotationParser {
   @Override
   public String parse(ParserParameters parameters) {
     Transition t = (Transition) parameters.getAnnotation();
-    String name = t.value();
-    FSMTransition transition = parameters.getFsm().createTransition(name);
+    String name = t.name();
+    //first we try the "name" property which dominates, then the default "value" property
+    if (name.length() == 0) {
+      name = t.value();
+    }
+    if (name.length() == 0) {
+      return "Transition must have a name. Define the \"name\" or \"value\" property.";
+    }
+    int weight = t.weight();
+    FSMTransition transition = parameters.getFsm().createTransition(name, weight);
     transition.setTransition(new InvocationTarget(parameters, Transition.class));
     return "";
   }
