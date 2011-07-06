@@ -25,5 +25,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Transition {
-  String value();
+  String value() default "";
+  String name() default "";
+  int weight() default 1;
 }

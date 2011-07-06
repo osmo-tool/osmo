@@ -27,7 +27,7 @@ public class OracleParser implements AnnotationParser {
         //TODO: add check that no transition called "all" is allowed
         continue;
       }
-      FSMTransition transition = fsm.createTransition(name);
+      FSMTransition transition = fsm.createTransition(name, -1);
       transition.addOracle(target);
     }
     return "";

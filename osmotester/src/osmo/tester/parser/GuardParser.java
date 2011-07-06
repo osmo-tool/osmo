@@ -28,7 +28,7 @@ public class GuardParser implements AnnotationParser {
         //TODO: add check that no transition called "all" is allowed
         return "";
       }
-      FSMTransition transition = fsm.createTransition(name);
+      FSMTransition transition = fsm.createTransition(name, -1);
       transition.addGuard(target);
     }
     return "";
