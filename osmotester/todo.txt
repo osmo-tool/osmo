@@ -16,3 +16,8 @@
 -testi jossa object settiin lisataan ja poistetaan tavaraa lennosta
 -data generointia partitioiden boundareille, sekä niiden yhteisille osille, jne.
 -sql kielto?
+-parameterinfo olio jokaiselle kutsulle
+--tämän pitää jakaa parametriryhmiin
+-yläluokka, jossa:
+--edellinen transitio tieto
+--parametrisoitava visualisointi
