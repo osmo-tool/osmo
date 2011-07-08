@@ -19,18 +19,16 @@ import static osmo.tester.TestUtils.*;
 public class ValuePartitionSet {
   private static final Logger log = new Logger(ValuePartitionSet.class);
   /** The different partitions in the domain. */
-  private ObjectSet<ValuePartition> partitions = new ObjectSet<ValuePartition>();
+  private ObjectSet<ValueRange> partitions = new ObjectSet<ValueRange>();
   /** The strategy for input data generation. */
-  private GenerationStrategy strategy = GenerationStrategy.RANDOM;
-  /** Keeps a history of all the data values created as input from this invariant. */
-  protected Collection<Number> history = new ArrayList<Number>();
+  private DataGenerationAlgorithm strategy = DataGenerationAlgorithm.RANDOM;
 
   /**
    * Sets the input generation strategy.
    *
    * @param strategy The new strategy.
    */
-  public void setStrategy(GenerationStrategy strategy) {
+  public void setStrategy(DataGenerationAlgorithm strategy) {
     this.strategy = strategy;
     partitions.setStrategy(strategy);
   }
@@ -46,7 +44,7 @@ public class ValuePartitionSet {
     if (min > max) {
       throw new IllegalArgumentException("Minimum value cannot be greater than maximum value.");
     }
-    partitions.addOption(new ValuePartition(min, max));
+    partitions.addOption(new ValueRange(min, max));
   }
 
   /**
@@ -58,7 +56,7 @@ public class ValuePartitionSet {
    */
   public void removePartition(double min, double max) {
     log.debug("Removing partition min("+min+") max("+max+")");
-    partitions.removeOption(new ValuePartition(min, max));
+    partitions.removeOption(new ValueRange(min, max));
   }
 
   /**
@@ -66,9 +64,9 @@ public class ValuePartitionSet {
    *
    * @return The partition to generate data from.
    */
-  public ValuePartition nextPartition() {
-    if (strategy != GenerationStrategy.OPTIMIZED_RANDOM) {
-      ValuePartition partition = partitions.input();
+  public ValueRange nextPartition() {
+    if (strategy != DataGenerationAlgorithm.OPTIMIZED_RANDOM) {
+      ValueRange partition = partitions.next();
       log.debug("Next interval "+partition);
       return partition;
     }
@@ -80,49 +78,32 @@ public class ValuePartitionSet {
    *
    * @return The chosen partition.
    */
-  private ValuePartition optimizedRandomPartition() {
+  private ValueRange optimizedRandomPartition() {
     log.debug("Optimized random partition choice start");
-    Collection<ValuePartition> options = partitions.getAll();
+    Collection<ValueRange> options = partitions.getAll();
     if (options.size() == 1) {
-      ValuePartition partition = options.iterator().next();
+      ValueRange partition = options.iterator().next();
       log.debug("Single partition found, returning it:"+partition);
       return partition;
     }
     int min = Integer.MAX_VALUE;
-    for (ValuePartition option : options) {
-      int count = coverageFor(option);
+    for (ValueRange option : options) {
+      int count = option.getHistory().size();
       log.debug("Coverage for "+option+":"+count);
       if (count < min) {
         min = count;
       }
     }
     log.debug("Min coverage:"+min);
-    Collection<ValuePartition> currentOptions = new ArrayList<ValuePartition>();
-    for (ValuePartition option : options) {
-      int count = coverageFor(option);
+    Collection<ValueRange> currentOptions = new ArrayList<ValueRange>();
+    for (ValueRange option : options) {
+      int count = option.getHistory().size();
       log.debug("Coverage for current option "+option+":"+count);
       if (count == min) {
         currentOptions.add(option);
       }
     }
     return oneOf(currentOptions);
-  }
-
-  /**
-   * Calculates the coverage for the given partition. Coverage is measured in terms of how many values have
-   * been generated for the given partition.
-   *
-   * @param partition The partition to check the coverage for.
-   * @return The number of values generated so far for the given partition.
-   */
-  private int coverageFor(ValuePartition partition) {
-    int count = 0;
-    for (Number value : history) {
-      if (partition.contains(value)) {
-        count++;
-      }
-    }
-    return count;
   }
 
   /**
@@ -141,12 +122,9 @@ public class ValuePartitionSet {
    */
   public Double nextDouble() {
     validate();
-    ValuePartition i = nextPartition();
-    double min = i.min().doubleValue();
-    double max = i.max().doubleValue();
-    double value = cDouble(min, max);
-    history.add(value);
-    return value;
+    ValueRange i = nextPartition();
+//    history.add(value);
+    return i.nextDouble();
   }
 
   /**
@@ -156,12 +134,9 @@ public class ValuePartitionSet {
    */
   public int nextInt() {
     validate();
-    ValuePartition i = nextPartition();
-    int min = i.min().intValue();
-    int max = i.max().intValue();
-    int value = cInt(min, max);
-    history.add(value);
-    return value;
+    ValueRange i = nextPartition();
+//    history.add(value);
+    return i.nextInt();
   }
 
   /**
@@ -171,12 +146,9 @@ public class ValuePartitionSet {
    */
   public long nextLong() {
     validate();
-    ValuePartition i = nextPartition();
-    long min = i.min().longValue();
-    long max = i.max().longValue();
-    long value = cLong(min, max);
-    history.add(value);
-    return value;
+    ValueRange i = nextPartition();
+//    history.add(value);
+    return i.nextLong();
   }
 
   /**
@@ -186,9 +158,9 @@ public class ValuePartitionSet {
    * @return True if the value fits in the defined partitions, false otherwise.
    */
   public boolean evaluate(double value) {
-    Collection<ValuePartition> partitions = this.partitions.getAll();
+    Collection<ValueRange> partitions = this.partitions.getAll();
     log.debug("Evaluating value:"+value);
-    for (ValuePartition partition : partitions) {
+    for (ValueRange partition : partitions) {
       log.debug("Checking partition:"+partition);
       if (partition.contains(value)) {
         log.debug("Found match");

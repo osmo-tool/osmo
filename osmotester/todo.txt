@@ -21,3 +21,4 @@
 -yläluokka, jossa:
 --edellinen transitio tieto
 --parametrisoitava visualisointi
+-optimized random: pitää huomioida myös myöhemmät kierrokset, kun objekteja on yli 1 luotu jokaista

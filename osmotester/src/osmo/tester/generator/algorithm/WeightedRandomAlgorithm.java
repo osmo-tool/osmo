@@ -1,6 +1,5 @@
 package osmo.tester.generator.algorithm;
 
-import osmo.tester.HashMapWithDefaultValue;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -26,7 +25,7 @@ import static osmo.tester.TestUtils.oneOf;
  *
  * @author Teemu Kanstren
  */
-public class WeightedRandomAlgorithm implements GenerationAlgorithm {
+public class WeightedRandomAlgorithm implements SequenceGenerationAlgorithm {
   private static final Logger log = new Logger(WeightedRandomAlgorithm.class);
 
   @Override
@@ -53,8 +52,8 @@ public class WeightedRandomAlgorithm implements GenerationAlgorithm {
   }
 
   private Map<FSMTransition, Double> countScore(TestSuite history, List<FSMTransition> available) {
-    //we use 1 as the starting value since 0 divided by any weight would be 0 and mess up the model initialization
-    Map<FSMTransition, Integer> coverage = new HashMapWithDefaultValue<FSMTransition, Integer>(1);
+    //todo: coverage in testutils?
+    Map<FSMTransition, Integer> coverage = new HashMap<FSMTransition, Integer>(1);
     List<TestCase> tests = history.getAllTestCases();
     //first we count how many times a transition has been covered
     for (TestCase test : tests) {
@@ -62,11 +61,15 @@ public class WeightedRandomAlgorithm implements GenerationAlgorithm {
       for (TestStep step : steps) {
         FSMTransition transition = step.getTransition();
         Integer count = coverage.get(transition);
+        if (count == null) {
+          //we use 1 as the starting value since 0 divided by any weight would be 0 and mess up the model initialization
+          count = 1;
+        }
         coverage.put(transition, count+1);
       }
     }
     for (FSMTransition transition : available) {
-      if (coverage.get(transition) == 1) {
+      if (coverage.get(transition) == null) {
         //this is needed since the "default" behaviour of our special map always gives 1 even if no content is there
         coverage.put(transition, 1);
       }

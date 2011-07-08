@@ -10,7 +10,7 @@ import java.util.List;
  * 
  * @author Teemu Kanstren
  */
-public interface GenerationAlgorithm {
+public interface SequenceGenerationAlgorithm {
   /**
    * This method is called once for each test step to be generated from the given FSM test model (object).
    * The algorithm should pick one of the given set of enabled transitions as the next test step.

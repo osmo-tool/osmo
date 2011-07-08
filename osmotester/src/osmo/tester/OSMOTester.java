@@ -3,7 +3,7 @@ package osmo.tester;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.GenerationListenerList;
 import osmo.tester.generator.MainGenerator;
-import osmo.tester.generator.algorithm.GenerationAlgorithm;
+import osmo.tester.generator.algorithm.SequenceGenerationAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.endcondition.ProbabilityCondition;
@@ -32,7 +32,7 @@ public class OSMOTester {
   /** When do we stop generating individual tests and start a new one? */
   private Collection<EndCondition> testCaseEndConditions = new ArrayList<EndCondition>();
   /** The algorithm to traverse the test model to generate test steps. */
-  private GenerationAlgorithm algorithm = new RandomAlgorithm();
+  private SequenceGenerationAlgorithm algorithm = new RandomAlgorithm();
   /** Listeners to be notified about test generation events. */
   private GenerationListenerList listeners = new GenerationListenerList();
 
@@ -105,7 +105,7 @@ public class OSMOTester {
    *
    * @param algorithm New test generation algorithm.
    */
-  public void setAlgorithm(GenerationAlgorithm algorithm) {
+  public void setAlgorithm(SequenceGenerationAlgorithm algorithm) {
     this.algorithm = algorithm;
   }
 

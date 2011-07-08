@@ -1,8 +1,12 @@
 package osmo.tester.model.dataflow;
 
+import osmo.tester.generator.algorithm.OptimizedRandomAlgorithm;
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static osmo.tester.TestUtils.oneOf;
 
@@ -17,7 +21,7 @@ public class ObjectSet<T> {
   /** The options for data generation and evaluation. */
   private List<T> options = new ArrayList<T>();
   /** The input strategy to choose an object. */
-  private GenerationStrategy strategy = GenerationStrategy.RANDOM;
+  private DataGenerationAlgorithm strategy = DataGenerationAlgorithm.RANDOM;
   /** index for next item if using ORDERED_LOOP. Using this instead of iterator to allow modification of options in runtime. */
   private int next = 0;
   /** The history of chosen input value objects for this invariant. */
@@ -26,7 +30,13 @@ public class ObjectSet<T> {
   public ObjectSet() {
   }
 
-  public ObjectSet(GenerationStrategy strategy) {
+  public ObjectSet(T... items) {
+    for (T item : items) {
+      options.add(item);
+    }
+  }
+
+  public ObjectSet(DataGenerationAlgorithm strategy) {
     this.strategy = strategy;
   }
 
@@ -35,7 +45,7 @@ public class ObjectSet<T> {
    *
    * @param strategy The new strategy.
    */
-  public void setStrategy(GenerationStrategy strategy) {
+  public void setStrategy(DataGenerationAlgorithm strategy) {
     this.strategy = strategy;
   }
 
@@ -78,29 +88,46 @@ public class ObjectSet<T> {
    *
    * @return The chosen input object.
    */
-  public T input() {
-    List<T> currentOptions = new ArrayList<T>();
-    currentOptions.addAll(options);
-    if (currentOptions.size() == 0) {
+  public T next() {
+    if (options.size() == 0) {
       throw new IllegalStateException("No value to provide (add some options).");
     }
-    if (strategy == GenerationStrategy.ORDERED_LOOP) {
-      if (next >= currentOptions.size()) {
-        next = 0;
-      }
-      T input = currentOptions.get(next++);
-      history.add(input);
-      return input;
+    T next = null;
+    if (strategy == DataGenerationAlgorithm.ORDERED_LOOP) {
+      next = orderedLoopChoice();
     }
-    if (strategy == GenerationStrategy.OPTIMIZED_RANDOM) {
-      currentOptions.removeAll(history);
-      if (currentOptions.size() == 0) {
-        currentOptions = options;
-      }
-      //we continue forward but since we removed the covered ones, random will pick the optimized_random now
+    if (strategy == DataGenerationAlgorithm.OPTIMIZED_RANDOM) {
+      next = optimizedRandomChoice();
     }
     //here we default to RANDOM
-    T input = oneOf(currentOptions);
+    if (next == null) {
+      next = oneOf(options);
+    }
+    history.add(next);
+    return next;
+  }
+
+  private T optimizedRandomChoice() {
+    Map<T, Integer> coverage = new HashMap<T, Integer>();
+    for (T t : history) {
+      Integer count = coverage.get(t);
+      //when first encountered, the object will have "null" instances so we translate that to 0
+      //if an object is in history multiple times, the following ones will just increment the value
+      if (count == null) {
+        count = 0;
+      }
+      coverage.put(t, count+1);
+    }
+    return OptimizedRandomAlgorithm.optimizedRandomChoice(coverage, options);
+  }
+
+  private T orderedLoopChoice() {
+    List<T> currentOptions = new ArrayList<T>();
+    currentOptions.addAll(options);
+    if (next >= currentOptions.size()) {
+      next = 0;
+    }
+    T input = currentOptions.get(next++);
     history.add(input);
     return input;
   }
