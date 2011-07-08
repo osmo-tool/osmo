@@ -31,6 +31,8 @@ public class MainGenerator {
   private Collection<EndCondition> testCaseEndConditions;
   /** The list of listeners to be notified of new events as generation progresses. */
   private GenerationListenerList listeners;
+  /** This is set when the test should end but @EndState is not yet achieved to signal ending ASAP. */
+  private boolean testEnding = false;
 
   /**
    * Constructor.
@@ -101,16 +103,34 @@ public class MainGenerator {
 
   private boolean checkSuiteEndConditions(FSM fsm) {
     for (EndCondition ec : suiteEndConditions) {
-      if (ec.endNow(fsm, true)) {
-        return true;
+      if (!ec.endNow(fsm, true)) {
+        return false;
       }
     }
-    return false;
+    return true;
   }
 
   private boolean checkTestCaseEndConditions(FSM fsm) {
+    if (testEnding) {
+      return checkEndStates(fsm);
+    }
     for (EndCondition ec : testCaseEndConditions) {
-      if (ec.endNow(fsm, false)) {
+      if (!ec.endNow(fsm, false)) {
+        return false;
+      }
+    }
+    testEnding = true;
+    if (fsm.getEndStates().size() > 0) {
+      return checkEndStates(fsm);
+    }
+    return true;
+  }
+
+  private boolean checkEndStates(FSM fsm) {
+    Collection<InvocationTarget> endStates = fsm.getEndStates();
+    for (InvocationTarget es : endStates) {
+      Boolean endable = (Boolean)es.invoke();
+      if (endable) {
         return true;
       }
     }
@@ -160,6 +180,7 @@ public class MainGenerator {
     //update history
     suite.endTest();
     listeners.testEnded();
+    testEnding = false;
   }
 
   /**

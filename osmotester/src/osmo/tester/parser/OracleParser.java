@@ -6,6 +6,8 @@ import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
 
+import java.lang.reflect.Method;
+
 /**
  * @author Teemu Kanstren
  */
@@ -15,21 +17,30 @@ public class OracleParser implements AnnotationParser {
   @Override
   public String parse(ParserParameters parameters) {
     Oracle oracle = (Oracle) parameters.getAnnotation();
+
+    Method method = parameters.getMethod();
+    String errors = "";
+    Class<?>[] parameterTypes = method.getParameterTypes();
+    if (parameterTypes.length > 0) {
+      //TODO: add warnings for wrong return types etc.
+      errors += "Oracle methods are not allowed to have parameters: \""+method.getName()+"()\" has "+parameterTypes.length+" parameters.\n";
+    }
+
     InvocationTarget target = new InvocationTarget(parameters, Oracle.class);
     FSM fsm = parameters.getFsm();
     String[] transitionNames = oracle.value();
     for (String name : transitionNames) {
       log.debug("Parsing oracle '"+name+"'");
+      //todo: add test for transition named "all" in a test model
       if (name.equals("all")) {
         fsm.addGenericOracle(target);
         //generic guards should not be have their own transition or it will fail the FSM check since it is a guard
         //without a transition
-        //TODO: add check that no transition called "all" is allowed
         continue;
       }
       FSMTransition transition = fsm.createTransition(name, -1);
       transition.addOracle(target);
     }
-    return "";
+    return errors;
   }
 }

@@ -33,6 +33,8 @@ public class FSM {
   private Collection<InvocationTarget> afterSuites = new ArrayList<InvocationTarget>();
   /** List of conditions when to stop (prematurely) test generation (single test, not suite). */
   private Collection<InvocationTarget> endConditions = new ArrayList<InvocationTarget>();
+  /** List of conditions when the models allows to stop test generation. */
+  private Collection<InvocationTarget> endStates = new ArrayList<InvocationTarget>();
   /** The generated test suite (or one being generated). */
   private final TestSuite testSuite = new TestSuite();
   /** The list of requirements that needs to be covered. */
@@ -103,10 +105,8 @@ public class FSM {
         errors += "Transition methods are not allowed to have parameters: \""+method.getName()+"()\" has "+p+" parameters.\n";
         log.debug("Error: Found transition with invalid parameters - "+ name);
       }
-      errors = checkGuards(transition, errors);
-      errors = checkOracles(transition, errors);
+      errors = addGenericGuardsAndOracles(transition, errors);
     }
-    errors = checkEndConditions(errors);
     if (errors.length() > 0) {
       throw new IllegalStateException("Invalid FSM:\n"+errors);
     }
@@ -114,74 +114,19 @@ public class FSM {
   }
 
   /**
-   * Check the guards for the given transition.
-   * Since a new transition is previously generated for each guard that previously had no transition defined,
-   * a guard without a transition is also checked here as it is simply a {@link FSMTransition} object without
-   * the actual transition method defined but with a set of guards defined.
+   * Add generic guards and oracles to all transitions.
    *
    * @param transition The transition to check.
    * @param errors The current error message string.
    * @return The error msg string given with possible new errors appended.
    */
-  private String checkGuards(FSMTransition transition, String errors) {
+  private String addGenericGuardsAndOracles(FSMTransition transition, String errors) {
     //we add all generic guards to the set of guards for this transition. doing it here includes them in the checks
     for (InvocationTarget guard : genericGuards) {
       transition.addGuard(guard);
     }
-    for (InvocationTarget guard : transition.getGuards()) {
-      Method method = guard.getMethod();
-      Class<?> type = method.getReturnType();
-      if (!(type.equals(boolean.class))) {
-        errors += "Invalid return type for guard (\""+method.getName()+"()\"):"+type+".\n";
-      }
-      Class<?>[] parameterTypes = method.getParameterTypes();
-      if (parameterTypes.length > 0) {
-        errors += "Guard methods are not allowed to have parameters: \""+method.getName()+"()\" has "+parameterTypes.length+" parameters.\n";
-      }
-    }
-    return errors;
-  }
-
-  /**
-   * Checks all oracles to see that there are no oracles without associated transitions.
-   * Also checks that the oracle methods have no parameters.
-   *
-   * @param transition The transition to check.
-   * @param errors The current error message string.
-   * @return The error msg string given with possible new errors appended.
-   */
-  private String checkOracles(FSMTransition transition, String errors) {
     for (InvocationTarget oracle : genericOracles) {
       transition.addOracle(oracle);
-    }
-    for (InvocationTarget oracle : transition.getOracles()) {
-      Method method = oracle.getMethod();
-      Class<?>[] parameterTypes = method.getParameterTypes();
-      if (parameterTypes.length > 0) {
-        errors += "Oracle methods are not allowed to have parameters: \""+method.getName()+"()\" has "+parameterTypes.length+" parameters.\n";
-      }
-    }
-    return errors;
-  }
-
-  /**
-   * Check the model end conditions.
-   * Each end condition must have a boolean return value and no parameters.
-   *
-   * @param errors The current error message string.
-   * @return The error msg string given with possible new errors appended.
-   */
-  private String checkEndConditions(String errors) {
-    for (InvocationTarget ec : endConditions) {
-      Method method = ec.getMethod();
-      Class<?> type = method.getReturnType();
-      if (!(type.equals(boolean.class))) {
-        errors += "Invalid return type for end condition (\""+method.getName()+"()\"):"+type+". Should be boolean.\n";
-      }
-      Class<?>[] parameterTypes = method.getParameterTypes();
-      if (parameterTypes.length > 0) {
-        errors += "End condition methods are not allowed to have parameters: \""+method.getName()+"()\" has "+parameterTypes.length+" parameters.\n";
-      }
     }
     return errors;
   }
@@ -238,6 +183,10 @@ public class FSM {
     return endConditions;
   }
 
+  public Collection<InvocationTarget> getEndStates() {
+    return endStates;
+  }
+
   /**
    * Sets the Requirements object, either from the parser if it found one in the model object or from this class
    * if not. Also initialized the requirements object to contain the {@link TestSuite} object for storing and
@@ -275,5 +224,14 @@ public class FSM {
    */
   public void addEndCondition(InvocationTarget target) {
     endConditions.add(target);
+  }
+
+  /**
+   * Add an end condition that should be checked before terminating a test case.
+   *
+   * @param target The end condition.
+   */
+  public void addEndState(InvocationTarget target) {
+    endStates.add(target);
   }
 }

@@ -6,6 +6,7 @@ import org.junit.Test;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.LengthCondition;
 import osmo.tester.model.Requirements;
+import osmo.tester.testmodels.EndStateModel;
 import osmo.tester.testmodels.PartialModel1;
 import osmo.tester.testmodels.PartialModel2;
 import osmo.tester.testmodels.ValidTestModel1;
@@ -132,6 +133,28 @@ public class GenerationTests {
     two += one;
     String actual = out.toString();
     assertEquals(two, actual);
+  }
+
+  @Test
+  public void generateEndStateModelLength1() {
+    EndStateModel model = new EndStateModel();
+    osmo.addModelObject(model);
+    LengthCondition length1 = new LengthCondition(1);
+    osmo.addTestEndCondition(length1);
+    osmo.addSuiteEndCondition(length1);
+    osmo.generate();
+    assertEquals("Number of covered requirements", 3, model.getRequirements().getCovered().size());
+  }
+
+  @Test
+  public void generateEndStateModelLength2() {
+    EndStateModel model = new EndStateModel();
+    osmo.addModelObject(model);
+    LengthCondition length1 = new LengthCondition(2);
+    osmo.addTestEndCondition(length1);
+    osmo.addSuiteEndCondition(length1);
+    osmo.generate();
+    assertEquals("Number of covered requirements", 3, model.getRequirements().getCovered().size());
   }
 
   @Test

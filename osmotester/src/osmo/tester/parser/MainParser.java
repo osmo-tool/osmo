@@ -5,6 +5,7 @@ import osmo.tester.annotation.AfterSuite;
 import osmo.tester.annotation.Before;
 import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.EndCondition;
+import osmo.tester.annotation.EndState;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Oracle;
 import osmo.tester.annotation.RequirementsField;
@@ -45,6 +46,7 @@ public class MainParser {
     parsers.put(RequirementsField.class, new RequirementsParser());
     parsers.put(Oracle.class, new OracleParser());
     parsers.put(EndCondition.class, new EndConditionParser());
+    parsers.put(EndState.class, new EndStateParser());
   }
 
   /**

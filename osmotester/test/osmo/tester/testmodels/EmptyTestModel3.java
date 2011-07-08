@@ -1,6 +1,7 @@
 package osmo.tester.testmodels;
 
 import osmo.tester.annotation.EndCondition;
+import osmo.tester.annotation.EndState;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Oracle;
 import osmo.tester.annotation.RequirementsField;
@@ -27,6 +28,10 @@ public class EmptyTestModel3 {
 
   @EndCondition
   public void end() {
+  }
+
+  @EndState
+  public void toEnd() {
   }
 
   @Oracle
