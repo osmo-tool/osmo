@@ -10,7 +10,7 @@ import static osmo.tester.TestUtils.*;
  * @author Teemu Kanstren
  */
 public class ValueRange {
-  private enum DataType {INT, LONG, DOUBLE};
+  private enum DataType {INT, LONG, DOUBLE}
   private double min = Double.MIN_VALUE;
   private double max = Double.MAX_VALUE;
   private Double increment = 1d;
@@ -18,7 +18,7 @@ public class ValueRange {
   protected List<Number> history = new ArrayList<Number>();
   protected List<Number> optimizerHistory = new ArrayList<Number>();
   /** The strategy for data generation. */
-  private DataGenerationAlgorithm algorithm = DataGenerationAlgorithm.RANDOM;
+  private DataGenerationAlgorithm algorithm = DataGenerationAlgorithm.OPTIMIZED_RANDOM;
 
   public ValueRange(Number min, Number max) {
     this.min = min.doubleValue();
@@ -51,38 +51,6 @@ public class ValueRange {
 
   public void setAlgorithm(DataGenerationAlgorithm algorithm) {
     this.algorithm = algorithm;
-  }
-
-  private Number next(DataType type) {
-    double min = min().doubleValue();
-    double max = max().doubleValue();
-    Number value = null;
-    if (algorithm == DataGenerationAlgorithm.ORDERED_LOOP) {
-      double last = min;
-      if (history.size() > 0) {
-        last = history.get(history.size()-1).doubleValue();
-      }
-      value = last+increment;
-    } else if (algorithm == DataGenerationAlgorithm.OPTIMIZED_RANDOM) {
-      do {
-        value = cDouble(min, max);
-        //conver to int or long as needed, double is already in correct format
-        if (type == DataType.INT) {
-          value = value.intValue();
-        } else if (type == DataType.LONG) {
-          value = value.longValue();
-        }
-      } while (optimizerHistory.contains(value));
-      optimizerHistory.add(value);
-      if (optimizerHistory.size() == (max-min)+1) {
-        optimizerHistory.clear();
-      }
-    } else {
-      //default to random
-      value = cDouble(min, max);
-    }
-    history.add(value);
-    return value;
   }
 
   /**

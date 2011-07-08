@@ -27,6 +27,9 @@ public class TransitionParser implements AnnotationParser {
     if (name.length() == 0) {
       return "Transition must have a name. Define the \"name\" or \"value\" property.";
     }
+    if (name.equals("all")) {
+      return "Transition name \"all\" is reserved. Choose another.\n";
+    }
     int weight = t.weight();
     FSMTransition transition = parameters.getFsm().createTransition(name, weight);
     transition.setTransition(new InvocationTarget(parameters, Transition.class));

@@ -1,6 +1,7 @@
 package osmo.tester.testmodels;
 
 import osmo.tester.annotation.EndCondition;
+import osmo.tester.annotation.EndState;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.TestSuiteField;
@@ -28,6 +29,11 @@ public class EmptyTestModel4 {
 
   @EndCondition
   public boolean ending(String foo) {
+    return false;
+  }
+
+  @EndState
+  public Boolean endd(String bar) {
     return false;
   }
 }

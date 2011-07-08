@@ -75,9 +75,11 @@ public class ParserTests {
       String expected = "Invalid FSM:\n" +
               "@RequirementsField class must be of type "+ Requirements.class.getName()+". Was "+String.class.getName()+".\n"+
               "@TestSuiteField class must be of type osmo.tester.generator.testsuite.TestSuite. Was java.lang.String.\n"+
+              "Invalid return type for @EndCondition (\"end()\"):void. Should be boolean.\n"+
               "Invalid return type for guard (\"hello()\"):class java.lang.String.\n"+
-              "Oracle methods are not allowed to have parameters: \"wrong()\" has 1 parameters.\n" +
-              "Invalid return type for end condition (\"end()\"):void. Should be boolean.\n";
+              "Invalid return type for @EndState (\"toEnd()\"):void. Should be boolean.\n"+
+              "Oracle methods are not allowed to have parameters: \"wrong()\" has 1 parameters.\n"+
+              "";
       assertEquals(expected, msg);
     }
   }
@@ -96,7 +98,9 @@ public class ParserTests {
               "@RequirementsField value was null, which is not allowed.\n"+
               "@TestSuiteField value was pre-initialized in the model, which is not allowed.\n"+
               "Guard methods are not allowed to have parameters: \"hello()\" has 1 parameters.\n"+
-              "End condition methods are not allowed to have parameters: \"ending()\" has 1 parameters.\n";
+              "@EndCondition methods are not allowed to have parameters: \"ending()\" has 1 parameters.\n"+
+              "@EndState methods are not allowed to have parameters: \"endd()\" has 1 parameters.\n"+
+              "";
       assertEquals(expected, msg);
     }
   }
@@ -109,9 +113,11 @@ public class ParserTests {
       fail("Should throw exception");
     } catch (Exception e) {
       String msg = e.getMessage();
-      String expected = "Invalid FSM:\n" + "Transition methods are not allowed to have parameters: \"epixx()\" has 1 parameters.\n"+
-              "Invalid return type for end condition (\"hello()\"):class java.lang.String. Should be boolean.\n" +
-              "End condition methods are not allowed to have parameters: \"hello()\" has 1 parameters.\n";
+      String expected = "Invalid FSM:\n" +
+              "Invalid return type for @EndCondition (\"hello()\"):class java.lang.String. Should be boolean.\n" +
+              "@EndCondition methods are not allowed to have parameters: \"hello()\" has 1 parameters.\n"+
+              "Transition methods are not allowed to have parameters: \"epixx()\" has 1 parameters.\n"
+              ;
       assertEquals(expected, msg);
     }
   }
@@ -125,10 +131,11 @@ public class ParserTests {
     } catch (Exception e) {
       String msg = e.getMessage();
       String expected = "Invalid FSM:\n" +
+              "Invalid return type for guard (\"listCheck()\"):class java.lang.String.\n"+
               "Transition methods are not allowed to have parameters: \"transition1()\" has 1 parameters.\n" +
               "Transition methods are not allowed to have parameters: \"epix()\" has 1 parameters.\n" +
-              "Guard/Oracle without transition:world\n" +
-              "Invalid return type for guard (\"listCheck()\"):class java.lang.String.\n";
+              "Guard/Oracle without transition:world\n"
+              ;
       assertEquals(expected, msg);
     }
   }
