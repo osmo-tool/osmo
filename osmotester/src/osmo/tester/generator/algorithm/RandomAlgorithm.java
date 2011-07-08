@@ -13,7 +13,7 @@ import java.util.Random;
  * 
  * @author Teemu Kanstren
  */
-public class RandomAlgorithm implements GenerationAlgorithm {
+public class RandomAlgorithm implements SequenceGenerationAlgorithm {
   /** Used to provide the randomization, along with the constant seed for deterministic test suites. */
   private Random random = new Random(1);
 

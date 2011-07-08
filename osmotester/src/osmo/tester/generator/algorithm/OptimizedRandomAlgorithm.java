@@ -1,6 +1,5 @@
 package osmo.tester.generator.algorithm;
 
-import osmo.tester.HashMapWithDefaultValue;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -8,10 +7,11 @@ import osmo.tester.model.FSMTransition;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static osmo.tester.TestUtils.oneOf;
+import static osmo.tester.TestUtils.*;
 
 /**
  * A test generation algorithm that is similar to the {@link RandomAlgorithm} but not preferring to take
@@ -20,37 +20,44 @@ import static osmo.tester.TestUtils.oneOf;
  *
  * @author Teemu Kanstren
  */
-public class OptimizedRandomAlgorithm implements GenerationAlgorithm {
+public class OptimizedRandomAlgorithm implements SequenceGenerationAlgorithm {
   @Override
   public FSMTransition choose(TestSuite history, List<FSMTransition> transitions) {
     Map<FSMTransition, Integer> coverage = countCoverage(history);
-    int smallest = Integer.MAX_VALUE;
-    for (FSMTransition transition : transitions) {
-      Integer count = coverage.get(transition);
-      if (count < smallest) {
-        smallest = count;
-      }
-    }
-    Collection<FSMTransition> options = new ArrayList<FSMTransition>();
-    for (FSMTransition transition : transitions) {
-      if (coverage.get(transition) == smallest) {
-        options.add(transition);
-      }
-    }
+    return optimizedRandomChoice(coverage, transitions);
+  }
+
+  public static <T> T optimizedRandomChoice(Map<T, Integer> coverage, Collection<T> choices) {
+    Collection<T> options = new ArrayList<T>();
+    options.addAll(choices);
+    options.removeAll(coverage.keySet());
+    //options now contains all previously uncovered transitions
     if (options.size() == 0) {
-      options = transitions;
+      //we have covered everything at least once so lets count the coverage instead
+      int smallest = minOf(coverage.values());
+      for (T t : choices) {
+        if (coverage.get(t) == smallest) {
+          options.add(t);
+        }
+      }
+      if (options.size() == 0) {
+        options = choices;
+      }
     }
     return oneOf(options);
   }
 
   private Map<FSMTransition, Integer> countCoverage(TestSuite history) {
-    Map<FSMTransition, Integer> coverage = new HashMapWithDefaultValue<FSMTransition, Integer>(0);
+    Map<FSMTransition, Integer> coverage = new HashMap<FSMTransition, Integer>();
     List<TestCase> tests = history.getAllTestCases();
     for (TestCase test : tests) {
       List<TestStep> steps = test.getSteps();
       for (TestStep step : steps) {
         FSMTransition transition = step.getTransition();
         Integer count = coverage.get(transition);
+        if (count == null) {
+          count = 0;
+        }
         coverage.put(transition, count+1);
       }
     }

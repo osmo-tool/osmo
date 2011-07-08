@@ -1,6 +1,6 @@
 package osmo.tester.generator;
 
-import osmo.tester.generator.algorithm.GenerationAlgorithm;
+import osmo.tester.generator.algorithm.SequenceGenerationAlgorithm;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.log.Logger;
@@ -24,7 +24,7 @@ public class MainGenerator {
   /** Test generation history. Initialized from the given model to enable sharing the object with model and generator. */
   private TestSuite suite = null;
   /** The set of enabled transitions in the current state is passed to this algorithm to pick one to execute. */
-  private GenerationAlgorithm algorithm;
+  private SequenceGenerationAlgorithm algorithm;
   /** Defines when test suite generation should be stopped. Invoked between each test case. */
   private Collection<EndCondition> suiteEndConditions;
   /** Defines when test case generation should be stopped. Invoked between each test step. */
@@ -42,7 +42,7 @@ public class MainGenerator {
    *
    * @param algorithm The set of enabled transitions in the current state is passed to this algorithm to pick one to execute.
    */
-  public void setAlgorithm(GenerationAlgorithm algorithm) {
+  public void setAlgorithm(SequenceGenerationAlgorithm algorithm) {
     this.algorithm = algorithm;
   }
 

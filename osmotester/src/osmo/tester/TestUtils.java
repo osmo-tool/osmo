@@ -23,7 +23,9 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -89,9 +91,27 @@ public class TestUtils {
     return rnd;
   }
 
+  public static int oneOf(int[] array) {
+    return array[cInt(0, array.length-1)];
+  }
+
+  public static <T> T oneOf(T[] array) {
+    return array[cInt(0, array.length-1)];
+  }
+
   public static <T> T oneOf(Collection<T> array) {
     List<T> list = new ArrayList<T>(array);
     return list.get(cInt(0, array.size()-1));
+  }
+
+  public static <T extends Number> T minOf(Collection<T> array) {
+    T smallest = null;
+    for (T t : array) {
+      if (smallest == null || t.doubleValue() < smallest.doubleValue()) {
+        smallest = t;
+      }
+    }
+    return smallest;
   }
 
   public static String getThreadInfo() {
