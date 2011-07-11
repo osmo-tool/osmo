@@ -23,6 +23,10 @@ import static osmo.tester.TestUtils.oneOf;
  * From the resulting set of values, the one with the smallest score is taken. If several share the same score, the
  * choice of transition is random from these.
  *
+ * Note than in calculation, a transition that is never visited has a visited value of 1 (and one that is visited once
+ * has a value of 2 and so on) to allow for simplified calculation of transition visit scores (otherwise all
+ * transitions would start with score of 0, and the choices of first transitions would be random without weight).
+ *
  * @author Teemu Kanstren
  */
 public class WeightedRandomAlgorithm implements SequenceGenerationAlgorithm {
@@ -51,6 +55,18 @@ public class WeightedRandomAlgorithm implements SequenceGenerationAlgorithm {
     return oneOf(options);
   }
 
+  /**
+   * Counts the "score" of a set of transition. The transition with the highest score should be taken first and the
+   * one with the lowest last. See class header for formula description and notes on why visit values start with 1.
+   *
+   * Note that this is typically recalculated between each transition since the one with
+   * the highest score may be also the highest in the next round and we cannot simply take them in order from a single
+   * calculation (even if the available set was the same).
+   *
+   * @param history The test generation history.
+   * @param available The set of available transitions (for which scores are calculated).
+   * @return A mapping of transitions to their scores.
+   */
   private Map<FSMTransition, Double> countScore(TestSuite history, List<FSMTransition> available) {
     //todo: coverage in testutils?
     Map<FSMTransition, Integer> coverage = new HashMap<FSMTransition, Integer>(1);

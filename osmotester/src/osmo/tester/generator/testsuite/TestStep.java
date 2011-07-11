@@ -48,10 +48,19 @@ public class TestStep {
     if (coveredRequirements == null) {
       return Collections.EMPTY_LIST;
     }
-    return coveredRequirements;
+    Collection<String> result = new ArrayList<String>();
+    result.addAll(coveredRequirements);
+    return result;
   }
 
   public FSMTransition getTransition() {
     return transition;
+  }
+
+  @Override
+  public String toString() {
+    return "TestStep{" +
+            "transition=" + transition +
+            '}';
   }
 }

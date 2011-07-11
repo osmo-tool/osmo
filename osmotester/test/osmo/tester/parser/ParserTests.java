@@ -2,7 +2,6 @@ package osmo.tester.parser;
 
 import org.junit.Before;
 import org.junit.Test;
-import osmo.tester.log.Logger;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
@@ -172,7 +171,7 @@ public class ParserTests {
     MainParser parser = new MainParser();
     try {
       FSM fsm = parser.parse(new Object());
-      fsm.check("");
+      fsm.checkAndUpdateGenericItems("");
       fail("Should throw exception when no transition methods are available.");
     } catch (Exception e) {
       String msg = e.getMessage();

@@ -2,7 +2,7 @@ package osmo.tester.unit;
 
 import org.junit.Test;
 import osmo.tester.OSMOTester;
-import osmo.tester.model.dataflow.DataGenerationAlgorithm;
+import osmo.tester.model.dataflow.DataGenerationStrategy;
 import osmo.tester.model.dataflow.ValuePartitionSet;
 import osmo.tester.model.dataflow.ValueRange;
 
@@ -29,7 +29,7 @@ public class ValuePartitionSetTests {
     ni.addPartition(10d, 100d);
     ni.addPartition(150d, 200d);
     ni.addPartition(250d, 300d);
-    ni.setStrategy(DataGenerationAlgorithm.ORDERED_LOOP);
+    ni.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     double d1 = ni.nextDouble();
     double d2 = ni.nextDouble();
     double d3 = ni.nextDouble();
@@ -46,7 +46,7 @@ public class ValuePartitionSetTests {
     ni.addPartition(10d, 100d);
     ni.addPartition(50d, 200d);
     ni.addPartition(150d, 300d);
-    ni.setStrategy(DataGenerationAlgorithm.ORDERED_LOOP);
+    ni.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     double d1 = ni.nextDouble();
     double d2 = ni.nextDouble();
     double d3 = ni.nextDouble();
@@ -63,7 +63,7 @@ public class ValuePartitionSetTests {
     ni.addPartition(-10d, 100d);
     ni.addPartition(-200d, -50d);
     ni.addPartition(-150d, 0d);
-    ni.setStrategy(DataGenerationAlgorithm.ORDERED_LOOP);
+    ni.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     double d1 = ni.nextDouble();
     double d2 = ni.nextDouble();
     double d3 = ni.nextDouble();
@@ -81,7 +81,7 @@ public class ValuePartitionSetTests {
     ni.addPartition(-10d, 100d);
     ni.addPartition(-200d, -50d);
     ni.addPartition(-150d, 0d);
-    ni.setStrategy(DataGenerationAlgorithm.RANDOM);
+    ni.setStrategy(DataGenerationStrategy.RANDOM);
     double d1 = ni.nextDouble();
     double d2 = ni.nextDouble();
     double d3 = ni.nextDouble();
@@ -100,7 +100,7 @@ public class ValuePartitionSetTests {
     ni.addPartition(10d, 100d);
     ni.addPartition(150d, 200d);
     ni.addPartition(250d, 300d);
-    ni.setStrategy(DataGenerationAlgorithm.OPTIMIZED_RANDOM);
+    ni.setStrategy(DataGenerationStrategy.OPTIMIZED_RANDOM);
     double d1 = ni.nextDouble();
     double d2 = ni.nextDouble();
     double d3 = ni.nextDouble();
@@ -136,7 +136,7 @@ public class ValuePartitionSetTests {
     ni.addPartition(150d, 200d);
     ni.addPartition(250d, 300d);
     ni.addPartition(101d, 120d);
-    ni.setStrategy(DataGenerationAlgorithm.ORDERED_LOOP);
+    ni.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     double d1 = ni.nextDouble();
     double d2 = ni.nextDouble();
     double d3 = ni.nextDouble();
@@ -254,7 +254,7 @@ public class ValuePartitionSetTests {
     ni.addPartition(1d, 1d);
     ni.addPartition(11d, 11d);
     ni.addPartition(-22d, -22d);
-    ni.setStrategy(DataGenerationAlgorithm.ORDERED_LOOP);
+    ni.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     int d1 = ni.nextInt();
     int d2 = ni.nextInt();
     int d3 = ni.nextInt();
@@ -269,7 +269,7 @@ public class ValuePartitionSetTests {
   public void testIntGenerationWithTwoValues() {
     ValuePartitionSet ni = new ValuePartitionSet();
     ni.addPartition(1d, 2d);
-    ni.setStrategy(DataGenerationAlgorithm.ORDERED_LOOP);
+    ni.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     boolean b1 = false;
     boolean b2 = false;
     for (int i = 0 ; i < 100 ; i++) {
@@ -288,7 +288,7 @@ public class ValuePartitionSetTests {
   @Test
   public void optimizedRandomValueRange() {
     ValueRange vr = new ValueRange(5, 7);
-    vr.setAlgorithm(DataGenerationAlgorithm.OPTIMIZED_RANDOM);
+    vr.setAlgorithm(DataGenerationStrategy.OPTIMIZED_RANDOM);
     boolean b5 = false;
     boolean b6 = false;
     boolean b7 = false;

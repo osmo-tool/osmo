@@ -107,7 +107,10 @@ public class TestSuite {
   public List<TestCase> getAllTestCases() {
     List<TestCase> all = new ArrayList<TestCase>(testCases.size()+1);
     all.addAll(testCases);
-    all.add(current);
+    if (current != null) {
+      //current is null if we finished test generation
+      all.add(current);
+    }
     return all;
   }
 

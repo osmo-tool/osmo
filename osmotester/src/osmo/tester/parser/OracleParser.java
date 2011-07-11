@@ -9,10 +9,12 @@ import osmo.tester.model.InvocationTarget;
 import java.lang.reflect.Method;
 
 /**
+ * Parses {@link osmo.tester.annotation.Oracle} annotations from the given model object.
+ *
  * @author Teemu Kanstren
  */
 public class OracleParser implements AnnotationParser {
-  private static Logger log = new Logger(AfterParser.class);
+  private static Logger log = new Logger(OracleParser.class);
 
   @Override
   public String parse(ParserParameters parameters) {

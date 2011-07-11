@@ -3,7 +3,7 @@ package osmo.tester.generator.endcondition;
 import osmo.tester.model.FSM;
 
 /**
- * This interface defines the strategy for when test suite or test case generation is stopped.
+ * This interface defines an end condition for when test suite or test case generation is stopped.
  * 
  * @author Teemu Kanstren
  */

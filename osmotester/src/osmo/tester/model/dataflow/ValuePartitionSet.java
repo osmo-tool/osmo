@@ -19,16 +19,16 @@ import static osmo.tester.TestUtils.*;
 public class ValuePartitionSet {
   private static final Logger log = new Logger(ValuePartitionSet.class);
   /** The different partitions in the domain. */
-  private ObjectSet<ValueRange> partitions = new ObjectSet<ValueRange>();
+  private ValueSet<ValueRange> partitions = new ValueSet<ValueRange>();
   /** The strategy for input data generation. */
-  private DataGenerationAlgorithm strategy = DataGenerationAlgorithm.RANDOM;
+  private DataGenerationStrategy strategy = DataGenerationStrategy.RANDOM;
 
   /**
    * Sets the input generation strategy.
    *
    * @param strategy The new strategy.
    */
-  public void setStrategy(DataGenerationAlgorithm strategy) {
+  public void setStrategy(DataGenerationStrategy strategy) {
     this.strategy = strategy;
     partitions.setStrategy(strategy);
   }
@@ -65,7 +65,7 @@ public class ValuePartitionSet {
    * @return The partition to generate data from.
    */
   public ValueRange nextPartition() {
-    if (strategy != DataGenerationAlgorithm.OPTIMIZED_RANDOM) {
+    if (strategy != DataGenerationStrategy.OPTIMIZED_RANDOM) {
       ValueRange partition = partitions.next();
       log.debug("Next interval "+partition);
       return partition;

@@ -72,17 +72,15 @@ public class FSM {
   }
 
   /**
-   * Checks the FSM for validity. This includes the following constraints:
+   * Checks the FSM for validity according to generic elements. This includes the following constraints:
    * -Is a requirements object defined in the model? if so use it, otherwise create empty one.
-   * -Check that each @Guard has a matching transition.
-   * -Check that no @Transition method has parameters.
-   * -Check that each @Guard returns a boolean value.
-   * -Check that no @Guard method has a return value.
-   * -Check that each @Oracle has proper parameters and return value.
-   * -Check that each @EndCondition has proper parameters and return value.
+   * -Check that each @Guard and @Oracle has a matching transition.
+   * Note that most checks for specific annotations are done already in the associated
+   * {@link osmo.tester.parser.AnnotationParser} object.
+   *
    * @param errors Previously defined errors to be reported in addition to new ones found.
    */
-  public void check(String errors) {
+  public void checkAndUpdateGenericItems(String errors) {
     log.debug("Checking FSM validity");
     if (requirements == null) {
       log.debug("No requirements object defined. Creating new.");
