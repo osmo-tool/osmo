@@ -1,6 +1,5 @@
 package osmo.tester.parser;
 
-import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.EndState;
 import osmo.tester.log.Logger;
 import osmo.tester.model.InvocationTarget;
@@ -8,6 +7,8 @@ import osmo.tester.model.InvocationTarget;
 import java.lang.reflect.Method;
 
 /**
+ * Parses {@link EndState} annotations from the given model object.
+ *
  * @author Teemu Kanstren
  */
 public class EndStateParser implements AnnotationParser {

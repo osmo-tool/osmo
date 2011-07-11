@@ -18,7 +18,7 @@ public class ValueRange {
   protected List<Number> history = new ArrayList<Number>();
   protected List<Number> optimizerHistory = new ArrayList<Number>();
   /** The strategy for data generation. */
-  private DataGenerationAlgorithm algorithm = DataGenerationAlgorithm.OPTIMIZED_RANDOM;
+  private DataGenerationStrategy algorithm = DataGenerationStrategy.OPTIMIZED_RANDOM;
 
   public ValueRange(Number min, Number max) {
     this.min = min.doubleValue();
@@ -49,7 +49,7 @@ public class ValueRange {
     return history;
   }
 
-  public void setAlgorithm(DataGenerationAlgorithm algorithm) {
+  public void setAlgorithm(DataGenerationStrategy algorithm) {
     this.algorithm = algorithm;
   }
 
@@ -62,13 +62,13 @@ public class ValueRange {
     double min = min().doubleValue();
     double max = max().doubleValue();
     double value = 0;
-    if (algorithm == DataGenerationAlgorithm.ORDERED_LOOP) {
+    if (algorithm == DataGenerationStrategy.ORDERED_LOOP) {
       double last = min;
       if (history.size() > 0) {
         last = history.get(history.size()-1).doubleValue();
       }
       value = last+increment;
-    } else if (algorithm == DataGenerationAlgorithm.OPTIMIZED_RANDOM) {
+    } else if (algorithm == DataGenerationStrategy.OPTIMIZED_RANDOM) {
       do {
         value = cDouble(min, max);
       } while (optimizerHistory.contains(value));
@@ -94,13 +94,13 @@ public class ValueRange {
     int max = max().intValue();
     int value = 0;
 
-    if (algorithm == DataGenerationAlgorithm.ORDERED_LOOP) {
+    if (algorithm == DataGenerationStrategy.ORDERED_LOOP) {
       int last = min;
       if (history.size() > 0) {
         last = history.get(history.size()-1).intValue();
       }
       value = last+increment.intValue();
-    } else if (algorithm == DataGenerationAlgorithm.OPTIMIZED_RANDOM) {
+    } else if (algorithm == DataGenerationStrategy.OPTIMIZED_RANDOM) {
       do {
         value = cInt(min, max);
       } while (optimizerHistory.contains(value));
@@ -126,13 +126,13 @@ public class ValueRange {
     long max = max().longValue();
     long value = 0;
 
-    if (algorithm == DataGenerationAlgorithm.ORDERED_LOOP) {
+    if (algorithm == DataGenerationStrategy.ORDERED_LOOP) {
       long last = min;
       if (history.size() > 0) {
         last = history.get(history.size()-1).intValue();
       }
       value = last+increment.longValue();
-    } else if (algorithm == DataGenerationAlgorithm.OPTIMIZED_RANDOM) {
+    } else if (algorithm == DataGenerationStrategy.OPTIMIZED_RANDOM) {
       do {
         value = cLong(min, max);
       } while (optimizerHistory.contains(value));

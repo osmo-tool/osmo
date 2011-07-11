@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * The main parser that takes the given model object and parses it for specific registered annotations,
  * passes these to specific {@link AnnotationParser} implementations to update the {@link FSM} representation
- * accordign to the information for the specific annotation.
+ * according to the information for the specific annotation.
  * 
  * @author Teemu Kanstren
  */
@@ -79,7 +79,7 @@ public class MainParser {
       errors += parseMethods(fsm, obj);
     }
     //finally we check that the generated FSM itself is valid
-    fsm.check(errors);
+    fsm.checkAndUpdateGenericItems(errors);
     return fsm;
   }
 

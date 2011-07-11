@@ -2,8 +2,8 @@ package osmo.tester.unit;
 
 import org.junit.Before;
 import org.junit.Test;
-import osmo.tester.model.dataflow.DataGenerationAlgorithm;
-import osmo.tester.model.dataflow.ObjectSet;
+import osmo.tester.model.dataflow.DataGenerationStrategy;
+import osmo.tester.model.dataflow.ValueSet;
 
 import static junit.framework.Assert.*;
 
@@ -11,11 +11,11 @@ import static junit.framework.Assert.*;
  * @author Teemu Kanstren
  */
 public class ObjectSetTests {
-  private ObjectSet<String> inv = null;
+  private ValueSet<String> inv = null;
 
   @Before
   public void setup() {
-    inv = new ObjectSet<String>();
+    inv = new ValueSet<String>();
     inv.addOption("one");
     inv.addOption("two");
     inv.addOption("three");
@@ -23,7 +23,7 @@ public class ObjectSetTests {
 
   @Test
   public void orderedTest() {
-    inv.setStrategy(DataGenerationAlgorithm.ORDERED_LOOP);
+    inv.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     inv.addOption("one");
     inv.addOption("two");
     inv.addOption("three");
@@ -63,8 +63,8 @@ public class ObjectSetTests {
     String v6 = null;
     boolean diff = false;
     for (int i = 0 ; i < 10 ; i++) {
-      inv = new ObjectSet<String>();
-      inv.setStrategy(DataGenerationAlgorithm.OPTIMIZED_RANDOM);
+      inv = new ValueSet<String>();
+      inv.setStrategy(DataGenerationStrategy.OPTIMIZED_RANDOM);
       inv.addOption("one");
       inv.addOption("two");
       inv.addOption("three");
@@ -85,15 +85,14 @@ public class ObjectSetTests {
   public void optimizedRandomTestSeveralLoops() {
     String v6 = null;
     boolean diff = false;
-    inv = new ObjectSet<String>();
-    inv.setStrategy(DataGenerationAlgorithm.OPTIMIZED_RANDOM);
+    inv = new ValueSet<String>();
+    inv.setStrategy(DataGenerationStrategy.OPTIMIZED_RANDOM);
     inv.addOption("one");
     inv.addOption("two");
     inv.addOption("three");
     inv.addOption("four");
     inv.addOption("five");
     for (int i = 0 ; i < 10 ; i++) {
-      System.out.println("loop");
       String reference = generateAndCheck();
       //make sure the generated values are in different order at least in once case
       if (v6 == null) {
@@ -119,7 +118,7 @@ public class ObjectSetTests {
 
   @Test
   public void evaluationTest() {
-    inv.setStrategy(DataGenerationAlgorithm.ORDERED_LOOP);
+    inv.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     assertTrue("Should find \"one\" in the set of objects.", inv.evaluate("one"));
     assertTrue("Should find \"two\" in the set of objects.", inv.evaluate("two"));
     assertTrue("Should find \"three\" in the set of objects.", inv.evaluate("three"));
@@ -128,7 +127,7 @@ public class ObjectSetTests {
 
   @Test
   public void addAndRemoveOrderedTest() {
-    inv.setStrategy(DataGenerationAlgorithm.ORDERED_LOOP);
+    inv.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     assertEquals("one", inv.next());
     assertEquals("two", inv.next());
     inv.removeOption("one");

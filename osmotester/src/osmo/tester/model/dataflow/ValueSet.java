@@ -11,32 +11,46 @@ import java.util.Map;
 import static osmo.tester.TestUtils.oneOf;
 
 /**
- * Represents a set of objects of the given type.
+ * Represents a set of values (objects) of the given type.
  * Input generation picks one of these objects according to the given input strategy.
  * Evaluation checks if the given object is found in the defined set.
+ * Defaults to random strategy.
  *
  * @author Teemu Kanstren
  */
-public class ObjectSet<T> {
+public class ValueSet<T> {
   /** The options for data generation and evaluation. */
   private List<T> options = new ArrayList<T>();
   /** The input strategy to choose an object. */
-  private DataGenerationAlgorithm strategy = DataGenerationAlgorithm.RANDOM;
-  /** index for next item if using ORDERED_LOOP. Using this instead of iterator to allow modification of options in runtime. */
+  private DataGenerationStrategy strategy = DataGenerationStrategy.RANDOM;
+  /** Index for next item if using ORDERED_LOOP. Using this instead of iterator to allow modification of options in runtime. */
   private int next = 0;
   /** The history of chosen input value objects for this invariant. */
   private Collection<T> history = new ArrayList<T>();
 
-  public ObjectSet() {
+  /**
+   * Constructor for when no initial options are provided. Options need to be added later with addOption().
+   */
+  public ValueSet() {
   }
 
-  public ObjectSet(T... items) {
+  /**
+   * Constructor for when an initial set of options is provided. New ones can still be added later.
+   *
+   * @param items The initial set of items.
+   */
+  public ValueSet(T... items) {
     for (T item : items) {
       options.add(item);
     }
   }
 
-  public ObjectSet(DataGenerationAlgorithm strategy) {
+  /**
+   * Constructor for defining the initial input generation strategy.
+   *
+   * @param strategy The algorithm for data generation.
+   */
+  public ValueSet(DataGenerationStrategy strategy) {
     this.strategy = strategy;
   }
 
@@ -45,7 +59,7 @@ public class ObjectSet<T> {
    *
    * @param strategy The new strategy.
    */
-  public void setStrategy(DataGenerationAlgorithm strategy) {
+  public void setStrategy(DataGenerationStrategy strategy) {
     this.strategy = strategy;
   }
 
@@ -66,6 +80,9 @@ public class ObjectSet<T> {
    */
   public void removeOption(T option) {
     int index = options.indexOf(option);
+    if (index < 0) {
+      return;
+    }
     if (index <= next) {
       next--;
     }
@@ -93,10 +110,10 @@ public class ObjectSet<T> {
       throw new IllegalStateException("No value to provide (add some options).");
     }
     T next = null;
-    if (strategy == DataGenerationAlgorithm.ORDERED_LOOP) {
+    if (strategy == DataGenerationStrategy.ORDERED_LOOP) {
       next = orderedLoopChoice();
     }
-    if (strategy == DataGenerationAlgorithm.OPTIMIZED_RANDOM) {
+    if (strategy == DataGenerationStrategy.OPTIMIZED_RANDOM) {
       next = optimizedRandomChoice();
     }
     //here we default to RANDOM
@@ -107,6 +124,11 @@ public class ObjectSet<T> {
     return next;
   }
 
+  /**
+   * Implements the optimized random strategy.
+   *
+   * @return The next item according to this strategy.
+   */
   private T optimizedRandomChoice() {
     Map<T, Integer> coverage = new HashMap<T, Integer>();
     for (T t : history) {
@@ -121,6 +143,11 @@ public class ObjectSet<T> {
     return OptimizedRandomAlgorithm.optimizedRandomChoice(coverage, options);
   }
 
+  /**
+   * Implements the ordered loop strategy.
+   *
+   * @return The next item according to this strategy.
+   */
   private T orderedLoopChoice() {
     List<T> currentOptions = new ArrayList<T>();
     currentOptions.addAll(options);

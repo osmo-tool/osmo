@@ -8,7 +8,8 @@ import java.util.Collection;
  * In practice this can be mapped to a method executing a specific test step for test generation when possible.
  * These are identified in the model object from the {@link osmo.tester.annotation.Transition} annotations.
  * This includes the method to execute the test step (and generate scripts, etc.) and also
- * the {@link osmo.tester.annotation.Guard} methods that define when the transition is allowed to be performed.
+ * the {@link osmo.tester.annotation.Guard} methods that define when the transition is allowed to be performed and
+ * the {@link osmo.tester.annotation.Oracle} methods that perform checks after the transitions.
  * 
  * @author Teemu Kanstren
  */

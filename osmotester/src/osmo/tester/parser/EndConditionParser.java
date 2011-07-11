@@ -7,6 +7,8 @@ import osmo.tester.model.InvocationTarget;
 import java.lang.reflect.Method;
 
 /**
+ * Parses {@link EndCondition} annotations from the given model object.
+ *
  * @author Teemu Kanstren
  */
 public class EndConditionParser implements AnnotationParser {

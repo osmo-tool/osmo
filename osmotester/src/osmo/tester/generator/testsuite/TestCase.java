@@ -4,14 +4,16 @@ import osmo.tester.model.FSMTransition;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 /**
  * This class describes a single test case and all test steps that it contains.
  * This also includes a list of added coverage for model transitions and requirements.
- * Note that this coverage information may or may not hold in current testing. If offline test mode is applied and
+ * Note that this coverage information may or may not hold in current testing.
+ * If offline test mode is applied and
  * test suite content or ordering is optimized after generation, this information is likely invalid
- * (unless optimization updates this information in the test case objects).
+ * (unless optimization updates this information in the test case objects as the supplies optimizers do).
  *
  * @author Teemu Kanstren
  */
@@ -20,10 +22,12 @@ public class TestCase {
   private List<TestStep> steps = new ArrayList<TestStep>();
   /** The latest test step (being/having been generated). */
   private TestStep currentStep = null;
-  /** Newly covered transitions in relation to generation history. See constructor for notes. */
-  private Collection<FSMTransition> addedTransitionCoverage = new ArrayList<FSMTransition>();
-  /** Newly covered requirements in relation to generation history. See constructor for notes. */
-  private Collection<String> addedRequirementsCoverage = new ArrayList<String>();
+  /** Newly covered transitions in relation to generation history. See class header for notes.
+  *  NOTE: we use a Set to avoid duplicates if the same transition is covered multiple times. */
+  private Collection<FSMTransition> addedTransitionCoverage = new HashSet<FSMTransition>();
+  /** Newly covered requirements in relation to generation history. See class header for notes.
+   *  NOTE: we use a Set to avoid duplicates if the same requirement is covered multiple times. */
+  private Collection<String> addedRequirementsCoverage = new HashSet<String>();
 
   /**
    * Adds a new test step.
@@ -77,5 +81,12 @@ public class TestCase {
 
   public void addAddedRequirementsCoverage(String requirement) {
     addedRequirementsCoverage.add(requirement);
+  }
+
+  @Override
+  public String toString() {
+    return "TestCase{" +
+            "steps=" + steps +
+            '}';
   }
 }

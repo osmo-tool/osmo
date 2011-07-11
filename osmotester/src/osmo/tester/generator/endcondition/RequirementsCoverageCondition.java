@@ -5,8 +5,8 @@ import osmo.tester.model.FSM;
 import osmo.tester.model.Requirements;
 
 /**
- * A simple strategy to stop test case generation when all requirements are covered.
- * The requirements to be covered have to be set in the model.
+ * A simple end condition to stop test case generation when all requirements are covered.
+ * The requirements to be covered have to be set in the model using the {@link Requirements} object.
  * 
  * @author Olli-Pekka Puolitaival
  */
@@ -30,7 +30,7 @@ public class RequirementsCoverageCondition implements EndCondition {
   @Override
   public boolean endNow(FSM fsm, boolean evaluateSuite) {
     Requirements requirements = fsm.getRequirements();
-    //
+    //covered includes "excess" that is the ones that are not registered so we remove those
     double covered = requirements.getCovered().size() - requirements.getExcess().size();
     double total = requirements.getRequirements().size();
 
