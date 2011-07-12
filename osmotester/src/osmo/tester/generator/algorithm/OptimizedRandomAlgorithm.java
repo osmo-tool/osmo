@@ -20,7 +20,7 @@ import static osmo.tester.TestUtils.*;
  *
  * @author Teemu Kanstren
  */
-public class OptimizedRandomAlgorithm implements SequenceGenerationAlgorithm {
+public class OptimizedRandomAlgorithm implements FSMTraversalAlgorithm {
   @Override
   public FSMTransition choose(TestSuite history, List<FSMTransition> transitions) {
     Map<FSMTransition, Integer> coverage = countCoverage(history);

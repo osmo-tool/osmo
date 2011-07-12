@@ -29,7 +29,7 @@ import static osmo.tester.TestUtils.oneOf;
  *
  * @author Teemu Kanstren
  */
-public class WeightedRandomAlgorithm implements SequenceGenerationAlgorithm {
+public class WeightedRandomAlgorithm implements FSMTraversalAlgorithm {
   private static final Logger log = new Logger(WeightedRandomAlgorithm.class);
 
   @Override
