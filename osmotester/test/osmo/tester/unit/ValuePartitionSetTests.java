@@ -3,7 +3,7 @@ package osmo.tester.unit;
 import org.junit.Test;
 import osmo.tester.OSMOTester;
 import osmo.tester.model.dataflow.DataGenerationStrategy;
-import osmo.tester.model.dataflow.ValuePartitionSet;
+import osmo.tester.model.dataflow.ValueRangeSet;
 import osmo.tester.model.dataflow.ValueRange;
 
 import static junit.framework.Assert.*;
@@ -14,7 +14,7 @@ import static junit.framework.Assert.*;
 public class ValuePartitionSetTests {
   @Test
   public void minMaxTest() {
-    ValuePartitionSet ni = new ValuePartitionSet();
+    ValueRangeSet ni = new ValueRangeSet();
     try {
       ni.addPartition(10d, 0d);
       fail("Wrong order of min/max should throw exception.");
@@ -25,7 +25,7 @@ public class ValuePartitionSetTests {
 
   @Test
   public void separatePositivePartitionsWithLoop() {
-    ValuePartitionSet ni = new ValuePartitionSet();
+    ValueRangeSet ni = new ValueRangeSet();
     ni.addPartition(10d, 100d);
     ni.addPartition(150d, 200d);
     ni.addPartition(250d, 300d);
@@ -42,7 +42,7 @@ public class ValuePartitionSetTests {
 
   @Test
   public void overlappingPositivePartitionsWithLoop() {
-    ValuePartitionSet ni = new ValuePartitionSet();
+    ValueRangeSet ni = new ValueRangeSet();
     ni.addPartition(10d, 100d);
     ni.addPartition(50d, 200d);
     ni.addPartition(150d, 300d);
@@ -59,7 +59,7 @@ public class ValuePartitionSetTests {
 
   @Test
   public void overlappingNegativePartitionsWithLoop() {
-    ValuePartitionSet ni = new ValuePartitionSet();
+    ValueRangeSet ni = new ValueRangeSet();
     ni.addPartition(-10d, 100d);
     ni.addPartition(-200d, -50d);
     ni.addPartition(-150d, 0d);
@@ -77,7 +77,7 @@ public class ValuePartitionSetTests {
 
   @Test
   public void randomInput() {
-    ValuePartitionSet ni = new ValuePartitionSet();
+    ValueRangeSet ni = new ValueRangeSet();
     ni.addPartition(-10d, 100d);
     ni.addPartition(-200d, -50d);
     ni.addPartition(-150d, 0d);
@@ -96,7 +96,7 @@ public class ValuePartitionSetTests {
   public void optimizedRandomInput() {
     OSMOTester osmo = new OSMOTester();
     osmo.setDebug(true);
-    ValuePartitionSet ni = new ValuePartitionSet();
+    ValueRangeSet ni = new ValueRangeSet();
     ni.addPartition(10d, 100d);
     ni.addPartition(150d, 200d);
     ni.addPartition(250d, 300d);
@@ -131,7 +131,7 @@ public class ValuePartitionSetTests {
 
   @Test
   public void addRemovePartitions() {
-    ValuePartitionSet ni = new ValuePartitionSet();
+    ValueRangeSet ni = new ValueRangeSet();
     ni.addPartition(10d, 100d);
     ni.addPartition(150d, 200d);
     ni.addPartition(250d, 300d);
@@ -159,7 +159,7 @@ public class ValuePartitionSetTests {
 
   @Test
   public void zeroPartitions() {
-    ValuePartitionSet ni = new ValuePartitionSet();
+    ValueRangeSet ni = new ValueRangeSet();
     try {
       double d1 = ni.nextDouble();
       fail("Zero partitions should fail generation.");
@@ -172,7 +172,7 @@ public class ValuePartitionSetTests {
   public void evaluationWithOnePartition() {
     OSMOTester osmo = new OSMOTester();
     osmo.setDebug(true);
-    ValuePartitionSet ni = new ValuePartitionSet();
+    ValueRangeSet ni = new ValueRangeSet();
     ni.addPartition(10d, 100d);
     //TODO: test data generation with boundaries for partitions
     assertInvariantDoesNotContain(1d, ni);
@@ -185,17 +185,17 @@ public class ValuePartitionSetTests {
     assertInvariantDoesNotContain(101d, ni);
   }
 
-  public void assertInvariantContains(double value, ValuePartitionSet di) {
+  public void assertInvariantContains(double value, ValueRangeSet di) {
     assertTrue("Value "+value+" should be contained in partition(s):"+di, di.evaluate(value));
   }
 
-  public void assertInvariantDoesNotContain(double value, ValuePartitionSet di) {
+  public void assertInvariantDoesNotContain(double value, ValueRangeSet di) {
     assertFalse("Value "+value+" should not be contained in partition(s):"+di, di.evaluate(value));
   }
 
   @Test
   public void evaluationWithThreePartitions() {
-    ValuePartitionSet ni = new ValuePartitionSet();
+    ValueRangeSet ni = new ValueRangeSet();
     ni.addPartition(10d, 100d);
     ni.addPartition(150d, 200d);
     ni.addPartition(250d, 300d);
@@ -221,7 +221,7 @@ public class ValuePartitionSetTests {
 
   @Test
   public void evaluationWithOverlappingPartitions() {
-    ValuePartitionSet ni = new ValuePartitionSet();
+    ValueRangeSet ni = new ValueRangeSet();
     ni.addPartition(10d, 100d);
     ni.addPartition(150d, 200d);
     ni.addPartition(250d, 300d);
@@ -250,7 +250,7 @@ public class ValuePartitionSetTests {
 
   @Test
   public void testIntGenerationWithSingleValue() {
-    ValuePartitionSet ni = new ValuePartitionSet();
+    ValueRangeSet ni = new ValueRangeSet();
     ni.addPartition(1d, 1d);
     ni.addPartition(11d, 11d);
     ni.addPartition(-22d, -22d);
@@ -267,7 +267,7 @@ public class ValuePartitionSetTests {
 
   @Test
   public void testIntGenerationWithTwoValues() {
-    ValuePartitionSet ni = new ValuePartitionSet();
+    ValueRangeSet ni = new ValueRangeSet();
     ni.addPartition(1d, 2d);
     ni.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     boolean b1 = false;

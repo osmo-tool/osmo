@@ -8,7 +8,7 @@ import java.util.Collection;
 import static osmo.tester.TestUtils.*;
 
 /**
- * This invariant represents a set of numeric input domains.
+ * Represents a set of numeric input domains.
  * Each domain is represented as a separate partition with a minimum and maximum value.
  * Input values are generated across the domains randomly and depending on the input-strategy the domain
  * is chosen in a different way each time.
@@ -16,8 +16,8 @@ import static osmo.tester.TestUtils.*;
  *
  * @author Teemu Kanstren
  */
-public class ValuePartitionSet {
-  private static final Logger log = new Logger(ValuePartitionSet.class);
+public class ValueRangeSet {
+  private static final Logger log = new Logger(ValueRangeSet.class);
   /** The different partitions in the domain. */
   private ValueSet<ValueRange> partitions = new ValueSet<ValueRange>();
   /** The strategy for input data generation. */

@@ -1,0 +1,12 @@
+v0.1 initial release
+v0.2 added features based on v0.1 experiences and feedback and invariance taxonomy
+-added weights to transitions
+-added weighted random algorithm
+-added @EndState annotation
+-renamed generation algorithms to FSM traversal algorithms
+-renamed strategies to end conditions
+-added compositional end conditions (or/and) for test cases and test suites
+-added support for several end conditions for both test case and test suite
+-added data generation components, including readable characters, value range, and value range set
+-added implementation for basic test suite optimizers
+-fixed some bugs and did some refactoring to clarify code
