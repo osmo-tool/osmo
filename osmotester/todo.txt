@@ -1,0 +1,22 @@
+-traceability matrix, which test case covers which requirement
+-read requirement list from code
+-skripterin tekeminen, jota voi parametrisoida
+-polkujen suorituksen ohjausta perustuen invarianttien historiaan
+-logien eri tasot, ei vain debuggi
+-generoinnin parametrien raportointi testikohtaisesti
+-tiloille pre- ja post-conditionit invariantti objekteilla. eli että voi oraclessa verrata tilan arvoja niihin mitkä oli ennen transitiota
+-data generointia partitioiden boundareille, sekä niiden yhteisille osille, jne.
+-data olioille tyypit, eli onko oikeaa inputtia vai viallista vai ryhmissä jotain? vai turha homma?
+-sql kielto?
+-parameterinfo olio jokaiselle kutsulle
+--tämän pitää jakaa parametriryhmiin (mitä tämä tarkoittaa?)
+--jokaisella on jo oma historia, mutta optimoinnille tarvii linkin transitioon
+-yläluokka, jossa:
+--edellinen transitio tieto
+--parametrisoitava visualisointi
+--suora kysely test id:lle
+--suora kysely test successille
+--suora kysely propertiisseille
+-optimized random: pitää huomioida myös myöhemmät kierrokset, kun objekteja on yli 1 luotu jokaista
+-test caselle id ja skripti yms
+-pre/post
