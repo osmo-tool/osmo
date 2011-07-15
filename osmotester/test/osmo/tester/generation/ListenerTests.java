@@ -3,7 +3,7 @@ package osmo.tester.generation;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOTester;
-import osmo.tester.generator.endcondition.LengthCondition;
+import osmo.tester.generator.endcondition.Length;
 import osmo.tester.model.Requirements;
 import osmo.tester.testmodels.ValidTestModel1;
 import osmo.tester.testmodels.ValidTestModel2;
@@ -32,8 +32,8 @@ public class ListenerTests {
   public void noEnabledTransition() {
     listener.addExpected("suite-start", "start", "g:kitted(epixx)", "g:listCheck(world)");
     osmo.addModelObject(new ValidTestModel1());
-    LengthCondition length3 = new LengthCondition(3);
-    LengthCondition length1 = new LengthCondition(1);
+    Length length3 = new Length(3);
+    Length length1 = new Length(1);
     osmo.addTestEndCondition(length3);
     osmo.addSuiteEndCondition(length1);
     try {
@@ -55,8 +55,8 @@ public class ListenerTests {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
     osmo.addModelObject(new ValidTestModel2(new Requirements(), ps));
-    LengthCondition length3 = new LengthCondition(3);
-    LengthCondition length1 = new LengthCondition(1);
+    Length length3 = new Length(3);
+    Length length1 = new Length(1);
     osmo.addTestEndCondition(length3);
     osmo.addSuiteEndCondition(length1);
     osmo.generate();

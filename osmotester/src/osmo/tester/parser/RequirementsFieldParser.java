@@ -10,7 +10,7 @@ import java.lang.reflect.Field;
  * 
  * @author Teemu Kanstren
  */
-public class RequirementsParser implements AnnotationParser {
+public class RequirementsFieldParser implements AnnotationParser {
   private Requirements req = null;
 
   @Override

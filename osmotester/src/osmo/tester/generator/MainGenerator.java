@@ -195,6 +195,18 @@ public class MainGenerator {
   }
 
   /**
+   * Invokes the given set of methods on the target test object.
+   *
+   * @param targets The methods to be invoked.
+   * @param arg Argument to methods invoked.
+   */
+  private void invokeAll(Collection<InvocationTarget> targets, Object arg) {
+    for (InvocationTarget target : targets) {
+      target.invoke(arg);
+    }
+  }
+
+  /**
    * Goes through all {@link osmo.tester.annotation.Transition} tagged methods in the given test model object,
    * invokes all associated {@link osmo.tester.annotation.Guard} tagged methods matching those transitions,
    * returning the set of {@link osmo.tester.annotation.Transition} methods that have no guards returning a value
@@ -232,10 +244,10 @@ public class MainGenerator {
     //we have to add this first or it will produce failures..
     suite.add(transition);
     listeners.transition(transition.getName());
-    invokeAll(transition.getPreMethods());
+    invokeAll(transition.getPreMethods(), transition.getPrePostParameter());
     InvocationTarget target = transition.getTransition();
     target.invoke();
-    invokeAll(transition.getPostMethods());
+    invokeAll(transition.getPostMethods(), transition.getPrePostParameter());
   }
 
   public TestSuite getSuite() {

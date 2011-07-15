@@ -8,6 +8,10 @@ import osmo.tester.annotation.Transition;
 import osmo.tester.model.Requirements;
 
 import java.io.PrintStream;
+import java.util.Map;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
 
 /**
  * A test model with requirements that can all be covered.
@@ -70,8 +74,9 @@ public class ValidTestModel4 {
   }
 
   @Post
-  public void stateCheck() {
+  public void stateCheck(Map<String, Object> p) {
     out.print(":gen_oracle");
+    assertEquals("Post should have no parameters without one defined in pre.", 0, p.size());
   }
 
   @Post({"hello", "world"})

@@ -10,8 +10,8 @@ import osmo.tester.model.FSM;
  * 
  * @author Teemu Kanstren
  */
-public class LengthCondition implements EndCondition {
-  private static Logger log = new Logger(LengthCondition.class);
+public class Length implements EndCondition {
+  private static Logger log = new Logger(Length.class);
    /** The stopping threshold. */
   private final int length;
 
@@ -20,7 +20,7 @@ public class LengthCondition implements EndCondition {
    *
    * @param length The number of steps/tests when to stop generation.
    */
-  public LengthCondition(int length) {
+  public Length(int length) {
     if (length < 0) {
       throw new IllegalArgumentException("Length cannot be < 0, was "+length+".");
     }

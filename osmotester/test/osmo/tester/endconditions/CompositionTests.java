@@ -4,7 +4,7 @@ import org.junit.Test;
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.CalculatorModel;
 import osmo.tester.generator.endcondition.AndComposition;
-import osmo.tester.generator.endcondition.LengthCondition;
+import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.OrComposition;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -19,8 +19,8 @@ import static junit.framework.Assert.assertEquals;
 public class CompositionTests {
   @Test
   public void length2AndLength4() {
-    LengthCondition length2 = new LengthCondition(2);
-    LengthCondition length4 = new LengthCondition(4);
+    Length length2 = new Length(2);
+    Length length4 = new Length(4);
     AndComposition and = new AndComposition(length2, length4);
 
     CalculatorModel calculator = new CalculatorModel();
@@ -38,9 +38,9 @@ public class CompositionTests {
 
   @Test
   public void length2AndLength4AndLength6() {
-    LengthCondition length2 = new LengthCondition(2);
-    LengthCondition length4 = new LengthCondition(4);
-    LengthCondition length6 = new LengthCondition(6);
+    Length length2 = new Length(2);
+    Length length4 = new Length(4);
+    Length length6 = new Length(6);
     AndComposition and = new AndComposition(length2, length4, length6);
 
     CalculatorModel calculator = new CalculatorModel();
@@ -58,9 +58,9 @@ public class CompositionTests {
 
   @Test
   public void length2OrLength4OrLength6() {
-    LengthCondition length2 = new LengthCondition(2);
-    LengthCondition length4 = new LengthCondition(4);
-    LengthCondition length6 = new LengthCondition(6);
+    Length length2 = new Length(2);
+    Length length4 = new Length(4);
+    Length length6 = new Length(6);
     OrComposition or = new OrComposition(length2, length4, length6);
 
     CalculatorModel calculator = new CalculatorModel();
@@ -78,9 +78,9 @@ public class CompositionTests {
 
   @Test
   public void suiteLength2AndLength4AndLength6() {
-    LengthCondition length2 = new LengthCondition(2);
-    LengthCondition length4 = new LengthCondition(4);
-    LengthCondition length6 = new LengthCondition(6);
+    Length length2 = new Length(2);
+    Length length4 = new Length(4);
+    Length length6 = new Length(6);
     AndComposition and = new AndComposition(length2, length4, length6);
 
     CalculatorModel calculator = new CalculatorModel();

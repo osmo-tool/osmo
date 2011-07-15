@@ -5,9 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.algorithm.WeightedRandomAlgorithm;
-import osmo.tester.generator.endcondition.LengthCondition;
+import osmo.tester.generator.endcondition.Length;
 import osmo.tester.log.Logger;
-import osmo.tester.testmodels.ValidTestModel1;
 import osmo.tester.testmodels.WeightedModel1;
 
 import static junit.framework.Assert.assertEquals;
@@ -37,8 +36,8 @@ public class WeightTests {
     listener.addExpected("suite-start", "start", "t:bob4", "t:bob3", "t:bob2", "t:bob4", "t:bob3", "t:bob4", "t:bob2", "t:bob1", "t:bob4", "t:bob3", "t:bob4", "end", "suite-end");
     osmo.addModelObject(new WeightedModel1());
     osmo.setAlgorithm(new WeightedRandomAlgorithm());
-    LengthCondition length3 = new LengthCondition(11);
-    LengthCondition length1 = new LengthCondition(1);
+    Length length3 = new Length(11);
+    Length length1 = new Length(1);
     osmo.addTestEndCondition(length3);
     osmo.addSuiteEndCondition(length1);
     osmo.generate();
@@ -51,8 +50,8 @@ public class WeightTests {
     listener.addExpected("start", "t:bob1", "t:bob2", "t:bob3", "t:bob4", "t:bob4", "t:bob3", "end", "suite-end");
     osmo.addModelObject(new WeightedModel1());
     osmo.setAlgorithm(new WeightedRandomAlgorithm());
-    LengthCondition length3 = new LengthCondition(6);
-    LengthCondition length1 = new LengthCondition(2);
+    Length length3 = new Length(6);
+    Length length1 = new Length(2);
     osmo.addTestEndCondition(length3);
     osmo.addSuiteEndCondition(length1);
     osmo.generate();
