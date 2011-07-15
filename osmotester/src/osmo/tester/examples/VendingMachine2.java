@@ -2,10 +2,10 @@ package osmo.tester.examples;
 
 import osmo.tester.OSMOTester;
 import osmo.tester.annotation.AfterSuite;
-import osmo.tester.annotation.Before;
+import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
-import osmo.tester.annotation.Oracle;
+import osmo.tester.annotation.Post;
 import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
@@ -55,7 +55,7 @@ public class VendingMachine2 {
     return bottles > 0;
   }
 
-  @Before
+  @BeforeTest
   public void start() {
     coins = 0;
     bottles = 10;
@@ -112,7 +112,7 @@ public class VendingMachine2 {
     return bottles <= 0;
   }
 
-  @Oracle
+  @Post
   public void checkState() {
     scripter.step("CHECK(bottles == "+bottles+")");
     scripter.step("CHECK(coins == "+coins+")");

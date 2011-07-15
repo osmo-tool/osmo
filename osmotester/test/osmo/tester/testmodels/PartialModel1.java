@@ -1,11 +1,11 @@
 package osmo.tester.testmodels;
 
-import osmo.tester.annotation.After;
-import osmo.tester.annotation.Before;
+import osmo.tester.annotation.AfterTest;
+import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
-import osmo.tester.annotation.Oracle;
+import osmo.tester.annotation.Post;
 import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
@@ -41,12 +41,12 @@ public class PartialModel1 {
 
   }
 
-  @Before
+  @BeforeTest
   public void reset() {
     req.clearCoverage();
   }
 
-  @After
+  @AfterTest
   public void end1() {
   }
 
@@ -76,12 +76,12 @@ public class PartialModel1 {
     return req.isCovered(REQ_WORLD);
   }
 
-  @Oracle("epixx")
+  @Post("epixx")
   public void epixxO() {
     out.print(":epixx_oracle");
   }
 
-  @Oracle
+  @Post
   public void stateCheck() {
     out.print(":gen_oracle");
   }

@@ -4,8 +4,11 @@ import osmo.tester.model.FSMTransition;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * This class describes a single test case and all test steps that it contains.
@@ -28,6 +31,43 @@ public class TestCase {
   /** Newly covered requirements in relation to generation history. See class header for notes.
    *  NOTE: we use a Set to avoid duplicates if the same requirement is covered multiple times. */
   private Collection<String> addedRequirementsCoverage = new HashSet<String>();
+  private final int id;
+  private boolean success = true;
+  private String script = "";
+  private final Map<String, Object> properties = new HashMap<String, Object>();
+  private static AtomicInteger nextId = new AtomicInteger(1);
+
+  public TestCase() {
+    this.id = nextId.getAndIncrement();
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public boolean isSuccess() {
+    return success;
+  }
+
+  public void fail() {
+    this.success = false;
+  }
+
+  public void setProperty(String key, Object value) {
+    properties.put(key, value);
+  }
+
+  public Object getProperty(String key) {
+    return properties.get(key);
+  }
+
+  public String getScript() {
+    return script;
+  }
+
+  public void setScript(String script) {
+    this.script = script;
+  }
 
   /**
    * Adds a new test step.

@@ -6,12 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation defines that the annotated method should be executed after each test case that has been
+ * This annotation defines that the annotated method should be executed before each test case that is
  * generated.
  *
  * @author Teemu Kanstren
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface After {
+public @interface BeforeTest {
 }

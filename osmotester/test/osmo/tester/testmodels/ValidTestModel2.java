@@ -1,7 +1,7 @@
 package osmo.tester.testmodels;
 
 import osmo.tester.annotation.Guard;
-import osmo.tester.annotation.Oracle;
+import osmo.tester.annotation.Post;
 import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.generation.NullPrintStream;
@@ -64,7 +64,7 @@ public class ValidTestModel2 {
     out.print(":epixx");
   }
 
-  @Oracle("epixx")
+  @Post("epixx")
   public void epixxO() {
     out.print(":epixx_oracle");
   }

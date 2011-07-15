@@ -1,14 +1,12 @@
 package osmo.tester.testmodels;
 
-import osmo.tester.annotation.Before;
+import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.EndState;
 import osmo.tester.annotation.Guard;
-import osmo.tester.annotation.Oracle;
+import osmo.tester.annotation.Post;
 import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.model.Requirements;
-
-import java.io.PrintStream;
 
 /**
  * @author Teemu Kanstren
@@ -27,7 +25,7 @@ public class EndStateModel {
     return req;
   }
 
-  @Before
+  @BeforeTest
   public void reset() {
     req.clearCoverage();
   }
@@ -64,11 +62,11 @@ public class EndStateModel {
     req.covered(REQ_EPIX);
   }
 
-  @Oracle("epixx")
+  @Post("epixx")
   public void epixxO() {
   }
 
-  @Oracle
+  @Post
   public void stateCheck() {
   }
 

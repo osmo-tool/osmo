@@ -1,11 +1,11 @@
 package osmo.tester.testmodels;
 
-import osmo.tester.annotation.After;
+import osmo.tester.annotation.AfterTest;
 import osmo.tester.annotation.AfterSuite;
-import osmo.tester.annotation.Before;
+import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
-import osmo.tester.annotation.Oracle;
+import osmo.tester.annotation.Post;
 import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
@@ -40,11 +40,11 @@ public class PartialModel2 {
   public void endAll() {
   }
 
-  @Before
+  @BeforeTest
   public void start2() {
   }
 
-  @After
+  @AfterTest
   public void end2() {
   }
 
@@ -65,7 +65,7 @@ public class PartialModel2 {
     out.print(":epixx");
   }
 
-  @Oracle({"hello", "world"})
+  @Post({"hello", "world"})
   public void sharedCheck() {
     out.print(":two_oracle");
   }

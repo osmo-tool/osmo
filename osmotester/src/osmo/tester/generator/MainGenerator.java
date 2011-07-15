@@ -228,12 +228,14 @@ public class MainGenerator {
    * @param transition  The transition to be executed.
    */
   public void execute(FSMTransition transition) {
+    transition.reset();
     //we have to add this first or it will produce failures..
     suite.add(transition);
     listeners.transition(transition.getName());
+    invokeAll(transition.getPreMethods());
     InvocationTarget target = transition.getTransition();
     target.invoke();
-    invokeAll(transition.getOracles());
+    invokeAll(transition.getPostMethods());
   }
 
   public TestSuite getSuite() {

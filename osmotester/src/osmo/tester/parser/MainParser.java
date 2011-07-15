@@ -1,13 +1,14 @@
 package osmo.tester.parser;
 
-import osmo.tester.annotation.After;
+import osmo.tester.annotation.AfterTest;
 import osmo.tester.annotation.AfterSuite;
-import osmo.tester.annotation.Before;
+import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.EndState;
 import osmo.tester.annotation.Guard;
-import osmo.tester.annotation.Oracle;
+import osmo.tester.annotation.Post;
+import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
@@ -38,13 +39,14 @@ public class MainParser {
     //first we set up the parser objects for the different annotation types
     parsers.put(Transition.class, new TransitionParser());
     parsers.put(Guard.class, new GuardParser());
-    parsers.put(After.class, new AfterParser());
-    parsers.put(Before.class, new BeforeParser());
+    parsers.put(AfterTest.class, new AfterTestParser());
+    parsers.put(BeforeTest.class, new BeforeTestParser());
     parsers.put(AfterSuite.class, new AfterSuiteParser());
     parsers.put(BeforeSuite.class, new BeforeSuiteParser());
     parsers.put(TestSuiteField.class, new TestSuiteParser());
     parsers.put(RequirementsField.class, new RequirementsParser());
-    parsers.put(Oracle.class, new OracleParser());
+    parsers.put(Pre.class, new PreParser());
+    parsers.put(Post.class, new PostParser());
     parsers.put(EndCondition.class, new EndConditionParser());
     parsers.put(EndState.class, new EndStateParser());
   }

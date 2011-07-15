@@ -18,6 +18,7 @@ public class InvocationTarget {
   private final Method method;
   /** The annotation name for the invoked method (from model annotations). Used for error reporting. */
   private final String type;
+  private Object parameter = null;
 
   public InvocationTarget(ParserParameters parameters, Class type) {
     this.modelObject = parameters.getModel();
@@ -28,7 +29,11 @@ public class InvocationTarget {
 
   public Object invoke() {
     try {
-      return method.invoke(modelObject);
+      if (parameter == null) {
+        return method.invoke(modelObject);
+      } else {
+        return method.invoke(modelObject, parameter);
+      }
     } catch (Exception e) {
       throw new RuntimeException("Failed to invoke "+type+" method on the model object.", e);
     }
@@ -36,6 +41,10 @@ public class InvocationTarget {
 
   public Method getMethod() {
     return method;
+  }
+
+  public void setParameter(Object parameter) {
+    this.parameter = parameter;
   }
 
   @Override

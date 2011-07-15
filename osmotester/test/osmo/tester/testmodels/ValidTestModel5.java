@@ -1,9 +1,9 @@
 package osmo.tester.testmodels;
 
-import osmo.tester.annotation.Before;
+import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
-import osmo.tester.annotation.Oracle;
+import osmo.tester.annotation.Post;
 import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.model.Requirements;
@@ -27,7 +27,7 @@ public class ValidTestModel5 {
     this.out = out;
   }
 
-  @Before
+  @BeforeTest
   public void reset() {
     req.clearCoverage();
   }
@@ -65,17 +65,17 @@ public class ValidTestModel5 {
     out.print(":epixx");
   }
 
-  @Oracle("epixx")
+  @Post("epixx")
   public void epixxO() {
     out.print(":epixx_oracle");
   }
 
-  @Oracle
+  @Post
   public void stateCheck() {
     out.print(":gen_oracle");
   }
 
-  @Oracle({"hello", "world"})
+  @Post({"hello", "world"})
   public void sharedCheck() {
     out.print(":two_oracle");
   }

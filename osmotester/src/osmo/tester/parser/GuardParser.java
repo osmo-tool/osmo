@@ -22,9 +22,9 @@ public class GuardParser implements AnnotationParser {
 
     Method method = parameters.getMethod();
     String errors = "";
-    Class<?> type = method.getReturnType();
-    if (!(type.equals(boolean.class))) {
-      errors += "Invalid return type for guard (\""+method.getName()+"()\"):"+type+".\n";
+    Class<?> returnType = method.getReturnType();
+    if (returnType != boolean.class && returnType != Boolean.class) {
+      errors += "Invalid return type for guard (\""+method.getName()+"()\"):"+returnType+".\n";
     }
     Class<?>[] parameterTypes = method.getParameterTypes();
     if (parameterTypes.length > 0) {

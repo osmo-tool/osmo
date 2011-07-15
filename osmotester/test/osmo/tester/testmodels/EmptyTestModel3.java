@@ -3,7 +3,7 @@ package osmo.tester.testmodels;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.EndState;
 import osmo.tester.annotation.Guard;
-import osmo.tester.annotation.Oracle;
+import osmo.tester.annotation.Post;
 import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
@@ -34,7 +34,7 @@ public class EmptyTestModel3 {
   public void toEnd() {
   }
 
-  @Oracle
+  @Post
   public void wrong(String p1) {
   }
 }

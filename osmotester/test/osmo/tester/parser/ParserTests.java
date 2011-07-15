@@ -58,7 +58,7 @@ public class ParserTests {
       String msg = e.getMessage();
       String expected = "Invalid FSM:\n" +
               "Only one @RequirementsField allowed in the model.\n" +
-              "Guard/Oracle without transition:foo\n";
+              "Guard/Pre/Post without transition:foo\n";
       assertEquals(expected, msg);
     }
   }
@@ -77,8 +77,7 @@ public class ParserTests {
               "Invalid return type for @EndCondition (\"end()\"):void. Should be boolean.\n"+
               "Invalid return type for guard (\"hello()\"):class java.lang.String.\n"+
               "Invalid return type for @EndState (\"toEnd()\"):void. Should be boolean.\n"+
-              "Oracle methods are not allowed to have parameters: \"wrong()\" has 1 parameters.\n"+
-              "";
+              "Post-methods are allowed to have only one parameter of type Map<String, Object>: \"wrong()\" has one of type class java.lang.String.\n";
       assertEquals(expected, msg);
     }
   }
@@ -133,7 +132,7 @@ public class ParserTests {
               "Invalid return type for guard (\"listCheck()\"):class java.lang.String.\n"+
               "Transition methods are not allowed to have parameters: \"transition1()\" has 1 parameters.\n" +
               "Transition methods are not allowed to have parameters: \"epix()\" has 1 parameters.\n" +
-              "Guard/Oracle without transition:world\n"
+              "Guard/Pre/Post without transition:world\n"
               ;
       assertEquals(expected, msg);
     }
@@ -186,6 +185,6 @@ public class ParserTests {
     assertNotNull("Transition '" + name + "' should be generated.", transition);
     assertNotNull("Transition '" + name + "' should have valid transition content.", transition.getTransition());
     assertEquals("Transition '" + name + "' should have " + guardCount + " guards.", guardCount, transition.getGuards().size());
-    assertEquals("Transition '" + name + "' should have " + oracleCount + " oracles.", oracleCount, transition.getOracles().size());
+    assertEquals("Transition '" + name + "' should have " + oracleCount + " oracles.", oracleCount, transition.getPostMethods().size());
   }
 }

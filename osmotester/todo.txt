@@ -14,4 +14,9 @@
 -yläluokka, jossa:
 --edellinen transitio tieto
 --parametrisoitava visualisointi
+--suora kysely test id:lle
+--suora kysely test successille
+--suora kysely propertiisseille
 -optimized random: pitää huomioida myös myöhemmät kierrokset, kun objekteja on yli 1 luotu jokaista
+-test caselle id ja skripti yms
+-pre/post

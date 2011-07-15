@@ -21,8 +21,10 @@ public class FSM {
   private Map<String, FSMTransition> transitions = new HashMap<String, FSMTransition>();
   /** List of generic guards that apply to all transitions. */
   private Collection<InvocationTarget> genericGuards = new ArrayList<InvocationTarget>();
-  /** List of generic oracles that apply to all transitions. */
-  private Collection<InvocationTarget> genericOracles = new ArrayList<InvocationTarget>();
+  /** List of generic pre-methods that apply to all transitions. */
+  private Collection<InvocationTarget> genericPre = new ArrayList<InvocationTarget>();
+  /** List of generic post-methods that apply to all transitions. */
+  private Collection<InvocationTarget> genericPost = new ArrayList<InvocationTarget>();
   /** List of methods to be executed before each test case. */
   private Collection<InvocationTarget> befores = new ArrayList<InvocationTarget>();
   /** List of methods to be executed after each test case. */
@@ -95,8 +97,8 @@ public class FSM {
       String name = transition.getName();
       log.debug("Checking transition:"+ name);
       if (target == null) {
-        errors += "Guard/Oracle without transition:"+ name +"\n";
-        log.debug("Error: Found guard/oracle without a matching transition - "+ name);
+        errors += "Guard/Pre/Post without transition:"+ name +"\n";
+        log.debug("Error: Found guard/pre/post without a matching transition - "+ name);
       } else if (target.getMethod().getParameterTypes().length > 0) {
         Method method = target.getMethod();
         int p = method.getParameterTypes().length;
@@ -123,8 +125,11 @@ public class FSM {
     for (InvocationTarget guard : genericGuards) {
       transition.addGuard(guard);
     }
-    for (InvocationTarget oracle : genericOracles) {
-      transition.addOracle(oracle);
+    for (InvocationTarget pre : genericPre) {
+      transition.addPre(pre);
+    }
+    for (InvocationTarget post : genericPost) {
+      transition.addPost(post);
     }
     return errors;
   }
@@ -207,12 +212,21 @@ public class FSM {
   }
 
   /**
-   * Add an oracle that should be evaluated for all transitions in the test model.
+   * Add a pre-method that should be executed for all transitions in the test model.
    *
-   * @param target The oracle method to be invoked for evaluation.
+   * @param target The pre method to be invoked for evaluation.
    */
-  public void addGenericOracle(InvocationTarget target) {
-    genericOracles.add(target);
+  public void addGenericPre(InvocationTarget target) {
+    genericPre.add(target);
+  }
+
+  /**
+   * Add a post-method that should be executed for all transitions in the test model.
+   *
+   * @param target The post method to be invoked for evaluation.
+   */
+  public void addGenericPost(InvocationTarget target) {
+    genericPost.add(target);
   }
 
   /**
