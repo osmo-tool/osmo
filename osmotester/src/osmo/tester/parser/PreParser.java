@@ -29,13 +29,11 @@ public class PreParser implements AnnotationParser {
     if (parameterTypes.length > 1) {
       errors += "Pre-methods are allowed to have only one parameter of type Map<String, Object>: \""+method.getName()+"()\" has "+parameterTypes.length+" parameters.\n";
     }
-    boolean hasParameter = false;
     if (parameterTypes.length == 1) {
       Class<?> parameterType = parameterTypes[0];
       if (parameterType != Map.class) {
         errors += "Pre-methods are allowed to have only one parameter of type Map<String, Object>: \""+method.getName()+"()\" has one of type "+parameterType+".\n";
       }
-      hasParameter = true;
     }
 
     InvocationTarget target = new InvocationTarget(parameters, Pre.class);
@@ -52,9 +50,6 @@ public class PreParser implements AnnotationParser {
       }
       FSMTransition transition = fsm.createTransition(name, -1);
       transition.addPre(target);
-      if (hasParameter) {
-        target.setParameter(transition.getPrePostParameter());
-      }
     }
     return errors;
   }

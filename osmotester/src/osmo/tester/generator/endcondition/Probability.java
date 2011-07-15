@@ -12,8 +12,8 @@ import java.util.Random;
  * 
  * @author Teemu Kanstren
  */
-public class ProbabilityCondition implements EndCondition {
-  private static Logger log = new Logger(ProbabilityCondition.class);
+public class Probability implements EndCondition {
+  private static Logger log = new Logger(Probability.class);
   /** The stopping threshold. */
   private final double threshold;
   /** Used to generate random values to check if generation should be stopped. */
@@ -24,9 +24,9 @@ public class ProbabilityCondition implements EndCondition {
    *
    * @param threshold The threshold value, if this is exceeded in evaluation, generation is stopped.
    */
-  public ProbabilityCondition(double threshold) {
+  public Probability(double threshold) {
     if (threshold < 0 || threshold > 1) {
-      throw new IllegalArgumentException(ProbabilityCondition.class.getSimpleName()+" threshold must be between 0 and 1. Was "+threshold+".");
+      throw new IllegalArgumentException(Probability.class.getSimpleName()+" threshold must be between 0 and 1. Was "+threshold+".");
     }
     this.threshold = threshold;
   }

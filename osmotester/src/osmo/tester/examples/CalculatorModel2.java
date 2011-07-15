@@ -8,7 +8,7 @@ import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Transition;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
-import osmo.tester.generator.endcondition.LengthCondition;
+import osmo.tester.generator.endcondition.Length;
 
 import java.io.PrintStream;
 
@@ -110,8 +110,8 @@ public class CalculatorModel2 {
     OSMOTester tester = new OSMOTester(new CalculatorModel2());
     tester.setAlgorithm(new RandomAlgorithm());
     tester.setDebug(true);
-    tester.addSuiteEndCondition(new LengthCondition(10));
-    tester.addTestEndCondition(new LengthCondition(10));
+    tester.addSuiteEndCondition(new Length(10));
+    tester.addTestEndCondition(new Length(10));
     tester.generate();
   }
 }

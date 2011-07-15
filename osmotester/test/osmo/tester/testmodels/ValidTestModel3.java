@@ -3,11 +3,15 @@ package osmo.tester.testmodels;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
+import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.model.Requirements;
 
 import java.io.PrintStream;
+import java.util.Map;
+
+import static junit.framework.Assert.assertEquals;
 
 /**
  * A test model with requirements that can all be covered.
@@ -58,6 +62,13 @@ public class ValidTestModel3 {
     return req.isCovered(REQ_WORLD);
   }
 
+  @Pre("epixx")
+  public void epixxPre(Map<String, Object> p) {
+    out.print(":epixx_pre");
+    assertEquals("First pre-method should have no parameters.", 0, p.size());
+    p.put("test", "hello post");
+  }
+
   @Transition("epixx")
   public void epixx() {
     req.covered(REQ_EPIX);
@@ -65,8 +76,10 @@ public class ValidTestModel3 {
   }
 
   @Post("epixx")
-  public void epixxO() {
+  public void epixxO(Map<String, Object> p) {
     out.print(":epixx_oracle");
+    assertEquals("Post should maintain pre-parameters.", 1, p.size());
+    assertEquals("Content of parameter should remain from pre- to post.", "hello post", p.get("test"));
   }
 
   @Post

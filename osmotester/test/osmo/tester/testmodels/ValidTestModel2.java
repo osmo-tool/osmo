@@ -2,6 +2,7 @@ package osmo.tester.testmodels;
 
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
+import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.generation.NullPrintStream;
@@ -56,6 +57,11 @@ public class ValidTestModel2 {
   @Guard("epixx")
   public boolean kitted() {
     return req.isCovered(REQ_WORLD);
+  }
+
+  @Pre("epixx")
+  public void epixxPre() {
+    out.print(":epixx_pre");
   }
 
   @Transition("epixx")

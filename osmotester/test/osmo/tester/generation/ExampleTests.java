@@ -5,7 +5,7 @@ import osmo.tester.OSMOTester;
 import osmo.tester.examples.CalculatorModel;
 import osmo.tester.examples.CalculatorModel2;
 import osmo.tester.examples.VendingExample;
-import osmo.tester.generator.endcondition.LengthCondition;
+import osmo.tester.generator.endcondition.Length;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -25,8 +25,8 @@ public class ExampleTests {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
     OSMOTester osmo = new OSMOTester(new CalculatorModel(ps));
-    LengthCondition length3 = new LengthCondition(3);
-    LengthCondition length2 = new LengthCondition(2);
+    Length length3 = new Length(3);
+    Length length2 = new Length(2);
     osmo.addTestEndCondition(length3);
     osmo.addSuiteEndCondition(length2);
     osmo.generate();
@@ -51,8 +51,8 @@ public class ExampleTests {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
     OSMOTester osmo = new OSMOTester(new CalculatorModel2(ps));
-    LengthCondition length3 = new LengthCondition(3);
-    LengthCondition length2 = new LengthCondition(2);
+    Length length3 = new Length(3);
+    Length length2 = new Length(2);
     osmo.addTestEndCondition(length3);
     osmo.addSuiteEndCondition(length2);
     osmo.generate();
@@ -77,8 +77,8 @@ public class ExampleTests {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
     OSMOTester osmo = new OSMOTester(new VendingExample(ps));
-    LengthCondition length3 = new LengthCondition(3);
-    LengthCondition length2 = new LengthCondition(2);
+    Length length3 = new Length(3);
+    Length length2 = new Length(2);
     osmo.addTestEndCondition(length3);
     osmo.addSuiteEndCondition(length2);
     osmo.generate();

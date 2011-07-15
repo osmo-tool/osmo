@@ -19,7 +19,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,8 +45,8 @@ public class MainParser {
     parsers.put(BeforeTest.class, new BeforeTestParser());
     parsers.put(AfterSuite.class, new AfterSuiteParser());
     parsers.put(BeforeSuite.class, new BeforeSuiteParser());
-    parsers.put(TestSuiteField.class, new TestSuiteParser());
-    parsers.put(RequirementsField.class, new RequirementsParser());
+    parsers.put(TestSuiteField.class, new TestSuiteFieldParser());
+    parsers.put(RequirementsField.class, new RequirementsFieldParser());
     parsers.put(Pre.class, new PreParser());
     parsers.put(Post.class, new PostParser());
     parsers.put(EndCondition.class, new EndConditionParser());
@@ -94,8 +96,8 @@ public class MainParser {
    */
   private String parseFields(FSM fsm, Object obj) {
     //first we find all declared fields of any scope and type (private, protected, ...)
-    Field[] fields = obj.getClass().getDeclaredFields();
-    log.debug("fields "+fields.length);
+    Collection<Field> fields = getAllFields(obj.getClass());
+    log.debug("fields "+fields.size());
     //next we create the parameter object and insert the common parameters
     ParserParameters parameters = new ParserParameters();
     parameters.setFsm(fsm);
@@ -126,6 +128,16 @@ public class MainParser {
     return errors;
   }
 
+  private Collection<Field> getAllFields(Class clazz) {
+    Class<?> superclass = clazz.getSuperclass();
+    Collection<Field> fields = new ArrayList<Field>();
+    if (superclass != null) {
+      fields.addAll(getAllFields(superclass));
+    }
+    Collections.addAll(fields, clazz.getDeclaredFields());
+    return fields;
+  }
+
   /**
    * Parse the relevant annotated methods and pass these to correct {@link AnnotationParser} objects.
    *
@@ -135,9 +147,9 @@ public class MainParser {
    */
   private String parseMethods(FSM fsm, Object obj) {
     //first we get all methods defined in the test model object (also all scopes -> private, protected, ...)
-    Method[] methods = obj.getClass().getMethods();
+    Collection<Method> methods = getAllMethods(obj.getClass());
     //there are always some methods inherited from java.lang.Object so we checking them here is pointless. FSM.check will do it
-    log.debug("methods "+methods.length);
+    log.debug("methods "+methods.size());
     //construct and store common parameters first for all method parsers, update the rest each time
     ParserParameters parameters = new ParserParameters();
     parameters.setFsm(fsm);
@@ -165,5 +177,15 @@ public class MainParser {
       }
     }
     return errors;
+  }
+
+  private Collection<Method> getAllMethods(Class clazz) {
+    Class<?> superclass = clazz.getSuperclass();
+    Collection<Method> methods = new ArrayList<Method>();
+    if (superclass != null) {
+      methods.addAll(getAllMethods(superclass));
+    }
+    Collections.addAll(methods, clazz.getMethods());
+    return methods;
   }
 }

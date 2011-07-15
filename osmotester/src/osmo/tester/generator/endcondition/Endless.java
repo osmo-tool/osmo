@@ -8,7 +8,7 @@ import osmo.tester.model.FSM;
  *
  * @author Teemu Kanstren
  */
-public class EndlessCondition implements EndCondition {
+public class Endless implements EndCondition {
   @Override
   public boolean endNow(FSM fsm, boolean evaluateSuite) {
     return false;

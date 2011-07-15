@@ -1,7 +1,7 @@
 package osmo.tester.endconditions;
 
 import org.junit.Test;
-import osmo.tester.generator.endcondition.ProbabilityCondition;
+import osmo.tester.generator.endcondition.Probability;
 
 import static junit.framework.Assert.fail;
 
@@ -11,24 +11,24 @@ import static junit.framework.Assert.fail;
 public class ProbabilityTests {
   @Test
   public void testTooLowThreshold() {
-    new ProbabilityCondition(0);
-    new ProbabilityCondition(0.1);
+    new Probability(0);
+    new Probability(0.1);
     assertThresholdOutOfBounds(-1);
     assertThresholdOutOfBounds(-0.01);
   }
 
   @Test
   public void testTooHighThreshold() {
-    new ProbabilityCondition(1);
-    new ProbabilityCondition(0.99);
+    new Probability(1);
+    new Probability(0.99);
     assertThresholdOutOfBounds(1.01);
     assertThresholdOutOfBounds(2);
   }
 
   private void assertThresholdOutOfBounds(double value) {
     try {
-      new ProbabilityCondition(value);
-      fail("Creation of "+ProbabilityCondition.class.getSimpleName()+" with threshold of "+value+" should fail.");
+      new Probability(value);
+      fail("Creation of "+Probability.class.getSimpleName()+" with threshold of "+value+" should fail.");
     } catch (IllegalArgumentException e) {
       //expected
     }

@@ -7,11 +7,14 @@ import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
+import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
+
+import java.util.Map;
 
 /**
  *
@@ -92,12 +95,20 @@ public class EmptyTestModel1 {
   public void stateOracle() {
   }
 
+  @Pre("epixx")
+  public void beforeEpixx() {
+  }
+
   @Post("epixx")
   public void epixxOracle() {
   }
 
+  @Pre({"hello", "epixx"})
+  public void commonPre(Map<String, Object> p) {
+  }
+
   @Post({"hello", "epixx"})
-  public void commonOracle() {
+  public void commonOracle(Map<String, Object> p) {
   }
 
   @EndCondition

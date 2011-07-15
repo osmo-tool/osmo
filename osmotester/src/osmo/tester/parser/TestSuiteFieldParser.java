@@ -11,8 +11,8 @@ import java.lang.reflect.Field;
  * 
  * @author Teemu Kanstren
  */
-public class TestSuiteParser implements AnnotationParser {
-  private static Logger log = new Logger(TestSuiteParser.class);
+public class TestSuiteFieldParser implements AnnotationParser {
+  private static Logger log = new Logger(TestSuiteFieldParser.class);
 
   @Override
   public String parse(ParserParameters parameters) {

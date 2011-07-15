@@ -24,13 +24,11 @@ public class PostParser implements AnnotationParser {
     Method method = parameters.getMethod();
     String errors = "";
     Class<?>[] parameterTypes = method.getParameterTypes();
-    boolean hasParameter = false;
     if (parameterTypes.length == 1) {
       Class<?> parameterType = parameterTypes[0];
       if (parameterType != Map.class) {
         errors += "Post-methods are allowed to have only one parameter of type Map<String, Object>: \""+method.getName()+"()\" has one of type "+parameterType+".\n";
       }
-      hasParameter = true;
     }
 
     InvocationTarget target = new InvocationTarget(parameters, Post.class);
@@ -47,9 +45,6 @@ public class PostParser implements AnnotationParser {
       }
       FSMTransition transition = fsm.createTransition(name, -1);
       transition.addPost(target);
-      if (hasParameter) {
-        target.setParameter(transition.getPrePostParameter());
-      }
     }
     return errors;
   }

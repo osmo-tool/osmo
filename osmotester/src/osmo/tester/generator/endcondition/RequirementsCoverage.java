@@ -10,8 +10,8 @@ import osmo.tester.model.Requirements;
  * 
  * @author Olli-Pekka Puolitaival
  */
-public class RequirementsCoverageCondition implements EndCondition {
-  private static Logger log = new Logger(LengthCondition.class);
+public class RequirementsCoverage implements EndCondition {
+  private static Logger log = new Logger(Length.class);
   /** The stopping threshold. */
   private final double threshold;
 
@@ -20,9 +20,9 @@ public class RequirementsCoverageCondition implements EndCondition {
    *
    * @param threshold The threshold value, if this is exceeded in evaluation, generation is stopped.
    */
-  public RequirementsCoverageCondition(double threshold) {
+  public RequirementsCoverage(double threshold) {
     if (threshold < 0 || threshold > 1) {
-      throw new IllegalArgumentException(RequirementsCoverageCondition.class.getSimpleName()+" threshold must be between 0 and 1. Was "+threshold+".");
+      throw new IllegalArgumentException(RequirementsCoverage.class.getSimpleName()+" threshold must be between 0 and 1. Was "+threshold+".");
     }
     this.threshold = threshold;
   }

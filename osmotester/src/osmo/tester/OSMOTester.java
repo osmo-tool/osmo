@@ -6,7 +6,7 @@ import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.endcondition.EndCondition;
-import osmo.tester.generator.endcondition.ProbabilityCondition;
+import osmo.tester.generator.endcondition.Probability;
 import osmo.tester.log.Logger;
 import osmo.tester.model.FSM;
 import osmo.tester.parser.MainParser;
@@ -67,10 +67,10 @@ public class OSMOTester {
     MainGenerator generator = new MainGenerator();
     generator.setAlgorithm(algorithm);
     if (suiteEndConditions.size() == 0) {
-      addSuiteEndCondition(new ProbabilityCondition(0.95d));
+      addSuiteEndCondition(new Probability(0.95d));
     }
     if (testCaseEndConditions.size() == 0) {
-      addTestEndCondition(new ProbabilityCondition(0.9d));
+      addTestEndCondition(new Probability(0.9d));
     }
     generator.setSuiteEndConditions(suiteEndConditions);
     generator.setTestCaseEndConditions(testCaseEndConditions);

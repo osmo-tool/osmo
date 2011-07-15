@@ -9,7 +9,7 @@ import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
-import osmo.tester.generator.endcondition.LengthCondition;
+import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
 
@@ -106,7 +106,7 @@ public class CalculatorModel {
 
   public static void main(String[] args) {
     OSMOTester tester = new OSMOTester(new CalculatorModel());
-    tester.addSuiteEndCondition(new LengthCondition(100));
+    tester.addSuiteEndCondition(new Length(100));
     tester.generate();
   }
 }
