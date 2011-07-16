@@ -107,7 +107,6 @@ public class Requirements {
    *
    * @return Message that can be printed to tell the requirements coverage.
    */
-  //TODO: add check for requirements that is not listed in expected requirements but is marked as covered
   public String printCoverage() {
     if (requirements.size() == 0 && covered.size() == 0) {
       return "No requirements defined. Not calculating or showing requirements coverage. \n" +
@@ -128,7 +127,6 @@ public class Requirements {
     } else {
       out.append("No requirements were defined as expected (with the add() method) so no percentage is calculated.");
     }
-    //TODO: add tests for coverage. including excess coverage
     return out.toString();
   }
 }

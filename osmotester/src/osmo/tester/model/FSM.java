@@ -60,7 +60,7 @@ public class FSM {
     log.debug("Creating transition: "+name+" weight:"+weight);
     FSMTransition transition = transitions.get(name);
     if (transition != null) {
-      //we can come here from guard, oracle, or transition creation. however, only transitions define weights
+      //we can come here from guard, post, or transition creation. however, only transitions define weights
       //so we have to set it here if it was previously not defined
       //note that transition.setWeight will do nothing in case of negative value as in guards and oracles
       transition.setWeight(weight);

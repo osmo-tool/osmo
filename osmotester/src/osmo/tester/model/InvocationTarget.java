@@ -35,6 +35,7 @@ public class InvocationTarget {
   }
 
   public Object invoke(Object arg) {
+    //we need to check if it has parameters since it is optional for a pre- or post-method to have parameters
     if (method.getParameterTypes().length == 0) {
       return invoke();
     }

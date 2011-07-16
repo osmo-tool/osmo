@@ -11,7 +11,8 @@ import java.lang.annotation.Target;
  * will be set by the generator before starting test generation to contain a reference to the TestLog object
  * that gives the model object itself access to the test generation history of the generator.
  *
- * If the annotated field is not of type TestLog, it an exception will be produced and generation will not commence.
+ * If the annotated field is not of type {@link osmo.tester.generator.testsuite.TestSuite},
+ * it an exception will be produced and generation will not commence.
  * If this field is set to a value in the test model before the model object is passed to the generator
  * (OSMOTester.generate()) the parser will throw an exception and generation does not commence. Therefore
  * the field should always be given a null value. After the value is set by the parser/generator, the set object

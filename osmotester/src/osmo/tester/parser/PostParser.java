@@ -36,7 +36,6 @@ public class PostParser implements AnnotationParser {
     String[] transitionNames = oracle.value();
     for (String name : transitionNames) {
       log.debug("Parsing post '"+name+"'");
-      //todo: add test for transition named "all" in a test model
       if (name.equals("all")) {
         fsm.addGenericPost(target);
         //generic post should not be have their own transition or it will fail the FSM check since it is a guard

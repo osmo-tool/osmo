@@ -33,24 +33,27 @@ public class WeightedRandomAlgorithm implements FSMTraversalAlgorithm {
   private static final Logger log = new Logger(WeightedRandomAlgorithm.class);
 
   @Override
-  public FSMTransition choose(TestSuite history, List<FSMTransition> transitions) {
-    log.debug("choosing from:"+transitions);
-    Map<FSMTransition, Double> scores = countScore(history, transitions);
+  public FSMTransition choose(TestSuite history, List<FSMTransition> choices) {
+    log.debug("choosing from:"+choices);
+    //count weighted score for all transitions in the current test suite as well as any new ones in the list of transitions
+    Map<FSMTransition, Double> scores = countScore(history, choices);
     double smallest = Integer.MAX_VALUE;
-    for (FSMTransition transition : transitions) {
+    //find the lowest score
+    for (FSMTransition transition : choices) {
       Double score = scores.get(transition);
       if (score < smallest) {
         smallest = score;
       }
     }
+    //create list of actual options, being the ones with the lowest scores and in the set of choices
     Collection<FSMTransition> options = new ArrayList<FSMTransition>();
-    for (FSMTransition transition : transitions) {
+    for (FSMTransition transition : choices) {
       if (scores.get(transition) == smallest) {
         options.add(transition);
       }
     }
     if (options.size() == 0) {
-      options = transitions;
+      options = choices;
     }
     return oneOf(options);
   }
@@ -68,7 +71,6 @@ public class WeightedRandomAlgorithm implements FSMTraversalAlgorithm {
    * @return A mapping of transitions to their scores.
    */
   private Map<FSMTransition, Double> countScore(TestSuite history, List<FSMTransition> available) {
-    //todo: coverage in testutils?
     Map<FSMTransition, Integer> coverage = new HashMap<FSMTransition, Integer>(1);
     List<TestCase> tests = history.getAllTestCases();
     //first we count how many times a transition has been covered
@@ -84,9 +86,9 @@ public class WeightedRandomAlgorithm implements FSMTraversalAlgorithm {
         coverage.put(transition, count+1);
       }
     }
+    //if one was never covered, we set it to default start value of 1 to get correct values overall
     for (FSMTransition transition : available) {
       if (coverage.get(transition) == null) {
-        //this is needed since the "default" behaviour of our special map always gives 1 even if no content is there
         coverage.put(transition, 1);
       }
     }

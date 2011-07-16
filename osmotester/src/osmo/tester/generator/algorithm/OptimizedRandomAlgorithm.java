@@ -27,6 +27,16 @@ public class OptimizedRandomAlgorithm implements FSMTraversalAlgorithm {
     return optimizedRandomChoice(coverage, transitions);
   }
 
+  /**
+   * Picks one from the set of available choices according to the optimized random algorithm.
+   * This is static and generalized to allow use from various algorithms such as transition traversal choice
+   * or data generator.
+   *
+   * @param coverage How many times each item has been covered. Input for the algorithm to choose the least covered.
+   * @param choices The set of possible choices where to pick the next from.
+   * @param <T> The type (class) of choices.
+   * @return A choice picked according to the optimized random algorithm.
+   */
   public static <T> T optimizedRandomChoice(Map<T, Integer> coverage, Collection<T> choices) {
     Collection<T> options = new ArrayList<T>();
     options.addAll(choices);
@@ -47,6 +57,13 @@ public class OptimizedRandomAlgorithm implements FSMTraversalAlgorithm {
     return oneOf(options);
   }
 
+  /**
+   * Counts how many times different transitions have been taken in the overall test generation
+   * history. This counds as coverage for that transition.
+   *
+   * @param history The test suite generated (test history).
+   * @return Number of times each transition has been taken.
+   */
   private Map<FSMTransition, Integer> countCoverage(TestSuite history) {
     Map<FSMTransition, Integer> coverage = new HashMap<FSMTransition, Integer>();
     List<TestCase> tests = history.getAllTestCases();

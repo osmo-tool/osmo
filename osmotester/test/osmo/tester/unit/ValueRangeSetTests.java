@@ -11,7 +11,7 @@ import static junit.framework.Assert.*;
 /**
  * @author Teemu Kanstren
  */
-public class ValuePartitionSetTests {
+public class ValueRangeSetTests {
   @Test
   public void minMaxTest() {
     ValueRangeSet ni = new ValueRangeSet();
@@ -283,31 +283,5 @@ public class ValuePartitionSetTests {
     }
     assertTrue("Should generate value 1", b1);
     assertTrue("Should generate value 2", b2);
-  }
-
-  @Test
-  public void optimizedRandomValueRange() {
-    ValueRange vr = new ValueRange(5, 7);
-    vr.setAlgorithm(DataGenerationStrategy.OPTIMIZED_RANDOM);
-    boolean b5 = false;
-    boolean b6 = false;
-    boolean b7 = false;
-    for (int a = 0 ; a < 10 ; a++) {
-      for (int i = 0 ; i < 3 ; i++) {
-        int n = vr.nextInt();
-        if (n == 5) {
-          b5 = true;
-        }
-        if (n == 6) {
-          b6 = true;
-        }
-        if (n == 7) {
-          b7 = true;
-        }
-      }
-      assertTrue("Should generate value 5 (loop "+a+")", b5);
-      assertTrue("Should generate value 6 (loop \"+a+\")", b6);
-      assertTrue("Should generate value 7 (loop \"+a+\")", b7);
-    }
   }
 }

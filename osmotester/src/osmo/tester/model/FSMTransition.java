@@ -28,6 +28,7 @@ public class FSMTransition {
   private final Collection<InvocationTarget> pres = new ArrayList<InvocationTarget>();
   /** The set of post-methods to be evaluated after this transition has been taken. */
   private final Collection<InvocationTarget> posts = new ArrayList<InvocationTarget>();
+  /** This is to allow @Pre and @Post to store and share properties over this transition. */
   private Map<String, Object> prePostParameter = new HashMap<String, Object>();
 
   public FSMTransition(String name) {
@@ -123,6 +124,9 @@ public class FSMTransition {
             '}';
   }
 
+  /**
+   * Clears the parameters between @Pre and @Post methods so old ones do not mess with new ones.
+   */
   public void reset() {
     prePostParameter.clear();
   }

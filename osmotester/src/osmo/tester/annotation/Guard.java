@@ -12,11 +12,10 @@ import java.lang.annotation.Target;
  * all these must return "true" for the transition to be considered as enabled and given to the algorithms
  * as an option for execution.
  *
- * The annotated method must be of form public boolean name();, where the name can be anything you like
- * as long as it is a valid Java method name.
+ * The annotated method must have no parameters and return a boolean value.
  *
  * Example:
- * @Transition("bob)
+ * @Transition("bob")
  * public void hello() {
  *   System.out.println("Hello Bob");
  * }

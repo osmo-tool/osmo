@@ -21,11 +21,18 @@ public interface GenerationListener {
   public void transition(String name);
 
   /**
-   * A test oracle has been invoked.
+   * A pre method has been invoked.
    *
-   * @param name Name of the test oracle as in @Oracle("name").
+   * @param name Name of the pre method as in @Pre("name").
    */
-  public void oracle(String name);
+  public void pre(String name);
+
+  /**
+   * A post method has been invoked.
+   *
+   * @param name Name of the post method as in @Post("name").
+   */
+  public void post(String name);
 
   /**
    * The generation of a new test case has started.

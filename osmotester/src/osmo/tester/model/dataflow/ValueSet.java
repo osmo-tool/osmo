@@ -4,6 +4,7 @@ import osmo.tester.generator.algorithm.OptimizedRandomAlgorithm;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,9 +41,7 @@ public class ValueSet<T> {
    * @param items The initial set of items.
    */
   public ValueSet(T... items) {
-    for (T item : items) {
-      options.add(item);
-    }
+    Collections.addAll(options, items);
   }
 
   /**

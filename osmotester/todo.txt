@@ -12,11 +12,5 @@
 --tämän pitää jakaa parametriryhmiin (mitä tämä tarkoittaa?)
 --jokaisella on jo oma historia, mutta optimoinnille tarvii linkin transitioon
 -yläluokka, jossa:
---edellinen transitio tieto
---parametrisoitava visualisointi
---suora kysely test id:lle
---suora kysely test successille
---suora kysely propertiisseille
+--parametrisoitava visualisointi?
 -optimized random: pitää huomioida myös myöhemmät kierrokset, kun objekteja on yli 1 luotu jokaista
--test caselle id ja skripti yms
--pre/post

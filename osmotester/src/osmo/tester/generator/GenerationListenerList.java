@@ -36,9 +36,16 @@ public class GenerationListenerList implements GenerationListener {
   }
 
   @Override
-  public void oracle(String name) {
+  public void pre(String name) {
     for (GenerationListener listener : listeners) {
-      listener.oracle(name);
+      listener.pre(name);
+    }
+  }
+
+  @Override
+  public void post(String name) {
+    for (GenerationListener listener : listeners) {
+      listener.post(name);
     }
   }
 

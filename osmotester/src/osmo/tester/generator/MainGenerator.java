@@ -199,9 +199,17 @@ public class MainGenerator {
    *
    * @param targets The methods to be invoked.
    * @param arg Argument to methods invoked.
+   * @param element Type of model element (pre or post)
+   * @param name Transition name for listener invocation.
    */
-  private void invokeAll(Collection<InvocationTarget> targets, Object arg) {
+  private void invokeAll(Collection<InvocationTarget> targets, Object arg, String element, String name) {
     for (InvocationTarget target : targets) {
+      if (element.equals("pre")) {
+        listeners.pre(name);
+      }
+      if (element.equals("post")) {
+        listeners.post(name);
+      }
       target.invoke(arg);
     }
   }
@@ -243,11 +251,12 @@ public class MainGenerator {
     transition.reset();
     //we have to add this first or it will produce failures..
     suite.add(transition);
-    listeners.transition(transition.getName());
-    invokeAll(transition.getPreMethods(), transition.getPrePostParameter());
+    String name = transition.getName();
+    invokeAll(transition.getPreMethods(), transition.getPrePostParameter(), "pre", name);
+    listeners.transition(name);
     InvocationTarget target = transition.getTransition();
     target.invoke();
-    invokeAll(transition.getPostMethods(), transition.getPrePostParameter());
+    invokeAll(transition.getPostMethods(), transition.getPrePostParameter(), "post", name);
   }
 
   public TestSuite getSuite() {

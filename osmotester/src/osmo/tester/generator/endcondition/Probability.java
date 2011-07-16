@@ -7,8 +7,8 @@ import java.util.Random;
 
 /**
  * A simple end condition that takes a probability threshold for stopping test generation.
- * The probability needs to be between 0..1 where 1 means the generation is never stopped
- * and 0 means the generation is always stopped.
+ * The probability needs to be between 0..1 where 0 means the generation is never stopped
+ * and 1 means the generation is always stopped.
  * 
  * @author Teemu Kanstren
  */
@@ -35,6 +35,6 @@ public class Probability implements EndCondition {
   public boolean endNow(FSM fsm, boolean evaluateSuite) {
     double v = random.nextDouble();
     log.debug("value "+v+" threshold "+threshold);
-    return v >= threshold;
+    return v <= threshold;
   }
 }

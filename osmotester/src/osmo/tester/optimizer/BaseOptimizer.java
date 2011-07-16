@@ -11,6 +11,8 @@ import java.util.List;
 
 /**
  * Base class for test suite optimizers.
+ * Test suite optimizers are intended to optimize a test suite after it has been fully generated.
+ * This includes, for example, re-ordering it to maximize a choice of coverage.
  *
  * @author Teemu Kanstren
  */

@@ -12,7 +12,7 @@ import osmo.tester.model.FSM;
  */
 public class Length implements EndCondition {
   private static Logger log = new Logger(Length.class);
-   /** The stopping threshold. */
+   /** The stopping length. */
   private final int length;
 
   /**

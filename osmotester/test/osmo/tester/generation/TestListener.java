@@ -5,6 +5,7 @@ import osmo.tester.generator.GenerationListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import static junit.framework.Assert.*;
 
@@ -16,9 +17,7 @@ public class TestListener implements GenerationListener {
   private Collection<String> expected = new ArrayList<String>();
 
   public void addExpected(String... items) {
-    for (String item : items) {
-      expected.add(item);
-    }
+    Collections.addAll(expected, items);
   }
 
   @Override
@@ -32,8 +31,13 @@ public class TestListener implements GenerationListener {
   }
 
   @Override
-  public void oracle(String name) {
-    steps.add("o:"+name);
+  public void pre(String name) {
+    steps.add("pre:"+name);
+  }
+
+  @Override
+  public void post(String name) {
+    steps.add("post:"+name);
   }
 
   @Override

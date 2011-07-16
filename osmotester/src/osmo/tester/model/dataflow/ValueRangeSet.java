@@ -65,6 +65,7 @@ public class ValueRangeSet {
    * @return The partition to generate data from.
    */
   public ValueRange nextPartition() {
+    //we use ValueSet for partitions so we only need to handle optimized random here as the valueset handles random and ordered loops
     if (strategy != DataGenerationStrategy.OPTIMIZED_RANDOM) {
       ValueRange partition = partitions.next();
       log.debug("Next interval "+partition);
@@ -86,6 +87,7 @@ public class ValueRangeSet {
       log.debug("Single partition found, returning it:"+partition);
       return partition;
     }
+    //first we find the minimum coverage in the set
     int min = Integer.MAX_VALUE;
     for (ValueRange option : options) {
       int count = option.getHistory().size();
@@ -95,6 +97,7 @@ public class ValueRangeSet {
       }
     }
     log.debug("Min coverage:"+min);
+    //then we find all that have coverage equal to smallest
     Collection<ValueRange> currentOptions = new ArrayList<ValueRange>();
     for (ValueRange option : options) {
       int count = option.getHistory().size();
@@ -103,6 +106,7 @@ public class ValueRangeSet {
         currentOptions.add(option);
       }
     }
+    //finally we pick one from the set of smallest coverage
     return oneOf(currentOptions);
   }
 

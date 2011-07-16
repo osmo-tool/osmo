@@ -23,7 +23,6 @@ public class AndComposition implements EndCondition {
 
   @Override
   public boolean endNow(FSM fsm, boolean evaluateSuite) {
-    boolean result = true;
     for (EndCondition condition : conditions) {
       if (!condition.endNow(fsm, evaluateSuite)) {
         //if any return "false", the AND composition becomes false as well.

@@ -7,26 +7,49 @@ import java.util.List;
 import static osmo.tester.TestUtils.*;
 
 /**
+ * Defines a value range with a minimum and maximum values. Generates input from this range, including min and max.
+ * Evaluates given values if they fit in the range.
+ *
  * @author Teemu Kanstren
  */
 public class ValueRange {
   private enum DataType {INT, LONG, DOUBLE}
-  private double min = Double.MIN_VALUE;
-  private double max = Double.MAX_VALUE;
-  private Double increment = 1d;
-  /** Keeps a history of all the data values created as input from this value range. */
+
+  /**
+   * Minimum value for this value range.
+   */
+  private Number min;
+  /**
+   * Maximum value for this value range.
+   */
+  private Number max;
+  /**
+   * Amount to increment with if using ordered loop data generation strategy.
+   */
+  private Number increment = 1;
+  /**
+   * Keeps a history of all the data values created as input from this value range.
+   */
   protected List<Number> history = new ArrayList<Number>();
+  /**
+   * History of generated values in case an optimized data generation strategy is used.
+   */
   protected List<Number> optimizerHistory = new ArrayList<Number>();
-  /** The strategy for data generation. */
+  /**
+   * The strategy for data generation.
+   */
   private DataGenerationStrategy algorithm = DataGenerationStrategy.OPTIMIZED_RANDOM;
 
   public ValueRange(Number min, Number max) {
-    this.min = min.doubleValue();
-    this.max = max.doubleValue();
+    this.min = min;
+    this.max = max;
   }
 
+  /**
+   * @param increment The value to increment with for ordered loops.
+   */
   public void setIncrement(Number increment) {
-    this.increment = increment.doubleValue();
+    this.increment = increment;
   }
 
   public Number min() {
@@ -34,7 +57,7 @@ public class ValueRange {
   }
 
   public void setMin(Number min) {
-    this.min = min.doubleValue();
+    this.min = min;
   }
 
   public Number max() {
@@ -42,7 +65,7 @@ public class ValueRange {
   }
 
   public void setMax(Number max) {
-    this.max = max.doubleValue();
+    this.max = max;
   }
 
   public Collection<Number> getHistory() {
@@ -54,66 +77,123 @@ public class ValueRange {
   }
 
   /**
-   * Generates a new double precision value in this value range.
+   * Generates a new numeric value of given type in this value range.
    *
+   * @param type The datatype to be generated.
    * @return Generated input value.
    */
-  public double nextDouble() {
-    double min = min().doubleValue();
-    double max = max().doubleValue();
-    double value = 0;
+  public Number next(DataType type) {
+    Number value = 0;
     if (algorithm == DataGenerationStrategy.ORDERED_LOOP) {
-      double last = min;
-      if (history.size() > 0) {
-        last = history.get(history.size()-1).doubleValue();
-      }
-      value = last+increment;
+      value = nextOrderedLoop(type);
     } else if (algorithm == DataGenerationStrategy.OPTIMIZED_RANDOM) {
-      do {
-        value = cDouble(min, max);
-      } while (optimizerHistory.contains(value));
-      optimizerHistory.add(value);
-      if (optimizerHistory.size() == (max-min)+1) {
-        optimizerHistory.clear();
-      }
+      value = nextOptimizedRandom(type);
     } else {
       //default to random
-      value = cDouble(min, max);
+      value = nextRandom(type);
     }
     history.add(value);
     return value;
   }
 
   /**
-   * Generates a new integer value in this value range.
+   * Create next value for the ordered loop algorithm.
+   *
+   * @param type The datatype to be created.
+   * @return A new value in this range.
+   */
+  private Number nextOrderedLoop(DataType type) {
+    Number last = min;
+    Number value = null;
+    if (!history.isEmpty()) {
+      //get the previous value
+      last = history.get(history.size() - 1);
+    } else {
+      return min;
+    }
+    switch (type) {
+      case INT:
+        value = last.intValue() + increment.intValue();
+        break;
+      case LONG:
+        value = last.longValue() + increment.longValue();
+        break;
+      case DOUBLE:
+        value = last.doubleValue() + increment.doubleValue();
+        break;
+      default:
+        throw new IllegalArgumentException("Enum type:" + type + " unsupported.");
+    }
+    if (value.doubleValue() > max.doubleValue()) {
+      value = min;
+    }
+    return value;
+  }
+
+  /**
+   * Create next value for the optimized random algorithm.
+   *
+   * @param type The datatype to be created.
+   * @return A new value in this range.
+   */
+  private Number nextOptimizedRandom(DataType type) {
+    Number value = null;
+    do {
+      switch (type) {
+        case INT:
+          value = cInt(min.intValue(), max.intValue());
+          break;
+        case LONG:
+          value = cLong(min.longValue(), max.longValue());
+          break;
+        case DOUBLE:
+          value = cDouble(min.doubleValue(), max.doubleValue());
+          break;
+        default:
+          throw new IllegalArgumentException("Enum type:" + type + " unsupported.");
+      }
+    } while (optimizerHistory.contains(value));
+    optimizerHistory.add(value);
+    if (optimizerHistory.size() == (max.intValue() - min.intValue()) + 1) {
+      optimizerHistory.clear();
+    }
+    return value;
+  }
+
+  private Number nextRandom(DataType type) {
+    Number value = null;
+    switch (type) {
+      case INT:
+        value = cInt(min().intValue(), max().intValue());
+        break;
+      case LONG:
+        value = cLong(min().longValue(), max().longValue());
+        break;
+      case DOUBLE:
+        value = cDouble(min().doubleValue(), max().doubleValue());
+        break;
+      default:
+        throw new IllegalArgumentException("Enum type:" + type + " unsupported.");
+    }
+    return value;
+  }
+
+  /**
+   * Generates a new double value in this value range.
+   *
+   * @return Generated input value.
+   */
+  public double nextDouble() {
+    return next(DataType.DOUBLE).doubleValue();
+  }
+
+  /**
+   * Generates a new long value in this value range.
    *
    * @return Generated input value.
    */
   public int nextInt() {
-    int min = min().intValue();
-    int max = max().intValue();
-    int value = 0;
-
-    if (algorithm == DataGenerationStrategy.ORDERED_LOOP) {
-      int last = min;
-      if (history.size() > 0) {
-        last = history.get(history.size()-1).intValue();
-      }
-      value = last+increment.intValue();
-    } else if (algorithm == DataGenerationStrategy.OPTIMIZED_RANDOM) {
-      do {
-        value = cInt(min, max);
-      } while (optimizerHistory.contains(value));
-      optimizerHistory.add(value);
-      if (optimizerHistory.size() == (max-min)+1) {
-        optimizerHistory.clear();
-      }
-    } else {
-      //default to random
-      value = cInt(min, max);
-    }
-    history.add(value);
-    return value;
+    return next(DataType.INT).intValue();
   }
 
   /**
@@ -122,30 +202,7 @@ public class ValueRange {
    * @return Generated input value.
    */
   public long nextLong() {
-    long min = min().longValue();
-    long max = max().longValue();
-    long value = 0;
-
-    if (algorithm == DataGenerationStrategy.ORDERED_LOOP) {
-      long last = min;
-      if (history.size() > 0) {
-        last = history.get(history.size()-1).intValue();
-      }
-      value = last+increment.longValue();
-    } else if (algorithm == DataGenerationStrategy.OPTIMIZED_RANDOM) {
-      do {
-        value = cLong(min, max);
-      } while (optimizerHistory.contains(value));
-      optimizerHistory.add(value);
-      if (optimizerHistory.size() == (max-min)+1) {
-        optimizerHistory.clear();
-      }
-    } else {
-      //default to random
-      value = cLong(min, max);
-    }
-    history.add(value);
-    return value;
+    return next(DataType.LONG).longValue();
   }
 
   @Override
@@ -153,28 +210,25 @@ public class ValueRange {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    ValueRange interval = (ValueRange) o;
+    ValueRange that = (ValueRange) o;
 
-    if (Double.compare(interval.max, max) != 0) return false;
-    if (Double.compare(interval.min, min) != 0) return false;
+    if (increment != null ? !increment.equals(that.increment) : that.increment != null) return false;
+    if (max != null ? !max.equals(that.max) : that.max != null) return false;
+    if (min != null ? !min.equals(that.min) : that.min != null) return false;
 
     return true;
   }
 
   @Override
   public int hashCode() {
-    int result;
-    long temp;
-    temp = min != +0.0d ? Double.doubleToLongBits(min) : 0L;
-    result = (int) (temp ^ (temp >>> 32));
-    temp = max != +0.0d ? Double.doubleToLongBits(max) : 0L;
-    result = 31 * result + (int) (temp ^ (temp >>> 32));
+    int result = min != null ? min.hashCode() : 0;
+    result = 31 * result + (max != null ? max.hashCode() : 0);
+    result = 31 * result + (increment != null ? increment.hashCode() : 0);
     return result;
   }
 
   public boolean contains(Number value) {
-    double d = value.doubleValue();
-    return d <= max && d >= min;
+    return value.doubleValue() <= max.doubleValue() && value.doubleValue() >= min.doubleValue();
   }
 
   @Override
