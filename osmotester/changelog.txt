@@ -12,4 +12,6 @@ added features based on v0.1 experiences and feedback, and invariance taxonomy
 -added data generation and evaluation components, including readable characters, value range, and value range set
 -added implementation for basic test suite optimizers
 -fixed some bugs and did some refactoring to clarify code
+v0.3 16/07/2011
+-split oracle to pre and post methods
 
