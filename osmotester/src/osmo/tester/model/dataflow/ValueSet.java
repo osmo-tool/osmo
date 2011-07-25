@@ -139,7 +139,7 @@ public class ValueSet<T> {
       }
       coverage.put(t, count+1);
     }
-    return OptimizedRandomAlgorithm.optimizedRandomChoice(coverage, options);
+    return OptimizedRandomAlgorithm.optimizedRandomChoice(coverage, null, options);
   }
 
   /**

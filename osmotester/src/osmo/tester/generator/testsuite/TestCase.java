@@ -93,6 +93,10 @@ public class TestCase {
   public String getScript() {
     return script;
   }
+  
+  public TestStep getCurrentStep(){
+    return currentStep;
+  }
 
   /**
    * @param script New value for the test script.
