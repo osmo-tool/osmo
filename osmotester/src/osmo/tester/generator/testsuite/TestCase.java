@@ -64,6 +64,10 @@ public class TestCase {
   public String getScript() {
     return script;
   }
+  
+  public TestStep getCurrentStep(){
+    return currentStep;
+  }
 
   public void setScript(String script) {
     this.script = script;
