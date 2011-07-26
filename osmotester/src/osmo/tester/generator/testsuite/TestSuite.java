@@ -5,13 +5,15 @@ import osmo.tester.model.Requirements;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Describes the test suite being generated.
  * 
- * @author Teemu Kanstren
+ * @author Teemu Kanstren, Olli-Pekka Puolitaival
  */
 public class TestSuite {
   /** The current test being generated. */
@@ -22,7 +24,9 @@ public class TestSuite {
   private final Collection<String> coveredRequirements = new HashSet<String>();
   /** List of covered transitions so far, excluding the current test case under generation. */
   private final Collection<FSMTransition> coveredTransitions = new HashSet<FSMTransition>();
-
+  /** List of covered transitions and number how many times it exist in the test suite*/
+  private Map<FSMTransition, Integer> transitionCoverages = new HashMap<FSMTransition, Integer>();
+  
   /**
    * Start a new test case.
    */
@@ -50,6 +54,11 @@ public class TestSuite {
     if (!coveredTransitions.contains(transition)) {
       current.addAddedTransitionCoverage(transition);
     }
+    Integer count = transitionCoverages.get(transition);
+    if (count == null) {
+      count = 0;
+    }
+    transitionCoverages.put(transition, count+1);
   }
 
   /**
@@ -112,6 +121,16 @@ public class TestSuite {
       all.add(current);
     }
     return all;
+  }
+  
+  /**
+   * Gives all transitions in this test suite, including coverage number
+   * Coverage number tells how many times transition is covered in this test suite
+   * 
+   * @return The transitions with coverage number
+   */
+  public Map<FSMTransition, Integer> getTransitionCoverages(){
+    return transitionCoverages;
   }
 
   /**
