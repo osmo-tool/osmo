@@ -24,7 +24,7 @@ import static osmo.tester.TestUtils.*;
 public class OptimizedRandomAlgorithm implements FSMTraversalAlgorithm {
   @Override
   public FSMTransition choose(TestSuite history, List<FSMTransition> transitions) {
-    Map<FSMTransition, Integer> coverage = countCoverage(history);
+    Map<FSMTransition, Integer> coverage = history.getTransitionCoverages();
     Map<FSMTransition, Integer> coverageTP = countTransitionPairCoverage(history);
     if(coverageTP != null){
       return optimizedRandomChoice(coverage,coverageTP, transitions);
@@ -119,24 +119,6 @@ public class OptimizedRandomAlgorithm implements FSMTraversalAlgorithm {
         }
         previousTransition = step.getTransition();
       }  
-    }
-    return coverage;
-  }
-
-  
-  private Map<FSMTransition, Integer> countCoverage(TestSuite history) {
-    Map<FSMTransition, Integer> coverage = new HashMap<FSMTransition, Integer>();
-    List<TestCase> tests = history.getAllTestCases();
-    for (TestCase test : tests) {
-      List<TestStep> steps = test.getSteps();
-      for (TestStep step : steps) {
-        FSMTransition transition = step.getTransition();
-        Integer count = coverage.get(transition);
-        if (count == null) {
-          count = 0;
-        }
-        coverage.put(transition, count+1);
-      }
     }
     return coverage;
   }
