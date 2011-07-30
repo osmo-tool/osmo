@@ -2,6 +2,7 @@ package osmo.tester.generator;
 
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.endcondition.EndCondition;
+import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.log.Logger;
 import osmo.tester.model.FSM;
@@ -155,7 +156,7 @@ public class MainGenerator {
   }
 
   private void beforeSuite(FSM fsm) {
-    listeners.suiteStarted();
+    listeners.suiteStarted(suite);
     Collection<InvocationTarget> befores = fsm.getBeforeSuites();
     invokeAll(befores);
   }
@@ -163,13 +164,13 @@ public class MainGenerator {
   private void afterSuite(FSM fsm) {
     Collection<InvocationTarget> afters = fsm.getAfterSuites();
     invokeAll(afters);
-    listeners.suiteEnded();
+    listeners.suiteEnded(suite);
   }
 
   private void beforeTest(FSM fsm) {
     //update history
     suite.startTest();
-    listeners.testStarted();
+    listeners.testStarted(suite.getCurrent());
     Collection<InvocationTarget> befores = fsm.getBefores();
     invokeAll(befores);
   }
@@ -177,9 +178,10 @@ public class MainGenerator {
   private void afterTest(FSM fsm) {
     Collection<InvocationTarget> afters = fsm.getAfters();
     invokeAll(afters);
+    TestCase current = suite.getCurrent();
     //update history
     suite.endTest();
-    listeners.testEnded();
+    listeners.testEnded(current);
     testEnding = false;
   }
 
@@ -200,15 +202,15 @@ public class MainGenerator {
    * @param targets The methods to be invoked.
    * @param arg Argument to methods invoked.
    * @param element Type of model element (pre or post)
-   * @param name Transition name for listener invocation.
+   * @param transition Transition to which the invocations are related.
    */
-  private void invokeAll(Collection<InvocationTarget> targets, Object arg, String element, String name) {
+  private void invokeAll(Collection<InvocationTarget> targets, Object arg, String element, FSMTransition transition) {
     for (InvocationTarget target : targets) {
       if (element.equals("pre")) {
-        listeners.pre(name);
+        listeners.pre(transition);
       }
       if (element.equals("post")) {
-        listeners.post(name);
+        listeners.post(transition);
       }
       target.invoke(arg);
     }
@@ -229,7 +231,7 @@ public class MainGenerator {
     enabled.addAll(allTransitions);
     for (FSMTransition transition : allTransitions) {
       for (InvocationTarget guard : transition.getGuards()) {
-        listeners.guard(guard.getMethod().getName()+"("+transition.getName()+")");
+        listeners.guard(transition);
         Boolean result = (Boolean)guard.invoke();
         if (!result) {
           enabled.remove(transition);
@@ -251,12 +253,11 @@ public class MainGenerator {
     transition.reset();
     //we have to add this first or it will produce failures..
     suite.add(transition);
-    String name = transition.getName();
-    invokeAll(transition.getPreMethods(), transition.getPrePostParameter(), "pre", name);
-    listeners.transition(name);
+    invokeAll(transition.getPreMethods(), transition.getPrePostParameter(), "pre", transition);
+    listeners.transition(transition);
     InvocationTarget target = transition.getTransition();
     target.invoke();
-    invokeAll(transition.getPostMethods(), transition.getPrePostParameter(), "post", name);
+    invokeAll(transition.getPostMethods(), transition.getPrePostParameter(), "post", transition);
   }
 
   public TestSuite getSuite() {

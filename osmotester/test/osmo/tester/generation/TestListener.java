@@ -2,6 +2,9 @@ package osmo.tester.generation;
 
 import org.junit.rules.ExpectedException;
 import osmo.tester.generator.GenerationListener;
+import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.FSMTransition;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,42 +24,42 @@ public class TestListener implements GenerationListener {
   }
 
   @Override
-  public void guard(String name) {
-    steps.add("g:"+name);
+  public void guard(FSMTransition transition) {
+    steps.add("g:"+transition.getName());
   }
 
   @Override
-  public void transition(String name) {
-    steps.add("t:"+name);
+  public void transition(FSMTransition transition) {
+    steps.add("t:"+transition.getName());
   }
 
   @Override
-  public void pre(String name) {
-    steps.add("pre:"+name);
+  public void pre(FSMTransition transition) {
+    steps.add("pre:"+transition.getName());
   }
 
   @Override
-  public void post(String name) {
-    steps.add("post:"+name);
+  public void post(FSMTransition transition) {
+    steps.add("post:"+transition.getName());
   }
 
   @Override
-  public void testStarted() {
+  public void testStarted(TestCase test) {
     steps.add("start");
   }
 
   @Override
-  public void testEnded() {
+  public void testEnded(TestCase test) {
     steps.add("end");
   }
 
   @Override
-  public void suiteStarted() {
+  public void suiteStarted(TestSuite suite) {
     steps.add("suite-start");
   }
 
   @Override
-  public void suiteEnded() {
+  public void suiteEnded(TestSuite suite) {
     steps.add("suite-end");
   }
 

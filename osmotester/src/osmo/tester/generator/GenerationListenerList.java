@@ -1,5 +1,9 @@
 package osmo.tester.generator;
 
+import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.FSMTransition;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -22,58 +26,58 @@ public class GenerationListenerList implements GenerationListener {
   }
 
   @Override
-  public void guard(String name) {
+  public void guard(FSMTransition transition) {
     for (GenerationListener listener : listeners) {
-      listener.guard(name);
+      listener.guard(transition);
     }
   }
 
   @Override
-  public void transition(String name) {
+  public void transition(FSMTransition transition) {
     for (GenerationListener listener : listeners) {
-      listener.transition(name);
+      listener.transition(transition);
     }
   }
 
   @Override
-  public void pre(String name) {
+  public void pre(FSMTransition transition) {
     for (GenerationListener listener : listeners) {
-      listener.pre(name);
+      listener.pre(transition);
     }
   }
 
   @Override
-  public void post(String name) {
+  public void post(FSMTransition transition) {
     for (GenerationListener listener : listeners) {
-      listener.post(name);
+      listener.post(transition);
     }
   }
 
   @Override
-  public void testStarted() {
+  public void testStarted(TestCase test) {
     for (GenerationListener listener : listeners) {
-      listener.testStarted();
+      listener.testStarted(test);
     }
   }
 
   @Override
-  public void testEnded() {
+  public void testEnded(TestCase test) {
     for (GenerationListener listener : listeners) {
-      listener.testEnded();
+      listener.testEnded(test);
     }
   }
 
   @Override
-  public void suiteStarted() {
+  public void suiteStarted(TestSuite suite) {
     for (GenerationListener listener : listeners) {
-      listener.suiteStarted();
+      listener.suiteStarted(suite);
     }
   }
 
   @Override
-  public void suiteEnded() {
+  public void suiteEnded(TestSuite suite) {
     for (GenerationListener listener : listeners) {
-      listener.suiteEnded();
+      listener.suiteEnded(suite);
     }
   }
 }
