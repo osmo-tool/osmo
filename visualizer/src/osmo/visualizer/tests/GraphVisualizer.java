@@ -1,4 +1,4 @@
-package osmo.visualizer;
+package osmo.visualizer.tests;
 
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
@@ -6,6 +6,9 @@ import osmo.tester.OSMOTester;
 import osmo.tester.examples.CalculatorModel;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.endcondition.Length;
+import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.FSMTransition;
 
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
@@ -35,18 +38,18 @@ public class GraphVisualizer extends JFrame implements GenerationListener {
   }
 
   @Override
-  public void guard(String name) {
+  public void guard(FSMTransition transition) {
   }
 
   @Override
-  public void transition(String name) {
+  public void transition(FSMTransition transition) {
     Object parent = graph.getDefaultParent();
     graph.getModel().beginUpdate();
     try {
       if (currentState == null) {
-        currentState = graph.insertVertex(parent, null, name, 200, 20 + (stateInd * 80), 140, 30);
+        currentState = graph.insertVertex(parent, null, transition.getName(), 200, 20 + (stateInd * 80), 140, 30);
       } else {
-        Object state = graph.insertVertex(parent, null, name, 200, 20 + (stateInd * 80), 140, 30);
+        Object state = graph.insertVertex(parent, null, transition.getName(), 200, 20 + (stateInd * 80), 140, 30);
         //you can also set text descriptions on the edges, check the JGraphX docs for details
         graph.insertEdge(parent, null, null, currentState, state);
 //        graph.insertEdge(parent, null, messsage, currentState, state);
@@ -59,15 +62,15 @@ public class GraphVisualizer extends JFrame implements GenerationListener {
   }
 
   @Override
-  public void pre(String name) {
+  public void pre(FSMTransition transition) {
   }
 
   @Override
-  public void post(String name) {
+  public void post(FSMTransition transition) {
   }
 
   @Override
-  public void testStarted() {
+  public void testStarted(TestCase test) {
     currentState = null;
     stateInd = 0;
     graph = new mxGraph();
@@ -77,15 +80,15 @@ public class GraphVisualizer extends JFrame implements GenerationListener {
   }
 
   @Override
-  public void testEnded() {
+  public void testEnded(TestCase test) {
   }
 
   @Override
-  public void suiteStarted() {
+  public void suiteStarted(TestSuite suite) {
   }
 
   @Override
-  public void suiteEnded() {
+  public void suiteEnded(TestSuite suite) {
   }
 
   public static void main(String[] args) {
