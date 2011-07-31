@@ -1,6 +1,5 @@
 package osmo.tester.generation;
 
-import org.junit.rules.ExpectedException;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;

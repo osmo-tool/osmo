@@ -1,7 +1,6 @@
 package osmo.tester.generator.testsuite;
 
 import osmo.tester.model.FSMTransition;
-import osmo.tester.model.Requirements;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,8 +48,8 @@ public class TestSuite {
    *
    * @param transition The transition to add.
    */
-  public void add(FSMTransition transition) {
-    current.addTransition(transition);
+  public TestStep addStep(FSMTransition transition) {
+    TestStep step = current.addStep(transition);
     if (!coveredTransitions.contains(transition)) {
       current.addAddedTransitionCoverage(transition);
     }
@@ -59,6 +58,7 @@ public class TestSuite {
       count = 0;
     }
     transitionCoverages.put(transition, count+1);
+    return step;
   }
 
   /**

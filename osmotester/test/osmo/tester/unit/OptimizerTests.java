@@ -20,21 +20,21 @@ public class OptimizerTests {
   public void requirementsOptimizer3TestsNoOverlap() {
     TestSuite suite = new TestSuite();
     suite.startTest();
-    suite.add(new FSMTransition("t1"));
+    suite.addStep(new FSMTransition("t1"));
     suite.covered("r1");
     suite.endTest();
     suite.startTest();
-    suite.add(new FSMTransition("t2"));
-    suite.add(new FSMTransition("t3"));
+    suite.addStep(new FSMTransition("t2"));
+    suite.addStep(new FSMTransition("t3"));
     suite.covered("r2");
-    suite.add(new FSMTransition("t4"));
+    suite.addStep(new FSMTransition("t4"));
     suite.covered("r3");
     suite.covered("r4");
     suite.endTest();
     suite.startTest();
-    suite.add(new FSMTransition("t5"));
-    suite.add(new FSMTransition("t6"));
-    suite.add(new FSMTransition("t7"));
+    suite.addStep(new FSMTransition("t5"));
+    suite.addStep(new FSMTransition("t6"));
+    suite.addStep(new FSMTransition("t7"));
     suite.endTest();
 
     RequirementsOptimizer optimizer = new RequirementsOptimizer();
@@ -91,22 +91,22 @@ public class OptimizerTests {
   private TestSuite createSuite1() {
     TestSuite suite = new TestSuite();
     suite.startTest();
-    suite.add(new FSMTransition("t1"));
+    suite.addStep(new FSMTransition("t1"));
     suite.covered("r1");
     suite.endTest();
     suite.startTest();
-    suite.add(new FSMTransition("t2"));
-    suite.add(new FSMTransition("t3"));
+    suite.addStep(new FSMTransition("t2"));
+    suite.addStep(new FSMTransition("t3"));
     suite.covered("r2");
-    suite.add(new FSMTransition("t4"));
+    suite.addStep(new FSMTransition("t4"));
     suite.covered("r1");
     suite.covered("r2");
     suite.endTest();
     suite.startTest();
-    suite.add(new FSMTransition("t5"));
-    suite.add(new FSMTransition("t6"));
-    suite.add(new FSMTransition("t7"));
-    suite.add(new FSMTransition("t8"));
+    suite.addStep(new FSMTransition("t5"));
+    suite.addStep(new FSMTransition("t6"));
+    suite.addStep(new FSMTransition("t7"));
+    suite.addStep(new FSMTransition("t8"));
     suite.endTest();
     return suite;
   }
@@ -114,26 +114,26 @@ public class OptimizerTests {
   private TestSuite createSuite2() {
     TestSuite suite = new TestSuite();
     suite.startTest();
-    suite.add(new FSMTransition("t1"));
+    suite.addStep(new FSMTransition("t1"));
     suite.covered("r5");
     suite.covered("r1");
     suite.endTest();
 
     suite.startTest();
-    suite.add(new FSMTransition("t2"));
-    suite.add(new FSMTransition("t3"));
+    suite.addStep(new FSMTransition("t2"));
+    suite.addStep(new FSMTransition("t3"));
     suite.covered("r2");
-    suite.add(new FSMTransition("t4"));
+    suite.addStep(new FSMTransition("t4"));
     suite.endTest();
 
     suite.startTest();
-    suite.add(new FSMTransition("t1"));
-    suite.add(new FSMTransition("t2"));
+    suite.addStep(new FSMTransition("t1"));
+    suite.addStep(new FSMTransition("t2"));
     suite.covered("r3");
-    suite.add(new FSMTransition("t3"));
+    suite.addStep(new FSMTransition("t3"));
     suite.covered("r4");
     suite.covered("r6");
-    suite.add(new FSMTransition("t4"));
+    suite.addStep(new FSMTransition("t4"));
     suite.endTest();
     return suite;
   }

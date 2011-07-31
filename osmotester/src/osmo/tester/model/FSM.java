@@ -37,6 +37,8 @@ public class FSM {
   private Collection<InvocationTarget> endConditions = new ArrayList<InvocationTarget>();
   /** List of conditions when the models allows to stop test generation. */
   private Collection<InvocationTarget> endStates = new ArrayList<InvocationTarget>();
+  /** List of state variables to store for each test step. */
+  private Collection<VariableField> stateVariables = new ArrayList<VariableField>();
   /** The generated test suite (or one being generated). */
   private final TestSuite testSuite = new TestSuite();
   /** The list of requirements that needs to be covered. */
@@ -245,5 +247,18 @@ public class FSM {
    */
   public void addEndState(InvocationTarget target) {
     endStates.add(target);
+  }
+
+  /**
+   * Add a state variable field for which to store value in each test step.
+   *
+   * @param var The variable field itself.
+   */
+  public void addVariable(VariableField var) {
+    stateVariables.add(var);
+  }
+
+  public Collection<VariableField> getStateVariables() {
+    return stateVariables;
   }
 }

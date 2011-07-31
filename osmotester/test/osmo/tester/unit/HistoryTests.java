@@ -4,8 +4,6 @@ import org.junit.Test;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
 
-import java.util.jar.Attributes;
-
 import static org.junit.Assert.*;
 
 /**
@@ -16,16 +14,16 @@ public class HistoryTests {
   public void historyContainsByName() {
     TestSuite suite = new TestSuite();
     suite.startTest();
-    suite.add(new FSMTransition("bob"));
-    suite.add(new FSMTransition("alice"));
+    suite.addStep(new FSMTransition("bob"));
+    suite.addStep(new FSMTransition("alice"));
     suite.endTest();
     suite.startTest();
-    suite.add(new FSMTransition("bob2"));
-    suite.add(new FSMTransition("alice2"));
+    suite.addStep(new FSMTransition("bob2"));
+    suite.addStep(new FSMTransition("alice2"));
     suite.endTest();
     suite.startTest();
-    suite.add(new FSMTransition("bob3"));
-    suite.add(new FSMTransition("alice3"));
+    suite.addStep(new FSMTransition("bob3"));
+    suite.addStep(new FSMTransition("alice3"));
     suite.endTest();
     assertTrue(suite.contains(new FSMTransition("bob")));
     assertTrue(suite.contains(new FSMTransition("bob2")));
@@ -37,8 +35,8 @@ public class HistoryTests {
   public void currentContainsByName() {
     TestSuite suite = new TestSuite();
     suite.startTest();
-    suite.add(new FSMTransition("bob"));
-    suite.add(new FSMTransition("alice"));
+    suite.addStep(new FSMTransition("bob"));
+    suite.addStep(new FSMTransition("alice"));
     assertTrue(suite.contains(new FSMTransition("bob")));
     assertFalse(suite.contains(new FSMTransition("bob4")));
   }

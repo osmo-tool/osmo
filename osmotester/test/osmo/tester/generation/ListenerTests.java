@@ -30,7 +30,7 @@ public class ListenerTests {
 
   @Test
   public void noEnabledTransition() {
-    listener.addExpected("suite-start", "start", "g:kitted(epixx)", "g:listCheck(world)");
+    listener.addExpected("suite-start", "start", "g:epixx", "g:world");
     osmo.addModelObject(new ValidTestModel1());
     Length length3 = new Length(3);
     Length length1 = new Length(1);
@@ -48,9 +48,9 @@ public class ListenerTests {
   @Test
   public void generateTestModel2() {
     listener.addExpected("suite-start");
-    listener.addExpected("start", "g:helloCheck(hello)", "g:kitted(epixx)", "g:worldCheck(world)", "t:hello");
-    listener.addExpected("g:helloCheck(hello)", "g:kitted(epixx)", "g:worldCheck(world)", "t:world");
-    listener.addExpected("g:helloCheck(hello)", "g:kitted(epixx)", "g:worldCheck(world)", "pre:epixx", "t:epixx", "post:epixx", "end");
+    listener.addExpected("start", "g:hello", "g:epixx", "g:world", "t:hello");
+    listener.addExpected("g:hello", "g:epixx", "g:world", "t:world");
+    listener.addExpected("g:hello", "g:epixx", "g:world", "pre:epixx", "t:epixx", "post:epixx", "end");
     listener.addExpected("suite-end");
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
