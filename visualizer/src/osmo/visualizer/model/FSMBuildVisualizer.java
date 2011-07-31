@@ -9,6 +9,7 @@ import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
+import edu.uci.ics.jung.visualization.renderers.VertexLabelAsShapeRenderer;
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.CalculatorModel;
 import osmo.tester.generator.GenerationListener;
@@ -27,12 +28,12 @@ import java.util.Set;
  */
 public class FSMBuildVisualizer extends JFrame implements GenerationListener {
 
-  private Graph<FSMTransition,String> graph;
+  private Graph<FSMTransition, String> graph;
   private Set<String> edges = new HashSet<String>();
   private Set<FSMTransition> vertices = new HashSet<FSMTransition>();
   private FSMTransition current = new FSMTransition("init");
   private int index = 0;
-  private VisualizationViewer<FSMTransition,String> vv;
+  private VisualizationViewer<FSMTransition, String> vv;
 
   public FSMBuildVisualizer() {
     super("Model Visualizer");
@@ -46,7 +47,10 @@ public class FSMBuildVisualizer extends JFrame implements GenerationListener {
     vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
     vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller());
     vv.getRenderer().getVertexLabelRenderer().setPosition(Position.CNTR);
-    vv.getRenderContext().setVertexLabelRenderer(new TransitionVertextLabelRenderer(Color.GREEN));
+    VertexLabelAsShapeRenderer<FSMTransition, String> vlasr = new VertexLabelAsShapeRenderer<FSMTransition, String>(vv.getRenderContext());
+//    vv.getRenderContext().setVertexShapeTransformer(vlasr);
+    vv.getRenderContext().setVertexShapeTransformer(new EllipseVertexTransformer());
+//    vv.getRenderContext().setVertexLabelRenderer(new TransitionVertextLabelRenderer(Color.GREEN));
     DefaultModalGraphMouse gm = new DefaultModalGraphMouse();
     gm.setMode(ModalGraphMouse.Mode.TRANSFORMING);
     vv.setGraphMouse(gm);
@@ -59,16 +63,16 @@ public class FSMBuildVisualizer extends JFrame implements GenerationListener {
 
   @Override
   public void guard(FSMTransition t) {
-    String edge = current.getName()+"->"+t.getName();
+    String edge = current.getName() + "->" + t.getName();
     if (!edges.contains(edge)) {
-      System.out.println("EDGE+"+edge);
+      System.out.println("EDGE+" + edge);
       if (!vertices.contains(t)) {
-        System.out.println("VERTEX+"+t);
+        System.out.println("VERTEX+" + t);
         graph.addVertex(t);
         vertices.add(t);
       }
       edges.add(edge);
-      graph.addEdge(""+index, current, t);
+      graph.addEdge("" + index, current, t);
       index++;
       vv.repaint();
     }
@@ -145,6 +149,6 @@ public class FSMBuildVisualizer extends JFrame implements GenerationListener {
     osmo.addSuiteEndCondition(new Length(5));
     osmo.addListener(gv);
     osmo.generate();
-    System.out.println("s:"+gv.graph.getVertexCount());
+    System.out.println("s:" + gv.graph.getVertexCount());
   }
 }
