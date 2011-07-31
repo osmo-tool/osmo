@@ -3,6 +3,7 @@ package osmo.tester.generator;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.log.Logger;
 import osmo.tester.model.FSM;
@@ -89,7 +90,7 @@ public class MainGenerator {
         List<FSMTransition> enabled = getEnabled(fsm);
         FSMTransition next = algorithm.choose(suite, enabled);
         log.debug("Taking transition "+next.getName());
-        execute(next);
+        execute(fsm, next);
         if (checkModelEndConditions(fsm)) {
           //stop this test case generation if any end condition returns true
           break;
@@ -249,14 +250,15 @@ public class MainGenerator {
    *
    * @param transition  The transition to be executed.
    */
-  public void execute(FSMTransition transition) {
+  public void execute(FSM fsm, FSMTransition transition) {
     transition.reset();
     //we have to add this first or it will produce failures..
-    suite.add(transition);
+    TestStep step = suite.addStep(transition);
     invokeAll(transition.getPreMethods(), transition.getPrePostParameter(), "pre", transition);
     listeners.transition(transition);
     InvocationTarget target = transition.getTransition();
     target.invoke();
+    step.storeState(fsm);
     invokeAll(transition.getPostMethods(), transition.getPrePostParameter(), "post", transition);
   }
 

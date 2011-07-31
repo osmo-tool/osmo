@@ -187,4 +187,9 @@ public class ParserTests {
     assertEquals("Transition '" + name + "' should have " + guardCount + " guards.", guardCount, transition.getGuards().size());
     assertEquals("Transition '" + name + "' should have " + oracleCount + " oracles.", oracleCount, transition.getPostMethods().size());
   }
+
+  @Test
+  public void variableParsing() {
+    fail("Not implemented");
+  }
 }

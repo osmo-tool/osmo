@@ -110,10 +110,11 @@ public class TestCase {
    *
    * @param transition The transition for the test step. 
    */
-  public void addTransition(FSMTransition transition) {
+  public TestStep addStep(FSMTransition transition) {
     TestStep step = new TestStep(transition);
     steps.add(step);
     currentStep = step;
+    return step;
   }
 
   /**

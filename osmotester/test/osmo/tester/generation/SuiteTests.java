@@ -14,12 +14,12 @@ public class SuiteTests {
   public void validSuite() {
     TestSuite suite = new TestSuite();
     suite.startTest();
-    suite.add(new FSMTransition("t1"));
-    suite.add(new FSMTransition("t2"));
+    suite.addStep(new FSMTransition("t1"));
+    suite.addStep(new FSMTransition("t2"));
     suite.endTest();
     suite.startTest();
-    suite.add(new FSMTransition("t1"));
-    suite.add(new FSMTransition("t2"));
+    suite.addStep(new FSMTransition("t1"));
+    suite.addStep(new FSMTransition("t2"));
     assertEquals("Number of test cases in test suite", 1, suite.getTestCases().size());
     assertEquals("Number of steps in current test", 2, suite.currentSteps());
     assertEquals("Number of total steps in test suite", 4, suite.totalSteps());
@@ -32,8 +32,8 @@ public class SuiteTests {
   public void addedCoverage() {
     TestSuite suite = new TestSuite();
     suite.startTest();
-    suite.add(new FSMTransition("t1"));
-    suite.add(new FSMTransition("t2"));
+    suite.addStep(new FSMTransition("t1"));
+    suite.addStep(new FSMTransition("t2"));
     suite.covered("r1");
 
     int a1 = suite.getCurrent().getAddedRequirementsCoverage().size();
@@ -43,8 +43,8 @@ public class SuiteTests {
     suite.endTest();
 
     suite.startTest();
-    suite.add(new FSMTransition("t1"));
-    suite.add(new FSMTransition("t2"));
+    suite.addStep(new FSMTransition("t1"));
+    suite.addStep(new FSMTransition("t2"));
     suite.covered("r1");
 
     a1 = suite.getCurrent().getAddedRequirementsCoverage().size();
@@ -54,8 +54,8 @@ public class SuiteTests {
     suite.endTest();
 
     suite.startTest();
-    suite.add(new FSMTransition("t1"));
-    suite.add(new FSMTransition("t3"));
+    suite.addStep(new FSMTransition("t1"));
+    suite.addStep(new FSMTransition("t3"));
     suite.covered("r2");
 
     a1 = suite.getCurrent().getAddedRequirementsCoverage().size();
@@ -65,10 +65,10 @@ public class SuiteTests {
     suite.endTest();
 
     suite.startTest();
-    suite.add(new FSMTransition("t3"));
-    suite.add(new FSMTransition("t4"));
+    suite.addStep(new FSMTransition("t3"));
+    suite.addStep(new FSMTransition("t4"));
     suite.covered("r3");
-    suite.add(new FSMTransition("t5"));
+    suite.addStep(new FSMTransition("t5"));
     suite.covered("r4");
 
     a1 = suite.getCurrent().getAddedRequirementsCoverage().size();
