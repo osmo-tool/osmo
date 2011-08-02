@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import osmo.tester.annotation.Variable;
+
 /**
  * Describes a single test step in a test case.
  * Difference to {@link FSMTransition} is that this includes the runtime information such as covered requirements.
@@ -23,9 +25,9 @@ public class TestStep {
   private final FSMTransition transition;
   /** The set of requirements covered by this test step. */
   private Collection<String> coveredRequirements = null;
-  /** Stores values of all {@link osmo.tester.annotation.Variable} annotated fields before executing this step. */
+  /** Stores values of all {@link Variable} annotated fields in the model before this step was generated. */
   private Map<String, Object> stateValuesBefore = new HashMap<String, Object>();
-  /** Stores values of all {@link osmo.tester.annotation.Variable} annotated fields after executing this step. */
+  /** Stores values of all {@link Variable} annotated fields in the model after this step was generated. */
   private Map<String, Object> stateValuesAfter = new HashMap<String, Object>();
 
   /**
@@ -82,6 +84,11 @@ public class TestStep {
     return stateValuesAfter;
   }
 
+  /**
+   * Stores the model state that was before the transition is executed.
+   *
+   * @param fsm This is where the state is copied from.
+   */
   public void storeStateBefore(FSM fsm) {
     Collection<VariableField> variables = fsm.getStateVariables();
     for (VariableField variable : variables) {
@@ -89,6 +96,11 @@ public class TestStep {
     }
   }
 
+  /**
+   * Stores the model state that is after the transition has been executed.
+   *
+   * @param fsm This is where the state is copied from.
+   */
   public void storeStateAfter(FSM fsm) {
     Collection<VariableField> variables = fsm.getStateVariables();
     for (VariableField variable : variables) {
