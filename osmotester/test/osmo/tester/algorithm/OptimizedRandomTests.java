@@ -30,7 +30,7 @@ public class OptimizedRandomTests {
 
   @Test
   public void testModel6Length4() {
-    listener.addExpected("suite-start", "start", "t:t1", "t:t3", "t:t4", "t:t2", "end", "suite-end");
+    listener.addExpected("suite-start", "start", "t:t1", "t:t2", "t:t2", "t:t1", "end", "suite-end");
     osmo.addModelObject(new ValidTestModel6());
     Length length4 = new Length(4);
     Length length1 = new Length(1);
@@ -53,7 +53,7 @@ public class OptimizedRandomTests {
 
   @Test
   public void testModel6Length15() {
-    listener.addExpected("suite-start", "start", "t:t1", "t:t2", "t:t3", "t:t4", "t:t1", "t:t2", "t:t3", "t:t4", "t:t4", "t:t2", "t:t3", "t:t1", "t:t1", "t:t4", "t:t3", "end", "suite-end");
+    listener.addExpected("suite-start", "start", "t:t1", "t:t2", "t:t4", "t:t2", "t:t2", "t:t3", "t:t2", "t:t1", "t:t4", "t:t1", "t:t3", "t:t1", "t:t1", "t:t4", "t:t3", "end", "suite-end");
     osmo.addModelObject(new ValidTestModel6());
     Length length15 = new Length(15);
     Length length1 = new Length(1);

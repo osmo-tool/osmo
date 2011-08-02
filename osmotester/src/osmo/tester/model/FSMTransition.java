@@ -1,5 +1,7 @@
 package osmo.tester.model;
 
+import osmo.tester.log.Logger;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -16,6 +18,7 @@ import java.util.Map;
  * @author Teemu Kanstren
  */
 public class FSMTransition {
+  private static Logger log = new Logger(FSMTransition.class);
   /** Name of the transition, from @Transition("name") or (name="name") or (value="name"). Fails if undefined or empty ("").*/
   private final String name;
   /** Weight of the transitions, from @Transition(weight=x), defaults to 1. */
@@ -129,5 +132,13 @@ public class FSMTransition {
    */
   public void reset() {
     prePostParameter.clear();
+  }
+
+  public void storeState(FSM fsm) {
+    Collection<VariableField> variables = fsm.getStateVariables();
+    log.debug("Storing variables:"+variables);
+    for (VariableField var : variables) {
+      prePostParameter.put(var.getName(), var.getValue());
+    }
   }
 }
