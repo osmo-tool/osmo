@@ -58,6 +58,7 @@ public class TestSuite {
       count = 0;
     }
     transitionCoverages.put(transition, count+1);
+
     return step;
   }
 

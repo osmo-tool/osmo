@@ -2,9 +2,12 @@ package osmo.tester.parser;
 
 import org.junit.Before;
 import org.junit.Test;
+import osmo.tester.annotation.Variable;
+import osmo.tester.generator.endcondition.Length;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
+import osmo.tester.model.VariableField;
 import osmo.tester.testmodels.PartialModel1;
 import osmo.tester.testmodels.PartialModel2;
 import osmo.tester.testmodels.EmptyTestModel1;
@@ -13,6 +16,7 @@ import osmo.tester.testmodels.EmptyTestModel3;
 import osmo.tester.testmodels.EmptyTestModel4;
 import osmo.tester.testmodels.EmptyTestModel5;
 import osmo.tester.testmodels.EmptyTestModel6;
+import osmo.tester.testmodels.VariableModel1;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -190,6 +194,29 @@ public class ParserTests {
 
   @Test
   public void variableParsing() {
-    fail("Not implemented");
+    MainParser parser = new MainParser();
+    VariableModel1 model = new VariableModel1();
+    FSM fsm = parser.parse(model);
+    Collection<VariableField> variables = fsm.getStateVariables();
+    assertEquals("All @"+Variable.class.getSimpleName()+" items should be parsed.", 10, variables.size());
+    assertVariablePresent(variables, "i1");
+    assertVariablePresent(variables, "f1");
+    assertVariablePresent(variables, "d1");
+    assertVariablePresent(variables, "b1");
+    assertVariablePresent(variables, "i2");
+    assertVariablePresent(variables, "f2");
+    assertVariablePresent(variables, "d2");
+    assertVariablePresent(variables, "b2");
+    assertVariablePresent(variables, "testVariable");
+    assertVariablePresent(variables, "stringVariable");
+  }
+
+  private void assertVariablePresent(Collection<VariableField> variables, String name) {
+    for (VariableField variable : variables) {
+      if (variable.getName().equals(name)) {
+        return;
+      }
+    }
+    fail("Variable "+name+" should be present in the model.");
   }
 }

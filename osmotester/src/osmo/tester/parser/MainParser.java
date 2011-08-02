@@ -12,6 +12,7 @@ import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.Variable;
 import osmo.tester.log.Logger;
 import osmo.tester.model.FSM;
 
@@ -51,6 +52,7 @@ public class MainParser {
     parsers.put(Post.class, new PostParser());
     parsers.put(EndCondition.class, new EndConditionParser());
     parsers.put(EndState.class, new EndStateParser());
+    parsers.put(Variable.class, new VariableParser());
   }
 
   /**

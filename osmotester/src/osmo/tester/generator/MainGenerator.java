@@ -248,17 +248,25 @@ public class MainGenerator {
   /**
    * Executes the given transition on the given model.
    *
+   * @param fsm The FSM model to which the transition belongs.
    * @param transition  The transition to be executed.
    */
   public void execute(FSM fsm, FSMTransition transition) {
     transition.reset();
     //we have to add this first or it will produce failures..
     TestStep step = suite.addStep(transition);
+    //store state variable values for pre-methods
+    transition.storeState(fsm);
+    //store into test step the current state
+    step.storeStateBefore(fsm);
     invokeAll(transition.getPreMethods(), transition.getPrePostParameter(), "pre", transition);
     listeners.transition(transition);
     InvocationTarget target = transition.getTransition();
     target.invoke();
-    step.storeState(fsm);
+    //store into test step the current state
+    step.storeStateAfter(fsm);
+    //re-store state into transition to update parameters for post-methods
+    transition.storeState(fsm);
     invokeAll(transition.getPostMethods(), transition.getPrePostParameter(), "post", transition);
   }
 

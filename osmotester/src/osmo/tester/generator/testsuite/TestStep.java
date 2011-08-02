@@ -23,8 +23,10 @@ public class TestStep {
   private final FSMTransition transition;
   /** The set of requirements covered by this test step. */
   private Collection<String> coveredRequirements = null;
-  /** Stores values of all {@link osmo.tester.annotation.Variable} annotated fields for this step. */
-  private Map<String, Object> stateValues = new HashMap<String, Object>();
+  /** Stores values of all {@link osmo.tester.annotation.Variable} annotated fields before executing this step. */
+  private Map<String, Object> stateValuesBefore = new HashMap<String, Object>();
+  /** Stores values of all {@link osmo.tester.annotation.Variable} annotated fields after executing this step. */
+  private Map<String, Object> stateValuesAfter = new HashMap<String, Object>();
 
   /**
    * Constructor.
@@ -72,10 +74,25 @@ public class TestStep {
             '}';
   }
 
-  public void storeState(FSM fsm) {
+  public Map<String, Object> getStateValuesBefore() {
+    return stateValuesBefore;
+  }
+
+  public Map<String, Object> getStateValuesAfter() {
+    return stateValuesAfter;
+  }
+
+  public void storeStateBefore(FSM fsm) {
     Collection<VariableField> variables = fsm.getStateVariables();
     for (VariableField variable : variables) {
-      stateValues.put(variable.getName(), variable.getValue());
+      stateValuesBefore.put(variable.getName(), variable.getValue());
+    }
+  }
+
+  public void storeStateAfter(FSM fsm) {
+    Collection<VariableField> variables = fsm.getStateVariables();
+    for (VariableField variable : variables) {
+      stateValuesAfter.put(variable.getName(), variable.getValue());
     }
   }
 }
