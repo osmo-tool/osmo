@@ -28,6 +28,11 @@ public class VariableField {
     checkIfVariableValue();
   }
 
+  /**
+   * Checks the field represented by this value for implementing the {@link VariableValue} interface.
+   * If this interface is implemented, the object is typecast and stored in the "variable" variable in
+   * this object for faster access when the value is queried.
+   */
   private void checkIfVariableValue() {
     Class<?>[] interfaces = field.getType().getInterfaces();
     for (Class<?> i : interfaces) {
@@ -43,10 +48,23 @@ public class VariableField {
     }
   }
 
+  /**
+   * Field name as read from the class object.
+   *
+   * @return The field name.
+   */
   public String getName() {
     return name;
   }
 
+  /**
+   * Gives the value of this field as relevant for the model state persistence.
+   * If the field implements the {@VariableValue} interface, the value() method in this
+   * interface is called to read the value to store.
+   * Otherwise the value of the object/primitive is given as such.
+   *
+   * @return The value to store for this field in the current model state.
+   */
   public Object getValue() {
     if (variable != null) {
       return variable.value();
