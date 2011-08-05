@@ -9,6 +9,8 @@ import osmo.tester.generator.endcondition.Length;
 import osmo.tester.log.Logger;
 import osmo.tester.testmodels.WeightedModel1;
 
+import java.util.Random;
+
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.fail;
 
@@ -21,8 +23,8 @@ public class WeightTests {
 
   @Before
   public void testSetup() {
-    Logger.debug = true;
     osmo = new OSMOTester();
+    osmo.setRandom(new Random(100));
     listener = new TestListener();
     osmo.addListener(listener);
   }
@@ -33,7 +35,7 @@ public class WeightTests {
 
   @Test
   public void weightedModel1SuiteSize1() {
-    listener.addExpected("suite-start", "start", "t:bob4", "t:bob3", "t:bob2", "t:bob4", "t:bob3", "t:bob4", "t:bob2", "t:bob1", "t:bob4", "t:bob3", "t:bob4", "end", "suite-end");
+    listener.addExpected("suite-start", "start", "t:bob4", "t:bob3", "t:bob4", "t:bob2", "t:bob3", "t:bob4", "t:bob1", "t:bob4", "t:bob3", "t:bob2", "t:bob4", "end", "suite-end");
     osmo.addModelObject(new WeightedModel1());
     osmo.setAlgorithm(new WeightedRandomAlgorithm());
     Length length3 = new Length(11);
@@ -46,8 +48,8 @@ public class WeightTests {
 
   @Test
   public void weightedModel1SuiteSize2() {
-    listener.addExpected("suite-start", "start", "t:bob4", "t:bob3", "t:bob2", "t:bob4", "t:bob3", "t:bob4", "end");
-    listener.addExpected("start", "t:bob1", "t:bob2", "t:bob3", "t:bob4", "t:bob4", "t:bob3", "end", "suite-end");
+    listener.addExpected("suite-start", "start", "t:bob4", "t:bob3", "t:bob4", "t:bob2", "t:bob3", "t:bob4", "end");
+    listener.addExpected("start", "t:bob1", "t:bob4", "t:bob3", "t:bob2", "t:bob4", "t:bob3", "end", "suite-end");
     osmo.addModelObject(new WeightedModel1());
     osmo.setAlgorithm(new WeightedRandomAlgorithm());
     Length length3 = new Length(6);
@@ -55,6 +57,6 @@ public class WeightTests {
     osmo.addTestEndCondition(length3);
     osmo.addSuiteEndCondition(length1);
     osmo.generate();
-    listener.validate("Generated sequence 1 for weighted model 1");
+    listener.validate("Generated sequence 2 for weighted model 1");
   }
 }

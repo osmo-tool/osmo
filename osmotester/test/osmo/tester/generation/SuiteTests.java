@@ -36,9 +36,9 @@ public class SuiteTests {
     suite.addStep(new FSMTransition("t2"));
     suite.covered("r1");
 
-    int a1 = suite.getCurrent().getAddedRequirementsCoverage().size();
+    int a1 = suite.getCurrentTest().getAddedRequirementsCoverage().size();
     assertEquals("Added coverage for requirements", 1, a1);
-    int a2 = suite.getCurrent().getAddedTransitionCoverage().size();
+    int a2 = suite.getCurrentTest().getAddedTransitionCoverage().size();
     assertEquals("Added coverage for transitions", 2, a2);
     suite.endTest();
 
@@ -47,9 +47,9 @@ public class SuiteTests {
     suite.addStep(new FSMTransition("t2"));
     suite.covered("r1");
 
-    a1 = suite.getCurrent().getAddedRequirementsCoverage().size();
+    a1 = suite.getCurrentTest().getAddedRequirementsCoverage().size();
     assertEquals("Added coverage for requirements", 0, a1);
-    a2 = suite.getCurrent().getAddedTransitionCoverage().size();
+    a2 = suite.getCurrentTest().getAddedTransitionCoverage().size();
     assertEquals("Added coverage for transitions", 0, a2);
     suite.endTest();
 
@@ -58,9 +58,9 @@ public class SuiteTests {
     suite.addStep(new FSMTransition("t3"));
     suite.covered("r2");
 
-    a1 = suite.getCurrent().getAddedRequirementsCoverage().size();
+    a1 = suite.getCurrentTest().getAddedRequirementsCoverage().size();
     assertEquals("Added coverage for requirements", 1, a1);
-    a2 = suite.getCurrent().getAddedTransitionCoverage().size();
+    a2 = suite.getCurrentTest().getAddedTransitionCoverage().size();
     assertEquals("Added coverage for transitions", 1, a2);
     suite.endTest();
 
@@ -71,9 +71,9 @@ public class SuiteTests {
     suite.addStep(new FSMTransition("t5"));
     suite.covered("r4");
 
-    a1 = suite.getCurrent().getAddedRequirementsCoverage().size();
+    a1 = suite.getCurrentTest().getAddedRequirementsCoverage().size();
     assertEquals("Added coverage for requirements", 2, a1);
-    a2 = suite.getCurrent().getAddedTransitionCoverage().size();
+    a2 = suite.getCurrentTest().getAddedTransitionCoverage().size();
     assertEquals("Added coverage for transitions", 2, a2);
     suite.endTest();
 

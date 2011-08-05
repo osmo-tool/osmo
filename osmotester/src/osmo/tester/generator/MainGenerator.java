@@ -171,7 +171,7 @@ public class MainGenerator {
   private void beforeTest(FSM fsm) {
     //update history
     suite.startTest();
-    listeners.testStarted(suite.getCurrent());
+    listeners.testStarted(suite.getCurrentTest());
     Collection<InvocationTarget> befores = fsm.getBefores();
     invokeAll(befores);
   }
@@ -179,7 +179,7 @@ public class MainGenerator {
   private void afterTest(FSM fsm) {
     Collection<InvocationTarget> afters = fsm.getAfters();
     invokeAll(afters);
-    TestCase current = suite.getCurrent();
+    TestCase current = suite.getCurrentTest();
     //update history
     suite.endTest();
     listeners.testEnded(current);

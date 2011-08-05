@@ -13,6 +13,7 @@ import osmo.tester.parser.MainParser;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Random;
 
 /**
  * The main class for initiating the MBT tool.
@@ -32,7 +33,7 @@ public class OSMOTester {
   /** When do we stop generating individual tests and start a new one? */
   private Collection<EndCondition> testCaseEndConditions = new ArrayList<EndCondition>();
   /** The algorithm to traverse the test model to generate test steps. */
-  private FSMTraversalAlgorithm algorithm = new RandomAlgorithm();
+  private FSMTraversalAlgorithm algorithm;
   /** Listeners to be notified about test generation events. */
   private GenerationListenerList listeners = new GenerationListenerList();
 
@@ -65,12 +66,16 @@ public class OSMOTester {
    */
   public void generate() {
     MainGenerator generator = new MainGenerator();
+    if (algorithm == null) {
+      //we do this here to avoid initializing from TestUtils.getRandom() before user calls setRandom() in this class
+      algorithm = new RandomAlgorithm();
+    }
     generator.setAlgorithm(algorithm);
     if (suiteEndConditions.size() == 0) {
-      addSuiteEndCondition(new Probability(0.95d));
+      addSuiteEndCondition(new Probability(0.05d));
     }
     if (testCaseEndConditions.size() == 0) {
-      addTestEndCondition(new Probability(0.9d));
+      addTestEndCondition(new Probability(0.1d));
     }
     generator.setSuiteEndConditions(suiteEndConditions);
     generator.setTestCaseEndConditions(testCaseEndConditions);
@@ -121,4 +126,23 @@ public class OSMOTester {
   public void addListener(GenerationListener listener) {
     listeners.addListener(listener);
   }
+
+  /**
+   * Allows the user to define their own random number generator.
+   * Typical use is to set a deterministic seed, as the standard approach in Java is to take
+   * the seed from the system clock to also randomize that.
+   * In practice this delegates the value to the {@link TestUtils} class, from which all the
+   * functionality in OSMOTester uses it.
+   * Note that if you use the functions from {@link TestUtils} yourself for any purposes
+   * (as they are intended to be used for any purpose you like), the sequence of the next value
+   * in algorithms etc. can change as they share the number generator.
+   * This should generally not be a problem but, for example, in trying to create deterministic test cases
+   * it may cause some confusion.
+   *
+   * @param random The new random number generator.
+   */
+  public void setRandom(Random random) {
+    TestUtils.setRandom(random);
+  }
+
 }

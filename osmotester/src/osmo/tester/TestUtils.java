@@ -35,8 +35,29 @@ import java.util.Scanner;
  * @author Teemu Kanstren
  */
 public class TestUtils {
-  private static Random random = new Random(100);
+  /** Used for random number generation, practically also shared in OSMOTester in many places.
+   * {@see OSMOTester} and the setRandom method in it.*/
+  private static Random random = new Random();
   public static String ln = System.getProperty("line.separator");
+
+  /**
+   * Allows sharing the random number generator all over OSMO.
+   *
+   * @return The used random generator.
+   */
+  public static Random getRandom() {
+    return random;
+  }
+
+  /**
+   * Allows setting the random number generator to users own configuration.
+   * See OSMOTester class and the setRandom() method in it for more info.
+   *
+   * @param random The new random generator.
+   */
+  public static void setRandom(Random random) {
+    TestUtils.random = random;
+  }
 
   /**
    * @return A random value.

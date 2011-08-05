@@ -6,10 +6,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import static osmo.tester.TestUtils.oneOf;
+import static osmo.tester.TestUtils.*;
 
 /**
  * Represents a set of values (objects) of the given type.
@@ -129,17 +130,31 @@ public class ValueSet<T> {
    * @return The next item according to this strategy.
    */
   private T optimizedRandomChoice() {
-    Map<T, Integer> coverage = new HashMap<T, Integer>();
-    for (T t : history) {
-      Integer count = coverage.get(t);
-      //when first encountered, the object will have "null" instances so we translate that to 0
-      //if an object is in history multiple times, the following ones will just increment the value
-      if (count == null) {
-        count = 0;
+    Collection<T> choices = new HashSet<T>();
+    choices.addAll(options);
+    choices.removeAll(history);
+    //choices now has all items that have never been covered
+
+    if (choices.size() == 0) {
+      Map<T, Integer> coverage = new HashMap<T, Integer>();
+      for (T t : history) {
+        Integer count = coverage.get(t);
+        //when first encountered, the object will have "null" instances so we translate that to 0
+        //if an object is in history multiple times, the following ones will just increment the value
+        if (count == null) {
+          count = 0;
+        }
+        count++;
+        coverage.put(t, count);
       }
-      coverage.put(t, count+1);
+      int min = minOf(coverage.values());
+      for (Map.Entry<T, Integer> item : coverage.entrySet()) {
+        if (coverage.get(item.getKey()) == min ) {
+          choices.add(item.getKey());
+        }
+      }
     }
-    return OptimizedRandomAlgorithm.optimizedRandomChoice(coverage, null, options);
+    return oneOf(choices);
   }
 
   /**

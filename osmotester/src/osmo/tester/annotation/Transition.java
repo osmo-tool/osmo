@@ -42,5 +42,5 @@ import java.lang.annotation.Target;
 public @interface Transition {
   String value() default "";
   String name() default "";
-  int weight() default 1;
+  int weight() default 10;
 }

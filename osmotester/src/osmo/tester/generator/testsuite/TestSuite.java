@@ -23,9 +23,11 @@ public class TestSuite {
   private final Collection<String> coveredRequirements = new HashSet<String>();
   /** List of covered transitions so far, excluding the current test case under generation. */
   private final Collection<FSMTransition> coveredTransitions = new HashSet<FSMTransition>();
-  /** List of covered transitions and number how many times it exist in the test suite*/
-  private Map<FSMTransition, Integer> transitionCoverages = new HashMap<FSMTransition, Integer>();
-  
+  /** List of covered transitions and number of how many times it exist in the test suite*/
+  private Map<FSMTransition, Integer> transitionCoverage = new HashMap<FSMTransition, Integer>();
+  /** List of covered transitions pairs and number of how many times it exist in the test suite*/
+  private Map<FSMTransition, Integer> tpCoverage = new HashMap<FSMTransition, Integer>();
+
   /**
    * Start a new test case.
    */
@@ -47,18 +49,18 @@ public class TestSuite {
    * Adds the given transition as a step into the current test case.
    *
    * @param transition The transition to add.
+   * @return The added step object.
    */
   public TestStep addStep(FSMTransition transition) {
     TestStep step = current.addStep(transition);
     if (!coveredTransitions.contains(transition)) {
       current.addAddedTransitionCoverage(transition);
     }
-    Integer count = transitionCoverages.get(transition);
+    Integer count = transitionCoverage.get(transition);
     if (count == null) {
       count = 0;
     }
-    transitionCoverages.put(transition, count+1);
-
+    transitionCoverage.put(transition, count+1);
     return step;
   }
 
@@ -96,7 +98,7 @@ public class TestSuite {
    *
    * @return The current test case.
    */
-  public TestCase getCurrent() {
+  public TestCase getCurrentTest() {
     return current;
   }
 
@@ -130,8 +132,8 @@ public class TestSuite {
    * 
    * @return The transitions with coverage number
    */
-  public Map<FSMTransition, Integer> getTransitionCoverages(){
-    return transitionCoverages;
+  public Map<FSMTransition, Integer> getTransitionCoverage(){
+    return transitionCoverage;
   }
 
   /**

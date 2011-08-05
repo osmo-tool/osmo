@@ -21,8 +21,8 @@ public class FSMTransition {
   private static Logger log = new Logger(FSMTransition.class);
   /** Name of the transition, from @Transition("name") or (name="name") or (value="name"). Fails if undefined or empty ("").*/
   private final String name;
-  /** Weight of the transitions, from @Transition(weight=x), defaults to 1. */
-  private int weight = 1;
+  /** Weight of the transitions, from @Transition(weight=x), defaults to 10 (see {@link osmo.tester.annotation.Transition}. */
+  private int weight = 10; //NOTE: this value here is pointless in practice, the true default is in the annotation class
   /** The set of guards defining when this transition can be taken. */
   private final Collection<InvocationTarget> guards = new ArrayList<InvocationTarget>();
   /** The method that needs to be invoked when the transition should be actually taken. */
@@ -98,25 +98,14 @@ public class FSMTransition {
 
     FSMTransition that = (FSMTransition) o;
 
-    if (weight != that.weight) return false;
-    if (guards != null ? !guards.equals(that.guards) : that.guards != null) return false;
     if (name != null ? !name.equals(that.name) : that.name != null) return false;
-    if (posts != null ? !posts.equals(that.posts) : that.posts != null) return false;
-    if (pres != null ? !pres.equals(that.pres) : that.pres != null) return false;
-    if (transition != null ? !transition.equals(that.transition) : that.transition != null) return false;
 
     return true;
   }
 
   @Override
   public int hashCode() {
-    int result = name != null ? name.hashCode() : 0;
-    result = 31 * result + weight;
-    result = 31 * result + (guards != null ? guards.hashCode() : 0);
-    result = 31 * result + (transition != null ? transition.hashCode() : 0);
-    result = 31 * result + (pres != null ? pres.hashCode() : 0);
-    result = 31 * result + (posts != null ? posts.hashCode() : 0);
-    return result;
+    return name != null ? name.hashCode() : 0;
   }
 
   @Override

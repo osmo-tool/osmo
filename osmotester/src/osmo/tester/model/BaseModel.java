@@ -1,6 +1,5 @@
 package osmo.tester.model;
 
-import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.RequirementsField;
@@ -42,7 +41,7 @@ public class BaseModel {
    */
   @BeforeTest
   public void initTest() {
-    test = suite.getCurrent();
+    test = suite.getCurrentTest();
     id = test.getId();
     previous = null;
   }
