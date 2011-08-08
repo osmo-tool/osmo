@@ -6,6 +6,7 @@ import osmo.tester.model.dataflow.ValueRange;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
 
 /**
  * @author Teemu Kanstren
@@ -46,4 +47,33 @@ public class ValueRangeTests {
     assertEquals("Third item", 7, vr.nextInt());
     assertEquals("Fourth item", 5, vr.nextInt());
   }
+
+  @Test
+  public void generics() {
+    ValueRange<Integer> vr = new ValueRange<Integer>(1,5);
+    Object o = vr.next();
+    assertEquals("Integer value range should produce integers..", Integer.class, o.getClass());
+
+    ValueRange<Long> vr2 = new ValueRange<Long>(1l,5l);
+    Object o2 = vr2.next();
+    assertEquals("Long value range should produce longs..", Long.class, o2.getClass());
+
+    ValueRange<Double> vr3 = new ValueRange<Double>(1d,5d);
+    Object o3 = vr3.next();
+    assertEquals("Double value range should produce doubles..", Double.class, o3.getClass());
+
+    ValueRange<Integer> vr4 = new ValueRange<Integer>(Integer.class, 1,5);
+    Object o4 = vr4.next();
+    assertEquals("Integer value range should produce integers..", Integer.class, o4.getClass());
+
+    ValueRange<Long> vr5 = new ValueRange<Long>(Long.class, 1,5);
+    Object o5 = vr5.next();
+    assertEquals("Long value range should produce longs..", Long.class, o5.getClass());
+
+    ValueRange<Double> vr6 = new ValueRange<Double>(Double.class, 1,5);
+    Object o6 = vr6.next();
+    assertEquals("Double value range should produce doubles..", Double.class, o6.getClass());
+  }
+
+  //TODO: whine about reified generics
 }
