@@ -14,9 +14,9 @@ public interface Input<T> {
   public T next();
 
   /**
-   * Set data generation algorithm
+   * Set data generation algorithm.
    *
-   * @return 
+   * @param algorithm The new data generation algorithm.
    */
   public void setStrategy(DataGenerationStrategy algorithm);
 

@@ -24,7 +24,7 @@ public class HTML implements CoverageMetric{
     ret += "<head></head>\n";
     ret += "<body>\n";
     ret += "<table border=\"1\">";
-    coverageCalculator cc = new coverageCalculator();
+    CoverageCalculator cc = new CoverageCalculator();
     Map<FSMTransition, Integer> coverage = cc.getTransitionCoverage(ts);
      for(Map.Entry<FSMTransition, Integer> a : coverage.entrySet()){
        ret += "<tr><td>"+ a.getKey().getName()+"</td><td>"+a.getValue()+"</td></tr>\n";
