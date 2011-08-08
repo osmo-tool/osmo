@@ -9,11 +9,35 @@ import static osmo.tester.TestUtils.*;
 /**
  * Defines a value range with a minimum and maximum values. Generates input from this range, including min and max.
  * Evaluates given values if they fit in the range.
+ * Support subclasses of {@link Number}, specifically {@link Integer}, {@link Long}, and {@link Double}.
+ * Notice that due to limitations of the Java generics type system, you have to either provide the type
+ * as an explicit argument to the constructor or otherwise the type to be generated will be based on the
+ * type of object passed as the "min" value of the range.
+ *
+ * To get integers do either
+ * new ValueRange<Integer>(1,2); or
+ * new ValueRange<Integer>(Integer.class, 1, 2);
+ *
+ * to get long values do either
+ * new ValueRange<Long>(1l,2l); or
+ * new ValueRange<Long>(Long.class, 1, 2);
+ *
+ * to get double values do either
+ * new ValueRange<Double>(1d,2d); or
+ * new ValueRange<Double>(Double.class, 1, 2);
+ *
+ * Omitting the type information will result in generation of integers.
+ * It is also possible to use any of the specific functions such as nextInt(), nextLong() and nextDouble()
+ * regardless of configured type.
+ *
+ * @see Input
+ * @see Output
  *
  * @author Teemu Kanstren
  */
-public class ValueRange {
-  private enum DataType {INT, LONG, DOUBLE}
+public class ValueRange<T extends Number> implements Input<T>, Output<T> {
+  /** Supported datatypes, each instance will be configured to produce one type based on given type information. */
+  public static enum DataType {INT, LONG, DOUBLE}
 
   /**
    * Minimum value for this value range.
@@ -39,10 +63,50 @@ public class ValueRange {
    * The strategy for data generation.
    */
   private DataGenerationStrategy algorithm = DataGenerationStrategy.OPTIMIZED_RANDOM;
+  /** The actual type of data to be generated.*/
+  private final DataType type;
 
+  /**
+   * Constructor that takes an explicit type argument for generation.
+   *
+   * @param type The type of data to be generated.
+   * @param min Minimum value of the range.
+   * @param max Maximum value of the range.
+   */
+  public ValueRange(Class<T> type, Number min, Number max) {
+    this.min = min;
+    this.max = max;
+
+    if (type.equals(Integer.class)) {
+      this.type = DataType.INT;
+    } else if (type.equals(Long.class)) {
+      this.type = DataType.LONG;
+    } else {
+      this.type = DataType.DOUBLE;
+    }
+  }
+
+  /**
+   * Constructor that tries to infer generated data type from the type of the "min" parameter.
+   *
+   * @param min Minimum value of the range.
+   * @param max Maximum value of the range.
+   */
   public ValueRange(Number min, Number max) {
     this.min = min;
     this.max = max;
+
+    if (min instanceof Integer) {
+      this.type = DataType.INT;
+    } else if (min instanceof Long) {
+      this.type = DataType.LONG;
+    } else {
+      this.type = DataType.DOUBLE;
+    }
+  }
+
+  public DataType getType() {
+    return type;
   }
 
   /**
@@ -74,6 +138,11 @@ public class ValueRange {
 
   public void setAlgorithm(DataGenerationStrategy algorithm) {
     this.algorithm = algorithm;
+  }
+
+  @Override
+  public T next() {
+    return (T)next(type);
   }
 
   /**
@@ -227,7 +296,7 @@ public class ValueRange {
     return result;
   }
 
-  public boolean contains(Number value) {
+  public boolean evaluate(Number value) {
     return value.doubleValue() <= max.doubleValue() && value.doubleValue() >= min.doubleValue();
   }
 

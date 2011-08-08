@@ -20,7 +20,7 @@ import static osmo.tester.TestUtils.*;
  *
  * @author Teemu Kanstren
  */
-public class ValueSet<T> {
+public class ValueSet<T> implements Input<T>, Output<T> {
   /** The options for data generation and evaluation. */
   private List<T> options = new ArrayList<T>();
   /** The input strategy to choose an object. */

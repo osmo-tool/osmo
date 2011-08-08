@@ -16,7 +16,7 @@ import static osmo.tester.TestUtils.*;
  *
  * @author Teemu Kanstren
  */
-public class ValueRangeSet {
+public class ValueRangeSet<T extends Number> implements Input<T>, Output<T>{
   private static final Logger log = new Logger(ValueRangeSet.class);
   /** The different partitions in the domain. */
   private ValueSet<ValueRange> partitions = new ValueSet<ValueRange>();
@@ -34,17 +34,43 @@ public class ValueRangeSet {
   }
 
   /**
-   * Adds a new data partition (domain).
+   * Adds a new data partition (domain). Type is inferred from the type of the "min" parameter.
+   * See {@link ValueRange} for more information on the types.
    *
    * @param min Lower bound (minimum value) of the partition.
    * @param max Upper bound (maximum value) of the partition.
    */
-  public void addPartition(double min, double max) {
+  public void addPartition(Number min, Number max) {
     log.debug("Adding partition min("+min+") max("+max+")");
-    if (min > max) {
+    validateRange(min, max);
+    if (min instanceof Integer) {
+      partitions.addOption(new ValueRange<Integer>(Integer.class, min, max));
+    } else if (min instanceof Long) {
+      partitions.addOption(new ValueRange<Long>(Long.class, min, max));
+    } else {
+      partitions.addOption(new ValueRange<Double>(Double.class, min, max));
+    }
+  }
+
+  /**
+   * Adds a new data partition (domain).
+   * The type to be generated is explicitly given.
+   * See {@link ValueRange} for more information on the types.
+   *
+   * @param type The type of numbers in value ranges.
+   * @param min Lower bound (minimum value) of the partition.
+   * @param max Upper bound (maximum value) of the partition.
+   */
+  public void addPartition(Class<T> type, Number min, Number max) {
+    log.debug("Adding partition min("+min+") max("+max+")");
+    validateRange(min, max);
+    partitions.addOption(new ValueRange<T>(type, min, max));
+  }
+
+  private void validateRange(Number min, Number max) {
+    if (min.doubleValue() > max.doubleValue()) {
       throw new IllegalArgumentException("Minimum value cannot be greater than maximum value.");
     }
-    partitions.addOption(new ValueRange(min, max));
   }
 
   /**
@@ -119,6 +145,19 @@ public class ValueRangeSet {
     }
   }
 
+  public T next() {
+    validate();
+    ValueRange i = nextPartition();
+//    history.add(value);
+    if (i.getType() == ValueRange.DataType.INT) {
+      return (T)new Integer(i.nextInt());
+    } else if (i.getType() == ValueRange.DataType.LONG) {
+      return (T)new Long(i.nextLong());
+    } else {
+      return (T)new Double(i.nextDouble());
+    }
+  }
+
   /**
    * Generates a new double value from the next partition in line.
    *
@@ -161,12 +200,12 @@ public class ValueRangeSet {
    * @param value The value to check.
    * @return True if the value fits in the defined partitions, false otherwise.
    */
-  public boolean evaluate(double value) {
+  public boolean evaluate(T value) {
     Collection<ValueRange> partitions = this.partitions.getAll();
     log.debug("Evaluating value:"+value);
     for (ValueRange partition : partitions) {
       log.debug("Checking partition:"+partition);
-      if (partition.contains(value)) {
+      if (partition.evaluate(value)) {
         log.debug("Found match");
         return true;
       }

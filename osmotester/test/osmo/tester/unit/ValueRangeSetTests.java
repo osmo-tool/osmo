@@ -7,6 +7,7 @@ import osmo.tester.model.dataflow.ValueRangeSet;
 import osmo.tester.model.dataflow.ValueRange;
 
 import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
 
 /**
  * @author Teemu Kanstren
@@ -283,5 +284,34 @@ public class ValueRangeSetTests {
     }
     assertTrue("Should generate value 1", b1);
     assertTrue("Should generate value 2", b2);
+  }
+
+  @Test
+  public void generics() {
+    ValueRangeSet<Integer> vrs1 = new ValueRangeSet<Integer>();
+    vrs1.addPartition(1, 2);
+    Object o1 = vrs1.next();
+    assertEquals("Integer value range should produce integers..", Integer.class, o1.getClass());
+
+    ValueRangeSet<Long> vrs2 = new ValueRangeSet<Long>();
+    vrs2.addPartition(Long.class, 1, 2);
+    Object o2 = vrs2.next();
+    assertEquals("Long value range should produce longs..", Long.class, o2.getClass());
+
+    ValueRangeSet<Long> vrs3 = new ValueRangeSet<Long>();
+    vrs3.addPartition(1l, 2l);
+    Object o3 = vrs3.next();
+    assertEquals("Long value range should produce longs..", Long.class, o3.getClass());
+
+
+    ValueRangeSet<Double> vrs4 = new ValueRangeSet<Double>();
+    vrs4.addPartition(Double.class, 1, 2);
+    Object o4 = vrs4.next();
+    assertEquals("Double value range should produce doubles..", Double.class, o4.getClass());
+
+    ValueRangeSet<Double> vrs5 = new ValueRangeSet<Double>();
+    vrs5.addPartition(1d, 2d);
+    Object o5 = vrs5.next();
+    assertEquals("Double value range should produce doubles..", Double.class, o5.getClass());
   }
 }
