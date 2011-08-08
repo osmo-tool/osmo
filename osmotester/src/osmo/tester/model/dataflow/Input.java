@@ -12,4 +12,12 @@ public interface Input<T> {
    * @return The generated input object.
    */
   public T next();
+
+  /**
+   * Set data generation algorithm
+   *
+   * @return 
+   */
+  public void setStrategy(DataGenerationStrategy algorithm);
+
 }

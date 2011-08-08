@@ -136,7 +136,8 @@ public class ValueRange<T extends Number> implements Input<T>, Output<T> {
     return history;
   }
 
-  public void setAlgorithm(DataGenerationStrategy algorithm) {
+  @Override
+  public void setStrategy(DataGenerationStrategy algorithm) {
     this.algorithm = algorithm;
   }
 

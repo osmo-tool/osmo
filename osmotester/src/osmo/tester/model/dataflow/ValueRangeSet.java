@@ -28,6 +28,7 @@ public class ValueRangeSet<T extends Number> implements Input<T>, Output<T>{
    *
    * @param strategy The new strategy.
    */
+  @Override
   public void setStrategy(DataGenerationStrategy strategy) {
     this.strategy = strategy;
     partitions.setStrategy(strategy);
@@ -145,6 +146,7 @@ public class ValueRangeSet<T extends Number> implements Input<T>, Output<T>{
     }
   }
 
+  @Override
   public T next() {
     validate();
     ValueRange i = nextPartition();

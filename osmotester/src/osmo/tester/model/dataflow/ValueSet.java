@@ -59,6 +59,7 @@ public class ValueSet<T> implements Input<T>, Output<T> {
    *
    * @param strategy The new strategy.
    */
+  @Override
   public void setStrategy(DataGenerationStrategy strategy) {
     this.strategy = strategy;
   }
@@ -105,6 +106,7 @@ public class ValueSet<T> implements Input<T>, Output<T> {
    *
    * @return The chosen input object.
    */
+  @Override
   public T next() {
     if (options.size() == 0) {
       throw new IllegalStateException("No value to provide (add some options).");
