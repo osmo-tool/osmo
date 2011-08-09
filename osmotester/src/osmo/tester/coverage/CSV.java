@@ -20,7 +20,7 @@ public class CSV implements CoverageMetric {
   @Override
   public String getTransitionCoverage(){
     String ret = "";
-    CoverageCalculator cc = new CoverageCalculator();
+    coverageCalculator cc = new coverageCalculator();
     Map<FSMTransition, Integer> coverage = cc.getTransitionCoverage(ts);
      for(Map.Entry<FSMTransition, Integer> a : coverage.entrySet()){
        ret += a.getKey().getName()+";"+a.getValue()+"\n";
