@@ -12,5 +12,7 @@ public enum DataGenerationStrategy {
   /** Pick a value on random but favor previously uncovered partitions or objects. */
   OPTIMIZED_RANDOM,
   /** Loop through all options in an order, restart from beginning after reaching end. */
-  ORDERED_LOOP
+  ORDERED_LOOP,
+  /** Choose values at the option boundaries (below, at, above). Only works for primitives. */
+  BOUNDARY_SCAN
 }

@@ -158,6 +158,8 @@ public class ValueRange<T extends Number> implements Input<T>, Output<T> {
       value = nextOrderedLoop(type);
     } else if (algorithm == DataGenerationStrategy.OPTIMIZED_RANDOM) {
       value = nextOptimizedRandom(type);
+    } else if (algorithm == DataGenerationStrategy.BOUNDARY_SCAN) {
+      value = nextBoundaryScan(type);
     } else {
       //default to random
       value = nextRandom(type);
@@ -246,6 +248,42 @@ public class ValueRange<T extends Number> implements Input<T>, Output<T> {
         throw new IllegalArgumentException("Enum type:" + type + " unsupported.");
     }
     return value;
+  }
+
+  public static void main(String[] args) {
+    new ValueRange<Integer>(0, 10).nextBoundaryScan(DataType.INT);
+  }
+
+  //TODO: boundary size + looping
+  public Number nextBoundaryScan(DataType type) {
+    Collection<Number> values = new ArrayList<Number>();
+    Number minPlus = 0;
+    Number minMinus = 0;
+    Number maxPlus = 0;
+    Number maxMinus = 0;
+    values.add(min);
+    values.add(max);
+    for (int i = 0 ; i < 10 ; i++) {
+      Number value = null;
+      if (minPlus.equals(minMinus)) {
+        minPlus = minMinus.intValue() + increment.intValue();
+        value = min.intValue() + minPlus.intValue();
+      } else {
+        minMinus = minMinus.intValue() + increment.intValue();
+        value = min.intValue() - minPlus.intValue();
+      }
+      values.add(value);
+      if (maxPlus.equals(maxMinus)) {
+        maxPlus = maxMinus.intValue() + increment.intValue();
+        value = max.intValue() + maxPlus.intValue();
+      } else {
+        maxMinus = maxMinus.intValue() + increment.intValue();
+        value = max.intValue() - maxPlus.intValue();
+      }
+      values.add(value);
+    }
+    System.out.println("Values:"+values);
+    return null;
   }
 
   /**
