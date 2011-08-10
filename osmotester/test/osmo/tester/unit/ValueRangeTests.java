@@ -77,7 +77,7 @@ public class ValueRangeTests {
 
   @Test
   public void boundaryScan() {
-    fail("TBD");
+    fail("TBD");//add tests for boundaries, including size of boundary scan
   }
   //TODO: whine about reified generics
 }
