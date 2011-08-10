@@ -15,7 +15,7 @@ public class ValueRangeTests {
   @Test
   public void optimizedRandomValueRange() {
     ValueRange vr = new ValueRange(5, 7);
-    vr.setAlgorithm(DataGenerationStrategy.OPTIMIZED_RANDOM);
+    vr.setStrategy(DataGenerationStrategy.OPTIMIZED_RANDOM);
     boolean b5 = false;
     boolean b6 = false;
     boolean b7 = false;
@@ -41,7 +41,7 @@ public class ValueRangeTests {
   @Test
   public void orderedLoopValueRange() {
     ValueRange vr = new ValueRange(5, 7);
-    vr.setAlgorithm(DataGenerationStrategy.ORDERED_LOOP);
+    vr.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     assertEquals("First item", 5, vr.nextInt());
     assertEquals("Second item", 6, vr.nextInt());
     assertEquals("Third item", 7, vr.nextInt());
@@ -75,5 +75,9 @@ public class ValueRangeTests {
     assertEquals("Double value range should produce doubles..", Double.class, o6.getClass());
   }
 
+  @Test
+  public void boundaryScan() {
+    fail("TBD");
+  }
   //TODO: whine about reified generics
 }
