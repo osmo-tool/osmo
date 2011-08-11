@@ -16,9 +16,10 @@ public class CSV extends CoverageMetric {
   }
 
   @Override
-  public String getTransitionCoverage(){
+  public String getTransitionCounts(){
     String ret = "Name;Count\n";
-    Map<FSMTransition, Integer> coverage = countTransitionCoverage();
+    Map<FSMTransition, Integer> coverage = countTransitions();
+
      for(Map.Entry<FSMTransition, Integer> a : coverage.entrySet()){
        ret += a.getKey().getName()+";"+a.getValue()+"\n";
      }
@@ -31,9 +32,9 @@ public class CSV extends CoverageMetric {
    * transition2;transition3;0
    * */
   @Override
-  public String getTransitionPairCoverage(){
+  public String getTransitionPairCounts(){
     String ret = "From;To;Count\n";
-    Map<String, Integer> coverage = countTransitionPairCoverage();
+    Map<String, Integer> coverage = countTransitionPairs();
     for(Map.Entry<String, Integer> a : coverage.entrySet()){
       ret += a.getKey()+";"+a.getValue()+"\n";
     }
@@ -46,14 +47,18 @@ public class CSV extends CoverageMetric {
   }
 
   @Override
-  public String getRequirementsCoverage() {
-    // TODO Auto-generated method stub
-    return null;
+  public String getRequirementsCounts() {
+    String ret = "Name;Count\n";
+    Map<String, Integer> coverage = countRequirements();
+    for(Map.Entry<String, Integer> a : coverage.entrySet()){
+      ret += a.getKey()+";"+a.getValue()+"\n";
+    }
+    return ret;
   }
 
   @Override
   public String getTraceabilityMatrix() {
     // TODO Auto-generated method stub
-    return null;
+    return "Not implemented yet";
   }
 }
