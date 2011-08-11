@@ -1,22 +1,16 @@
 package osmo.tester.coverage;
 
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Map;
 
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
 
 /**
  * This returns coverage tables in HTML format
  *
- * @author Olli-Pekka Puolitaival
+ * @author Olli-Pekka Puolitaival, Teemu Kanstrén
  */
 public class HTML extends CoverageMetric {
-
   public HTML(TestSuite ts) {
     super(ts);
   }
@@ -26,46 +20,17 @@ public class HTML extends CoverageMetric {
     suite.startTest();
     suite.addStep(new FSMTransition("test"));
     suite.endTest();
-    System.out.println(new HTML(suite).getTransitionCounts());
+    System.out.println(new CSV(suite).getTransitionCounts());
+    System.out.println(new CSV(suite).getTransitionPairCounts());
   }
 
-  @Override
   public String getTransitionCounts() {
-    VelocityEngine velocity = new VelocityEngine();
-    velocity.setProperty("resource.loader", "class");
-    velocity.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
-    VelocityContext vc = new VelocityContext();
-
-    Map<FSMTransition, Integer> coverage = countTransitions();
-    Collection<TransitionCount> tc = new ArrayList<TransitionCount>();
-
-    for (Map.Entry<FSMTransition, Integer> a : coverage.entrySet()) {
-      tc.add(new TransitionCount(a.getKey(), a.getValue()));
-    }
-    vc.put("transitions", tc);
-
-    StringWriter sw = new StringWriter();
-    velocity.mergeTemplate("osmo/tester/coverage/templates/html-transition-coverage.vm", "UTF8", vc, sw);
-    return sw.toString();
+    //note: for this to work, you need to have the IDE or build script copy the .html files to the same location on the output dir (alongside the java classes)
+    return super.getTransitionCounts("osmo/tester/coverage/templates/transition-coverage.html");
   }
 
-  @Override
   public String getTransitionPairCounts(){
-
-    String ret = "<html>\n";
-    ret += "<head></head>\n";
-    ret += "<body>\n";
-    ret += "<table border=\"1\">\n";
-    ret += "<tr><td>From</td><td>To</td><td>Count</td></tr>\n";
-    Map<String, Integer> coverage = countTransitionPairs();
-    for (Map.Entry<String, Integer> a : coverage.entrySet()) {
-      String[] b = a.getKey().split(";");
-      ret += "<tr><td>" + b[0] + "</td><td>" + b[1] + "</td><td>" + a.getValue() + "</td></tr>\n";
-    }
-    ret += "</table>\n";
-    ret += "</body>\n";
-    ret += "</html>\n";
-    return ret;
+    return super.getTransitionPairCounts("osmo/tester/coverage/templates/transitionpair-coverage.html");
   }
 
   @Override
