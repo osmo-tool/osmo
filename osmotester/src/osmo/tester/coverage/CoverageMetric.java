@@ -1,5 +1,6 @@
 package osmo.tester.coverage;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,11 +22,11 @@ public abstract class CoverageMetric {
     this.testSuite = ts;
   }
   
-  protected  Map<FSMTransition, Integer> countTransitionCoverage(){
+  protected  Map<FSMTransition, Integer> countTransitions(){
     return testSuite.getTransitionCoverage();
   }
   
-  protected Map<String, Integer> countTransitionPairCoverage(){
+  protected Map<String, Integer> countTransitionPairs(){
     Map<String, Integer> ret = new HashMap<String, Integer>();
     
     for(TestCase tc: testSuite.getTestCases()){
@@ -43,7 +44,24 @@ public abstract class CoverageMetric {
         previous = ts.getTransition().getName();
       }
     }
+    return ret;
+  }
+  
+  protected Map<String, Integer> countRequirements(){
+    Map<String, Integer> ret = new HashMap<String, Integer>();
     
+    for(TestCase tc: testSuite.getTestCases()){
+      for(TestStep ts: tc.getSteps()){        
+        Collection<String> keys = ts.getCoveredRequirements();
+        
+        for(String key: keys){
+          Integer count = ret.get(key);
+          if (count == null)
+            count = 0;
+          ret.put(key, count+1);
+        }
+      }
+    }
     return ret;
   }
   
@@ -51,19 +69,19 @@ public abstract class CoverageMetric {
    * Returns Transition coverage table
    * @return coverage metric in certain kind of format
    */
-  public abstract String getTransitionCoverage();
+  public abstract String getTransitionCounts();
   
   /**
    * 
    * @return
    */
-  public abstract String getTransitionPairCoverage();
+  public abstract String getTransitionPairCounts();
   
   /**
    * 
    * @return
    */
-  public abstract String getRequirementsCoverage();
+  public abstract String getRequirementsCounts();
   
   /**
    * 
