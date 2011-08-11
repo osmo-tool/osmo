@@ -4,11 +4,8 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Properties;
 
-import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
@@ -29,7 +26,7 @@ public class HTML extends CoverageMetric {
     suite.startTest();
     suite.addStep(new FSMTransition("test"));
     suite.endTest();
-    System.out.println(new HTML(suite).getTransitionCoverage());
+    System.out.println(new HTML(suite).getTransitionCounts());
   }
 
   @Override
@@ -40,9 +37,10 @@ public class HTML extends CoverageMetric {
     VelocityContext vc = new VelocityContext();
 
     Map<FSMTransition, Integer> coverage = countTransitions();
+    Collection<TransitionCount> tc = new ArrayList<TransitionCount>();
 
     for (Map.Entry<FSMTransition, Integer> a : coverage.entrySet()) {
-      tc.add(new TransitionCoverage(a.getKey(), a.getValue()));
+      tc.add(new TransitionCount(a.getKey(), a.getValue()));
     }
     vc.put("transitions", tc);
 
