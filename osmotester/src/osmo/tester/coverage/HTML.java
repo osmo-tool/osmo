@@ -23,6 +23,7 @@ public class HTML extends CoverageMetric{
     ret += "<body>\n";
     ret += "<table border=\"1\">\n";
     ret += "<tr><td>Name</td><td>Count</td></tr>\n";
+
     Map<FSMTransition, Integer> coverage = countTransitions();
      for(Map.Entry<FSMTransition, Integer> a : coverage.entrySet()){
        ret += "<tr><td>"+ a.getKey().getName()+"</td><td>"+a.getValue()+"</td></tr>\n";

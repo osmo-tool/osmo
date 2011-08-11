@@ -19,6 +19,7 @@ public class CSV extends CoverageMetric {
   public String getTransitionCounts(){
     String ret = "Name;Count\n";
     Map<FSMTransition, Integer> coverage = countTransitions();
+
      for(Map.Entry<FSMTransition, Integer> a : coverage.entrySet()){
        ret += a.getKey().getName()+";"+a.getValue()+"\n";
      }
