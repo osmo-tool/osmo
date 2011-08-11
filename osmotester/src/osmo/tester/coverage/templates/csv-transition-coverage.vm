@@ -1,0 +1,4 @@
+Name,Count
+#foreach ($t in transitions)
+$t.name,$t.count
+#end

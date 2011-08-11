@@ -21,7 +21,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../miner/lib/junit-4.9b2.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/velocity-1.7-dep.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
