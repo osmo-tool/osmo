@@ -9,43 +9,39 @@ import osmo.tester.model.FSMTransition;
  * 
  * @author Olli-Pekka Puolitaival
  */
-public class CSV implements CoverageMetric {
-  
-  private TestSuite ts = null;
+public class CSV extends CoverageMetric {
   
   public CSV(TestSuite ts) {
-    this.ts = ts;
+    super(ts);
   }
 
   @Override
   public String getTransitionCoverage(){
-    String ret = "";
-    CoverageCalculator cc = new CoverageCalculator();
-    Map<FSMTransition, Integer> coverage = cc.getTransitionCoverage(ts);
+    String ret = "Name;Count\n";
+    Map<FSMTransition, Integer> coverage = countTransitionCoverage();
      for(Map.Entry<FSMTransition, Integer> a : coverage.entrySet()){
        ret += a.getKey().getName()+";"+a.getValue()+"\n";
      }
      return ret;
   }
   
-  public String transitionPairCoverage(){
-    //TODO: implement
-    /**
-     * Output something like this
-     * transition1;transition2;2
-     * transition2;transition3;0
-     * */
-    return null;
+  /**
+   * Output something like this
+   * transition1;transition2;2
+   * transition2;transition3;0
+   * */
+  @Override
+  public String getTransitionPairCoverage(){
+    String ret = "From;To;Count\n";
+    Map<String, Integer> coverage = countTransitionPairCoverage();
+    for(Map.Entry<String, Integer> a : coverage.entrySet()){
+      ret += a.getKey()+";"+a.getValue()+"\n";
+    }
+    return ret;
   }
   
   public String traceabilityMatrix(){
     //TODO: implement
-    return null;
-  }
-
-  @Override
-  public String getTransitionPairCoverage() {
-    // TODO Auto-generated method stub
     return null;
   }
 
