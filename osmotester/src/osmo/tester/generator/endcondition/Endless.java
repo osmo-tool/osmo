@@ -1,5 +1,6 @@
 package osmo.tester.generator.endcondition;
 
+import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 
 /**
@@ -10,7 +11,12 @@ import osmo.tester.model.FSM;
  */
 public class Endless implements EndCondition {
   @Override
-  public boolean endNow(FSM fsm, boolean evaluateSuite) {
+  public boolean endSuite(TestSuite suite, FSM fsm) {
+    return false;
+  }
+
+  @Override
+  public boolean endTest(TestSuite suite, FSM fsm) {
     return false;
   }
 }

@@ -1,5 +1,6 @@
 package osmo.tester.parser;
 
+import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 
 import java.lang.reflect.Field;
@@ -17,6 +18,7 @@ import java.lang.reflect.Method;
 public class ParserParameters {
   /** Describes the test model from test generation perspective. */
   private FSM fsm = null;
+  private TestSuite suite = null;
   /** The test model itself, providing executable methods for test generation. */
   private Object model = null;
   /** The annotation being currently processed. */
@@ -32,6 +34,14 @@ public class ParserParameters {
 
   public void setFsm(FSM fsm) {
     this.fsm = fsm;
+  }
+
+  public TestSuite getSuite() {
+    return suite;
+  }
+
+  public void setSuite(TestSuite suite) {
+    this.suite = suite;
   }
 
   public Object getModel() {

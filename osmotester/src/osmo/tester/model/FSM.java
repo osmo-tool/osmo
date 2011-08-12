@@ -40,14 +40,15 @@ public class FSM {
   /** List of state variables to store for each test step. */
   private Collection<VariableField> stateVariables = new ArrayList<VariableField>();
   /** The generated test suite (or one being generated). */
-  private final TestSuite testSuite = new TestSuite();
+  private final TestSuite suite;
   /** The list of requirements that needs to be covered. */
   private Requirements requirements;
 
   /**
    * Constructor.
    */
-  public FSM() {
+  public FSM(TestSuite suite) {
+    this.suite = suite;
   }
 
   /**
@@ -176,10 +177,6 @@ public class FSM {
     return afterSuites;
   }
 
-  public TestSuite getTestSuite() {
-    return testSuite;
-  }
-
   public Requirements getRequirements() {
     return requirements;
   }
@@ -201,7 +198,7 @@ public class FSM {
    */
   public void setRequirements(Requirements requirements) {
     this.requirements = requirements;
-    requirements.setTestSuite(testSuite);
+    requirements.setTestSuite(suite);
   }
 
   /**

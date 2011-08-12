@@ -1,5 +1,6 @@
 package osmo.tester.generator.endcondition;
 
+import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.log.Logger;
 import osmo.tester.model.FSM;
 
@@ -31,10 +32,19 @@ public class Probability implements EndCondition {
     this.threshold = threshold;
   }
 
-  @Override
-  public boolean endNow(FSM fsm, boolean evaluateSuite) {
+  public boolean endNow(TestSuite suite, FSM fsm) {
     double v = random.nextDouble();
     log.debug("value "+v+" threshold "+threshold);
     return v <= threshold;
+  }
+
+  @Override
+  public boolean endSuite(TestSuite suite, FSM fsm) {
+    return endNow(suite, fsm);
+  }
+
+  @Override
+  public boolean endTest(TestSuite suite, FSM fsm) {
+    return endNow(suite, fsm);
   }
 }

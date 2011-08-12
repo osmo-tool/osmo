@@ -34,7 +34,7 @@ public class TestSuiteFieldParser implements AnnotationParser {
         errors += name +" value was pre-initialized in the model, which is not allowed.\n";
         return errors;
       }
-      TestSuite suite = parameters.getFsm().getTestSuite();
+      TestSuite suite = parameters.getSuite();
       field.set(model, suite);
       log.debug("Value is now set to: "+suite);
     } catch (IllegalAccessException e) {

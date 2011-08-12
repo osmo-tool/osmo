@@ -1,5 +1,6 @@
 package osmo.tester.generator.endcondition;
 
+import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.log.Logger;
 import osmo.tester.model.FSM;
 import osmo.tester.model.Requirements;
@@ -27,8 +28,7 @@ public class RequirementsCoverage implements EndCondition {
     this.threshold = threshold;
   }
 
-  @Override
-  public boolean endNow(FSM fsm, boolean evaluateSuite) {
+  private boolean endNow(TestSuite suite, FSM fsm) {
     Requirements requirements = fsm.getRequirements();
     //covered includes "excess" that is the ones that are not registered so we remove those
     double covered = requirements.getCovered().size() - requirements.getExcess().size();
@@ -44,5 +44,15 @@ public class RequirementsCoverage implements EndCondition {
     }
     log.debug("threshold:"+threshold+" covered:"+percentage);
     return percentage >= threshold;
+  }
+
+  @Override
+  public boolean endSuite(TestSuite suite, FSM fsm) {
+    return endNow(suite, fsm);
+  }
+
+  @Override
+  public boolean endTest(TestSuite suite, FSM fsm) {
+    return endNow(suite, fsm);
   }
 }
