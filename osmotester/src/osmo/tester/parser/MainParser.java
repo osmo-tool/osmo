@@ -13,6 +13,7 @@ import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
+import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.log.Logger;
 import osmo.tester.model.FSM;
 
@@ -37,9 +38,11 @@ public class MainParser {
   private static Logger log = new Logger(MainParser.class);
   /** Key = Annotation type, Value = The parser object for that annotation. */
   private final Map<Class<? extends Annotation>, AnnotationParser> parsers = new HashMap<Class<? extends Annotation>, AnnotationParser>();
+  private final TestSuite suite;
 
-  public MainParser() {
-    //first we set up the parser objects for the different annotation types
+  public MainParser(TestSuite suite) {
+    this.suite = suite;
+    //we set up the parser objects for the different annotation types
     parsers.put(Transition.class, new TransitionParser());
     parsers.put(Guard.class, new GuardParser());
     parsers.put(AfterTest.class, new AfterTestParser());
@@ -76,7 +79,7 @@ public class MainParser {
    */
   public FSM parse(Collection<Object> modelObjects) {
     log.debug("parsing");
-    FSM fsm = new FSM();
+    FSM fsm = new FSM(suite);
     String errors = "";
     for (Object obj : modelObjects) {
       //first we check any annotated fields that are relevant
@@ -103,6 +106,7 @@ public class MainParser {
     //next we create the parameter object and insert the common parameters
     ParserParameters parameters = new ParserParameters();
     parameters.setFsm(fsm);
+    parameters.setSuite(suite);
     parameters.setModel(obj);
     String errors = "";
     //now we loop through all fields defined in the model object
@@ -155,6 +159,7 @@ public class MainParser {
     //construct and store common parameters first for all method parsers, update the rest each time
     ParserParameters parameters = new ParserParameters();
     parameters.setFsm(fsm);
+    parameters.setSuite(suite);
     parameters.setModel(obj);
     String errors = "";
     //loop through all the methods defined in the given object

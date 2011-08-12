@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.endcondition.Length;
+import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
@@ -29,13 +30,15 @@ import static junit.framework.Assert.*;
  * @author Teemu Kanstren
  */
 public class ParserTests {
+  private MainParser parser = null;
+
   @Before
   public void setup() {
+    parser = new MainParser(new TestSuite());
   }
 
   @Test
   public void testModel1() throws Exception {
-    MainParser parser = new MainParser();
     EmptyTestModel1 model = new EmptyTestModel1();
     FSM fsm = parser.parse(model);
     assertEquals("Number of @Before methods", 2, fsm.getBefores().size());
@@ -54,7 +57,6 @@ public class ParserTests {
 
   @Test
   public void testModel2() {
-    MainParser parser = new MainParser();
     try {
       FSM fsm = parser.parse(new EmptyTestModel2());
       fail("Should throw exception");
@@ -69,7 +71,6 @@ public class ParserTests {
 
   @Test
   public void testModel3() {
-    MainParser parser = new MainParser();
     try {
       FSM fsm = parser.parse(new EmptyTestModel3());
       fail("Should throw exception");
@@ -88,7 +89,6 @@ public class ParserTests {
 
   @Test
   public void testModel4() {
-    MainParser parser = new MainParser();
     try {
       FSM fsm = parser.parse(new EmptyTestModel4());
       fail("Should throw exception");
@@ -109,7 +109,6 @@ public class ParserTests {
 
   @Test
   public void testModel5() {
-    MainParser parser = new MainParser();
     try {
       FSM fsm = parser.parse(new EmptyTestModel5());
       fail("Should throw exception");
@@ -126,7 +125,6 @@ public class ParserTests {
 
   @Test
   public void testModel6() {
-    MainParser parser = new MainParser();
     try {
       FSM fsm = parser.parse(new EmptyTestModel6());
       fail("Should throw exception");
@@ -144,7 +142,6 @@ public class ParserTests {
 
   @Test
   public void testPartialModels() {
-    MainParser parser = new MainParser();
     Requirements req = new Requirements();
     PartialModel1 model1 = new PartialModel1(req, null);
     PartialModel2 model2 = new PartialModel2(req, null);
@@ -171,7 +168,6 @@ public class ParserTests {
 
   @Test
   public void noMethods() {
-    MainParser parser = new MainParser();
     try {
       FSM fsm = parser.parse(new Object());
       fsm.checkAndUpdateGenericItems("");
@@ -194,7 +190,6 @@ public class ParserTests {
 
   @Test
   public void variableParsing() {
-    MainParser parser = new MainParser();
     VariableModel1 model = new VariableModel1();
     FSM fsm = parser.parse(model);
     Collection<VariableField> variables = fsm.getStateVariables();

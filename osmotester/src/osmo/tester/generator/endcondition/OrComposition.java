@@ -1,5 +1,6 @@
 package osmo.tester.generator.endcondition;
 
+import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 
 /**
@@ -22,9 +23,20 @@ public class OrComposition implements EndCondition {
   }
 
   @Override
-  public boolean endNow(FSM fsm, boolean evaluateSuite) {
+  public boolean endSuite(TestSuite suite, FSM fsm) {
     for (EndCondition condition : conditions) {
-      if (condition.endNow(fsm, evaluateSuite)) {
+      if (condition.endSuite(suite, fsm)) {
+        //if any return true, the OR composition becomes true as well
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @Override
+  public boolean endTest(TestSuite suite, FSM fsm) {
+    for (EndCondition condition : conditions) {
+      if (condition.endTest(suite, fsm)) {
         //if any return true, the OR composition becomes true as well
         return true;
       }

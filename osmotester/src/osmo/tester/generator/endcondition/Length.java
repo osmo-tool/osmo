@@ -28,12 +28,14 @@ public class Length implements EndCondition {
   }
 
   @Override
-  public boolean endNow(FSM fsm, boolean evaluateSuite) {
-    TestSuite suite = fsm.getTestSuite();
-    log.debug("e:"+evaluateSuite+" h:"+suite.getTestCases().size()+" c:"+suite.currentSteps());
-    if (evaluateSuite) {
-      return suite.getTestCases().size() >= length;
-    }
+  public boolean endSuite(TestSuite suite, FSM fsm) {
+    log.debug(" es:"+suite.getTestCases().size()+" c:"+suite.currentSteps());
+    return suite.getTestCases().size() >= length;
+  }
+
+  @Override
+  public boolean endTest(TestSuite suite, FSM fsm) {
+    log.debug(" et:"+suite.getTestCases().size()+" c:"+suite.currentSteps());
     return suite.currentSteps() >= length;
   }
 }

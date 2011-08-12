@@ -7,6 +7,7 @@ import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.endcondition.Probability;
+import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.log.Logger;
 import osmo.tester.model.FSM;
 import osmo.tester.parser.MainParser;
@@ -36,6 +37,8 @@ public class OSMOTester {
   private FSMTraversalAlgorithm algorithm;
   /** Listeners to be notified about test generation events. */
   private GenerationListenerList listeners = new GenerationListenerList();
+  private TestSuite suite = new TestSuite();
+  private FSM fsm = null;
 
   /**
    * Create the tester with the initialized test model object.
@@ -65,7 +68,7 @@ public class OSMOTester {
    * Invoke this to perform actual test generation from the given model, with the given algorithms and strategies.
    */
   public void generate() {
-    MainGenerator generator = new MainGenerator();
+    MainGenerator generator = new MainGenerator(suite);
     if (algorithm == null) {
       //we do this here to avoid initializing from TestUtils.getRandom() before user calls setRandom() in this class
       algorithm = new RandomAlgorithm();
@@ -80,11 +83,19 @@ public class OSMOTester {
     generator.setSuiteEndConditions(suiteEndConditions);
     generator.setTestCaseEndConditions(testCaseEndConditions);
     generator.setListeners(listeners);
-    MainParser parser = new MainParser();
-    FSM fsm = parser.parse(modelObjects);
+    MainParser parser = new MainParser(suite);
+    fsm = parser.parse(modelObjects);
     generator.generate(fsm);
-    System.out.println("generated " + fsm.getTestSuite().getTestCases().size() + " tests.\n");
+    System.out.println("generated " + suite.getTestCases().size() + " tests.\n");
     System.out.println(fsm.getRequirements().printCoverage());
+  }
+
+  public TestSuite getSuite() {
+    return suite;
+  }
+
+  public FSM getFsm() {
+    return fsm;
   }
 
   /**
