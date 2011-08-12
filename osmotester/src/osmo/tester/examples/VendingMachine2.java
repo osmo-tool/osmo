@@ -9,6 +9,8 @@ import osmo.tester.annotation.Post;
 import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
+import osmo.tester.coverage.CSV;
+import osmo.tester.coverage.CoverageMetric;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
 
@@ -123,7 +125,10 @@ public class VendingMachine2 {
 
   public static void main(String[] args) {
     OSMOTester tester = new OSMOTester(new VendingMachine2());
-//    tester.setDebug(true);
     tester.generate();
+
+    //Print coverage metric
+    CSV csv = new CSV(tester.getSuite());
+    System.out.println("\n"+csv.getTransitionCounts());
   }
 }
