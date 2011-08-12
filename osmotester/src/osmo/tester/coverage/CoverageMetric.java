@@ -3,8 +3,11 @@ package osmo.tester.coverage;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -14,13 +17,16 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
 
 /**
- * This interface defines the coverage metric used for test generation.
+ * This class provides means to generate coverage metric reports from generated tests.
  * 
  * @author Olli-Pekka Puolitaival, Teemu Kanstrén
  */
 public abstract class CoverageMetric {
+  /** The test suite generation history. */
   private TestSuite testSuite = null;
+  /** For template->report generation. */
   private VelocityEngine velocity = new VelocityEngine();
+  /** For storing template variables. */
   private VelocityContext vc = new VelocityContext();
 
   public CoverageMetric(TestSuite ts) {
@@ -33,16 +39,14 @@ public abstract class CoverageMetric {
     return testSuite.getTransitionCoverage();
   }
   
-  protected Collection<TransitionPairCount> countTransitionPairs(){
-    Map<FSMTransition[], Integer> map = new HashMap<FSMTransition[], Integer>();
+  protected List<TransitionPairCount> countTransitionPairs(){
+    Map<TransitionPair, Integer> map = new HashMap<TransitionPair, Integer>();
     
     for(TestCase tc: testSuite.getTestCases()){
       FSMTransition previous = new FSMTransition("Start");
       for(TestStep ts: tc.getSteps()){
         FSMTransition next = ts.getTransition();
-        FSMTransition[] key = new FSMTransition[2];
-        key[0] = previous;
-        key[1] = next;
+        TransitionPair key = new TransitionPair(previous, next);
         Integer count = map.get(key);
         if (count == null) {
           count = 0;
@@ -51,10 +55,10 @@ public abstract class CoverageMetric {
         previous = ts.getTransition();
       }
     }
-    Collection<TransitionPairCount> tpc = new ArrayList<TransitionPairCount>();
-    for (Map.Entry<FSMTransition[], Integer> entry : map.entrySet()) {
-      FSMTransition[] pair = entry.getKey();
-      TransitionPairCount count = new TransitionPairCount(pair[0], pair[1], entry.getValue());
+    List<TransitionPairCount> tpc = new ArrayList<TransitionPairCount>();
+    for (Map.Entry<TransitionPair, Integer> entry : map.entrySet()) {
+      TransitionPair pair = entry.getKey();
+      TransitionPairCount count = new TransitionPairCount(pair, entry.getValue());
       tpc.add(count);
     }
     return tpc;
@@ -79,36 +83,43 @@ public abstract class CoverageMetric {
   }
   
   /**
-   * Returns Transition coverage table
-   * @return coverage metric in certain kind of format
+   * Creates a transition coverage count table, showing how many times each transition
+   * has been covered by test cases in test suite.
+   *
+   * @param templateName The name of Velocity template to format the results.
+   * @return Transition coverage formatted with given template.
    */
   public String getTransitionCounts(String templateName) {
     Map<FSMTransition, Integer> coverage = countTransitions();
-    Collection<TransitionCount> tc = new ArrayList<TransitionCount>();
+    List<TransitionCount> counts = new ArrayList<TransitionCount>();
 
     for (Map.Entry<FSMTransition, Integer> a : coverage.entrySet()) {
-      tc.add(new TransitionCount(a.getKey(), a.getValue()));
+      TransitionCount count = new TransitionCount(a.getKey(), a.getValue());
+      counts.add(count);
     }
-    vc.put("transitions", tc);
+    Collections.sort(counts);
+    vc.put("transitions", counts);
 
     StringWriter sw = new StringWriter();
     velocity.mergeTemplate(templateName, "UTF8", vc, sw);
-//    velocity.mergeTemplate("osmo/tester/coverage/templates/transition-coverage.html", "UTF8", vc, sw);
     return sw.toString();
   }
   
   /**
-   * 
-   * @return
+   * Creates a transition pair coverage count table, showing how many times each transition pair
+   * has been covered by test cases in test suite.
+   *
+   * @param templateName The name of Velocity template to format the results.
+   * @return Transition pair coverage formatted with given template.
    */
   public String getTransitionPairCounts(String templateName) {
-    Collection<TransitionPairCount> tpc = countTransitionPairs();
+    List<TransitionPairCount> tpc = countTransitionPairs();
+    Collections.sort(tpc);
 
     vc.put("pairs", tpc);
 
     StringWriter sw = new StringWriter();
     velocity.mergeTemplate(templateName, "UTF8", vc, sw);
-//    velocity.mergeTemplate("osmo/tester/coverage/templates/transition-coverage.html", "UTF8", vc, sw);
     return sw.toString();
   }
   

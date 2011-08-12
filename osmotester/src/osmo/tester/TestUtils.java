@@ -247,4 +247,35 @@ public class TestUtils {
     }
     return text.toString();
   }
+
+  /**
+   * Unifies line separators in given string by replacing all found instances with the given string.
+   * The set of replaces separators includes \r\n, \r and \n.
+   *
+   * @param toUnify
+   * @param ls
+   * @return
+   */
+  public static String unifyLineSeparators(String toUnify, String ls) {
+    char[] chars = toUnify.toCharArray();
+    StringBuilder sb = new StringBuilder(toUnify.length());
+    for (int i = 0 ; i < chars.length ; i++) {
+      char c = chars[i];
+      switch (c) {
+        case '\n':
+          sb.append(ls);
+          break;
+        case '\r':
+          sb.append(ls);
+          if ( chars.length >= i && chars[i+1] == '\n') {
+            i++;
+          }
+          break;
+        default:
+          sb.append(c);
+      }
+    }
+    return sb.toString();
+  }
+
 }
