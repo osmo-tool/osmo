@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class MainGenerator {
   private static Logger log = new Logger(MainGenerator.class);
-  /** Test generation history. Initialized from the given model to enable sharing the object with model and generator. */
+  /** Test generation history. */
   private final TestSuite suite;
   /** The set of enabled transitions in the current state is passed to this algorithm to pick one to execute. */
   private FSMTraversalAlgorithm algorithm;
@@ -112,11 +112,19 @@ public class MainGenerator {
     return true;
   }
 
+  /**
+   * Check if generation of current test case should stop based on given end conditions.
+   *
+   * @param fsm The model being used in test generation.
+   * @return True if this test generation should stop.
+   */
   private boolean checkTestCaseEndConditions(FSM fsm) {
     if (testEnding) {
+      //allow ending only if end state annotations are not present or return true
       return checkEndStates(fsm);
     }
     for (EndCondition ec : testCaseEndConditions) {
+      //check if all end conditions are met
       if (!ec.endTest(suite, fsm)) {
         return false;
       }
@@ -268,9 +276,5 @@ public class MainGenerator {
     //re-store state into transition to update parameters for post-methods
     transition.storeState(fsm);
     invokeAll(transition.getPostMethods(), transition.getPrePostParameter(), "post", transition);
-  }
-
-  public TestSuite getSuite() {
-    return suite;
   }
 }
