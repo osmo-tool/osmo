@@ -37,7 +37,9 @@ public class OSMOTester {
   private FSMTraversalAlgorithm algorithm;
   /** Listeners to be notified about test generation events. */
   private GenerationListenerList listeners = new GenerationListenerList();
+  /** The set of generated tests. */
   private TestSuite suite = new TestSuite();
+  /** The parsed model for test generation. */
   private FSM fsm = null;
 
   /**
