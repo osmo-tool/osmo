@@ -13,32 +13,28 @@ import static osmo.tester.TestUtils.*;
  * Notice that due to limitations of the Java generics type system, you have to either provide the type
  * as an explicit argument to the constructor or otherwise the type to be generated will be based on the
  * type of object passed as the "min" value of the range.
- *
+ * <p/>
  * To get integers do either
  * new ValueRange<Integer>(1,2); or
  * new ValueRange<Integer>(Integer.class, 1, 2);
- *
+ * <p/>
  * to get long values do either
  * new ValueRange<Long>(1l,2l); or
  * new ValueRange<Long>(Long.class, 1, 2);
- *
+ * <p/>
  * to get double values do either
  * new ValueRange<Double>(1d,2d); or
  * new ValueRange<Double>(Double.class, 1, 2);
- *
+ * <p/>
  * Omitting the type information will result in generation of integers.
  * It is also possible to use any of the specific functions such as nextInt(), nextLong() and nextDouble()
  * regardless of configured type.
  *
+ * @author Teemu Kanstren
  * @see Input
  * @see Output
- *
- * @author Teemu Kanstren
  */
 public class ValueRange<T extends Number> implements Input<T>, Output<T> {
-  /** Supported datatypes, each instance will be configured to produce one type based on given type information. */
-  public static enum DataType {INT, LONG, DOUBLE}
-
   /**
    * Minimum value for this value range.
    */
@@ -63,15 +59,19 @@ public class ValueRange<T extends Number> implements Input<T>, Output<T> {
    * The strategy for data generation.
    */
   private DataGenerationStrategy algorithm = DataGenerationStrategy.OPTIMIZED_RANDOM;
-  /** The actual type of data to be generated.*/
+  /**
+   * The actual type of data to be generated.
+   */
   private final DataType type;
+  /** Handles boundary scan data generation strategy. */
+  private final Boundary boundary;
 
   /**
    * Constructor that takes an explicit type argument for generation.
    *
    * @param type The type of data to be generated.
-   * @param min Minimum value of the range.
-   * @param max Maximum value of the range.
+   * @param min  Minimum value of the range.
+   * @param max  Maximum value of the range.
    */
   public ValueRange(Class<T> type, Number min, Number max) {
     this.min = min;
@@ -84,6 +84,7 @@ public class ValueRange<T extends Number> implements Input<T>, Output<T> {
     } else {
       this.type = DataType.DOUBLE;
     }
+    boundary = new Boundary(this.type, min, max);
   }
 
   /**
@@ -103,6 +104,7 @@ public class ValueRange<T extends Number> implements Input<T>, Output<T> {
     } else {
       this.type = DataType.DOUBLE;
     }
+    boundary = new Boundary(this.type, min, max);
   }
 
   public DataType getType() {
@@ -114,6 +116,11 @@ public class ValueRange<T extends Number> implements Input<T>, Output<T> {
    */
   public void setIncrement(Number increment) {
     this.increment = increment;
+    boundary.setIncrement(increment);
+  }
+
+  public void setCount(int count) {
+    boundary.setCount(count);
   }
 
   public Number min() {
@@ -143,7 +150,7 @@ public class ValueRange<T extends Number> implements Input<T>, Output<T> {
 
   @Override
   public T next() {
-    return (T)next(type);
+    return (T) next(type);
   }
 
   /**
@@ -159,7 +166,7 @@ public class ValueRange<T extends Number> implements Input<T>, Output<T> {
     } else if (algorithm == DataGenerationStrategy.OPTIMIZED_RANDOM) {
       value = nextOptimizedRandom(type);
     } else if (algorithm == DataGenerationStrategy.BOUNDARY_SCAN) {
-      value = nextBoundaryScan(type);
+      value = nextBoundaryScan();
     } else {
       //default to random
       value = nextRandom(type);
@@ -251,39 +258,11 @@ public class ValueRange<T extends Number> implements Input<T>, Output<T> {
   }
 
   public static void main(String[] args) {
-    new ValueRange<Integer>(0, 10).nextBoundaryScan(DataType.INT);
+    new ValueRange<Integer>(0, 10).nextBoundaryScan();
   }
 
-  //TODO: boundary size + looping
-  public Number nextBoundaryScan(DataType type) {
-    Collection<Number> values = new ArrayList<Number>();
-    Number minPlus = 0;
-    Number minMinus = 0;
-    Number maxPlus = 0;
-    Number maxMinus = 0;
-    values.add(min);
-    values.add(max);
-    for (int i = 0 ; i < 10 ; i++) {
-      Number value = null;
-      if (minPlus.equals(minMinus)) {
-        minPlus = minMinus.intValue() + increment.intValue();
-        value = min.intValue() + minPlus.intValue();
-      } else {
-        minMinus = minMinus.intValue() + increment.intValue();
-        value = min.intValue() - minPlus.intValue();
-      }
-      values.add(value);
-      if (maxPlus.equals(maxMinus)) {
-        maxPlus = maxMinus.intValue() + increment.intValue();
-        value = max.intValue() + maxPlus.intValue();
-      } else {
-        maxMinus = maxMinus.intValue() + increment.intValue();
-        value = max.intValue() - maxPlus.intValue();
-      }
-      values.add(value);
-    }
-    System.out.println("Values:"+values);
-    return null;
+  public Number nextBoundaryScan() {
+    return boundary.next();
   }
 
   /**

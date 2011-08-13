@@ -16,17 +16,17 @@ public class ObjectSetTests {
   @Before
   public void setup() {
     inv = new ValueSet<String>();
-    inv.addOption("one");
-    inv.addOption("two");
-    inv.addOption("three");
+    inv.add("one");
+    inv.add("two");
+    inv.add("three");
   }
 
   @Test
   public void orderedTest() {
     inv.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
-    inv.addOption("one");
-    inv.addOption("two");
-    inv.addOption("three");
+    inv.add("one");
+    inv.add("two");
+    inv.add("three");
     assertEquals("one", inv.next());
     assertEquals("two", inv.next());
     assertEquals("three", inv.next());
@@ -65,11 +65,11 @@ public class ObjectSetTests {
     for (int i = 0 ; i < 10 ; i++) {
       inv = new ValueSet<String>();
       inv.setStrategy(DataGenerationStrategy.OPTIMIZED_RANDOM);
-      inv.addOption("one");
-      inv.addOption("two");
-      inv.addOption("three");
-      inv.addOption("four");
-      inv.addOption("five");
+      inv.add("one");
+      inv.add("two");
+      inv.add("three");
+      inv.add("four");
+      inv.add("five");
       String reference = generateAndCheck();
       //make sure the generated values are in different order at least in once case
       if (v6 == null) {
@@ -87,11 +87,11 @@ public class ObjectSetTests {
     boolean diff = false;
     inv = new ValueSet<String>();
     inv.setStrategy(DataGenerationStrategy.OPTIMIZED_RANDOM);
-    inv.addOption("one");
-    inv.addOption("two");
-    inv.addOption("three");
-    inv.addOption("four");
-    inv.addOption("five");
+    inv.add("one");
+    inv.add("two");
+    inv.add("three");
+    inv.add("four");
+    inv.add("five");
     for (int i = 0 ; i < 10 ; i++) {
       String reference = generateAndCheck();
       //make sure the generated values are in different order at least in once case
@@ -132,8 +132,8 @@ public class ObjectSetTests {
     assertEquals("two", inv.next());
     inv.removeOption("one");
     assertEquals("three", inv.next());
-    inv.addOption("four");
-    inv.addOption("five");
+    inv.add("four");
+    inv.add("five");
     assertEquals("four", inv.next());
     inv.removeOption("three");
     assertEquals("five", inv.next());

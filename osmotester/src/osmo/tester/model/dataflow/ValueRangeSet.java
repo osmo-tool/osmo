@@ -45,11 +45,11 @@ public class ValueRangeSet<T extends Number> implements Input<T>, Output<T>{
     log.debug("Adding partition min("+min+") max("+max+")");
     validateRange(min, max);
     if (min instanceof Integer) {
-      partitions.addOption(new ValueRange<Integer>(Integer.class, min, max));
+      partitions.add(new ValueRange<Integer>(Integer.class, min, max));
     } else if (min instanceof Long) {
-      partitions.addOption(new ValueRange<Long>(Long.class, min, max));
+      partitions.add(new ValueRange<Long>(Long.class, min, max));
     } else {
-      partitions.addOption(new ValueRange<Double>(Double.class, min, max));
+      partitions.add(new ValueRange<Double>(Double.class, min, max));
     }
   }
 
@@ -65,7 +65,7 @@ public class ValueRangeSet<T extends Number> implements Input<T>, Output<T>{
   public void addPartition(Class<T> type, Number min, Number max) {
     log.debug("Adding partition min("+min+") max("+max+")");
     validateRange(min, max);
-    partitions.addOption(new ValueRange<T>(type, min, max));
+    partitions.add(new ValueRange<T>(type, min, max));
   }
 
   private void validateRange(Number min, Number max) {
@@ -151,9 +151,9 @@ public class ValueRangeSet<T extends Number> implements Input<T>, Output<T>{
     validate();
     ValueRange i = nextPartition();
 //    history.add(value);
-    if (i.getType() == ValueRange.DataType.INT) {
+    if (i.getType() == DataType.INT) {
       return (T)new Integer(i.nextInt());
-    } else if (i.getType() == ValueRange.DataType.LONG) {
+    } else if (i.getType() == DataType.LONG) {
       return (T)new Long(i.nextLong());
     } else {
       return (T)new Double(i.nextDouble());

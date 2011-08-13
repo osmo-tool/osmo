@@ -69,7 +69,7 @@ public class ValueSet<T> implements Input<T>, Output<T> {
    *
    * @param option The object to be added.
    */
-  public void addOption(T option) {
+  public void add(T option) {
     options.add(option);
   }
 
@@ -112,15 +112,18 @@ public class ValueSet<T> implements Input<T>, Output<T> {
       throw new IllegalStateException("No value to provide (add some options).");
     }
     T next = null;
-    if (strategy == DataGenerationStrategy.ORDERED_LOOP) {
-      next = orderedLoopChoice();
-    }
-    if (strategy == DataGenerationStrategy.OPTIMIZED_RANDOM) {
-      next = optimizedRandomChoice();
-    }
-    //here we default to RANDOM
-    if (next == null) {
-      next = oneOf(options);
+    switch (strategy) {
+      case ORDERED_LOOP:
+        next = orderedLoopChoice();
+        break;
+      case OPTIMIZED_RANDOM:
+        next = optimizedRandomChoice();
+        break;
+      case RANDOM:
+        next = oneOf(options);
+        break;
+      default:
+        throw new IllegalArgumentException("Unsupported strategy ("+strategy.name()+") for "+ValueSet.class.getSimpleName());
     }
     history.add(next);
     return next;

@@ -250,7 +250,7 @@ public class ValueRangeSetTests {
   }
 
   @Test
-  public void testIntGenerationWithSingleValue() {
+  public void intGenerationWithSingleValue() {
     ValueRangeSet ni = new ValueRangeSet();
     ni.addPartition(1d, 1d);
     ni.addPartition(11d, 11d);
@@ -267,7 +267,7 @@ public class ValueRangeSetTests {
   }
 
   @Test
-  public void testIntGenerationWithTwoValues() {
+  public void intGenerationWithTwoValues() {
     ValueRangeSet ni = new ValueRangeSet();
     ni.addPartition(1d, 2d);
     ni.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
@@ -290,28 +290,34 @@ public class ValueRangeSetTests {
   public void generics() {
     ValueRangeSet<Integer> vrs1 = new ValueRangeSet<Integer>();
     vrs1.addPartition(1, 2);
-    Object o1 = vrs1.next();
+    Integer o1 = vrs1.next();
     assertEquals("Integer value range should produce integers..", Integer.class, o1.getClass());
 
     ValueRangeSet<Long> vrs2 = new ValueRangeSet<Long>();
     vrs2.addPartition(Long.class, 1, 2);
-    Object o2 = vrs2.next();
+    Long o2 = vrs2.next();
     assertEquals("Long value range should produce longs..", Long.class, o2.getClass());
 
     ValueRangeSet<Long> vrs3 = new ValueRangeSet<Long>();
     vrs3.addPartition(1l, 2l);
-    Object o3 = vrs3.next();
+    Long o3 = vrs3.next();
     assertEquals("Long value range should produce longs..", Long.class, o3.getClass());
 
 
     ValueRangeSet<Double> vrs4 = new ValueRangeSet<Double>();
     vrs4.addPartition(Double.class, 1, 2);
-    Object o4 = vrs4.next();
+    Double o4 = vrs4.next();
     assertEquals("Double value range should produce doubles..", Double.class, o4.getClass());
 
     ValueRangeSet<Double> vrs5 = new ValueRangeSet<Double>();
     vrs5.addPartition(1d, 2d);
-    Object o5 = vrs5.next();
+    Double o5 = vrs5.next();
     assertEquals("Double value range should produce doubles..", Double.class, o5.getClass());
+  }
+
+  private void assertValues(ValueRangeSet<Double> range, double... expected) {
+    for (double i : expected) {
+      assertEquals(i, range.next());
+    }
   }
 }
