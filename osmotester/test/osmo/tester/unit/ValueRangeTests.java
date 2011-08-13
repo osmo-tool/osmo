@@ -76,8 +76,32 @@ public class ValueRangeTests {
   }
 
   @Test
-  public void boundaryScan() {
-    fail("TBD");//add tests for boundaries, including size of boundary scan
+  public void boundaryScanDefault() {
+    ValueRange<Integer> range = new ValueRange<Integer>(10, 20);
+    range.setStrategy(DataGenerationStrategy.BOUNDARY_SCAN);
+    assertValues(range, 10, 20, 11, 21, 9, 19, 12, 22, 8, 18, 13, 23, 7, 17, 14, 24, 6, 16, 15, 25, 5, 15, 10, 20);
+  }
+
+  @Test
+  public void boundaryScan0() {
+    ValueRange<Integer> range = new ValueRange<Integer>(10, 20);
+    range.setStrategy(DataGenerationStrategy.BOUNDARY_SCAN);
+    range.setCount(0);
+    assertValues(range, 10, 20, 10, 20);
+  }
+
+  @Test
+  public void boundaryScan1() {
+    ValueRange<Integer> range = new ValueRange<Integer>(10, 20);
+    range.setStrategy(DataGenerationStrategy.BOUNDARY_SCAN);
+    range.setCount(1);
+    assertValues(range, 10, 20, 11, 21, 9, 19, 10, 20, 11, 21, 9, 19, 10, 20);
+  }
+
+  private void assertValues(ValueRange<Integer> range, int... expected) {
+    for (int i : expected) {
+      assertEquals(i, range.next().intValue());
+    }
   }
   //TODO: whine about reified generics
 }
