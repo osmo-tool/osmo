@@ -44,6 +44,11 @@ public class TransitionPairCount implements Comparable<TransitionPairCount> {
       String name1 = pair.getFrom().getName();
       String name2 = o.getFrom().getName();
       countDiff = name1.compareTo(name2);
+      if (countDiff == 0) {
+        name1 = pair.getTo().getName();
+        name2 = o.getTo().getName();
+        countDiff = name1.compareTo(name2);
+      }
     }
     return countDiff;
   }

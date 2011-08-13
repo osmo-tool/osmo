@@ -2,6 +2,7 @@ package osmo.tester.coverage;
 
 import java.util.Map;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
 /**
@@ -10,9 +11,8 @@ import osmo.tester.model.FSMTransition;
  * @author Olli-Pekka Puolitaival, Teemu Kanstrén
  */
 public class CSV extends CoverageMetric {
-  
-  public CSV(TestSuite ts) {
-    super(ts);
+  public CSV(TestSuite ts, FSM fsm) {
+    super(ts, fsm);
   }
 
   public String getTransitionCounts(){
@@ -34,14 +34,8 @@ public class CSV extends CoverageMetric {
     return null;
   }
 
-  @Override
-  public String getRequirementsCounts() {
-    String ret = "Name;Count\n";
-    Map<String, Integer> coverage = countRequirements();
-    for(Map.Entry<String, Integer> a : coverage.entrySet()){
-      ret += a.getKey()+";"+a.getValue()+"\n";
-    }
-    return ret;
+  public String getRequirementCounts() {
+    return super.getRequirementsCounts("osmo/tester/coverage/templates/requirement-coverage.csv");
   }
 
   @Override
