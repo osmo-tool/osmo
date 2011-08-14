@@ -1,4 +1,4 @@
-package osmo.tester.coverage;
+package osmo.tester.reporting.coverage;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeSet;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
