@@ -42,6 +42,8 @@ public class TestCase {
   private final Map<String, Object> properties = new HashMap<String, Object>();
   /** The next identifier in line to set for test cases. */
   private static AtomicInteger nextId = new AtomicInteger(1);
+  /** Identifier for next test case step. */
+  private int nextStepId = 1;
 
   public TestCase() {
     this.id = nextId.getAndIncrement();
@@ -111,10 +113,14 @@ public class TestCase {
    * @param transition The transition for the test step. 
    */
   public TestStep addStep(FSMTransition transition) {
-    TestStep step = new TestStep(transition);
+    TestStep step = new TestStep(transition, nextStepId++);
     steps.add(step);
     currentStep = step;
     return step;
+  }
+
+  public void setStepProperty(String name, Object value) {
+    currentStep.setProperty(name, value);
   }
 
   /**

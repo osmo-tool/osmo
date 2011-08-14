@@ -1,9 +1,7 @@
-package osmo.tester.coverage;
+package osmo.tester.reporting.coverage;
 
-import java.util.Map;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
-import osmo.tester.model.FSMTransition;
 
 /**
  * Returns coverage tables in comma separate value (CSV) format
@@ -17,7 +15,7 @@ public class CSV extends CoverageMetric {
 
   public String getTransitionCounts(){
     //note: for this to work, you need to have the IDE or build script copy the .csv files to the same location on the output dir (alongside the java classes)
-    return super.getTransitionCounts("osmo/tester/coverage/templates/transition-coverage.csv");
+    return super.getTransitionCounts("osmo/tester/reporting/coverage/templates/transition-coverage.csv");
   }
   
   /**
@@ -26,7 +24,7 @@ public class CSV extends CoverageMetric {
    * transition2;transition3;0
    * */
   public String getTransitionPairCounts(){
-    return super.getTransitionPairCounts("osmo/tester/coverage/templates/transitionpair-coverage.csv");
+    return super.getTransitionPairCounts("osmo/tester/reporting/coverage/templates/transitionpair-coverage.csv");
   }
   
   public String traceabilityMatrix(){
@@ -35,7 +33,7 @@ public class CSV extends CoverageMetric {
   }
 
   public String getRequirementCounts() {
-    return super.getRequirementsCounts("osmo/tester/coverage/templates/requirement-coverage.csv");
+    return super.getRequirementsCounts("osmo/tester/reporting/coverage/templates/requirement-coverage.csv");
   }
 
   @Override

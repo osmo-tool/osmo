@@ -1,4 +1,4 @@
-package osmo.tester.coverage;
+package osmo.tester.reporting.coverage;
 
 import osmo.tester.model.FSMTransition;
 

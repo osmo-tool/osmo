@@ -29,14 +29,23 @@ public class TestStep {
   private Map<String, Object> stateValuesBefore = new HashMap<String, Object>();
   /** Stores values of all {@link Variable} annotated fields in the model after this step was generated. */
   private Map<String, Object> stateValuesAfter = new HashMap<String, Object>();
+  /** Properties to be reported as parameters during this test step. */
+  private Map<String, Object> properties = new HashMap<String, Object>();
+  /** Step identifier. */
+  private final int id;
 
   /**
    * Constructor.
    *
    * @param transition The transition that was taken in this test step.
    */
-  public TestStep(FSMTransition transition) {
+  public TestStep(FSMTransition transition, int id) {
     this.transition = transition;
+    this.id = id;
+  }
+
+  public int getId() {
+    return id;
   }
 
   /**
@@ -106,5 +115,19 @@ public class TestStep {
     for (VariableField variable : variables) {
       stateValuesAfter.put(variable.getName(), variable.getValue());
     }
+  }
+
+  /**
+   * Add a new parameter value for this step.
+   *
+   * @param name Parameter name.
+   * @param value Parameter value.
+   */
+  public void setProperty(String name, Object value) {
+    properties.put(name, value);
+  }
+
+  public Map<String, Object> getProperties() {
+    return properties;
   }
 }
