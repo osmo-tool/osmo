@@ -52,11 +52,11 @@
     <javac source="1.5" target="1.5" classpathref="class.path" srcdir="${test-src}" destdir="${test-dest}"/>
   </target>
 
-  <target name="jar" depends="compile" description="Create jar file">
+  <target name="jar" depends="compile,copyresources" description="Create jar file">
     <jar destfile="osmotester.jar" basedir="${prod-dest}"/>
   </target>
 
-  <target name="test" depends="clean, compile">
+  <target name="test" depends="clean, compile, copyresources">
     <cobertura-instrument todir="${instrumented-dest}">
       <fileset dir="${prod-dest}">
         <include name="**/*.class"/>
@@ -92,6 +92,23 @@
         <include name="osmo/tester/**"/>
       </packageset>
     </javadoc>
+  </target>
+
+  <target name="copyresources" depends="init,compile">
+    <copy todir="${prod-dest}">
+      <fileset dir="${prod-src}">
+        <include name="**/*.html"/>
+        <include name="**/*.csv"/>
+        <include name="**/*.xml"/>
+      </fileset>
+    </copy>
+    <copy todir="${test-dest}">
+      <fileset dir="${test-src}">
+        <include name="**/*.html"/>
+        <include name="**/*.csv"/>
+        <include name="**/*.xml"/>
+      </fileset>
+    </copy>
   </target>
 
   <target name="jenkins" depends="test, javadocs"/>
