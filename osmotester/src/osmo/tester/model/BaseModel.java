@@ -26,7 +26,7 @@ public class BaseModel {
   protected TestCase test = null;
   /** The suite being generated. */
   @TestSuiteField
-  public TestSuite suite = null;
+  public TestSuite suite = new TestSuite();
   /** For defining requirements. */
   @RequirementsField
   protected Requirements req = new Requirements();
@@ -59,44 +59,5 @@ public class BaseModel {
     }
     //set this transition as the "previous" one, which means of course that no @Post can rely on this
     previous = steps.get(size-1);
-  }
-
-  /**
-   * Marks the current test case as failed. Mostly only useful for reporting in online tests.
-   */
-  public void failed() {
-    test.fail();
-  }
-
-  /**
-   * Tells if the current test has been marked as failed or not.
-   *
-   * @return True if the test has been marked as failed.
-   */
-  public boolean isFailed() {
-    return !test.isSuccess();
-  }
-
-  /**
-   * This is to allow the user to store the test script for whatever purposes they like.
-   * The script is not used by OSMOTester but it can be useful to store this and other properties
-   * in case later an optimizer is run to modify the test suite ordering etc. and the script is not
-   * optimal to store at the moment of creation.
-   *
-   * @param script New script for this test case.
-   */
-  public void setScript(String script) {
-    test.setScript(script);
-  }
-
-  /**
-   * Sets given property for test case to given value. This is to give the user a chance to store any
-   * properties they like and do with the what they like. They are not used by OSMOTester itself.
-   *
-   * @param key Identifier for property.
-   * @param value The new value for the property.
-   */
-  public void setProperty(String key, Object value) {
-    test.setProperty(key, value);
   }
 }

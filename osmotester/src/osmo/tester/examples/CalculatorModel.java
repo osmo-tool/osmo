@@ -26,7 +26,7 @@ public class CalculatorModel {
   @RequirementsField
   private Requirements requirement = new Requirements();
   @TestSuiteField
-  private TestSuite history = null;
+  private TestSuite history = new TestSuite();
   private int counter = 0;
   private int testCount = 1;
   private static final String REQ_INCREASE = "increase";

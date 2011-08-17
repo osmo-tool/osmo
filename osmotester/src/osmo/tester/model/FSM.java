@@ -40,15 +40,26 @@ public class FSM {
   /** List of state variables to store for each test step. */
   private Collection<VariableField> stateVariables = new ArrayList<VariableField>();
   /** The generated test suite (or one being generated). */
-  private final TestSuite suite;
+  private TestSuite suite;
   /** The list of requirements that needs to be covered. */
   private Requirements requirements;
 
   /**
    * Constructor.
    */
-  public FSM(TestSuite suite) {
+  public FSM() {
+  }
+
+  public void setSuite(TestSuite suite) {
     this.suite = suite;
+    if (requirements != null) {
+      log.debug("Setting suite to requirements");
+      requirements.setTestSuite(suite);
+    }
+  }
+
+  public TestSuite getSuite() {
+    return suite;
   }
 
   /**
@@ -91,6 +102,11 @@ public class FSM {
       log.debug("No requirements object defined. Creating new.");
       //user the setRequirements method to also initialize the requirements object missing state
       setRequirements(new Requirements());
+    }
+    if (suite == null) {
+      log.debug("No suite object defined. Creating new.");
+      //user the setSuite method to also initialize the suite object missing state
+      setSuite(new TestSuite());
     }
     if (transitions.size() == 0) {
       errors += "No transitions found in given model object. Model cannot be processed.\n";

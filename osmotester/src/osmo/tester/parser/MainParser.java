@@ -38,10 +38,8 @@ public class MainParser {
   private static Logger log = new Logger(MainParser.class);
   /** Key = Annotation type, Value = The parser object for that annotation. */
   private final Map<Class<? extends Annotation>, AnnotationParser> parsers = new HashMap<Class<? extends Annotation>, AnnotationParser>();
-  private final TestSuite suite;
 
-  public MainParser(TestSuite suite) {
-    this.suite = suite;
+  public MainParser() {
     //we set up the parser objects for the different annotation types
     parsers.put(Transition.class, new TransitionParser());
     parsers.put(Guard.class, new GuardParser());
@@ -79,7 +77,7 @@ public class MainParser {
    */
   public FSM parse(Collection<Object> modelObjects) {
     log.debug("parsing");
-    FSM fsm = new FSM(suite);
+    FSM fsm = new FSM();
     String errors = "";
     for (Object obj : modelObjects) {
       //first we check any annotated fields that are relevant
@@ -106,7 +104,6 @@ public class MainParser {
     //next we create the parameter object and insert the common parameters
     ParserParameters parameters = new ParserParameters();
     parameters.setFsm(fsm);
-    parameters.setSuite(suite);
     parameters.setModel(obj);
     String errors = "";
     //now we loop through all fields defined in the model object
@@ -159,7 +156,6 @@ public class MainParser {
     //construct and store common parameters first for all method parsers, update the rest each time
     ParserParameters parameters = new ParserParameters();
     parameters.setFsm(fsm);
-    parameters.setSuite(suite);
     parameters.setModel(obj);
     String errors = "";
     //loop through all the methods defined in the given object

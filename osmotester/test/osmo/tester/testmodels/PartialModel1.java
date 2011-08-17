@@ -21,7 +21,7 @@ public class PartialModel1 {
   @RequirementsField
   private final Requirements req;
   @TestSuiteField
-  private TestSuite history = null;
+  private TestSuite history = new TestSuite();
   public static final String REQ_HELLO = "hello";
   public static final String REQ_WORLD = "world";
   public static final String REQ_EPIX = "epix";

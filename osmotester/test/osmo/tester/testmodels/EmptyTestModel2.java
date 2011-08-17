@@ -15,9 +15,9 @@ public class EmptyTestModel2 {
   @RequirementsField
   private Requirements req2 = new Requirements();
   @TestSuiteField
-  private TestSuite suite1 = null;
+  private TestSuite suite1 = new TestSuite();
   @TestSuiteField
-  private TestSuite suite2 = null;
+  private TestSuite suite2 = new TestSuite();
 
   @Guard("foo")
   public boolean hello() {

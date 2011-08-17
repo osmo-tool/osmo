@@ -1,12 +1,16 @@
 package osmo.tester.reporting.tests;
 
 import org.junit.Test;
+import osmo.tester.OSMOTester;
+import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.log.Logger;
 import osmo.tester.model.FSMTransition;
+import osmo.tester.testmodels.ParameterModel1;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 import static junit.framework.Assert.assertEquals;
 import static osmo.tester.TestUtils.getResource;
@@ -15,26 +19,18 @@ import static osmo.tester.TestUtils.unifyLineSeparators;
 /**
  * @author Teemu Kanstren
  */
-public class TestReporterTests {
+public class CSVTests {
   @Test
   public void csvSteps() {
-    Logger.debug = true;
-    TestSuite suite = new TestSuite();
-    suite.startTest();
-    suite.addStep(new FSMTransition("one"));
-    suite.setStepProperty("p1", "hello");
-    suite.setStepProperty("p2", "world");
-    suite.setStepProperty("p3", "dude");
-    suite.addStep(new FSMTransition("two"));
-    suite.setStepProperty("p4", "extra");
-    suite.addStep(new FSMTransition("two"));
-    suite.endTest();
-    suite.startTest();
-    suite.addStep(new FSMTransition("one111"));
-    suite.setStepProperty("p11", "hello11");
-    suite.endTest();
-    CSV csv = new CSV(suite, null);
-    List<String> report = csv.report();
+    OSMOTester osmo = new OSMOTester();
+    ParameterModel1 model = new ParameterModel1();
+    osmo.addModelObject(model);
+    osmo.addTestEndCondition(new Length(10));
+    osmo.addSuiteEndCondition(new Length(2));
+    osmo.setRandom(new Random(1));
+    osmo.generate();
+    List<String> report = model.getResult();
+
     assertEquals("Should generate 2 reports for 2 tests", 2, report.size());
     String report1 = unifyLineSeparators(report.get(0), "\n");
     String report2 = unifyLineSeparators(report.get(1), "\n");

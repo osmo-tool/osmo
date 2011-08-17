@@ -31,7 +31,7 @@ public class VendingExample {
   private int coins = 0;
   private int bottles = 10;
   @TestSuiteField
-  private TestSuite testSuite = null;
+  private TestSuite testSuite = new TestSuite();
 
   public VendingExample() {
     scripter = new Scripter(System.out);

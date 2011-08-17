@@ -3,17 +3,20 @@ package osmo.tester.reporting.tests;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
  * @author Teemu Kanstren
  */
 public class CSV {
-  private final StepInfo info;
+  private final ParameterReportBuilder info;
 
-  public CSV(TestSuite suite, FSM fsm) {
-    info = new StepInfo(suite, fsm);
+  public CSV(TestSuite suite) {
+    info = new ParameterReportBuilder(suite);
+  }
+
+  public void addParameter(String name, Object value) {
+    info.addParameter(name, value);
   }
 
   public List<String> report() {
