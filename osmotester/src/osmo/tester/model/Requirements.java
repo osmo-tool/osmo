@@ -1,6 +1,7 @@
 package osmo.tester.model;
 
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.log.Logger;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.TreeSet;
  * @author Teemu Kanstren
  */
 public class Requirements {
+  private static Logger log = new Logger(Requirements.class);
   /** The overall set of requirements that should be covered. */
   private List<String> requirements = new ArrayList<String>();
   /** The set of requirements that have been covered. */
@@ -28,6 +30,7 @@ public class Requirements {
   private TestSuite testSuite = null;
 
   public void setTestSuite(TestSuite testSuite) {
+    log.debug("Setting test suite:"+testSuite);
     this.testSuite = testSuite;
   }
 

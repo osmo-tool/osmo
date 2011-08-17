@@ -24,7 +24,7 @@ import java.util.List;
 public class MainGenerator {
   private static Logger log = new Logger(MainGenerator.class);
   /** Test generation history. */
-  private final TestSuite suite;
+  private TestSuite suite;
   /** The set of enabled transitions in the current state is passed to this algorithm to pick one to execute. */
   private FSMTraversalAlgorithm algorithm;
   /** Defines when test suite generation should be stopped. Invoked between each test case. */
@@ -39,8 +39,7 @@ public class MainGenerator {
   /**
    * Constructor.
    */
-  public MainGenerator(TestSuite suite) {
-    this.suite = suite;
+  public MainGenerator() {
   }
 
   /**
@@ -81,6 +80,7 @@ public class MainGenerator {
    * @param fsm Describes the test model in an FSM format.
    */
   public void generate(FSM fsm) {
+    suite = fsm.getSuite();
     log.debug("Starting test suite generation");
     beforeSuite(fsm);
     while (!checkSuiteEndConditions(fsm)) {

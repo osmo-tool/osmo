@@ -183,9 +183,4 @@ public class TestSuite {
     }
     return false;
   }
-
-  public void setStepProperty(String name, Object value) {
-    current.setStepProperty(name, value);
-  }
-
 }

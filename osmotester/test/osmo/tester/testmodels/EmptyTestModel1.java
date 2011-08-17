@@ -25,7 +25,7 @@ public class EmptyTestModel1 {
   @RequirementsField
   private Requirements requirements = new Requirements();
   @TestSuiteField
-  private TestSuite history = null;
+  private TestSuite history = new TestSuite();
 
   public TestSuite getHistory() {
     return history;

@@ -20,8 +20,6 @@ import java.io.PrintStream;
 public class PartialModel2 {
   @RequirementsField
   private final Requirements req;
-  @TestSuiteField
-  private TestSuite history = null;
   public static final String REQ_HELLO = "hello";
   public static final String REQ_WORLD = "world";
   public static final String REQ_EPIX = "epix";
@@ -30,10 +28,6 @@ public class PartialModel2 {
   public PartialModel2(Requirements req, PrintStream out) {
     this.req = req;
     this.out = out;
-  }
-
-  public TestSuite getHistory() {
-    return history;
   }
 
   @AfterSuite

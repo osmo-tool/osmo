@@ -25,6 +25,7 @@ public class CompositionTests {
 
     CalculatorModel calculator = new CalculatorModel();
     OSMOTester tester = new OSMOTester(calculator);
+    tester.setDebug(true);
     tester.addTestEndCondition(and);
     tester.addSuiteEndCondition(length2);
     tester.generate();

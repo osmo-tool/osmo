@@ -44,7 +44,7 @@ public class CoverageTests {
     addStep("eight");
     suite.endTest();
 
-    fsm = new FSM(suite);
+    fsm = new FSM();
     fsm.createTransition("one", 0);
     fsm.createTransition("two", 0);
     fsm.createTransition("three", 0);

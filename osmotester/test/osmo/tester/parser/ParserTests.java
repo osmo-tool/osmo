@@ -34,7 +34,7 @@ public class ParserTests {
 
   @Before
   public void setup() {
-    parser = new MainParser(new TestSuite());
+    parser = new MainParser();
   }
 
   @Test
@@ -64,6 +64,7 @@ public class ParserTests {
       String msg = e.getMessage();
       String expected = "Invalid FSM:\n" +
               "Only one @RequirementsField allowed in the model.\n" +
+              "Only one @TestSuiteField allowed in the model.\n"+
               "Guard/Pre/Post without transition:foo\n";
       assertEquals(expected, msg);
     }
@@ -98,7 +99,6 @@ public class ParserTests {
       String msg = e.getMessage();
       String expected = "Invalid FSM:\n" +
               "@RequirementsField value was null, which is not allowed.\n"+
-              "@TestSuiteField value was pre-initialized in the model, which is not allowed.\n"+
               "Guard methods are not allowed to have parameters: \"hello()\" has 1 parameters.\n"+
               "@EndCondition methods are not allowed to have parameters: \"ending()\" has 1 parameters.\n"+
               "@EndState methods are not allowed to have parameters: \"endd()\" has 1 parameters.\n"+
@@ -158,11 +158,9 @@ public class ParserTests {
     assertTransitionPresent(fsm, "world", 3, 2);
     assertTransitionPresent(fsm, "epixx", 2, 2);
     assertEquals("Number of end conditions", 2, fsm.getEndConditions().size());
-    assertNotNull("Should have TestLog set", model1.getHistory());
-    assertNotNull("Should have TestLog set", model2.getHistory());
+    assertNotNull("Should have TestSuite set", model1.getHistory());
     String s = "";
     String s1 = "";
-    assertTrue("TestLog should be the same in partial models", model1.getHistory() == model2.getHistory());
     assertNotNull("Should have Requirements set", fsm.getRequirements());
   }
 
