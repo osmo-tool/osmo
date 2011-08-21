@@ -16,6 +16,12 @@ public class Logger {
   private java.util.logging.Logger logger;
   /** When set to true, debug information will be printed to log file/console. */
   public static boolean debug = false;
+  /** Log file handler, shared to keep from creating numerous log files. */
+  private static FileHandler file;
+  /** Name of the log file to be written. */
+  private final String filename = "osmotester.log";
+  /** Used for synchronization. */
+  private final Object lock = new Object();
 
   /**
    * Constructor.
@@ -45,9 +51,12 @@ public class Logger {
     console.setFormatter(new LogFormatter());
     console.setLevel(level);
     logger.addHandler(console);
-    String filename = "osmotester.log";
     try {
-      FileHandler file = new FileHandler(filename, false);
+      synchronized (lock) {
+        if (file == null) {
+          file = new FileHandler(filename, false);
+        }
+      }
       logger.addHandler(file);
       file.setFormatter(new LogFormatter());
       file.setLevel(level);

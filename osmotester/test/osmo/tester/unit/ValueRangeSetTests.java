@@ -96,7 +96,6 @@ public class ValueRangeSetTests {
   @Test
   public void optimizedRandomInput() {
     OSMOTester osmo = new OSMOTester();
-    osmo.setDebug(true);
     ValueRangeSet ni = new ValueRangeSet();
     ni.addPartition(10d, 100d);
     ni.addPartition(150d, 200d);
@@ -172,7 +171,6 @@ public class ValueRangeSetTests {
   @Test
   public void evaluationWithOnePartition() {
     OSMOTester osmo = new OSMOTester();
-    osmo.setDebug(true);
     ValueRangeSet ni = new ValueRangeSet();
     ni.addPartition(10d, 100d);
     //TODO: test data generation with boundaries for partitions
