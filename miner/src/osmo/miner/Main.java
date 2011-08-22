@@ -4,6 +4,9 @@ import javax.swing.*;
 import javax.swing.plaf.TreeUI;
 import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.tree.DefaultTreeCellRenderer;
+
+import osmo.miner.gui.MainForm;
+
 import java.awt.*;
 import java.io.InputStream;
 import java.net.URL;
@@ -17,8 +20,6 @@ public class Main {
   }
 
   public void main2() throws Exception {
-    JFrame frame = new JFrame("OSMO Miner");
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     try {
       for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
         if ("Nimbus".equals(info.getName())) {
@@ -30,10 +31,7 @@ public class Main {
       //if Nimbus does not exist, you are out of luck
       System.out.println("No Nimbus look and feel found. The GUI is not going to be pretty now..");
     }
-    JTree files = new JTree();
-
-    frame.getContentPane().add(files, BorderLayout.WEST);
-    frame.setSize(800, 600);
-    frame.setVisible(true);
+    MainForm form = new MainForm();
+    
   }
 }
