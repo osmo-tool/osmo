@@ -5,7 +5,7 @@ import javax.swing.plaf.TreeUI;
 import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import osmo.miner.gui.MainForm;
+import osmo.miner.gui.mainform.MainForm;
 
 import java.awt.*;
 import java.io.InputStream;
@@ -28,10 +28,10 @@ public class Main {
         }
       }
     } catch (Exception e) {
-      //if Nimbus does not exist, you are out of luck
+      // if Nimbus does not exist, you are out of luck
       System.out.println("No Nimbus look and feel found. The GUI is not going to be pretty now..");
     }
     MainForm form = new MainForm();
-    
+
   }
 }
