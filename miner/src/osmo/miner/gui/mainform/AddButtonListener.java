@@ -2,6 +2,7 @@ package osmo.miner.gui.mainform;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JFileChooser;
 
@@ -17,6 +18,7 @@ public class AddButtonListener implements ActionListener {
   @Override
   public void actionPerformed(ActionEvent e) {
     fc.showOpenDialog(parent);
+    File[] files = fc.getSelectedFiles();
   }
 
 }
