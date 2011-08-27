@@ -1,7 +1,11 @@
 package osmo.miner.model;
 
 public class HierarchyModel {
-  private Node current = new Node(null, "root");
+  private Node current = null;
+
+  public HierarchyModel(Node current) {
+    this.current = current;
+  }
 
   public void add(String name) {
     current = current.addChild(name);
@@ -28,7 +32,7 @@ public class HierarchyModel {
       }
       // System.out.println("Appending:" + child);
       sb.append(child.getName());
-      appendChildren(child, sb, ++depth);
+      appendChildren(child, sb, depth+1);
     }
   }
 }
