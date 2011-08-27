@@ -5,12 +5,13 @@ import org.xml.sax.SAXException;
 import org.xml.sax.ext.DefaultHandler2;
 
 import osmo.miner.model.HierarchyModel;
+import osmo.miner.model.Node;
 
 public class HierarchyHandler extends DefaultHandler2 {
-  private int depth = 0;
-  private final HierarchyModel model = new HierarchyModel();
+  private final HierarchyModel model;
 
-  public HierarchyHandler() {
+  public HierarchyHandler(Node root) {
+    model = new HierarchyModel(root);
   }
 
   @Override
@@ -20,13 +21,11 @@ public class HierarchyHandler extends DefaultHandler2 {
 
   @Override
   public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-    depth++;
     model.add(qName);
   }
 
   @Override
   public void endElement(String uri, String localName, String qName) throws SAXException {
-    depth--;
     model.up();
   }
 

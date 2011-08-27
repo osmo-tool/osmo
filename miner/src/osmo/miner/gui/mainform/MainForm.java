@@ -1,25 +1,26 @@
 package osmo.miner.gui.mainform;
 
+import osmo.miner.model.Node;
+
 import java.awt.GraphicsConfiguration;
 import java.awt.HeadlessException;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 import java.awt.BorderLayout;
 
-import javax.swing.JFileChooser;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JList;
-import javax.swing.JLabel;
-import javax.swing.JButton;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JScrollBar;
-import javax.swing.JTree;
-import javax.swing.JSplitPane;
+import java.net.URL;
+import javax.swing.plaf.basic.BasicTreeUI;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
 
 public class MainForm extends JFrame {
+  private Node rootNode = new Node(null, "root");
+  private DefaultListModel listModel = new DefaultListModel();
+  private JTree tree;
 
   public MainForm() throws HeadlessException {
     super();
@@ -37,7 +38,7 @@ public class MainForm extends JFrame {
     JScrollPane scrollPane = new JScrollPane();
     panel.add(scrollPane);
 
-    JList list = new JList();
+    JList list = new JList(listModel);
     scrollPane.setViewportView(list);
 
     JLabel lblFiles = new JLabel("Files/Tests");
@@ -65,7 +66,7 @@ public class MainForm extends JFrame {
     JScrollPane scrollPane_1 = new JScrollPane();
     panel_2.add(scrollPane_1, BorderLayout.CENTER);
 
-    JTree tree = new JTree();
+    createTree();
     scrollPane_1.setViewportView(tree);
 
     JSplitPane splitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panel, panel_2);
@@ -73,5 +74,36 @@ public class MainForm extends JFrame {
     getContentPane().add(splitter, BorderLayout.CENTER);
 
     setVisible(true);
+  }
+
+  private void createTree() {
+    tree = new JTree(rootNode);
+//    BasicTreeUI ui = (BasicTreeUI) tree.getUI();
+//    tree.setShowsRootHandles(false);
+    DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) tree.getCellRenderer();
+//    URL openImg = getClass().getResource("/osmo/miner/images/down-arrow.png");
+//    ImageIcon openIcon = new ImageIcon(openImg);
+//    ui.setExpandedIcon(openIcon);
+    renderer.setOpenIcon(null);
+//    URL closeImg = getClass().getResource("/osmo/miner/images/right-arrow.png");
+//    ImageIcon closeIcon = new ImageIcon(closeImg);
+//    ui.setCollapsedIcon(closeIcon);
+//    ui.setCollapsedIcon(null);
+    renderer.setClosedIcon(null);
+//    renderer.setLeafIcon(customLeafIcons);
+//    tree.setCellRenderer(renderer);
+  }
+
+  public DefaultListModel getListModel() {
+    return listModel;
+  }
+
+  public Node getRootNode() {
+    return rootNode;
+  }
+
+  public void updateTree() {
+    DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+    model.reload();
   }
 }

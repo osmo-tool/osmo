@@ -1,12 +1,15 @@
 package osmo.miner.model;
 
+import javax.swing.tree.TreeNode;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 
-public class Node {
+public class Node implements TreeNode {
   private final Node parent;
   private final String name;
-  private final List<Node> children = new ArrayList<Node>();
+  private final ArrayList<Node> children = new ArrayList<Node>();
 
   public Node(Node parent, String name) {
     super();
@@ -33,8 +36,50 @@ public class Node {
   }
 
   @Override
-  public String toString() {
-    return name + "--" + children;
+  public TreeNode getChildAt(int i) {
+    return children.get(i);
   }
 
+  @Override
+  public int getChildCount() {
+    return children.size();
+  }
+
+  @Override
+  public int getIndex(TreeNode node) {
+    return children.indexOf(node);
+  }
+
+  @Override
+  public boolean getAllowsChildren() {
+    return true;
+  }
+
+  @Override
+  public boolean isLeaf() {
+    return false;
+  }
+
+  @Override
+  public Enumeration children() {
+    Enumeration e = new Enumeration() {
+      Iterator i = children.iterator();
+
+      @Override
+      public boolean hasMoreElements() {
+        return i.hasNext();
+      }
+
+      @Override
+      public Object nextElement() {
+        return i.next();
+      }
+    };
+    return e;
+  }
+
+  @Override
+  public String toString() {
+    return name; // + "--" + children;
+  }
 }

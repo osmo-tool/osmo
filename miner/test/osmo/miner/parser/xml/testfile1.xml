@@ -2,4 +2,5 @@
   <teststep>
    hello world
   </teststep>
+  <teststep>step2</teststep>
 </testcase>

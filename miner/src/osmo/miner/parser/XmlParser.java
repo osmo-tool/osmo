@@ -6,6 +6,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import osmo.miner.model.HierarchyModel;
+import osmo.miner.model.Node;
 
 public class XmlParser {
   private final SAXParser parser;
@@ -20,8 +21,8 @@ public class XmlParser {
     }
   }
 
-  public HierarchyModel parse(InputStream in) {
-    HierarchyHandler handler = new HierarchyHandler();
+  public HierarchyModel parse(Node root, InputStream in) {
+    HierarchyHandler handler = new HierarchyHandler(root);
     try {
       parser.parse(in, handler);
     } catch (Exception e) {
