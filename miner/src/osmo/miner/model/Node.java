@@ -9,7 +9,7 @@ import java.util.List;
 public class Node implements TreeNode {
   private final Node parent;
   private final String name;
-  private final ArrayList<Node> children = new ArrayList<Node>();
+  private ArrayList<Node> children = new ArrayList<Node>();
 
   public Node(Node parent, String name) {
     super();
@@ -78,8 +78,13 @@ public class Node implements TreeNode {
     return e;
   }
 
+  public void cloneTo(Node target) {
+    target.children = children;
+  }
+
   @Override
   public String toString() {
     return name; // + "--" + children;
   }
+
 }

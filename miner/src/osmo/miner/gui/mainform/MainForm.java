@@ -2,24 +2,18 @@ package osmo.miner.gui.mainform;
 
 import osmo.miner.model.Node;
 
-import java.awt.GraphicsConfiguration;
 import java.awt.HeadlessException;
 
 import javax.swing.*;
 import java.awt.BorderLayout;
 
 import java.awt.FlowLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.net.URL;
-import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeModel;
 
 public class MainForm extends JFrame {
   private Node rootNode = new Node(null, "root");
-  private DefaultListModel listModel = new DefaultListModel();
+  private MOListModel listModel = new MOListModel();
   private JTree tree;
 
   public MainForm() throws HeadlessException {
@@ -39,6 +33,8 @@ public class MainForm extends JFrame {
     panel.add(scrollPane);
 
     JList list = new JList(listModel);
+    list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    list.addListSelectionListener(new MOSelectionListener(this));
     scrollPane.setViewportView(list);
 
     JLabel lblFiles = new JLabel("Files/Tests");
@@ -94,15 +90,12 @@ public class MainForm extends JFrame {
 //    tree.setCellRenderer(renderer);
   }
 
-  public DefaultListModel getListModel() {
+  public MOListModel getListModel() {
     return listModel;
   }
 
-  public Node getRootNode() {
-    return rootNode;
-  }
-
-  public void updateTree() {
+  public void updateTree(Node root) {
+    root.cloneTo(this.rootNode);
     DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
     model.reload();
   }

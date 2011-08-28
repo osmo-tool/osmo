@@ -1,6 +1,7 @@
 package osmo.miner.gui.mainform;
 
-import osmo.miner.model.HierarchyModel;
+import osmo.miner.model.ModelObject;
+import osmo.miner.model.Node;
 import osmo.miner.parser.XmlParser;
 
 import java.awt.event.ActionEvent;
@@ -26,17 +27,11 @@ public class AddButtonListener implements ActionListener {
   @Override
   public void actionPerformed(ActionEvent e) {
     fc.showOpenDialog(parent);
-    InputStream in = null;
-    try {
-      File file = fc.getSelectedFiles()[0];
-      DefaultListModel listModel = parent.getListModel();
-      listModel.addElement(file);
-      in = new FileInputStream(file);
-    } catch (FileNotFoundException e1) {
-      throw new RuntimeException("Failed to open file:", e1);
+    File[] files = fc.getSelectedFiles();
+    for (File file : files) {
+      MOListModel listModel = parent.getListModel();
+      listModel.add(new ModelObject(file));
     }
-    HierarchyModel model = parser.parse(parent.getRootNode(), in);
-    parent.updateTree();
   }
 
 }
