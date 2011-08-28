@@ -1,5 +1,6 @@
 package osmo.miner.gui.mainform;
 
+import osmo.miner.gui.attributetable.ValuePair;
 import osmo.miner.model.Node;
 
 import java.awt.HeadlessException;
@@ -8,17 +9,17 @@ import javax.swing.*;
 import java.awt.BorderLayout;
 
 import java.awt.FlowLayout;
+import java.util.ArrayList;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 
 public class MainForm extends JFrame {
-  private Node rootNode = new Node(null, "root");
+  private Node rootNode = new Node(null, "root", new ArrayList<ValuePair>());
   private MOListModel listModel = new MOListModel();
   private JTree tree;
 
   public MainForm() throws HeadlessException {
     super();
-    // TODO Auto-generated constructor stub
     setTitle("OSMO Miner");
     setSize(800, 600);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -74,6 +75,7 @@ public class MainForm extends JFrame {
 
   private void createTree() {
     tree = new JTree(rootNode);
+    tree.addMouseListener(new TreeMouseListener(tree));
 //    BasicTreeUI ui = (BasicTreeUI) tree.getUI();
 //    tree.setShowsRootHandles(false);
     DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) tree.getCellRenderer();

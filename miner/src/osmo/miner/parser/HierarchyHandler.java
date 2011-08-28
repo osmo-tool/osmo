@@ -4,10 +4,14 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.DefaultHandler2;
 
+import osmo.miner.gui.attributetable.ValuePair;
 import osmo.miner.model.Node;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HierarchyHandler extends DefaultHandler2 {
-  private Node root = new Node(null, "root");
+  private Node root = new Node(null, "root", new ArrayList<ValuePair>());
   private Node current = null;
 
   public HierarchyHandler() {
@@ -21,33 +25,18 @@ public class HierarchyHandler extends DefaultHandler2 {
 
   @Override
   public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-    current = current.addChild(qName);
+    List<ValuePair> pairs = new ArrayList<ValuePair>();
+    for (int i = 0 ; i < attributes.getLength() ; i++) {
+      String name = attributes.getQName(i);
+      String value = attributes.getValue(i);
+      pairs.add(new ValuePair(name, value));
+    }
+    current = current.addChild(qName, pairs);
   }
 
   @Override
   public void endElement(String uri, String localName, String qName) throws SAXException {
     current = current.getParent();
-  }
-
-  @Override
-  public String toString() {
-    // System.out.println("root:" + current);
-    StringBuilder sb = new StringBuilder();
-    sb.append(current.getName());
-    appendChildren(current, sb, 1);
-    return sb.toString();
-  }
-
-  private void appendChildren(Node node, StringBuilder sb, int depth) {
-    for (Node child : node.getChildren()) {
-      sb.append("\n");
-      for (int i = 0; i < depth; i++) {
-        sb.append("--");
-      }
-      // System.out.println("Appending:" + child);
-      sb.append(child.getName());
-      appendChildren(child, sb, depth + 1);
-    }
   }
 
   public Node getRoot() {
