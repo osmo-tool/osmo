@@ -13,6 +13,6 @@ public class XMLParserTests {
     InputStream file1 = getClass().getResourceAsStream("testfile1.xml");
     XmlParser parser = new XmlParser();
     Node root = parser.parse(file1);
-    System.out.println("model:\n" + root);
+    System.out.println("model:\n" + root.treeString());
   }
 }
