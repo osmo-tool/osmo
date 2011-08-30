@@ -1,10 +1,6 @@
 package osmo.miner.gui.mainform;
 
-import osmo.miner.model.ModelObject;
-import osmo.miner.model.Node;
-import osmo.miner.parser.XmlParser;
-
-import javax.swing.*;
+import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -27,7 +23,6 @@ public class MOSelectionListener implements ListSelectionListener {
     MOListModel model = (MOListModel) list.getModel();
     int index = e.getFirstIndex();
     ModelObject mo = (ModelObject) model.getElementAt(index);
-    Node root = mo.getRoot();
-    parent.updateTree(root);
+    parent.updateSelection(mo);
   }
 }

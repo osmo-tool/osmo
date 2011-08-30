@@ -1,10 +1,9 @@
-package osmo.miner.gui.mainform;
+package osmo.miner.gui;
 
 import osmo.miner.gui.attributetable.AttributeTableForm;
-import osmo.miner.model.ModelObject;
 import osmo.miner.model.Node;
 
-import javax.swing.*;
+import javax.swing.JTree;
 import javax.swing.tree.TreePath;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -25,7 +24,7 @@ public class TreeMouseListener extends MouseAdapter {
     }
     TreePath path = tree.getPathForLocation(e.getX(), e.getY());
     Node node = (Node) path.getLastPathComponent();
-    System.out.println("clicked on:"+node);
+    System.out.println("clicked on:" + node);
     AttributeTableForm form = new AttributeTableForm(node);
   }
 }

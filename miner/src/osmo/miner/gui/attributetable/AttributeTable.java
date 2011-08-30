@@ -1,8 +1,8 @@
 package osmo.miner.gui.attributetable;
 
-import javax.swing.JTable;
-
 import osmo.miner.model.Node;
+
+import javax.swing.JTable;
 
 public class AttributeTable extends JTable {
 

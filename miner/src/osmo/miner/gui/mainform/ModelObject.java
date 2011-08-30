@@ -1,6 +1,4 @@
-package osmo.miner.model;
-
-import osmo.miner.parser.XmlParser;
+package osmo.miner.gui.mainform;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,26 +9,20 @@ import java.io.InputStream;
  * @author Teemu Kanstren
  */
 public class ModelObject implements Comparable<ModelObject> {
-  private final XmlParser parser = new XmlParser();
   private final InputStream in;
   private final String name;
-  private Node root = null;
 
   public ModelObject(File file) {
     try {
       in = new FileInputStream(file);
     } catch (FileNotFoundException e) {
-      throw new RuntimeException("Unable to open file "+file.getName(), e);
+      throw new RuntimeException("Unable to open file " + file.getName(), e);
     }
     name = file.getName();
   }
 
-  public synchronized Node getRoot() {
-    if (root != null) {
-      return root;
-    }
-    root = parser.parse(in);
-    return root;
+  public InputStream getInputStream() {
+    return in;
   }
 
   @Override
