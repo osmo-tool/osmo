@@ -1,8 +1,8 @@
 package osmo.miner.gui.attributetable;
 
-import javax.swing.table.AbstractTableModel;
-
 import osmo.miner.model.Node;
+
+import javax.swing.table.AbstractTableModel;
 
 public class AttributeTableModel extends AbstractTableModel {
   private final Node node;

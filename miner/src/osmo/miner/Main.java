@@ -1,15 +1,8 @@
 package osmo.miner;
 
-import javax.swing.*;
-import javax.swing.plaf.TreeUI;
-import javax.swing.plaf.basic.BasicTreeUI;
-import javax.swing.tree.DefaultTreeCellRenderer;
-
 import osmo.miner.gui.mainform.MainForm;
 
-import java.awt.*;
-import java.io.InputStream;
-import java.net.URL;
+import javax.swing.UIManager;
 
 /**
  * @author Teemu Kanstren

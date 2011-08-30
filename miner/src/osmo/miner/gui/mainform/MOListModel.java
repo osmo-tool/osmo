@@ -1,8 +1,6 @@
 package osmo.miner.gui.mainform;
 
-import osmo.miner.model.ModelObject;
-
-import javax.swing.*;
+import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import java.util.ArrayList;

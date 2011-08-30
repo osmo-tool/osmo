@@ -1,6 +1,6 @@
 <testcase>
   <teststep id="1" sun-spots='3'>
-   hello world
+    hello world
   </teststep>
   <teststep>step2</teststep>
 </testcase>

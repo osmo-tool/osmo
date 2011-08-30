@@ -1,45 +1,42 @@
-package osmo.miner.parser;
+package osmo.miner.parser.xml;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.DefaultHandler2;
-
 import osmo.miner.gui.attributetable.ValuePair;
-import osmo.miner.model.Node;
+import osmo.miner.parser.Miner;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public class HierarchyHandler extends DefaultHandler2 {
-  private Node root = new Node(null, "root", new ArrayList<ValuePair>());
-  private Node current = null;
+/**
+ * @author Teemu Kanstren
+ */
+public class MainHandler extends DefaultHandler2 {
+  private Collection<Miner> miners = new ArrayList<Miner>();
 
-  public HierarchyHandler() {
-    current = root;
-  }
-
-  @Override
-  public void characters(char[] ch, int start, int length) throws SAXException {
-
+  public void addMiner(Miner miner) {
+    miners.add(miner);
   }
 
   @Override
   public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
     List<ValuePair> pairs = new ArrayList<ValuePair>();
-    for (int i = 0 ; i < attributes.getLength() ; i++) {
+    for (int i = 0; i < attributes.getLength(); i++) {
       String name = attributes.getQName(i);
       String value = attributes.getValue(i);
       pairs.add(new ValuePair(name, value));
     }
-    current = current.addChild(qName, pairs);
+    for (Miner miner : miners) {
+      miner.startElement(qName, pairs);
+    }
   }
 
   @Override
   public void endElement(String uri, String localName, String qName) throws SAXException {
-    current = current.getParent();
-  }
-
-  public Node getRoot() {
-    return root;
+    for (Miner miner : miners) {
+      miner.endElement(qName);
+    }
   }
 }

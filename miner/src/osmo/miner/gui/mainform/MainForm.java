@@ -1,22 +1,25 @@
 package osmo.miner.gui.mainform;
 
-import osmo.miner.gui.attributetable.ValuePair;
-import osmo.miner.model.Node;
+import osmo.miner.gui.mainform.plainmodel.PMForm;
+import osmo.miner.gui.mainform.testmodel.TestForm;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.ListSelectionModel;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.HeadlessException;
 
-import javax.swing.*;
-import java.awt.BorderLayout;
-
-import java.awt.FlowLayout;
-import java.util.ArrayList;
-import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.DefaultTreeModel;
-
 public class MainForm extends JFrame {
-  private Node rootNode = new Node(null, "root", new ArrayList<ValuePair>());
   private MOListModel listModel = new MOListModel();
-  private JTree tree;
+  private PMForm pmForm = new PMForm();
+  private TestForm testForm = new TestForm();
 
   public MainForm() throws HeadlessException {
     super();
@@ -53,52 +56,27 @@ public class MainForm extends JFrame {
     btnRemove.addActionListener(new RemoveButtonListener(this));
     panel_1.add(btnRemove);
 
-    JPanel panel_2 = new JPanel();
+//    JPanel panel_2 = new JPanel();
     // getContentPane().add(panel_2, BorderLayout.CENTER);
-    panel_2.setLayout(new BorderLayout(0, 0));
+//    panel_2.setLayout(new BorderLayout(0, 0));
 
-    JLabel lblModel = new JLabel("Model");
-    panel_2.add(lblModel, BorderLayout.NORTH);
+    JTabbedPane tabs = new JTabbedPane();
+    tabs.addTab("Plain", pmForm);
+    tabs.addTab("Test", testForm);
 
-    JScrollPane scrollPane_1 = new JScrollPane();
-    panel_2.add(scrollPane_1, BorderLayout.CENTER);
-
-    createTree();
-    scrollPane_1.setViewportView(tree);
-
-    JSplitPane splitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panel, panel_2);
+    JSplitPane splitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panel, tabs);
     splitter.setOneTouchExpandable(true);
     getContentPane().add(splitter, BorderLayout.CENTER);
 
     setVisible(true);
   }
 
-  private void createTree() {
-    tree = new JTree(rootNode);
-    tree.addMouseListener(new TreeMouseListener(tree));
-//    BasicTreeUI ui = (BasicTreeUI) tree.getUI();
-//    tree.setShowsRootHandles(false);
-    DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) tree.getCellRenderer();
-//    URL openImg = getClass().getResource("/osmo/miner/images/down-arrow.png");
-//    ImageIcon openIcon = new ImageIcon(openImg);
-//    ui.setExpandedIcon(openIcon);
-    renderer.setOpenIcon(null);
-//    URL closeImg = getClass().getResource("/osmo/miner/images/right-arrow.png");
-//    ImageIcon closeIcon = new ImageIcon(closeImg);
-//    ui.setCollapsedIcon(closeIcon);
-//    ui.setCollapsedIcon(null);
-    renderer.setClosedIcon(null);
-//    renderer.setLeafIcon(customLeafIcons);
-//    tree.setCellRenderer(renderer);
-  }
-
   public MOListModel getListModel() {
     return listModel;
   }
 
-  public void updateTree(Node root) {
-    root.cloneTo(this.rootNode);
-    DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-    model.reload();
+  public void updateSelection(ModelObject mo) {
+    pmForm.updateWith(mo);
   }
 }
+

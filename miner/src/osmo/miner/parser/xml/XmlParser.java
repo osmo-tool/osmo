@@ -1,14 +1,15 @@
-package osmo.miner.parser;
+package osmo.miner.parser.xml;
 
-import java.io.InputStream;
+import osmo.miner.parser.Miner;
+import osmo.miner.parser.Parser;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import java.io.InputStream;
 
-import osmo.miner.model.Node;
-
-public class XmlParser {
+public class XmlParser implements Parser {
   private final SAXParser parser;
+  private MainHandler handler = new MainHandler();
 
   public XmlParser() {
     SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -20,13 +21,15 @@ public class XmlParser {
     }
   }
 
-  public Node parse(InputStream in) {
-    HierarchyHandler handler = new HierarchyHandler();
+  public void parse(InputStream in) {
     try {
       parser.parse(in, handler);
     } catch (Exception e) {
       throw new RuntimeException("Failed to parse given InputStream.", e);
     }
-    return handler.getRoot();
+  }
+
+  public void addMiner(Miner miner) {
+    handler.addMiner(miner);
   }
 }

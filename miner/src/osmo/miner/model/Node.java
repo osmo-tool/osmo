@@ -1,15 +1,12 @@
 package osmo.miner.model;
 
-import javax.swing.tree.TreeNode;
-
 import osmo.miner.gui.attributetable.ValuePair;
 
+import javax.swing.tree.TreeNode;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-import java.util.TreeMap;
 
 public class Node implements TreeNode {
   private final Node parent;
@@ -33,11 +30,11 @@ public class Node implements TreeNode {
   public List<Node> getChildren() {
     return children;
   }
-  
+
   public List<ValuePair> getAttributes() {
     return attributes;
   }
-  
+
   public String getName() {
     return name;
   }
