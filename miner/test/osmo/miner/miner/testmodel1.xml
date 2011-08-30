@@ -1,0 +1,10 @@
+<testcase>
+  <variable name="gv1" value="gfoo"/>
+  <variable name="gv2" value="gbar"/>
+  <teststep>
+    <variable name="lv1" value="lfoo"/>
+    <variable name="lv2" value="lbar"/>
+    hello world
+  </teststep>
+  <teststep>step2</teststep>
+</testcase>

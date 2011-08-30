@@ -1,15 +1,16 @@
-package osmo.miner.parser;
+package osmo.miner.miner;
 
 import osmo.miner.gui.attributetable.ValuePair;
 import osmo.miner.model.Node;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Teemu Kanstren
  */
 public interface Miner {
-  public void startElement(String name, List<ValuePair> attributes);
+  public void startElement(String name, Map<String, String> attributes);
 
   public void endElement(String name);
 

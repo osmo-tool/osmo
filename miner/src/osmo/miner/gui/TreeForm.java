@@ -2,8 +2,8 @@ package osmo.miner.gui;
 
 import osmo.miner.gui.attributetable.ValuePair;
 import osmo.miner.gui.mainform.ModelObject;
+import osmo.miner.miner.Miner;
 import osmo.miner.model.Node;
-import osmo.miner.parser.Miner;
 import osmo.miner.parser.Parser;
 
 import javax.swing.JPanel;
