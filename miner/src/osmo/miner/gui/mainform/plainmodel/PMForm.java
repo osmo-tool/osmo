@@ -1,9 +1,9 @@
 package osmo.miner.gui.mainform.plainmodel;
 
 import osmo.miner.gui.TreeForm;
-import osmo.miner.parser.Miner;
+import osmo.miner.miner.Miner;
+import osmo.miner.miner.plain.PlainHierarchyMiner;
 import osmo.miner.parser.Parser;
-import osmo.miner.parser.PlainHierarchyMiner;
 import osmo.miner.parser.xml.XmlParser;
 
 /**

@@ -1,5 +1,7 @@
 package osmo.miner.parser;
 
+import osmo.miner.miner.Miner;
+
 import java.io.InputStream;
 
 /**

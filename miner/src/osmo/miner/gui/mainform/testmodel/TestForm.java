@@ -1,9 +1,9 @@
 package osmo.miner.gui.mainform.testmodel;
 
 import osmo.miner.gui.TreeForm;
-import osmo.miner.parser.Miner;
+import osmo.miner.miner.Miner;
+import osmo.miner.miner.program.ProgramModelMiner;
 import osmo.miner.parser.Parser;
-import osmo.miner.parser.TestModelMiner;
 import osmo.miner.parser.xml.XmlParser;
 
 /**
@@ -20,6 +20,6 @@ public class TestForm extends TreeForm {
 
   @Override
   public Miner createMiner() {
-    return new TestModelMiner();
+    return new ProgramModelMiner();
   }
 }

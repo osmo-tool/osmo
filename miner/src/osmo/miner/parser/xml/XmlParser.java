@@ -1,6 +1,6 @@
 package osmo.miner.parser.xml;
 
-import osmo.miner.parser.Miner;
+import osmo.miner.miner.Miner;
 import osmo.miner.parser.Parser;
 
 import javax.xml.parsers.SAXParser;
