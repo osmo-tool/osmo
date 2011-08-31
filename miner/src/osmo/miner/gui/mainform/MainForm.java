@@ -77,6 +77,7 @@ public class MainForm extends JFrame {
 
   public void updateSelection(ModelObject mo) {
     pmForm.updateWith(mo);
+    testForm.updateWith(mo);
   }
 }
 

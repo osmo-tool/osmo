@@ -1,5 +1,7 @@
 package osmo.miner;
 
+import osmo.miner.log.Logger;
+
 import java.io.IOException;
 import java.util.Properties;
 
@@ -7,6 +9,7 @@ import java.util.Properties;
  * @author Teemu Kanstren
  */
 public class Config {
+  private static Logger log = new Logger(Config.class);
   public static String variableId;
   public static String variableNameId;
   public static String variableValueId;
@@ -21,8 +24,7 @@ public class Config {
     try {
       props.load(Config.class.getResourceAsStream("/osmo-miner.properties"));
     } catch (IOException e) {
-      //TODO: logging..
-      e.printStackTrace();
+      log.error("Failed to load configuration file 'osmo-miner.properties'", e);
     }
     variableId = props.getProperty("variable_id");
     variableNameId = props.getProperty("variable_name_id");
@@ -32,6 +34,9 @@ public class Config {
   }
 
   public static void validate() {
+    if (variableId == null) {
+      init();
+    }
     String errors = "";
     if (variableId == null) {
       errors += "Variable ID must be non-null. ";
