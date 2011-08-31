@@ -1,5 +1,6 @@
 package osmo.miner.gui.mainform.testmodel;
 
+import osmo.miner.Config;
 import osmo.miner.gui.TreeForm;
 import osmo.miner.miner.Miner;
 import osmo.miner.miner.program.ProgramModelMiner;
