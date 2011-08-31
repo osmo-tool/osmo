@@ -1,16 +1,37 @@
 package osmo.miner;
 
+import java.io.IOException;
+import java.util.Properties;
+
 /**
  * @author Teemu Kanstren
  */
 public class Config {
-  private String variableId;
-  private String stepId;
-  private String variableNameId;
-  private String variableValueId;
-  private String stepNameId;
+  public static String variableId;
+  public static String variableNameId;
+  public static String variableValueId;
+  public static String stepId;
+  public static String stepNameId;
 
-  public void validate() {
+  private Config() {
+  }
+
+  public static void init() {
+    Properties props = new Properties();
+    try {
+      props.load(Config.class.getResourceAsStream("/osmo-miner.properties"));
+    } catch (IOException e) {
+      //TODO: logging..
+      e.printStackTrace();
+    }
+    variableId = props.getProperty("variable_id");
+    variableNameId = props.getProperty("variable_name_id");
+    variableValueId = props.getProperty("variable_value_id");
+    stepId = props.getProperty("step_id");
+    stepNameId = props.getProperty("step_name_id");
+  }
+
+  public static void validate() {
     String errors = "";
     if (variableId == null) {
       errors += "Variable ID must be non-null. ";
@@ -30,41 +51,5 @@ public class Config {
     if (errors.length() > 0) {
       throw new IllegalStateException(errors);
     }
-  }
-
-  public String getVariableId() {
-    return variableId;
-  }
-
-  public void setVariableId(String variableId) {
-    this.variableId = variableId;
-  }
-
-  public String getStepId() {
-    return stepId;
-  }
-
-  public void setStepId(String stepId) {
-    this.stepId = stepId;
-  }
-
-  public String getVariableNameId() {
-    return variableNameId;
-  }
-
-  public void setVariableNameId(String variableNameId) {
-    this.variableNameId = variableNameId;
-  }
-
-  public String getVariableValueId() {
-    return variableValueId;
-  }
-
-  public void setVariableValueId(String variableValueId) {
-    this.variableValueId = variableValueId;
-  }
-
-  public String getStepNameId() {
-    return stepNameId;
   }
 }
