@@ -24,7 +24,6 @@ public abstract class TreeForm extends JPanel {
   private Node rootNode = new Node(null, "root", new ArrayList<ValuePair>());
   private final Map<ModelObject, Node> roots = new HashMap<ModelObject, Node>();
   private final Parser parser;
-  private final Miner miner;
 
   public TreeForm() {
     tree = new JTree(rootNode);
@@ -37,20 +36,20 @@ public abstract class TreeForm extends JPanel {
     add(scrollPane, BorderLayout.CENTER);
     scrollPane.setViewportView(tree);
     parser = createParser();
-    miner = createMiner();
-    parser.addMiner(miner);
   }
 
   public abstract Parser createParser();
 
   public abstract Miner createMiner();
 
-  public synchronized Node transform(ModelObject mo) {
-    Node root = roots.get(mo);
+  public synchronized Node transform(ModelObject newRoot) {
+    Node root = roots.get(newRoot);
     if (root == null) {
-      parser.parse(mo.getInputStream());
+      Miner miner = createMiner();
+      parser.addMiner(miner);
+      parser.parse(newRoot.getInputStream());
       root = miner.getRoot();
-      roots.put(mo, root);
+      roots.put(newRoot, root);
     }
     return root;
   }

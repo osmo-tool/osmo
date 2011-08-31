@@ -9,19 +9,21 @@ import java.io.InputStream;
  * @author Teemu Kanstren
  */
 public class ModelObject implements Comparable<ModelObject> {
-  private final InputStream in;
+  private final File file;
   private final String name;
 
   public ModelObject(File file) {
+    this.file = file;
+    name = file.getName();
+  }
+
+  public InputStream getInputStream() {
+    InputStream in = null;
     try {
       in = new FileInputStream(file);
     } catch (FileNotFoundException e) {
       throw new RuntimeException("Unable to open file " + file.getName(), e);
     }
-    name = file.getName();
-  }
-
-  public InputStream getInputStream() {
     return in;
   }
 

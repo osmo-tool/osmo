@@ -55,18 +55,26 @@ public class ProgramModelMiner implements Miner {
 
   @Override
   public Node getRoot() {
-    Node root = new Node(null, "root", new ArrayList<ValuePair>());
+    Node root = new Node(null, mainProgram.getName(), parameters(mainProgram));
     addChildren(root, mainProgram);
     return root;
   }
 
-  private void addChildren(Node node, Program program) {
+  private List<ValuePair> parameters(Program program) {
     Map<String, Variable> variables = program.getVariables();
     List<ValuePair> pairs = new ArrayList<ValuePair>();
     for (Variable variable : variables.values()) {
       pairs.add(new ValuePair(variable.getName(), variable.getValues()));
     }
-    node.addChild(program.getName(), pairs);
-    //TODO: finish this
+    return pairs;
   }
+
+  private void addChildren(Node node, Program program) {
+    Map<String, Program> steps = program.getSteps();
+    for (Program subProgram : steps.values()) {
+      Node child = node.addChild(subProgram.getName(), parameters(subProgram));
+      addChildren(child, subProgram);
+    }
+  }
+
 }
