@@ -4,7 +4,10 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.DefaultHandler2;
 import osmo.miner.gui.attributetable.ValuePair;
-import osmo.miner.miner.Miner;
+import osmo.miner.miner.plain.PlainHierarchyMiner;
+import osmo.miner.miner.program.ProgramModelMiner;
+import osmo.miner.model.Node;
+import osmo.miner.model.program.Program;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,12 +18,8 @@ import java.util.Map;
 /**
  * @author Teemu Kanstren
  */
-public class MainHandler extends DefaultHandler2 {
-  private Collection<Miner> miners = new ArrayList<Miner>();
-
-  public void addMiner(Miner miner) {
-    miners.add(miner);
-  }
+public class PlainHandler extends DefaultHandler2 {
+  private PlainHierarchyMiner plainMiner = new PlainHierarchyMiner();
 
   @Override
   public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
@@ -30,15 +29,15 @@ public class MainHandler extends DefaultHandler2 {
       String value = attributes.getValue(i);
       attrs.put(name, value);
     }
-    for (Miner miner : miners) {
-      miner.startElement(qName, attrs);
-    }
+    plainMiner.startElement(qName, attrs);
   }
 
   @Override
   public void endElement(String uri, String localName, String qName) throws SAXException {
-    for (Miner miner : miners) {
-      miner.endElement(qName);
-    }
+    plainMiner.endElement(qName);
+  }
+
+  public Node getRoot() {
+    return plainMiner.getRoot();
   }
 }

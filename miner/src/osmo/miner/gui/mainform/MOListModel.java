@@ -12,8 +12,12 @@ import java.util.List;
  * @author Teemu Kanstren
  */
 public class MOListModel implements ListModel {
-  private List<ModelObject> objects = new ArrayList<ModelObject>();
+  private final List<ModelObject> objects;
   private Collection<ListDataListener> listeners = new ArrayList<ListDataListener>();
+
+  public MOListModel(List<ModelObject> objects) {
+    this.objects = objects;
+  }
 
   @Override
   public int getSize() {
@@ -32,9 +36,8 @@ public class MOListModel implements ListModel {
     objects.add(mo);
     Collections.sort(objects);
     for (ListDataListener listener : listeners) {
-      int index = objects.size() - 1;
+      int index = objects.size();
       listener.contentsChanged(new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, 0, index));
-//      listener.intervalAdded(new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED, index, index));
     }
   }
 
