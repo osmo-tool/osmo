@@ -239,7 +239,9 @@ public class TestUtils {
     try {
       while (scanner.hasNextLine()){
         text.append(scanner.nextLine());
-        text.append("\n");
+        if (scanner.hasNextLine()) {
+          text.append("\n");
+        }
       }
     }
     finally{
