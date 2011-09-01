@@ -1,12 +1,13 @@
-package osmo.miner.gui.mainform.plainmodel;
+package osmo.miner.gui.mainform.programmodel;
 
 import osmo.miner.gui.TreeMouseListener;
 import osmo.miner.gui.attributetable.ValuePair;
 import osmo.miner.gui.mainform.ModelObject;
 import osmo.miner.log.Logger;
-import osmo.miner.miner.plain.PlainHierarchyMiner;
+import osmo.miner.miner.program.MultiProgramModelMiner;
 import osmo.miner.model.Node;
-import osmo.miner.parser.xml.PlainHandler;
+import osmo.miner.model.program.Program;
+import osmo.miner.parser.xml.ProgramHandler;
 import osmo.miner.parser.xml.XmlParser;
 
 import javax.swing.JPanel;
@@ -18,6 +19,7 @@ import java.awt.BorderLayout;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,14 +27,15 @@ import java.util.Map;
 /**
  * @author Teemu Kanstren
  */
-public class PMForm extends JPanel {
-  private static final Logger log = new Logger(PMForm.class);
+public class AllForm extends JPanel {
+  private static final Logger log = new Logger(AllForm.class);
   private JTree tree;
   private Node rootNode = null;
-  private final Map<ModelObject, Node> roots = new HashMap<ModelObject, Node>();
+  private final ProgramParser parser;
 
-  public PMForm() {
-    rootNode = new Node(null, "Hierarchy", new ArrayList<ValuePair>());
+  public AllForm(ProgramParser parser) {
+    this.parser = parser;
+    rootNode = new Node(null, "Model", new ArrayList<ValuePair>());
     tree = new JTree(rootNode);
     tree.addMouseListener(new TreeMouseListener(tree));
     DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) tree.getCellRenderer();
@@ -44,31 +47,13 @@ public class PMForm extends JPanel {
     scrollPane.setViewportView(tree);
   }
 
-  public synchronized Node transform(ModelObject newRoot) {
-    Node root = roots.get(newRoot);
-    if (root == null) {
-      root = createObjectRoot(newRoot);
+  public void updateWith(List<ModelObject> modelObjects) {
+    Collection<Program> programs = new ArrayList<Program>();
+    for (ModelObject mo : modelObjects) {
+      programs.add(parser.programFor(mo));
     }
-    return root;
-  }
-
-  private Node createObjectRoot(ModelObject newRoot) {
-    PlainHandler handler = new PlainHandler();
-    XmlParser parser = new XmlParser(handler);
-    InputStream inputStream = newRoot.getInputStream();
-    parser.parse(inputStream);
-    try {
-      inputStream.close();
-    } catch (IOException e) {
-      log.error("Failed to close inputstream", e);
-    }
-    Node root = handler.getRoot();
-    roots.put(newRoot, root);
-    return root;
-  }
-
-  public void updateWith(ModelObject mo) {
-    Node root = transform(mo);
+    MultiProgramModelMiner miner = new MultiProgramModelMiner();
+    Node root = miner.nodeFor(programs);
     root.cloneTo(this.rootNode);
     DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
     model.reload();
