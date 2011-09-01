@@ -1,7 +1,5 @@
 package osmo.miner.model;
 
-import osmo.miner.gui.attributetable.ValuePair;
-
 import javax.swing.tree.TreeNode;
 import java.util.ArrayList;
 import java.util.Enumeration;

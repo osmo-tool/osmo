@@ -6,7 +6,7 @@ import java.util.Collection;
 /**
  * @author Teemu Kanstren
  */
-public class Variable {
+public class Variable implements Comparable<Variable> {
   private final String name;
   private final Collection<String> values = new ArrayList<String>();
 
@@ -24,5 +24,10 @@ public class Variable {
 
   public Collection<String> getValues() {
     return values;
+  }
+
+  @Override
+  public int compareTo(Variable o) {
+    return name.compareTo(o.name);
   }
 }

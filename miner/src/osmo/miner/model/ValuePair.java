@@ -1,5 +1,8 @@
-package osmo.miner.gui.attributetable;
+package osmo.miner.model;
 
+/**
+ * @author Teemu Kanstren
+ */
 public class ValuePair {
   private final String name;
   private final Object value;
@@ -16,5 +19,4 @@ public class ValuePair {
 
   public Object getValue() {
     return value;
-  }
-}
+  }}
