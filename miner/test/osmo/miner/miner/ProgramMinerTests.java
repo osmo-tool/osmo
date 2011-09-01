@@ -4,10 +4,10 @@ import org.junit.Before;
 import org.junit.Test;
 import osmo.miner.Config;
 import osmo.miner.log.Logger;
-import osmo.miner.miner.program.ProgramModelMiner;
 import osmo.miner.model.program.Program;
 import osmo.miner.model.program.Variable;
-import osmo.miner.parser.xml.XmlParser;
+import osmo.miner.prom.ProgramHandler;
+import osmo.miner.prom.XmlProgramParser;
 
 import java.io.InputStream;
 import java.util.Map;
@@ -19,8 +19,7 @@ import static junit.framework.Assert.*;
  * @author Teemu Kanstren
  */
 public class ProgramMinerTests {
-  private ProgramModelMiner miner;
-  private XmlParser parser;
+  private XmlProgramParser parser;
 
   @Before
   public void setup() {
@@ -30,17 +29,14 @@ public class ProgramMinerTests {
     Config.variableValueId = "value";
     Config.stepId = "teststep";
     Config.stepNameId = "name";
-    parser = new XmlParser();
-    miner = new ProgramModelMiner();
-    parser.addMiner(miner);
+    parser = new XmlProgramParser();
   }
 
   @Test
-  public void globalVariables() {
+  public void globalVariables() throws Exception {
     InputStream file1 = getClass().getResourceAsStream("testmodel1.xml");
-    parser.parse(file1);
-    Program program = miner.getMainProgram();
-    Map<String, Variable> variables = program.getGlobalVariables();
+    Program program = parser.parse(file1, "GlobalVariablesTest");
+    Map<String, Variable> variables = program.getGlobalVariableMap();
     assertEquals("Number of parsed variables", 4, variables.size());
     Variable gv1 = variables.get("gv1");
     Variable gv2 = variables.get("gv2");
@@ -53,12 +49,11 @@ public class ProgramMinerTests {
   }
 
   @Test
-  public void singleStepVariables() {
+  public void singleStepVariables() throws Exception {
     InputStream file1 = getClass().getResourceAsStream("testmodel1.xml");
-    parser.parse(file1);
-    Program program = miner.getMainProgram();
+    Program program = parser.parse(file1, "SingleStepVariablesTest");
     Map<String, Program> steps = program.getSteps();
-    Map<String, Variable> variables = program.getVariables();
+    Map<String, Variable> variables = program.getVariableMap();
     assertEquals("Number of parsed variables", 2, variables.size());
     Variable gv1 = variables.get("gv1");
     Variable gv2 = variables.get("gv2");
@@ -70,7 +65,7 @@ public class ProgramMinerTests {
     assertEquals("Values for lv2", null, lv2);
 
     Program step1 = steps.get("step1");
-    Map<String, Variable> step1Variables = step1.getVariables();
+    Map<String, Variable> step1Variables = step1.getVariableMap();
     lv1 = step1Variables.get("lv1");
     lv2 = step1Variables.get("lv2");
     assertEquals("Values for lv1", "[lfoo]", lv1.getValues().toString());
@@ -78,12 +73,11 @@ public class ProgramMinerTests {
   }
 
   @Test
-  public void twoStepVariables() {
+  public void twoStepVariables() throws Exception {
     InputStream file1 = getClass().getResourceAsStream("testmodel2.xml");
-    parser.parse(file1);
-    Program program = miner.getMainProgram();
+    Program program = parser.parse(file1, "TwoStepVariablesTest");
     Map<String, Program> steps = program.getSteps();
-    Map<String, Variable> variables = program.getVariables();
+    Map<String, Variable> variables = program.getVariableMap();
     assertEquals("Number of parsed variables", 2, variables.size());
     Variable gv1 = variables.get("gv1");
     Variable gv2 = variables.get("gv2");
@@ -95,14 +89,14 @@ public class ProgramMinerTests {
     assertEquals("Values for lv2", null, lv2);
 
     Program step1 = steps.get("step1");
-    Map<String, Variable> step1Variables = step1.getVariables();
+    Map<String, Variable> step1Variables = step1.getVariableMap();
     lv1 = step1Variables.get("lv1");
     lv2 = step1Variables.get("lv2");
     assertEquals("Values for lv1", "[lfoo1]", lv1.getValues().toString());
     assertEquals("Values for lv2", "[lbar1]", lv2.getValues().toString());
 
     Program step2 = steps.get("step2");
-    Map<String, Variable> step2Variables = step2.getVariables();
+    Map<String, Variable> step2Variables = step2.getVariableMap();
     lv1 = step2Variables.get("lv1");
     lv2 = step2Variables.get("lv2");
     Variable lv3 = step2Variables.get("lv3");
@@ -112,15 +106,14 @@ public class ProgramMinerTests {
   }
 
   @Test
-  public void twoModelsWithOverlap() {
+  public void twoModelsWithOverlap() throws Exception {
     InputStream file1 = getClass().getResourceAsStream("testmodel1.xml");
     InputStream file2 = getClass().getResourceAsStream("testmodel2.xml");
-    parser.parse(file1);
-    parser.parse(file2);
+    parser.parse(file1, "Test1");
+    Program program = parser.parse(file2, "Test2");
 
-    Program program = miner.getMainProgram();
     Map<String, Program> steps = program.getSteps();
-    Map<String, Variable> variables = program.getVariables();
+    Map<String, Variable> variables = program.getVariableMap();
     assertEquals("Number of parsed variables", 2, variables.size());
     Variable gv1 = variables.get("gv1");
     Variable gv2 = variables.get("gv2");
@@ -132,14 +125,14 @@ public class ProgramMinerTests {
     assertEquals("Values for lv2", null, lv2);
 
     Program step1 = steps.get("step1");
-    Map<String, Variable> step1Variables = step1.getVariables();
+    Map<String, Variable> step1Variables = step1.getVariableMap();
     lv1 = step1Variables.get("lv1");
     lv2 = step1Variables.get("lv2");
     assertEquals("Values for lv1", "[lfoo, lfoo1]", lv1.getValues().toString());
     assertEquals("Values for lv2", "[lbar, lbar1]", lv2.getValues().toString());
 
     Program step2 = steps.get("step2");
-    Map<String, Variable> step2Variables = step2.getVariables();
+    Map<String, Variable> step2Variables = step2.getVariableMap();
     lv1 = step2Variables.get("lv1");
     lv2 = step2Variables.get("lv2");
     Variable lv3 = step2Variables.get("lv3");

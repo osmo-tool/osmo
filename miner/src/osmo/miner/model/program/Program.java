@@ -1,8 +1,10 @@
 package osmo.miner.model.program;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,7 +14,6 @@ public class Program {
   private final Program parent;
   private final String name;
   private Map<String, Variable> variables = new HashMap<String, Variable>();
-  //todo: this ordering needs to be reconsidered
   private Map<String, Program> steps = new LinkedHashMap<String, Program>();
 
   public Program(Program parent, String name) {
@@ -28,30 +29,41 @@ public class Program {
     return name;
   }
 
-  public Map<String, Variable> getVariables() {
+  public Map<String, Variable> getVariableMap() {
     return variables;
   }
 
-  public Map<String, Variable> getGlobalVariables() {
+  public List<Variable> getVariables() {
+    List<Variable> result = new ArrayList<Variable>();
+    result.addAll(variables.values());
+    return result;
+  }
+
+  public Map<String, Variable> getGlobalVariableMap() {
     Map<String, Variable> globals = new HashMap<String, Variable>();
     for (Variable var : variables.values()) {
       globals.put(var.getName(), var);
     }
     for (Program step : steps.values()) {
-      Map<String, Variable> stepVariables = step.getVariables();
-      for (String name : stepVariables.keySet()) {
-        Variable var = globals.get(name);
-        if (var == null) {
-          var = new Variable(name);
-          globals.put(name, var);
+      List<Variable> stepVariables = step.getVariables();
+      for (Variable var : stepVariables) {
+        if (globals.get(var.getName()) == null) {
+          globals.put(var.getName(), var);
         }
-        Collection<String> values = stepVariables.get(name).getValues();
+        Collection<String> values = var.getValues();
         for (String value : values) {
           var.addValue(value);
         }
       }
     }
     return globals;
+  }
+
+  public List<Variable> getGlobalVariables() {
+    List<Variable> result = new ArrayList<Variable>();
+    Map<String, Variable> globalVariableMap = getGlobalVariableMap();
+    result.addAll(globalVariableMap.values());
+    return result;
   }
 
   public Variable createVariable(String name) {

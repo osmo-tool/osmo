@@ -1,0 +1,12 @@
+<WorkflowLog description="$desc">
+  <Data>
+$general_attrs  </Data>
+  <Source program="$src">
+    <Data>
+$source_attrs    </Data>
+  </Source>
+  <Process id="$process_id" description="$process_desc">
+    <Data>
+$process_attrs    </Data>
+$processes  </Process>
+</WorkflowLog>
