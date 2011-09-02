@@ -130,12 +130,12 @@ public class ObjectSetTests {
     inv.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     assertEquals("one", inv.next());
     assertEquals("two", inv.next());
-    inv.removeOption("one");
+    inv.remove("one");
     assertEquals("three", inv.next());
     inv.add("four");
     inv.add("five");
     assertEquals("four", inv.next());
-    inv.removeOption("three");
+    inv.remove("three");
     assertEquals("five", inv.next());
     assertEquals("two", inv.next());
   }

@@ -83,7 +83,7 @@ public class ValueRangeSet<T extends Number> implements Input<T>, Output<T>{
    */
   public void removePartition(double min, double max) {
     log.debug("Removing partition min("+min+") max("+max+")");
-    partitions.removeOption(new ValueRange(min, max));
+    partitions.remove(new ValueRange(min, max));
   }
 
   /**

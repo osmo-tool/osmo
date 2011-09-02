@@ -2,89 +2,85 @@ package osmo.miner.prom;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import osmo.miner.Config;
 import osmo.miner.log.Logger;
 import osmo.miner.model.program.Program;
+import osmo.miner.model.program.Step;
+import osmo.miner.model.program.Suite;
 import osmo.miner.model.program.Variable;
+import osmo.miner.parser.xml.XmlProgramParser;
 
 import javax.swing.*;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Teemu Kanstren
  */
 public class XmlToMXml {
   private static final Logger log = new Logger(XmlToMXml.class);
-  private final JFileChooser fc = new JFileChooser();
   private String description = "description";
   private String source = "source";
-  private VelocityEngine velocity = new VelocityEngine();
+  private VelocityEngine velocity = Config.createVelocity();
 
-  public XmlToMXml() throws Exception {
+  public XmlToMXml() {
+  }
 
-    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      if ("Nimbus".equals(info.getName())) {
-        UIManager.setLookAndFeel(info.getClassName());
-        break;
-      }
-    }
-    
+  public void chooseAndWrite() throws IOException {
+    Config.validate();
+    JFileChooser fc = new JFileChooser();
     fc.setMultiSelectionEnabled(true);
-    velocity.setProperty("resource.loader", "class");
-    velocity.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
 
     fc.showOpenDialog(null);
     File[] files = fc.getSelectedFiles();
     XmlProgramParser parser = new XmlProgramParser();
-    Collection<Program> programs = new ArrayList<Program>();
+    Suite suite = new Suite();
     for (File file : files) {
       log.debug("Parsing file:"+file);
-      programs.add(parser.parse(file));
+      suite.add(parser.parse(file));
     }
-    write(programs);
+    File output = new File("osmominer-output.mxml");
+    FileOutputStream out = new FileOutputStream(output);
+    write(suite, out);
   }
 
-  public static void main(String[] args) throws Exception {
-    Logger.debug = true;
-    XmlToMXml m = new XmlToMXml();
-  }
-
-  public void write(Collection<Program> programs) throws Exception {
+  public void write(Suite suite, OutputStream out) throws IOException {
     VelocityContext vc = new VelocityContext();
 
-    List<Variable> all = new ArrayList<Variable>();
-    for (Program program : programs) {
-      all.addAll(program.getGlobalVariables());
-    }
-    Collections.sort(all);
+    Program superProgram = suite.createEFSM();
+    List<Variable> global = new ArrayList<Variable>();
+    global.addAll(superProgram.getGlobalVariables());
+    Collections.sort(global);
+    List<Variable> top = new ArrayList<Variable>();
+    top.addAll(superProgram.getVariables());
+    Collections.sort(top);
     vc.put("desc", description);
     vc.put("general_attrs", "");
     vc.put("src", source);
-    vc.put("source_attrs", "");
-    vc.put("process_attrs", createAttributes(all));
+    vc.put("source_attrs", createAttributes(global));
+    vc.put("process_attrs", createAttributes(top));
     vc.put("process_id", "process id");
     vc.put("process_desc", "process desc");
 
-    String processes = createProgramStrings(programs);
+    String processes = createProgramStrings(suite);
     vc.put("processes", processes);
 
     StringWriter sw = new StringWriter();
     log.debug("Merging template");
     velocity.mergeTemplate("/osmo/miner/prom/WorkFlowLog.vm", "UTF8", vc, sw);
-    File output = new File("osmominer-output.mxml");
-    FileOutputStream out = new FileOutputStream(output);
     out.write(sw.toString().getBytes());
   }
 
-  public String createProgramStrings(Collection<Program> programs) {
+  public String createProgramStrings(Suite suite) {
     StringWriter sw = new StringWriter();
-    for (Program program : programs) {
+    for (Program program : suite.getPrograms()) {
       sw.append(createProgramString(program));
     }
     return sw.toString();
@@ -108,11 +104,10 @@ public class XmlToMXml {
   public String createMethodStrings(Program program) {
     VelocityContext vc = new VelocityContext();
 
-    Map<String, Program> stepMap = program.getSteps();
-    Collection<Program> steps = stepMap.values();
+    Collection<Step> steps = program.getSteps();
     log.debug("Steps:"+steps);
     StringWriter sw = new StringWriter();
-    for (Program step : steps) {
+    for (Step step : steps) {
       vc.put("method", step.getName());
       vc.put("params", createAttributes(step.getVariables()));
       //time is not used but is possible

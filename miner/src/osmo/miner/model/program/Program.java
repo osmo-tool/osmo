@@ -1,5 +1,7 @@
 package osmo.miner.model.program;
 
+import osmo.miner.log.Logger;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,18 +13,13 @@ import java.util.Map;
  * @author Teemu Kanstren
  */
 public class Program {
-  private final Program parent;
+  private static final Logger log = new Logger(Program.class);
   private final String name;
   private Map<String, Variable> variables = new HashMap<String, Variable>();
-  private Map<String, Program> steps = new LinkedHashMap<String, Program>();
+  private Map<String, Step> steps = new LinkedHashMap<String, Step>();
 
-  public Program(Program parent, String name) {
-    this.parent = parent;
+  public Program(String name) {
     this.name = name;
-  }
-
-  public Program getParent() {
-    return parent;
   }
 
   public String getName() {
@@ -42,17 +39,26 @@ public class Program {
   public Map<String, Variable> getGlobalVariableMap() {
     Map<String, Variable> globals = new HashMap<String, Variable>();
     for (Variable var : variables.values()) {
-      globals.put(var.getName(), var);
+      String varName = var.getName();
+      Variable gVar = new Variable(varName);
+      globals.put(varName, gVar);
+      Collection<String> values = var.getValues();
+      for (String value : values) {
+        gVar.addValue(value);
+      }
     }
-    for (Program step : steps.values()) {
+    for (Step step : steps.values()) {
       List<Variable> stepVariables = step.getVariables();
       for (Variable var : stepVariables) {
-        if (globals.get(var.getName()) == null) {
-          globals.put(var.getName(), var);
+        String varName = var.getName();
+        Variable gVar = globals.get(varName);
+        if (gVar == null) {
+          gVar = new Variable(varName);
+          globals.put(varName, gVar);
         }
         Collection<String> values = var.getValues();
         for (String value : values) {
-          var.addValue(value);
+          gVar.addValue(value);
         }
       }
     }
@@ -75,14 +81,20 @@ public class Program {
     return var;
   }
 
-  public Map<String, Program> getSteps() {
+  public List<Step> getSteps() {
+    List<Step> result = new ArrayList<Step>();
+    result.addAll(steps.values());
+    return result;
+  }
+
+  public Map<String, Step> getStepMap() {
     return steps;
   }
 
-  public Program createStep(String name) {
-    Program step = steps.get(name);
+  public Step createStep(String name) {
+    Step step = steps.get(name);
     if (step == null) {
-      step = new Program(this, name);
+      step = new Step(this, name);
       steps.put(name, step);
     }
     return step;

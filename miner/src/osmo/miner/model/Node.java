@@ -118,9 +118,9 @@ public class Node implements TreeNode {
     sb.append(node.getName());
     for (ValuePair attribute : node.attributes) {
       sb.append(":");
-      sb.append(attribute.getName());
+      sb.append(attribute.getValue1());
       sb.append("=");
-      sb.append(attribute.getValue());
+      sb.append(attribute.getValue2());
     }
   }
 
