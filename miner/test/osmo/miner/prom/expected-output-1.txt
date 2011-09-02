@@ -1,0 +1,89 @@
+<WorkflowLog description="description">
+  <Data>
+  </Data>
+  <Source program="source">
+    <Data>
+      <Attribute name="s1v1">[1, 2]</Attribute>
+      <Attribute name="s2v1">[7, 4, 2]</Attribute>
+      <Attribute name="s3v1">[5, 3, 4]</Attribute>
+      <Attribute name="s4v1">[1, 2]</Attribute>
+      <Attribute name="v1">[hello, world]</Attribute>
+    </Data>
+  </Source>
+  <Process id="process id" description="process desc">
+    <Data>
+      <Attribute name="v1">[hello, world]</Attribute>
+    </Data>
+    <ProcessInstance id="TestProgram2" description="program desc">
+      <Data>
+      </Data>
+      <AuditTrailEntry>
+        <Data>
+        </Data>
+        <WorkflowModelElement>step1</WorkflowModelElement>
+        <EventType>complete</EventType>
+        <Originator></Originator>
+      </AuditTrailEntry>
+      <AuditTrailEntry>
+        <Data>
+      <Attribute name="s2v1">[7]</Attribute>
+        </Data>
+        <WorkflowModelElement>step2</WorkflowModelElement>
+        <EventType>complete</EventType>
+        <Originator></Originator>
+      </AuditTrailEntry>
+      <AuditTrailEntry>
+        <Data>
+      <Attribute name="s3v1">[5]</Attribute>
+        </Data>
+        <WorkflowModelElement>step3</WorkflowModelElement>
+        <EventType>complete</EventType>
+        <Originator></Originator>
+      </AuditTrailEntry>
+      <AuditTrailEntry>
+        <Data>
+        </Data>
+        <WorkflowModelElement>step4</WorkflowModelElement>
+        <EventType>complete</EventType>
+        <Originator></Originator>
+      </AuditTrailEntry>
+    </ProcessInstance>
+    <ProcessInstance id="TestProgram1" description="program desc">
+      <Data>
+      <Attribute name="v1">[hello, world]</Attribute>
+      </Data>
+      <AuditTrailEntry>
+        <Data>
+      <Attribute name="s1v1">[1, 2]</Attribute>
+        </Data>
+        <WorkflowModelElement>step1</WorkflowModelElement>
+        <EventType>complete</EventType>
+        <Originator></Originator>
+      </AuditTrailEntry>
+      <AuditTrailEntry>
+        <Data>
+      <Attribute name="s2v1">[4, 2]</Attribute>
+        </Data>
+        <WorkflowModelElement>step2</WorkflowModelElement>
+        <EventType>complete</EventType>
+        <Originator></Originator>
+      </AuditTrailEntry>
+      <AuditTrailEntry>
+        <Data>
+      <Attribute name="s3v1">[3, 4]</Attribute>
+        </Data>
+        <WorkflowModelElement>step3</WorkflowModelElement>
+        <EventType>complete</EventType>
+        <Originator></Originator>
+      </AuditTrailEntry>
+      <AuditTrailEntry>
+        <Data>
+      <Attribute name="s4v1">[1, 2]</Attribute>
+        </Data>
+        <WorkflowModelElement>step4</WorkflowModelElement>
+        <EventType>complete</EventType>
+        <Originator></Originator>
+      </AuditTrailEntry>
+    </ProcessInstance>
+  </Process>
+</WorkflowLog>

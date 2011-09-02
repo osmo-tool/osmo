@@ -1,9 +1,9 @@
-package osmo.miner.prom;
+package osmo.miner.parser.xml;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.DefaultHandler2;
-import osmo.miner.model.Node;
+import osmo.miner.miner.ProgramMiner;
 import osmo.miner.model.program.Program;
 
 import java.util.HashMap;
@@ -36,6 +36,6 @@ public class ProgramHandler extends DefaultHandler2 {
   }
 
   public Program getProgram() {
-    return programMiner.getMainProgram();
+    return programMiner.getProgram();
   }
 }

@@ -3,20 +3,20 @@ package osmo.miner.model;
 /**
  * @author Teemu Kanstren
  */
-public class ValuePair {
-  private final String name;
-  private final Object value;
+public class ValuePair <T> {
+  private final T value1;
+  private final T value2;
 
-  public ValuePair(String name, Object value) {
+  public ValuePair(T value1, T value2) {
     super();
-    this.name = name;
-    this.value = value;
+    this.value1 = value1;
+    this.value2 = value2;
   }
 
-  public String getName() {
-    return name;
+  public T getValue1() {
+    return value1;
   }
 
-  public Object getValue() {
-    return value;
+  public T getValue2() {
+    return value2;
   }}

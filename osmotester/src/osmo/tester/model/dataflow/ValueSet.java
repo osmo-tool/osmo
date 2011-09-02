@@ -79,7 +79,7 @@ public class ValueSet<T> implements Input<T>, Output<T> {
    *
    * @param option The object to be removed.
    */
-  public void removeOption(T option) {
+  public void remove(T option) {
     int index = options.indexOf(option);
     if (index < 0) {
       return;

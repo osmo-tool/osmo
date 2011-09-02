@@ -1,7 +1,10 @@
 package osmo.miner;
 
+import org.apache.velocity.app.VelocityEngine;
 import osmo.miner.log.Logger;
 
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -15,6 +18,10 @@ public class Config {
   public static String variableValueId;
   public static String stepId;
   public static String stepNameId;
+
+  static {
+    init();
+  }
 
   private Config() {
   }
@@ -31,6 +38,24 @@ public class Config {
     variableValueId = props.getProperty("variable_value_id");
     stepId = props.getProperty("step_id");
     stepNameId = props.getProperty("step_name_id");
+
+    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+      if ("Nimbus".equals(info.getName())) {
+        try {
+          UIManager.setLookAndFeel(info.getClassName());
+        } catch (Exception e) {
+          log.error("Failed to set Nimbus look and feel", e);
+        }
+        break;
+      }
+    }
+  }
+
+  public static VelocityEngine createVelocity() {
+    VelocityEngine velocity = new VelocityEngine();
+    velocity.setProperty("resource.loader", "class");
+    velocity.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+    return velocity;
   }
 
   public static void validate() {
