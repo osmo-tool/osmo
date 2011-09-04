@@ -1,0 +1,5 @@
+Mined invariants for $program
+
+#foreach ($inv in $invariants)
+$inv
+#end

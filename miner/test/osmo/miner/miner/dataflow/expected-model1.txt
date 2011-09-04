@@ -1,0 +1,75 @@
+Mined invariants for $program
+
+Value range (integer)
+Variable: v1 Scope: global
+Range invalid
+
+Value range (integer)
+Variable: s1v2 Scope: global
+Range: 2 - 2
+
+Value range (integer)
+Variable: s1v1 Scope: global
+Range: 1 - 1
+
+Value range (integer)
+Variable: s2v2 Scope: global
+Range: 2 - 2
+
+Value range (integer)
+Variable: s2v1 Scope: global
+Range: 4 - 7
+
+Value range (integer)
+Variable: s4v1 Scope: global
+Range: 1 - 1
+
+Value range (integer)
+Variable: s4v2 Scope: global
+Range: 2 - 2
+
+Value range (integer)
+Variable: s3v1 Scope: global
+Range: 3 - 5
+
+Value range (integer)
+Variable: s3v2 Scope: global
+Range: 4 - 4
+
+Value range (integer)
+Variable: s3v1 Scope: step3
+Range: 3 - 5
+
+Value range (integer)
+Variable: s3v2 Scope: step3
+Range: 4 - 4
+
+Value range (integer)
+Variable: s2v2 Scope: step2
+Range: 2 - 2
+
+Value range (integer)
+Variable: s2v1 Scope: step2
+Range: 4 - 7
+
+Value range (integer)
+Variable: s1v2 Scope: step1
+Range: 2 - 2
+
+Value range (integer)
+Variable: s1v1 Scope: step1
+Range: 1 - 1
+
+Value range (integer)
+Variable: s4v1 Scope: step4
+Range: 1 - 1
+
+Value range (integer)
+Variable: s4v2 Scope: step4
+Range: 2 - 2
+
+Value range (integer)
+Variable: v1 Scope: TestProgram1
+Range invalid
+
+

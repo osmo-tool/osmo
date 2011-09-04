@@ -3,8 +3,7 @@ package osmo.miner;
 import org.apache.velocity.app.VelocityEngine;
 import osmo.miner.log.Logger;
 
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.*;
 import java.io.IOException;
 import java.util.Properties;
 

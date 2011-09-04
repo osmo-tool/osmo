@@ -3,8 +3,10 @@ package osmo.miner.parser.xml;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.DefaultHandler2;
-import osmo.miner.miner.ProgramMiner;
+import osmo.miner.Config;
+import osmo.miner.log.Logger;
 import osmo.miner.model.program.Program;
+import osmo.miner.model.program.Step;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,10 +15,13 @@ import java.util.Map;
  * @author Teemu Kanstren
  */
 public class ProgramHandler extends DefaultHandler2 {
-  private ProgramMiner programMiner;
+  private static final Logger log = new Logger(ProgramHandler.class);
+  private final Program program;
+  private Step step;
 
   public ProgramHandler(String name) {
-    programMiner = new ProgramMiner(name);
+    program = new Program(name);
+    Config.validate();
   }
 
   @Override
@@ -27,15 +32,39 @@ public class ProgramHandler extends DefaultHandler2 {
       String value = attributes.getValue(i);
       attrs.put(name, value);
     }
-    programMiner.startElement(qName, attrs);
+    startElement(qName, attrs);
   }
 
   @Override
   public void endElement(String uri, String localName, String qName) throws SAXException {
-    programMiner.endElement(qName);
+    endElement(qName);
+  }
+
+  public void startElement(String element, Map<String, String> attributes) {
+    if (element.equals(Config.variableId)) {
+      String name = attributes.get(Config.variableNameId);
+      String value = attributes.get(Config.variableValueId);
+      if (step != null) {
+        step.addVariable(name, value);
+      } else {
+        program.addVariable(name, value);
+      }
+    }
+    if (element.equals(Config.stepId)) {
+      String name = attributes.get(Config.stepNameId);
+//      log.debug("step start:"+name);
+      step = program.createStep(name);
+    }
+  }
+
+  public void endElement(String element) {
+    if (element.equals(Config.stepId)) {
+      step = null;
+//      log.debug("Ending step:"+ currentProgram.getName());
+    }
   }
 
   public Program getProgram() {
-    return programMiner.getProgram();
+    return program;
   }
 }
