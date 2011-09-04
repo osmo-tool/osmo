@@ -1,10 +1,6 @@
 package osmo.miner.model.program;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,7 +9,7 @@ import java.util.Map;
 public class Step {
   private final Program parent;
   private final String name;
-  private Map<String, Variable> variables = new HashMap<String, Variable>();
+  private Map<String, String> variables = new HashMap<String, String>();
 
   public Step(Program parent, String name) {
     this.parent = parent;
@@ -28,33 +24,18 @@ public class Step {
     return name;
   }
 
-  public Variable createVariable(String name) {
-    Variable var = variables.get(name);
-    if (var == null) {
-      var = new Variable(name);
-      variables.put(name, var);
-    }
-    return var;
+  public void addVariable(String name, String value) {
+    variables.put(name, value);
   }
 
-  public Map<String, Variable> getVariableMap() {
+  public Map<String, String> getVariables() {
     return variables;
-  }
-
-  public List<Variable> getVariables() {
-    List<Variable> result = new ArrayList<Variable>();
-    result.addAll(variables.values());
-    return result;
   }
 
   public Step deepCopy(Program parent) {
     Step copy = new Step(parent, name);
-    for (Variable v : variables.values()) {
-      Variable cv = copy.createVariable(v.getName());
-      Collection<String> values = v.getValues();
-      for (String value : values) {
-        cv.addValue(value);
-      }
+    for (String name : variables.keySet()) {
+      copy.addVariable(name, variables.get(name));
     }
     return copy;
   }

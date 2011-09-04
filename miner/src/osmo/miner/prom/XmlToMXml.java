@@ -7,7 +7,6 @@ import osmo.miner.log.Logger;
 import osmo.miner.model.program.Program;
 import osmo.miner.model.program.Step;
 import osmo.miner.model.program.Suite;
-import osmo.miner.model.program.Variable;
 import osmo.miner.parser.xml.XmlProgramParser;
 
 import javax.swing.*;
@@ -20,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Teemu Kanstren
@@ -54,18 +54,11 @@ public class XmlToMXml {
   public void write(Suite suite, OutputStream out) throws IOException {
     VelocityContext vc = new VelocityContext();
 
-    Program superProgram = suite.createEFSM();
-    List<Variable> global = new ArrayList<Variable>();
-    global.addAll(superProgram.getGlobalVariables());
-    Collections.sort(global);
-    List<Variable> top = new ArrayList<Variable>();
-    top.addAll(superProgram.getVariables());
-    Collections.sort(top);
     vc.put("desc", description);
     vc.put("general_attrs", "");
     vc.put("src", source);
-    vc.put("source_attrs", createAttributes(global));
-    vc.put("process_attrs", createAttributes(top));
+    vc.put("source_attrs", "");
+    vc.put("process_attrs", "");
     vc.put("process_id", "process id");
     vc.put("process_desc", "process desc");
 
@@ -117,11 +110,13 @@ public class XmlToMXml {
     return sw.toString();
   }
 
-  public String createAttributes(List<Variable> variables) {
-    Collections.sort(variables);
+  public String createAttributes(Map<String, String> variables) {
+    List<String> names = new ArrayList<String>();
+    names.addAll(variables.keySet());
+    Collections.sort(names);
     StringWriter sw = new StringWriter();
-    for (Variable variable : variables) {
-      sw.append("      <Attribute name=\""+variable.getName()+"\">"+variable.getValues()+"</Attribute>\n");
+    for (String name : names) {
+      sw.append("      <Attribute name=\""+name+"\">"+variables.get(name)+"</Attribute>\n");
     }
     return sw.toString();
   }

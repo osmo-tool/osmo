@@ -2,16 +2,15 @@ package osmo.miner.prom;
 
 import org.junit.Test;
 import osmo.miner.log.Logger;
-import osmo.miner.model.program.Program;
 import osmo.miner.model.program.Suite;
 import osmo.miner.testmodels.TestModels1;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Collection;
 
 import static junit.framework.Assert.assertEquals;
-import static osmo.tester.TestUtils.*;
+import static osmo.tester.TestUtils.getResource;
+import static osmo.tester.TestUtils.unifyLineSeparators;
 
 /**
  * @author Teemu Kanstren

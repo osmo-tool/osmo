@@ -3,16 +3,10 @@
   </Data>
   <Source program="source">
     <Data>
-      <Attribute name="s1v1">[1, 2]</Attribute>
-      <Attribute name="s2v1">[7, 4, 2]</Attribute>
-      <Attribute name="s3v1">[5, 3, 4]</Attribute>
-      <Attribute name="s4v1">[1, 2]</Attribute>
-      <Attribute name="v1">[hello, world]</Attribute>
     </Data>
   </Source>
   <Process id="process id" description="process desc">
     <Data>
-      <Attribute name="v1">[hello, world]</Attribute>
     </Data>
     <ProcessInstance id="TestProgram2" description="program desc">
       <Data>
@@ -26,7 +20,7 @@
       </AuditTrailEntry>
       <AuditTrailEntry>
         <Data>
-      <Attribute name="s2v1">[7]</Attribute>
+      <Attribute name="s2v1">7</Attribute>
         </Data>
         <WorkflowModelElement>step2</WorkflowModelElement>
         <EventType>complete</EventType>
@@ -34,7 +28,7 @@
       </AuditTrailEntry>
       <AuditTrailEntry>
         <Data>
-      <Attribute name="s3v1">[5]</Attribute>
+      <Attribute name="s3v1">5</Attribute>
         </Data>
         <WorkflowModelElement>step3</WorkflowModelElement>
         <EventType>complete</EventType>
@@ -50,11 +44,12 @@
     </ProcessInstance>
     <ProcessInstance id="TestProgram1" description="program desc">
       <Data>
-      <Attribute name="v1">[hello, world]</Attribute>
+      <Attribute name="v1">hello</Attribute>
       </Data>
       <AuditTrailEntry>
         <Data>
-      <Attribute name="s1v1">[1, 2]</Attribute>
+      <Attribute name="s1v1">1</Attribute>
+      <Attribute name="s1v2">2</Attribute>
         </Data>
         <WorkflowModelElement>step1</WorkflowModelElement>
         <EventType>complete</EventType>
@@ -62,7 +57,8 @@
       </AuditTrailEntry>
       <AuditTrailEntry>
         <Data>
-      <Attribute name="s2v1">[4, 2]</Attribute>
+      <Attribute name="s2v1">4</Attribute>
+      <Attribute name="s2v2">2</Attribute>
         </Data>
         <WorkflowModelElement>step2</WorkflowModelElement>
         <EventType>complete</EventType>
@@ -70,7 +66,8 @@
       </AuditTrailEntry>
       <AuditTrailEntry>
         <Data>
-      <Attribute name="s3v1">[3, 4]</Attribute>
+      <Attribute name="s3v1">3</Attribute>
+      <Attribute name="s3v2">4</Attribute>
         </Data>
         <WorkflowModelElement>step3</WorkflowModelElement>
         <EventType>complete</EventType>
@@ -78,7 +75,8 @@
       </AuditTrailEntry>
       <AuditTrailEntry>
         <Data>
-      <Attribute name="s4v1">[1, 2]</Attribute>
+      <Attribute name="s4v1">1</Attribute>
+      <Attribute name="s4v2">2</Attribute>
         </Data>
         <WorkflowModelElement>step4</WorkflowModelElement>
         <EventType>complete</EventType>

@@ -1,0 +1,7 @@
+Value range (integer)
+Variable: $var Scope: $scope
+#if ($valid)
+Range: $min - $max
+#else
+Range invalid
+#end
