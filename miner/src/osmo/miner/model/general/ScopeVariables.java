@@ -5,30 +5,31 @@ import osmo.miner.model.dataflow.DataFlowInvariant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * @author Teemu Kanstren
  */
-public class ScopeInvariants {
+public class ScopeVariables {
   private final String name;
-  private final Map<String, Collection<DataFlowInvariant>> variables = new HashMap<String, Collection<DataFlowInvariant>>();
+  private final Map<String, VariableInvariants> variables = new HashMap<String, VariableInvariants>();
 
-  public ScopeInvariants(String name) {
+  public ScopeVariables(String name) {
     this.name = name;
   }
 
   public void add(DataFlowInvariant invariant) {
     String variable = invariant.getVariable();
-    Collection<DataFlowInvariant> data = variables.get(variable);
+    VariableInvariants data = variables.get(variable);
     if (data == null) {
-      data = new ArrayList<DataFlowInvariant>();
+      data = new VariableInvariants(variable);
       variables.put(variable, data);
     }
     data.add(invariant);
   }
 
-  public Collection<DataFlowInvariant> getInvariantsFor(String variable) {
+  public VariableInvariants getInvariantsFor(String variable) {
     return variables.get(variable);
   }
 
@@ -36,7 +37,7 @@ public class ScopeInvariants {
     return name;
   }
 
-  public Map<String, Collection<DataFlowInvariant>> getVariables() {
-    return variables;
+  public Collection<VariableInvariants> getVariables() {
+    return variables.values();
   }
 }

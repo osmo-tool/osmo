@@ -6,6 +6,7 @@ import osmo.miner.miner.MainMiner;
 import osmo.miner.model.dataflow.DataFlowInvariant;
 import osmo.miner.model.general.InvariantCollection;
 import osmo.miner.model.dataflow.ValueRangeInt;
+import osmo.miner.model.general.VariableInvariants;
 import osmo.miner.model.program.Suite;
 import osmo.miner.testmodels.TestModels1;
 
@@ -86,31 +87,31 @@ public class ValueRangeMinerTests {
   }
 
   private void assertInvariantCount(InvariantCollection toCheck, String variable, String scope, int expectedCount) {
-    Collection<DataFlowInvariant> invariants = toCheck.getInvariants(scope, variable);
-    for (DataFlowInvariant invariant : invariants) {
+    VariableInvariants invariants = toCheck.getInvariants(scope, variable);
+    for (DataFlowInvariant invariant : invariants.getInvariants()) {
       assertTrue("Invariant should be valid", invariant.isValid());
     }
-    int actualCount = invariants.size();
+    int actualCount = invariants.count();
     assertEquals("Number of invariants for variable:" + variable + " scope:" + scope, expectedCount, actualCount);
   }
 
   public void assertInvalidInvariantFound(InvariantCollection toCheck, String variable, String scope) {
-    Collection<DataFlowInvariant> invariants = toCheck.getInvariants(scope, variable);
-    for (DataFlowInvariant invariant : invariants) {
+    VariableInvariants invariants = toCheck.getInvariants(scope, variable);
+    for (DataFlowInvariant invariant : invariants.getInvariants()) {
       assertFalse("Invariant should be invalid", invariant.isValid());
     }
-    assertTrue("Could not find required value range invariant for variable:" + variable + " scope:" + scope, invariants.size() > 0);
-    assertTrue("Should have only one value range invariant for variable:" + variable + " scope:" + scope, invariants.size() == 1);
+    assertTrue("Could not find required value range invariant for variable:" + variable + " scope:" + scope, invariants.count() > 0);
+    assertTrue("Should have only one value range invariant for variable:" + variable + " scope:" + scope, invariants.count() == 1);
   }
 
   public void assertInvariantRange(InvariantCollection toCheck, String variable, String scope, int min, int max) {
-    Collection<DataFlowInvariant> invariants = toCheck.getInvariants(scope, variable);
-    for (DataFlowInvariant invariant : invariants) {
+    VariableInvariants invariants = toCheck.getInvariants(scope, variable);
+    for (DataFlowInvariant invariant : invariants.getInvariants()) {
       ValueRangeInt vr = (ValueRangeInt) invariant;
       assertTrue("Invariant for variable:" + variable + " scope:" + scope + " should be valid", vr.isValid());
       assertEquals("Min value for value range", min, vr.getMin());
       assertEquals("Max value for value range", max, vr.getMax());
     }
-    assertEquals("Should only have one value range for:" + variable + " scope:" + scope, 1, invariants.size());
+    assertEquals("Should only have one value range for:" + variable + " scope:" + scope, 1, invariants.count());
   }
 }
