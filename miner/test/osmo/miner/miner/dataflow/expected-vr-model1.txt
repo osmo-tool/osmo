@@ -1,4 +1,4 @@
-Mined invariants for $program
+Mined invariants for TestProgram
 
 Value range (integer)
 Variable: v1 Scope: global

@@ -1,0 +1,4 @@
+Values observed:
+#foreach ($value in $values)
+-$value.value1 ($value.value2 times)
+#end

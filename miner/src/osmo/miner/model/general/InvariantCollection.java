@@ -1,9 +1,10 @@
-package osmo.miner.model.dataflow;
+package osmo.miner.model.general;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import osmo.miner.Config;
 import osmo.miner.log.Logger;
+import osmo.miner.model.dataflow.DataFlowInvariant;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -19,41 +20,33 @@ import static osmo.tester.TestUtils.getResource;
  */
 public class InvariantCollection {
   private static Logger log = new Logger(InvariantCollection.class);
-  private Map<String, Collection<DataFlowInvariant>> scopeVariableMap = new HashMap<String, Collection<DataFlowInvariant>>();
+  private Map<String, ScopeInvariants> scopes = new HashMap<String, ScopeInvariants>();
   private Collection<DataFlowInvariant> all = new ArrayList<DataFlowInvariant>();
 
   public Collection<DataFlowInvariant> getInvariants(String scope, String variable) {
-    String key = scope+":"+variable;
-    return scopeVariableMap.get(key);
+    return scopes.get(scope).getInvariantsFor(variable);
   }
 
   public synchronized boolean addAll(Collection<? extends DataFlowInvariant> toAdd) {
     for (DataFlowInvariant invariant : toAdd) {
-      String key = invariant.getScope() + ":" + invariant.getVariable();
-      Collection<DataFlowInvariant> current = scopeVariableMap.get(key);
-      if (current == null) {
-        current = new ArrayList<DataFlowInvariant>();
-        scopeVariableMap.put(key, current);
-      }
-      current.add(invariant);
+      add(invariant);
     }
-    all.addAll(toAdd);
     return toAdd.size() > 0;
   }
 
-  public synchronized void addAll(InvariantCollection toAdd) {
-    Set<String> keys = toAdd.scopeVariableMap.keySet();
-    for (String key : keys) {
-      for (DataFlowInvariant invariant : toAdd.scopeVariableMap.get(key)) {
-        Collection<DataFlowInvariant> current = scopeVariableMap.get(key);
-        if (current == null) {
-          current = new ArrayList<DataFlowInvariant>();
-          scopeVariableMap.put(key, current);
-        }
-        current.add(invariant);
-      }
+  public synchronized void add(DataFlowInvariant toAdd) {
+    String scope = toAdd.getScope();
+    ScopeInvariants scopeInvariants = scopes.get(scope);
+    if (scopeInvariants == null) {
+      scopeInvariants = new ScopeInvariants(scope);
+      scopes.put(scope, scopeInvariants);
     }
-    all.addAll(toAdd.all);
+    scopeInvariants.add(toAdd);
+    all.add(toAdd);
+  }
+
+  public synchronized void addAll(InvariantCollection toAdd) {
+    addAll(toAdd.all);
   }
 
   public int size() {

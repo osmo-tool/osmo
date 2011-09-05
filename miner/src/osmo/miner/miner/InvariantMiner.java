@@ -1,6 +1,6 @@
 package osmo.miner.miner;
 
-import osmo.miner.model.dataflow.InvariantCollection;
+import osmo.miner.model.general.InvariantCollection;
 import osmo.miner.model.program.Program;
 import osmo.miner.model.program.Step;
 
