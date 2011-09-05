@@ -18,7 +18,11 @@
 
 package osmo.tester;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
@@ -35,8 +39,10 @@ import java.util.Scanner;
  * @author Teemu Kanstren
  */
 public class TestUtils {
-  /** Used for random number generation, practically also shared in OSMOTester in many places.
-   * {@see OSMOTester} and the setRandom method in it.*/
+  /**
+   * Used for random number generation, practically also shared in OSMOTester in many places.
+   * {@see OSMOTester} and the setRandom method in it.
+   */
   private static Random random = new Random();
   public static String ln = System.getProperty("line.separator");
 
@@ -154,7 +160,7 @@ public class TestUtils {
    * @return Random value between the given bounds, bounds included.
    */
   public static double cDouble(double min, double max) {
-    double diff = max-min;
+    double diff = max - min;
     double rnd = random.nextDouble();
     rnd *= diff;
     rnd += min;
@@ -166,7 +172,7 @@ public class TestUtils {
    * @return A randomly picked item from the given list.
    */
   public static int oneOf(int[] array) {
-    return array[cInt(0, array.length-1)];
+    return array[cInt(0, array.length - 1)];
   }
 
   /**
@@ -174,7 +180,7 @@ public class TestUtils {
    * @return A randomly picked item from the given list.
    */
   public static <T> T oneOf(T[] array) {
-    return array[cInt(0, array.length-1)];
+    return array[cInt(0, array.length - 1)];
   }
 
   /**
@@ -183,7 +189,7 @@ public class TestUtils {
    */
   public static <T> T oneOf(Collection<T> array) {
     List<T> list = new ArrayList<T>(array);
-    return list.get(cInt(0, array.size()-1));
+    return list.get(cInt(0, array.size() - 1));
   }
 
   /**
@@ -211,7 +217,7 @@ public class TestUtils {
     ThreadMXBean tb = ManagementFactory.getThreadMXBean();
     long[] ids = tb.getAllThreadIds();
     ThreadInfo[] infos = tb.getThreadInfo(ids, 5);
-    StringBuilder builder = new StringBuilder("Information for available threads:"+ln);
+    StringBuilder builder = new StringBuilder("Information for available threads:" + ln);
     for (ThreadInfo info : infos) {
       builder.append("Thread").append(ln);
       builder.append("-name=").append(info.getThreadName()).append(ln);
@@ -228,7 +234,7 @@ public class TestUtils {
   /**
    * Reads a string resource from the resource path (=classpath) of the given class.
    *
-   * @param c The that defines where we look for the String.
+   * @param c    The that defines where we look for the String.
    * @param name The name of the resource containing the string.
    * @return The String representation of the resource, newlines represented by '\n'.
    */
@@ -237,14 +243,14 @@ public class TestUtils {
     StringBuilder text = new StringBuilder();
     Scanner scanner = new Scanner(is, "UTF-8");
     try {
-      while (scanner.hasNextLine()){
-        text.append(scanner.nextLine());
+      while (scanner.hasNextLine()) {
+        String line = scanner.nextLine();
+        text.append(line);
         if (scanner.hasNextLine()) {
           text.append("\n");
         }
       }
-    }
-    finally{
+    } finally {
       scanner.close();
     }
     return text.toString();
@@ -261,7 +267,7 @@ public class TestUtils {
   public static String unifyLineSeparators(String toUnify, String ls) {
     char[] chars = toUnify.toCharArray();
     StringBuilder sb = new StringBuilder(toUnify.length());
-    for (int i = 0 ; i < chars.length ; i++) {
+    for (int i = 0; i < chars.length; i++) {
       char c = chars[i];
       switch (c) {
         case '\n':
@@ -269,7 +275,7 @@ public class TestUtils {
           break;
         case '\r':
           sb.append(ls);
-          if ( chars.length >= i && chars[i+1] == '\n') {
+          if (chars.length >= i && chars[i + 1] == '\n') {
             i++;
           }
           break;
