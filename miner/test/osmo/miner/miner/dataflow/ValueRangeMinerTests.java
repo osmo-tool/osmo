@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import osmo.miner.miner.MainMiner;
 import osmo.miner.model.dataflow.DataFlowInvariant;
-import osmo.miner.model.dataflow.InvariantCollection;
+import osmo.miner.model.general.InvariantCollection;
 import osmo.miner.model.dataflow.ValueRangeInt;
 import osmo.miner.model.program.Suite;
 import osmo.miner.testmodels.TestModels1;
@@ -80,7 +80,7 @@ public class ValueRangeMinerTests {
     Suite suite = TestModels1.model1();
     main.mine(suite);
     InvariantCollection invariants = main.getInvariants();
-    String expected = getResource(getClass(), "expected-model1.txt");
+    String expected = getResource(getClass(), "expected-vr-model1.txt");
     expected = unifyLineSeparators(expected, "\n");
     assertEquals("Generated report for model1", expected, invariants.toString());
   }

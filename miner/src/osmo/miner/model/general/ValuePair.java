@@ -1,4 +1,4 @@
-package osmo.miner.model;
+package osmo.miner.model.general;
 
 /**
  * @author Teemu Kanstren
