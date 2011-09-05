@@ -18,7 +18,7 @@ import static osmo.tester.TestUtils.unifyLineSeparators;
 public class MXmlTests {
   @Test
   public void model1() throws IOException {
-    Logger.debug = true;
+    //Logger.debug = true;
     Suite programs = TestModels1.model1();
     XmlToMXml transformer = new XmlToMXml();
     ByteArrayOutputStream out = new ByteArrayOutputStream();

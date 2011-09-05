@@ -10,8 +10,8 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import static osmo.tester.TestUtils.getResource;
 
@@ -20,10 +20,10 @@ import static osmo.tester.TestUtils.getResource;
  */
 public class InvariantCollection {
   private static Logger log = new Logger(InvariantCollection.class);
-  private Map<String, ScopeInvariants> scopes = new HashMap<String, ScopeInvariants>();
+  private Map<String, ScopeVariables> scopes = new HashMap<String, ScopeVariables>();
   private Collection<DataFlowInvariant> all = new ArrayList<DataFlowInvariant>();
 
-  public Collection<DataFlowInvariant> getInvariants(String scope, String variable) {
+  public VariableInvariants getInvariants(String scope, String variable) {
     return scopes.get(scope).getInvariantsFor(variable);
   }
 
@@ -36,12 +36,12 @@ public class InvariantCollection {
 
   public synchronized void add(DataFlowInvariant toAdd) {
     String scope = toAdd.getScope();
-    ScopeInvariants scopeInvariants = scopes.get(scope);
-    if (scopeInvariants == null) {
-      scopeInvariants = new ScopeInvariants(scope);
-      scopes.put(scope, scopeInvariants);
+    ScopeVariables scopeVariables = scopes.get(scope);
+    if (scopeVariables == null) {
+      scopeVariables = new ScopeVariables(scope);
+      scopes.put(scope, scopeVariables);
     }
-    scopeInvariants.add(toAdd);
+    scopeVariables.add(toAdd);
     all.add(toAdd);
   }
 
@@ -53,11 +53,24 @@ public class InvariantCollection {
     return all.size();
   }
 
+  public Collection<ScopeVariables> getSortedScopes() {
+    List<ScopeVariables> result = new ArrayList<ScopeVariables>();
+    for (String scope : scopes.keySet()) {
+      if (scope.equals("global")) {
+        continue;
+      }
+      result.add(scopes.get(scope));
+    }
+    result.add(0, scopes.get("global"));
+    return result;
+  }
+
   @Override
   public String toString() {
     VelocityEngine velocity = Config.createVelocity();
     VelocityContext vc = new VelocityContext();
-    vc.put("invariants", all);
+    vc.put("scopes", getSortedScopes());
+    vc.put("program", "TestProgram");
     Class c = getClass();
     String templateName = c.getSimpleName() + ".vm";
     String template = getResource(c, templateName);

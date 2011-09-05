@@ -28,4 +28,15 @@ public class ValueSetMinerTests {
 
     System.out.println(invariants);
   }
+
+  @Test
+  public void setAndRangeForModel1() {
+    Suite suite = TestModels1.model1();
+    main.addMiner(new ValueRangeMiner());
+    main.mine(suite);
+    InvariantCollection invariants = main.getInvariants();
+
+    System.out.println(invariants);
+  }
+
 }
