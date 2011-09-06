@@ -13,10 +13,14 @@ import java.util.Map;
  */
 public class ScopeVariables {
   private final String name;
+  private final boolean program;
+  private final boolean global;
   private final Map<String, VariableInvariants> variables = new HashMap<String, VariableInvariants>();
 
-  public ScopeVariables(String name) {
+  public ScopeVariables(String name, boolean program, boolean global) {
     this.name = name;
+    this.program = program;
+    this.global = global;
   }
 
   public void add(DataFlowInvariant invariant) {
@@ -27,6 +31,14 @@ public class ScopeVariables {
       variables.put(variable, data);
     }
     data.add(invariant);
+  }
+
+  public boolean isProgram() {
+    return program;
+  }
+
+  public boolean isGlobal() {
+    return global;
   }
 
   public VariableInvariants getInvariantsFor(String variable) {

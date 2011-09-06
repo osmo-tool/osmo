@@ -9,8 +9,12 @@ public class ValueRangeInt extends DataFlowInvariant {
   private int min = Integer.MAX_VALUE;
   private int max = Integer.MIN_VALUE;
 
+  public ValueRangeInt(String scope, String variable, boolean program, boolean global) {
+    super(scope, variable, program, global);
+  }
+
   public ValueRangeInt(String scope, String variable) {
-    super(scope, variable);
+    super(scope, variable, false, false);
   }
 
   public void check(String value) {
@@ -50,5 +54,13 @@ public class ValueRangeInt extends DataFlowInvariant {
     vc.put("min", min);
     vc.put("max", max);
     vc.put("valid", valid);
+  }
+
+  @Override
+  public String toString() {
+    if (!valid) {
+      return "Range: Non-numeric (invalid)";
+    }
+    return "Range: "+min+"-"+max;
   }
 }

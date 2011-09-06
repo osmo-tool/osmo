@@ -38,7 +38,7 @@ public class InvariantCollection {
     String scope = toAdd.getScope();
     ScopeVariables scopeVariables = scopes.get(scope);
     if (scopeVariables == null) {
-      scopeVariables = new ScopeVariables(scope);
+      scopeVariables = new ScopeVariables(scope, toAdd.isProgram(), toAdd.isGlobal());
       scopes.put(scope, scopeVariables);
     }
     scopeVariables.add(toAdd);
@@ -55,11 +55,11 @@ public class InvariantCollection {
 
   public Collection<ScopeVariables> getSortedScopes() {
     List<ScopeVariables> result = new ArrayList<ScopeVariables>();
-    for (String scope : scopes.keySet()) {
-      if (scope.equals("global")) {
+    for (ScopeVariables scope : scopes.values()) {
+      if (scope.isGlobal()) {
         continue;
       }
-      result.add(scopes.get(scope));
+      result.add(scope);
     }
     result.add(0, scopes.get("global"));
     return result;
