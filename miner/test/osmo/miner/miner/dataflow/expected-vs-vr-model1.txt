@@ -1,57 +1,75 @@
 Mined invariants for TestProgram
 
 global:v1
+Values observed: [hello(1)]
 Range: Non-numeric (invalid)
 
 global:s1v2
+Values observed: [2(1)]
 Range: 2-2
 
 global:s1v1
+Values observed: [1(1)]
 Range: 1-1
 
 global:s2v2
+Values observed: [2(1)]
 Range: 2-2
 
 global:s2v1
+Values observed: [7(1)] [4(1)]
 Range: 4-7
 
 global:s4v1
+Values observed: [1(1)]
 Range: 1-1
 
 global:s4v2
+Values observed: [2(1)]
 Range: 2-2
 
 global:s3v1
+Values observed: [3(1)] [5(1)]
 Range: 3-5
 
 global:s3v2
+Values observed: [4(1)]
 Range: 4-4
 
 TestProgram1:v1
+Values observed: [hello(1)]
 Range: Non-numeric (invalid)
 
 step3:s3v1
+Values observed: [3(1)] [5(1)]
 Range: 3-5
 
 step3:s3v2
+Values observed: [4(1)]
 Range: 4-4
 
 step2:s2v2
+Values observed: [2(1)]
 Range: 2-2
 
 step2:s2v1
+Values observed: [7(1)] [4(1)]
 Range: 4-7
 
 step1:s1v2
+Values observed: [2(1)]
 Range: 2-2
 
 step1:s1v1
+Values observed: [1(1)]
 Range: 1-1
 
 step4:s4v1
+Values observed: [1(1)]
 Range: 1-1
 
 step4:s4v2
+Values observed: [2(1)]
 Range: 2-2
 
 

@@ -27,36 +27,37 @@ public class ValueSetMiner implements InvariantMiner {
     for (Map<String, ValueSet> locals : localSets.values()) {
       invariants.addAll(locals.values());
     }
+//    System.out.println("global invariants:" + globalSets);
+//    System.out.println("local invariants:" + localSets);
     return invariants;
   }
 
   @Override
   public void programStart(Program program) {
-    checkSet(program.getVariables(), globalSets, "global");
-    checkLocalSet(program.getName(), program.getVariables());
+    checkSet(program.getVariables(), true, true, "global");
+    checkSet(program.getVariables(), true, false, program.getName());
   }
 
   @Override
   public void step(Step step) {
-    checkSet(step.getVariables(), globalSets, "global");
-    checkLocalSet(step.getName(), step.getVariables());
+    checkSet(step.getVariables(), false, true, "global");
+    checkSet(step.getVariables(), false, false, step.getName());
   }
 
-  private void checkLocalSet(String name, Map<String, String> variables) {
-    Map<String, ValueSet> sets = localSets.get(name);
-    if (sets == null) {
-      sets = new HashMap<String, ValueSet>();
-      localSets.put(name, sets);
+  private void checkSet(Map<String, String> variables, boolean program, boolean global, String scope) {
+    Map<String, ValueSet> sets = globalSets;
+    if (!global) {
+      sets = localSets.get(scope);
+      if (sets == null) {
+        sets = new HashMap<String, ValueSet>();
+        localSets.put(scope, sets);
+      }
     }
-    checkSet(variables, sets, name);
-  }
-
-  private void checkSet(Map<String, String> variables, Map<String, ValueSet> sets, String scope) {
     Set<String> names = variables.keySet();
     for (String name : names) {
       ValueSet set = sets.get(name);
       if (set == null) {
-        set = new ValueSet(scope, name);
+        set = new ValueSet(scope, name, program, global);
         sets.put(name, set);
       }
       String value = variables.get(name);

@@ -14,8 +14,12 @@ import java.util.Map;
 public class ValueSet extends DataFlowInvariant {
   private Map<String, Integer> observations = new HashMap<String, Integer>();
 
+  public ValueSet(String scope, String variable, boolean program, boolean global) {
+    super(scope, variable, program, global);
+  }
+
   public ValueSet(String scope, String variable) {
-    super(scope, variable);
+    super(scope, variable, false, false);
   }
 
   public void add(String option) {
