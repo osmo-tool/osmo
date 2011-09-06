@@ -16,11 +16,15 @@ public abstract class DataFlowInvariant {
   private static final Logger log = new Logger(DataFlowInvariant.class);
   protected final String scope;
   protected final String variable;
+  private final boolean program;
+  private final boolean global;
   protected boolean valid = true;
 
-  protected DataFlowInvariant(String scope, String variable) {
+  protected DataFlowInvariant(String scope, String variable, boolean program, boolean global) {
     this.scope = scope;
     this.variable = variable;
+    this.program = program;
+    this.global = global;
   }
 
   public String getScope() {
@@ -33,6 +37,14 @@ public abstract class DataFlowInvariant {
 
   public boolean isValid() {
     return valid;
+  }
+
+  public boolean isProgram() {
+    return program;
+  }
+
+  public boolean isGlobal() {
+    return global;
   }
 
   public abstract void fill(VelocityContext vc);
