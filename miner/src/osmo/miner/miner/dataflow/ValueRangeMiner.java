@@ -31,31 +31,30 @@ public class ValueRangeMiner implements InvariantMiner {
 
   @Override
   public void programStart(Program program) {
-    checkRange(program.getVariables(), globalRanges, "global");
-    checkLocalRange(program.getName(), program.getVariables());
+    checkRange(program.getVariables(), true, true, "global");
+    checkRange(program.getVariables(), true, false, program.getName());
   }
 
   @Override
   public void step(Step step) {
-    checkRange(step.getVariables(), globalRanges, "global");
-    checkLocalRange(step.getName(), step.getVariables());
+    checkRange(step.getVariables(), false, true, "global");
+    checkRange(step.getVariables(), false, false, step.getName());
   }
 
-  private void checkLocalRange(String name, Map<String, String> variables) {
-    Map<String, ValueRangeInt> ranges = localRanges.get(name);
-    if (ranges == null) {
-      ranges = new HashMap<String, ValueRangeInt>();
-      localRanges.put(name, ranges);
+  private void checkRange(Map<String, String> variables, boolean program, boolean global, String scope) {
+    Map<String, ValueRangeInt> ranges = globalRanges;
+    if (!global) {
+      ranges = localRanges.get(scope);
+      if (ranges == null) {
+        ranges = new HashMap<String, ValueRangeInt>();
+        localRanges.put(scope, ranges);
+      }
     }
-    checkRange(variables, ranges, name);
-  }
-
-  private void checkRange(Map<String, String> variables, Map<String, ValueRangeInt> ranges, String scope) {
     Set<String> names = variables.keySet();
     for (String name : names) {
       ValueRangeInt range = ranges.get(name);
       if (range == null) {
-        range = new ValueRangeInt(scope, name);
+        range = new ValueRangeInt(scope, name, program, global);
         ranges.put(name, range);
       }
       if (!range.isValid()) {

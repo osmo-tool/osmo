@@ -55,13 +55,21 @@ public class InvariantCollection {
 
   public Collection<ScopeVariables> getSortedScopes() {
     List<ScopeVariables> result = new ArrayList<ScopeVariables>();
+    List<ScopeVariables> globalScope = new ArrayList<ScopeVariables>();
+    List<ScopeVariables> programScope = new ArrayList<ScopeVariables>();
     for (ScopeVariables scope : scopes.values()) {
       if (scope.isGlobal()) {
+        globalScope.add(scope);
+        continue;
+      }
+      if (scope.isProgram()) {
+        programScope.add(scope);
         continue;
       }
       result.add(scope);
     }
-    result.add(0, scopes.get("global"));
+    result.addAll(0, programScope);
+    result.addAll(0, globalScope);
     return result;
   }
 
