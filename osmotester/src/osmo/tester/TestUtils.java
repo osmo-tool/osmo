@@ -69,7 +69,7 @@ public class TestUtils {
    * @return A random value.
    */
   public static int cInt() {
-    return (int) Math.round(cDouble());
+    return random.nextInt();
   }
 
   /**
@@ -78,14 +78,17 @@ public class TestUtils {
    * @return Random integer between the given bounds, bounds included.
    */
   public static int cInt(int min, int max) {
-    return (int) Math.round(cDouble(min, max));
+    int diff = max - min + 1;
+    int rnd = random.nextInt(diff);
+    rnd += min;
+    return rnd;
   }
 
   /**
    * @return A random value.
    */
   public static float cFloat() {
-    return (float) Math.round(cDouble());
+    return random.nextFloat();
   }
 
   /**
@@ -94,14 +97,17 @@ public class TestUtils {
    * @return Random value between the given bounds, bounds included.
    */
   public static float cFloat(float min, float max) {
-    return (float) Math.round(cDouble(min, max));
+    float diff = max - min;
+    float rnd = random.nextFloat() * diff;
+    rnd += min;
+    return rnd;
   }
 
   /**
    * @return A random value.
    */
   public static long cLong() {
-    return (long) Math.round(cDouble());
+    return random.nextLong();
   }
 
   /**
@@ -110,14 +116,15 @@ public class TestUtils {
    * @return Random value between the given bounds, bounds included.
    */
   public static long cLong(long min, long max) {
-    return (long) Math.round(cDouble(min, max));
+    long diff = max - min + 1;
+    return min + (long) (random.nextDouble() * diff);
   }
 
   /**
    * @return A random value.
    */
   public static byte cByte() {
-    return (byte) Math.round(cDouble());
+    return (byte) cInt(Byte.MIN_VALUE, Byte.MAX_VALUE);
   }
 
   /**
@@ -126,14 +133,14 @@ public class TestUtils {
    * @return Random value between the given bounds, bounds included.
    */
   public static byte cByte(byte min, byte max) {
-    return (byte) Math.round(cDouble(min, max));
+    return (byte)cInt(min, max);
   }
 
   /**
    * @return A random value.
    */
   public static char cChar() {
-    return (char) Math.round(cDouble());
+    return (char) cInt(Character.MIN_VALUE, Character.MAX_VALUE);
   }
 
   /**
@@ -142,16 +149,14 @@ public class TestUtils {
    * @return Random value between the given bounds, bounds included.
    */
   public static char cChar(char min, char max) {
-    return (char) Math.round(cDouble(min, max));
+    return (char)cInt(min, max);
   }
 
   /**
    * @return A random value.
    */
   public static double cDouble() {
-    double min = Integer.MIN_VALUE;
-    double max = Integer.MAX_VALUE;
-    return cDouble(min, max);
+    return random.nextDouble();
   }
 
   /**

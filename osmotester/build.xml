@@ -10,6 +10,7 @@
   <property name="coverage-dir" value="${main-output}/coverage"/>
   <property name="javadoc-dir" value="${main-output}/docs/api"/>
   <property name="cobertura.home" value="${env.COBERTURA_HOME}"/>
+  <property name="build.version" value="1.1"/>
 
   <path id="class.path">
     <!--pathelement path="${currentenv.classpath}"/-->
@@ -53,7 +54,7 @@
   </target>
 
   <target name="jar" depends="compile,copyresources" description="Create jar file">
-    <jar destfile="osmotester.jar" basedir="${prod-dest}"/>
+    <jar destfile="osmotester${build.version}.jar" basedir="${prod-dest}"/>
   </target>
 
   <target name="test" depends="clean, compile, copyresources">
