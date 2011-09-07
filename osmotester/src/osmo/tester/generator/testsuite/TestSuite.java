@@ -25,8 +25,6 @@ public class TestSuite {
   private final Collection<FSMTransition> coveredTransitions = new HashSet<FSMTransition>();
   /** List of covered transitions and number of how many times it exist in the test suite*/
   private Map<FSMTransition, Integer> transitionCoverage = new HashMap<FSMTransition, Integer>();
-  /** List of covered transitions pairs and number of how many times it exist in the test suite*/
-  private Map<FSMTransition, Integer> tpCoverage = new HashMap<FSMTransition, Integer>();
 
   /**
    * Start a new test case.
