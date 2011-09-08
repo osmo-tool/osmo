@@ -54,7 +54,7 @@
   </target>
 
   <target name="jar" depends="compile,copyresources" description="Create jar file">
-    <jar destfile="osmotester${build.version}.jar" basedir="${prod-dest}"/>
+    <jar destfile="osmotester-v${build.version}.jar" basedir="${prod-dest}"/>
   </target>
 
   <target name="test" depends="clean, compile, copyresources">
