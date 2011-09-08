@@ -1,6 +1,5 @@
 package osmo.tester.parser;
 
-import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 
 import java.lang.reflect.Field;

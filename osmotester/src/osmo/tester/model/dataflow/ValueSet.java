@@ -1,7 +1,5 @@
 package osmo.tester.model.dataflow;
 
-import osmo.tester.generator.algorithm.OptimizedRandomAlgorithm;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -10,7 +8,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import static osmo.tester.TestUtils.*;
+import static osmo.tester.TestUtils.minOf;
+import static osmo.tester.TestUtils.oneOf;
 
 /**
  * Represents a set of values (objects) of the given type.

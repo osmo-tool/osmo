@@ -1,5 +1,6 @@
 package osmo.tester.generator.testsuite;
 
+import osmo.tester.annotation.Variable;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.VariableField;
@@ -9,8 +10,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import osmo.tester.annotation.Variable;
 
 /**
  * Describes a single test step in a test case.

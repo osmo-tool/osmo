@@ -5,7 +5,7 @@ import osmo.tester.log.Logger;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static osmo.tester.TestUtils.*;
+import static osmo.tester.TestUtils.oneOf;
 
 /**
  * Represents a set of numeric input domains.

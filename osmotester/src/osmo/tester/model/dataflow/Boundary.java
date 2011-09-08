@@ -1,8 +1,5 @@
 package osmo.tester.model.dataflow;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 /**
  * @author Teemu Kanstren
  */
