@@ -1,10 +1,10 @@
 package osmo.tester.examples;
 
 import osmo.tester.OSMOTester;
-import osmo.tester.annotation.AfterTest;
 import osmo.tester.annotation.AfterSuite;
-import osmo.tester.annotation.BeforeTest;
+import osmo.tester.annotation.AfterTest;
 import osmo.tester.annotation.BeforeSuite;
+import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Transition;
 import osmo.tester.generator.algorithm.RandomAlgorithm;

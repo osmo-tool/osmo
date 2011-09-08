@@ -7,6 +7,7 @@ import osmo.tester.generation.TestListener;
 import osmo.tester.generator.algorithm.OptimizedRandomAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.endcondition.Length;
+import osmo.tester.log.Logger;
 import osmo.tester.testmodels.ValidTestModel6;
 
 import java.util.Collection;
@@ -32,7 +33,7 @@ public class OptimizedRandomTests {
 
   @Test
   public void testModel6Length4() {
-    listener.addExpected("suite-start", "start", "t:t1", "t:t2", "t:t1", "t:t4", "end", "suite-end");
+    listener.addExpected("suite-start", "start", "t:t1", "t:t1", "t:t2", "t:t1", "end", "suite-end");
     osmo.addModelObject(new ValidTestModel6());
     Length length4 = new Length(4);
     Length length1 = new Length(1);
@@ -55,7 +56,8 @@ public class OptimizedRandomTests {
 
   @Test
   public void testModel6Length20() {
-    listener.addExpected("suite-start", "start", "t:t1", "t:t2", "t:t1", "t:t4", "t:t1", "t:t3", "t:t2", "t:t2", "t:t4", "t:t2", "t:t3", "t:t4", "t:t4", "t:t3", "t:t3", "t:t1", "t:t1", "t:t1", "t:t3", "t:t3", "end", "suite-end");
+    Logger.debug = true;
+    listener.addExpected("suite-start", "start", "t:t1", "t:t1", "t:t2", "t:t1", "t:t4", "t:t3", "t:t4", "t:t4", "t:t1", "t:t3", "t:t2", "t:t4", "t:t2", "t:t3", "t:t3", "t:t1", "t:t1", "t:t3", "t:t1", "t:t2", "end", "suite-end");
     osmo.addModelObject(new ValidTestModel6());
     Length length15 = new Length(20);
     Length length1 = new Length(1);

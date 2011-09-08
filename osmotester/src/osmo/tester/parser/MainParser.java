@@ -1,9 +1,9 @@
 package osmo.tester.parser;
 
-import osmo.tester.annotation.AfterTest;
 import osmo.tester.annotation.AfterSuite;
-import osmo.tester.annotation.BeforeTest;
+import osmo.tester.annotation.AfterTest;
 import osmo.tester.annotation.BeforeSuite;
+import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.EndState;
 import osmo.tester.annotation.Guard;
@@ -13,7 +13,6 @@ import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
-import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.log.Logger;
 import osmo.tester.model.FSM;
 
@@ -21,7 +20,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;

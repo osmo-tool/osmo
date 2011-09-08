@@ -1,6 +1,6 @@
 package osmo.tester.model.dataflow;
 
-import static osmo.tester.TestUtils.*;
+import static osmo.tester.TestUtils.cInt;
 
 /**
  * Input/Output in form of human readable characters.

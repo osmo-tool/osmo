@@ -9,9 +9,9 @@ import osmo.tester.annotation.Post;
 import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
-import osmo.tester.reporting.coverage.CSV;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
+import osmo.tester.reporting.coverage.CSV;
 
 import java.io.PrintStream;
 

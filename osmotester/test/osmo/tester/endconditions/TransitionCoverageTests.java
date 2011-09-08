@@ -14,7 +14,6 @@ import static junit.framework.Assert.*;
  * @author Teemu Kanstren
  */
 public class TransitionCoverageTests {
-
   private FSM fsm;
   private FSMTransition t1;
   private FSMTransition t2;
@@ -47,111 +46,112 @@ public class TransitionCoverageTests {
   }
 
   @Test
-  public void coverage70p() {
+  public void suiteCoverage70p() {
     suite.startTest();
     suite.addStep(t1);
     suite.addStep(t3);
     tc = new TransitionCoverage(0.7);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t4);
     suite.addStep(t5);
     suite.addStep(t6);
     suite.addStep(t7);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t8);
-    assertEnd(true);
+    assertEndSuite(true);
   }
 
   @Test
   public void coverage0p() {
     suite.startTest();
     tc = new TransitionCoverage(0.0);
-    assertEnd(true);
+    assertEndSuite(true);
+    assertEndTest(true);
   }
 
   @Test
-  public void coverage100p() {
+  public void suiteCoverage100p() {
     tc = new TransitionCoverage(1.0);
     suite.startTest();
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t1);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t2);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t3);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t4);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t5);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t6);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t7);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t8);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t9);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t10);
-    assertEnd(true);
+    assertEndSuite(true);
   }
 
   @Test
-  public void coverage150p() {
+  public void suiteCoverage150p() {
     tc = new TransitionCoverage(1.5);
     suite.startTest();
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t1);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t2);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t3);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t4);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t5);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t6);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t7);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t8);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t9);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t10);
     suite.addStep(t1);
     suite.addStep(t2);
     suite.addStep(t3);
     suite.addStep(t5);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t7);
-    assertEnd(true);
+    assertEndSuite(true);
   }
 
   @Test
-  public void coverage150pOverlap() {
+  public void suiteCoverage150pOverlap() {
     tc = new TransitionCoverage(1.5);
     suite.startTest();
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t1);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t2);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t3);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t4);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t5);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t6);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t7);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t8);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t9);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t10);
     suite.addStep(t1);
     suite.addStep(t2);
@@ -164,38 +164,67 @@ public class TransitionCoverageTests {
     suite.addStep(t3);
     suite.addStep(t3);
     suite.addStep(t5);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t7);
-    assertEnd(true);
+    assertEndSuite(true);
   }
 
   @Test
-  public void coverage50pOverlap() {
+  public void suiteCoverage50pOverlap() {
     tc = new TransitionCoverage(0.5);
     suite.startTest();
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t1);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t2);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t2);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t2);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t9);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t6);
-    assertEnd(false);
+    assertEndSuite(false);
     suite.addStep(t8);
-    assertEnd(true);
+    assertEndSuite(true);
     suite.addStep(t8);
-    assertEnd(true);
+    assertEndSuite(true);
     suite.addStep(t9);
-    assertEnd(true);
+    assertEndSuite(true);
   }
 
-  private void assertEnd(boolean expected) {
-    boolean actual = tc.checkThreshold(suite, fsm);
+  @Test
+  public void testCoverage50pTwoTests() {
+    tc = new TransitionCoverage(0.5);
+    suite.startTest();
+    suite.addStep(t1);
+    suite.addStep(t2);
+    suite.addStep(t3);
+    suite.addStep(t4);
+    suite.addStep(t5);
+    suite.addStep(t6);
+    suite.endTest();
+    suite.startTest();
+    suite.addStep(t2);
+    suite.addStep(t3);
+    suite.addStep(t8);
+    assertEndSuite(true);
+    assertEndTest(false);
+    suite.addStep(t5);
+    suite.addStep(t6);
+    assertEndSuite(true);
+    assertEndTest(true);
+  }
+
+
+  private void assertEndSuite(boolean expected) {
+    boolean actual = tc.checkThreshold(suite, fsm, true);
     assertEquals("Transition Coverage should end with "+suite.totalSteps()+"/10", expected, actual);
+  }
+
+  private void assertEndTest(boolean expected) {
+    boolean actual = tc.checkThreshold(suite, fsm, false);
+    assertEquals("Transition Coverage should end with " + suite.getCurrentTest().getSteps().size() + "/10", expected, actual);
   }
 }

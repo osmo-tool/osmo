@@ -12,7 +12,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import static osmo.tester.TestUtils.*;
+import static osmo.tester.TestUtils.minOf;
+import static osmo.tester.TestUtils.oneOf;
 
 /**
  * A test generation algorithm that is similar to the {@link RandomAlgorithm} but not preferring to take
@@ -135,7 +136,11 @@ public class OptimizedRandomAlgorithm implements FSMTraversalAlgorithm {
         map = new HashMap<FSMTransition, Integer>();
         tpCoverage.put(previous, map);
       }
-      uncoveredTP.removeAll(map.keySet());
+      for (FSMTransition t : map.keySet()) {
+        if (map.get(t) > 0) {
+          uncoveredTP.remove(t);
+        }
+      }
     }
     log.debug("Uncovered TP:"+uncoveredTP);
     //options now contains all previously uncovered transition pairs

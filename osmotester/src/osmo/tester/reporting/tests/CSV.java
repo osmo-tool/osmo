@@ -1,7 +1,6 @@
 package osmo.tester.reporting.tests;
 
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.model.FSM;
 
 import java.util.List;
 

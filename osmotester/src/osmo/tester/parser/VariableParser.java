@@ -1,14 +1,10 @@
 package osmo.tester.parser;
 
-import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.Variable;
 import osmo.tester.log.Logger;
-import osmo.tester.model.Requirements;
 import osmo.tester.model.VariableField;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Parses {@link osmo.tester.annotation.Variable} annotations from the given model object.
