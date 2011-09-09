@@ -14,4 +14,18 @@ added features based on v0.1 experiences and feedback, and invariance taxonomy
 -fixed some bugs and did some refactoring to clarify code
 v0.3 16/07/2011
 -split oracle to pre and post methods
+v0.4 02/08/2011
+-added @Variable annotation and resulting state storage to TestStep? and @Pre and @Post parameters.
+-fixed some bugs and did some optimizations
+v1.0 24/08/2011
+-This is the first version to provide some stable interface
+-Cleaned up excess parameters from TestSuite and TestStep
+-Fixed spamming over several log files ( issue #7 )
+-Changed TestSuite? initialization to require non-null value
+-Added requirements coverage and test data reporters ( issue #6 ,  issue #11 )
+-Added basic boundary scan algorithm to dataflow generators ( issue #9 )
+-Defined common interfaces for dataflow input and output ( issue #8 )
+v1.1 09/09/2011
+-fixes to make random numbers more uniformly distributed
+-added transitioncoverage endcondition
 
