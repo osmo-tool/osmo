@@ -58,7 +58,8 @@ public abstract class DataFlowInvariant {
     String templateName = c.getSimpleName() + ".vm";
     String template = getResource(c, templateName);
     StringWriter sw = new StringWriter();
-    log.debug("Merging template:"+templateName);
+//    log.debug("Merging template:"+templateName);
+    //log.debugNL(".");
     velocity.evaluate(vc, sw, templateName, template);
     return sw.toString();
   }

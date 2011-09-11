@@ -58,7 +58,7 @@ public class ValueRangeMiner implements InvariantMiner {
         ranges.put(name, range);
       }
       if (!range.isValid()) {
-        return;
+        continue;
       }
       String value = variables.get(name);
       range.check(value);
