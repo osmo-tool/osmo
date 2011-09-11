@@ -7,6 +7,7 @@ import osmo.miner.Config;
 import osmo.miner.log.Logger;
 import osmo.miner.model.program.Program;
 import osmo.miner.model.program.Step;
+import osmo.miner.parser.ProgramResolver;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +19,7 @@ public class ProgramHandler extends DefaultHandler2 {
   private static final Logger log = new Logger(ProgramHandler.class);
   private final Program program;
   private Step step;
+  private ProgramResolver resolver = new FileResolver();
 
   public ProgramHandler(String name) {
     program = new Program(name);
@@ -54,6 +56,8 @@ public class ProgramHandler extends DefaultHandler2 {
       String name = attributes.get(Config.stepNameId);
 //      log.debug("step start:"+name);
       step = program.createStep(name);
+      Program sub = resolver.resolve(Config.baseDir+name);
+      step.merge(sub);
     }
   }
 

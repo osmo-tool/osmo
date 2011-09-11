@@ -84,4 +84,8 @@ public class Logger {
   public void error(String msg, Exception e) {
     logger.log(Level.SEVERE, msg, e);
   }
+
+  public void debugNL(String msg) {
+    System.out.print(msg);
+  }
 }

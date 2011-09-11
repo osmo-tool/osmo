@@ -3,6 +3,7 @@ package osmo.miner;
 import osmo.miner.log.Logger;
 import osmo.miner.miner.MainMiner;
 import osmo.miner.miner.dataflow.ValueRangeMiner;
+import osmo.miner.miner.dataflow.ValueSetMiner;
 import osmo.miner.model.program.Suite;
 import osmo.miner.parser.xml.XmlProgramParser;
 
@@ -32,6 +33,7 @@ public class GUI {
     MainMiner miner = new MainMiner();
     ValueRangeMiner vrMiner = new ValueRangeMiner();
     miner.addMiner(vrMiner);
+    miner.addMiner(new ValueSetMiner());
     miner.mine(suite);
     File output = new File("osmominer-output.txt");
     FileOutputStream out = new FileOutputStream(output);

@@ -17,6 +17,9 @@ public class Config {
   public static String variableValueId;
   public static String stepId;
   public static String stepNameId;
+  public static String baseDir;
+  public static String variablePre;
+  public static String variablePost;
 
   static {
     init();
@@ -37,6 +40,7 @@ public class Config {
     variableValueId = props.getProperty("variable_value_id");
     stepId = props.getProperty("step_id");
     stepNameId = props.getProperty("step_name_id");
+    baseDir = props.getProperty("base_dir");
 
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
       if ("Nimbus".equals(info.getName())) {

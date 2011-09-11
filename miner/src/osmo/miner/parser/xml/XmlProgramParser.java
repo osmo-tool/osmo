@@ -1,6 +1,7 @@
 package osmo.miner.parser.xml;
 
 import osmo.miner.model.program.Program;
+import osmo.miner.parser.StartEndVariableResolver;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -15,7 +16,10 @@ import java.io.InputStream;
 public class XmlProgramParser {
   public Program parse(File file) throws IOException {
     FileInputStream in = new FileInputStream(file);
-    return parse(in, file.getName());
+    Program program = parse(in, file.getName());
+    StartEndVariableResolver vr = new StartEndVariableResolver();
+    vr.resolve(program);
+    return program;
   }
 
   public Program parse(InputStream in, String name) {
@@ -29,6 +33,7 @@ public class XmlProgramParser {
     } catch (Exception e) {
       throw new RuntimeException("Failed to create SAX (XML) parser.", e);
     }
-    return handler.getProgram();
+    Program program = handler.getProgram();
+    return program;
   }
 }

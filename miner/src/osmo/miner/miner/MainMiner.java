@@ -39,6 +39,10 @@ public class MainMiner implements InvariantMiner {
 
   @Override
   public void step(Step step) {
+    Collection<Step> subSteps = step.getSubSteps();
+    for (Step subStep : subSteps) {
+      step(subStep);
+    }
     for (InvariantMiner miner : miners) {
       miner.step(step);
     }
