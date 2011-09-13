@@ -1,13 +1,13 @@
 package osmo.miner;
 
-import osmo.miner.log.Logger;
+import osmo.common.log.Logger;
 import osmo.miner.miner.MainMiner;
 import osmo.miner.miner.dataflow.ValueRangeMiner;
 import osmo.miner.miner.dataflow.ValueSetMiner;
 import osmo.miner.model.program.Suite;
 import osmo.miner.parser.xml.XmlProgramParser;
 
-import javax.swing.*;
+import javax.swing.JFileChooser;
 import java.io.File;
 import java.io.FileOutputStream;
 
@@ -39,5 +39,10 @@ public class GUI {
     FileOutputStream out = new FileOutputStream(output);
     String info = miner.getInvariants().toString();
     out.write(info.getBytes());
+  }
+
+  public static void main(String[] args) throws Exception {
+    GUI gui = new GUI();
+    gui.choose();
   }
 }

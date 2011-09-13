@@ -10,7 +10,7 @@ import osmo.tester.optimizer.TransitionOptimizer;
 import java.util.Collection;
 import java.util.List;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
 
 /**
  * @author Teemu Kanstren

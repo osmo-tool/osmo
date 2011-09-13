@@ -1,9 +1,9 @@
 package osmo.tester.generator.algorithm;
 
+import osmo.common.log.Logger;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.log.Logger;
 import osmo.tester.model.FSMTransition;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static osmo.tester.TestUtils.oneOf;
+import static osmo.common.TestUtils.oneOf;
 
 /**
  * A test generation algorithm that is similar to the {@link osmo.tester.generator.algorithm.OptimizedRandomAlgorithm}

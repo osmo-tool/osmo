@@ -2,12 +2,12 @@ package osmo.miner.model.dataflow;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import osmo.common.log.Logger;
 import osmo.miner.Config;
-import osmo.miner.log.Logger;
 
 import java.io.StringWriter;
 
-import static osmo.tester.TestUtils.getResource;
+import static osmo.common.TestUtils.getResource;
 
 /**
  * @author Teemu Kanstren

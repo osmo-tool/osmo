@@ -1,7 +1,6 @@
 package osmo.miner.miner;
 
 import org.junit.Test;
-import osmo.miner.log.Logger;
 import osmo.miner.model.program.Suite;
 import osmo.miner.testmodels.TestModels1;
 

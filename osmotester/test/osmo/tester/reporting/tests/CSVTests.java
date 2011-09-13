@@ -3,18 +3,13 @@ package osmo.tester.reporting.tests;
 import org.junit.Test;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.Length;
-import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.log.Logger;
-import osmo.tester.model.FSMTransition;
 import osmo.tester.testmodels.ParameterModel1;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
 import static junit.framework.Assert.assertEquals;
-import static osmo.tester.TestUtils.getResource;
-import static osmo.tester.TestUtils.unifyLineSeparators;
+import static osmo.common.TestUtils.*;
 
 /**
  * @author Teemu Kanstren

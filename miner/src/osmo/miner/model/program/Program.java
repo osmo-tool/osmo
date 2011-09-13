@@ -1,6 +1,6 @@
 package osmo.miner.model.program;
 
-import osmo.miner.log.Logger;
+import osmo.common.log.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;

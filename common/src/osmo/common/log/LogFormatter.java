@@ -1,4 +1,4 @@
-package osmo.tester.log;
+package osmo.common.log;
 
 import java.text.MessageFormat;
 import java.util.Date;

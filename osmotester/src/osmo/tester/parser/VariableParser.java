@@ -1,7 +1,7 @@
 package osmo.tester.parser;
 
+import osmo.common.log.Logger;
 import osmo.tester.annotation.Variable;
-import osmo.tester.log.Logger;
 import osmo.tester.model.VariableField;
 
 import java.lang.reflect.Field;

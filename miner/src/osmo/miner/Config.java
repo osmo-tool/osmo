@@ -1,9 +1,9 @@
 package osmo.miner;
 
 import org.apache.velocity.app.VelocityEngine;
-import osmo.miner.log.Logger;
+import osmo.common.log.Logger;
 
-import javax.swing.*;
+import javax.swing.UIManager;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -41,6 +41,12 @@ public class Config {
     stepId = props.getProperty("step_id");
     stepNameId = props.getProperty("step_name_id");
     baseDir = props.getProperty("base_dir");
+    variablePre = props.getProperty("variable_pre");
+    variablePost = props.getProperty("variable_post");
+    String debug = props.getProperty("debug");
+    if ("true".equals(debug)) {
+      Logger.debug = true;
+    }
 
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
       if ("Nimbus".equals(info.getName())) {

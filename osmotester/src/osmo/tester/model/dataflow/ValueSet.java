@@ -8,8 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import static osmo.tester.TestUtils.minOf;
-import static osmo.tester.TestUtils.oneOf;
+import static osmo.common.TestUtils.*;
 
 /**
  * Represents a set of values (objects) of the given type.

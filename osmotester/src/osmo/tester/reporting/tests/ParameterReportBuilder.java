@@ -2,10 +2,10 @@ package osmo.tester.reporting.tests;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import osmo.common.log.Logger;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.log.Logger;
 
 import java.io.StringWriter;
 import java.util.ArrayList;

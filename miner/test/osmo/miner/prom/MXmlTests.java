@@ -1,7 +1,6 @@
 package osmo.miner.prom;
 
 import org.junit.Test;
-import osmo.miner.log.Logger;
 import osmo.miner.model.program.Suite;
 import osmo.miner.testmodels.TestModels1;
 
@@ -9,8 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import static junit.framework.Assert.assertEquals;
-import static osmo.tester.TestUtils.getResource;
-import static osmo.tester.TestUtils.unifyLineSeparators;
+import static osmo.common.TestUtils.*;
 
 /**
  * @author Teemu Kanstren

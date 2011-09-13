@@ -2,13 +2,13 @@ package osmo.tester.endconditions;
 
 import org.junit.Before;
 import org.junit.Test;
+import osmo.common.log.Logger;
 import osmo.tester.generator.endcondition.TransitionCoverage;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.log.Logger;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
 
 /**
  * @author Teemu Kanstren

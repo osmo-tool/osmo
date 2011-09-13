@@ -1,8 +1,8 @@
 package osmo.tester.testmodels;
 
 import osmo.tester.annotation.AfterTest;
-import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.BeforeSuite;
+import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;

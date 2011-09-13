@@ -2,8 +2,8 @@ package osmo.miner.model.general;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import osmo.common.log.Logger;
 import osmo.miner.Config;
-import osmo.miner.log.Logger;
 import osmo.miner.model.dataflow.DataFlowInvariant;
 
 import java.io.StringWriter;
@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static osmo.tester.TestUtils.getResource;
+import static osmo.common.TestUtils.getResource;
 
 /**
  * @author Teemu Kanstren

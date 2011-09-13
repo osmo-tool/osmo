@@ -6,13 +6,9 @@ import org.junit.Test;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.algorithm.WeightedRandomAlgorithm;
 import osmo.tester.generator.endcondition.Length;
-import osmo.tester.log.Logger;
 import osmo.tester.testmodels.WeightedModel1;
 
 import java.util.Random;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
 
 /**
  * @author Teemu Kanstren

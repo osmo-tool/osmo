@@ -1,7 +1,7 @@
 package osmo.tester.model;
 
+import osmo.common.log.Logger;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.log.Logger;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;

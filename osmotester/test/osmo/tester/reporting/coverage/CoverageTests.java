@@ -7,8 +7,8 @@ import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
 
-import static junit.framework.Assert.*;
-import static osmo.tester.TestUtils.*;
+import static junit.framework.Assert.assertEquals;
+import static osmo.common.TestUtils.*;
 
 /**
  * @author Teemu Kanstren

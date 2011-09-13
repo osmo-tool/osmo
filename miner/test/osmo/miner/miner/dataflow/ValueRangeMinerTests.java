@@ -4,17 +4,14 @@ import org.junit.Before;
 import org.junit.Test;
 import osmo.miner.miner.MainMiner;
 import osmo.miner.model.dataflow.DataFlowInvariant;
-import osmo.miner.model.general.InvariantCollection;
 import osmo.miner.model.dataflow.ValueRangeInt;
+import osmo.miner.model.general.InvariantCollection;
 import osmo.miner.model.general.VariableInvariants;
 import osmo.miner.model.program.Suite;
 import osmo.miner.testmodels.TestModels1;
 
-import java.util.Collection;
-
 import static junit.framework.Assert.*;
-import static osmo.tester.TestUtils.getResource;
-import static osmo.tester.TestUtils.unifyLineSeparators;
+import static osmo.common.TestUtils.*;
 
 /**
  * @author Teemu Kanstren

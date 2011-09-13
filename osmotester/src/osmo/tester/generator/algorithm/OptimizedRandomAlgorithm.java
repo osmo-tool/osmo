@@ -1,8 +1,8 @@
 package osmo.tester.generator.algorithm;
 
+import osmo.common.log.Logger;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.log.Logger;
 import osmo.tester.model.FSMTransition;
 
 import java.util.ArrayList;
@@ -12,8 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import static osmo.tester.TestUtils.minOf;
-import static osmo.tester.TestUtils.oneOf;
+import static osmo.common.TestUtils.*;
 
 /**
  * A test generation algorithm that is similar to the {@link RandomAlgorithm} but not preferring to take

@@ -2,10 +2,8 @@ package osmo.miner.model.general;
 
 import osmo.miner.model.dataflow.DataFlowInvariant;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

@@ -2,18 +2,17 @@ package osmo.tester.algorithm;
 
 import org.junit.Before;
 import org.junit.Test;
+import osmo.common.log.Logger;
 import osmo.tester.OSMOTester;
 import osmo.tester.generation.TestListener;
 import osmo.tester.generator.algorithm.OptimizedRandomAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.endcondition.Length;
-import osmo.tester.log.Logger;
 import osmo.tester.testmodels.ValidTestModel6;
 
 import java.util.Collection;
 import java.util.Random;
 
-import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 
 /**

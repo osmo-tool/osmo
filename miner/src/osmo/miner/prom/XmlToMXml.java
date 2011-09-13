@@ -2,14 +2,14 @@ package osmo.miner.prom;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import osmo.common.log.Logger;
 import osmo.miner.Config;
-import osmo.miner.log.Logger;
 import osmo.miner.model.program.Program;
 import osmo.miner.model.program.Step;
 import osmo.miner.model.program.Suite;
 import osmo.miner.parser.xml.XmlProgramParser;
 
-import javax.swing.*;
+import javax.swing.JFileChooser;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;

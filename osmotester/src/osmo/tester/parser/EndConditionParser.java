@@ -1,7 +1,7 @@
 package osmo.tester.parser;
 
+import osmo.common.log.Logger;
 import osmo.tester.annotation.EndCondition;
-import osmo.tester.log.Logger;
 import osmo.tester.model.InvocationTarget;
 
 import java.lang.reflect.Method;
