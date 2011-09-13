@@ -1,7 +1,7 @@
 package osmo.miner.parser;
 
+import osmo.common.log.Logger;
 import osmo.miner.Config;
-import osmo.miner.log.Logger;
 import osmo.miner.model.program.Program;
 import osmo.miner.model.program.Step;
 

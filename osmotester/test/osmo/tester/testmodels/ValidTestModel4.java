@@ -11,7 +11,6 @@ import java.io.PrintStream;
 import java.util.Map;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
 
 /**
  * A test model with requirements that can all be covered.

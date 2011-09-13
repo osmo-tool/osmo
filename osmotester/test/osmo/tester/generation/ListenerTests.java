@@ -11,8 +11,7 @@ import osmo.tester.testmodels.ValidTestModel2;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
+import static junit.framework.Assert.*;
 
 /**
  * @author Teemu Kanstren

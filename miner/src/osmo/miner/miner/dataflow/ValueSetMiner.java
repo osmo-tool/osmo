@@ -1,7 +1,6 @@
 package osmo.miner.miner.dataflow;
 
 import osmo.miner.miner.InvariantMiner;
-import osmo.miner.model.dataflow.ValueRangeInt;
 import osmo.miner.model.dataflow.ValueSet;
 import osmo.miner.model.general.InvariantCollection;
 import osmo.miner.model.program.Program;

@@ -1,7 +1,7 @@
 package osmo.tester.parser;
 
+import osmo.common.log.Logger;
 import osmo.tester.annotation.Post;
-import osmo.tester.log.Logger;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;

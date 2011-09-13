@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static osmo.tester.TestUtils.*;
+import static osmo.common.TestUtils.*;
 
 /**
  * Defines a value range with a minimum and maximum values. Generates input from this range, including min and max.

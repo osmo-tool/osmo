@@ -4,9 +4,7 @@ import org.junit.Test;
 import osmo.tester.model.dataflow.DataGenerationStrategy;
 import osmo.tester.model.dataflow.ValueRange;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.fail;
+import static junit.framework.Assert.*;
 
 /**
  * @author Teemu Kanstren

@@ -1,11 +1,11 @@
 package osmo.tester.model.dataflow;
 
-import osmo.tester.log.Logger;
+import osmo.common.log.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static osmo.tester.TestUtils.oneOf;
+import static osmo.common.TestUtils.oneOf;
 
 /**
  * Represents a set of numeric input domains.

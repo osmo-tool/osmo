@@ -1,6 +1,5 @@
 package osmo.tester.unit;
 
-import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.model.dataflow.ReadableCharSet;
 

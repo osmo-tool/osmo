@@ -1,9 +1,9 @@
 package osmo.tester.optimizer;
 
+import osmo.common.log.Logger;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.log.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;

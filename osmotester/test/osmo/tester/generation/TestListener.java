@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
 
 /**
  * @author Teemu Kanstren

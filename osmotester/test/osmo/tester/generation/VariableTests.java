@@ -7,14 +7,12 @@ import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.model.Requirements;
-import osmo.tester.testmodels.ValidTestModel2;
 import osmo.tester.testmodels.VariableModel1;
 
 import java.util.List;
 import java.util.Map;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
 
 /**
  * @author Teemu Kanstren

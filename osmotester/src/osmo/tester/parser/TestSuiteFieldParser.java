@@ -1,8 +1,8 @@
 package osmo.tester.parser;
 
+import osmo.common.log.Logger;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.log.Logger;
 
 import java.lang.reflect.Field;
 

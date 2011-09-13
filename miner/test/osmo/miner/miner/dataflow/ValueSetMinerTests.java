@@ -7,9 +7,8 @@ import osmo.miner.model.general.InvariantCollection;
 import osmo.miner.model.program.Suite;
 import osmo.miner.testmodels.TestModels1;
 
-import static junit.framework.Assert.*;
-import static osmo.tester.TestUtils.getResource;
-import static osmo.tester.TestUtils.unifyLineSeparators;
+import static junit.framework.Assert.assertEquals;
+import static osmo.common.TestUtils.*;
 
 /**
  * @author Teemu Kanstren

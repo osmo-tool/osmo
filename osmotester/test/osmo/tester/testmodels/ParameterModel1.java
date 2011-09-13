@@ -1,11 +1,9 @@
 package osmo.tester.testmodels;
 
-import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.reporting.tests.CSV;
-import osmo.tester.reporting.tests.ParameterReportBuilder;
 
 import java.util.List;
 

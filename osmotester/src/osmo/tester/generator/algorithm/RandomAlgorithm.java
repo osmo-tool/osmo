@@ -1,6 +1,6 @@
 package osmo.tester.generator.algorithm;
 
-import osmo.tester.TestUtils;
+import osmo.common.TestUtils;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
 

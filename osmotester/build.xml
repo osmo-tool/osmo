@@ -11,6 +11,9 @@
   <property name="javadoc-dir" value="${main-output}/docs/api"/>
   <property name="cobertura.home" value="${env.COBERTURA_HOME}"/>
   <property name="build.version" value="1.1.0"/>
+  <property name="osmo-common-output" value="../common/ant-out/production"/>
+  <property name="jar.file" value="osmo-tester-v${build.version}.jar"/>
+  <property name="zip.file" value="osmo-tester-v${build.version}.zip"/>
 
   <path id="class.path">
     <!--pathelement path="${currentenv.classpath}"/-->
@@ -33,6 +36,10 @@
   <target name="clean">
     <echo message="Removing old directory structure..."/>
     <delete dir="${main-output}"/>
+    <echo message="Removing jar file:${jar.file}"/>
+    <delete file="${jar.file}"/>
+    <echo message="Removing zip file:${zip.file}"/>
+    <delete file="${zip.file}"/>
   </target>
 
   <!-- MK DEPLOY DIR -->
@@ -54,7 +61,12 @@
   </target>
 
   <target name="jar" depends="compile,copyresources" description="Create jar file">
-    <jar destfile="osmotester-v${build.version}.jar" basedir="${prod-dest}"/>
+    <ant dir="../common" antfile="build.xml" target="jar" inheritall="false"/>
+
+    <jar destfile="${jar.file}">
+      <fileset dir="${prod-dest}"/>
+      <fileset dir="${osmo-common-output}"/>
+    </jar>
   </target>
 
   <target name="test" depends="clean, compile, copyresources">
@@ -115,12 +127,12 @@
   <target name="jenkins" depends="test, javadocs"/>
 
   <target name="distro" depends="jar,javadocs">
-    <zip destfile="osmotester-v${build.version}.zip">
+    <zip destfile="${zip.file}">
       <zipfileset dir="." includes="osmo-guide.pdf" prefix="docs"/>
       <zipfileset dir="${javadoc-dir}/" prefix="docs/api"/>
       <zipfileset dir="${prod-src}/" prefix="src/prod"/>
       <zipfileset dir="${test-src}/" prefix="src/test"/>
-      <zipfileset dir="." includes="osmotester-v${build.version}.jar"/>
+      <zipfileset dir="." includes="${jar.file}"/>
     </zip>
   </target>
 </project>

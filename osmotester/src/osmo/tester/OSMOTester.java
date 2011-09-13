@@ -1,5 +1,7 @@
 package osmo.tester;
 
+import osmo.common.TestUtils;
+import osmo.common.log.Logger;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.GenerationListenerList;
 import osmo.tester.generator.MainGenerator;
@@ -8,7 +10,6 @@ import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.endcondition.Probability;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.log.Logger;
 import osmo.tester.model.FSM;
 import osmo.tester.parser.MainParser;
 

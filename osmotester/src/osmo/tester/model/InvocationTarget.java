@@ -1,6 +1,6 @@
 package osmo.tester.model;
 
-import osmo.tester.log.Logger;
+import osmo.common.log.Logger;
 import osmo.tester.parser.ParserParameters;
 
 import java.lang.reflect.Method;

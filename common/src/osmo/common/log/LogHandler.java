@@ -1,4 +1,4 @@
-package osmo.miner.log;
+package osmo.common.log;
 
 import java.io.PrintStream;
 import java.util.logging.Handler;
