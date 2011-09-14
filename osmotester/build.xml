@@ -21,6 +21,7 @@
       <include name="**/*.jar"/>
     </fileset>
     <path location="${prod-dest}"/>
+    <path location="../common/ant-out/production"/>
   </path>
 
   <path id="cobertura.classpath">
@@ -53,6 +54,7 @@
   </target>
 
   <target name="compile" depends="init">
+    <ant dir="../common" antfile="build.xml" target="jar" inheritall="false"/>
     <echo message="Compiling production..."/>
     <javac source="1.5" target="1.5" debug="true" classpathref="class.path" srcdir="${prod-src}"
            destdir="${prod-dest}"/>
@@ -61,8 +63,6 @@
   </target>
 
   <target name="jar" depends="compile,copyresources" description="Create jar file">
-    <ant dir="../common" antfile="build.xml" target="jar" inheritall="false"/>
-
     <jar destfile="${jar.file}">
       <fileset dir="${prod-dest}"/>
       <fileset dir="${osmo-common-output}"/>
