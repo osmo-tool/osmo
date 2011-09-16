@@ -1,7 +1,6 @@
 package osmo.tester.generator.testsuite;
 
 import osmo.tester.model.FSMTransition;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -16,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * after the suite has been generated.
  * All optimizers provided with OSMOTester will also update the added coverage information of the tests.
  *
- * @author Teemu Kanstren
+ * @author Teemu Kanstren, Olli-Pekka Puolitaival
  */
 public class TestCase {
   /** The test steps (taken) for this test case. */
@@ -94,6 +93,22 @@ public class TestCase {
     return addedTransitionCoverage;
   }
 
+  public Collection<FSMTransition> getCoveredTransitions(){
+      Collection<FSMTransition> transitionCoverage = new HashSet<FSMTransition>();
+    for(TestStep teststep: steps){
+    	transitionCoverage.add(teststep.getTransition());
+    }
+    return transitionCoverage;
+  }
+  
+  public Collection<String> getCoveredRequirements(){
+	  Collection<String> requirementsCoverage = new HashSet<String>();
+    for(TestStep teststep: steps){
+      requirementsCoverage.addAll(teststep.getCoveredRequirements());
+    }
+    return requirementsCoverage;
+  }
+  
   public void addAddedTransitionCoverage(FSMTransition transition) {
     addedTransitionCoverage.add(transition);
   }
