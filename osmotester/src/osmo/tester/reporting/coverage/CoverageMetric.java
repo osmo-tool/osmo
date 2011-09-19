@@ -24,9 +24,9 @@ import java.util.Map;
  */
 public abstract class CoverageMetric {
   /** The test suite generation history. */
-  private final TestSuite testSuite;
+  protected final TestSuite testSuite;
   /** The parsed model for test generation. */
-  private final FSM fsm;
+  protected final FSM fsm;
   /** For template->report generation. */
   private VelocityEngine velocity = new VelocityEngine();
   /** For storing template variables. */
