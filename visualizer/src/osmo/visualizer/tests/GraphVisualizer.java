@@ -3,7 +3,7 @@ package osmo.visualizer.tests;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
 import osmo.tester.OSMOTester;
-import osmo.tester.examples.CalculatorModel;
+import osmo.tester.examples.calculator.CalculatorModel;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;

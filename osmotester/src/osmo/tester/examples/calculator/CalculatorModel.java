@@ -1,4 +1,4 @@
-package osmo.tester.examples;
+package osmo.tester.examples.calculator;
 
 import osmo.tester.OSMOTester;
 import osmo.tester.annotation.AfterSuite;

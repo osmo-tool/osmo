@@ -1,4 +1,4 @@
-package osmo.tester.examples;
+package osmo.tester.examples.vendingmachine;
 
 import java.io.PrintStream;
 
