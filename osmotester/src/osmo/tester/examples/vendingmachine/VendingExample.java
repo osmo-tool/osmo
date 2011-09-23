@@ -1,4 +1,4 @@
-package osmo.tester.examples;
+package osmo.tester.examples.vendingmachine;
 
 import osmo.tester.OSMOTester;
 import osmo.tester.annotation.AfterSuite;
@@ -6,12 +6,9 @@ import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
-import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.model.Requirements;
-import osmo.tester.reporting.coverage.CSV;
 
 import java.io.PrintStream;
 
@@ -28,27 +25,22 @@ import static junit.framework.Assert.assertTrue;
  * 
  * @author Teemu Kanstren
  */
-public class VendingMachine2 {
+public class VendingExample {
   private final Scripter scripter;
   private final PrintStream out;
   private int coins = 0;
   private int bottles = 10;
   @TestSuiteField
-  private TestSuite testSuite = null;
-  @RequirementsField
-  private final Requirements req = new Requirements();
-  private static final String C10 = "10cents";
-  private static final String C20 = "20cents";
-  private static final String C50 = "50cents";
-  private static final String VEND = "vend";
+  private TestSuite testSuite = new TestSuite();
 
-  public VendingMachine2() {
+  public VendingExample() {
     scripter = new Scripter(System.out);
     this.out = System.out;
-    req.add(C10);
-    req.add(C20);
-    req.add(C50);
-    req.add(VEND);
+  }
+
+  public VendingExample(PrintStream ps) {
+    scripter = new Scripter(ps);
+    this.out = ps;
   }
 
   @Guard
@@ -59,6 +51,7 @@ public class VendingMachine2 {
   @BeforeTest
   public void start() {
     coins = 0;
+    //uncomment this for failure to continue with 0 available transitions
     bottles = 10;
     int tests = testSuite.getTestCases().size()+1;
     out.println("Starting test:"+ tests);
@@ -69,43 +62,49 @@ public class VendingMachine2 {
     out.println("Created total of "+ testSuite.getTestCases().size()+" tests.");
   }
 
-  @Transition(C20)
+  @Guard("20cents")
+  public boolean allow20cents() {
+    return coins <= 80;
+  }
+
+  @Transition("20cents")
   public void insert20cents() {
-    scripter.step("20c");
+    scripter.step("INSERT 20");
     coins += 20;
-    req.covered(C20);
   }
 
-  @Guard({C10, C20, C50})
-  public boolean allowCoins() {
-    return coins < 300;
+  @Guard("10cents")
+  public boolean allow10cents() {
+    return coins <= 90;
   }
 
-  @Transition(C10)
+  @Transition("10cents")
   public void insert10cents() {
-    scripter.step("10c");
+    scripter.step("INSERT 10");
     coins += 10;
-    req.covered(C10);
   }
 
-  @Transition(C50)
+  @Guard("50cents")
+  public boolean allow50cents() {
+    return coins <= 50;
+  }
+
+  @Transition("50cents")
   public void insert50cents() {
-    scripter.step("50c");
+    scripter.step("INSERT 50");
     coins += 50;
-    req.covered(C50);
   }
 
-  @Guard(VEND)
+  @Guard("vend")
   public boolean allowVend() {
-    return coins >= 100;
+    return coins == 100;
   }
 
-  @Transition(VEND)
+  @Transition("vend")
   public void vend() {
     scripter.step("VEND ("+bottles+")");
-    coins -= 100;
+    coins = 0;
     bottles--;
-    req.covered(VEND);
   }
 
   @EndCondition
@@ -117,17 +116,14 @@ public class VendingMachine2 {
   public void checkState() {
     scripter.step("CHECK(bottles == "+bottles+")");
     scripter.step("CHECK(coins == "+coins+")");
-    assertTrue(coins <= 400);
+    assertTrue(coins <= 100);
     assertTrue(coins >= 0);
     assertTrue(bottles >= 0);
   }
 
   public static void main(String[] args) {
-    OSMOTester tester = new OSMOTester(new VendingMachine2());
+    OSMOTester tester = new OSMOTester(new VendingExample());
+//    tester.setDebug(true);
     tester.generate();
-
-    //Print coverage metric
-    CSV csv = new CSV(tester.getSuite(), tester.getFsm());
-    System.out.println("\n"+csv.getTransitionCounts());
   }
 }

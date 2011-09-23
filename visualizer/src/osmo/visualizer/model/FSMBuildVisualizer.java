@@ -11,7 +11,7 @@ import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.renderers.VertexLabelAsShapeRenderer;
 import osmo.tester.OSMOTester;
-import osmo.tester.examples.CalculatorModel;
+import osmo.tester.examples.calculator.CalculatorModel;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;

@@ -3,9 +3,9 @@ package osmo.tester.generation;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOTester;
-import osmo.tester.examples.CalculatorModel;
-import osmo.tester.examples.CalculatorModel2;
-import osmo.tester.examples.VendingExample;
+import osmo.tester.examples.calculator.CalculatorModel;
+import osmo.tester.examples.calculator.CalculatorModel2;
+import osmo.tester.examples.vendingmachine.VendingExample;
 import osmo.tester.generator.endcondition.Length;
 
 import java.io.ByteArrayOutputStream;
