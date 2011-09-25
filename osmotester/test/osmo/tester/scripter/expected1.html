@@ -94,7 +94,7 @@
   </tr>
   <tr>
     <td>Library</td>
-    <td>$library</td>
+    <td>SeleniumLibrary</td>
     <td></td>
     <td></td>
   </tr>
@@ -107,14 +107,18 @@
     <th>Value</th>
     <th>Value</th>
   </tr>
-#foreach ($var in $variables)
-  <tr$css.tableClass>
-    <td>$var.key</td>
-    <td>$var.value</td>
+  <tr>
+    <td>var1</td>
+    <td>hello</td>
     <td></td>
     <td></td>
   </tr>
-#end
+  <tr class='alt'>
+    <td>var2</td>
+    <td>world</td>
+    <td></td>
+    <td></td>
+  </tr>
 </table>
 <br/>
 <table id="tests">
@@ -124,17 +128,32 @@
     <th>Argument</th>
     <th>Argument</th>
   </tr>
-$css.reset()
-#foreach ($test in $tests)
-#foreach ($step in $test.steps)
-  <tr$css.tableClass>
-    <td>$test.name</td>
-    <td>$step.action</td>
-    <td>$step.p1</td>
-    <td>$step.p2</td>
+
+  <tr>
+    <td>test1</td>
+    <td>step1-1</td>
+    <td>s1-1 p1</td>
+    <td>s1-1 p2</td>
   </tr>
-#end
-#end
+  <tr class='alt'>
+    <td></td>
+    <td>step1-2</td>
+    <td>s1-2 p1</td>
+    <td>s1-2 p2</td>
+  </tr>
+  <tr>
+    <td>test2</td>
+    <td>step2-1</td>
+    <td>s2-1 p1</td>
+    <td>s2-1 p2</td>
+  </tr>
+  <tr class='alt'>
+    <td></td>
+    <td>step2-2</td>
+    <td>s2-2 p1</td>
+    <td>s2-2 p2</td>
+  </tr>
 </table>
 </body>
 </html>
+
