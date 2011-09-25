@@ -1,7 +1,7 @@
 package osmo.miner.model.dataflow;
 
 import org.apache.velocity.VelocityContext;
-import osmo.miner.model.general.ValuePair;
+import osmo.common.ValuePair;
 
 import java.util.ArrayList;
 import java.util.Collection;

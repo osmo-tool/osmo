@@ -32,7 +32,6 @@ public abstract class CoverageMetric {
   /** For storing template variables. */
   private VelocityContext vc = new VelocityContext();
 
-
   public CoverageMetric(TestSuite ts, FSM fsm) {
     this.testSuite = ts;
     this.fsm = fsm;

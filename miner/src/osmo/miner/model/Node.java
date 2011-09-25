@@ -1,6 +1,6 @@
 package osmo.miner.model;
 
-import osmo.miner.model.general.ValuePair;
+import osmo.common.ValuePair;
 
 import javax.swing.tree.TreeNode;
 import java.util.ArrayList;
