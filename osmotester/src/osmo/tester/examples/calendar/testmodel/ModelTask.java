@@ -1,4 +1,4 @@
-package osmo.tester.examples.calendar;
+package osmo.tester.examples.calendar.testmodel;
 
 import java.util.Date;
 
@@ -35,5 +35,14 @@ public class ModelTask {
 
   public void setTaskId(String taskId) {
     this.taskId = taskId;
+  }
+
+  @Override
+  public String toString() {
+    return "ModelTask{" +
+            "uid='" + uid + '\'' +
+            ", description='" + description + '\'' +
+            ", time=" + time +
+            '}';
   }
 }

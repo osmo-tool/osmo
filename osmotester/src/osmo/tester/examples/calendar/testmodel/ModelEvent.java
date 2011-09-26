@@ -1,4 +1,4 @@
-package osmo.tester.examples.calendar;
+package osmo.tester.examples.calendar.testmodel;
 
 import java.util.Date;
 
@@ -47,5 +47,16 @@ public class ModelEvent {
 
   public void setEventId(String eventId) {
     this.eventId = eventId;
+  }
+
+  @Override
+  public String toString() {
+    return "ModelEvent{" +
+            "uid='" + uid + '\'' +
+            ", description='" + description + '\'' +
+            ", location='" + location + '\'' +
+            ", start=" + start +
+            ", end=" + end +
+            '}';
   }
 }

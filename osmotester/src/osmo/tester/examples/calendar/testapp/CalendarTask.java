@@ -37,4 +37,12 @@ public class CalendarTask {
   public void setDescription(String description) {
     this.description = description;
   }
+
+  @Override
+  public String toString() {
+    return "CalendarTask{" +
+            "description='" + description + '\'' +
+            ", when=" + when +
+            '}';
+  }
 }

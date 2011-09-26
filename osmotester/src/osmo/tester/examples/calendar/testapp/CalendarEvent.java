@@ -1,6 +1,9 @@
 package osmo.tester.examples.calendar.testapp;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -11,7 +14,9 @@ public class CalendarEvent {
   private Date end = null;
   private String description = null;
   private String location = null;
+  private Collection<String> participants = new HashSet<String>();
   private final String id;
+  private final String organizer;
   private static final AtomicInteger nextId = new AtomicInteger(0);
 
   public CalendarEvent(String uid, Date start, Date end, String description, String location) {
@@ -20,6 +25,16 @@ public class CalendarEvent {
     this.description = description;
     this.location = location;
     id = uid+":event:"+nextId.incrementAndGet();
+    participants.add(uid);
+    organizer = uid;
+  }
+
+  public String getOrganizer() {
+    return organizer;
+  }
+
+  public Collection<String> getParticipants() {
+    return participants;
   }
 
   public String getId() {
@@ -58,10 +73,17 @@ public class CalendarEvent {
     this.location = location;
   }
 
+  public void addParticipant(String uid) {
+    participants.add(uid);
+  }
+
   @Override
   public String toString() {
     return "CalendarEvent{" +
-            "id='" + id + '\'' +
+            "description='" + description + '\'' +
+            ", location='" + location + '\'' +
+            ", start=" + start +
+            ", end=" + end +
             '}';
   }
 }

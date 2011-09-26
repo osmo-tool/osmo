@@ -1,11 +1,11 @@
-package osmo.tester.examples.calendar;
+package osmo.tester.examples.calendar.testmodel;
 
 import osmo.tester.examples.calendar.testapp.CalendarApplication;
 import osmo.tester.examples.calendar.testapp.CalendarEvent;
+import osmo.tester.examples.calendar.testapp.CalendarServer;
 import osmo.tester.examples.calendar.testapp.CalendarTask;
 import osmo.tester.examples.calendar.testapp.CalendarUser;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -21,15 +21,6 @@ public class OnlineScripter {
   private Map<String, CalendarUser> users = new HashMap<String, CalendarUser>();
 
   public OnlineScripter() {
-  }
-
-  private CalendarUser getUser(String uid) {
-    CalendarUser user = users.get(uid);
-    if (user == null) {
-      user = new CalendarUser();
-      users.put(uid, user);
-    }
-    return user;
   }
 
   private CalendarApplication getCalendarFor(String uid) {
@@ -52,21 +43,21 @@ public class OnlineScripter {
     calendar.removeTask(task.getTaskId());
   }
 
-
   public void addEvent(ModelEvent event) {
     CalendarApplication calendar = getCalendarFor(event.getUid());
     CalendarEvent calendarEvent = calendar.addEvent(event.getStart(), event.getEnd(), event.getDescription(), event.getLocation());
     event.setEventId(calendarEvent.getId());
   }
 
-  public void removeEvent(ModelEvent event) {
-    CalendarApplication calendar = getCalendarFor(event.getUid());
-    calendar.removeEvent(event.getEventId());
+  public void removeEvent(String uid, ModelEvent event) {
+    CalendarApplication calendar = getCalendarFor(uid);
+    calendar.removeEvent(event.getEventId(), false);
   }
 
   public void assertUserTasks(String uid, Collection<ModelTask> tasks) {
     CalendarApplication calendar = getCalendarFor(uid);
     Collection<CalendarTask> calendarTasks = calendar.getTasks();
+//    System.out.println("tasks:"+tasks+" ctasks:"+calendarTasks);
     if (tasks == null) {
       if (calendarTasks != null && calendarTasks.size() > 0) {
         fail("Tasks are null in model, should be empty also in calendar");
@@ -94,6 +85,7 @@ public class OnlineScripter {
   public void assertUserEvents(String uid, Collection<ModelEvent> events) {
     CalendarApplication calendar = getCalendarFor(uid);
     Collection<CalendarEvent> calendarEvents = calendar.getEvents();
+    System.out.println("uid:"+uid+" events:"+events+" cevents:"+calendarEvents);
     if (events == null) {
       if (calendarEvents != null && calendarEvents.size() > 0) {
         fail("Events are null in model, should be empty also in calendar");
@@ -122,4 +114,31 @@ public class OnlineScripter {
     }
   }
 
+  public void removeTaskThatDoesNotExist(String uid) {
+    CalendarApplication calendar = getCalendarFor(uid);
+    try {
+      calendar.removeTask("no such task");
+      fail("Removing a task that does not exist should fail.");
+    } catch (Exception e) {
+      //expected
+    }
+  }
+
+  public void removeEventThatDoesNotExist(String uid) {
+    CalendarApplication calendar = getCalendarFor(uid);
+    try {
+      calendar.removeEvent("no such event", false);
+      fail("Removing an event that does not exist should fail.");
+    } catch (Exception e) {
+      //expected
+    }
+  }
+
+  public void linkEventToUser(ModelEvent event, String uid) {
+    CalendarApplication calendarTo = getCalendarFor(uid);
+    CalendarApplication calendarFrom = getCalendarFor(event.getUid());
+    String eventId = event.getEventId();
+//    System.out.println("attached event:"+event);
+    calendarTo.attach(calendarFrom.getEvent(eventId));
+  }
 }
