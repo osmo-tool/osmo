@@ -1,17 +1,21 @@
 package osmo.tester.examples.calendar.testapp;
 
+import osmo.tester.examples.calendar.testmodel.ModelTask;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 
 /**
  * @author Teemu Kanstren
  */
 public class CalendarApplication {
-  private Collection<CalendarTask> tasks = new ArrayList<CalendarTask>();
-  private Collection<CalendarEvent> events = new ArrayList<CalendarEvent>();
+  private final CalendarServer server = CalendarServer.getServer();
+  private Collection<CalendarTask> tasks = new HashSet<CalendarTask>();
+  private Collection<CalendarEvent> events = new HashSet<CalendarEvent>();
   private final String uid;
 
   public CalendarApplication(CalendarUser user) {
@@ -31,29 +35,50 @@ public class CalendarApplication {
   }
 
   public void removeTask(String taskId) {
-    CalendarTask toRemove = null;
-    for (CalendarTask task : tasks) {
-      if (task.getId().equals(taskId)) {
-        toRemove = task;
-      }
+    CalendarTask toRemove = getTask(taskId);
+    if (toRemove == null) {
+      throw new IllegalArgumentException("Task to remove does not exist:"+taskId);
     }
     tasks.remove(toRemove);
   }
 
-  public void removeEvent(String eventId) {
-    CalendarEvent toRemove = null;
-    for (CalendarEvent event : events) {
-      if (event.getId().equals(eventId)) {
-        toRemove = event;
+  public CalendarTask getTask(String taskId) {
+    for (CalendarTask task : tasks) {
+      if (task.getId().equals(taskId)) {
+        return task;
       }
+    }
+    return null;
+  }
+
+  public void removeEvent(String eventId, boolean serverSource) {
+    CalendarEvent toRemove = getEvent(eventId);
+    if (toRemove == null) {
+      if (!serverSource) {
+        throw new IllegalArgumentException("Event to remove does not exist:"+eventId);
+      }
+      return;
+    }
+    if (toRemove.getOrganizer().equals(uid)) {
+      System.out.println("Server delete:"+toRemove.getOrganizer()+" uid:"+uid);
+      server.deleteEvent(uid, eventId);
     }
     events.remove(toRemove);
   }
 
+  public String getUid() {
+    return uid;
+  }
 
-  public CalendarEvent getEventFor(Date time) {
+  public CalendarEvent getEvent(String eventId) {
+    for (CalendarEvent event : events) {
+      if (event.getId().equals(eventId)) {
+        return event;
+      }
+    }
     return null;
   }
+
 
   private boolean isTimeInDay(Date time, Date day) {
     Calendar begin = new GregorianCalendar();
@@ -102,4 +127,11 @@ public class CalendarApplication {
     return events;
   }
 
+  public void attach(CalendarTask task) {
+    tasks.add(task);
+  }
+
+  public void attach(CalendarEvent event) {
+    events.add(event);
+  }
 }
