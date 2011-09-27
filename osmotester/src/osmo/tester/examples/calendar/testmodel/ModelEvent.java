@@ -3,14 +3,22 @@ package osmo.tester.examples.calendar.testmodel;
 import java.util.Date;
 
 /**
+ * Describes a calendar event for the test model.
+ *
  * @author Teemu Kanstren
  */
 public class ModelEvent {
+  /** Start time for the event. */
   private Date start;
+  /** End time for the event. */
   private Date end;
+  /** Description of the event. */
   private String description;
+  /** Location of the event. */
   private String location;
+  /** ID for the user who is the organizer. */
   private String uid;
+  /** Unique ID for the event. */
   private String eventId;
 
   public ModelEvent(String uid, Date start, Date end, String description, String location) {
