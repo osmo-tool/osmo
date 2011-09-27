@@ -1,6 +1,9 @@
 package osmo.tester.examples.calendar.testmodel;
 
+import osmo.tester.model.dataflow.ValueRange;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,20 +16,46 @@ import static osmo.common.TestUtils.*;
 import static osmo.common.TestUtils.oneOf;
 
 /**
+ * Holds the overall state of the model.
+ *
  * @author Teemu Kanstren
  */
 public class ModelState {
+  /** Test users with calendars. */
   private Collection<String> uids = new ArrayList<String>();
+  /** Tasks for each user. */
   private Map<String, Collection<ModelTask>> userTasks = new HashMap<String, Collection<ModelTask>>();
+  /** Events for each user. */
   private Map<String, Collection<ModelEvent>> userEvents = new HashMap<String, Collection<ModelEvent>>();
+  /** Used to generate unique identifiers for tasks. */
   private AtomicInteger taskCount = new AtomicInteger(0);
+  /** Used to generate unique identifiers for events. */
   private AtomicInteger eventCount = new AtomicInteger(0);
+  /** Used to generate start times between January 2000 and December 2010. */
+  private ValueRange<Long> startTime;
 
   public ModelState() {
+  }
+
+  /**
+   * Used to reset the state between test generation.
+   */
+  public void reset() {
+    uids.clear();
+    userTasks.clear();
+    userEvents.clear();
+    taskCount = new AtomicInteger(0);
+    eventCount = new AtomicInteger(0);
+
     int users = cInt(1, 5);
     for (int i = 0 ; i < users ; i++) {
       uids.add("user"+i);
     }
+    Calendar start = Calendar.getInstance();
+    start.set(2000, 0, 1);
+    Calendar end = Calendar.getInstance();
+    end.set(2010, 11, 31);
+    startTime = new ValueRange<Long>(start.getTimeInMillis(), end.getTimeInMillis());
   }
 
   public String randomUID() {
@@ -145,19 +174,15 @@ public class ModelState {
     return oneOf(tasks);
   }
 
-  @Override
-  public String toString() {
-    return "ModelState{" +
-            "uids=" + uids +
-            ", userTasks=" + userTasks +
-            ", userEvents=" + userEvents +
-            '}';
-  }
-
   public void attach(String uid, ModelEvent event) {
     getOrCreateEvents(uid).add(event);
   }
 
+  /**
+   * Get the list of events attached to users where the organizer is not the attached user.
+   *
+   * @return List of participants for events.
+   */
   private Collection<ParticipantEvent> getParticipantEvents() {
     Collection<ParticipantEvent> results = new HashSet<ParticipantEvent>();
     for (String uid : userEvents.keySet()) {
@@ -171,6 +196,11 @@ public class ModelState {
     return results;
   }
 
+  /**
+   * Provides a set of unique event, removing duplicates due to participants.
+   *
+   * @return Set of unique events.
+   */
   private Collection<ModelEvent> getUniqueEvents() {
     Collection<ModelEvent> results = new HashSet<ModelEvent>();
     for (String uid : userEvents.keySet()) {
@@ -182,4 +212,18 @@ public class ModelState {
   public boolean hasParticipantEvents() {
     return getParticipantEvents().size() > 0;
   }
+
+  public Date randomStartTime() {
+    return new Date(startTime.next());
+  }
+
+  @Override
+  public String toString() {
+    return "ModelState{" +
+            "uids=" + uids +
+            ", userTasks=" + userTasks +
+            ", userEvents=" + userEvents +
+            '}';
+  }
+
 }

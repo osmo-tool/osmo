@@ -3,12 +3,18 @@ package osmo.tester.examples.calendar.testmodel;
 import java.util.Date;
 
 /**
+ * Describes a calendar task for the test model.
+ *
  * @author Teemu Kanstren
  */
 public class ModelTask {
+  /** Time for the task. */
   private Date time;
+  /** Description of the task. */
   private String description;
+  /** User whose task it is. */
   private String uid;
+  /** Unique identifier for the task. */
   private String taskId;
 
   public ModelTask(String uid, Date time, String description) {

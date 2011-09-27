@@ -60,7 +60,6 @@ public class CalendarApplication {
       return;
     }
     if (toRemove.getOrganizer().equals(uid)) {
-      System.out.println("Server delete:"+toRemove.getOrganizer()+" uid:"+uid);
       server.deleteEvent(uid, eventId);
     }
     events.remove(toRemove);

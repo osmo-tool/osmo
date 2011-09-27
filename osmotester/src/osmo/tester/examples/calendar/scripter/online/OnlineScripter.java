@@ -1,10 +1,12 @@
-package osmo.tester.examples.calendar.testmodel;
+package osmo.tester.examples.calendar.scripter.online;
 
+import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.examples.calendar.testapp.CalendarApplication;
 import osmo.tester.examples.calendar.testapp.CalendarEvent;
-import osmo.tester.examples.calendar.testapp.CalendarServer;
 import osmo.tester.examples.calendar.testapp.CalendarTask;
 import osmo.tester.examples.calendar.testapp.CalendarUser;
+import osmo.tester.examples.calendar.testmodel.ModelEvent;
+import osmo.tester.examples.calendar.testmodel.ModelTask;
 
 import java.util.Collection;
 import java.util.Date;
@@ -15,12 +17,22 @@ import static junit.framework.Assert.*;
 import static junit.framework.Assert.assertEquals;
 
 /**
+ * "Scripter" for online testing, directly invoking the test calendar.
+ *
  * @author Teemu Kanstren
  */
-public class OnlineScripter {
+public class OnlineScripter implements CalendarScripter {
   private Map<String, CalendarUser> users = new HashMap<String, CalendarUser>();
 
   public OnlineScripter() {
+  }
+
+  /**
+   * Used to reset the scripter between generated tests.
+   */
+  @Override
+  public void reset() {
+    users.clear();
   }
 
   private CalendarApplication getCalendarFor(String uid) {
@@ -32,28 +44,33 @@ public class OnlineScripter {
     return user.getCalendar();
   }
 
+  @Override
   public void addTask(ModelTask task) {
     CalendarApplication calendar = getCalendarFor(task.getUid());
     CalendarTask calendarTask = calendar.addTask(task.getTime(), task.getDescription());
     task.setTaskId(calendarTask.getId());
   }
 
+  @Override
   public void removeTask(ModelTask task) {
     CalendarApplication calendar = getCalendarFor(task.getUid());
     calendar.removeTask(task.getTaskId());
   }
 
+  @Override
   public void addEvent(ModelEvent event) {
     CalendarApplication calendar = getCalendarFor(event.getUid());
     CalendarEvent calendarEvent = calendar.addEvent(event.getStart(), event.getEnd(), event.getDescription(), event.getLocation());
     event.setEventId(calendarEvent.getId());
   }
 
+  @Override
   public void removeEvent(String uid, ModelEvent event) {
     CalendarApplication calendar = getCalendarFor(uid);
     calendar.removeEvent(event.getEventId(), false);
   }
 
+  @Override
   public void assertUserTasks(String uid, Collection<ModelTask> tasks) {
     CalendarApplication calendar = getCalendarFor(uid);
     Collection<CalendarTask> calendarTasks = calendar.getTasks();
@@ -82,17 +99,18 @@ public class OnlineScripter {
     }
   }
 
+  @Override
   public void assertUserEvents(String uid, Collection<ModelEvent> events) {
     CalendarApplication calendar = getCalendarFor(uid);
     Collection<CalendarEvent> calendarEvents = calendar.getEvents();
-    System.out.println("uid:"+uid+" events:"+events+" cevents:"+calendarEvents);
+//    System.out.println("uid:"+uid+" events:"+events+" cevents:"+calendarEvents);
     if (events == null) {
       if (calendarEvents != null && calendarEvents.size() > 0) {
         fail("Events are null in model, should be empty also in calendar");
       }
       return;
     }
-    assertEquals("Number of tasks in model vs calendar", events.size(), calendarEvents.size());
+    assertEquals("Number of events in model vs calendar", events.size(), calendarEvents.size());
     for (ModelEvent modelEvent : events) {
       String description = modelEvent.getDescription();
       Date start = modelEvent.getStart();
@@ -114,6 +132,7 @@ public class OnlineScripter {
     }
   }
 
+  @Override
   public void removeTaskThatDoesNotExist(String uid) {
     CalendarApplication calendar = getCalendarFor(uid);
     try {
@@ -124,6 +143,7 @@ public class OnlineScripter {
     }
   }
 
+  @Override
   public void removeEventThatDoesNotExist(String uid) {
     CalendarApplication calendar = getCalendarFor(uid);
     try {
@@ -134,6 +154,7 @@ public class OnlineScripter {
     }
   }
 
+  @Override
   public void linkEventToUser(ModelEvent event, String uid) {
     CalendarApplication calendarTo = getCalendarFor(uid);
     CalendarApplication calendarFrom = getCalendarFor(event.getUid());

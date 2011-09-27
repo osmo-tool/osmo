@@ -1,9 +1,12 @@
 package osmo.tester.examples.calendar.testmodel;
 
 /**
+ * Describes an event with a participant other than the organizer.
+ *
  * @author Teemu Kanstren
  */
 public class ParticipantEvent {
+  /** User identifier (uid) of the participant. */
   private final String participant;
   private final ModelEvent event;
 
