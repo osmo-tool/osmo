@@ -26,6 +26,11 @@ public class Scripter {
   private Map<String, String> variables = new HashMap<String, String>();
   private Collection<RFTestCase> tests = new ArrayList<RFTestCase>();
   private RFTestCase currentTest = null;
+  private final int cellCount;
+
+  public Scripter(int cellCount) {
+    this.cellCount = cellCount;
+  }
 
   public void setTestLibrary(String testLibrary) {
     this.testLibrary = testLibrary;
@@ -43,15 +48,19 @@ public class Scripter {
     if (currentTest != null) {
       tests.add(currentTest);
     }
-    currentTest = new RFTestCase(name);
+    currentTest = new RFTestCase(name, cellCount);
   }
 
 //  public void endTest() {
 //    tests.add(currentTest);
 //  }
 
-  public void addStep(String keyword, String p1, String p2) {
-    currentTest.addStep(keyword, p1, p2);
+  public void addStep(String keyword, String... params) {
+    currentTest.addStep(keyword, params);
+  }
+
+  public void addStepWithResult(String keyword, String variableName, String... params) {
+    currentTest.addStepWithResult(keyword, variableName, params);
   }
 
   public String createScript() {
@@ -59,6 +68,7 @@ public class Scripter {
       tests.add(currentTest);
     }
     vc.put("library",  testLibrary);
+    vc.put("argument_headers", getArgumentHeaders());
     vc.put("variables", variables.entrySet());
     vc.put("css", new CSSHelper());
     vc.put("tests", tests);
@@ -68,4 +78,22 @@ public class Scripter {
     velocity.mergeTemplate("osmo/tester/scripter/robotframework/script.vm", "UTF8", vc, sw);
     return sw.toString();
   }
+
+  private Collection<String> getArgumentHeaders() {
+    Collection<String> headers = new ArrayList<String>();
+    int count = 0;
+    for (RFTestCase test : tests) {
+      for (RFTestStep step : test.getSteps()) {
+        int stepCount = step.getParameters().size();
+        if (stepCount > count) {
+          count = stepCount;
+        }
+      }
+    }
+    for (int i = 0 ; i < count ; i++) {
+      headers.add("Argument");
+    }
+    return headers;
+  }
+
 }

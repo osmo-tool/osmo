@@ -5,7 +5,9 @@ import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Transition;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
+import osmo.tester.examples.calendar.scripter.offline.OfflineScripter;
 import osmo.tester.examples.calendar.scripter.online.OnlineScripter;
+import osmo.tester.generator.endcondition.Length;
 
 import java.util.Date;
 
@@ -54,8 +56,10 @@ public class CalendarBaseModel {
 
   public static void main(String[] args) {
     OSMOTester osmo = new OSMOTester();
+    osmo.addSuiteEndCondition(new Length(2));
     ModelState state = new ModelState();
-    CalendarScripter scripter = new OnlineScripter();
+//    CalendarScripter scripter = new OnlineScripter();
+    CalendarScripter scripter = new OfflineScripter("tests.html");
     osmo.addModelObject(new CalendarBaseModel(state, scripter));
     osmo.addModelObject(new CalendarOracleModel(state, scripter));
     osmo.addModelObject(new CalendarTaskModel(state, scripter));
@@ -63,6 +67,7 @@ public class CalendarBaseModel {
     osmo.addModelObject(new CalendarParticipantModel(state, scripter));
     osmo.addModelObject(new CalendarErrorModel(state, scripter));
     osmo.generate();
+    scripter.write();
   }
 
   //time limit = 10 years

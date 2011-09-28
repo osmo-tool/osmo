@@ -10,9 +10,11 @@ public class RFTestCase {
   private Collection<RFTestStep> steps = new ArrayList<RFTestStep>();
   private final String name;
   private boolean read = false;
+  private final int cellCount;
 
-  public RFTestCase(String name) {
+  public RFTestCase(String name, int cellCount) {
     this.name = name;
+    this.cellCount = cellCount;
   }
 
   public String getName() {
@@ -27,8 +29,13 @@ public class RFTestCase {
     return steps;
   }
 
-  public void addStep(String keyword, String p1, String p2) {
-    RFTestStep step = new RFTestStep(keyword, p1, p2);
+  public void addStep(String keyword, String[] params) {
+    RFTestStep step = new RFTestStep(keyword, cellCount, params);
+    steps.add(step);
+  }
+
+  public void addStepWithResult(String keyword, String variableName, String[] params) {
+    RFTestStep step = new RFTestStep(keyword, cellCount, variableName, params);
     steps.add(step);
   }
 }
