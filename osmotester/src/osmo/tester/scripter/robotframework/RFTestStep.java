@@ -10,17 +10,17 @@ import java.util.Collections;
 public class RFTestStep {
   private final String action;
   private final String variableName;
-  private final String[] params;
+  private final RFParameter[] params;
   private final int cellCount;
 
-  public RFTestStep(String action, int cellCount, String... params) {
+  public RFTestStep(String action, int cellCount, RFParameter... params) {
     this.action = action;
     this.variableName = null;
     this.params = params;
     this.cellCount = cellCount;
   }
 
-  public RFTestStep(String action, int cellCount, String variableName, String... params) {
+  public RFTestStep(String action, int cellCount, String variableName, RFParameter... params) {
     this.action = action;
     this.variableName = variableName;
     this.params = params;
@@ -28,15 +28,20 @@ public class RFTestStep {
   }
 
   public String getAction() {
+    if (variableName != null) {
+      return "${"+variableName+"}=";
+    }
     return action;
   }
 
   public Collection<String> getParameters() {
     Collection<String> parameters = new ArrayList<String>();
     if (variableName != null) {
-      parameters.add(variableName+"=");
+      parameters.add(action);
     }
-    Collections.addAll(parameters, params);
+    for (RFParameter param : params) {
+      parameters.add(param.toString());
+    }
     int i = parameters.size();
     for (; i < cellCount ; i++) {
       parameters.add("");

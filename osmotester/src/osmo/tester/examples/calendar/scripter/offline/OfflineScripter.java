@@ -3,6 +3,8 @@ package osmo.tester.examples.calendar.scripter.offline;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.examples.calendar.testmodel.ModelEvent;
 import osmo.tester.examples.calendar.testmodel.ModelTask;
+import osmo.tester.model.dataflow.ReadableCharSet;
+import osmo.tester.scripter.robotframework.RFParameter;
 import osmo.tester.scripter.robotframework.Scripter;
 
 import java.io.BufferedWriter;
@@ -30,7 +32,13 @@ public class OfflineScripter implements CalendarScripter {
 
   public OfflineScripter(String fileName) {
     this.fileName = fileName;
-    scripter.setTestLibrary("CalculatorLibrary");
+    scripter.setTestLibrary(CalculatorLibrary.class.getName());
+    ReadableCharSet set = new ReadableCharSet(3, 5);
+    scripter.addVariable("user1", "OSMO "+set.nextWord());
+    scripter.addVariable("user2", "OSMO "+set.nextWord());
+    scripter.addVariable("user3", "OSMO "+set.nextWord());
+    scripter.addVariable("user4", "OSMO "+set.nextWord());
+    scripter.addVariable("user5", "OSMO "+set.nextWord());
   }
 
   public String getScript() {
@@ -52,12 +60,17 @@ public class OfflineScripter implements CalendarScripter {
     String taskId = "Task" + nextTaskId;
     nextTaskId++;
     task.setTaskId(taskId);
-    scripter.addStepWithResult("Add Task", taskId, task.getUid(), formatTime(task.getTime()), task.getDescription());
+    RFParameter start = new RFParameter(formatTime(task.getTime()), false);
+    RFParameter description = new RFParameter(task.getDescription(), false);
+    RFParameter uid = new RFParameter(task.getUid(), true);
+    scripter.addStepWithResult("Add Task", taskId, uid, start, description);
   }
 
   @Override
   public void removeTask(ModelTask task) {
-    scripter.addStep("Remove Task", task.getUid(), task.getTaskId());
+    RFParameter uid = new RFParameter(task.getUid(), true);
+    RFParameter taskId = new RFParameter(task.getTaskId(), true);
+    scripter.addStep("Remove Task", uid, taskId);
   }
 
   @Override
@@ -65,17 +78,19 @@ public class OfflineScripter implements CalendarScripter {
     String eventId = "Event" + nextEventId;
     nextEventId++;
     event.setEventId(eventId);
-    String uid = event.getUid();
-    String start = formatTime(event.getStart());
-    String end = formatTime(event.getEnd());
-    String description = event.getDescription();
-    String location = event.getLocation();
+    RFParameter uid = new RFParameter(event.getUid(), true);
+    RFParameter start = new RFParameter(formatTime(event.getStart()), false);
+    RFParameter end = new RFParameter(formatTime(event.getEnd()), false);
+    RFParameter description = new RFParameter(event.getDescription(), false);
+    RFParameter location = new RFParameter(event.getLocation(), false);
     scripter.addStepWithResult("Add Event", eventId, uid, start, end, description, location);
   }
 
   @Override
   public void removeEvent(String uid, ModelEvent event) {
-    scripter.addStep("Remove Event", event.getUid(), event.getEventId());
+    RFParameter uidRef = new RFParameter(uid, true);
+    RFParameter eventId = new RFParameter(event.getEventId(), true);
+    scripter.addStep("Remove Event", uidRef, eventId);
   }
 
   @Override
@@ -83,11 +98,14 @@ public class OfflineScripter implements CalendarScripter {
     if (tasks == null) {
       tasks = new ArrayList<ModelTask>();
     }
-    scripter.addStep("Assert User Task Count is", uid, "" + tasks.size());
+    RFParameter uidRef = new RFParameter(uid, true);
+    RFParameter expectedSize = new RFParameter("" + tasks.size(), false);
+    scripter.addStep("Assert User Task Count is", uidRef, expectedSize);
     for (ModelTask task : tasks) {
-      String time = formatTime(task.getTime());
-      String description = task.getDescription();
-      scripter.addStep("Assert User has Task", uid, time, description);
+      RFParameter time = new RFParameter(formatTime(task.getTime()), false);
+      RFParameter description = new RFParameter(task.getDescription(), false);
+      uidRef = new RFParameter(uid, true);
+      scripter.addStep("Assert User has Task", uidRef, time, description);
     }
   }
 
@@ -98,27 +116,33 @@ public class OfflineScripter implements CalendarScripter {
     }
     scripter.addStep("Assert User Event Count is", uid, "" + events.size());
     for (ModelEvent event : events) {
-      String start = formatTime(event.getStart());
-      String end = formatTime(event.getEnd());
-      String description = event.getDescription();
-      String location = event.getLocation();
-      scripter.addStep("Assert User has Event", uid, start, end, description, location);
+      RFParameter uidRef = new RFParameter(uid, true);
+      RFParameter start = new RFParameter(formatTime(event.getStart()), false);
+      RFParameter end = new RFParameter(formatTime(event.getEnd()), false);
+      RFParameter description = new RFParameter(event.getDescription(), false);
+      RFParameter location = new RFParameter(event.getLocation(), false);
+      scripter.addStep("Assert User has Event", uidRef, start, end, description, location);
     }
   }
 
   @Override
   public void removeTaskThatDoesNotExist(String uid) {
-    scripter.addStep("Remove Nonexistent Task for", uid);
+    RFParameter uidRef = new RFParameter(uid, true);
+    scripter.addStep("Remove Nonexistent Task for", uidRef);
   }
 
   @Override
   public void removeEventThatDoesNotExist(String uid) {
-    scripter.addStep("Remove Nonexistent Event for", uid);
+    RFParameter uidRef = new RFParameter(uid, true);
+    scripter.addStep("Remove Nonexistent Event for", uidRef);
   }
 
   @Override
   public void linkEventToUser(ModelEvent event, String targetUid) {
-    scripter.addStep("Link Event to User", targetUid, event.getUid(), event.getEventId());
+    RFParameter tUidRef = new RFParameter(targetUid, true);
+    RFParameter sUidRef = new RFParameter(event.getUid(), true);
+    RFParameter eventId = new RFParameter(event.getEventId(), true);
+    scripter.addStep("Link Event to User", tUidRef, sUidRef, eventId);
   }
 
   @Override

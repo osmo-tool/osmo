@@ -9,7 +9,7 @@ import static osmo.common.TestUtils.cInt;
  */
 public class ReadableCharSet {
   /** Defines the list of characters that are considered as human-readable. */
-  public static final String chars = "abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ0123456789,.<>!\"#¤%&/()=?´`{[]}\\¨^~';:|-_*-+= \t";
+  public static final String chars = "abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ0123456789,.<>!\"#%&/()=?´`{[]}\\¨^~';:|-_*-+= \t";
   /** Minimum length of generated word. */
   private int min = 5;
   /** Maximum length of generated word. */

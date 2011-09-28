@@ -24,7 +24,7 @@ public class CalculatorLibrary {
   /** Library version for robot framework. */
   public static final String ROBOT_LIBRARY_VERSION = "1.0.0";
   private Map<String, CalendarUser> users = new HashMap<String, CalendarUser>();
-  private SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy at HH:mm:ss z", Locale.ENGLISH);
+  private SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy 'at' HH:mm:ss z", Locale.ENGLISH);
 
   /**
    * This library takes no arguments.
@@ -110,7 +110,7 @@ public class CalculatorLibrary {
     assertTrue("Expected event not found on calendar:" + userId + ", " + start + ", " + end + ", " + description, found);
   }
 
-  public void removeNonExistentTask(String userId) {
+  public void removeNonexistentTaskfor(String userId) {
     CalendarApplication calendar = getCalendarFor(userId);
     try {
       calendar.removeTask("no such task");

@@ -56,12 +56,12 @@ public class CalendarBaseModel {
 
   public static void main(String[] args) {
     OSMOTester osmo = new OSMOTester();
-    osmo.addSuiteEndCondition(new Length(2));
+//    osmo.addSuiteEndCondition(new Length(2));
     ModelState state = new ModelState();
 //    CalendarScripter scripter = new OnlineScripter();
     CalendarScripter scripter = new OfflineScripter("tests.html");
     osmo.addModelObject(new CalendarBaseModel(state, scripter));
-    osmo.addModelObject(new CalendarOracleModel(state, scripter));
+//    osmo.addModelObject(new CalendarOracleModel(state, scripter));
     osmo.addModelObject(new CalendarTaskModel(state, scripter));
     osmo.addModelObject(new CalendarOverlappingModel(state, scripter));
     osmo.addModelObject(new CalendarParticipantModel(state, scripter));
@@ -94,4 +94,7 @@ public class CalendarBaseModel {
   //check geteventforday in post, also gettaskforday (IGNORE)
   //user boundary values for task remove and add
   //create specific model object for each boundary
+  //create more examples of using dataflow objects
+  //create example of failing script
+  //create example of oracle in transitions
 }
