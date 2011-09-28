@@ -7,7 +7,9 @@ import osmo.tester.generator.GenerationListenerList;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
+import osmo.tester.generator.endcondition.AndComposition;
 import osmo.tester.generator.endcondition.EndCondition;
+import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.Probability;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
@@ -76,10 +78,10 @@ public class OSMOTester {
     }
     generator.setAlgorithm(algorithm);
     if (suiteEndConditions.size() == 0) {
-      addSuiteEndCondition(new Probability(0.05d));
+      addSuiteEndCondition(new AndComposition(new Length(1), new Probability(0.05d)));
     }
     if (testCaseEndConditions.size() == 0) {
-      addTestEndCondition(new Probability(0.1d));
+      addTestEndCondition(new AndComposition(new Length(1), new Probability(0.1d)));
     }
     generator.setSuiteEndConditions(suiteEndConditions);
     generator.setTestCaseEndConditions(testCaseEndConditions);

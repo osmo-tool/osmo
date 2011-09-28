@@ -37,7 +37,7 @@ public class Scripter {
   }
 
   public void addVariable(String name, String value) {
-    variables.put(name, value);
+    variables.put("${"+name+"}", value);
   }
 
   public String scriptFor(TestCase test) {
@@ -55,12 +55,28 @@ public class Scripter {
 //    tests.add(currentTest);
 //  }
 
-  public void addStep(String keyword, String... params) {
+  public void addStep(String keyword, RFParameter... params) {
     currentTest.addStep(keyword, params);
   }
 
-  public void addStepWithResult(String keyword, String variableName, String... params) {
+  public void addStepWithResult(String keyword, String variableName, RFParameter... params) {
     currentTest.addStepWithResult(keyword, variableName, params);
+  }
+
+  public void addStep(String keyword, String... params) {
+    RFParameter[] rfParams = new RFParameter[params.length];
+    for (int i = 0 ; i < params.length ; i++) {
+      rfParams[i] = new RFParameter(params[i]);
+    }
+    currentTest.addStep(keyword, rfParams);
+  }
+
+  public void addStepWithResult(String keyword, String variableName, String... params) {
+    RFParameter[] rfParams = new RFParameter[params.length];
+    for (int i = 0 ; i < params.length ; i++) {
+      rfParams[i] = new RFParameter(params[i]);
+    }
+    currentTest.addStepWithResult(keyword, variableName, rfParams);
   }
 
   public String createScript() {

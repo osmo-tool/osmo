@@ -48,7 +48,7 @@ public class ModelState {
     eventCount = new AtomicInteger(0);
 
     int users = cInt(1, 5);
-    for (int i = 0 ; i < users ; i++) {
+    for (int i = 1 ; i <= users ; i++) {
       uids.add("user"+i);
     }
     Calendar start = Calendar.getInstance();
