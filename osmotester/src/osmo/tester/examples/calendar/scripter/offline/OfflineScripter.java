@@ -8,8 +8,6 @@ import osmo.tester.scripter.robotframework.RFParameter;
 import osmo.tester.scripter.robotframework.Scripter;
 
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -20,19 +18,29 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
+ * Offline scripter for the calendar example. Creates a test script to be executed with the
+ * robot framework.
+ *
  * @author Teemu Kanstren
  */
 public class OfflineScripter implements CalendarScripter {
+  /** The OSMO robot framework scripter, script table size 6 columns. */
   private Scripter scripter = new Scripter(6);
-  private int index = 1;
+  /** Number of currently generated test. */
+  private int nextTestId = 1;
+  /** Id for next task to create in the script. */
   private int nextTaskId = 1;
+  /** Id for next event to create in the script. */
   private int nextEventId = 1;
+  /** For formatting dates as text strings in scripts. */
   private SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy 'at' HH:mm:ss z", Locale.ENGLISH);
+  /** Name of the file where the script will be stored. */
   private final String fileName;
 
   public OfflineScripter(String fileName) {
     this.fileName = fileName;
     scripter.setTestLibrary(CalculatorLibrary.class.getName());
+    //create users with random family name length 3-5 characters
     ReadableCharSet set = new ReadableCharSet(3, 5);
     scripter.addVariable("user1", "OSMO "+set.nextWord());
     scripter.addVariable("user2", "OSMO "+set.nextWord());
@@ -41,16 +49,27 @@ public class OfflineScripter implements CalendarScripter {
     scripter.addVariable("user5", "OSMO "+set.nextWord());
   }
 
+  /**
+   * Create the actual script from the RF scripter.
+   *
+   * @return The complete test script.
+   */
   public String getScript() {
     return scripter.createScript();
   }
 
   @Override
   public void reset() {
-    scripter.startTest("Test" + index);
-    index++;
+    scripter.startTest("Test" + nextTestId);
+    nextTestId++;
   }
 
+  /**
+   * Helper method to format dates for text scripts.
+   *
+   * @param time The date to format.
+   * @return Date in String format.
+   */
   private String formatTime(Date time) {
     return df.format(time);
   }
@@ -114,9 +133,10 @@ public class OfflineScripter implements CalendarScripter {
     if (events == null) {
       events = new ArrayList<ModelEvent>();
     }
-    scripter.addStep("Assert User Event Count is", uid, "" + events.size());
+    RFParameter uidRef = new RFParameter(uid, true);
+    RFParameter expectedCount = new RFParameter("" + events.size(), false);
+    scripter.addStep("Assert User Event Count is", uidRef, expectedCount);
     for (ModelEvent event : events) {
-      RFParameter uidRef = new RFParameter(uid, true);
       RFParameter start = new RFParameter(formatTime(event.getStart()), false);
       RFParameter end = new RFParameter(formatTime(event.getEnd()), false);
       RFParameter description = new RFParameter(event.getDescription(), false);

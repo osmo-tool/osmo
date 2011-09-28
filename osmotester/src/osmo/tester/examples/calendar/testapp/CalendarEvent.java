@@ -7,16 +7,27 @@ import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
+ * Describes an event in the calendar. An event is considered to be one with an organizer,
+ * one or more participants (including the organizer), a description, a location, and a start and end time.
+ *
  * @author Teemu Kanstren
  */
 public class CalendarEvent {
+  /** Start of the event. */
   private Date start = null;
+  /** End of the event. */
   private Date end = null;
+  /** Description of the event. */
   private String description = null;
+  /** Location of the event. */
   private String location = null;
+  /** The participants in the event. */
   private Collection<String> participants = new HashSet<String>();
+  /** Unique identifier for the event. */
   private final String id;
+  /** Organizer of the event (their unique user id)*/
   private final String organizer;
+  /** Maintains the next identifier for created event. */
   private static final AtomicInteger nextId = new AtomicInteger(0);
 
   public CalendarEvent(String uid, Date start, Date end, String description, String location) {

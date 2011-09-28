@@ -24,8 +24,11 @@ public class Scripter {
   private VelocityContext vc = new VelocityContext();
   /** The test case variables. */
   private Map<String, String> variables = new HashMap<String, String>();
+  /** The test cases to be generated. */
   private Collection<RFTestCase> tests = new ArrayList<RFTestCase>();
+  /** Test currently being scripted. */
   private RFTestCase currentTest = null;
+  /** How many cells should the RF test script table have? Used to fill empty cells and make a nice looking table. */
   private final int cellCount;
 
   public Scripter(int cellCount) {
@@ -36,14 +39,21 @@ public class Scripter {
     this.testLibrary = testLibrary;
   }
 
+  /**
+   * Adds a variable to the RF script. These are given in a separate table in the script file beginning.
+   *
+   * @param name Name of the variable.
+   * @param value Value for the variable.
+   */
   public void addVariable(String name, String value) {
     variables.put("${"+name+"}", value);
   }
 
-  public String scriptFor(TestCase test) {
-    return createScript();
-  }
-
+  /**
+   * Starts a new test case in the script.
+   *
+   * @param name Name of the new test case.
+   */
   public void startTest(String name) {
     if (currentTest != null) {
       tests.add(currentTest);
@@ -51,18 +61,29 @@ public class Scripter {
     currentTest = new RFTestCase(name, cellCount);
   }
 
-//  public void endTest() {
-//    tests.add(currentTest);
-//  }
-
+  /**
+   * Adds a test step (keyword) into the currently generated test case.
+   *
+   * @param keyword The keyword for the test step.
+   * @param params The parameters of the test step.
+   */
   public void addStep(String keyword, RFParameter... params) {
     currentTest.addStep(keyword, params);
   }
 
+  /**
+   * Adds a test step (keyword) into the currently generated test case,
+   * with a definition of a variable storing the output of the step.
+   *
+   * @param keyword The keyword for the test step.
+   * @param variableName The name of the variable to generate in RF for storing the output.
+   * @param params The parameters for the test step.
+   */
   public void addStepWithResult(String keyword, String variableName, RFParameter... params) {
     currentTest.addStepWithResult(keyword, variableName, params);
   }
 
+/*
   public void addStep(String keyword, String... params) {
     RFParameter[] rfParams = new RFParameter[params.length];
     for (int i = 0 ; i < params.length ; i++) {
@@ -78,7 +99,13 @@ public class Scripter {
     }
     currentTest.addStepWithResult(keyword, variableName, rfParams);
   }
+*/
 
+  /**
+   * Creates the test script based on the given test cases, test steps, variables, and the template.
+   *
+   * @return The test (suite) script as text.
+   */
   public String createScript() {
     if (!tests.contains(currentTest)) {
       tests.add(currentTest);
@@ -95,18 +122,14 @@ public class Scripter {
     return sw.toString();
   }
 
+  /**
+   * Creates the set of table headers for the test case table in order to enable template rendering.
+   *
+   * @return The Argument headers for the test table, according to the number of cells defined.
+   */
   private Collection<String> getArgumentHeaders() {
     Collection<String> headers = new ArrayList<String>();
-    int count = 0;
-    for (RFTestCase test : tests) {
-      for (RFTestStep step : test.getSteps()) {
-        int stepCount = step.getParameters().size();
-        if (stepCount > count) {
-          count = stepCount;
-        }
-      }
-    }
-    for (int i = 0 ; i < count ; i++) {
+    for (int i = 0 ; i < cellCount ; i++) {
       headers.add("Argument");
     }
     return headers;

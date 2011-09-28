@@ -22,6 +22,7 @@ import static junit.framework.Assert.assertEquals;
  * @author Teemu Kanstren
  */
 public class OnlineScripter implements CalendarScripter {
+  /** Maps user identifiers to CalendarUser objects. */
   private Map<String, CalendarUser> users = new HashMap<String, CalendarUser>();
 
   public OnlineScripter() {
@@ -35,6 +36,12 @@ public class OnlineScripter implements CalendarScripter {
     users.clear();
   }
 
+  /**
+   * Helper to get the calendar object for the given user.
+   *
+   * @param uid User whose calendar we want.
+   * @return The calendar.
+   */
   private CalendarApplication getCalendarFor(String uid) {
     CalendarUser user = users.get(uid);
     if (user == null) {
