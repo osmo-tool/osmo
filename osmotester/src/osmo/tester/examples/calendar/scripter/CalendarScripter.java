@@ -28,4 +28,6 @@ public interface CalendarScripter {
   void removeEventThatDoesNotExist(String uid);
 
   void linkEventToUser(ModelEvent event, String uid);
+
+  void write();
 }

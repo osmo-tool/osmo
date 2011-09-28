@@ -5,9 +5,12 @@ import osmo.tester.examples.calendar.testapp.CalendarEvent;
 import osmo.tester.examples.calendar.testapp.CalendarTask;
 import osmo.tester.examples.calendar.testapp.CalendarUser;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import static junit.framework.Assert.*;
@@ -21,6 +24,7 @@ public class CalculatorLibrary {
   /** Library version for robot framework. */
   public static final String ROBOT_LIBRARY_VERSION = "1.0.0";
   private Map<String, CalendarUser> users = new HashMap<String, CalendarUser>();
+  private SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy at HH:mm:ss z", Locale.ENGLISH);
 
   /**
    * This library takes no arguments.
@@ -38,7 +42,11 @@ public class CalculatorLibrary {
   }
 
   private Date timeFor(String time) {
-    return null;
+    try {
+      return df.parse(time);
+    } catch (ParseException e) {
+      throw new IllegalArgumentException("Unable to parse date:"+time, e);
+    }
   }
 
   public String addTask(String userId, String time, String description) {
@@ -63,7 +71,7 @@ public class CalculatorLibrary {
     calendar.removeEvent(eventId, false);
   }
 
-  public void assertUserTaskCount(String userId, String expectedCount) {
+  public void assertUserTaskCountIs(String userId, String expectedCount) {
     CalendarApplication calendar = getCalendarFor(userId);
     assertEquals("Number of tasks for user "+userId, Integer.parseInt(expectedCount), calendar.getTasks().size());
   }
@@ -82,7 +90,7 @@ public class CalculatorLibrary {
     assertTrue("Expected task not found on calendar:" + userId + ", "+time+", " + description, found);
   }
   
-  public void assertUserEventCount(String userId, String expectedCount) {
+  public void assertUserEventCountIs(String userId, String expectedCount) {
     CalendarApplication calendar = getCalendarFor(userId);
     assertEquals("Number of events for user " + userId, Integer.parseInt(expectedCount), calendar.getEvents().size());
   }
@@ -112,7 +120,7 @@ public class CalculatorLibrary {
     }
   }
 
-  public void removeNonExistentEvent(String userId) {
+  public void removeNonexistentEventFor(String userId) {
     CalendarApplication calendar = getCalendarFor(userId);
     try {
       calendar.removeEvent("no such event", false);

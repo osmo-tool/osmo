@@ -3,6 +3,7 @@
   <style type="text/css">
     #tests
     {
+    empty-cells:show;
     font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
     width:100%;
     border-collapse:collapse;
@@ -121,8 +122,9 @@
   <tr class="alt">
     <th>Test Case</th>
     <th>Action</th>
-    <th>Argument</th>
-    <th>Argument</th>
+#foreach ($arg_header in $argument_headers)
+    <th>$arg_header</th>
+#end
   </tr>
 $css.reset()
 #foreach ($test in $tests)
@@ -130,8 +132,9 @@ $css.reset()
   <tr$css.tableClass>
     <td>$test.name</td>
     <td>$step.action</td>
-    <td>$step.p1</td>
-    <td>$step.p2</td>
+#foreach ($param in $step.parameters)
+    <td>$param</td>
+#end
   </tr>
 #end
 #end

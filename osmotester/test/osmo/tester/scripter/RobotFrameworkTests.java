@@ -13,7 +13,7 @@ import static osmo.common.TestUtils.*;
 public class RobotFrameworkTests {
   @Test
   public void twoVariablesTwoTestsTwoSteps() {
-    Scripter scripter = new Scripter();
+    Scripter scripter = new Scripter(2);
     scripter.setTestLibrary("SeleniumLibrary");
     scripter.addVariable("var1", "hello");
     scripter.addVariable("var2", "world");
