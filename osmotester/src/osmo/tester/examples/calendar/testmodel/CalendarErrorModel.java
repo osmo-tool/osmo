@@ -4,10 +4,17 @@ import osmo.tester.annotation.Transition;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 
 /**
+ * Adds error handling test steps to the overall test model.
+ * Includes
+ *  -removing a task that does not exist, and checking proper error handling
+ *  -removing an event that does not exist, and checking proper error handling
+ *
  * @author Teemu Kanstren
  */
 public class CalendarErrorModel {
+  /** The global model state, shared across test models. */
   private final ModelState state;
+  /** The scripter for creating/executing the test cases. */
   private final CalendarScripter scripter;
 
   public CalendarErrorModel(ModelState state, CalendarScripter scripter) {

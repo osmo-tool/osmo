@@ -1,8 +1,5 @@
 package osmo.tester.examples.calendar.testapp;
 
-import osmo.tester.examples.calendar.testmodel.ModelTask;
-
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;

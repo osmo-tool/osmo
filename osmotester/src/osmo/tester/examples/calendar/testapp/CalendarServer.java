@@ -4,10 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * The server handles cascading deletes when an organizer deletes a calendar event with other participants.
+ *
  * @author Teemu Kanstren
  */
 public class CalendarServer {
+  /** Self. */
   private static final CalendarServer singleton = new CalendarServer();
+  /** Maps user identifiers to calendars. */
   private Map<String, CalendarApplication> calendars = new HashMap<String, CalendarApplication>();
 
   private CalendarServer() {

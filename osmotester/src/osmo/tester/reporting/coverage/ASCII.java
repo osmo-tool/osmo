@@ -1,15 +1,15 @@
 package osmo.tester.reporting.coverage;
 
+import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.FSM;
+import osmo.tester.model.FSMTransition;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.model.FSM;
-import osmo.tester.model.FSMTransition;
 
 /**
  * Returns coverage tables in ASCII format

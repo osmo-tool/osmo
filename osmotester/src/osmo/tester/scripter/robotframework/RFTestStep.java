@@ -2,7 +2,6 @@ package osmo.tester.scripter.robotframework;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 /**
  * @author Teemu Kanstren

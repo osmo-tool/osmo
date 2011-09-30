@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static junit.framework.Assert.*;
-import static junit.framework.Assert.assertEquals;
 
 /**
  * "Scripter" for online testing, directly invoking the test calendar.

@@ -7,10 +7,16 @@ import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import java.util.Date;
 
 /**
+ * Adds tasks to the calendar. Includes
+ * -add task
+ * -remove task
+ *
  * @author Teemu Kanstren
  */
 public class CalendarTaskModel {
+  /** The global model state, shared across test models. */
   private final ModelState state;
+  /** The scripter for creating/executing the test cases. */
   private final CalendarScripter scripter;
 
   public CalendarTaskModel(ModelState state, CalendarScripter scripter) {
