@@ -6,18 +6,22 @@ import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Transition;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.examples.calendar.scripter.offline.OfflineScripter;
-import osmo.tester.examples.calendar.scripter.online.OnlineScripter;
-import osmo.tester.generator.endcondition.Length;
 
 import java.util.Date;
 
 import static osmo.tester.examples.calendar.testmodel.ModelHelper.calculateEndTime;
 
 /**
+ * The base test model for the calendar. Includes
+ * -add organizer event, meaning an event that has no participants
+ * -removing event from the organizer (possibly impacting remove from all participants if such exist)
+ *
  * @author Teemu Kanstren
  */
 public class CalendarBaseModel {
+  /** The global model state, shared across test models. */
   private final ModelState state;
+  /** The scripter for creating/executing the test cases. */
   private final CalendarScripter scripter;
 
   public CalendarBaseModel(ModelState state, CalendarScripter scripter) {
@@ -54,6 +58,11 @@ public class CalendarBaseModel {
     scripter.removeEvent(event.getUid(), event);
   }
 
+  /**
+   * This is used to execute the calendar example.
+   *
+   * @param args command line arguments, ignored.
+   */
   public static void main(String[] args) {
     OSMOTester osmo = new OSMOTester();
 //    osmo.addSuiteEndCondition(new Length(2));

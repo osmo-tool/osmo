@@ -1,6 +1,7 @@
 package osmo.tester.generator.testsuite;
 
 import osmo.tester.model.FSMTransition;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;

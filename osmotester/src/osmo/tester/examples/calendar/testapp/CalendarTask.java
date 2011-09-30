@@ -4,12 +4,18 @@ import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
+ * A task has a date but no duration, thus no end time, and has a description but no location.
+ *
  * @author Teemu Kanstren
  */
 public class CalendarTask {
+  /** Date for the task. */
   private Date when = null;
+  /** Task description. */
   private String description = null;
+  /** Unique identifier for the task. */
   private final String id;
+  /** Used to assign new task identifiers. */
   private static final AtomicInteger nextId = new AtomicInteger(0);
 
   public CalendarTask(String uid, Date when, String description) {

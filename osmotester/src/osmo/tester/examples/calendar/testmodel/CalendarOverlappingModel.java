@@ -10,10 +10,18 @@ import static osmo.common.TestUtils.cLong;
 import static osmo.tester.examples.calendar.testmodel.ModelHelper.calculateEndTime;
 
 /**
+ * Adds overlapping events and tasks to the test model.
+ * Includes
+ *  -Adding an event that overlaps another event in the same calendar
+ *  -Adding a task that overlaps another task in the same calendar
+ *  -Adding a task that overlaps another event in the same calendar
+ *
  * @author Teemu Kanstren
  */
 public class CalendarOverlappingModel {
+  /** The global model state, shared across test models. */
   private final ModelState state;
+  /** The scripter for creating/executing the test cases. */
   private final CalendarScripter scripter;
 
   public CalendarOverlappingModel(ModelState state, CalendarScripter scripter) {

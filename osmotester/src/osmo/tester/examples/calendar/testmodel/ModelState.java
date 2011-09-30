@@ -13,7 +13,6 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static osmo.common.TestUtils.*;
-import static osmo.common.TestUtils.oneOf;
 
 /**
  * Holds the overall state of the model.

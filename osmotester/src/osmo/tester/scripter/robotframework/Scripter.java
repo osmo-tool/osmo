@@ -2,7 +2,6 @@ package osmo.tester.scripter.robotframework;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
-import osmo.tester.generator.testsuite.TestCase;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
