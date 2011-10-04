@@ -4,12 +4,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
+ * Represents a test case for the robot framework scripter.
+ *
  * @author Teemu Kanstren
  */
 public class RFTestCase {
+  /** The test steps in this test case. */
   private Collection<RFTestStep> steps = new ArrayList<RFTestStep>();
+  /** The name of the test case. */
   private final String name;
+  /** Defines is the name has been queried or not, used to only print the name once in the table, while having a simple template. */
   private boolean read = false;
+  /** Number of cells in the RF test case HTML table, used for pretty printing. */
   private final int cellCount;
 
   public RFTestCase(String name, int cellCount) {
