@@ -25,7 +25,12 @@ v1.0 24/08/2011
 -Added requirements coverage and test data reporters ( issue #6 ,  issue #11 )
 -Added basic boundary scan algorithm to dataflow generators ( issue #9 )
 -Defined common interfaces for dataflow input and output ( issue #8 )
-v1.1 09/09/2011
+v1.1.0 09/09/2011
 -fixes to make random numbers more uniformly distributed
 -added transitioncoverage endcondition
+v1.2.0 04/10/2011
+-added extensive calendar example (in source code) and tutorial (in manual)
+-added robot framework scripter
+-added ASCII reporting
+
 
