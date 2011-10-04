@@ -10,7 +10,7 @@
   <property name="coverage-dir" value="${main-output}/coverage"/>
   <property name="javadoc-dir" value="${main-output}/docs/api"/>
   <property name="cobertura.home" value="${env.COBERTURA_HOME}"/>
-  <property name="build.version" value="1.1.0"/>
+  <property name="build.version" value="1.2.0"/>
   <property name="osmo-common-output" value="../common/ant-out/production"/>
   <property name="jar.file" value="osmo-tester-v${build.version}.jar"/>
   <property name="zip.file" value="osmo-tester-v${build.version}.zip"/>
