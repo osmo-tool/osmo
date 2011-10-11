@@ -1,4 +1,4 @@
-<project name="osmo-tester" default="jar" basedir=".">
+<project name="osmo-visualizer" default="jar" basedir=".">
   <property environment="env"/>
   <property name="prod-src" value="src"/>
   <property name="test-src" value="test"/>
@@ -9,7 +9,10 @@
   <property name="instrumented-dest" value="${main-output}/instrumented"/>
   <property name="coverage-dir" value="${main-output}/coverage"/>
   <property name="javadoc-dir" value="${main-output}/docs/api"/>
+  <property name="osmo-tester-output" value="../osmotester/ant-out/production"/>
   <property name="cobertura.home" value="${env.COBERTURA_HOME}"/>
+  <property name="build.version" value="0.1.0"/>
+  <property name="jar.file" value="osmo-visualizer-v${build.version}.jar"/>
 
   <path id="class.path">
     <!--pathelement path="${currentenv.classpath}"/-->
@@ -17,6 +20,7 @@
       <include name="**/*.jar"/>
     </fileset>
     <path location="${prod-dest}"/>
+    <path location="${osmo-tester-output}"/>
   </path>
 
   <path id="cobertura.classpath">
@@ -45,7 +49,8 @@
   </target>
 
   <target name="compile" depends="init">
-    <echo message="Compiling production..."/>
+    <ant dir="../osmotester" antfile="build.xml" target="jar" inheritAll="false"/>
+    <echo message="Compiling production...${osmo-tester-output}"/>
     <javac source="1.5" target="1.5" debug="true" classpathref="class.path" srcdir="${prod-src}"
            destdir="${prod-dest}"/>
     <echo message="Compiling tests..."/>
@@ -53,7 +58,7 @@
   </target>
 
   <target name="jar" depends="compile" description="Create jar file">
-    <jar destfile="osmotester.jar" basedir="${prod-dest}"/>
+    <jar destfile="${jar.file}" basedir="${prod-dest}"/>
   </target>
 
   <target name="test" depends="clean, compile">
@@ -87,9 +92,9 @@
   </target>
 
   <target name="javadocs">
-    <javadoc destdir="${javadoc-dir}" author="true" version="true" use="true" windowtitle="OSMO API">
+    <javadoc destdir="${javadoc-dir}" author="true" version="true" use="true" windowtitle="OSMO Visualizer API">
       <packageset dir="src" defaultexcludes="yes">
-        <include name="osmo/tester/**"/>
+        <include name="osmo/visualizer/**"/>
       </packageset>
     </javadoc>
   </target>

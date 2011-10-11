@@ -9,6 +9,8 @@ import osmo.tester.annotation.Post;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.dataflow.Input;
+import osmo.tester.model.dataflow.ValueSet;
 
 import java.io.PrintStream;
 
@@ -17,19 +19,20 @@ import static junit.framework.Assert.assertTrue;
 /**
  * Example of a vending machine.
  * Takes 10, 20, and 50 cent coins.
- * Maximum of 100 cents allowed to be inserted.
- * If inserting a coin would go over total of 100 cents, it is not allowed.
- * When 100 cents inserted the "vend" transition can be taken.
- * When "vend" is taken, number of coins is reset to 0 and a bottle is deducted from the number of available bottles.
- * When there are only 0 bottles left, all states are disabled.
+ * Price is configured with a variable and can be changed to create a new test set with changed price.
+ * When 100 cents (or the value of the price variable if changed) inserted the "vend" transition can be taken.
+ * When "vend" is taken, number of coins is reduced by the price value and a bottle is deducted from the number of available bottles.
+ * When there are only 0 bottles left, the model end condition ends test generation.
  * 
  * @author Teemu Kanstren
  */
 public class VendingExample {
   private final Scripter scripter;
   private final PrintStream out;
-  private int coins = 0;
+  private int cents = 0;
   private int bottles = 10;
+  private final int PRICE = 100;
+  private final Input<Integer> coins = new ValueSet<Integer>(10,20,50);
   @TestSuiteField
   private TestSuite testSuite = new TestSuite();
 
@@ -43,67 +46,36 @@ public class VendingExample {
     this.out = ps;
   }
 
-  @Guard
-  public boolean gotBottles() {
-    return bottles > 0;
-  }
-
   @BeforeTest
   public void start() {
-    coins = 0;
+    cents = 0;
     //uncomment this for failure to continue with 0 available transitions
     bottles = 10;
     int tests = testSuite.getTestCases().size()+1;
-    out.println("Starting test:"+ tests);
+    out.print("Starting test:"+ tests+"\n");
   }
 
   @AfterSuite
   public void done() {
-    out.println("Created total of "+ testSuite.getTestCases().size()+" tests.");
+    out.print("Created total of "+ testSuite.getTestCases().size()+" tests.\n");
   }
 
-  @Guard("20cents")
-  public boolean allow20cents() {
-    return coins <= 80;
-  }
-
-  @Transition("20cents")
-  public void insert20cents() {
-    scripter.step("INSERT 20");
-    coins += 20;
-  }
-
-  @Guard("10cents")
-  public boolean allow10cents() {
-    return coins <= 90;
-  }
-
-  @Transition("10cents")
-  public void insert10cents() {
-    scripter.step("INSERT 10");
-    coins += 10;
-  }
-
-  @Guard("50cents")
-  public boolean allow50cents() {
-    return coins <= 50;
-  }
-
-  @Transition("50cents")
-  public void insert50cents() {
-    scripter.step("INSERT 50");
-    coins += 50;
+  @Transition("insert-money")
+  public void insertMoney() {
+    int coin = coins.next();
+    scripter.step("INSERT "+coin);
+    cents += coin;
   }
 
   @Guard("vend")
   public boolean allowVend() {
-    return coins == 100;
+    return cents >= PRICE;
   }
 
   @Transition("vend")
   public void vend() {
     scripter.step("VEND ("+bottles+")");
-    coins = 0;
+    cents -= PRICE;
     bottles--;
   }
 
@@ -115,9 +87,8 @@ public class VendingExample {
   @Post
   public void checkState() {
     scripter.step("CHECK(bottles == "+bottles+")");
-    scripter.step("CHECK(coins == "+coins+")");
-    assertTrue(coins <= 100);
-    assertTrue(coins >= 0);
+    scripter.step("CHECK(coins == "+ cents +")");
+    assertTrue(cents >= 0);
     assertTrue(bottles >= 0);
   }
 

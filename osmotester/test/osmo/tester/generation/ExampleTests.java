@@ -90,27 +90,27 @@ public class ExampleTests {
     osmo.addTestEndCondition(length3);
     osmo.addSuiteEndCondition(length2);
     osmo.generate();
-    String expected = "Starting test:1" + ln +
-            "INSERT 10" + ln +
-            "CHECK(bottles == 10)" + ln +
-            "CHECK(coins == 10)" + ln +
-            "INSERT 10" + ln +
-            "CHECK(bottles == 10)" + ln +
-            "CHECK(coins == 20)" + ln +
-            "INSERT 10" + ln +
-            "CHECK(bottles == 10)" + ln +
-            "CHECK(coins == 30)" + ln +
-            "Starting test:2" + ln +
-            "INSERT 50" + ln +
-            "CHECK(bottles == 10)" + ln +
-            "CHECK(coins == 50)" + ln +
-            "INSERT 10" + ln +
-            "CHECK(bottles == 10)" + ln +
-            "CHECK(coins == 60)" + ln +
-            "INSERT 10" + ln +
-            "CHECK(bottles == 10)" + ln +
-            "CHECK(coins == 70)" + ln +
-            "Created total of 2 tests." + ln;
+    String expected = "Starting test:1\n" +
+            "INSERT 20\n" +
+            "CHECK(bottles == 10)\n" +
+            "CHECK(coins == 20)\n" +
+            "INSERT 10\n" +
+            "CHECK(bottles == 10)\n" +
+            "CHECK(coins == 30)\n" +
+            "INSERT 10\n" +
+            "CHECK(bottles == 10)\n" +
+            "CHECK(coins == 40)\n" +
+            "Starting test:2\n" +
+            "INSERT 50\n" +
+            "CHECK(bottles == 10)\n" +
+            "CHECK(coins == 50)\n" +
+            "INSERT 20\n" +
+            "CHECK(bottles == 10)\n" +
+            "CHECK(coins == 70)\n" +
+            "INSERT 50\n" +
+            "CHECK(bottles == 10)\n" +
+            "CHECK(coins == 120)\n" +
+            "Created total of 2 tests.\n";
     String actual = out.toString();
     assertEquals(expected, actual);
   }

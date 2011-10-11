@@ -15,6 +15,6 @@ public class Scripter {
   }
 
   public void step(String step) {
-    out.println(step);
+    out.print(step+"\n");
   }
 }
