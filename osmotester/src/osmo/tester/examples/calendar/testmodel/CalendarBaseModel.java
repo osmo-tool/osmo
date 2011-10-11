@@ -6,6 +6,7 @@ import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Transition;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.examples.calendar.scripter.offline.OfflineScripter;
+import osmo.tester.examples.calendar.scripter.online.OnlineScripter;
 
 import java.util.Date;
 
@@ -67,14 +68,15 @@ public class CalendarBaseModel {
     OSMOTester osmo = new OSMOTester();
 //    osmo.addSuiteEndCondition(new Length(2));
     ModelState state = new ModelState();
-//    CalendarScripter scripter = new OnlineScripter();
-    CalendarScripter scripter = new OfflineScripter("tests.html");
+    CalendarScripter scripter = new OnlineScripter();
+//    CalendarScripter scripter = new OfflineScripter("tests.html");
     osmo.addModelObject(new CalendarBaseModel(state, scripter));
     osmo.addModelObject(new CalendarOracleModel(state, scripter));
     osmo.addModelObject(new CalendarTaskModel(state, scripter));
     osmo.addModelObject(new CalendarOverlappingModel(state, scripter));
     osmo.addModelObject(new CalendarParticipantModel(state, scripter));
-    osmo.addModelObject(new CalendarErrorModel(state, scripter));
+    osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter));
+    osmo.addModelObject(new CalendarFailureModel(state, scripter));
     osmo.generate();
     scripter.write();
   }
@@ -101,9 +103,9 @@ public class CalendarBaseModel {
   //check tasks for all users (DONE)
   //check events for all users (DONE)
   //check geteventforday in post, also gettaskforday (IGNORE)
-  //user boundary values for task remove and add
-  //create specific model object for each boundary
-  //create more examples of using dataflow objects
-  //create example of failing script
-  //create example of oracle in transitions
+  //user boundary values for task remove and add (IGNORE)
+  //create specific model object for each boundary (NO BOUNDARY PRESENT, IGNORE)
+  //create more examples of using dataflow objects (IF WE CAN THINK OF SOME)
+  //create example of failing script (DONE)
+  //create example of oracle in transitions (DONE)
 }
