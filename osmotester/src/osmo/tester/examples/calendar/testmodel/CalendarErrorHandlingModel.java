@@ -11,13 +11,13 @@ import osmo.tester.examples.calendar.scripter.CalendarScripter;
  *
  * @author Teemu Kanstren
  */
-public class CalendarErrorModel {
+public class CalendarErrorHandlingModel {
   /** The global model state, shared across test models. */
   private final ModelState state;
   /** The scripter for creating/executing the test cases. */
   private final CalendarScripter scripter;
 
-  public CalendarErrorModel(ModelState state, CalendarScripter scripter) {
+  public CalendarErrorHandlingModel(ModelState state, CalendarScripter scripter) {
     this.state = state;
     this.scripter = scripter;
   }

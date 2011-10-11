@@ -18,7 +18,22 @@
 
 package osmo.common;
 
+import org.xml.sax.InputSource;
+
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.sax.SAXTransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
@@ -129,7 +144,7 @@ public class TestUtils {
    * @return Random value between the given bounds, bounds included.
    */
   public static byte cByte(byte min, byte max) {
-    return (byte)cInt(min, max);
+    return (byte) cInt(min, max);
   }
 
   /**
@@ -145,7 +160,7 @@ public class TestUtils {
    * @return Random value between the given bounds, bounds included.
    */
   public static char cChar(char min, char max) {
-    return (char)cInt(min, max);
+    return (char) cInt(min, max);
   }
 
   /**
@@ -261,9 +276,9 @@ public class TestUtils {
    * Unifies line separators in given string by replacing all found instances with the given string.
    * The set of replaces separators includes \r\n, \r and \n.
    *
-   * @param toUnify
-   * @param ls
-   * @return
+   * @param toUnify The string to unify.
+   * @param ls      Line separator characters.
+   * @return Same as input but with replaced line separators.
    */
   public static String unifyLineSeparators(String toUnify, String ls) {
     char[] chars = toUnify.toCharArray();
@@ -287,4 +302,20 @@ public class TestUtils {
     return sb.toString();
   }
 
+  //TODO: add tests
+  public static String formatXml(String xml) throws TransformerException {
+    try {
+      Source xmlInput = new StreamSource(new StringReader(xml));
+      StringWriter stringWriter = new StringWriter();
+      StreamResult xmlOutput = new StreamResult(stringWriter);
+      TransformerFactory transformerFactory = TransformerFactory.newInstance();
+      transformerFactory.setAttribute("indent-number", 2);
+      Transformer transformer = transformerFactory.newTransformer();
+      transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+      transformer.transform(xmlInput, xmlOutput);
+      return xmlOutput.getWriter().toString();
+    } catch (Exception e) {
+      throw new RuntimeException(e); // simple exception handling, please review it
+    }
+  }
 }
