@@ -113,6 +113,7 @@
         <include name="**/*.html"/>
         <include name="**/*.csv"/>
         <include name="**/*.xml"/>
+        <include name="**/*.vm"/>
       </fileset>
     </copy>
     <copy todir="${test-dest}">
@@ -120,6 +121,7 @@
         <include name="**/*.html"/>
         <include name="**/*.csv"/>
         <include name="**/*.xml"/>
+        <include name="**/*.vm"/>
       </fileset>
     </copy>
   </target>

@@ -70,7 +70,7 @@ public class CalendarBaseModel {
 //    CalendarScripter scripter = new OnlineScripter();
     CalendarScripter scripter = new OfflineScripter("tests.html");
     osmo.addModelObject(new CalendarBaseModel(state, scripter));
-//    osmo.addModelObject(new CalendarOracleModel(state, scripter));
+    osmo.addModelObject(new CalendarOracleModel(state, scripter));
     osmo.addModelObject(new CalendarTaskModel(state, scripter));
     osmo.addModelObject(new CalendarOverlappingModel(state, scripter));
     osmo.addModelObject(new CalendarParticipantModel(state, scripter));

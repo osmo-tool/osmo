@@ -50,16 +50,13 @@
 
   <target name="compile" depends="init">
     <echo message="Compiling production..."/>
-    <javac source="1.5" target="1.5" debug="true" classpathref="class.path" srcdir="${prod-src}"
-           destdir="${prod-dest}"/>
+    <javac source="1.5" target="1.5" debug="true" classpathref="class.path" srcdir="${prod-src}" destdir="${prod-dest}"/>
     <echo message="Compiling tests..."/>
     <javac source="1.5" target="1.5" classpathref="class.path" srcdir="${test-src}" destdir="${test-dest}"/>
   </target>
 
   <target name="jar" depends="compile, copyresources" description="Create jar file">
-
     <ant dir="../common" antfile="build.xml" target="jar" inheritAll="false"/>
-
     <jar destfile="${jar.file}">
       <manifest>
         <attribute name="Main-Class" value="osmo.miner.GUI"/>

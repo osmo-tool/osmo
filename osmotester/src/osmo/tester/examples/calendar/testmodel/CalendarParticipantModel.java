@@ -32,7 +32,7 @@ public class CalendarParticipantModel {
   public void linkEventToUser() {
     ModelEvent event = state.getRandomExistingEvent();
     String uid = state.randomUID();
-    System.out.println("--LINKTASKTOUSER:"+uid+" - "+event);
+    System.out.println("--LINKEVENTTOUSER:"+uid+" - "+event);
     state.attach(uid, event);
     scripter.linkEventToUser(event, uid);
   }
