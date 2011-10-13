@@ -34,7 +34,7 @@ public class CalendarFailureModel {
   public void giefFailure() {
     Collection<ModelEvent> events = new ArrayList<ModelEvent>();
     events.add(new ModelEvent("persikka", new Date(0), new Date(0), null, null));
-    scripter.assertUserEvents("bob", events);
+    scripter.assertUserEvents(state.randomUID(), events);
     System.out.println("--MUSTIKKA");
   }
 }

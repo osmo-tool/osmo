@@ -1,5 +1,6 @@
 package osmo.tester.generator.endcondition;
 
+import osmo.common.TestUtils;
 import osmo.common.log.Logger;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
@@ -17,8 +18,6 @@ public class Probability implements EndCondition {
   private static Logger log = new Logger(Probability.class);
   /** The stopping threshold. */
   private final double threshold;
-  /** Used to generate random values to check if generation should be stopped. */
-  private final Random random = new Random();
 
   /**
    * Constructor.
@@ -33,7 +32,7 @@ public class Probability implements EndCondition {
   }
 
   public boolean endNow(TestSuite suite, FSM fsm) {
-    double v = random.nextDouble();
+    double v = TestUtils.getRandom().nextDouble();
     log.debug("value "+v+" threshold "+threshold);
     return v <= threshold;
   }
