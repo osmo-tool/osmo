@@ -42,6 +42,7 @@ public class OfflineScripter implements CalendarScripter {
     scripter.setTestLibrary(CalculatorLibrary.class.getName());
     //create users with random family name length 3-5 characters
     ReadableCharSet set = new ReadableCharSet(3, 5);
+    set.asciiLettersAndNumbersOnly();
     scripter.addVariable("user1", "OSMO "+set.nextWord());
     scripter.addVariable("user2", "OSMO "+set.nextWord());
     scripter.addVariable("user3", "OSMO "+set.nextWord());

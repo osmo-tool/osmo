@@ -1,5 +1,10 @@
 package osmo.tester.model.dataflow;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
 import static osmo.common.TestUtils.cInt;
 
 /**
@@ -9,7 +14,7 @@ import static osmo.common.TestUtils.cInt;
  */
 public class ReadableCharSet {
   /** Defines the list of characters that are considered as human-readable. */
-  public static final String chars = "abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ0123456789,.<>!\"#%&/()=?´`{[]}\\¨^~';:|-_*-+= \t";
+  private String chars = "abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ0123456789,.<>!\"#%&/()=?´`{[]}\\¨^~';:|-_*-+= \t";
   /** Minimum length of generated word. */
   private int min = 5;
   /** Maximum length of generated word. */
@@ -19,6 +24,30 @@ public class ReadableCharSet {
    * Constructor for default values (min=5, max=10).
    */
   public ReadableCharSet() {
+  }
+
+  /**
+   * Removes the characters in the given string from the potential characters to generate.
+   *
+   * @param charsToRemove The characters to remove.
+   */
+  public void reduceBy(String charsToRemove) {
+    char[] r = charsToRemove.toCharArray();
+    String result = "";
+    for (int ci = 0; ci < chars.toCharArray().length; ci++) {
+      char c = chars.toCharArray()[ci];
+      boolean found = false;
+      for (char rc : r) {
+        if (c == rc) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        result += c;
+      }
+    }
+    chars = result;
   }
 
   /**
@@ -87,5 +116,13 @@ public class ReadableCharSet {
       result = result && b;
     }
     return result;
+  }
+
+  public void enableXml() {
+    reduceBy("<>");
+  }
+
+  public void asciiLettersAndNumbersOnly() {
+    chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   }
 }

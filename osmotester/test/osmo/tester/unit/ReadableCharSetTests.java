@@ -133,4 +133,24 @@ public class ReadableCharSetTests {
     ReadableCharSet set = new ReadableCharSet(10, 20);
     assertTrue("Evaluating empty string should work.", set.evaluateWord("1234567890"));
   }
+
+  @Test
+  public void reduceWithWhiteSpace() {
+    ReadableCharSet set = new ReadableCharSet(10, 20);
+    set.reduceBy(" \t");
+    for (int i = 0 ; i < 1000 ; i++) {
+      char c = set.next();
+      assertFalse("Should not contain removed chars, has " + c, c == ' ' || c == '\t');
+    }
+  }
+
+  @Test
+  public void reduceWithXml() {
+    ReadableCharSet set = new ReadableCharSet(10, 20);
+    set.reduceBy("<>");
+    for (int i = 0; i < 1000; i++) {
+      char c = set.next();
+      assertFalse("Should not contain removed chars, has " + c, c == '<' || c == '>');
+    }
+  }
 }
