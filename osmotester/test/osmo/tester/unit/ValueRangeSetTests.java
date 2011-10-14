@@ -5,6 +5,9 @@ import osmo.tester.OSMOTester;
 import osmo.tester.model.dataflow.DataGenerationStrategy;
 import osmo.tester.model.dataflow.ValueRangeSet;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import static junit.framework.Assert.*;
 
 /**
@@ -299,7 +302,6 @@ public class ValueRangeSetTests {
     Long o3 = vrs3.next();
     assertEquals("Long value range should produce longs..", Long.class, o3.getClass());
 
-
     ValueRangeSet<Double> vrs4 = new ValueRangeSet<Double>();
     vrs4.addPartition(Double.class, 1, 2);
     Double o4 = vrs4.next();
@@ -310,6 +312,42 @@ public class ValueRangeSetTests {
     Double o5 = vrs5.next();
     assertEquals("Double value range should produce doubles..", Double.class, o5.getClass());
   }
+
+  @Test
+  public void boundaryScanningInteger() {
+    ValueRangeSet<Integer> vr = new ValueRangeSet<Integer>();
+    vr.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
+    vr.setPartitionStrategy(DataGenerationStrategy.BOUNDARY_SCAN);
+    vr.addPartition(0, 100);
+    vr.addPartition(-100, -50);
+    vr.addPartition(200, 300);
+    vr.addPartition(-300, -200);
+    Collection<Integer> actual = new ArrayList<Integer>();
+    for (int i = 0 ; i < 30 ; i++) {
+      actual.add(vr.next());
+    }
+    String expected = "[0, -100, 200, -300, 100, -50, 300, -200, 1, -99, 201, -299, 101, -49, 301, -199, -1, -101, 199, -301, 99, -51, 299, -201, 2, -98, 202, -298, 102, -48]";
+    assertEquals("Generated integers for value range with boundary scan", expected, actual.toString());
+  }
+
+  @Test
+  public void boundaryScanningFloat() {
+    ValueRangeSet<Float> vr = new ValueRangeSet<Float>();
+    vr.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
+    vr.setPartitionStrategy(DataGenerationStrategy.BOUNDARY_SCAN);
+    vr.addPartition(0f, 100f);
+    vr.addPartition(-100f, -50f);
+    vr.addPartition(200f, 300f);
+    vr.addPartition(-300f, -200f);
+    vr.setIncrement(0.1f);
+    Collection<Float> actual = new ArrayList<Float>();
+    for (int i = 0; i < 30; i++) {
+      actual.add(vr.next());
+    }
+    String expected = "[0, -100, 200, -300, 100, -50, 300, -200, 1, -99, 201, -299, 101, -49, 301, -199, -1, -101, 199, -301, 99, -51, 299, -201, 2, -98, 202, -298, 102, -48]";
+    assertEquals("Generated integers for value range with boundary scan", expected, actual.toString());
+  }
+
 
   private void assertValues(ValueRangeSet<Double> range, double... expected) {
     for (double i : expected) {
