@@ -20,8 +20,11 @@ public class ValueRangeSet<T extends Number> implements Input<T>, Output<T>{
   private static final Logger log = new Logger(ValueRangeSet.class);
   /** The different partitions in the domain. */
   private ValueSet<ValueRange> partitions = new ValueSet<ValueRange>();
-  /** The strategy for input data generation. */
+  /** The strategy for selecting a partition. */
   private DataGenerationStrategy strategy = DataGenerationStrategy.RANDOM;
+  /** The strategy for input data generation from the partitions. */
+  private DataGenerationStrategy partitionStrategy = DataGenerationStrategy.RANDOM;
+  private Number increment = 1;
 
   /**
    * Sets the input generation strategy.
@@ -35,6 +38,31 @@ public class ValueRangeSet<T extends Number> implements Input<T>, Output<T>{
   }
 
   /**
+   * Set the data generation strategy for the composing partitions.
+   *
+   * @param strategy The new strategy.
+   */
+  public void setPartitionStrategy(DataGenerationStrategy strategy) {
+    this.partitionStrategy = strategy;
+    Collection<ValueRange> all = partitions.getAll();
+    for (ValueRange range : all) {
+      range.setStrategy(partitionStrategy);
+    }
+  }
+
+  /**
+   * Set the increment value for all partitions.
+   *
+   * @param increment Increment for value range partitions.
+   */
+  public void setIncrement(Number increment) {
+    Collection<ValueRange> all = partitions.getAll();
+    for (ValueRange range : all) {
+      range.setIncrement(increment);
+    }
+  }
+
+  /**
    * Adds a new data partition (domain). Type is inferred from the type of the "min" parameter.
    * See {@link ValueRange} for more information on the types.
    *
@@ -44,13 +72,17 @@ public class ValueRangeSet<T extends Number> implements Input<T>, Output<T>{
   public void addPartition(Number min, Number max) {
     log.debug("Adding partition min("+min+") max("+max+")");
     validateRange(min, max);
+    ValueRange range = null;
     if (min instanceof Integer) {
-      partitions.add(new ValueRange<Integer>(Integer.class, min, max));
+      range = new ValueRange<Integer>(Integer.class, min, max);
     } else if (min instanceof Long) {
-      partitions.add(new ValueRange<Long>(Long.class, min, max));
+      range = new ValueRange<Long>(Long.class, min, max);
     } else {
-      partitions.add(new ValueRange<Double>(Double.class, min, max));
+      range = new ValueRange<Double>(Double.class, min, max);
     }
+    range.setStrategy(partitionStrategy);
+    range.setIncrement(increment);
+    partitions.add(range);
   }
 
   /**
