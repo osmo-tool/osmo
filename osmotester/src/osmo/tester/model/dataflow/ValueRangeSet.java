@@ -13,6 +13,7 @@ import static osmo.common.TestUtils.oneOf;
  * Input values are generated across the domains randomly and depending on the input-strategy the domain
  * is chosen in a different way each time.
  * Evaluation of values checks if the given value fits in any of the given domains.
+ * NOTE: Use Double as datatype for floating point numbers, not Float. Float is not supported in this class at this time.
  *
  * @author Teemu Kanstren
  */
@@ -24,6 +25,7 @@ public class ValueRangeSet<T extends Number> implements Input<T>, Output<T>{
   private DataGenerationStrategy strategy = DataGenerationStrategy.RANDOM;
   /** The strategy for input data generation from the partitions. */
   private DataGenerationStrategy partitionStrategy = DataGenerationStrategy.RANDOM;
+  /** The value used to increment value range in boundary scan. */
   private Number increment = 1;
 
   /**
