@@ -32,5 +32,9 @@ v1.2.0 04/10/2011
 -added extensive calendar example (in source code) and tutorial (in manual)
 -added robot framework scripter
 -added ASCII reporting
+v 1.2.1 17/10/2011
+-fixes to the calendar example
+-random test generation algorithm uses the common seed now (enables determinism and model versioning)
+-valuerangeset to support boundary scan
 
 

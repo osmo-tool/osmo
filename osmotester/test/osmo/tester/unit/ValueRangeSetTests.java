@@ -332,7 +332,7 @@ public class ValueRangeSetTests {
 
   @Test
   public void boundaryScanningFloat() {
-    ValueRangeSet<Float> vr = new ValueRangeSet<Float>();
+    ValueRangeSet<Double> vr = new ValueRangeSet<Double>();
     vr.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     vr.setPartitionStrategy(DataGenerationStrategy.BOUNDARY_SCAN);
     vr.addPartition(0f, 100f);
@@ -340,12 +340,11 @@ public class ValueRangeSetTests {
     vr.addPartition(200f, 300f);
     vr.addPartition(-300f, -200f);
     vr.setIncrement(0.1f);
-    Collection<Float> actual = new ArrayList<Float>();
+    //the valuerangeset actually converts float to double
+    double[] expected = new double[]{0, -100, 200, -300, 100, -50, 300, -200, 0.1, -99.9, 200.1, -299.9, 100.1, -49.9, 300.1, -199.9, -0.1, -100.1, 199.9, -300.1, 99.9, -50.1, 299.9, -200.1, 0.2, -99.8, 200.2, -299.8, 100.2, -49.8};
     for (int i = 0; i < 30; i++) {
-      actual.add(vr.next());
+      assertEquals("Generated integers for value range with boundary scan (index "+i+")", expected[i], vr.next().doubleValue(), 0.01d);
     }
-    String expected = "[0, -100, 200, -300, 100, -50, 300, -200, 1, -99, 201, -299, 101, -49, 301, -199, -1, -101, 199, -301, 99, -51, 299, -201, 2, -98, 202, -298, 102, -48]";
-    assertEquals("Generated integers for value range with boundary scan", expected, actual.toString());
   }
 
 
