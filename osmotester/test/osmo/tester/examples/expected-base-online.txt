@@ -1,0 +1,130 @@
+-NEW TEST
+--ADDEVENT:ModelEvent{uid='user2', description='event1', location='location1', start=Wed Jul 23 17:25:01 EEST 2003, end=Wed Jul 23 17:53:18 EEST 2003}
+-NEW TEST
+--ADDEVENT:ModelEvent{uid='user5', description='event1', location='location1', start=Fri Nov 23 16:18:43 EET 2001, end=Fri Nov 23 16:56:17 EET 2001}
+--ADDEVENT:ModelEvent{uid='user1', description='event2', location='location2', start=Sun Sep 25 18:07:27 EEST 2005, end=Sun Sep 25 21:49:17 EEST 2005}
+--ADDEVENT:ModelEvent{uid='user4', description='event3', location='location3', start=Tue Apr 30 18:49:23 EEST 2002, end=Tue Apr 30 20:57:11 EEST 2002}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user1', description='event2', location='location2', start=Sun Sep 25 18:07:27 EEST 2005, end=Sun Sep 25 21:49:17 EEST 2005}
+--ADDEVENT:ModelEvent{uid='user4', description='event4', location='location4', start=Mon Aug 22 00:48:08 EEST 2005, end=Mon Aug 22 02:32:49 EEST 2005}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user4', description='event4', location='location4', start=Mon Aug 22 00:48:08 EEST 2005, end=Mon Aug 22 02:32:49 EEST 2005}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user5', description='event1', location='location1', start=Fri Nov 23 16:18:43 EET 2001, end=Fri Nov 23 16:56:17 EET 2001}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user4', description='event3', location='location3', start=Tue Apr 30 18:49:23 EEST 2002, end=Tue Apr 30 20:57:11 EEST 2002}
+--ADDEVENT:ModelEvent{uid='user1', description='event5', location='location5', start=Sun Feb 17 17:02:15 EET 2002, end=Sun Feb 17 18:26:15 EET 2002}
+-NEW TEST
+--ADDEVENT:ModelEvent{uid='user2', description='event1', location='location1', start=Fri Apr 17 21:08:53 EEST 2009, end=Fri Apr 17 23:28:37 EEST 2009}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user2', description='event1', location='location1', start=Fri Apr 17 21:08:53 EEST 2009, end=Fri Apr 17 23:28:37 EEST 2009}
+--ADDEVENT:ModelEvent{uid='user2', description='event2', location='location2', start=Tue May 22 22:52:38 EEST 2007, end=Tue May 22 22:58:19 EEST 2007}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user2', description='event2', location='location2', start=Tue May 22 22:52:38 EEST 2007, end=Tue May 22 22:58:19 EEST 2007}
+--ADDEVENT:ModelEvent{uid='user3', description='event3', location='location3', start=Fri Dec 10 16:54:51 EET 2004, end=Fri Dec 10 17:52:01 EET 2004}
+--ADDEVENT:ModelEvent{uid='user3', description='event4', location='location4', start=Wed Sep 05 23:26:04 EEST 2007, end=Thu Sep 06 03:12:26 EEST 2007}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user3', description='event3', location='location3', start=Fri Dec 10 16:54:51 EET 2004, end=Fri Dec 10 17:52:01 EET 2004}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user3', description='event4', location='location4', start=Wed Sep 05 23:26:04 EEST 2007, end=Thu Sep 06 03:12:26 EEST 2007}
+--ADDEVENT:ModelEvent{uid='user2', description='event5', location='location5', start=Fri Oct 15 18:50:11 EEST 2004, end=Fri Oct 15 21:07:53 EEST 2004}
+--ADDEVENT:ModelEvent{uid='user3', description='event6', location='location6', start=Sat Oct 02 21:23:14 EEST 2004, end=Sun Oct 03 00:24:22 EEST 2004}
+--ADDEVENT:ModelEvent{uid='user1', description='event7', location='location7', start=Sat Mar 15 22:57:56 EET 2003, end=Sun Mar 16 00:38:22 EET 2003}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user3', description='event6', location='location6', start=Sat Oct 02 21:23:14 EEST 2004, end=Sun Oct 03 00:24:22 EEST 2004}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user1', description='event7', location='location7', start=Sat Mar 15 22:57:56 EET 2003, end=Sun Mar 16 00:38:22 EET 2003}
+--ADDEVENT:ModelEvent{uid='user3', description='event8', location='location8', start=Tue Nov 02 10:55:21 EET 2010, end=Tue Nov 02 12:35:24 EET 2010}
+-NEW TEST
+--ADDEVENT:ModelEvent{uid='user4', description='event1', location='location1', start=Tue Jan 22 21:50:05 EET 2008, end=Tue Jan 22 22:18:48 EET 2008}
+--ADDEVENT:ModelEvent{uid='user3', description='event2', location='location2', start=Wed Mar 17 18:44:52 EET 2004, end=Wed Mar 17 19:40:07 EET 2004}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user4', description='event1', location='location1', start=Tue Jan 22 21:50:05 EET 2008, end=Tue Jan 22 22:18:48 EET 2008}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user3', description='event2', location='location2', start=Wed Mar 17 18:44:52 EET 2004, end=Wed Mar 17 19:40:07 EET 2004}
+--ADDEVENT:ModelEvent{uid='user3', description='event3', location='location3', start=Sun Dec 07 12:41:15 EET 2003, end=Sun Dec 07 13:57:43 EET 2003}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user3', description='event3', location='location3', start=Sun Dec 07 12:41:15 EET 2003, end=Sun Dec 07 13:57:43 EET 2003}
+--ADDEVENT:ModelEvent{uid='user4', description='event4', location='location4', start=Mon Feb 08 22:36:26 EET 2010, end=Mon Feb 08 23:55:49 EET 2010}
+-NEW TEST
+--ADDEVENT:ModelEvent{uid='user2', description='event1', location='location1', start=Sun Oct 28 17:01:21 EET 2001, end=Sun Oct 28 18:57:23 EET 2001}
+--ADDEVENT:ModelEvent{uid='user2', description='event2', location='location2', start=Mon May 29 04:06:12 EEST 2006, end=Mon May 29 05:23:41 EEST 2006}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user2', description='event2', location='location2', start=Mon May 29 04:06:12 EEST 2006, end=Mon May 29 05:23:41 EEST 2006}
+-NEW TEST
+--ADDEVENT:ModelEvent{uid='user3', description='event1', location='location1', start=Fri Nov 17 19:32:38 EET 2006, end=Fri Nov 17 21:05:12 EET 2006}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user3', description='event1', location='location1', start=Fri Nov 17 19:32:38 EET 2006, end=Fri Nov 17 21:05:12 EET 2006}
+--ADDEVENT:ModelEvent{uid='user3', description='event2', location='location2', start=Wed Nov 13 19:39:23 EET 2002, end=Wed Nov 13 21:53:51 EET 2002}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user3', description='event2', location='location2', start=Wed Nov 13 19:39:23 EET 2002, end=Wed Nov 13 21:53:51 EET 2002}
+--ADDEVENT:ModelEvent{uid='user4', description='event3', location='location3', start=Thu Apr 17 07:09:07 EEST 2008, end=Thu Apr 17 07:33:12 EEST 2008}
+--ADDEVENT:ModelEvent{uid='user1', description='event4', location='location4', start=Tue Aug 29 00:21:46 EEST 2000, end=Tue Aug 29 01:40:06 EEST 2000}
+--ADDEVENT:ModelEvent{uid='user3', description='event5', location='location5', start=Sun Oct 26 03:33:54 EET 2008, end=Sun Oct 26 05:00:19 EET 2008}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user1', description='event4', location='location4', start=Tue Aug 29 00:21:46 EEST 2000, end=Tue Aug 29 01:40:06 EEST 2000}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user3', description='event5', location='location5', start=Sun Oct 26 03:33:54 EET 2008, end=Sun Oct 26 05:00:19 EET 2008}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user4', description='event3', location='location3', start=Thu Apr 17 07:09:07 EEST 2008, end=Thu Apr 17 07:33:12 EEST 2008}
+--ADDEVENT:ModelEvent{uid='user4', description='event6', location='location6', start=Fri Sep 10 00:49:38 EEST 2004, end=Fri Sep 10 03:49:14 EEST 2004}
+--ADDEVENT:ModelEvent{uid='user3', description='event7', location='location7', start=Mon Feb 02 21:50:40 EET 2004, end=Mon Feb 02 23:04:59 EET 2004}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user4', description='event6', location='location6', start=Fri Sep 10 00:49:38 EEST 2004, end=Fri Sep 10 03:49:14 EEST 2004}
+--ADDEVENT:ModelEvent{uid='user2', description='event8', location='location8', start=Thu Aug 08 13:47:10 EEST 2002, end=Thu Aug 08 14:23:16 EEST 2002}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user3', description='event7', location='location7', start=Mon Feb 02 21:50:40 EET 2004, end=Mon Feb 02 23:04:59 EET 2004}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user2', description='event8', location='location8', start=Thu Aug 08 13:47:10 EEST 2002, end=Thu Aug 08 14:23:16 EEST 2002}
+--ADDEVENT:ModelEvent{uid='user3', description='event9', location='location9', start=Fri May 23 20:20:50 EEST 2003, end=Sat May 24 00:17:03 EEST 2003}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user3', description='event9', location='location9', start=Fri May 23 20:20:50 EEST 2003, end=Sat May 24 00:17:03 EEST 2003}
+--ADDEVENT:ModelEvent{uid='user1', description='event10', location='location10', start=Sat Nov 15 07:26:37 EET 2003, end=Sat Nov 15 09:52:23 EET 2003}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user1', description='event10', location='location10', start=Sat Nov 15 07:26:37 EET 2003, end=Sat Nov 15 09:52:23 EET 2003}
+--ADDEVENT:ModelEvent{uid='user2', description='event11', location='location11', start=Sat Jan 28 09:12:07 EET 2006, end=Sat Jan 28 10:29:38 EET 2006}
+--ADDEVENT:ModelEvent{uid='user3', description='event12', location='location12', start=Wed May 13 03:58:02 EEST 2009, end=Wed May 13 07:46:01 EEST 2009}
+--ADDEVENT:ModelEvent{uid='user3', description='event13', location='location13', start=Sat Dec 16 18:22:26 EET 2000, end=Sat Dec 16 19:29:22 EET 2000}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user3', description='event12', location='location12', start=Wed May 13 03:58:02 EEST 2009, end=Wed May 13 07:46:01 EEST 2009}
+--ADDEVENT:ModelEvent{uid='user3', description='event14', location='location14', start=Thu Jul 27 08:40:23 EEST 2006, end=Thu Jul 27 11:47:51 EEST 2006}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user2', description='event11', location='location11', start=Sat Jan 28 09:12:07 EET 2006, end=Sat Jan 28 10:29:38 EET 2006}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user3', description='event14', location='location14', start=Thu Jul 27 08:40:23 EEST 2006, end=Thu Jul 27 11:47:51 EEST 2006}
+--ADDEVENT:ModelEvent{uid='user1', description='event15', location='location15', start=Sun Mar 21 13:31:01 EET 2004, end=Sun Mar 21 16:07:47 EET 2004}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user3', description='event13', location='location13', start=Sat Dec 16 18:22:26 EET 2000, end=Sat Dec 16 19:29:22 EET 2000}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user1', description='event15', location='location15', start=Sun Mar 21 13:31:01 EET 2004, end=Sun Mar 21 16:07:47 EET 2004}
+--ADDEVENT:ModelEvent{uid='user2', description='event16', location='location16', start=Mon Jul 28 13:50:18 EEST 2003, end=Mon Jul 28 14:32:26 EEST 2003}
+--ADDEVENT:ModelEvent{uid='user4', description='event17', location='location17', start=Sat Jul 04 03:57:49 EEST 2009, end=Sat Jul 04 04:52:53 EEST 2009}
+--ADDEVENT:ModelEvent{uid='user3', description='event18', location='location18', start=Thu Apr 30 05:27:38 EEST 2009, end=Thu Apr 30 07:16:13 EEST 2009}
+--ADDEVENT:ModelEvent{uid='user2', description='event19', location='location19', start=Sun Dec 17 08:20:47 EET 2000, end=Sun Dec 17 09:20:27 EET 2000}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user2', description='event16', location='location16', start=Mon Jul 28 13:50:18 EEST 2003, end=Mon Jul 28 14:32:26 EEST 2003}
+--ADDEVENT:ModelEvent{uid='user4', description='event20', location='location20', start=Mon Jul 28 11:12:55 EEST 2003, end=Mon Jul 28 13:31:32 EEST 2003}
+-NEW TEST
+--ADDEVENT:ModelEvent{uid='user2', description='event1', location='location1', start=Sun Dec 10 13:55:39 EET 2006, end=Sun Dec 10 17:34:46 EET 2006}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user2', description='event1', location='location1', start=Sun Dec 10 13:55:39 EET 2006, end=Sun Dec 10 17:34:46 EET 2006}
+--ADDEVENT:ModelEvent{uid='user4', description='event2', location='location2', start=Sun Sep 23 13:28:44 EEST 2001, end=Sun Sep 23 17:21:57 EEST 2001}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user4', description='event2', location='location2', start=Sun Sep 23 13:28:44 EEST 2001, end=Sun Sep 23 17:21:57 EEST 2001}
+--ADDEVENT:ModelEvent{uid='user2', description='event3', location='location3', start=Sun Feb 26 15:05:57 EET 2006, end=Sun Feb 26 16:06:31 EET 2006}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user2', description='event3', location='location3', start=Sun Feb 26 15:05:57 EET 2006, end=Sun Feb 26 16:06:31 EET 2006}
+--ADDEVENT:ModelEvent{uid='user1', description='event4', location='location4', start=Sun Aug 06 21:22:55 EEST 2006, end=Mon Aug 07 01:00:20 EEST 2006}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user1', description='event4', location='location4', start=Sun Aug 06 21:22:55 EEST 2006, end=Mon Aug 07 01:00:20 EEST 2006}
+--ADDEVENT:ModelEvent{uid='user4', description='event5', location='location5', start=Tue Dec 02 20:15:39 EET 2003, end=Tue Dec 02 20:59:43 EET 2003}
+--ADDEVENT:ModelEvent{uid='user1', description='event6', location='location6', start=Thu Nov 08 23:19:23 EET 2001, end=Fri Nov 09 00:31:42 EET 2001}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user1', description='event6', location='location6', start=Thu Nov 08 23:19:23 EET 2001, end=Fri Nov 09 00:31:42 EET 2001}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user4', description='event5', location='location5', start=Tue Dec 02 20:15:39 EET 2003, end=Tue Dec 02 20:59:43 EET 2003}
+--ADDEVENT:ModelEvent{uid='user2', description='event7', location='location7', start=Thu Jun 29 11:19:03 EEST 2000, end=Thu Jun 29 11:20:49 EEST 2000}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user2', description='event7', location='location7', start=Thu Jun 29 11:19:03 EEST 2000, end=Thu Jun 29 11:20:49 EEST 2000}
+--ADDEVENT:ModelEvent{uid='user4', description='event8', location='location8', start=Tue Oct 17 11:05:45 EEST 2006, end=Tue Oct 17 11:30:25 EEST 2006}
+--ADDEVENT:ModelEvent{uid='user3', description='event9', location='location9', start=Fri May 30 16:30:34 EEST 2008, end=Fri May 30 16:42:12 EEST 2008}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user3', description='event9', location='location9', start=Fri May 30 16:30:34 EEST 2008, end=Fri May 30 16:42:12 EEST 2008}
+--ADDEVENT:ModelEvent{uid='user2', description='event10', location='location10', start=Fri Feb 27 19:44:56 EET 2009, end=Fri Feb 27 19:51:35 EET 2009}
+--ADDEVENT:ModelEvent{uid='user4', description='event11', location='location11', start=Fri Sep 25 00:46:05 EEST 2009, end=Fri Sep 25 02:52:26 EEST 2009}
+--ADDEVENT:ModelEvent{uid='user3', description='event12', location='location12', start=Sun Mar 11 01:25:06 EET 2001, end=Sun Mar 11 03:05:31 EET 2001}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user4', description='event11', location='location11', start=Fri Sep 25 00:46:05 EEST 2009, end=Fri Sep 25 02:52:26 EEST 2009}
+--ADDEVENT:ModelEvent{uid='user1', description='event13', location='location13', start=Wed May 23 11:50:24 EEST 2001, end=Wed May 23 13:31:29 EEST 2001}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user1', description='event13', location='location13', start=Wed May 23 11:50:24 EEST 2001, end=Wed May 23 13:31:29 EEST 2001}
+--ADDEVENT:ModelEvent{uid='user1', description='event14', location='location14', start=Sat Oct 18 00:00:17 EEST 2003, end=Sat Oct 18 00:03:09 EEST 2003}
+--ADDEVENT:ModelEvent{uid='user3', description='event15', location='location15', start=Sat Aug 17 03:03:28 EEST 2002, end=Sat Aug 17 06:32:05 EEST 2002}
+--ADDEVENT:ModelEvent{uid='user1', description='event16', location='location16', start=Mon Mar 06 10:29:25 EET 2006, end=Mon Mar 06 11:07:00 EET 2006}
+-NEW TEST
+--ADDEVENT:ModelEvent{uid='user1', description='event1', location='location1', start=Wed Jan 12 12:06:02 EET 2005, end=Wed Jan 12 14:25:47 EET 2005}
+-NEW TEST
+--ADDEVENT:ModelEvent{uid='user2', description='event1', location='location1', start=Sun Jun 18 15:48:42 EEST 2006, end=Sun Jun 18 19:08:21 EEST 2006}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user2', description='event1', location='location1', start=Sun Jun 18 15:48:42 EEST 2006, end=Sun Jun 18 19:08:21 EEST 2006}
+--ADDEVENT:ModelEvent{uid='user2', description='event2', location='location2', start=Tue Mar 09 07:03:07 EET 2010, end=Tue Mar 09 09:03:14 EET 2010}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user2', description='event2', location='location2', start=Tue Mar 09 07:03:07 EET 2010, end=Tue Mar 09 09:03:14 EET 2010}
+--ADDEVENT:ModelEvent{uid='user1', description='event3', location='location3', start=Tue Dec 07 12:56:18 EET 2010, end=Tue Dec 07 13:20:29 EET 2010}
+--ADDEVENT:ModelEvent{uid='user1', description='event4', location='location4', start=Sun Apr 22 19:03:13 EEST 2001, end=Sun Apr 22 20:45:27 EEST 2001}
+-NEW TEST
+--ADDEVENT:ModelEvent{uid='user1', description='event1', location='location1', start=Sat Aug 30 15:54:13 EEST 2003, end=Sat Aug 30 16:19:38 EEST 2003}
+--ADDEVENT:ModelEvent{uid='user1', description='event2', location='location2', start=Sun Jan 13 11:37:11 EET 2002, end=Sun Jan 13 14:09:10 EET 2002}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user1', description='event1', location='location1', start=Sat Aug 30 15:54:13 EEST 2003, end=Sat Aug 30 16:19:38 EEST 2003}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user1', description='event2', location='location2', start=Sun Jan 13 11:37:11 EET 2002, end=Sun Jan 13 14:09:10 EET 2002}
+--ADDEVENT:ModelEvent{uid='user1', description='event3', location='location3', start=Sun Aug 25 18:32:00 EEST 2002, end=Sun Aug 25 20:55:46 EEST 2002}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user1', description='event3', location='location3', start=Sun Aug 25 18:32:00 EEST 2002, end=Sun Aug 25 20:55:46 EEST 2002}
+--ADDEVENT:ModelEvent{uid='user1', description='event4', location='location4', start=Mon Jan 06 00:58:44 EET 2003, end=Mon Jan 06 02:28:34 EET 2003}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user1', description='event4', location='location4', start=Mon Jan 06 00:58:44 EET 2003, end=Mon Jan 06 02:28:34 EET 2003}
+--ADDEVENT:ModelEvent{uid='user1', description='event5', location='location5', start=Sat Aug 26 21:23:08 EEST 2000, end=Sun Aug 27 00:46:26 EEST 2000}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user1', description='event5', location='location5', start=Sat Aug 26 21:23:08 EEST 2000, end=Sun Aug 27 00:46:26 EEST 2000}
+--ADDEVENT:ModelEvent{uid='user1', description='event6', location='location6', start=Tue Jun 19 12:06:05 EEST 2001, end=Tue Jun 19 12:11:36 EEST 2001}
+generated 10 tests.
+
+No requirements defined. Not calculating or showing requirements coverage. 
+If you want to see requirements coverage you need to define a @RequirementsField
+and add some requirements and their coverage into the model.
+

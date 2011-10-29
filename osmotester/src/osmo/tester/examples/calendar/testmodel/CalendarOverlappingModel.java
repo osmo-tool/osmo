@@ -41,7 +41,7 @@ public class CalendarOverlappingModel {
     Date start = new Date(event.getStart().getTime()+cLong(500, diff));
     Date end = calculateEndTime(start);
     ModelEvent overLapping = state.createEvent(event.getUid(), start, end);
-    System.out.println("--REMOVEORGANIZEREVENT:"+event);
+    System.out.println("--ADDOVERLAPPINGEVENT:"+event);
     scripter.addEvent(overLapping);
   }
 

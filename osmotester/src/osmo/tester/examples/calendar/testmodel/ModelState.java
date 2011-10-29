@@ -5,9 +5,12 @@ import osmo.tester.model.dataflow.ValueRange;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -23,9 +26,9 @@ public class ModelState {
   /** Test users with calendars. */
   private Collection<String> uids = new ArrayList<String>();
   /** Tasks for each user. */
-  private Map<String, Collection<ModelTask>> userTasks = new HashMap<String, Collection<ModelTask>>();
+  private Map<String, List<ModelTask>> userTasks = new LinkedHashMap<String, List<ModelTask>>();
   /** Events for each user. */
-  private Map<String, Collection<ModelEvent>> userEvents = new HashMap<String, Collection<ModelEvent>>();
+  private Map<String, List<ModelEvent>> userEvents = new LinkedHashMap<String, List<ModelEvent>>();
   /** Used to generate unique identifiers for tasks. */
   private AtomicInteger taskCount = new AtomicInteger(0);
   /** Used to generate unique identifiers for events. */
@@ -51,9 +54,11 @@ public class ModelState {
       uids.add("user"+i);
     }
     Calendar start = Calendar.getInstance();
-    start.set(2000, 0, 1);
+    start.setTime(new Date(0));
+    start.set(2000, 0, 1, 0, 0, 0);
     Calendar end = Calendar.getInstance();
-    end.set(2010, 11, 31);
+    end.setTime(new Date(0));
+    end.set(2010, 11, 31, 23, 59, 59);
     startTime = new ValueRange<Long>(start.getTimeInMillis(), end.getTimeInMillis());
   }
 
@@ -65,9 +70,17 @@ public class ModelState {
     return userTasks.size() > 0;
   }
 
+  private String keyFor(Set<String> keys) {
+    List<String> items = new ArrayList<String>();
+    items.addAll(keys);
+    Collections.sort(items);
+    return oneOf(items);
+  }
+
   public ModelTask getAndRemoveRandomTask() {
     Set<String> keys = userTasks.keySet();
-    String uid = oneOf(keys);
+//    String uid = oneOf(keys);
+    String uid = keyFor(keys);
     Collection<ModelTask> tasks = userTasks.get(uid);
     ModelTask task = oneOf(tasks);
     tasks.remove(task);
@@ -88,9 +101,9 @@ public class ModelState {
   }
 
   private Collection<ModelEvent> getOrCreateEvents(String uid) {
-    Collection<ModelEvent> events = userEvents.get(uid);
+    List<ModelEvent> events = userEvents.get(uid);
     if (events == null) {
-      events = new HashSet<ModelEvent>();
+      events = new ArrayList<ModelEvent>();
       userEvents.put(uid, events);
     }
     return events;
@@ -105,9 +118,9 @@ public class ModelState {
   }
 
   private Collection<ModelTask> getOrCreateTasks(String uid) {
-    Collection<ModelTask> tasks = userTasks.get(uid);
+    List<ModelTask> tasks = userTasks.get(uid);
     if (tasks == null) {
-      tasks = new HashSet<ModelTask>();
+      tasks = new ArrayList<ModelTask>();
       userTasks.put(uid, tasks);
     }
     return tasks;
@@ -161,20 +174,25 @@ public class ModelState {
 
   public ModelEvent getRandomExistingEvent() {
     Set<String> keys = userEvents.keySet();
-    String uid = oneOf(keys);
+//    String uid = oneOf(keys);
+    String uid = keyFor(keys);
     Collection<ModelEvent> events = userEvents.get(uid);
     return oneOf(events);
   }
 
   public ModelTask getRandomExistingTask() {
     Set<String> keys = userTasks.keySet();
-    String uid = oneOf(keys);
+//    String uid = oneOf(keys);
+    String uid = keyFor(keys);
     Collection<ModelTask> tasks = userTasks.get(uid);
     return oneOf(tasks);
   }
 
   public void attach(String uid, ModelEvent event) {
-    getOrCreateEvents(uid).add(event);
+    Collection<ModelEvent> events = getOrCreateEvents(uid);
+    if (!events.contains(event)) {
+      events.add(event);
+    }
   }
 
   /**
@@ -201,9 +219,14 @@ public class ModelState {
    * @return Set of unique events.
    */
   private Collection<ModelEvent> getUniqueEvents() {
-    Collection<ModelEvent> results = new HashSet<ModelEvent>();
+    Collection<ModelEvent> results = new ArrayList<ModelEvent>();
     for (String uid : userEvents.keySet()) {
-      results.addAll(userEvents.get(uid));
+      List<ModelEvent> events = userEvents.get(uid);
+      for (ModelEvent event : events) {
+        if (!results.contains(event)) {
+          results.add(event);
+        }
+      }
     }
     return results;
   }
