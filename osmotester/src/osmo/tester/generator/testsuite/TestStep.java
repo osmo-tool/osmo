@@ -35,6 +35,7 @@ public class TestStep {
    * Constructor.
    *
    * @param transition The transition that was taken in this test step.
+   * @param id The identifier for this step.
    */
   public TestStep(FSMTransition transition, int id) {
     this.transition = transition;

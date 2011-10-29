@@ -30,11 +30,11 @@ import static junit.framework.Assert.assertTrue;
  */
 public class VendingMachine2 {
   private final Scripter scripter;
-  private final PrintStream out;
+  public final PrintStream out;
   private int coins = 0;
   private int bottles = 10;
   @TestSuiteField
-  private TestSuite testSuite = null;
+  private TestSuite testSuite = new TestSuite();
   @RequirementsField
   private final Requirements req = new Requirements();
   private static final String C10 = "10cents";
@@ -43,8 +43,12 @@ public class VendingMachine2 {
   private static final String VEND = "vend";
 
   public VendingMachine2() {
-    scripter = new Scripter(System.out);
-    this.out = System.out;
+    this(System.out);
+  }
+
+  public VendingMachine2(PrintStream ps) {
+    scripter = new Scripter(ps);
+    this.out = ps;
     req.add(C10);
     req.add(C20);
     req.add(C50);
@@ -61,12 +65,12 @@ public class VendingMachine2 {
     coins = 0;
     bottles = 10;
     int tests = testSuite.getTestCases().size()+1;
-    out.println("Starting test:"+ tests);
+    out.print("Starting test:" + tests + "\n");
   }
 
   @AfterSuite
   public void done() {
-    out.println("Created total of "+ testSuite.getTestCases().size()+" tests.");
+    out.print("Created total of " + testSuite.getTestCases().size() + " tests." + "\n");
   }
 
   @Transition(C20)
@@ -123,7 +127,8 @@ public class VendingMachine2 {
   }
 
   public static void main(String[] args) {
-    OSMOTester tester = new OSMOTester(new VendingMachine2());
+    VendingMachine2 vendingMachine2 = new VendingMachine2();
+    OSMOTester tester = new OSMOTester(vendingMachine2);
     tester.generate();
 
     //Print coverage metric

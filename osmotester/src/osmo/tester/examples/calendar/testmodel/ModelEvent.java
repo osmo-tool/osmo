@@ -7,7 +7,7 @@ import java.util.Date;
  *
  * @author Teemu Kanstren
  */
-public class ModelEvent {
+public class ModelEvent { // implements Comparable<ModelEvent> {
   /** Start time for the event. */
   private Date start;
   /** End time for the event. */
@@ -66,5 +66,9 @@ public class ModelEvent {
             ", start=" + start +
             ", end=" + end +
             '}';
+  }
+
+  public int compareTo(ModelEvent o) {
+    return toString().hashCode()-o.toString().hashCode();
   }
 }

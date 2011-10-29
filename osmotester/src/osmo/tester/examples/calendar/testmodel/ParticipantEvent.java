@@ -22,4 +22,12 @@ public class ParticipantEvent {
   public ModelEvent getEvent() {
     return event;
   }
+
+  @Override
+  public String toString() {
+    return "ParticipantEvent{" +
+            "participant='" + participant + '\'' +
+            ", event=" + event +
+            '}';
+  }
 }

@@ -11,6 +11,7 @@ import osmo.tester.examples.calendar.testmodel.ModelTask;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static junit.framework.Assert.*;
@@ -22,7 +23,7 @@ import static junit.framework.Assert.*;
  */
 public class OnlineScripter implements CalendarScripter {
   /** Maps user identifiers to CalendarUser objects. */
-  private Map<String, CalendarUser> users = new HashMap<String, CalendarUser>();
+  private Map<String, CalendarUser> users = new LinkedHashMap<String, CalendarUser>();
 
   public OnlineScripter() {
   }

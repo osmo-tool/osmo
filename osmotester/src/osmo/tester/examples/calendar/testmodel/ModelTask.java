@@ -7,7 +7,7 @@ import java.util.Date;
  *
  * @author Teemu Kanstren
  */
-public class ModelTask {
+public class ModelTask { //implements Comparable<ModelTask> {
   /** Time for the task. */
   private Date time;
   /** Description of the task. */
@@ -50,5 +50,9 @@ public class ModelTask {
             ", description='" + description + '\'' +
             ", time=" + time +
             '}';
+  }
+
+  public int compareTo(ModelTask o) {
+    return toString().hashCode()-o.toString().hashCode();
   }
 }
