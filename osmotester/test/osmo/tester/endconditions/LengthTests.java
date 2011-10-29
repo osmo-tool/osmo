@@ -29,7 +29,7 @@ public class LengthTests {
     tester.addSuiteEndCondition(testStrategy);
     tester.generate();
     TestSuite testLog = calculator.getHistory();
-    List<TestCase> history = testLog.getTestCases();
+    List<TestCase> history = testLog.getFinishedTestCases();
     assertEquals("Number of tests generated", expectedLength, history.size());
     for (TestCase test : history) {
       assertEquals("Number of steps in a test case", expectedLength, test.getSteps().size());

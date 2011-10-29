@@ -54,7 +54,7 @@ public abstract class CoverageMetric {
   protected List<TransitionPairCount> countTransitionPairs(){
     Map<TransitionPair, Integer> coverage = new HashMap<TransitionPair, Integer>();
     
-    for(TestCase tc: testSuite.getTestCases()){
+    for(TestCase tc: testSuite.getFinishedTestCases()){
       FSMTransition previous = new FSMTransition("Start");
       for(TestStep ts: tc.getSteps()){
         FSMTransition next = ts.getTransition();
@@ -90,7 +90,7 @@ public abstract class CoverageMetric {
   protected List<RequirementCount> countRequirements(){
     Map<String, Integer> coverage = new HashMap<String, Integer>();
     
-    for(TestCase tc: testSuite.getTestCases()){
+    for(TestCase tc: testSuite.getFinishedTestCases()){
       for(TestStep ts: tc.getSteps()){        
         Collection<String> keys = ts.getCoveredRequirements();
         

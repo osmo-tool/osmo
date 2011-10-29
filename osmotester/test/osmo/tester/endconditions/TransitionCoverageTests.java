@@ -30,7 +30,6 @@ public class TransitionCoverageTests {
 
   @Before
   public void setup() {
-    Logger.debug = true;
     fsm = new FSM();
     t1 = fsm.createTransition("t1", 1);
     t2 = fsm.createTransition("t2", 1);

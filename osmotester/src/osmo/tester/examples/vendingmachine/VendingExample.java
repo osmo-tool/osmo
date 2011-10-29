@@ -51,13 +51,13 @@ public class VendingExample {
     cents = 0;
     //uncomment this for failure to continue with 0 available transitions
     bottles = 10;
-    int tests = testSuite.getTestCases().size()+1;
+    int tests = testSuite.getFinishedTestCases().size()+1;
     out.print("Starting test:"+ tests+"\n");
   }
 
   @AfterSuite
   public void done() {
-    out.print("Created total of "+ testSuite.getTestCases().size()+" tests.\n");
+    out.print("Created total of "+ testSuite.getFinishedTestCases().size()+" tests.\n");
   }
 
   @Transition("insert-money")

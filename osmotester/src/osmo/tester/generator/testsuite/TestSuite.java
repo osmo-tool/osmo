@@ -105,7 +105,7 @@ public class TestSuite {
    *
    * @return The test cases.
    */
-  public List<TestCase> getTestCases() {
+  public List<TestCase> getFinishedTestCases() {
     return testCases;
   }
 

@@ -1,5 +1,6 @@
 package osmo.tester.generator.testsuite;
 
+import osmo.common.log.Logger;
 import osmo.tester.model.FSMTransition;
 
 import java.util.ArrayList;
@@ -19,21 +20,36 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Teemu Kanstren, Olli-Pekka Puolitaival
  */
 public class TestCase {
-  /** The test steps (taken) for this test case. */
+  private static Logger log = new Logger(TestCase.class);
+  /**
+   * The test steps (taken) for this test case.
+   */
   private List<TestStep> steps = new ArrayList<TestStep>();
-  /** The latest test step (being/having been generated). */
+  /**
+   * The latest test step (being/having been generated).
+   */
   private TestStep currentStep = null;
-  /** Newly covered transitions in relation to generation history. See class header for notes.
-  *  NOTE: we use a Set to avoid duplicates if the same transition is covered multiple times. */
+  /**
+   * Newly covered transitions in relation to generation history. See class header for notes.
+   * NOTE: we use a Set to avoid duplicates if the same transition is covered multiple times.
+   */
   private Collection<FSMTransition> addedTransitionCoverage = new HashSet<FSMTransition>();
-  /** Newly covered requirements in relation to generation history. See class header for notes.
-   *  NOTE: we use a Set to avoid duplicates if the same requirement is covered multiple times. */
+  /**
+   * Newly covered requirements in relation to generation history. See class header for notes.
+   * NOTE: we use a Set to avoid duplicates if the same requirement is covered multiple times.
+   */
   private Collection<String> addedRequirementsCoverage = new HashSet<String>();
-  /** Unique identifier for this test case. */
+  /**
+   * Unique identifier for this test case.
+   */
   private final int id;
-  /** The next identifier in line to set for test cases. */
+  /**
+   * The next identifier in line to set for test cases.
+   */
   private static AtomicInteger nextId = new AtomicInteger(1);
-  /** Identifier for next test case step. */
+  /**
+   * Identifier for next test case step.
+   */
   private int nextStepId = 1;
 
   public TestCase() {
@@ -47,17 +63,19 @@ public class TestCase {
     return id;
   }
 
-  public TestStep getCurrentStep(){
+  public TestStep getCurrentStep() {
     return currentStep;
   }
 
   /**
    * Adds a new test step.
    *
-   * @param transition The transition for the test step. 
+   * @param transition The transition for the test step.
+   * @return The new step object.
    */
   public TestStep addStep(FSMTransition transition) {
     TestStep step = new TestStep(transition, nextStepId++);
+    log.debug("Added step:" + step);
     steps.add(step);
     currentStep = step;
     return step;
@@ -94,22 +112,22 @@ public class TestCase {
     return addedTransitionCoverage;
   }
 
-  public Collection<FSMTransition> getCoveredTransitions(){
-      Collection<FSMTransition> transitionCoverage = new HashSet<FSMTransition>();
-    for(TestStep teststep: steps){
-    	transitionCoverage.add(teststep.getTransition());
+  public Collection<FSMTransition> getCoveredTransitions() {
+    Collection<FSMTransition> transitionCoverage = new HashSet<FSMTransition>();
+    for (TestStep teststep : steps) {
+      transitionCoverage.add(teststep.getTransition());
     }
     return transitionCoverage;
   }
-  
-  public Collection<String> getCoveredRequirements(){
-	  Collection<String> requirementsCoverage = new HashSet<String>();
-    for(TestStep teststep: steps){
+
+  public Collection<String> getCoveredRequirements() {
+    Collection<String> requirementsCoverage = new HashSet<String>();
+    for (TestStep teststep : steps) {
       requirementsCoverage.addAll(teststep.getCoveredRequirements());
     }
     return requirementsCoverage;
   }
-  
+
   public void addAddedTransitionCoverage(FSMTransition transition) {
     addedTransitionCoverage.add(transition);
   }
