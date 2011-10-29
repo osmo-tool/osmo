@@ -20,12 +20,12 @@ public class SuiteTests {
     suite.startTest();
     suite.addStep(new FSMTransition("t1"));
     suite.addStep(new FSMTransition("t2"));
-    assertEquals("Number of test cases in test suite", 1, suite.getTestCases().size());
+    assertEquals("Number of test cases in test suite", 1, suite.getFinishedTestCases().size());
     assertEquals("Number of steps in current test", 2, suite.currentSteps());
     assertEquals("Number of total steps in test suite", 4, suite.totalSteps());
     suite.endTest();
     assertEquals("Number of steps in current test", 0, suite.currentSteps());
-    assertEquals("Number of test cases in test suite", 2, suite.getTestCases().size());
+    assertEquals("Number of test cases in test suite", 2, suite.getFinishedTestCases().size());
   }
 
   @Test
@@ -78,7 +78,7 @@ public class SuiteTests {
     suite.endTest();
 
     assertEquals("Number of steps in current test", 0, suite.currentSteps());
-    assertEquals("Number of test cases in test suite", 4, suite.getTestCases().size());
+    assertEquals("Number of test cases in test suite", 4, suite.getFinishedTestCases().size());
   }
 
 }

@@ -29,13 +29,13 @@ public class Length implements EndCondition {
 
   @Override
   public boolean endSuite(TestSuite suite, FSM fsm) {
-    log.debug(" es:"+suite.getTestCases().size()+" c:"+suite.currentSteps());
-    return suite.getTestCases().size() >= length;
+    log.debug(" es:"+suite.getFinishedTestCases().size()+" c:"+suite.currentSteps());
+    return suite.getFinishedTestCases().size() >= length;
   }
 
   @Override
   public boolean endTest(TestSuite suite, FSM fsm) {
-    log.debug(" et:"+suite.getTestCases().size()+" c:"+suite.currentSteps());
+    log.debug(" et:"+suite.getFinishedTestCases().size()+" c:"+suite.currentSteps());
     return suite.currentSteps() >= length;
   }
 }

@@ -38,7 +38,7 @@ public class VariableTests {
     osmo.addSuiteEndCondition(length1);
     osmo.generate();
     TestSuite suite = model.getSuite();
-    List<TestCase> tests = suite.getTestCases();
+    List<TestCase> tests = suite.getFinishedTestCases();
     for (TestCase test : tests) {
       List<TestStep> steps = test.getSteps();
       int expected = 1;

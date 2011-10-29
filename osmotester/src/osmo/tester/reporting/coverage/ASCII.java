@@ -88,7 +88,7 @@ public class ASCII extends CoverageMetric {
 
   @Override
   public String getTraceabilityMatrix() {
-	    List<TestCase> testcases = testSuite.getTestCases();
+	    List<TestCase> testcases = testSuite.getFinishedTestCases();
 	    Collection<FSMTransition> all = fsm.getTransitions();
 	    
 	    int max= 0;
