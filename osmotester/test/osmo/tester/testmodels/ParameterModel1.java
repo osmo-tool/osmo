@@ -7,9 +7,7 @@ import osmo.tester.reporting.tests.CSV;
 
 import java.util.List;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class ParameterModel1 {
   @TestSuiteField
   private TestSuite suite = new TestSuite();

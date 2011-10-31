@@ -7,10 +7,8 @@ import osmo.tester.model.dataflow.ValueSet;
 
 import static junit.framework.Assert.*;
 
-/**
- * @author Teemu Kanstren
- */
-public class ObjectSetTests {
+/** @author Teemu Kanstren */
+public class ValuetSetTests {
   private ValueSet<String> inv = null;
 
   @Before
@@ -46,7 +44,7 @@ public class ObjectSetTests {
     assertTrue(v2.equals("one") || v2.equals("two") || v2.equals("three"));
     assertTrue(v3.equals("one") || v3.equals("two") || v3.equals("three"));
     boolean fail = true;
-    for (int i = 0 ; i < 10 ; i++) {
+    for (int i = 0; i < 10; i++) {
       String v1_2 = inv.next();
       String v2_2 = inv.next();
       String v3_2 = inv.next();
@@ -62,7 +60,7 @@ public class ObjectSetTests {
   public void optimizedRandomTestOneLoop() {
     String v6 = null;
     boolean diff = false;
-    for (int i = 0 ; i < 10 ; i++) {
+    for (int i = 0; i < 10; i++) {
       inv = new ValueSet<String>();
       inv.setStrategy(DataGenerationStrategy.OPTIMIZED_RANDOM);
       inv.add("one");
@@ -92,7 +90,7 @@ public class ObjectSetTests {
     inv.add("three");
     inv.add("four");
     inv.add("five");
-    for (int i = 0 ; i < 10 ; i++) {
+    for (int i = 0; i < 10; i++) {
       String reference = generateAndCheck();
       //make sure the generated values are in different order at least in once case
       if (v6 == null) {
@@ -112,8 +110,8 @@ public class ObjectSetTests {
     String v5 = inv.next();
     boolean match = v1.equals(v2) || v1.equals(v3) || v1.equals(v4) || v1.equals(v5);
     match = match || v2.equals(v3) || v2.equals(v4) || v2.equals(v5) || v3.equals(v4) || v3.equals(v5) || v4.equals(v5);
-    assertFalse("Optimized random should generate random values but always different when uncovered options exist:"+v1+v2+v3+v4+v5, match);
-    return v1+v2+v3+v4+v5;
+    assertFalse("Optimized random should generate random values but always different when uncovered options exist:" + v1 + v2 + v3 + v4 + v5, match);
+    return v1 + v2 + v3 + v4 + v5;
   }
 
   @Test

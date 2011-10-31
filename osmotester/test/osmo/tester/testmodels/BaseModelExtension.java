@@ -13,9 +13,7 @@ import java.util.Map;
 
 import static junit.framework.Assert.*;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class BaseModelExtension extends BaseModel {
   private boolean first = false;
   private boolean second = false;
@@ -72,7 +70,7 @@ public class BaseModelExtension extends BaseModel {
   public void checkMe(Map<String, Object> p) {
     assertEquals("Test id", count, id);
     checkCount++;
-    System.out.println("p:"+p);
+    System.out.println("p:" + p);
     if (p.size() == 0) {
       firstChecked = true;
     } else {

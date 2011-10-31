@@ -30,9 +30,7 @@ public class CalculatorLibrary {
   /** For parsing string formatted dates passed from offline scripter. */
   private SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy 'at' HH:mm:ss z", Locale.ENGLISH);
 
-  /**
-   * This library takes no arguments.
-   */
+  /** This library takes no arguments. */
   public CalculatorLibrary() {
   }
 
@@ -55,15 +53,15 @@ public class CalculatorLibrary {
     try {
       return df.parse(time);
     } catch (ParseException e) {
-      throw new IllegalArgumentException("Unable to parse date:"+time, e);
+      throw new IllegalArgumentException("Unable to parse date:" + time, e);
     }
   }
 
   /**
    * Implements the "Add Task" keyword.
    *
-   * @param userId User for whom the task is to be added.
-   * @param time The time of the task.
+   * @param userId      User for whom the task is to be added.
+   * @param time        The time of the task.
    * @param description The description of the task.
    * @return The task id.
    */
@@ -75,7 +73,7 @@ public class CalculatorLibrary {
 
   /**
    * Implements the "Remove Task" keyword.
-   * 
+   *
    * @param userId The user whose task is to be removed.
    * @param taskId The id of the task that is to be removed.
    */
@@ -87,11 +85,11 @@ public class CalculatorLibrary {
   /**
    * Implements the "Add Event" keyword.
    *
-   * @param userId The user for whom the event is to be added.
-   * @param start Start time for the event.
-   * @param end End time for the event.
+   * @param userId      The user for whom the event is to be added.
+   * @param start       Start time for the event.
+   * @param end         End time for the event.
    * @param description Description of the event.
-   * @param location Location of the event.
+   * @param location    Location of the event.
    * @return The event id.
    */
   public String addEvent(String userId, String start, String end, String description, String location) {
@@ -103,7 +101,7 @@ public class CalculatorLibrary {
   /**
    * Implements the "Remove Event" keyword.
    *
-   * @param userId The user whose event is to be removed.
+   * @param userId  The user whose event is to be removed.
    * @param eventId The event that is to be removed.
    */
   public void removeEvent(String userId, String eventId) {
@@ -115,20 +113,20 @@ public class CalculatorLibrary {
    * Implements the "Assert User Task Count Is" keyword.
    * Checks that the count of tasks for the given user matches the expected value.
    *
-   * @param userId The user whose tasks need to be checked.
+   * @param userId        The user whose tasks need to be checked.
    * @param expectedCount The expected number of tasks.
    */
   public void assertUserTaskCountIs(String userId, String expectedCount) {
     CalendarApplication calendar = getCalendarFor(userId);
-    assertEquals("Number of tasks for user "+userId, Integer.parseInt(expectedCount), calendar.getTasks().size());
+    assertEquals("Number of tasks for user " + userId, Integer.parseInt(expectedCount), calendar.getTasks().size());
   }
 
   /**
    * Implements the "Assert User Has Task" keyword.
    * Checks  that the user has a task with the given properties.
    *
-   * @param userId The user who should have this task.
-   * @param time The time the task should have.
+   * @param userId      The user who should have this task.
+   * @param time        The time the task should have.
    * @param description The description the task should have.
    */
   public void assertUserHasTask(String userId, String time, String description) {
@@ -142,14 +140,14 @@ public class CalculatorLibrary {
         break;
       }
     }
-    assertTrue("Expected task not found on calendar:" + userId + ", "+time+", " + description, found);
+    assertTrue("Expected task not found on calendar:" + userId + ", " + time + ", " + description, found);
   }
 
   /**
    * Implements the "Assert User Event Count Is" keyword.
    * Checks that the count of events for the given user matches the expected value.
    *
-   * @param userId The user whose events need to be checked.
+   * @param userId        The user whose events need to be checked.
    * @param expectedCount The expected number of events.
    */
   public void assertUserEventCountIs(String userId, String expectedCount) {
@@ -161,11 +159,11 @@ public class CalculatorLibrary {
    * Implements the "Assert User Has Event" keyword.
    * Checks that the given user has an event with the given properties.
    *
-   * @param userId The user who should have the event.
-   * @param startTime The start time of the event.
-   * @param endTime The end time of the event.
+   * @param userId      The user who should have the event.
+   * @param startTime   The start time of the event.
+   * @param endTime     The end time of the event.
    * @param description The description of the event.
-   * @param location The location of the event.
+   * @param location    The location of the event.
    */
   public void assertUserHasEvent(String userId, String startTime, String endTime, String description, String location) {
     CalendarApplication calendar = getCalendarFor(userId);
@@ -220,7 +218,7 @@ public class CalculatorLibrary {
    *
    * @param targetUserId The user whom to link the event to.
    * @param sourceUserId The user who has the event already (organizer).
-   * @param eventId The event to be linked.
+   * @param eventId      The event to be linked.
    */
   public void linkEventToUser(String targetUserId, String sourceUserId, String eventId) {
     CalendarApplication calendarTo = getCalendarFor(targetUserId);

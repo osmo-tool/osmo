@@ -2,24 +2,15 @@ package osmo.tester.endconditions;
 
 import org.junit.Before;
 import org.junit.Test;
-import osmo.common.log.Logger;
-import osmo.tester.OSMOTester;
-import osmo.tester.examples.calculator.CalculatorModel;
-import osmo.tester.generator.endcondition.DefinedStepCoverage;
-import osmo.tester.generator.endcondition.Length;
-import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.generator.endcondition.StepCoverage;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
-import java.util.List;
+import static junit.framework.Assert.assertEquals;
 
-import static junit.framework.Assert.*;
-
-/**
- * @author Teemu Kanstren
- */
-public class DefinedStepsTests {
+/** @author Teemu Kanstren */
+public class StepsCoverageTests {
   private FSM fsm;
   private FSMTransition t1;
   private FSMTransition t2;
@@ -32,7 +23,7 @@ public class DefinedStepsTests {
   private FSMTransition t9;
   private FSMTransition t10;
   private TestSuite suite;
-  private DefinedStepCoverage stepCoverage;
+  private StepCoverage stepCoverage;
 
   @Before
   public void setup() {
@@ -49,7 +40,7 @@ public class DefinedStepsTests {
     t10 = fsm.createTransition("t10", 1);
     suite = new TestSuite();
     suite.startTest();
-    stepCoverage = new DefinedStepCoverage();
+    stepCoverage = new StepCoverage();
   }
 
   @Test

@@ -8,7 +8,7 @@ import osmo.tester.model.Requirements;
 /**
  * A simple end condition to stop test case generation when all requirements are covered.
  * The requirements to be covered have to be set in the model using the {@link Requirements} object.
- * 
+ *
  * @author Olli-Pekka Puolitaival
  */
 public class RequirementsCoverage implements EndCondition {
@@ -23,7 +23,7 @@ public class RequirementsCoverage implements EndCondition {
    */
   public RequirementsCoverage(double threshold) {
     if (threshold < 0 || threshold > 1) {
-      throw new IllegalArgumentException(RequirementsCoverage.class.getSimpleName()+" threshold must be between 0 and 1. Was "+threshold+".");
+      throw new IllegalArgumentException(RequirementsCoverage.class.getSimpleName() + " threshold must be between 0 and 1. Was " + threshold + ".");
     }
     this.threshold = threshold;
   }
@@ -35,14 +35,14 @@ public class RequirementsCoverage implements EndCondition {
     double total = requirements.getRequirements().size();
 
     double percentage = 0;
-    if(total == 0) {
+    if (total == 0) {
       //always end if no requirements are defined, otherwise it is an infinite loop
       log.debug("No requirements defined, condition is always false.");
       return true;
     } else {
-      percentage = covered/total;
+      percentage = covered / total;
     }
-    log.debug("threshold:"+threshold+" covered:"+percentage);
+    log.debug("threshold:" + threshold + " covered:" + percentage);
     return percentage >= threshold;
   }
 

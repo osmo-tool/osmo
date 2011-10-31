@@ -14,12 +14,12 @@ import java.util.Map;
  * This includes the method to execute the test step (and generate scripts, etc.) and also
  * the {@link osmo.tester.annotation.Guard} methods that define when the transition is allowed to be performed and
  * the {@link osmo.tester.annotation.Post} methods that perform checks after the transitions.
- * 
+ *
  * @author Teemu Kanstren
  */
 public class FSMTransition {
   private static Logger log = new Logger(FSMTransition.class);
-  /** Name of the transition, from @Transition("name") or (name="name") or (value="name"). Fails if undefined or empty ("").*/
+  /** Name of the transition, from @Transition("name") or (name="name") or (value="name"). Fails if undefined or empty (""). */
   private final String name;
   /** Weight of the transitions, from @Transition(weight=x), defaults to 10 (see {@link osmo.tester.annotation.Transition}. */
   private int weight = 10; //NOTE: this value here is pointless in practice, the true default is in the annotation class
@@ -116,16 +116,14 @@ public class FSMTransition {
             '}';
   }
 
-  /**
-   * Clears the parameters between @Pre and @Post methods so old ones do not mess with new ones.
-   */
+  /** Clears the parameters between @Pre and @Post methods so old ones do not mess with new ones. */
   public void reset() {
     prePostParameter.clear();
   }
 
   public void storeState(FSM fsm) {
     Collection<VariableField> variables = fsm.getStateVariables();
-    log.debug("Storing variables:"+variables);
+    log.debug("Storing variables:" + variables);
     for (VariableField var : variables) {
       prePostParameter.put(var.getName(), var.getValue());
     }

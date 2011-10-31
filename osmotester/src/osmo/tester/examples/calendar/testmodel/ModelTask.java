@@ -53,6 +53,6 @@ public class ModelTask { //implements Comparable<ModelTask> {
   }
 
   public int compareTo(ModelTask o) {
-    return toString().hashCode()-o.toString().hashCode();
+    return toString().hashCode() - o.toString().hashCode();
   }
 }

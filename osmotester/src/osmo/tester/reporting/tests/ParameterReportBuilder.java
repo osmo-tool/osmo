@@ -15,9 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class ParameterReportBuilder {
   private static Logger log = new Logger(ParameterReportBuilder.class);
   /** For template->report generation. */
@@ -51,7 +49,7 @@ public class ParameterReportBuilder {
       parameters.put("id", Integer.toString(step.getId()));
       testParameters.add(parameters);
     }
-    parameters.put(name, ""+value);
+    parameters.put(name, "" + value);
   }
 
   public List<String> report(String templateName) {
@@ -61,7 +59,7 @@ public class ParameterReportBuilder {
       List<List<String>> rows = new ArrayList<List<String>>();
       rows.add(headers);
       for (Map<String, String> map : test) {
-        log.debug("processing parameters:"+map);
+        log.debug("processing parameters:" + map);
         Set<String> names = map.keySet();
         for (String name : names) {
           if (!headers.contains(name)) {
@@ -69,7 +67,7 @@ public class ParameterReportBuilder {
           }
         }
       }
-      log.debug("headers:"+headers);
+      log.debug("headers:" + headers);
       for (Map<String, String> map : test) {
         List<String> row = new ArrayList<String>();
         for (String name : headers) {

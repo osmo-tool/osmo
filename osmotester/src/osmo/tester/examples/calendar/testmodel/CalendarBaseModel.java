@@ -1,15 +1,11 @@
 package osmo.tester.examples.calendar.testmodel;
 
-import osmo.tester.OSMOTester;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Transition;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
-import osmo.tester.examples.calendar.scripter.offline.OfflineScripter;
-import osmo.tester.examples.calendar.scripter.online.OnlineScripter;
 
 import java.util.Date;
-import java.util.Random;
 
 import static osmo.tester.examples.calendar.testmodel.ModelHelper.calculateEndTime;
 

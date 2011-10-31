@@ -41,7 +41,7 @@ public class VariableField {
         try {
           variable = (VariableValue) field.get(modelObject);
         } catch (IllegalAccessException e) {
-          throw new RuntimeException("Failed to read state variable value for field:"+field, e);
+          throw new RuntimeException("Failed to read state variable value for field:" + field, e);
         }
         break;
       }
@@ -72,7 +72,7 @@ public class VariableField {
     try {
       return field.get(modelObject);
     } catch (IllegalAccessException e) {
-      throw new RuntimeException("Failed to read state variable value for field:"+field, e);
+      throw new RuntimeException("Failed to read state variable value for field:" + field, e);
     }
   }
 }

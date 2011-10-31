@@ -16,7 +16,7 @@ import java.util.Map;
  * Difference to {@link FSMTransition} is that this includes the runtime information such as covered requirements.
  * Model state variable values (annotated with {@link osmo.tester.annotation.Variable}) are stored at the end of
  * the executed transition function.
- * 
+ *
  * @author Teemu Kanstren
  */
 public class TestStep {
@@ -35,7 +35,7 @@ public class TestStep {
    * Constructor.
    *
    * @param transition The transition that was taken in this test step.
-   * @param id The identifier for this step.
+   * @param id         The identifier for this step.
    */
   public TestStep(FSMTransition transition, int id) {
     this.transition = transition;

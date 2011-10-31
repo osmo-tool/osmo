@@ -12,9 +12,7 @@ import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class OptimizerTests {
   @Test
   public void requirementsOptimizer3TestsNoOverlap() {
@@ -80,9 +78,9 @@ public class OptimizerTests {
     Collection<String> added1 = testCase1.getAddedRequirementsCoverage();
     Collection<String> added2 = testCase2.getAddedRequirementsCoverage();
     Collection<String> added3 = testCase3.getAddedRequirementsCoverage();
-    System.out.println("added1:"+added1);
-    System.out.println("added2:"+added2);
-    System.out.println("added3:"+added3);
+    System.out.println("added1:" + added1);
+    System.out.println("added2:" + added2);
+    System.out.println("added3:" + added3);
     assertEquals("Number of new requirements covered by test 1.", 3, added1.size());
     assertEquals("Number of new requirements covered by test 2.", 2, added2.size());
     assertEquals("Number of new requirements covered by test 3.", 1, added3.size());

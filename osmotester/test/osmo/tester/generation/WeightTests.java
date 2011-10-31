@@ -10,9 +10,7 @@ import osmo.tester.testmodels.WeightedModel1;
 
 import java.util.Random;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class WeightTests {
   private OSMOTester osmo = null;
   private TestListener listener;

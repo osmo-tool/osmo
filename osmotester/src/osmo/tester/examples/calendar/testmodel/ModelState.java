@@ -7,7 +7,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -15,7 +14,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static osmo.common.TestUtils.*;
+import static osmo.common.TestUtils.cInt;
+import static osmo.common.TestUtils.oneOf;
 
 /**
  * Holds the overall state of the model.
@@ -39,9 +39,7 @@ public class ModelState {
   public ModelState() {
   }
 
-  /**
-   * Used to reset the state between test generation.
-   */
+  /** Used to reset the state between test generation. */
   public void reset() {
     uids.clear();
     userTasks.clear();
@@ -50,8 +48,8 @@ public class ModelState {
     eventCount = new AtomicInteger(0);
 
     int users = cInt(1, 5);
-    for (int i = 1 ; i <= users ; i++) {
-      uids.add("user"+i);
+    for (int i = 1; i <= users; i++) {
+      uids.add("user" + i);
     }
     Calendar start = Calendar.getInstance();
     start.setTime(new Date(0));

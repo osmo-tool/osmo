@@ -6,8 +6,8 @@ import osmo.tester.examples.calendar.scripter.CalendarScripter;
 /**
  * Adds error handling test steps to the overall test model.
  * Includes
- *  -removing a task that does not exist, and checking proper error handling
- *  -removing an event that does not exist, and checking proper error handling
+ * -removing a task that does not exist, and checking proper error handling
+ * -removing an event that does not exist, and checking proper error handling
  *
  * @author Teemu Kanstren
  */

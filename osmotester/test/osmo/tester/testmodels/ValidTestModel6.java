@@ -2,13 +2,11 @@ package osmo.tester.testmodels;
 
 import osmo.tester.annotation.Transition;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class ValidTestModel6 {
   @Transition("t1")
   public void one() {
-    
+
   }
 
   @Transition("t2")

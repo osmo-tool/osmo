@@ -27,7 +27,7 @@ public class RequirementsOptimizer extends BaseOptimizer {
     while (tests.size() > 0) {
       log.debug("Searching for the next test");
       TestCase next = findNext(tests, totalCoverage);
-      log.debug("Next given:"+next);
+      log.debug("Next given:" + next);
       if (next == null) {
         //the rest of the tests have no requirements coverage, so we add them all
         result.addAll(tests);
@@ -45,7 +45,7 @@ public class RequirementsOptimizer extends BaseOptimizer {
    * Finds the next test case from the set of remaining ones, being the one that provides the most new requirements
    * coverage.
    *
-   * @param tests The set of tests where to find the next one.
+   * @param tests         The set of tests where to find the next one.
    * @param totalCoverage The total coverage of requirements so far for all previous tests.
    * @return The next test case that adds most to the requirements coverage.
    */

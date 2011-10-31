@@ -50,7 +50,7 @@ public class ExampleTests {
             "+ 2" + ln +
             "+ 3" + ln +
             "Test case ended" + ln +
-            "last"+ln;
+            "last" + ln;
     String actual = out.toString();
     assertEquals(expected, actual);
   }

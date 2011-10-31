@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * This annotation defines that the annotated method should be executed before each test case that is
  * generated.
- *
+ * <p/>
  * The annotated method must have no parameters.
  *
  * @author Teemu Kanstren

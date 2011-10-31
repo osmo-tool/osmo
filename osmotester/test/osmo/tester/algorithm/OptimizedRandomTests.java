@@ -15,9 +15,7 @@ import java.util.Random;
 
 import static junit.framework.Assert.assertFalse;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class OptimizedRandomTests {
   private OSMOTester osmo = null;
   private TestListener listener;

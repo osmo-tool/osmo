@@ -9,11 +9,10 @@ import java.util.List;
 import java.util.Random;
 
 import static junit.framework.Assert.assertEquals;
-import static osmo.common.TestUtils.*;
+import static osmo.common.TestUtils.getResource;
+import static osmo.common.TestUtils.unifyLineSeparators;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class CSVTests {
   @Test
   public void csvSteps() {

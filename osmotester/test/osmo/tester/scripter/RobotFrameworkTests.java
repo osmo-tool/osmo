@@ -8,9 +8,7 @@ import osmo.tester.scripter.robotframework.Scripter;
 import static junit.framework.Assert.assertEquals;
 import static osmo.common.TestUtils.unifyLineSeparators;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class RobotFrameworkTests {
   @Test
   public void twoVariablesTwoTestsTwoSteps() {

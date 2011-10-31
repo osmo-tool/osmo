@@ -6,7 +6,7 @@ package osmo.tester.model.dataflow;
  * This is mainly used internally by the ValueRange data object, but can also be used directly if needed.
  * NOTE: By default this only generates 5 boundary values for each boundary. Set the count to different
  * values to have more values.
- *
+ * <p/>
  * This can also be re-used by re-setting the properties, and calling init() again.
  *
  * @author Teemu Kanstren
@@ -53,32 +53,32 @@ public class Boundary {
     values.add(min);
     //and the upper bound
     values.add(max);
-    for (int i = 0 ; i < count ; i++) {
+    for (int i = 0; i < count; i++) {
       switch (type) {
         case INT:
           //then we add minimum +1 and miminum -1 (or whatever the increment value)
           //and in subsequent loops we increase this to +2, -2, +3, -3, and so on
-          values.add(min.intValue()+addReduce.intValue());
-          values.add(max.intValue()+addReduce.intValue());
+          values.add(min.intValue() + addReduce.intValue());
+          values.add(max.intValue() + addReduce.intValue());
           //and do the same for maximum bound
-          values.add(min.intValue()-addReduce.intValue());
-          values.add(max.intValue()-addReduce.intValue());
+          values.add(min.intValue() - addReduce.intValue());
+          values.add(max.intValue() - addReduce.intValue());
           //update the increment for next loop
           addReduce = addReduce.intValue() + increment.intValue();
           break;
         //the following do the same as above but with long and double data types
         case LONG:
-          values.add(min.longValue()+addReduce.longValue());
-          values.add(max.longValue()+addReduce.longValue());
-          values.add(min.longValue()-addReduce.longValue());
-          values.add(max.longValue()-addReduce.longValue());
+          values.add(min.longValue() + addReduce.longValue());
+          values.add(max.longValue() + addReduce.longValue());
+          values.add(min.longValue() - addReduce.longValue());
+          values.add(max.longValue() - addReduce.longValue());
           addReduce = addReduce.longValue() + increment.longValue();
           break;
         case DOUBLE:
-          values.add(min.doubleValue()+addReduce.doubleValue());
-          values.add(max.doubleValue()+addReduce.doubleValue());
-          values.add(min.doubleValue()-addReduce.doubleValue());
-          values.add(max.doubleValue()-addReduce.doubleValue());
+          values.add(min.doubleValue() + addReduce.doubleValue());
+          values.add(max.doubleValue() + addReduce.doubleValue());
+          values.add(min.doubleValue() - addReduce.doubleValue());
+          values.add(max.doubleValue() - addReduce.doubleValue());
           addReduce = addReduce.doubleValue() + increment.doubleValue();
           break;
       }

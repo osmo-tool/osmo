@@ -11,7 +11,7 @@ import java.util.Map;
 
 /**
  * Describes the test suite being generated.
- * 
+ *
  * @author Teemu Kanstren, Olli-Pekka Puolitaival
  */
 public class TestSuite {
@@ -23,19 +23,15 @@ public class TestSuite {
   private final Collection<String> coveredRequirements = new HashSet<String>();
   /** List of covered transitions so far, excluding the current test case under generation. */
   private final Collection<FSMTransition> coveredTransitions = new HashSet<FSMTransition>();
-  /** List of covered transitions and number of how many times it exist in the test suite*/
+  /** List of covered transitions and number of how many times it exist in the test suite */
   private Map<FSMTransition, Integer> transitionCoverage = new HashMap<FSMTransition, Integer>();
 
-  /**
-   * Start a new test case.
-   */
+  /** Start a new test case. */
   public void startTest() {
     current = new TestCase();
   }
 
-  /**
-   * End the current test case and moves it to the suite "history".
-   */
+  /** End the current test case and moves it to the suite "history". */
   public void endTest() {
     coveredRequirements.addAll(current.getAddedRequirementsCoverage());
     coveredTransitions.addAll(current.getAddedTransitionCoverage());
@@ -58,7 +54,7 @@ public class TestSuite {
     if (count == null) {
       count = 0;
     }
-    transitionCoverage.put(transition, count+1);
+    transitionCoverage.put(transition, count + 1);
     return step;
   }
 
@@ -115,7 +111,7 @@ public class TestSuite {
    * @return The test cases.
    */
   public List<TestCase> getAllTestCases() {
-    List<TestCase> all = new ArrayList<TestCase>(testCases.size()+1);
+    List<TestCase> all = new ArrayList<TestCase>(testCases.size() + 1);
     all.addAll(testCases);
     if (current != null) {
       //current is null if we finished test generation
@@ -123,14 +119,14 @@ public class TestSuite {
     }
     return all;
   }
-  
+
   /**
    * Gives all transitions in this test suite, including coverage number
    * Coverage number tells how many times transition is covered in this test suite
-   * 
+   *
    * @return The transitions with coverage number
    */
-  public Map<FSMTransition, Integer> getTransitionCoverage(){
+  public Map<FSMTransition, Integer> getTransitionCoverage() {
     return transitionCoverage;
   }
 
@@ -168,7 +164,7 @@ public class TestSuite {
   /**
    * Checks if the given test case contains the given transition.
    *
-   * @param testCase The test case to check.
+   * @param testCase   The test case to check.
    * @param transition The transition to check.
    * @return True if the given transition is found in the given test case, otherwise false.
    */
@@ -180,5 +176,22 @@ public class TestSuite {
       }
     }
     return false;
+  }
+
+  public Map<String, ModelVariable> getVariables() {
+    Map<String, ModelVariable> variables = new HashMap<String, ModelVariable>();
+    for (TestCase test : testCases) {
+      Map<String, ModelVariable> testVariables = test.getVariables();
+      for (ModelVariable testVar : testVariables.values()) {
+        String name = testVar.getName();
+        ModelVariable var = variables.get(name);
+        if (var == null) {
+          var = new ModelVariable(name);
+          variables.put(name, var);
+        }
+        var.addAll(testVar);
+      }
+    }
+    return variables;
   }
 }

@@ -1,11 +1,17 @@
 <html>
 <head></head>
 <body>
-  <table border="1">
-    <tr><td>Name</td><td>Count</td></tr>
+<table border="1">
+  <tr>
+    <td>Name</td>
+    <td>Count</td>
+  </tr>
 #foreach ($t in $transitions)
-    <tr><td>$t.name</td><td>$t.count</td></tr>
+  <tr>
+    <td>$t.name</td>
+    <td>$t.count</td>
+  </tr>
 #end
-  </table>
+</table>
 </body>
 </html>

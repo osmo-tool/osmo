@@ -2,9 +2,7 @@ package osmo.tester.generation;
 
 import osmo.tester.model.VariableValue;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class TestVariable implements VariableValue {
   private final String value;
 

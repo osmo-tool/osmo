@@ -6,9 +6,7 @@ import osmo.tester.model.FSMTransition;
 
 import static junit.framework.Assert.assertEquals;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class SuiteTests {
   @Test
   public void validSuite() {

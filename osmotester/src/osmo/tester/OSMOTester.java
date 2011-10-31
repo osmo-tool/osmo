@@ -21,7 +21,7 @@ import java.util.Random;
 
 /**
  * The main class for initiating the MBT tool.
- *
+ * <p/>
  * Create the model object using the annotations from osmo.tester.annotation package.
  * Set test generation stop strategies for both the overall test suite and individual test cases.
  * Set the algorithm for test generation.
@@ -32,7 +32,7 @@ import java.util.Random;
 public class OSMOTester {
   /** The set of test model objects, given by the user. */
   private final Collection<Object> modelObjects = new ArrayList<Object>();
-  /** When do we stop generating the overall test suite? (stopping all test generation)*/
+  /** When do we stop generating the overall test suite? (stopping all test generation) */
   private Collection<EndCondition> suiteEndConditions = new ArrayList<EndCondition>();
   /** When do we stop generating individual tests and start a new one? */
   private Collection<EndCondition> testCaseEndConditions = new ArrayList<EndCondition>();
@@ -52,9 +52,7 @@ public class OSMOTester {
     modelObjects.add(modelObject);
   }
 
-  /**
-   * A constructor for use with addModelObject() method.
-   */
+  /** A constructor for use with addModelObject() method. */
   public OSMOTester() {
   }
 
@@ -67,9 +65,7 @@ public class OSMOTester {
     modelObjects.add(modelObject);
   }
 
-  /**
-   * Invoke this to perform actual test generation from the given model, with the given algorithms and strategies.
-   */
+  /** Invoke this to perform actual test generation from the given model, with the given algorithms and strategies. */
   public void generate() {
     MainGenerator generator = new MainGenerator();
     if (algorithm == null) {

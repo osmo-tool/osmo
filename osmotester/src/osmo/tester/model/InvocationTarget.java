@@ -22,15 +22,15 @@ public class InvocationTarget {
   public InvocationTarget(ParserParameters parameters, Class type) {
     this.modelObject = parameters.getModel();
     this.method = parameters.getMethod();
-    this.type = "@"+type.getName();
-    log.debug("Found and created "+this.type+" method:"+method.getName());
+    this.type = "@" + type.getName();
+    log.debug("Found and created " + this.type + " method:" + method.getName());
   }
 
   public Object invoke() {
     try {
       return method.invoke(modelObject);
     } catch (Exception e) {
-      throw new RuntimeException("Failed to invoke "+type+" method on the model object.", e);
+      throw new RuntimeException("Failed to invoke " + type + " method on the model object.", e);
     }
   }
 
@@ -42,7 +42,7 @@ public class InvocationTarget {
     try {
       return method.invoke(modelObject, arg);
     } catch (Exception e) {
-      throw new RuntimeException("Failed to invoke "+type+" method on the model object.", e);
+      throw new RuntimeException("Failed to invoke " + type + " method on the model object.", e);
     }
   }
 

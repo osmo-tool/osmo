@@ -8,9 +8,7 @@ import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.model.Requirements;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class EndStateModel {
   @RequirementsField
   private final Requirements req = new Requirements();

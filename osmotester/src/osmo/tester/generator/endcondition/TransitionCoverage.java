@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public class TransitionCoverage implements EndCondition {
   private static final Logger log = new Logger(TransitionCoverage.class);
-  /** Required transition coverage. 1=100%, 1.5=150% and so on.*/
+  /** Required transition coverage. 1=100%, 1.5=150% and so on. */
   private final double threshold;
 
   /**
@@ -56,7 +56,7 @@ public class TransitionCoverage implements EndCondition {
         if (count == null) {
           count = 0;
         }
-        coverage.put(t, count+1);
+        coverage.put(t, count + 1);
       }
     }
     Collection<FSMTransition> temp = new ArrayList<FSMTransition>();
@@ -96,7 +96,7 @@ public class TransitionCoverage implements EndCondition {
       }
     }*/
 
-    log.debug("ratio:"+ratio + "threshold:"+threshold);
+    log.debug("ratio:" + ratio + "threshold:" + threshold);
     return ratio >= threshold;
   }
 }

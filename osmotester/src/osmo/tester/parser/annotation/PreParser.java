@@ -1,10 +1,12 @@
-package osmo.tester.parser;
+package osmo.tester.parser.annotation;
 
 import osmo.common.log.Logger;
 import osmo.tester.annotation.Pre;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
+import osmo.tester.parser.AnnotationParser;
+import osmo.tester.parser.ParserParameters;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -24,14 +26,14 @@ public class PreParser implements AnnotationParser {
     Method method = parameters.getMethod();
     String errors = "";
     Class<?>[] parameterTypes = method.getParameterTypes();
-      //return types are not checked because the make no difference for invocation
+    //return types are not checked because the make no difference for invocation
     if (parameterTypes.length > 1) {
-      errors += "Pre-methods are allowed to have only one parameter of type Map<String, Object>: \""+method.getName()+"()\" has "+parameterTypes.length+" parameters.\n";
+      errors += "Pre-methods are allowed to have only one parameter of type Map<String, Object>: \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n";
     }
     if (parameterTypes.length == 1) {
       Class<?> parameterType = parameterTypes[0];
       if (parameterType != Map.class) {
-        errors += "Pre-methods are allowed to have only one parameter of type Map<String, Object>: \""+method.getName()+"()\" has one of type "+parameterType+".\n";
+        errors += "Pre-methods are allowed to have only one parameter of type Map<String, Object>: \"" + method.getName() + "()\" has one of type " + parameterType + ".\n";
       }
     }
 
@@ -39,7 +41,7 @@ public class PreParser implements AnnotationParser {
     FSM fsm = parameters.getFsm();
     String[] transitionNames = pre.value();
     for (String name : transitionNames) {
-      log.debug("Parsing pre-method '"+name+"'");
+      log.debug("Parsing pre-method '" + name + "'");
       //todo: add test for transition named "all" in a test model
       if (name.equals("all")) {
         fsm.addGenericPre(target);

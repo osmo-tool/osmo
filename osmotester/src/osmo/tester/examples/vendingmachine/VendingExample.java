@@ -23,7 +23,7 @@ import static junit.framework.Assert.assertTrue;
  * When 100 cents (or the value of the price variable if changed) inserted the "vend" transition can be taken.
  * When "vend" is taken, number of coins is reduced by the price value and a bottle is deducted from the number of available bottles.
  * When there are only 0 bottles left, the model end condition ends test generation.
- * 
+ *
  * @author Teemu Kanstren
  */
 public class VendingExample {
@@ -32,7 +32,7 @@ public class VendingExample {
   private int cents = 0;
   private int bottles = 10;
   private final int PRICE = 100;
-  private final Input<Integer> coins = new ValueSet<Integer>(10,20,50);
+  private final Input<Integer> coins = new ValueSet<Integer>(10, 20, 50);
   @TestSuiteField
   private TestSuite testSuite = new TestSuite();
 
@@ -51,19 +51,19 @@ public class VendingExample {
     cents = 0;
     //uncomment this for failure to continue with 0 available transitions
     bottles = 10;
-    int tests = testSuite.getFinishedTestCases().size()+1;
-    out.print("Starting test:"+ tests+"\n");
+    int tests = testSuite.getFinishedTestCases().size() + 1;
+    out.print("Starting test:" + tests + "\n");
   }
 
   @AfterSuite
   public void done() {
-    out.print("Created total of "+ testSuite.getFinishedTestCases().size()+" tests.\n");
+    out.print("Created total of " + testSuite.getFinishedTestCases().size() + " tests.\n");
   }
 
   @Transition("insert-money")
   public void insertMoney() {
     int coin = coins.next();
-    scripter.step("INSERT "+coin);
+    scripter.step("INSERT " + coin);
     cents += coin;
   }
 
@@ -74,7 +74,7 @@ public class VendingExample {
 
   @Transition("vend")
   public void vend() {
-    scripter.step("VEND ("+bottles+")");
+    scripter.step("VEND (" + bottles + ")");
     cents -= PRICE;
     bottles--;
   }
@@ -86,8 +86,8 @@ public class VendingExample {
 
   @Post
   public void checkState() {
-    scripter.step("CHECK(bottles == "+bottles+")");
-    scripter.step("CHECK(coins == "+ cents +")");
+    scripter.step("CHECK(bottles == " + bottles + ")");
+    scripter.step("CHECK(coins == " + cents + ")");
     assertTrue(cents >= 0);
     assertTrue(bottles >= 0);
   }

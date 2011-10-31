@@ -14,7 +14,7 @@ import java.io.PrintStream;
 
 /**
  * This is the simple OSMO tester example model made by finite-state-machine (FSM) style
- *
+ * <p/>
  * This model is describing behavior of simple calculator.
  * The calculator can increase and decrease the count.
  *
@@ -25,10 +25,11 @@ public class CalculatorModel2 {
   private int testCount = 1;
   private State currentState;
   private final PrintStream out;
-  private enum State{
-	  Start,
-	  Decrease,
-	  Increase,
+
+  private enum State {
+    Start,
+    Decrease,
+    Increase,
   }
 
   public CalculatorModel2() {
@@ -52,7 +53,7 @@ public class CalculatorModel2 {
   @BeforeTest
   public void start() {
     counter = 0;
-    out.println("Starting new test case "+testCount);
+    out.println("Starting new test case " + testCount);
     testCount++;
     currentState = null;
   }
@@ -81,18 +82,18 @@ public class CalculatorModel2 {
 
   @Transition("decrease")
   public void decreaseState() {
-	out.println("Decreased: " + counter--);
+    out.println("Decreased: " + counter--);
     currentState = State.Decrease;
   }
 
   @Guard("increase")
   public boolean IncreaseGuard() {
-	    return currentState == State.Increase || currentState == State.Decrease || currentState == State.Start;
+    return currentState == State.Increase || currentState == State.Decrease || currentState == State.Start;
   }
 
   @Transition("increase")
   public void increaseState() {
-	out.println("Increased: " + counter++);
+    out.println("Increased: " + counter++);
     currentState = State.Increase;
   }
 

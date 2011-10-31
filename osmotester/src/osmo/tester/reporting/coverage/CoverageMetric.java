@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * This class provides means to generate coverage metric reports from generated tests.
- * 
+ *
  * @author Olli-Pekka Puolitaival, Teemu Kanstrén
  */
 public abstract class CoverageMetric {
@@ -38,8 +38,8 @@ public abstract class CoverageMetric {
     velocity.setProperty("resource.loader", "class");
     velocity.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
   }
-  
-  protected  Map<FSMTransition, Integer> countTransitions(){
+
+  protected Map<FSMTransition, Integer> countTransitions() {
     Map<FSMTransition, Integer> covered = testSuite.getTransitionCoverage();
 
     Collection<FSMTransition> all = fsm.getTransitions();
@@ -50,20 +50,20 @@ public abstract class CoverageMetric {
     }
     return covered;
   }
-  
-  protected List<TransitionPairCount> countTransitionPairs(){
+
+  protected List<TransitionPairCount> countTransitionPairs() {
     Map<TransitionPair, Integer> coverage = new HashMap<TransitionPair, Integer>();
-    
-    for(TestCase tc: testSuite.getFinishedTestCases()){
+
+    for (TestCase tc : testSuite.getFinishedTestCases()) {
       FSMTransition previous = new FSMTransition("Start");
-      for(TestStep ts: tc.getSteps()){
+      for (TestStep ts : tc.getSteps()) {
         FSMTransition next = ts.getTransition();
         TransitionPair key = new TransitionPair(previous, next);
         Integer count = coverage.get(key);
         if (count == null) {
           count = 0;
         }
-        coverage.put(key, count+1);
+        coverage.put(key, count + 1);
         previous = ts.getTransition();
       }
     }
@@ -71,7 +71,7 @@ public abstract class CoverageMetric {
     Collection<FSMTransition> all = fsm.getTransitions();
     for (FSMTransition t1 : all) {
       for (FSMTransition t2 : all) {
-        TransitionPair pair = new TransitionPair(t1,t2);
+        TransitionPair pair = new TransitionPair(t1, t2);
         if (!coverage.containsKey(pair)) {
           coverage.put(pair, 0);
         }
@@ -86,15 +86,15 @@ public abstract class CoverageMetric {
     }
     return tpc;
   }
-  
-  protected List<RequirementCount> countRequirements(){
+
+  protected List<RequirementCount> countRequirements() {
     Map<String, Integer> coverage = new HashMap<String, Integer>();
-    
-    for(TestCase tc: testSuite.getFinishedTestCases()){
-      for(TestStep ts: tc.getSteps()){        
+
+    for (TestCase tc : testSuite.getFinishedTestCases()) {
+      for (TestStep ts : tc.getSteps()) {
         Collection<String> keys = ts.getCoveredRequirements();
-        
-        for(String key: keys){
+
+        for (String key : keys) {
           Integer count = coverage.get(key);
           if (count == null)
             count = 0;
@@ -119,7 +119,7 @@ public abstract class CoverageMetric {
     }
     return rc;
   }
-  
+
   /**
    * Creates a transition coverage count table, showing how many times each transition
    * has been covered by test cases in test suite.
@@ -142,7 +142,7 @@ public abstract class CoverageMetric {
     velocity.mergeTemplate(templateName, "UTF8", vc, sw);
     return sw.toString();
   }
-  
+
   /**
    * Creates a transition pair coverage count table, showing how many times each transition pair
    * has been covered by test cases in test suite.
@@ -160,7 +160,7 @@ public abstract class CoverageMetric {
     velocity.mergeTemplate(templateName, "UTF8", vc, sw);
     return sw.toString();
   }
-  
+
   /**
    * Creates a requirement coverage count table, showing how many times each requirement
    * has been covered by test cases in test suite.
@@ -178,10 +178,7 @@ public abstract class CoverageMetric {
     velocity.mergeTemplate(templateName, "UTF8", vc, sw);
     return sw.toString();
   }
-  
-  /**
-   * 
-   * @return
-   */
+
+  /** @return  */
   public abstract String getTraceabilityMatrix();
 }

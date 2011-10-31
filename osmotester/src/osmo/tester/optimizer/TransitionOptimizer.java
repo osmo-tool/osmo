@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * Optimizes the given test suite so that most transitions are covered at the beginning of the test suite.
-
+ *
  * @author Teemu Kanstren
  */
 public class TransitionOptimizer extends BaseOptimizer {
@@ -40,7 +40,7 @@ public class TransitionOptimizer extends BaseOptimizer {
    * Finds the next test case from the set of remaining ones, being the one that provides the most new transition
    * coverage.
    *
-   * @param tests The set of tests where to find the next one.
+   * @param tests         The set of tests where to find the next one.
    * @param totalCoverage The total coverage of transitions so far for all previous tests.
    * @return The next test case that adds most to the transition coverage.
    */

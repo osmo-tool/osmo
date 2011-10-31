@@ -11,29 +11,26 @@ import java.lang.annotation.Target;
  * to which it should be linked. One transition can have several guards associated with it, in which case
  * all these must return "true" for the transition to be considered as enabled and given to the algorithms
  * as an option for execution.
- *
+ * <p/>
  * The annotated method must have no parameters and return a boolean value.
- *
+ * <p/>
  * Example:
- * @Transition("bob")
- * public void hello() {
- *   System.out.println("Hello Bob");
- * }
  *
- * @Guard("bob")
- * public boolean allowBob() {
- *   return Math.random() > 0.6;
+ * @author Teemu Kanstren
+ * @Transition("bob") public void hello() {
+ * System.out.println("Hello Bob");
  * }
- *
+ * @Guard("bob") public boolean allowBob() {
+ * return Math.random() > 0.6;
+ * }
+ * <p/>
  * The above example will allow the transition named "bob" (method hello()) to be taken in the random
  * function from Math.random() returns a value bigger than 0.6.
- *
+ * <p/>
  * Currently there is a special Guard annotation with the name "all". If such a guard annotation is found,
  * it will be executed before all the transition methods to check if they can be executed (along with their
  * specific guard methods).This will likely change when the special name is move to its own annotation
  * along with other similar annotations.
- *
- * @author Teemu Kanstren
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

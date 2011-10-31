@@ -12,7 +12,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import static osmo.common.TestUtils.*;
+import static osmo.common.TestUtils.minOf;
+import static osmo.common.TestUtils.oneOf;
 
 /**
  * A test generation algorithm that is similar to the {@link RandomAlgorithm} but not preferring to take
@@ -28,7 +29,7 @@ import static osmo.common.TestUtils.*;
  */
 public class OptimizedRandomAlgorithm implements FSMTraversalAlgorithm {
   private static Logger log = new Logger(OptimizedRandomAlgorithm.class);
-  /** The coverage for transitions pairs, key = source transition, value = {destination transition, coverage}*/
+  /** The coverage for transitions pairs, key = source transition, value = {destination transition, coverage} */
   private Map<FSMTransition, Map<FSMTransition, Integer>> tpCoverage = new HashMap<FSMTransition, Map<FSMTransition, Integer>>();
 
   @Override
@@ -44,7 +45,7 @@ public class OptimizedRandomAlgorithm implements FSMTraversalAlgorithm {
     Collection<FSMTransition> options = new HashSet<FSMTransition>();
     options.addAll(choices);
     options.removeAll(tCoverage.keySet());
-    log.debug("uncovered options:"+options);
+    log.debug("uncovered options:" + options);
     //options now contains all previously uncovered transitions
 
     //we add also all previously uncovered transition pairs to options
@@ -69,8 +70,8 @@ public class OptimizedRandomAlgorithm implements FSMTraversalAlgorithm {
    * The set of taken transition pairs is available in the mapping this class holds over time and that is updated
    * every time a new transition is taken.
    *
-   * @param history The test generation history.
-   * @param choices Available transition choices in the current state.
+   * @param history           The test generation history.
+   * @param choices           Available transition choices in the current state.
    * @param currentTPCoverage Transition pair coverage from the previously taken transition.
    * @return An option based on coverage analysis of available options.
    */
@@ -82,7 +83,7 @@ public class OptimizedRandomAlgorithm implements FSMTraversalAlgorithm {
     int smallest = minOf(tCoverage.values());
 //    Map<FSMTransition, Integer> currentTPCoverage = checkTPCoverageFor(current, choices);
     int smallestTP = minOf(currentTPCoverage.values());
-    log.debug("smallest:"+smallest+" stp:"+smallestTP);
+    log.debug("smallest:" + smallest + " stp:" + smallestTP);
 
     for (FSMTransition t : choices) {
       if (tCoverage.get(t) == smallest) {
@@ -102,7 +103,7 @@ public class OptimizedRandomAlgorithm implements FSMTraversalAlgorithm {
    * that get() will always return something valid for the available choices.
    *
    * @param previous The transition that was taken previously (pair source).
-   * @param choices The choices for the next transition (pair destination).
+   * @param choices  The choices for the next transition (pair destination).
    * @return Calculated coverage for the available source-destination pairs.
    */
   private Map<FSMTransition, Integer> getTPCoverageFor(FSMTransition previous, List<FSMTransition> choices) {
@@ -121,10 +122,10 @@ public class OptimizedRandomAlgorithm implements FSMTraversalAlgorithm {
 
   /**
    * Adds any available and completely uncovered transition pairs to the given set of options.
-   * 
+   *
    * @param previous Previously taken transition (pair source).
-   * @param options Current choices, for example, already added from completely uncovered transitions (with "null" source).
-   * @param choices The possible choices for the next transition to be taken (pair destination).
+   * @param options  Current choices, for example, already added from completely uncovered transitions (with "null" source).
+   * @param choices  The possible choices for the next transition to be taken (pair destination).
    */
   private void addUncoveredTP(FSMTransition previous, Collection<FSMTransition> options, Collection<FSMTransition> choices) {
     Collection<FSMTransition> uncoveredTP = new ArrayList<FSMTransition>();
@@ -141,7 +142,7 @@ public class OptimizedRandomAlgorithm implements FSMTraversalAlgorithm {
         }
       }
     }
-    log.debug("Uncovered TP:"+uncoveredTP);
+    log.debug("Uncovered TP:" + uncoveredTP);
     //options now contains all previously uncovered transition pairs
     //Make union
     options.addAll(uncoveredTP);
@@ -151,7 +152,7 @@ public class OptimizedRandomAlgorithm implements FSMTraversalAlgorithm {
    * Updates the coverage table in memory based on the transition that has been chosen as the one to be taken.
    *
    * @param previous The previously taken transition.
-   * @param choice The choice of transition that will be taken next.
+   * @param choice   The choice of transition that will be taken next.
    */
   private void updateTPCoverage(FSMTransition previous, FSMTransition choice) {
     if (previous == null) {

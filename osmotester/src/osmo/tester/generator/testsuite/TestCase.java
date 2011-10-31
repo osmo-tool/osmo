@@ -5,8 +5,10 @@ import osmo.tester.model.FSMTransition;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -21,13 +23,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class TestCase {
   private static Logger log = new Logger(TestCase.class);
-  /**
-   * The test steps (taken) for this test case.
-   */
+  /** The test steps (taken) for this test case. */
   private List<TestStep> steps = new ArrayList<TestStep>();
-  /**
-   * The latest test step (being/having been generated).
-   */
+  /** The latest test step (being/having been generated). */
   private TestStep currentStep = null;
   /**
    * Newly covered transitions in relation to generation history. See class header for notes.
@@ -39,26 +37,19 @@ public class TestCase {
    * NOTE: we use a Set to avoid duplicates if the same requirement is covered multiple times.
    */
   private Collection<String> addedRequirementsCoverage = new HashSet<String>();
-  /**
-   * Unique identifier for this test case.
-   */
+  /** Unique identifier for this test case. */
   private final int id;
-  /**
-   * The next identifier in line to set for test cases.
-   */
+  /** The next identifier in line to set for test cases. */
   private static AtomicInteger nextId = new AtomicInteger(1);
-  /**
-   * Identifier for next test case step.
-   */
+  /** Identifier for next test case step. */
   private int nextStepId = 1;
+  private Map<String, ModelVariable> variables = new HashMap<String, ModelVariable>();
 
   public TestCase() {
     this.id = nextId.getAndIncrement();
   }
 
-  /**
-   * @return Unique id for this test case.
-   */
+  /** @return Unique id for this test case. */
   public int getId() {
     return id;
   }
@@ -145,5 +136,19 @@ public class TestCase {
     return "TestCase{" +
             "steps=" + steps +
             '}';
+  }
+
+  public void addVariableValue(String name, Object value) {
+    ModelVariable variable = variables.get(name);
+    if (variable == null) {
+      variable = new ModelVariable(name);
+      variables.put(name, variable);
+    }
+    log.debug("Added value:"+value);
+    variable.addValue(value);
+  }
+
+  public Map<String, ModelVariable> getVariables() {
+    return variables;
   }
 }

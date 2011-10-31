@@ -28,7 +28,7 @@ public class HTML extends CoverageMetric {
     return super.getTransitionCounts("osmo/tester/reporting/coverage/templates/transition-coverage.html");
   }
 
-  public String getTransitionPairCounts(){
+  public String getTransitionPairCounts() {
     return super.getTransitionPairCounts("osmo/tester/reporting/coverage/templates/transitionpair-coverage.html");
   }
 

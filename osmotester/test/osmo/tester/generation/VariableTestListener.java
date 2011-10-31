@@ -13,9 +13,7 @@ import java.util.Set;
 
 import static junit.framework.Assert.assertTrue;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class VariableTestListener implements GenerationListener {
   private Collection<String> variables = new ArrayList<String>();
 
@@ -40,7 +38,7 @@ public class VariableTestListener implements GenerationListener {
       if (name.startsWith("old")) {
         continue;
       }
-      assertTrue("same state should be available in @"+Post.class.getSimpleName()+" as was in @"+Pre.class.getName(), variables.contains(name));
+      assertTrue("same state should be available in @" + Post.class.getSimpleName() + " as was in @" + Pre.class.getName(), variables.contains(name));
     }
   }
 

@@ -69,6 +69,6 @@ public class ModelEvent { // implements Comparable<ModelEvent> {
   }
 
   public int compareTo(ModelEvent o) {
-    return toString().hashCode()-o.toString().hashCode();
+    return toString().hashCode() - o.toString().hashCode();
   }
 }

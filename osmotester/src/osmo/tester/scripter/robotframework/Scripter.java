@@ -41,11 +41,11 @@ public class Scripter {
   /**
    * Adds a variable to the RF script. These are given in a separate table in the script file beginning.
    *
-   * @param name Name of the variable.
+   * @param name  Name of the variable.
    * @param value Value for the variable.
    */
   public void addVariable(String name, String value) {
-    variables.put("${"+name+"}", value);
+    variables.put("${" + name + "}", value);
   }
 
   /**
@@ -64,7 +64,7 @@ public class Scripter {
    * Adds a test step (keyword) into the currently generated test case.
    *
    * @param keyword The keyword for the test step.
-   * @param params The parameters of the test step.
+   * @param params  The parameters of the test step.
    */
   public void addStep(String keyword, RFParameter... params) {
     currentTest.addStep(keyword, params);
@@ -74,9 +74,9 @@ public class Scripter {
    * Adds a test step (keyword) into the currently generated test case,
    * with a definition of a variable storing the output of the step.
    *
-   * @param keyword The keyword for the test step.
+   * @param keyword      The keyword for the test step.
    * @param variableName The name of the variable to generate in RF for storing the output.
-   * @param params The parameters for the test step.
+   * @param params       The parameters for the test step.
    */
   public void addStepWithResult(String keyword, String variableName, RFParameter... params) {
     currentTest.addStepWithResult(keyword, variableName, params);
@@ -109,7 +109,7 @@ public class Scripter {
     if (!tests.contains(currentTest)) {
       tests.add(currentTest);
     }
-    vc.put("library",  testLibrary);
+    vc.put("library", testLibrary);
     vc.put("argument_headers", getArgumentHeaders());
     vc.put("variables", variables.entrySet());
     vc.put("css", new CSSHelper());
@@ -128,7 +128,7 @@ public class Scripter {
    */
   private Collection<String> getArgumentHeaders() {
     Collection<String> headers = new ArrayList<String>();
-    for (int i = 0 ; i < cellCount ; i++) {
+    for (int i = 0; i < cellCount; i++) {
       headers.add("Argument");
     }
     return headers;

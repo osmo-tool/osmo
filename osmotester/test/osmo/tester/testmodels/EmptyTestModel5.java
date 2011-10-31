@@ -4,9 +4,7 @@ import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Transition;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class EmptyTestModel5 {
   @Guard("foo")
   public boolean hello() {

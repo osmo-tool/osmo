@@ -3,7 +3,7 @@ package osmo.tester.examples.calendar.scripter.offline;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.examples.calendar.testmodel.ModelEvent;
 import osmo.tester.examples.calendar.testmodel.ModelTask;
-import osmo.tester.model.dataflow.ReadableCharSet;
+import osmo.tester.model.dataflow.ReadableWords;
 import osmo.tester.scripter.robotframework.RFParameter;
 import osmo.tester.scripter.robotframework.Scripter;
 
@@ -41,13 +41,13 @@ public class OfflineScripter implements CalendarScripter {
     this.fileName = fileName;
     scripter.setTestLibrary(CalculatorLibrary.class.getName());
     //create users with random family name length 3-5 characters
-    ReadableCharSet set = new ReadableCharSet(3, 5);
-    set.asciiLettersAndNumbersOnly();
-    scripter.addVariable("user1", "OSMO "+set.nextWord());
-    scripter.addVariable("user2", "OSMO "+set.nextWord());
-    scripter.addVariable("user3", "OSMO "+set.nextWord());
-    scripter.addVariable("user4", "OSMO "+set.nextWord());
-    scripter.addVariable("user5", "OSMO "+set.nextWord());
+    ReadableWords words = new ReadableWords(3, 5);
+    words.asciiLettersAndNumbersOnly();
+    scripter.addVariable("user1", "OSMO " + words.next());
+    scripter.addVariable("user2", "OSMO " + words.next());
+    scripter.addVariable("user3", "OSMO " + words.next());
+    scripter.addVariable("user4", "OSMO " + words.next());
+    scripter.addVariable("user5", "OSMO " + words.next());
   }
 
   /**

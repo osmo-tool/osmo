@@ -18,7 +18,7 @@ public class CalendarUser {
   private static final AtomicInteger nextId = new AtomicInteger(0);
 
   public CalendarUser() {
-    userId = "uid"+nextId.incrementAndGet();
+    userId = "uid" + nextId.incrementAndGet();
     calendar = new CalendarApplication(this);
     server.addUser(this);
   }

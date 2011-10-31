@@ -2,11 +2,13 @@ package osmo.tester.parser;
 
 import org.junit.Before;
 import org.junit.Test;
+import osmo.common.log.Logger;
 import osmo.tester.annotation.Variable;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
 import osmo.tester.model.VariableField;
+import osmo.tester.model.dataflow.SearchableInput;
 import osmo.tester.testmodels.EmptyTestModel1;
 import osmo.tester.testmodels.EmptyTestModel2;
 import osmo.tester.testmodels.EmptyTestModel3;
@@ -16,22 +18,20 @@ import osmo.tester.testmodels.EmptyTestModel6;
 import osmo.tester.testmodels.PartialModel1;
 import osmo.tester.testmodels.PartialModel2;
 import osmo.tester.testmodels.VariableModel1;
+import osmo.tester.testmodels.VariableModel2;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import static junit.framework.Assert.*;
 
-/**
- *
- *
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class ParserTests {
   private MainParser parser = null;
 
   @Before
   public void setup() {
+    Logger.debug = true;
     parser = new MainParser();
   }
 
@@ -62,7 +62,7 @@ public class ParserTests {
       String msg = e.getMessage();
       String expected = "Invalid FSM:\n" +
               "Only one @RequirementsField allowed in the model.\n" +
-              "Only one @TestSuiteField allowed in the model.\n"+
+              "Only one @TestSuiteField allowed in the model.\n" +
               "Guard/Pre/Post without transition:foo\n";
       assertEquals(expected, msg);
     }
@@ -76,11 +76,11 @@ public class ParserTests {
     } catch (Exception e) {
       String msg = e.getMessage();
       String expected = "Invalid FSM:\n" +
-              "@RequirementsField class must be of type "+ Requirements.class.getName()+". Was "+String.class.getName()+".\n"+
-              "@TestSuiteField class must be of type osmo.tester.generator.testsuite.TestSuite. Was java.lang.String.\n"+
-              "Invalid return type for @EndCondition (\"end()\"):void. Should be boolean.\n"+
-              "Invalid return type for guard (\"hello()\"):class java.lang.String.\n"+
-              "Invalid return type for @EndState (\"toEnd()\"):void. Should be boolean.\n"+
+              "@RequirementsField class must be of type " + Requirements.class.getName() + ". Was " + String.class.getName() + ".\n" +
+              "@TestSuiteField class must be of type osmo.tester.generator.testsuite.TestSuite. Was java.lang.String.\n" +
+              "Invalid return type for @EndCondition (\"end()\"):void. Should be boolean.\n" +
+              "Invalid return type for guard (\"hello()\"):class java.lang.String.\n" +
+              "Invalid return type for @EndState (\"toEnd()\"):void. Should be boolean.\n" +
               "Post-methods are allowed to have only one parameter of type Map<String, Object>: \"wrong()\" has one of type class java.lang.String.\n";
       assertEquals(expected, msg);
     }
@@ -96,10 +96,10 @@ public class ParserTests {
 //      e.printStackTrace();
       String msg = e.getMessage();
       String expected = "Invalid FSM:\n" +
-              "@RequirementsField value was null, which is not allowed.\n"+
-              "Guard methods are not allowed to have parameters: \"hello()\" has 1 parameters.\n"+
-              "@EndCondition methods are not allowed to have parameters: \"ending()\" has 1 parameters.\n"+
-              "@EndState methods are not allowed to have parameters: \"endd()\" has 1 parameters.\n"+
+              "@RequirementsField value was null, which is not allowed.\n" +
+              "Guard methods are not allowed to have parameters: \"hello()\" has 1 parameters.\n" +
+              "@EndCondition methods are not allowed to have parameters: \"ending()\" has 1 parameters.\n" +
+              "@EndState methods are not allowed to have parameters: \"endd()\" has 1 parameters.\n" +
               "";
       assertEquals(expected, msg);
     }
@@ -114,9 +114,8 @@ public class ParserTests {
       String msg = e.getMessage();
       String expected = "Invalid FSM:\n" +
               "Invalid return type for @EndCondition (\"hello()\"):class java.lang.String. Should be boolean.\n" +
-              "@EndCondition methods are not allowed to have parameters: \"hello()\" has 1 parameters.\n"+
-              "Transition methods are not allowed to have parameters: \"epixx()\" has 1 parameters.\n"
-              ;
+              "@EndCondition methods are not allowed to have parameters: \"hello()\" has 1 parameters.\n" +
+              "Transition methods are not allowed to have parameters: \"epixx()\" has 1 parameters.\n";
       assertEquals(expected, msg);
     }
   }
@@ -129,11 +128,10 @@ public class ParserTests {
     } catch (Exception e) {
       String msg = e.getMessage();
       String expected = "Invalid FSM:\n" +
-              "Invalid return type for guard (\"listCheck()\"):class java.lang.String.\n"+
+              "Invalid return type for guard (\"listCheck()\"):class java.lang.String.\n" +
               "Transition methods are not allowed to have parameters: \"transition1()\" has 1 parameters.\n" +
               "Transition methods are not allowed to have parameters: \"epix()\" has 1 parameters.\n" +
-              "Guard/Pre/Post without transition:world\n"
-              ;
+              "Guard/Pre/Post without transition:world\n";
       assertEquals(expected, msg);
     }
   }
@@ -189,7 +187,7 @@ public class ParserTests {
     VariableModel1 model = new VariableModel1();
     FSM fsm = parser.parse(model);
     Collection<VariableField> variables = fsm.getStateVariables();
-    assertEquals("All @"+Variable.class.getSimpleName()+" items should be parsed.", 10, variables.size());
+    assertEquals("All @" + Variable.class.getSimpleName() + " items should be parsed.", 10, variables.size());
     assertVariablePresent(variables, "i1");
     assertVariablePresent(variables, "f1");
     assertVariablePresent(variables, "d1");
@@ -208,6 +206,25 @@ public class ParserTests {
         return;
       }
     }
-    fail("Variable "+name+" should be present in the model.");
+    fail("Variable " + name + " should be present in the model.");
+  }
+
+  @Test
+  public void searchableInputParsing() {
+    VariableModel2 model = new VariableModel2();
+    FSM fsm = parser.parse(model);
+    Collection<SearchableInput> inputs = fsm.getSearchableInputs();
+    assertEquals("Number of inputs", 2, inputs.size());
+    assertSearchableInputPresent(inputs, "range");
+    assertSearchableInputPresent(inputs, "set");
+  }
+
+  private void assertSearchableInputPresent(Collection<SearchableInput> inputs, String name) {
+    for (SearchableInput input : inputs) {
+      if (input.getName().equals(name)) {
+        return;
+      }
+    }
+    fail("SearchableInput "+name+" should be present in the model.");
   }
 }

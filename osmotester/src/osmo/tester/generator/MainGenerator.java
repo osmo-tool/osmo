@@ -18,7 +18,7 @@ import java.util.List;
  * The main test generator class.
  * Takes as input the finite state machine model parsed by {@link osmo.tester.parser.MainParser}.
  * Runs test generation on this model using the defined algorithms, exit strategies, etc.
- * 
+ *
  * @author Teemu Kanstren
  */
 public class MainGenerator {
@@ -36,40 +36,26 @@ public class MainGenerator {
   /** This is set when the test should end but @EndState is not yet achieved to signal ending ASAP. */
   private boolean testEnding = false;
 
-  /**
-   * Constructor.
-   */
+  /** Constructor. */
   public MainGenerator() {
   }
 
-  /**
-   *
-   * @param algorithm The set of enabled transitions in the current state is passed to this algorithm to pick one to execute.
-   */
+  /** @param algorithm The set of enabled transitions in the current state is passed to this algorithm to pick one to execute. */
   public void setAlgorithm(FSMTraversalAlgorithm algorithm) {
     this.algorithm = algorithm;
   }
 
-  /**
-   *
-   * @param suiteEndConditions Defines when test suite generation should be stopped. Invoked between each test case.
-   */
+  /** @param suiteEndConditions Defines when test suite generation should be stopped. Invoked between each test case. */
   public void setSuiteEndConditions(Collection<EndCondition> suiteEndConditions) {
     this.suiteEndConditions = suiteEndConditions;
   }
 
-  /**
-   *
-   * @param testCaseEndConditions Defines when test case generation should be stopped. Invoked between each test step.
-   */
+  /** @param testCaseEndConditions Defines when test case generation should be stopped. Invoked between each test step. */
   public void setTestCaseEndConditions(Collection<EndCondition> testCaseEndConditions) {
     this.testCaseEndConditions = testCaseEndConditions;
   }
 
-  /**
-   * 
-   * @param listeners Listeners to be notified about generation events.
-   */
+  /** @param listeners Listeners to be notified about generation events. */
   public void setListeners(GenerationListenerList listeners) {
     this.listeners = listeners;
   }
@@ -80,7 +66,7 @@ public class MainGenerator {
    * @param fsm Describes the test model in an FSM format.
    */
   public void generate(FSM fsm) {
-    suite = fsm.getSuite();
+    suite = fsm.initSuite();
     log.debug("Starting test suite generation");
     beforeSuite(fsm);
     while (!checkSuiteEndConditions(fsm)) {
@@ -89,7 +75,7 @@ public class MainGenerator {
       while (!checkTestCaseEndConditions(fsm)) {
         List<FSMTransition> enabled = getEnabled(fsm);
         FSMTransition next = algorithm.choose(suite, enabled);
-        log.debug("Taking transition "+next.getName());
+        log.debug("Taking transition " + next.getName());
         execute(fsm, next);
         if (checkModelEndConditions(fsm)) {
           //stop this test case generation if any end condition returns true
@@ -139,7 +125,7 @@ public class MainGenerator {
   private boolean checkEndStates(FSM fsm) {
     Collection<InvocationTarget> endStates = fsm.getEndStates();
     for (InvocationTarget es : endStates) {
-      Boolean endable = (Boolean)es.invoke();
+      Boolean endable = (Boolean) es.invoke();
       if (endable) {
         return true;
       }
@@ -156,7 +142,7 @@ public class MainGenerator {
   private boolean checkModelEndConditions(FSM fsm) {
     Collection<InvocationTarget> endConditions = fsm.getEndConditions();
     for (InvocationTarget ec : endConditions) {
-      Boolean result = (Boolean)ec.invoke();
+      Boolean result = (Boolean) ec.invoke();
       if (result) {
         return true;
       }
@@ -208,9 +194,9 @@ public class MainGenerator {
   /**
    * Invokes the given set of methods on the target test object.
    *
-   * @param targets The methods to be invoked.
-   * @param arg Argument to methods invoked.
-   * @param element Type of model element (pre or post)
+   * @param targets    The methods to be invoked.
+   * @param arg        Argument to methods invoked.
+   * @param element    Type of model element (pre or post)
    * @param transition Transition to which the invocations are related.
    */
   private void invokeAll(Collection<InvocationTarget> targets, Object arg, String element, FSMTransition transition) {
@@ -241,7 +227,7 @@ public class MainGenerator {
     for (FSMTransition transition : allTransitions) {
       for (InvocationTarget guard : transition.getGuards()) {
         listeners.guard(transition);
-        Boolean result = (Boolean)guard.invoke();
+        Boolean result = (Boolean) guard.invoke();
         if (!result) {
           enabled.remove(transition);
         }
@@ -256,8 +242,8 @@ public class MainGenerator {
   /**
    * Executes the given transition on the given model.
    *
-   * @param fsm The FSM model to which the transition belongs.
-   * @param transition  The transition to be executed.
+   * @param fsm        The FSM model to which the transition belongs.
+   * @param transition The transition to be executed.
    */
   public void execute(FSM fsm, FSMTransition transition) {
     transition.reset();
