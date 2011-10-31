@@ -1,9 +1,11 @@
-package osmo.tester.parser;
+package osmo.tester.parser.annotation;
 
 import osmo.common.log.Logger;
 import osmo.tester.annotation.Transition;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
+import osmo.tester.parser.AnnotationParser;
+import osmo.tester.parser.ParserParameters;
 
 /**
  * Parses {@link Transition} annotations from the given model object.

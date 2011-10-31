@@ -15,7 +15,7 @@ import java.util.HashSet;
  * -an event has a start time, end time, one or more participants, a description and a location
  * -linking events from an organizer to other users (simulates invitations)
  * -removing events from organizer removes them from all participants
- *
+ * <p/>
  * A user is assumed to have only one calendar.
  *
  * @author Teemu Kanstren
@@ -42,7 +42,7 @@ public class CalendarApplication {
   /**
    * Adds a task with the given properties to the calendar.
    *
-   * @param date The time of the task.
+   * @param date        The time of the task.
    * @param description The description of the task.
    * @return The created task.
    */
@@ -55,10 +55,10 @@ public class CalendarApplication {
   /**
    * Adds a event with the given properties to the calendar.
    *
-   * @param start The start time of the event.
-   * @param end The end time of the event.
+   * @param start       The start time of the event.
+   * @param end         The end time of the event.
    * @param description The description of the event.
-   * @param location The location of the event.
+   * @param location    The location of the event.
    * @return The create event.
    */
   public CalendarEvent addEvent(Date start, Date end, String description, String location) {
@@ -76,7 +76,7 @@ public class CalendarApplication {
   public void removeTask(String taskId) {
     CalendarTask toRemove = getTask(taskId);
     if (toRemove == null) {
-      throw new IllegalArgumentException("Task to remove does not exist:"+taskId);
+      throw new IllegalArgumentException("Task to remove does not exist:" + taskId);
     }
     tasks.remove(toRemove);
   }
@@ -99,16 +99,16 @@ public class CalendarApplication {
   /**
    * Removes the given event from this calendar.
    *
-   * @param eventId The identifier of the event to be removed.
+   * @param eventId      The identifier of the event to be removed.
    * @param serverSource Should be true if the request is from the CalendarServer.
-   * The server may try a cascading delete over all calendars so it should not fail,
-   * while direct calendar remove should be valid and fail if not found.
+   *                     The server may try a cascading delete over all calendars so it should not fail,
+   *                     while direct calendar remove should be valid and fail if not found.
    */
   public void removeEvent(String eventId, boolean serverSource) {
     CalendarEvent toRemove = getEvent(eventId);
     if (toRemove == null) {
       if (!serverSource) {
-        throw new IllegalArgumentException("Event to remove does not exist:"+eventId);
+        throw new IllegalArgumentException("Event to remove does not exist:" + eventId);
       }
       return;
     }
@@ -141,7 +141,7 @@ public class CalendarApplication {
    * Checks if the given time is inside the given day.
    *
    * @param time The time to check.
-   * @param day The day where it should fit in. Hours, minutes, seconds, milliseconds are ignored.
+   * @param day  The day where it should fit in. Hours, minutes, seconds, milliseconds are ignored.
    * @return True if the time fits inside the given day, false otherwise.
    */
   private boolean isTimeInDay(Date time, Date day) {

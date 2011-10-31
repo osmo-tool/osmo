@@ -1,7 +1,9 @@
 package osmo.tester.model;
 
 import osmo.common.log.Logger;
+import osmo.tester.generator.SearchableInputObserver;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.dataflow.SearchableInput;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -12,7 +14,7 @@ import java.util.Map;
 /**
  * Represents the given model object in terms of a finite state machine (FSM).
  * Produced by the parser and used by the generator to create actual test cases.
- * 
+ *
  * @author Teemu Kanstren
  */
 public class FSM {
@@ -39,14 +41,13 @@ public class FSM {
   private Collection<InvocationTarget> endStates = new ArrayList<InvocationTarget>();
   /** List of state variables to store for each test step. */
   private Collection<VariableField> stateVariables = new ArrayList<VariableField>();
+  private Collection<SearchableInput> searchableInputs = new ArrayList<SearchableInput>();
   /** The generated test suite (or one being generated). */
   private TestSuite suite;
   /** The list of requirements that needs to be covered. */
   private Requirements requirements;
 
-  /**
-   * Constructor.
-   */
+  /** Constructor. */
   public FSM() {
   }
 
@@ -66,12 +67,12 @@ public class FSM {
    * Returns an existing object for the requested transition name or creates a new one if one was not previously
    * found existing.
    *
-   * @param name The name of the transition. Taken from @Transition("name").
+   * @param name   The name of the transition. Taken from @Transition("name").
    * @param weight The weight of the transition. Taken from @Transition(weight=x).
    * @return A transition object for the requested name.
    */
   public FSMTransition createTransition(String name, int weight) {
-    log.debug("Creating transition: "+name+" weight:"+weight);
+    log.debug("Creating transition: " + name + " weight:" + weight);
     FSMTransition transition = transitions.get(name);
     if (transition != null) {
       //we can come here from guard, post, or transition creation. however, only transitions define weights
@@ -114,20 +115,20 @@ public class FSM {
     for (FSMTransition transition : transitions.values()) {
       InvocationTarget target = transition.getTransition();
       String name = transition.getName();
-      log.debug("Checking transition:"+ name);
+      log.debug("Checking transition:" + name);
       if (target == null) {
-        errors += "Guard/Pre/Post without transition:"+ name +"\n";
-        log.debug("Error: Found guard/pre/post without a matching transition - "+ name);
+        errors += "Guard/Pre/Post without transition:" + name + "\n";
+        log.debug("Error: Found guard/pre/post without a matching transition - " + name);
       } else if (target.getMethod().getParameterTypes().length > 0) {
         Method method = target.getMethod();
         int p = method.getParameterTypes().length;
-        errors += "Transition methods are not allowed to have parameters: \""+method.getName()+"()\" has "+p+" parameters.\n";
-        log.debug("Error: Found transition with invalid parameters - "+ name);
+        errors += "Transition methods are not allowed to have parameters: \"" + method.getName() + "()\" has " + p + " parameters.\n";
+        log.debug("Error: Found transition with invalid parameters - " + name);
       }
       errors = addGenericGuardsAndOracles(transition, errors);
     }
     if (errors.length() > 0) {
-      throw new IllegalStateException("Invalid FSM:\n"+errors);
+      throw new IllegalStateException("Invalid FSM:\n" + errors);
     }
     log.debug("FSM checked");
   }
@@ -136,7 +137,7 @@ public class FSM {
    * Add generic guards and oracles to all transitions.
    *
    * @param transition The transition to check.
-   * @param errors The current error message string.
+   * @param errors     The current error message string.
    * @return The error msg string given with possible new errors appended.
    */
   private String addGenericGuardsAndOracles(FSMTransition transition, String errors) {
@@ -273,5 +274,21 @@ public class FSM {
 
   public Collection<VariableField> getStateVariables() {
     return stateVariables;
+  }
+
+  public Collection<SearchableInput> getSearchableInputs() {
+    return searchableInputs;
+  }
+
+  public void addSearchableInput(SearchableInput input) {
+    searchableInputs.add(input);
+  }
+
+  public TestSuite initSuite() {
+    for (SearchableInput input : searchableInputs) {
+      SearchableInputObserver observer = new SearchableInputObserver(suite);
+      input.setObserver(observer);
+    }
+    return suite;
   }
 }

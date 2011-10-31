@@ -40,24 +40,28 @@ public interface GenerationListener {
 
   /**
    * The generation of a new test case has started.
+   *
    * @param test The associated test object.
    */
   public void testStarted(TestCase test);
 
   /**
    * The generation of a new test case has ended.
+   *
    * @param test The associated test object.
    */
   public void testEnded(TestCase test);
 
   /**
    * Test suite generation has started.
+   *
    * @param suite The associated test suite object.
    */
   public void suiteStarted(TestSuite suite);
 
   /**
    * Test suite generation has ended.
+   *
    * @param suite The associated test suite object.
    */
   public void suiteEnded(TestSuite suite);

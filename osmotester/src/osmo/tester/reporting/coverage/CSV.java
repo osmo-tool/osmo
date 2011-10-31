@@ -5,7 +5,7 @@ import osmo.tester.model.FSM;
 
 /**
  * Returns coverage tables in comma separate value (CSV) format
- * 
+ *
  * @author Olli-Pekka Puolitaival, Teemu Kanstrén
  */
 public class CSV extends CoverageMetric {
@@ -13,21 +13,21 @@ public class CSV extends CoverageMetric {
     super(ts, fsm);
   }
 
-  public String getTransitionCounts(){
+  public String getTransitionCounts() {
     //note: for this to work, you need to have the IDE or build script copy the .csv files to the same location on the output dir (alongside the java classes)
     return super.getTransitionCounts("osmo/tester/reporting/coverage/templates/transition-coverage.csv");
   }
-  
+
   /**
    * Output something like this
    * transition1;transition2;2
    * transition2;transition3;0
-   * */
-  public String getTransitionPairCounts(){
+   */
+  public String getTransitionPairCounts() {
     return super.getTransitionPairCounts("osmo/tester/reporting/coverage/templates/transitionpair-coverage.csv");
   }
-  
-  public String traceabilityMatrix(){
+
+  public String traceabilityMatrix() {
     //TODO: implement
     return null;
   }

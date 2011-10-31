@@ -1,11 +1,19 @@
 <html>
 <head></head>
 <body>
-  <table border="1">
-    <tr><td>From</td><td>To</td><td>Count</td></tr>
+<table border="1">
+  <tr>
+    <td>From</td>
+    <td>To</td>
+    <td>Count</td>
+  </tr>
 #foreach ($tp in $pairs)
-    <tr><td>$tp.from.name</td><td>$tp.to.name</td><td>$tp.count</td></tr>
+  <tr>
+    <td>$tp.from.name</td>
+    <td>$tp.to.name</td>
+    <td>$tp.count</td>
+  </tr>
 #end
-  </table>
+</table>
 </body>
 </html>

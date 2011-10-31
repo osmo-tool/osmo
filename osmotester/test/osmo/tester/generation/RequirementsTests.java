@@ -8,9 +8,7 @@ import osmo.tester.testmodels.ValidTestModel2;
 
 import static junit.framework.Assert.assertEquals;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class RequirementsTests {
   @Test
   public void fullCoverage() {

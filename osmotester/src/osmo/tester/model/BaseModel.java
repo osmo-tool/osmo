@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * A simple base class for providing some common functionality for test models.
  * You can either extend this for your models or just use the annotations in any other class.
- *
+ * <p/>
  * The provided fields are initialized with @BeforeTest, meaning that any use of this class cannot rely in
  * other @BeforeTest annotations that these fields are initialized.
  * An exception is the "previous" field, which is initialized with @Post, meaning that any use of this class
@@ -58,6 +58,6 @@ public class BaseModel {
       return;
     }
     //set this transition as the "previous" one, which means of course that no @Post can rely on this
-    previous = steps.get(size-1);
+    previous = steps.get(size - 1);
   }
 }

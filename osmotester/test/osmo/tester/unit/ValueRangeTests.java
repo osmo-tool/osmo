@@ -4,11 +4,10 @@ import org.junit.Test;
 import osmo.tester.model.dataflow.DataGenerationStrategy;
 import osmo.tester.model.dataflow.ValueRange;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class ValueRangeTests {
   @Test
   public void optimizedRandomValueRange() {
@@ -17,8 +16,8 @@ public class ValueRangeTests {
     boolean b5 = false;
     boolean b6 = false;
     boolean b7 = false;
-    for (int a = 0 ; a < 10 ; a++) {
-      for (int i = 0 ; i < 3 ; i++) {
+    for (int a = 0; a < 10; a++) {
+      for (int i = 0; i < 3; i++) {
         int n = vr.nextInt();
         if (n == 5) {
           b5 = true;
@@ -30,7 +29,7 @@ public class ValueRangeTests {
           b7 = true;
         }
       }
-      assertTrue("Should generate value 5 (loop "+a+")", b5);
+      assertTrue("Should generate value 5 (loop " + a + ")", b5);
       assertTrue("Should generate value 6 (loop \"+a+\")", b6);
       assertTrue("Should generate value 7 (loop \"+a+\")", b7);
     }
@@ -48,27 +47,27 @@ public class ValueRangeTests {
 
   @Test
   public void generics() {
-    ValueRange<Integer> vr = new ValueRange<Integer>(1,5);
+    ValueRange<Integer> vr = new ValueRange<Integer>(1, 5);
     Object o = vr.next();
     assertEquals("Integer value range should produce integers..", Integer.class, o.getClass());
 
-    ValueRange<Long> vr2 = new ValueRange<Long>(1l,5l);
+    ValueRange<Long> vr2 = new ValueRange<Long>(1l, 5l);
     Object o2 = vr2.next();
     assertEquals("Long value range should produce longs..", Long.class, o2.getClass());
 
-    ValueRange<Double> vr3 = new ValueRange<Double>(1d,5d);
+    ValueRange<Double> vr3 = new ValueRange<Double>(1d, 5d);
     Object o3 = vr3.next();
     assertEquals("Double value range should produce doubles..", Double.class, o3.getClass());
 
-    ValueRange<Integer> vr4 = new ValueRange<Integer>(Integer.class, 1,5);
+    ValueRange<Integer> vr4 = new ValueRange<Integer>(Integer.class, 1, 5);
     Object o4 = vr4.next();
     assertEquals("Integer value range should produce integers..", Integer.class, o4.getClass());
 
-    ValueRange<Long> vr5 = new ValueRange<Long>(Long.class, 1,5);
+    ValueRange<Long> vr5 = new ValueRange<Long>(Long.class, 1, 5);
     Object o5 = vr5.next();
     assertEquals("Long value range should produce longs..", Long.class, o5.getClass());
 
-    ValueRange<Double> vr6 = new ValueRange<Double>(Double.class, 1,5);
+    ValueRange<Double> vr6 = new ValueRange<Double>(Double.class, 1, 5);
     Object o6 = vr6.next();
     assertEquals("Double value range should produce doubles..", Double.class, o6.getClass());
   }

@@ -30,7 +30,7 @@ public class CalendarTaskModel {
     String uid = state.randomUID();
     Date time = state.randomStartTime();
     ModelTask task = state.createTask(uid, time);
-    System.out.println("--ADDTASK:"+task);
+    System.out.println("--ADDTASK:" + task);
     scripter.addTask(task);
   }
 
@@ -42,7 +42,7 @@ public class CalendarTaskModel {
   @Transition("RemoveTask")
   public void removeTask() {
     ModelTask task = state.getAndRemoveRandomTask();
-    System.out.println("--REMOVETASK:"+task);
+    System.out.println("--REMOVETASK:" + task);
     scripter.removeTask(task);
   }
 }

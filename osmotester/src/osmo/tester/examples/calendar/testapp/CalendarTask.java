@@ -21,7 +21,7 @@ public class CalendarTask {
   public CalendarTask(String uid, Date when, String description) {
     this.when = when;
     this.description = description;
-    id = uid+":task:"+nextId.incrementAndGet();
+    id = uid + ":task:" + nextId.incrementAndGet();
   }
 
   public String getId() {

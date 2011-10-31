@@ -5,23 +5,18 @@ import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
-import osmo.tester.model.FSMTransition;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
-/**
- * @author Teemu Kanstren
- */
-public class DefinedStepCoverage implements EndCondition {
-  private static Logger log = new Logger(DefinedStepCoverage.class);
+/** @author Teemu Kanstren */
+public class StepCoverage implements EndCondition {
+  private static Logger log = new Logger(StepCoverage.class);
   private Collection<String> required = new ArrayList<String>();
 
-  public DefinedStepCoverage(String... stepsToCover) {
+  public StepCoverage(String... stepsToCover) {
     Collections.addAll(required, stepsToCover);
   }
 
@@ -43,7 +38,7 @@ public class DefinedStepCoverage implements EndCondition {
     for (String step : steps) {
       remaining.remove(step);
     }
-    log.debug("remaining:"+remaining);
+    log.debug("remaining:" + remaining);
     return remaining.size() == 0;
   }
 

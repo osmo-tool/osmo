@@ -5,9 +5,7 @@ import osmo.tester.generator.endcondition.Probability;
 
 import static junit.framework.Assert.fail;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class ProbabilityTests {
   @Test
   public void testTooLowThreshold() {
@@ -28,7 +26,7 @@ public class ProbabilityTests {
   private void assertThresholdOutOfBounds(double value) {
     try {
       new Probability(value);
-      fail("Creation of "+Probability.class.getSimpleName()+" with threshold of "+value+" should fail.");
+      fail("Creation of " + Probability.class.getSimpleName() + " with threshold of " + value + " should fail.");
     } catch (IllegalArgumentException e) {
       //expected
     }

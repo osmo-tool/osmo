@@ -14,9 +14,7 @@ import osmo.tester.model.Requirements;
 
 import java.io.PrintStream;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class PartialModel1 {
   @RequirementsField
   private final Requirements req;

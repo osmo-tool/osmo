@@ -8,9 +8,9 @@ import java.lang.annotation.Target;
 /**
  * This annotation defines that the annotated method should be executed after test generation has finished
  * (all tests in the suite have been generated).
- *
+ * <p/>
  * The annotated method must have no parameters.
- * 
+ *
  * @author Teemu Kanstren
  */
 @Retention(RetentionPolicy.RUNTIME)

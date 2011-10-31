@@ -4,9 +4,7 @@ import osmo.tester.generator.testsuite.TestSuite;
 
 import java.util.List;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class CSV {
   private final ParameterReportBuilder info;
 

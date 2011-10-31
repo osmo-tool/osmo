@@ -24,7 +24,7 @@ public class RFParameter {
   @Override
   public String toString() {
     if (reference) {
-      return "${"+value+"}";
+      return "${" + value + "}";
     }
     return value;
   }

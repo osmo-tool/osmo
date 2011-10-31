@@ -8,11 +8,10 @@ import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
 
 import static junit.framework.Assert.assertEquals;
-import static osmo.common.TestUtils.*;
+import static osmo.common.TestUtils.getResource;
+import static osmo.common.TestUtils.unifyLineSeparators;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class CoverageTests {
   private TestSuite suite = null;
   private FSM fsm = null;

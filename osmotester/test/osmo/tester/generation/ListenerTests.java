@@ -11,11 +11,10 @@ import osmo.tester.testmodels.ValidTestModel2;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class ListenerTests {
   private OSMOTester osmo = null;
   private TestListener listener;

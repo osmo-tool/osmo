@@ -13,9 +13,8 @@ import java.lang.annotation.Target;
  * should aim to cover. If the field is null or of wrong type, an exception will be thrown and test generation
  * will not commence. For more information on defining the requirements, see the Requirements class.
  *
- * @see osmo.tester.model.Requirements
- *
  * @author Teemu Kanstren
+ * @see osmo.tester.model.Requirements
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

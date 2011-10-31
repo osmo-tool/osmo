@@ -7,8 +7,8 @@ import osmo.tester.examples.calendar.scripter.CalendarScripter;
 /**
  * Adds participants to the calendar test model.
  * Includes
- *  -Linking an existing event to another user's calendar, effectively making the "another user" a participant in the event
- *  -Removing a participant event, removing an event from someone who is a "participant", that is whose user id is not the same as the organizer user id for the event
+ * -Linking an existing event to another user's calendar, effectively making the "another user" a participant in the event
+ * -Removing a participant event, removing an event from someone who is a "participant", that is whose user id is not the same as the organizer user id for the event
  *
  * @author Teemu Kanstren
  */
@@ -32,7 +32,7 @@ public class CalendarParticipantModel {
   public void linkEventToUser() {
     ModelEvent event = state.getRandomExistingEvent();
     String uid = state.randomUID();
-    System.out.println("--LINKEVENTTOUSER:"+uid+" - "+event);
+    System.out.println("--LINKEVENTTOUSER:" + uid + " - " + event);
     state.attach(uid, event);
     scripter.linkEventToUser(event, uid);
   }
@@ -45,7 +45,7 @@ public class CalendarParticipantModel {
   @Transition("RemoveParticipantEvent")
   public void removeParticipantEvent() {
     ParticipantEvent event = state.getAndRemoveParticipantEvent();
-    System.out.println("--REMOVEPARTICIPANTEVENT:"+event);
+    System.out.println("--REMOVEPARTICIPANTEVENT:" + event);
     scripter.removeEvent(event.getParticipant(), event.getEvent());
   }
 }

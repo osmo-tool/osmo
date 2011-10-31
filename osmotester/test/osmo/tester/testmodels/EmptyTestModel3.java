@@ -8,9 +8,7 @@ import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class EmptyTestModel3 {
   @RequirementsField
   private String requirements = null;

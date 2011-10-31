@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  * while the generator is processing the model to generate tests. Any field annotated with this annotation
  * will be set by the generator before starting test generation to contain a reference to the TestLog object
  * that gives the model object itself access to the test generation history of the generator.
- *
+ * <p/>
  * If the annotated field is not of type {@link osmo.tester.generator.testsuite.TestSuite},
  * it an exception will be produced and generation will not commence.
  * If this field is set to a value in the test model before the model object is passed to the generator
@@ -19,10 +19,9 @@ import java.lang.annotation.Target;
  * will be updated but if the reference is changed it will have no impact on the test generation other than
  * the model object not having access to the correct history object through this reference.
  *
- * @see osmo.tester.generator.testsuite.TestSuite
- *
  * @author Teemu Kanstren
- */ 
+ * @see osmo.tester.generator.testsuite.TestSuite
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface TestSuiteField {

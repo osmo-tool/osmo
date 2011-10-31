@@ -15,6 +15,21 @@ import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
 import osmo.tester.model.FSM;
+import osmo.tester.model.dataflow.SearchableInput;
+import osmo.tester.parser.annotation.AfterSuiteParser;
+import osmo.tester.parser.annotation.AfterTestParser;
+import osmo.tester.parser.annotation.BeforeSuiteParser;
+import osmo.tester.parser.annotation.BeforeTestParser;
+import osmo.tester.parser.annotation.EndConditionParser;
+import osmo.tester.parser.annotation.EndStateParser;
+import osmo.tester.parser.annotation.GuardParser;
+import osmo.tester.parser.annotation.PostParser;
+import osmo.tester.parser.annotation.PreParser;
+import osmo.tester.parser.annotation.RequirementsFieldParser;
+import osmo.tester.parser.annotation.TestSuiteFieldParser;
+import osmo.tester.parser.annotation.TransitionParser;
+import osmo.tester.parser.annotation.VariableParser;
+import osmo.tester.parser.field.SearchableInputParser;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -29,29 +44,33 @@ import java.util.Map;
  * The main parser that takes the given model object and parses it for specific registered annotations,
  * passes these to specific {@link AnnotationParser} implementations to update the {@link FSM} representation
  * according to the information for the specific annotation.
- * 
+ *
  * @author Teemu Kanstren
  */
 public class MainParser {
   private static Logger log = new Logger(MainParser.class);
   /** Key = Annotation type, Value = The parser object for that annotation. */
-  private final Map<Class<? extends Annotation>, AnnotationParser> parsers = new HashMap<Class<? extends Annotation>, AnnotationParser>();
+  private final Map<Class<? extends Annotation>, AnnotationParser> annotationParsers = new HashMap<Class<? extends Annotation>, AnnotationParser>();
+  /** Key = Annotation type, Value = The parser object for that annotation. */
+  private final Map<Class, AnnotationParser> fieldParsers = new HashMap<Class, AnnotationParser>();
 
   public MainParser() {
     //we set up the parser objects for the different annotation types
-    parsers.put(Transition.class, new TransitionParser());
-    parsers.put(Guard.class, new GuardParser());
-    parsers.put(AfterTest.class, new AfterTestParser());
-    parsers.put(BeforeTest.class, new BeforeTestParser());
-    parsers.put(AfterSuite.class, new AfterSuiteParser());
-    parsers.put(BeforeSuite.class, new BeforeSuiteParser());
-    parsers.put(TestSuiteField.class, new TestSuiteFieldParser());
-    parsers.put(RequirementsField.class, new RequirementsFieldParser());
-    parsers.put(Pre.class, new PreParser());
-    parsers.put(Post.class, new PostParser());
-    parsers.put(EndCondition.class, new EndConditionParser());
-    parsers.put(EndState.class, new EndStateParser());
-    parsers.put(Variable.class, new VariableParser());
+    annotationParsers.put(Transition.class, new TransitionParser());
+    annotationParsers.put(Guard.class, new GuardParser());
+    annotationParsers.put(AfterTest.class, new AfterTestParser());
+    annotationParsers.put(BeforeTest.class, new BeforeTestParser());
+    annotationParsers.put(AfterSuite.class, new AfterSuiteParser());
+    annotationParsers.put(BeforeSuite.class, new BeforeSuiteParser());
+    annotationParsers.put(TestSuiteField.class, new TestSuiteFieldParser());
+    annotationParsers.put(RequirementsField.class, new RequirementsFieldParser());
+    annotationParsers.put(Pre.class, new PreParser());
+    annotationParsers.put(Post.class, new PostParser());
+    annotationParsers.put(EndCondition.class, new EndConditionParser());
+    annotationParsers.put(EndState.class, new EndStateParser());
+    annotationParsers.put(Variable.class, new VariableParser());
+
+    fieldParsers.put(SearchableInput.class, new SearchableInputParser());
   }
 
   /**
@@ -98,7 +117,7 @@ public class MainParser {
   private String parseFields(FSM fsm, Object obj) {
     //first we find all declared fields of any scope and type (private, protected, ...)
     Collection<Field> fields = getAllFields(obj.getClass());
-    log.debug("fields "+fields.size());
+    log.debug("fields " + fields.size());
     //next we create the parameter object and insert the common parameters
     ParserParameters parameters = new ParserParameters();
     parameters.setFsm(fsm);
@@ -106,27 +125,42 @@ public class MainParser {
     String errors = "";
     //now we loop through all fields defined in the model object
     for (Field field : fields) {
-      log.debug("field:"+field);
+      log.debug("field:" + field);
       //set the field to be accessible from the parser objects
       parameters.setField(field);
       Annotation[] annotations = field.getAnnotations();
       //loop through all defined annotations for each field
       for (Annotation annotation : annotations) {
         Class<? extends Annotation> annotationClass = annotation.annotationType();
-        log.debug("class:"+annotationClass);
-        AnnotationParser parser = parsers.get(annotationClass);
+        log.debug("class:" + annotationClass);
+        AnnotationParser parser = annotationParsers.get(annotationClass);
         if (parser == null) {
           //unsupported annotation (e.g. for some completely different aspect)
           continue;
         }
-        log.debug("parser:"+parser);
+        log.debug("parser:" + parser);
         //set the annotation itself as a parameter to the used parser object
         parameters.setAnnotation(annotation);
         //and finally parse it
         errors += parser.parse(parameters);
       }
+      parseField(field, parameters);
     }
     return errors;
+  }
+
+  private void parseField(Field field, ParserParameters parameters) {
+    log.debug("parsefield");
+    Class fieldClass = field.getType();
+    for (Class parserType : fieldParsers.keySet()) {
+      if (parserType.isAssignableFrom(fieldClass)) {
+        AnnotationParser fieldParser = fieldParsers.get(parserType);
+        if (fieldParser != null) {
+          log.debug("field parser invocation:" + parameters);
+          fieldParser.parse(parameters);
+        }
+      }
+    }
   }
 
   private Collection<Field> getAllFields(Class clazz) {
@@ -150,7 +184,7 @@ public class MainParser {
     //first we get all methods defined in the test model object (also all scopes -> private, protected, ...)
     Collection<Method> methods = getAllMethods(obj.getClass());
     //there are always some methods inherited from java.lang.Object so we checking them here is pointless. FSM.check will do it
-    log.debug("methods "+methods.size());
+    log.debug("methods " + methods.size());
     //construct and store common parameters first for all method parsers, update the rest each time
     ParserParameters parameters = new ParserParameters();
     parameters.setFsm(fsm);
@@ -158,19 +192,19 @@ public class MainParser {
     String errors = "";
     //loop through all the methods defined in the given object
     for (Method method : methods) {
-      log.debug("method:"+method);
+      log.debug("method:" + method);
       parameters.setMethod(method);
       Annotation[] annotations = method.getAnnotations();
       //check all annotations for supported ones, use the given object to process them
       for (Annotation annotation : annotations) {
         Class<? extends Annotation> annotationClass = annotation.annotationType();
-        log.debug("class:"+annotationClass);
-        AnnotationParser parser = parsers.get(annotationClass);
+        log.debug("class:" + annotationClass);
+        AnnotationParser parser = annotationParsers.get(annotationClass);
         if (parser == null) {
           //unsupported annotation (e.g. for some completely different aspect)
           continue;
         }
-        log.debug("parser:"+parser);
+        log.debug("parser:" + parser);
         //set the annotation itself as a parameter to the used parser object
         parameters.setAnnotation(annotation);
         //and finally parse it

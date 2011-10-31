@@ -6,5 +6,5 @@ package osmo.tester.model.dataflow;
  * @author Teemu Kanstren
  */
 public enum DataType {
-  INT,LONG,DOUBLE
+  INT, LONG, DOUBLE
 }

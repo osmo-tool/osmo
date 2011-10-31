@@ -17,7 +17,7 @@ import static osmo.common.TestUtils.oneOf;
  *
  * @author Teemu Kanstren
  */
-public class ValueRangeSet<T extends Number> implements Input<T>, Output<T>{
+public class ValueRangeSet<T extends Number> extends SearchableInput<T> implements Output<T> {
   private static final Logger log = new Logger(ValueRangeSet.class);
   /** The different partitions in the domain. */
   private ValueSet<ValueRange> partitions = new ValueSet<ValueRange>();
@@ -72,7 +72,7 @@ public class ValueRangeSet<T extends Number> implements Input<T>, Output<T>{
    * @param max Upper bound (maximum value) of the partition.
    */
   public void addPartition(Number min, Number max) {
-    log.debug("Adding partition min("+min+") max("+max+")");
+    log.debug("Adding partition min(" + min + ") max(" + max + ")");
     validateRange(min, max);
     ValueRange range = null;
     if (min instanceof Integer) {
@@ -93,11 +93,11 @@ public class ValueRangeSet<T extends Number> implements Input<T>, Output<T>{
    * See {@link ValueRange} for more information on the types.
    *
    * @param type The type of numbers in value ranges.
-   * @param min Lower bound (minimum value) of the partition.
-   * @param max Upper bound (maximum value) of the partition.
+   * @param min  Lower bound (minimum value) of the partition.
+   * @param max  Upper bound (maximum value) of the partition.
    */
   public void addPartition(Class<T> type, Number min, Number max) {
-    log.debug("Adding partition min("+min+") max("+max+")");
+    log.debug("Adding partition min(" + min + ") max(" + max + ")");
     validateRange(min, max);
     partitions.add(new ValueRange<T>(type, min, max));
   }
@@ -116,7 +116,7 @@ public class ValueRangeSet<T extends Number> implements Input<T>, Output<T>{
    * @param max Upper bound (maximum value) of the partition.
    */
   public void removePartition(double min, double max) {
-    log.debug("Removing partition min("+min+") max("+max+")");
+    log.debug("Removing partition min(" + min + ") max(" + max + ")");
     partitions.remove(new ValueRange(min, max));
   }
 
@@ -129,7 +129,7 @@ public class ValueRangeSet<T extends Number> implements Input<T>, Output<T>{
     //we use ValueSet for partitions so we only need to handle optimized random here as the valueset handles random and ordered loops
     if (strategy != DataGenerationStrategy.OPTIMIZED_RANDOM) {
       ValueRange partition = partitions.next();
-      log.debug("Next interval "+partition);
+      log.debug("Next interval " + partition);
       return partition;
     }
     return optimizedRandomPartition();
@@ -145,24 +145,24 @@ public class ValueRangeSet<T extends Number> implements Input<T>, Output<T>{
     Collection<ValueRange> options = partitions.getAll();
     if (options.size() == 1) {
       ValueRange partition = options.iterator().next();
-      log.debug("Single partition found, returning it:"+partition);
+      log.debug("Single partition found, returning it:" + partition);
       return partition;
     }
     //first we find the minimum coverage in the set
     int min = Integer.MAX_VALUE;
     for (ValueRange option : options) {
       int count = option.getHistory().size();
-      log.debug("Coverage for "+option+":"+count);
+      log.debug("Coverage for " + option + ":" + count);
       if (count < min) {
         min = count;
       }
     }
-    log.debug("Min coverage:"+min);
+    log.debug("Min coverage:" + min);
     //then we find all that have coverage equal to smallest
     Collection<ValueRange> currentOptions = new ArrayList<ValueRange>();
     for (ValueRange option : options) {
       int count = option.getHistory().size();
-      log.debug("Coverage for current option "+option+":"+count);
+      log.debug("Coverage for current option " + option + ":" + count);
       if (count == min) {
         currentOptions.add(option);
       }
@@ -171,9 +171,7 @@ public class ValueRangeSet<T extends Number> implements Input<T>, Output<T>{
     return oneOf(currentOptions);
   }
 
-  /**
-   * Validates that this invariant makes sense (has partitions defined etc.).
-   */
+  /** Validates that this invariant makes sense (has partitions defined etc.). */
   protected void validate() {
     if (partitions.size() == 0) {
       throw new IllegalStateException("No partitions defined. Add some to use this for something.");
@@ -185,13 +183,16 @@ public class ValueRangeSet<T extends Number> implements Input<T>, Output<T>{
     validate();
     ValueRange i = nextPartition();
 //    history.add(value);
+    T next;
     if (i.getType() == DataType.INT) {
-      return (T)new Integer(i.nextInt());
+      next = (T) new Integer(i.nextInt());
     } else if (i.getType() == DataType.LONG) {
-      return (T)new Long(i.nextLong());
+      next = (T) new Long(i.nextLong());
     } else {
-      return (T)new Double(i.nextDouble());
+      next = (T) new Double(i.nextDouble());
     }
+    observe(next);
+    return next;
   }
 
   /**
@@ -238,9 +239,9 @@ public class ValueRangeSet<T extends Number> implements Input<T>, Output<T>{
    */
   public boolean evaluate(T value) {
     Collection<ValueRange> partitions = this.partitions.getAll();
-    log.debug("Evaluating value:"+value);
+    log.debug("Evaluating value:" + value);
     for (ValueRange partition : partitions) {
-      log.debug("Checking partition:"+partition);
+      log.debug("Checking partition:" + partition);
       if (partition.evaluate(value)) {
         log.debug("Found match");
         return true;

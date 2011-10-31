@@ -25,7 +25,7 @@ import static junit.framework.Assert.assertTrue;
  * When 100 cents inserted the "vend" transition can be taken.
  * When "vend" is taken, number of coins is reset to 0 and a bottle is deducted from the number of available bottles.
  * When there are only 0 bottles left, all states are disabled.
- * 
+ *
  * @author Teemu Kanstren
  */
 public class VendingMachine2 {
@@ -64,7 +64,7 @@ public class VendingMachine2 {
   public void start() {
     coins = 0;
     bottles = 10;
-    int tests = testSuite.getFinishedTestCases().size()+1;
+    int tests = testSuite.getFinishedTestCases().size() + 1;
     out.print("Starting test:" + tests + "\n");
   }
 
@@ -106,7 +106,7 @@ public class VendingMachine2 {
 
   @Transition(VEND)
   public void vend() {
-    scripter.step("VEND ("+bottles+")");
+    scripter.step("VEND (" + bottles + ")");
     coins -= 100;
     bottles--;
     req.covered(VEND);
@@ -119,8 +119,8 @@ public class VendingMachine2 {
 
   @Post
   public void checkState() {
-    scripter.step("CHECK(bottles == "+bottles+")");
-    scripter.step("CHECK(coins == "+coins+")");
+    scripter.step("CHECK(bottles == " + bottles + ")");
+    scripter.step("CHECK(coins == " + coins + ")");
     assertTrue(coins <= 400);
     assertTrue(coins >= 0);
     assertTrue(bottles >= 0);
@@ -133,6 +133,6 @@ public class VendingMachine2 {
 
     //Print coverage metric
     CSV csv = new CSV(tester.getSuite(), tester.getFsm());
-    System.out.println("\n"+csv.getTransitionCounts());
+    System.out.println("\n" + csv.getTransitionCounts());
   }
 }

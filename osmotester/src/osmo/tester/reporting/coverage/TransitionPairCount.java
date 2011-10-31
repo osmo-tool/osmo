@@ -19,16 +19,12 @@ public class TransitionPairCount implements Comparable<TransitionPairCount> {
     this.count = count;
   }
 
-  /**
-   * @return The first transition of the pair.
-   */
+  /** @return The first transition of the pair. */
   public FSMTransition getFrom() {
     return pair.getFrom();
   }
 
-  /**
-   * @return The second (latter) transition of the pair.
-   */
+  /** @return The second (latter) transition of the pair. */
   public FSMTransition getTo() {
     return pair.getTo();
   }

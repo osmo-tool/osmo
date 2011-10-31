@@ -4,7 +4,7 @@ import java.io.PrintStream;
 
 /**
  * A  very simple example of a "scripter" used to write test scripts from a test model.
- * 
+ *
  * @author Teemu Kanstren
  */
 public class Scripter {
@@ -15,6 +15,6 @@ public class Scripter {
   }
 
   public void step(String step) {
-    out.print(step+"\n");
+    out.print(step + "\n");
   }
 }

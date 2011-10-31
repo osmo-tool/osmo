@@ -2,7 +2,6 @@ package osmo.tester.endconditions;
 
 import org.junit.Before;
 import org.junit.Test;
-import osmo.common.log.Logger;
 import osmo.tester.generator.endcondition.TransitionCoverage;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
@@ -10,9 +9,7 @@ import osmo.tester.model.FSMTransition;
 
 import static junit.framework.Assert.assertEquals;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class TransitionCoverageTests {
   private FSM fsm;
   private FSMTransition t1;
@@ -219,7 +216,7 @@ public class TransitionCoverageTests {
 
   private void assertEndSuite(boolean expected) {
     boolean actual = tc.checkThreshold(suite, fsm, true);
-    assertEquals("Transition Coverage should end with "+suite.totalSteps()+"/10", expected, actual);
+    assertEquals("Transition Coverage should end with " + suite.totalSteps() + "/10", expected, actual);
   }
 
   private void assertEndTest(boolean expected) {

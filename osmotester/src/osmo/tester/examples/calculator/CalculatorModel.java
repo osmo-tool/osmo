@@ -19,7 +19,7 @@ import java.io.PrintStream;
  * Same as the other calculator but without explicit state enumeration. Instead this will keep the counter > 0 and
  * use the counter itself to define the state. This also illustrates how you can name your methods and elements in
  * any way you like, since only the annotations are used.
- * 
+ *
  * @author Teemu Kanstren
  */
 public class CalculatorModel {
@@ -60,7 +60,7 @@ public class CalculatorModel {
   @BeforeTest
   public void start() {
     counter = 0;
-    out.println("Starting new test case "+testCount);
+    out.println("Starting new test case " + testCount);
     testCount++;
   }
 

@@ -10,7 +10,6 @@ import osmo.tester.examples.calendar.testmodel.ModelTask;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -28,9 +27,7 @@ public class OnlineScripter implements CalendarScripter {
   public OnlineScripter() {
   }
 
-  /**
-   * Used to reset the scripter between generated tests.
-   */
+  /** Used to reset the scripter between generated tests. */
   @Override
   public void reset() {
     users.clear();
@@ -102,7 +99,7 @@ public class OnlineScripter implements CalendarScripter {
         }
         found = true;
       }
-      assertTrue("ModelTask not found on calendar:"+modelTask, found);
+      assertTrue("ModelTask not found on calendar:" + modelTask, found);
     }
   }
 
@@ -135,7 +132,7 @@ public class OnlineScripter implements CalendarScripter {
         }
         found = true;
       }
-      assertTrue("ModelEvent not found on calendar:"+modelEvent, found);
+      assertTrue("ModelEvent not found on calendar:" + modelEvent, found);
     }
   }
 

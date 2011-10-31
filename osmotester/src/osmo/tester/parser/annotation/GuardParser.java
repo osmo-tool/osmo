@@ -1,16 +1,18 @@
-package osmo.tester.parser;
+package osmo.tester.parser.annotation;
 
 import osmo.common.log.Logger;
 import osmo.tester.annotation.Guard;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
+import osmo.tester.parser.AnnotationParser;
+import osmo.tester.parser.ParserParameters;
 
 import java.lang.reflect.Method;
 
 /**
  * Parses {@link Guard} annotations from the given model object.
- * 
+ *
  * @author Teemu Kanstren
  */
 public class GuardParser implements AnnotationParser {
@@ -24,11 +26,11 @@ public class GuardParser implements AnnotationParser {
     String errors = "";
     Class<?> returnType = method.getReturnType();
     if (returnType != boolean.class && returnType != Boolean.class) {
-      errors += "Invalid return type for guard (\""+method.getName()+"()\"):"+returnType+".\n";
+      errors += "Invalid return type for guard (\"" + method.getName() + "()\"):" + returnType + ".\n";
     }
     Class<?>[] parameterTypes = method.getParameterTypes();
     if (parameterTypes.length > 0) {
-      errors += "Guard methods are not allowed to have parameters: \""+method.getName()+"()\" has "+parameterTypes.length+" parameters.\n";
+      errors += "Guard methods are not allowed to have parameters: \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n";
     }
 
     String[] transitionNames = g.value();

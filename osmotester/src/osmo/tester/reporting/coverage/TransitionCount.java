@@ -22,16 +22,12 @@ public class TransitionCount implements Comparable<TransitionCount> {
     return transition;
   }
 
-  /**
-   * @return The number of times the transition has been taken.
-   */
+  /** @return The number of times the transition has been taken. */
   public int getCount() {
     return count;
   }
 
-  /**
-   * @return Name of the transition.
-   */
+  /** @return Name of the transition. */
   public String getName() {
     return transition.getName();
   }

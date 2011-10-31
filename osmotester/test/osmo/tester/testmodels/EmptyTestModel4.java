@@ -9,9 +9,7 @@ import osmo.tester.annotation.Transition;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class EmptyTestModel4 {
   @RequirementsField
   private Requirements requirements = null;

@@ -17,7 +17,7 @@ import java.util.TreeSet;
  * covered in which test case and test step. A requirement is defined as a string that is expected to be both its
  * unique identifier and expressive enough to describe the actual intent of the requirement for the user to be able
  * to understand what it is.
- * 
+ *
  * @author Teemu Kanstren
  */
 public class Requirements {
@@ -30,7 +30,7 @@ public class Requirements {
   private TestSuite testSuite = null;
 
   public void setTestSuite(TestSuite testSuite) {
-    log.debug("Setting test suite:"+testSuite);
+    log.debug("Setting test suite:" + testSuite);
     this.testSuite = testSuite;
   }
 
@@ -42,7 +42,7 @@ public class Requirements {
   public void add(String requirement) {
     //check if already exists
     if (requirements.contains(requirement)) {
-      throw new IllegalArgumentException("Attempted to register '"+requirement+"' twice. Duplicates not allowed.");
+      throw new IllegalArgumentException("Attempted to register '" + requirement + "' twice. Duplicates not allowed.");
     }
     requirements.add(requirement);
   }
@@ -98,9 +98,7 @@ public class Requirements {
     return covered.contains(requirement);
   }
 
-  /**
-   * This resets the requirements coverage, removing any coverage information.
-   */
+  /** This resets the requirements coverage, removing any coverage information. */
   public void clearCoverage() {
     covered.clear();
   }
@@ -118,14 +116,14 @@ public class Requirements {
     }
     StringBuilder out = new StringBuilder();
     Collections.sort(requirements);
-    out.append("Requirements:"+requirements+"\n");
-    out.append("Covered:"+covered+"\n");
-    int n = covered.size()-getExcess().size();
+    out.append("Requirements:" + requirements + "\n");
+    out.append("Covered:" + covered + "\n");
+    int n = covered.size() - getExcess().size();
     int total = requirements.size();
     if (total > 0) {
-      double p = n/total*100;
+      double p = n / total * 100;
       final MessageFormat format = new MessageFormat("Total = {0}/{1} ({2}%) requirements.");
-      Object args = new Object[] {n, total, p};
+      Object args = new Object[]{n, total, p};
       out.append(format.format(args));
     } else {
       out.append("No requirements were defined as expected (with the add() method) so no percentage is calculated.");

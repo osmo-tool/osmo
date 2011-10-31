@@ -16,11 +16,7 @@ import osmo.tester.model.Requirements;
 
 import java.util.Map;
 
-/**
- *
- * 
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class EmptyTestModel1 {
   @RequirementsField
   private Requirements requirements = new Requirements();

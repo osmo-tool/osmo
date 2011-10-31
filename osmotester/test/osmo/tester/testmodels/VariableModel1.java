@@ -11,11 +11,10 @@ import osmo.tester.generator.testsuite.TestSuite;
 
 import java.util.Map;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class VariableModel1 {
   @Variable
   private int i1 = 1;
@@ -43,7 +42,7 @@ public class VariableModel1 {
   @Pre("first")
   public void pre(Map<String, Object> state) {
     String msg = "@" + Variable.class.getSimpleName() + " should be visible in @" + Pre.class.getSimpleName() + " methods.";
-    System.out.println("pre-state:"+state);
+    System.out.println("pre-state:" + state);
     assertNotNull(msg, state.get("i1"));
     assertNotNull(msg, state.get("f1"));
     assertNotNull(msg, state.get("d1"));
@@ -57,7 +56,7 @@ public class VariableModel1 {
   @Post("first")
   public void post(Map<String, Object> state) {
     String msg = "@" + Variable.class.getSimpleName() + " should be visible in @" + Post.class.getSimpleName() + " methods.";
-    System.out.println("post-state:"+state);
+    System.out.println("post-state:" + state);
     Integer newI1 = (Integer) state.get("i1");
     Float newF1 = (Float) state.get("f1");
     Double newD1 = (Double) state.get("d1");
@@ -67,14 +66,14 @@ public class VariableModel1 {
     assertNotNull(msg, newD1);
     assertNotNull(msg, newB1);
 
-    String msg2 = "@"+Post.class.getSimpleName()+" state should be updated and different from @"+Pre.class.getSimpleName()+" (assuming a @"+Transition.class.getName()+" changed state).";
+    String msg2 = "@" + Post.class.getSimpleName() + " state should be updated and different from @" + Pre.class.getSimpleName() + " (assuming a @" + Transition.class.getName() + " changed state).";
     Integer oldI1 = (Integer) state.get("old-i1");
     Float oldF1 = (Float) state.get("old-f1");
     Double oldD1 = (Double) state.get("old-d1");
     Boolean oldB1 = (Boolean) state.get("old-b1");
-    assertEquals(msg2, oldI1+1, newI1.intValue());
-    assertEquals(msg2, oldF1+1, newF1);
-    assertEquals(msg2, oldD1+1, newD1);
+    assertEquals(msg2, oldI1 + 1, newI1.intValue());
+    assertEquals(msg2, oldF1 + 1, newF1);
+    assertEquals(msg2, oldD1 + 1, newD1);
     assertEquals(msg2, !oldB1, newB1.booleanValue());
   }
 

@@ -6,7 +6,7 @@ package osmo.tester.model;
  * object represented by this field.
  * If this is not implemented by the object, the object is taken as such (consider the object itself to
  * become then the return value of the value() method).
- *
+ * <p/>
  * The intent of this interface is to provide means to store specific data for more complex objects.
  * For example, if the state is composed of an object that has modifiable dynamic fields (e.g. setX()),
  * the value will seem the same for all steps since they share the same object. On the other hand,

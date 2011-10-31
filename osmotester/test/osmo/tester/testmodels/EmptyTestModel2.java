@@ -6,9 +6,7 @@ import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class EmptyTestModel2 {
   @RequirementsField
   private Requirements req1 = new Requirements();

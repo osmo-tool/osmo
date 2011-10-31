@@ -1,5 +1,7 @@
 package osmo.tester.model.dataflow;
 
+import osmo.common.log.Logger;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -8,7 +10,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import static osmo.common.TestUtils.*;
+import static osmo.common.TestUtils.minOf;
+import static osmo.common.TestUtils.oneOf;
 
 /**
  * Represents a set of values (objects) of the given type.
@@ -18,7 +21,8 @@ import static osmo.common.TestUtils.*;
  *
  * @author Teemu Kanstren
  */
-public class ValueSet<T> implements Input<T>, Output<T> {
+public class ValueSet<T> extends SearchableInput<T> implements Output<T> {
+  private static final Logger log = new Logger(ValueSet.class);
   /** The options for data generation and evaluation. */
   private List<T> options = new ArrayList<T>();
   /** The input strategy to choose an object. */
@@ -28,9 +32,7 @@ public class ValueSet<T> implements Input<T>, Output<T> {
   /** The history of chosen input value objects for this invariant. */
   private Collection<T> history = new ArrayList<T>();
 
-  /**
-   * Constructor for when no initial options are provided. Options need to be added later with addOption().
-   */
+  /** Constructor for when no initial options are provided. Options need to be added later with addOption(). */
   public ValueSet() {
   }
 
@@ -121,9 +123,11 @@ public class ValueSet<T> implements Input<T>, Output<T> {
         next = oneOf(options);
         break;
       default:
-        throw new IllegalArgumentException("Unsupported strategy ("+strategy.name()+") for "+ValueSet.class.getSimpleName());
+        throw new IllegalArgumentException("Unsupported strategy (" + strategy.name() + ") for " + ValueSet.class.getSimpleName());
     }
     history.add(next);
+    //log.debug("Value:"+next);
+    observe(next);
     return next;
   }
 
@@ -152,7 +156,7 @@ public class ValueSet<T> implements Input<T>, Output<T> {
       }
       int min = minOf(coverage.values());
       for (Map.Entry<T, Integer> item : coverage.entrySet()) {
-        if (coverage.get(item.getKey()) == min ) {
+        if (coverage.get(item.getKey()) == min) {
           choices.add(item.getKey());
         }
       }

@@ -10,9 +10,7 @@ import java.util.Collection;
 
 import static junit.framework.Assert.*;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class ValueRangeSetTests {
   @Test
   public void minMaxTest() {
@@ -36,10 +34,10 @@ public class ValueRangeSetTests {
     double d2 = ni.nextDouble();
     double d3 = ni.nextDouble();
     double d4 = ni.nextDouble();
-    assertTrue("Generated value 1 should be in partition 1 (10-100) was "+d1, d1 >= 10 && d1 <= 100);
-    assertTrue("Generated value 2 should be in partition 2 (150-200) was "+d2, d2 >= 150 && d2 <= 200);
-    assertTrue("Generated value 3 should be in partition 3 (250-300) was "+d3, d3 >= 250 && d3 <= 300);
-    assertTrue("Generated value 4 should be in partition 1 (10-100) was "+d4, d4 >= 10 && d4 <= 100);
+    assertTrue("Generated value 1 should be in partition 1 (10-100) was " + d1, d1 >= 10 && d1 <= 100);
+    assertTrue("Generated value 2 should be in partition 2 (150-200) was " + d2, d2 >= 150 && d2 <= 200);
+    assertTrue("Generated value 3 should be in partition 3 (250-300) was " + d3, d3 >= 250 && d3 <= 300);
+    assertTrue("Generated value 4 should be in partition 1 (10-100) was " + d4, d4 >= 10 && d4 <= 100);
   }
 
   @Test
@@ -53,10 +51,10 @@ public class ValueRangeSetTests {
     double d2 = ni.nextDouble();
     double d3 = ni.nextDouble();
     double d4 = ni.nextDouble();
-    assertTrue("Generated value 1 should be in partition 1 (10-100) was "+d1, d1 >= 10 && d1 <= 100);
-    assertTrue("Generated value 2 should be in partition 2 (150-200) was "+d2, d2 >= 50 && d2 <= 200);
-    assertTrue("Generated value 3 should be in partition 3 (250-300) was "+d3, d3 >= 150 && d3 <= 300);
-    assertTrue("Generated value 4 should be in partition 1 (10-100) was "+d4, d4 >= 10 && d4 <= 100);
+    assertTrue("Generated value 1 should be in partition 1 (10-100) was " + d1, d1 >= 10 && d1 <= 100);
+    assertTrue("Generated value 2 should be in partition 2 (150-200) was " + d2, d2 >= 50 && d2 <= 200);
+    assertTrue("Generated value 3 should be in partition 3 (250-300) was " + d3, d3 >= 150 && d3 <= 300);
+    assertTrue("Generated value 4 should be in partition 1 (10-100) was " + d4, d4 >= 10 && d4 <= 100);
   }
 
   @Test
@@ -70,11 +68,11 @@ public class ValueRangeSetTests {
     double d2 = ni.nextDouble();
     double d3 = ni.nextDouble();
     double d4 = ni.nextDouble();
-    assertTrue("Generated value 1 should be in partition 1 (-10-100) was "+d1, d1 >= -10 && d1 <= 100);
-    assertTrue("Generated value 2 should be in partition 2 (-200-(-50)) was "+d2, d2 <= -50 && d2 >= -200);
-    assertTrue("Generated value 3 should be in partition 3 (-150-0) was "+d3, d3 >= -150 && d3 <= 0);
-    assertTrue("Generated value 4 should be in partition 4 (-10-100) was "+d4, d4 >= -10 && d4 <= 100);
-    assertFalse("Number generation should be random, appears not (repeat to be sure): generated value was the same twice ("+d4+")", d1 == d4);
+    assertTrue("Generated value 1 should be in partition 1 (-10-100) was " + d1, d1 >= -10 && d1 <= 100);
+    assertTrue("Generated value 2 should be in partition 2 (-200-(-50)) was " + d2, d2 <= -50 && d2 >= -200);
+    assertTrue("Generated value 3 should be in partition 3 (-150-0) was " + d3, d3 >= -150 && d3 <= 0);
+    assertTrue("Generated value 4 should be in partition 4 (-10-100) was " + d4, d4 >= -10 && d4 <= 100);
+    assertFalse("Number generation should be random, appears not (repeat to be sure): generated value was the same twice (" + d4 + ")", d1 == d4);
   }
 
   @Test
@@ -88,10 +86,10 @@ public class ValueRangeSetTests {
     double d2 = ni.nextDouble();
     double d3 = ni.nextDouble();
     double d4 = ni.nextDouble();
-    assertTrue("Generated value 1 should be in partitions 1-3 (-10-100, -50-(-200) was "+d1, (d1 >= -10 && d1 <= 100) || (d1 <= 0 && d1 >= -200));
-    assertTrue("Generated value 2 should be in partitions 1-3 (-10-100, -50-(-200) was "+d2, (d2 >= -10 && d2 <= 100) || (d2 <= 0 && d2 >= -200));
-    assertTrue("Generated value 3 should be in partitions 1-3 (-10-100, -50-(-200) was "+d3, (d3 >= -10 && d3 <= 100) || (d3 <= 0 && d3 >= -200));
-    assertTrue("Generated value 4 should be in partitions 1-3 (-10-100, -50-(-200) was "+d4, (d4 >= -10 && d4 <= 100) || (d4 <= 0 && d4 >= -200));
+    assertTrue("Generated value 1 should be in partitions 1-3 (-10-100, -50-(-200) was " + d1, (d1 >= -10 && d1 <= 100) || (d1 <= 0 && d1 >= -200));
+    assertTrue("Generated value 2 should be in partitions 1-3 (-10-100, -50-(-200) was " + d2, (d2 >= -10 && d2 <= 100) || (d2 <= 0 && d2 >= -200));
+    assertTrue("Generated value 3 should be in partitions 1-3 (-10-100, -50-(-200) was " + d3, (d3 >= -10 && d3 <= 100) || (d3 <= 0 && d3 >= -200));
+    assertTrue("Generated value 4 should be in partitions 1-3 (-10-100, -50-(-200) was " + d4, (d4 >= -10 && d4 <= 100) || (d4 <= 0 && d4 >= -200));
   }
 
   @Test
@@ -110,7 +108,7 @@ public class ValueRangeSetTests {
     int p2 = findInPartitions(d2, 10d, 100d, 150d, 200d, 250d, 300d);
     int p3 = findInPartitions(d3, 10d, 100d, 150d, 200d, 250d, 300d);
     int p4 = findInPartitions(d4, 10d, 100d, 150d, 200d, 250d, 300d);
-    assertTrue("Generated values should cover all partitions now: "+p1+", "+p2+", "+p3, p1 != p2 && p1 != p3 && p2 != p3);
+    assertTrue("Generated values should cover all partitions now: " + p1 + ", " + p2 + ", " + p3, p1 != p2 && p1 != p3 && p2 != p3);
     assertTrue("Overflowing generated value should be in one of the already covered partitions.", p4 == p1 || p4 == p2 || p4 == p3);
 
   }
@@ -142,20 +140,20 @@ public class ValueRangeSetTests {
     double d2 = ni.nextDouble();
     double d3 = ni.nextDouble();
     double d4 = ni.nextDouble();
-    assertTrue("Generated value 1 should be in partition 1 (10-100) was "+d1, d1 >= 10 && d1 <= 100);
-    assertTrue("Generated value 2 should be in partition 2 (150-200) was "+d2, d2 >= 150 && d2 <= 200);
-    assertTrue("Generated value 3 should be in partition 3 (250-300) was "+d3, d3 >= 250 && d3 <= 300);
-    assertTrue("Generated value 4 should be in partition 4 (101-120) was "+d4, d4 >= 101 && d4 <= 120);
+    assertTrue("Generated value 1 should be in partition 1 (10-100) was " + d1, d1 >= 10 && d1 <= 100);
+    assertTrue("Generated value 2 should be in partition 2 (150-200) was " + d2, d2 >= 150 && d2 <= 200);
+    assertTrue("Generated value 3 should be in partition 3 (250-300) was " + d3, d3 >= 250 && d3 <= 300);
+    assertTrue("Generated value 4 should be in partition 4 (101-120) was " + d4, d4 >= 101 && d4 <= 120);
     ni.removePartition(101d, 120d);
 
     d1 = ni.nextDouble();
     d2 = ni.nextDouble();
     d3 = ni.nextDouble();
     d4 = ni.nextDouble();
-    assertTrue("Generated value 1 should be in partition 1 (10-100) was "+d1, d1 >= 10 && d1 <= 100);
-    assertTrue("Generated value 2 should be in partition 2 (150-200) was "+d2, d2 >= 150 && d2 <= 200);
-    assertTrue("Generated value 3 should be in partition 3 (250-300) was "+d3, d3 >= 250 && d3 <= 300);
-    assertTrue("Generated value 4 should be in partition 1 (10-100) was "+d4, d4 >= 10 && d4 <= 100);
+    assertTrue("Generated value 1 should be in partition 1 (10-100) was " + d1, d1 >= 10 && d1 <= 100);
+    assertTrue("Generated value 2 should be in partition 2 (150-200) was " + d2, d2 >= 150 && d2 <= 200);
+    assertTrue("Generated value 3 should be in partition 3 (250-300) was " + d3, d3 >= 250 && d3 <= 300);
+    assertTrue("Generated value 4 should be in partition 1 (10-100) was " + d4, d4 >= 10 && d4 <= 100);
   }
 
   @Test
@@ -186,11 +184,11 @@ public class ValueRangeSetTests {
   }
 
   public void assertInvariantContains(double value, ValueRangeSet di) {
-    assertTrue("Value "+value+" should be contained in partition(s):"+di, di.evaluate(value));
+    assertTrue("Value " + value + " should be contained in partition(s):" + di, di.evaluate(value));
   }
 
   public void assertInvariantDoesNotContain(double value, ValueRangeSet di) {
-    assertFalse("Value "+value+" should not be contained in partition(s):"+di, di.evaluate(value));
+    assertFalse("Value " + value + " should not be contained in partition(s):" + di, di.evaluate(value));
   }
 
   @Test
@@ -272,7 +270,7 @@ public class ValueRangeSetTests {
     ni.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     boolean b1 = false;
     boolean b2 = false;
-    for (int i = 0 ; i < 100 ; i++) {
+    for (int i = 0; i < 100; i++) {
       int n = ni.nextInt();
       if (n == 1) {
         b1 = true;
@@ -323,7 +321,7 @@ public class ValueRangeSetTests {
     vr.addPartition(200, 300);
     vr.addPartition(-300, -200);
     Collection<Integer> actual = new ArrayList<Integer>();
-    for (int i = 0 ; i < 30 ; i++) {
+    for (int i = 0; i < 30; i++) {
       actual.add(vr.next());
     }
     String expected = "[0, -100, 200, -300, 100, -50, 300, -200, 1, -99, 201, -299, 101, -49, 301, -199, -1, -101, 199, -301, 99, -51, 299, -201, 2, -98, 202, -298, 102, -48]";
@@ -343,7 +341,7 @@ public class ValueRangeSetTests {
     //the valuerangeset actually converts float to double
     double[] expected = new double[]{0, -100, 200, -300, 100, -50, 300, -200, 0.1, -99.9, 200.1, -299.9, 100.1, -49.9, 300.1, -199.9, -0.1, -100.1, 199.9, -300.1, 99.9, -50.1, 299.9, -200.1, 0.2, -99.8, 200.2, -299.8, 100.2, -49.8};
     for (int i = 0; i < 30; i++) {
-      assertEquals("Generated integers for value range with boundary scan (index "+i+")", expected[i], vr.next().doubleValue(), 0.01d);
+      assertEquals("Generated integers for value range with boundary scan (index " + i + ")", expected[i], vr.next().doubleValue(), 0.01d);
     }
   }
 

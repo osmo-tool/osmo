@@ -7,5 +7,5 @@ package osmo.tester.optimizer;
  * @author Teemu Kanstren
  */
 public class RATOptimizer {
-  
+
 }

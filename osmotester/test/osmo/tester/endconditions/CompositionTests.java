@@ -13,9 +13,7 @@ import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class CompositionTests {
   @Test
   public void length2AndLength4() {

@@ -3,7 +3,6 @@ package osmo.tester.examples;
 import junit.framework.AssertionFailedError;
 import org.junit.Before;
 import org.junit.Test;
-import osmo.common.log.Logger;
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.examples.calendar.scripter.offline.OfflineScripter;
@@ -27,9 +26,7 @@ import static junit.framework.Assert.fail;
 import static osmo.common.TestUtils.getResource;
 import static osmo.common.TestUtils.unifyLineSeparators;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class CalendarTests {
   private OSMOTester osmo = null;
 
@@ -107,7 +104,7 @@ public class CalendarTests {
     ModelState state = new ModelState();
     OfflineScripter scripter = new OfflineScripter("tests.html");
     osmo.addModelObject(new CalendarBaseModel(state, scripter));
-    generateAndAssertScript(scripter, "expected-base-offline.html");
+    generateAndAssertScript(scripter, "expected-base-offline.txt");
 
   }
 
@@ -131,6 +128,6 @@ public class CalendarTests {
     osmo.addModelObject(new CalendarParticipantModel(state, scripter));
     osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter));
     osmo.addModelObject(new CalendarFailureModel(state, scripter));
-    generateAndAssertScript(scripter, "expected-full-offline.html");
+    generateAndAssertScript(scripter, "expected-full-offline.txt");
   }
 }

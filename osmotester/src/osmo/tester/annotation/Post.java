@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * This annotation defines that the annotated method should be executed after each the specified
  * (or any) transition.
- *
+ * <p/>
  * The annotated method must have no parameters or one parameter of type Map<String, Object>.
  * If the parameter is there, OSMOTester will provide a Map which is the same as the Map that
  * was provided to the any @Pre methods for that transition (allowing, e.g., passing values from @Pre

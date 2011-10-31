@@ -24,7 +24,7 @@ public class CalendarEvent {
   private Collection<String> participants = new HashSet<String>();
   /** Unique identifier for the event. */
   private final String id;
-  /** Organizer of the event (their unique user id)*/
+  /** Organizer of the event (their unique user id) */
   private final String organizer;
   /** Maintains the next identifier for created event. */
   private static final AtomicInteger nextId = new AtomicInteger(0);
@@ -34,7 +34,7 @@ public class CalendarEvent {
     this.end = end;
     this.description = description;
     this.location = location;
-    id = uid+":event:"+nextId.incrementAndGet();
+    id = uid + ":event:" + nextId.incrementAndGet();
     participants.add(uid);
     organizer = uid;
   }

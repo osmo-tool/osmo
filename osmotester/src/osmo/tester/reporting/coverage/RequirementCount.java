@@ -1,8 +1,6 @@
 package osmo.tester.reporting.coverage;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class RequirementCount implements Comparable<RequirementCount> {
   private final String name;
   private final int count;

@@ -1,5 +1,7 @@
 package osmo.tester.model.dataflow;
 
+import osmo.common.log.Logger;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -34,34 +36,21 @@ import static osmo.common.TestUtils.*;
  * @see Input
  * @see Output
  */
-public class ValueRange<T extends Number> implements Input<T>, Output<T> {
-  /**
-   * Minimum value for this value range.
-   */
+public class ValueRange<T extends Number> extends SearchableInput<T> implements Output<T> {
+  private static final Logger log = new Logger(ValueRange.class);
+  /** Minimum value for this value range. */
   private Number min;
-  /**
-   * Maximum value for this value range.
-   */
+  /** Maximum value for this value range. */
   private Number max;
-  /**
-   * Amount to increment with if using ordered loop data generation strategy.
-   */
+  /** Amount to increment with if using ordered loop data generation strategy. */
   private Number increment = 1;
-  /**
-   * Keeps a history of all the data values created as input from this value range.
-   */
+  /** Keeps a history of all the data values created as input from this value range. */
   protected List<Number> history = new ArrayList<Number>();
-  /**
-   * History of generated values in case an optimized data generation strategy is used.
-   */
+  /** History of generated values in case an optimized data generation strategy is used. */
   protected List<Number> optimizerHistory = new ArrayList<Number>();
-  /**
-   * The strategy for data generation.
-   */
+  /** The strategy for data generation. */
   private DataGenerationStrategy algorithm = DataGenerationStrategy.OPTIMIZED_RANDOM;
-  /**
-   * The actual type of data to be generated.
-   */
+  /** The actual type of data to be generated. */
   private final DataType type;
   /** Handles boundary scan data generation strategy. */
   private final Boundary boundary;
@@ -111,9 +100,7 @@ public class ValueRange<T extends Number> implements Input<T>, Output<T> {
     return type;
   }
 
-  /**
-   * @param increment The value to increment with for ordered loops.
-   */
+  /** @param increment The value to increment with for ordered loops. */
   public void setIncrement(Number increment) {
     this.increment = increment;
     boundary.setIncrement(increment);
@@ -172,6 +159,8 @@ public class ValueRange<T extends Number> implements Input<T>, Output<T> {
       value = nextRandom(type);
     }
     history.add(value);
+    observe((T) value);
+    log.debug("Value:"+value);
     return value;
   }
 
@@ -257,11 +246,7 @@ public class ValueRange<T extends Number> implements Input<T>, Output<T> {
     return value;
   }
 
-  public static void main(String[] args) {
-    new ValueRange<Integer>(0, 10).nextBoundaryScan();
-  }
-
-  public Number nextBoundaryScan() {
+  private Number nextBoundaryScan() {
     return boundary.next();
   }
 
