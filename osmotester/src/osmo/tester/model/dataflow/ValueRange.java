@@ -74,6 +74,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> implements 
       this.type = DataType.DOUBLE;
     }
     boundary = new Boundary(this.type, min, max);
+    allSupported = true;
   }
 
   /**
@@ -94,6 +95,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> implements 
       this.type = DataType.DOUBLE;
     }
     boundary = new Boundary(this.type, min, max);
+    allSupported = true;
   }
 
   public DataType getType() {
@@ -301,6 +303,40 @@ public class ValueRange<T extends Number> extends SearchableInput<T> implements 
 
   public boolean evaluate(Number value) {
     return value.doubleValue() <= max.doubleValue() && value.doubleValue() >= min.doubleValue();
+  }
+
+  @Override
+  public Collection<T> getOptions() {
+    int n = (int)Math.round((max.doubleValue()-min.doubleValue())/increment.doubleValue());
+    if (n > 1000) {
+      throw new IllegalStateException("Currently only 1000 values in coverage are supported. You request "+n+".");
+    }
+    log.debug("Number of options:"+n);
+    Number min = this.min;
+    Number max = this.max;
+    Collection<T> options = new ArrayList<T>();
+    while (max.doubleValue() > min.doubleValue()) {
+      T value = null;
+      switch (type) {
+        case INT:
+          min = min.intValue() + increment.intValue();
+          value = (T) new Integer(min.intValue());
+          break;
+        case LONG:
+          min = min.longValue() + increment.longValue();
+          value = (T) new Long(min.intValue());
+          break;
+        case DOUBLE:
+          min = min.doubleValue() + increment.doubleValue();
+          value = (T) new Double(min.intValue());
+          break;
+        default:
+          throw new IllegalArgumentException("Enum type:" + type + " unsupported.");
+      }
+      options.add(value);
+      min = min.doubleValue()+increment.doubleValue();
+    }
+    return options;
   }
 
   @Override

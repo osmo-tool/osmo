@@ -1,5 +1,7 @@
 package osmo.tester.model.dataflow;
 
+import java.util.Collection;
+
 import static osmo.common.TestUtils.cInt;
 
 /**
@@ -62,5 +64,10 @@ public class ReadableChars extends SearchableInput<Character> {
 
   public void asciiLettersAndNumbersOnly() {
     chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  }
+
+  @Override
+  public Collection<Object> getOptions() {
+    return null;
   }
 }

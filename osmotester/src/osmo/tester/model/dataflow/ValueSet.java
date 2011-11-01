@@ -34,6 +34,7 @@ public class ValueSet<T> extends SearchableInput<T> implements Output<T> {
 
   /** Constructor for when no initial options are provided. Options need to be added later with addOption(). */
   public ValueSet() {
+    init();
   }
 
   /**
@@ -43,6 +44,7 @@ public class ValueSet<T> extends SearchableInput<T> implements Output<T> {
    */
   public ValueSet(T... items) {
     Collections.addAll(options, items);
+    init();
   }
 
   /**
@@ -52,6 +54,11 @@ public class ValueSet<T> extends SearchableInput<T> implements Output<T> {
    */
   public ValueSet(DataGenerationStrategy strategy) {
     this.strategy = strategy;
+    init();
+  }
+
+  private void init() {
+    allSupported = true;
   }
 
   /**
@@ -196,6 +203,11 @@ public class ValueSet<T> extends SearchableInput<T> implements Output<T> {
    */
   public Collection<T> getAll() {
     return options;
+  }
+
+  @Override
+  public Collection<T> getOptions() {
+    return getAll();
   }
 
   @Override

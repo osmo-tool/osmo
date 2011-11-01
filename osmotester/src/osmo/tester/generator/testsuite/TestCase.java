@@ -65,7 +65,7 @@ public class TestCase {
    * @return The new step object.
    */
   public TestStep addStep(FSMTransition transition) {
-    TestStep step = new TestStep(transition, nextStepId++);
+    TestStep step = new TestStep(this, transition, nextStepId++);
     log.debug("Added step:" + step);
     steps.add(step);
     currentStep = step;
@@ -138,14 +138,21 @@ public class TestCase {
             '}';
   }
 
-  public void addVariableValue(String name, Object value) {
+  public void addVariableValue(String name, Object value, boolean merge) {
     ModelVariable variable = variables.get(name);
     if (variable == null) {
       variable = new ModelVariable(name);
       variables.put(name, variable);
     }
-    log.debug("Added value:"+value);
-    variable.addValue(value);
+    log.debug("Variable:"+name+" add value:" + value);
+    if (!merge || !variable.contains(value)) {
+      log.debug("m:"+merge+" c:"+variable.contains(value));
+      variable.addValue(value);
+    }
+  }
+
+  public void addVariableValue(String name, Object value) {
+    addVariableValue(name, value, false);
   }
 
   public Map<String, ModelVariable> getVariables() {

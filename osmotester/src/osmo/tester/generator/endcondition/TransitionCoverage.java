@@ -99,4 +99,8 @@ public class TransitionCoverage implements EndCondition {
     log.debug("ratio:" + ratio + "threshold:" + threshold);
     return ratio >= threshold;
   }
+
+  @Override
+  public void init(FSM fsm) {
+  }
 }

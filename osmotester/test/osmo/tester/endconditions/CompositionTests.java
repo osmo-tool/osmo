@@ -3,9 +3,9 @@ package osmo.tester.endconditions;
 import org.junit.Test;
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.calculator.CalculatorModel;
-import osmo.tester.generator.endcondition.AndComposition;
+import osmo.tester.generator.endcondition.And;
 import osmo.tester.generator.endcondition.Length;
-import osmo.tester.generator.endcondition.OrComposition;
+import osmo.tester.generator.endcondition.Or;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 
@@ -19,7 +19,7 @@ public class CompositionTests {
   public void length2AndLength4() {
     Length length2 = new Length(2);
     Length length4 = new Length(4);
-    AndComposition and = new AndComposition(length2, length4);
+    And and = new And(length2, length4);
 
     CalculatorModel calculator = new CalculatorModel();
     OSMOTester tester = new OSMOTester(calculator);
@@ -39,7 +39,7 @@ public class CompositionTests {
     Length length2 = new Length(2);
     Length length4 = new Length(4);
     Length length6 = new Length(6);
-    AndComposition and = new AndComposition(length2, length4, length6);
+    And and = new And(length2, length4, length6);
 
     CalculatorModel calculator = new CalculatorModel();
     OSMOTester tester = new OSMOTester(calculator);
@@ -59,7 +59,7 @@ public class CompositionTests {
     Length length2 = new Length(2);
     Length length4 = new Length(4);
     Length length6 = new Length(6);
-    OrComposition or = new OrComposition(length2, length4, length6);
+    Or or = new Or(length2, length4, length6);
 
     CalculatorModel calculator = new CalculatorModel();
     OSMOTester tester = new OSMOTester(calculator);
@@ -79,7 +79,7 @@ public class CompositionTests {
     Length length2 = new Length(2);
     Length length4 = new Length(4);
     Length length6 = new Length(6);
-    AndComposition and = new AndComposition(length2, length4, length6);
+    And and = new And(length2, length4, length6);
 
     CalculatorModel calculator = new CalculatorModel();
     OSMOTester tester = new OSMOTester(calculator);

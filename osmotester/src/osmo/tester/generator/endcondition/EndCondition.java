@@ -26,5 +26,6 @@ public interface EndCondition {
    * @return True to stop generation, false to continue.
    */
   public boolean endTest(TestSuite suite, FSM fsm);
+  public void init(FSM fsm);
 }
 

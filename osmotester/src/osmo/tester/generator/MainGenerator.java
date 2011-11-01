@@ -66,6 +66,7 @@ public class MainGenerator {
    * @param fsm Describes the test model in an FSM format.
    */
   public void generate(FSM fsm) {
+    initEndConditions(fsm);
     suite = fsm.initSuite();
     log.debug("Starting test suite generation");
     beforeSuite(fsm);
@@ -87,6 +88,15 @@ public class MainGenerator {
     }
     afterSuite(fsm);
     log.debug("Finished test suite generation");
+  }
+
+  private void initEndConditions(FSM fsm) {
+    for (EndCondition ec : testCaseEndConditions) {
+      ec.init(fsm);
+    }
+    for (EndCondition ec : suiteEndConditions) {
+      ec.init(fsm);
+    }
   }
 
   private boolean checkSuiteEndConditions(FSM fsm) {

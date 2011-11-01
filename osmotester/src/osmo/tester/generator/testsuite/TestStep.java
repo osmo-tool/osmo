@@ -30,6 +30,7 @@ public class TestStep {
   private Map<String, Object> stateValuesAfter = new HashMap<String, Object>();
   /** Step identifier. */
   private final int id;
+  private final TestCase parent;
 
   /**
    * Constructor.
@@ -37,7 +38,8 @@ public class TestStep {
    * @param transition The transition that was taken in this test step.
    * @param id         The identifier for this step.
    */
-  public TestStep(FSMTransition transition, int id) {
+  public TestStep(TestCase parent, FSMTransition transition, int id) {
+    this.parent = parent;
     this.transition = transition;
     this.id = id;
   }
@@ -99,7 +101,10 @@ public class TestStep {
   public void storeStateBefore(FSM fsm) {
     Collection<VariableField> variables = fsm.getStateVariables();
     for (VariableField variable : variables) {
-      stateValuesBefore.put(variable.getName(), variable.getValue());
+      String name = variable.getName();
+      Object value = variable.getValue();
+      stateValuesBefore.put(name, value);
+      parent.addVariableValue(name, ""+value, true);
     }
   }
 
@@ -111,7 +116,10 @@ public class TestStep {
   public void storeStateAfter(FSM fsm) {
     Collection<VariableField> variables = fsm.getStateVariables();
     for (VariableField variable : variables) {
-      stateValuesAfter.put(variable.getName(), variable.getValue());
+      String name = variable.getName();
+      Object value = variable.getValue();
+      stateValuesAfter.put(name, value);
+      parent.addVariableValue(name, ""+value, true);
     }
   }
 }
