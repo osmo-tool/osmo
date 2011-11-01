@@ -62,4 +62,8 @@ public class StepCoverage implements EndCondition {
   public void addRequiredStep(String step) {
     required.add(step);
   }
+
+  @Override
+  public void init(FSM fsm) {
+  }
 }

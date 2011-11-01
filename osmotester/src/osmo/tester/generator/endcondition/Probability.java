@@ -44,4 +44,8 @@ public class Probability implements EndCondition {
   public boolean endTest(TestSuite suite, FSM fsm) {
     return endNow(suite, fsm);
   }
+
+  @Override
+  public void init(FSM fsm) {
+  }
 }

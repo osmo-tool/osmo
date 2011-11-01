@@ -27,4 +27,8 @@ public class ModelVariable {
   public void addAll(ModelVariable testVar) {
     values.addAll(testVar.values);
   }
+
+  public boolean contains(Object value) {
+    return values.contains(value);
+  }
 }

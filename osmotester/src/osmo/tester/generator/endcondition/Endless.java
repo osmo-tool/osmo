@@ -19,4 +19,8 @@ public class Endless implements EndCondition {
   public boolean endTest(TestSuite suite, FSM fsm) {
     return false;
   }
+
+  @Override
+  public void init(FSM fsm) {
+  }
 }

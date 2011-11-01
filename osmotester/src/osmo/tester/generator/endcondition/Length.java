@@ -38,4 +38,8 @@ public class Length implements EndCondition {
     log.debug(" et:" + suite.getFinishedTestCases().size() + " c:" + suite.currentSteps());
     return suite.currentSteps() >= length;
   }
+
+  @Override
+  public void init(FSM fsm) {
+  }
 }
