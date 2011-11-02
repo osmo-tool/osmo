@@ -44,9 +44,11 @@ public class DataCoverage implements EndCondition {
       temp.addAll(req.getValues());
       ModelVariable variable = variables.get(req.getName());
       Collection<Object> values = variable.getValues();
+      log.debug("values:" + values);
       for (Object value : values) {
         temp.remove(""+value);
       }
+      log.debug("temp:"+temp);
       if (temp.size() > 0) {
         return false;
       }
@@ -77,6 +79,12 @@ public class DataCoverage implements EndCondition {
       if (req != null) {
         if (req.isAll() && !req.isInitialized()) {
           req.initializeFrom(input);
+        }
+        Collection<String> values = req.getValues();
+        for (Object value : values) {
+          if (!input.evaluateSerialized("" + value)) {
+            throw new IllegalArgumentException("Impossible coverage requirements, defined variables [" + name + "] can not have value "+value+".");
+          }
         }
       }
     }

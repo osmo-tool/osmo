@@ -17,7 +17,7 @@ import static osmo.common.TestUtils.oneOf;
  *
  * @author Teemu Kanstren
  */
-public class ValueRangeSet<T extends Number> extends SearchableInput<T> implements Output<T> {
+public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
   private static final Logger log = new Logger(ValueRangeSet.class);
   /** The different partitions in the domain. */
   private ValueSet<ValueRange> partitions = new ValueSet<ValueRange>();
@@ -237,7 +237,8 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> implemen
    * @param value The value to check.
    * @return True if the value fits in the defined partitions, false otherwise.
    */
-  public boolean evaluate(T value) {
+  @Override
+  public boolean evaluate(Number value) {
     Collection<ValueRange> partitions = this.partitions.getAll();
     log.debug("Evaluating value:" + value);
     for (ValueRange partition : partitions) {
@@ -248,6 +249,17 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> implemen
       }
     }
     return false;
+  }
+
+  @Override
+  public boolean evaluateSerialized(String item) {
+    double value = 0;
+    try {
+      value = Double.parseDouble(item);
+    } catch (NumberFormatException e) {
+      return false;
+    }
+    return evaluate(value);
   }
 
   @Override

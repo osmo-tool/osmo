@@ -21,7 +21,7 @@ import static osmo.common.TestUtils.oneOf;
  *
  * @author Teemu Kanstren
  */
-public class ValueSet<T> extends SearchableInput<T> implements Output<T> {
+public class ValueSet<T> extends SearchableInput<T> {
   private static final Logger log = new Logger(ValueSet.class);
   /** The options for data generation and evaluation. */
   private List<T> options = new ArrayList<T>();
@@ -105,6 +105,16 @@ public class ValueSet<T> extends SearchableInput<T> implements Output<T> {
    */
   public boolean evaluate(T value) {
     return options.contains(value);
+  }
+
+  @Override
+  public boolean evaluateSerialized(String item) {
+    for (T option : options) {
+      if (option.toString().equals(item)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**

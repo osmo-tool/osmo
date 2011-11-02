@@ -240,18 +240,12 @@ public class DataCoverageTests {
     osmo.addTestEndCondition(dc);
     osmo.addSuiteEndCondition(length1);
     try {
-      fail("Check needs to be written");
       osmo.generate();
       fail("Generation with coverage for invalid values should fail.");
-    } catch (IllegalStateException e) {
+    } catch (IllegalArgumentException e) {
       //Expected
       assertEquals("Reported error", "Impossible coverage requirements, defined variables [range] can not have value 6.", e.getMessage());
     }
-  }
-
-  @Test
-  public void thresholdForeverInAnotherPlaceForAllConditions() {
-    fail("TBD");
   }
 
   @Test
