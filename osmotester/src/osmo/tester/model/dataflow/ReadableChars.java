@@ -70,4 +70,9 @@ public class ReadableChars extends SearchableInput<Character> {
   public Collection<Object> getOptions() {
     return null;
   }
+
+  @Override
+  public boolean evaluate(Character item) {
+    return chars.contains(item.toString());
+  }
 }

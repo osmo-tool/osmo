@@ -6,7 +6,7 @@ import java.util.Collection;
 import static osmo.common.TestUtils.cInt;
 
 /** @author Teemu Kanstren */
-public class ReadableWords extends SearchableInput<String> implements Output<String> {
+public class ReadableWords extends SearchableInput<String> {
   /** Minimum length of generated word. */
   private int min = 5;
   /** Maximum length of generated word. */
@@ -89,6 +89,11 @@ public class ReadableWords extends SearchableInput<String> implements Output<Str
       result = result && b;
     }
     return result;
+  }
+
+  @Override
+  public boolean evaluateSerialized(String item) {
+    return evaluate(item);
   }
 
   public Collection<String> getHistory() {

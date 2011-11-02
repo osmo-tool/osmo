@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOTester;
+import osmo.tester.generator.endcondition.Endless;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.model.Requirements;
 import osmo.tester.testmodels.BaseModelExtension;
@@ -190,6 +191,23 @@ public class GenerationTests {
     Length length5 = new Length(5);
     osmo.addTestEndCondition(length5);
     osmo.addSuiteEndCondition(length5);
+    osmo.generate();
+    assertEquals("Number of times generic @Post performed", 10, model.checkCount);
+    assertTrue("Should have performed generic @Post for first transition", model.firstChecked);
+    assertTrue("Should have performed generic @Post for second transition", model.secondChecked);
+  }
+
+  @Test
+  public void thresholdBreak() {
+    BaseModelExtension model = new BaseModelExtension();
+//    osmo.setDebug(true);
+    osmo.addModelObject(model);
+    Endless endless = new Endless();
+    osmo.addTestEndCondition(endless);
+    osmo.addSuiteEndCondition(endless);
+//    osmo.setTestThreshold(100);
+//    osmo.setSuiteThreshold(200);
+    fail("to be implemented..");
     osmo.generate();
     assertEquals("Number of times generic @Post performed", 10, model.checkCount);
     assertTrue("Should have performed generic @Post for first transition", model.firstChecked);

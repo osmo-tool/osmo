@@ -36,7 +36,7 @@ import static osmo.common.TestUtils.*;
  * @see Input
  * @see Output
  */
-public class ValueRange<T extends Number> extends SearchableInput<T> implements Output<T> {
+public class ValueRange<T extends Number> extends SearchableInput<T> {
   private static final Logger log = new Logger(ValueRange.class);
   /** Minimum value for this value range. */
   private Number min;
@@ -301,8 +301,20 @@ public class ValueRange<T extends Number> extends SearchableInput<T> implements 
     return result;
   }
 
+  @Override
   public boolean evaluate(Number value) {
     return value.doubleValue() <= max.doubleValue() && value.doubleValue() >= min.doubleValue();
+  }
+
+  @Override
+  public boolean evaluateSerialized(String item) {
+    double value = 0;
+    try {
+      value = Double.parseDouble(item);
+    } catch (NumberFormatException e) {
+      return false;
+    }
+    return evaluate(value);
   }
 
   @Override

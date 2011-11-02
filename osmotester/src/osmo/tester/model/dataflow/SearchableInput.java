@@ -3,7 +3,7 @@ package osmo.tester.model.dataflow;
 import java.util.Collection;
 
 /** @author Teemu Kanstren */
-public abstract class SearchableInput<T> implements Input<T> {
+public abstract class SearchableInput<T> implements Input<T>, Output<T> {
   private String name;
   private InputObserver<T> observer = null;
   protected boolean allSupported = false;

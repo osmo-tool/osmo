@@ -13,4 +13,6 @@ public interface Output<T> {
    * @return True if matches the rules.
    */
   public boolean evaluate(T item);
+
+  public boolean evaluateSerialized(String item);
 }
