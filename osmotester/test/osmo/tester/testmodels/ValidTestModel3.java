@@ -1,5 +1,8 @@
 package osmo.tester.testmodels;
 
+import osmo.tester.annotation.AfterSuite;
+import osmo.tester.annotation.AfterTest;
+import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
@@ -33,6 +36,13 @@ public class ValidTestModel3 {
   @BeforeTest
   public void reset() {
     req.clearCoverage();
+  }
+
+  @AfterTest
+  @BeforeSuite
+  @AfterSuite
+  public void empty() {
+
   }
 
   @Guard("hello")

@@ -79,8 +79,8 @@ public class MainParser {
    * @param model Model object to be parsed.
    * @return The FSM for the given object.
    */
-  public FSM parse(Object model) {
-    Collection<Object> models = new ArrayList<Object>();
+  public FSM parse(ModelObject model) {
+    Collection<ModelObject> models = new ArrayList<ModelObject>();
     models.add(model);
     return parse(models);
   }
@@ -92,15 +92,17 @@ public class MainParser {
    * @param modelObjects The set of test model objects to be parsed.
    * @return The FSM object created from the given model object that can be used for test generation.
    */
-  public FSM parse(Collection<Object> modelObjects) {
+  public FSM parse(Collection<ModelObject> modelObjects) {
     log.debug("parsing");
     FSM fsm = new FSM();
     String errors = "";
-    for (Object obj : modelObjects) {
+    for (ModelObject mo : modelObjects) {
       //first we check any annotated fields that are relevant
-      errors += parseFields(fsm, obj);
+      String prefix = mo.getPrefix();
+      Object obj = mo.getObject();
+      errors += parseFields(fsm, prefix, obj);
       //next we check any annotated methods that are relevant
-      errors += parseMethods(fsm, obj);
+      errors += parseMethods(fsm, prefix, obj);
     }
     //finally we check that the generated FSM itself is valid
     fsm.checkAndUpdateGenericItems(errors);
@@ -111,10 +113,11 @@ public class MainParser {
    * Parse the relevant annotated fields and pass these to correct {@link AnnotationParser} objects.
    *
    * @param fsm The test model object to be updated according to the parsed information.
+   * @param prefix Prefix to add to all model element names.
    * @param obj The model object that contains the annotations and fields/executable methods for test generation.
    * @return A string listing all found errors.
    */
-  private String parseFields(FSM fsm, Object obj) {
+  private String parseFields(FSM fsm, String prefix, Object obj) {
     //first we find all declared fields of any scope and type (private, protected, ...)
     Collection<Field> fields = getAllFields(obj.getClass());
     log.debug("fields " + fields.size());
@@ -122,6 +125,7 @@ public class MainParser {
     ParserParameters parameters = new ParserParameters();
     parameters.setFsm(fsm);
     parameters.setModel(obj);
+    parameters.setPrefix(prefix);
     String errors = "";
     //now we loop through all fields defined in the model object
     for (Field field : fields) {
@@ -177,10 +181,11 @@ public class MainParser {
    * Parse the relevant annotated methods and pass these to correct {@link AnnotationParser} objects.
    *
    * @param fsm The test model object to be updated according to the parsed information.
+   * @param prefix Prefix to add to all model element names.
    * @param obj The model object that contains the annotations and fields/executable methods for test generation.
    * @return String representing any errors encountered.
    */
-  private String parseMethods(FSM fsm, Object obj) {
+  private String parseMethods(FSM fsm, String prefix, Object obj) {
     //first we get all methods defined in the test model object (also all scopes -> private, protected, ...)
     Collection<Method> methods = getAllMethods(obj.getClass());
     //there are always some methods inherited from java.lang.Object so we checking them here is pointless. FSM.check will do it
@@ -189,6 +194,7 @@ public class MainParser {
     ParserParameters parameters = new ParserParameters();
     parameters.setFsm(fsm);
     parameters.setModel(obj);
+    parameters.setPrefix(prefix);
     String errors = "";
     //loop through all the methods defined in the given object
     for (Method method : methods) {

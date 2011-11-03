@@ -25,6 +25,7 @@ public class ParserParameters {
   private Field field = null;
   /** The annotated method, if any. When fields are parsed this is null, otherwise must be non-null. */
   private Method method = null;
+  private String prefix = null;
 
   public FSM getFsm() {
     return fsm;
@@ -64,5 +65,13 @@ public class ParserParameters {
 
   public void setMethod(Method method) {
     this.method = method;
+  }
+
+  public String getPrefix() {
+    return prefix;
+  }
+
+  public void setPrefix(String prefix) {
+    this.prefix = prefix;
   }
 }

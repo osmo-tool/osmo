@@ -14,6 +14,7 @@ import osmo.tester.generator.endcondition.Probability;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.parser.MainParser;
+import osmo.tester.parser.ModelObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,7 +32,7 @@ import java.util.Random;
  */
 public class OSMOTester {
   /** The set of test model objects, given by the user. */
-  private final Collection<Object> modelObjects = new ArrayList<Object>();
+  private final Collection<ModelObject> modelObjects = new ArrayList<ModelObject>();
   /** When do we stop generating the overall test suite? (stopping all test generation) */
   private Collection<EndCondition> suiteEndConditions = new ArrayList<EndCondition>();
   /** When do we stop generating individual tests and start a new one? */
@@ -49,7 +50,7 @@ public class OSMOTester {
    * @param modelObject The model object defined using the OSMOTester annotations.
    */
   public OSMOTester(Object modelObject) {
-    modelObjects.add(modelObject);
+    addModelObject(modelObject);
   }
 
   /** A constructor for use with addModelObject() method. */
@@ -62,8 +63,13 @@ public class OSMOTester {
    * @param modelObject The model object (with OSMO annotations) to be added.
    */
   public void addModelObject(Object modelObject) {
-    modelObjects.add(modelObject);
+    modelObjects.add(new ModelObject(modelObject));
   }
+
+  public void addModelObject(String prefix, Object modelObject) {
+    modelObjects.add(new ModelObject(prefix, modelObject));
+  }
+
 
   /** Invoke this to perform actual test generation from the given model, with the given algorithms and strategies. */
   public void generate() {

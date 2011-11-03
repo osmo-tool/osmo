@@ -17,9 +17,12 @@ import osmo.tester.testmodels.EmptyTestModel5;
 import osmo.tester.testmodels.EmptyTestModel6;
 import osmo.tester.testmodels.PartialModel1;
 import osmo.tester.testmodels.PartialModel2;
+import osmo.tester.testmodels.ValidTestModel3;
 import osmo.tester.testmodels.VariableModel1;
 import osmo.tester.testmodels.VariableModel2;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -34,10 +37,19 @@ public class ParserTests {
     parser = new MainParser();
   }
 
+  private ModelObject mo(Object o) {
+    return new ModelObject(o);
+  }
+
+  private ModelObject mo(String prefix, Object o) {
+    return new ModelObject(prefix, o);
+  }
+
+
   @Test
   public void testModel1() throws Exception {
     EmptyTestModel1 model = new EmptyTestModel1();
-    FSM fsm = parser.parse(model);
+    FSM fsm = parser.parse(mo(model));
     assertEquals("Number of @Before methods", 2, fsm.getBefores().size());
     assertEquals("Number of @BeforeSuite methods", 1, fsm.getBeforeSuites().size());
     assertEquals("Number of @After methods", 1, fsm.getAfters().size());
@@ -55,7 +67,7 @@ public class ParserTests {
   @Test
   public void testModel2() {
     try {
-      FSM fsm = parser.parse(new EmptyTestModel2());
+      FSM fsm = parser.parse(mo(new EmptyTestModel2()));
       fail("Should throw exception");
     } catch (Exception e) {
       String msg = e.getMessage();
@@ -70,7 +82,7 @@ public class ParserTests {
   @Test
   public void testModel3() {
     try {
-      FSM fsm = parser.parse(new EmptyTestModel3());
+      FSM fsm = parser.parse(mo(new EmptyTestModel3()));
       fail("Should throw exception");
     } catch (Exception e) {
       String msg = e.getMessage();
@@ -88,7 +100,7 @@ public class ParserTests {
   @Test
   public void testModel4() {
     try {
-      FSM fsm = parser.parse(new EmptyTestModel4());
+      FSM fsm = parser.parse(mo(new EmptyTestModel4()));
       fail("Should throw exception");
     } catch (Exception e) {
       //note that this exception checking will swallow real errors so it can be useful to print them..
@@ -107,7 +119,7 @@ public class ParserTests {
   @Test
   public void testModel5() {
     try {
-      FSM fsm = parser.parse(new EmptyTestModel5());
+      FSM fsm = parser.parse(mo(new EmptyTestModel5()));
       fail("Should throw exception");
     } catch (Exception e) {
       String msg = e.getMessage();
@@ -122,7 +134,7 @@ public class ParserTests {
   @Test
   public void testModel6() {
     try {
-      FSM fsm = parser.parse(new EmptyTestModel6());
+      FSM fsm = parser.parse(mo(new EmptyTestModel6()));
       fail("Should throw exception");
     } catch (Exception e) {
       String msg = e.getMessage();
@@ -140,9 +152,9 @@ public class ParserTests {
     Requirements req = new Requirements();
     PartialModel1 model1 = new PartialModel1(req, null);
     PartialModel2 model2 = new PartialModel2(req, null);
-    Collection<Object> models = new ArrayList<Object>();
-    models.add(model1);
-    models.add(model2);
+    Collection<ModelObject> models = new ArrayList<ModelObject>();
+    models.add(mo(model1));
+    models.add(mo(model2));
     FSM fsm = parser.parse(models);
     assertEquals("Number of @Before methods", 2, fsm.getBefores().size());
     assertEquals("Number of @BeforeSuite methods", 1, fsm.getBeforeSuites().size());
@@ -162,7 +174,7 @@ public class ParserTests {
   @Test
   public void noMethods() {
     try {
-      FSM fsm = parser.parse(new Object());
+      FSM fsm = parser.parse(mo(new Object()));
       fsm.checkAndUpdateGenericItems("");
       fail("Should throw exception when no transition methods are available.");
     } catch (Exception e) {
@@ -184,7 +196,7 @@ public class ParserTests {
   @Test
   public void variableParsing() {
     VariableModel1 model = new VariableModel1();
-    FSM fsm = parser.parse(model);
+    FSM fsm = parser.parse(mo(model));
     Collection<VariableField> variables = fsm.getStateVariables();
     assertEquals("All @" + Variable.class.getSimpleName() + " items should be parsed.", 10, variables.size());
     assertVariablePresent(variables, "i1");
@@ -211,7 +223,7 @@ public class ParserTests {
   @Test
   public void searchableInputParsing() {
     VariableModel2 model = new VariableModel2();
-    FSM fsm = parser.parse(model);
+    FSM fsm = parser.parse(mo(model));
     Collection<SearchableInput> inputs = fsm.getSearchableInputs();
     assertEquals("Number of inputs", 2, inputs.size());
     assertSearchableInputPresent(inputs, "range");
@@ -226,4 +238,26 @@ public class ParserTests {
     }
     fail("SearchableInput "+name+" should be present in the model.");
   }
+
+  @Test
+  public void prefixParsing() {
+    ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
+    PrintStream ps = new PrintStream(out);
+    ValidTestModel3 model = new ValidTestModel3(ps);
+    Collection<ModelObject> models = new ArrayList<ModelObject>();
+    models.add(mo("ap_", model));
+    models.add(mo("ip_", model));
+    FSM fsm = parser.parse(models);
+    assertTransitionPresent(fsm, "ap_hello", 1, 2);
+    assertTransitionPresent(fsm, "ip_hello", 1, 2);
+    assertTransitionPresent(fsm, "ap_world", 1, 2);
+    assertTransitionPresent(fsm, "ip_world", 1, 2);
+    assertTransitionPresent(fsm, "ap_epixx", 1, 3);
+    assertTransitionPresent(fsm, "ip_epixx", 1, 3);
+    assertEquals("Number of @BeforeTest elements", 2, fsm.getBefores().size());
+    assertEquals("Number of @BeforeSuite elements", 2, fsm.getBeforeSuites().size());
+    assertEquals("Number of @AfterTest elements", 2, fsm.getAfters().size());
+    assertEquals("Number of @AfterSuite elements", 2, fsm.getAfterSuites().size());
+  }
+
 }
