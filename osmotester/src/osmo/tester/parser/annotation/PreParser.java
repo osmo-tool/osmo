@@ -40,6 +40,7 @@ public class PreParser implements AnnotationParser {
     InvocationTarget target = new InvocationTarget(parameters, Pre.class);
     FSM fsm = parameters.getFsm();
     String[] transitionNames = pre.value();
+    String prefix = parameters.getPrefix();
     for (String name : transitionNames) {
       log.debug("Parsing pre-method '" + name + "'");
       //todo: add test for transition named "all" in a test model
@@ -49,6 +50,7 @@ public class PreParser implements AnnotationParser {
         //without a transition
         continue;
       }
+      name = prefix+name;
       FSMTransition transition = fsm.createTransition(name, -1);
       transition.addPre(target);
     }

@@ -36,6 +36,7 @@ public class PostParser implements AnnotationParser {
     InvocationTarget target = new InvocationTarget(parameters, Post.class);
     FSM fsm = parameters.getFsm();
     String[] transitionNames = oracle.value();
+    String prefix = parameters.getPrefix();
     for (String name : transitionNames) {
       log.debug("Parsing post '" + name + "'");
       if (name.equals("all")) {
@@ -44,6 +45,7 @@ public class PostParser implements AnnotationParser {
         //without a transition
         continue;
       }
+      name = prefix + name;
       FSMTransition transition = fsm.createTransition(name, -1);
       transition.addPost(target);
     }

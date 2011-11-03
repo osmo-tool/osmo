@@ -32,6 +32,8 @@ public class TransitionParser implements AnnotationParser {
     if (name.equals("all")) {
       return "Transition name \"all\" is reserved. Choose another.\n";
     }
+    String prefix = parameters.getPrefix();
+    name = prefix + name;
     int weight = t.weight();
     FSMTransition transition = parameters.getFsm().createTransition(name, weight);
     transition.setTransition(new InvocationTarget(parameters, Transition.class));

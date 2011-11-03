@@ -34,6 +34,7 @@ public class GuardParser implements AnnotationParser {
     }
 
     String[] transitionNames = g.value();
+    String prefix = parameters.getPrefix();
     for (String name : transitionNames) {
       FSM fsm = parameters.getFsm();
       InvocationTarget target = new InvocationTarget(parameters, Guard.class);
@@ -43,6 +44,7 @@ public class GuardParser implements AnnotationParser {
         //without a transition
         return errors;
       }
+      name = prefix + name;
       FSMTransition transition = fsm.createTransition(name, -1);
       transition.addGuard(target);
     }
