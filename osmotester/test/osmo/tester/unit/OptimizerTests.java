@@ -4,8 +4,8 @@ import org.junit.Test;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
-import osmo.tester.optimizer.RequirementsOptimizer;
-import osmo.tester.optimizer.TransitionOptimizer;
+import osmo.tester.optimizer.offline.RequirementsOptimizer;
+import osmo.tester.optimizer.offline.TransitionOptimizer;
 
 import java.util.Collection;
 import java.util.List;

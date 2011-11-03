@@ -70,7 +70,6 @@ public class OSMOTester {
     modelObjects.add(new ModelObject(prefix, modelObject));
   }
 
-
   /** Invoke this to perform actual test generation from the given model, with the given algorithms and strategies. */
   public void generate() {
     MainGenerator generator = new MainGenerator();
