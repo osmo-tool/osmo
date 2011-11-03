@@ -1,4 +1,4 @@
-package osmo.tester.optimizer;
+package osmo.tester.optimizer.offline;
 
 import osmo.common.log.Logger;
 import osmo.tester.generator.testsuite.TestCase;
