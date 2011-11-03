@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 /** @author Teemu Kanstren */
-public class StepCoverage implements EndCondition {
+public class StepCoverage extends AbstractEndCondition {
   private static Logger log = new Logger(StepCoverage.class);
   private Collection<String> required = new ArrayList<String>();
 

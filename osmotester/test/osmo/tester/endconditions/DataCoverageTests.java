@@ -23,7 +23,6 @@ public class DataCoverageTests {
 
   @Before
   public void testSetup() {
-    Logger.debug = true;
     osmo = new OSMOTester();
     osmo.setRandom(new Random(123));
   }

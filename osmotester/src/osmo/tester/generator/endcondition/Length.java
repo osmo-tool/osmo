@@ -10,7 +10,7 @@ import osmo.tester.model.FSM;
  *
  * @author Teemu Kanstren
  */
-public class Length implements EndCondition {
+public class Length extends AbstractEndCondition {
   private static Logger log = new Logger(Length.class);
   /** The stopping length. */
   private final int length;

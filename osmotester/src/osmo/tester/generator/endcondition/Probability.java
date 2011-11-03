@@ -12,7 +12,7 @@ import osmo.tester.model.FSM;
  *
  * @author Teemu Kanstren
  */
-public class Probability implements EndCondition {
+public class Probability extends AbstractEndCondition {
   private static Logger log = new Logger(Probability.class);
   /** The stopping threshold. */
   private final double threshold;

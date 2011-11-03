@@ -19,7 +19,7 @@ import java.util.Map;
  *
  * @author Teemu Kanstren
  */
-public class TransitionCoverage implements EndCondition {
+public class TransitionCoverage extends AbstractEndCondition {
   private static final Logger log = new Logger(TransitionCoverage.class);
   /** Required transition coverage. 1=100%, 1.5=150% and so on. */
   private final double threshold;

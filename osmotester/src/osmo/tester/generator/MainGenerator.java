@@ -100,12 +100,17 @@ public class MainGenerator {
   }
 
   private boolean checkSuiteEndConditions(FSM fsm) {
+    boolean shouldEnd = true;
     for (EndCondition ec : suiteEndConditions) {
-      if (!ec.endSuite(suite, fsm)) {
-        return false;
+      boolean temp = ec.endSuite(suite, fsm);
+      if (ec.isStrict() && temp) {
+        return true;
+      }
+      if (!temp) {
+        shouldEnd = false;
       }
     }
-    return true;
+    return shouldEnd;
   }
 
   /**
@@ -119,11 +124,19 @@ public class MainGenerator {
       //allow ending only if end state annotations are not present or return true
       return checkEndStates(fsm);
     }
+    boolean shouldEnd = true;
     for (EndCondition ec : testCaseEndConditions) {
       //check if all end conditions are met
-      if (!ec.endTest(suite, fsm)) {
-        return false;
+      boolean temp = ec.endTest(suite, fsm);
+      if (ec.isStrict() && temp) {
+        return true;
       }
+      if (!temp) {
+        shouldEnd = false;
+      }
+    }
+    if (!shouldEnd) {
+      return false;
     }
     testEnding = true;
     if (fsm.getEndStates().size() > 0) {

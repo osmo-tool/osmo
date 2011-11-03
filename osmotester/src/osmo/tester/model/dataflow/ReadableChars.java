@@ -75,4 +75,12 @@ public class ReadableChars extends SearchableInput<Character> {
   public boolean evaluate(Character item) {
     return chars.contains(item.toString());
   }
+
+  @Override
+  public boolean evaluateSerialized(String item) {
+    if (item.length() != 1) {
+      return false;
+    }
+    return evaluate(item.charAt(0));
+  }
 }

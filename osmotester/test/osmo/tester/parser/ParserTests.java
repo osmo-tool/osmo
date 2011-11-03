@@ -31,7 +31,6 @@ public class ParserTests {
 
   @Before
   public void setup() {
-    Logger.debug = true;
     parser = new MainParser();
   }
 

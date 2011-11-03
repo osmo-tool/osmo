@@ -1,6 +1,7 @@
 package osmo.tester.generator.endcondition.data;
 
 import osmo.common.log.Logger;
+import osmo.tester.generator.endcondition.AbstractEndCondition;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
@@ -16,7 +17,7 @@ import java.util.Map;
 import java.util.Set;
 
 /** @author Teemu Kanstren */
-public class DataCoverage implements EndCondition {
+public class DataCoverage extends AbstractEndCondition {
   private static Logger log = new Logger(DataCoverage.class);
   private Map<String, DataCoverageRequirement> requirements = new HashMap<String, DataCoverageRequirement>();
 

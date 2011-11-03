@@ -16,6 +16,7 @@ import osmo.tester.testmodels.ValidTestModel2;
 import osmo.tester.testmodels.ValidTestModel3;
 import osmo.tester.testmodels.ValidTestModel4;
 import osmo.tester.testmodels.ValidTestModel5;
+import osmo.tester.testmodels.VariableModel2;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -199,19 +200,19 @@ public class GenerationTests {
 
   @Test
   public void thresholdBreak() {
-    BaseModelExtension model = new BaseModelExtension();
+    VariableModel2 model = new VariableModel2();
 //    osmo.setDebug(true);
     osmo.addModelObject(model);
     Endless endless = new Endless();
     osmo.addTestEndCondition(endless);
     osmo.addSuiteEndCondition(endless);
-//    osmo.setTestThreshold(100);
-//    osmo.setSuiteThreshold(200);
-    fail("to be implemented..");
+    Length length = new Length(100);
+    length.setStrict(true);
+    osmo.addTestEndCondition(length);
+    osmo.addSuiteEndCondition(length);
     osmo.generate();
-    assertEquals("Number of times generic @Post performed", 10, model.checkCount);
-    assertTrue("Should have performed generic @Post for first transition", model.firstChecked);
-    assertTrue("Should have performed generic @Post for second transition", model.secondChecked);
+    assertEquals("Number of tests", 100, osmo.getSuite().getFinishedTestCases().size());
+    assertEquals("Test length", 100, osmo.getSuite().getFinishedTestCases().get(0).getSteps().size());
   }
 
 }

@@ -70,7 +70,6 @@ public class BaseModelExtension extends BaseModel {
   public void checkMe(Map<String, Object> p) {
     assertEquals("Test id", count, id);
     checkCount++;
-    System.out.println("p:" + p);
     if (p.size() == 0) {
       firstChecked = true;
     } else {

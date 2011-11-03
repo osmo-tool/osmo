@@ -27,5 +27,7 @@ public interface EndCondition {
    */
   public boolean endTest(TestSuite suite, FSM fsm);
   public void init(FSM fsm);
+  public boolean isStrict();
+  public void setStrict(boolean strict);
 }
 

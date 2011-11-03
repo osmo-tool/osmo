@@ -9,7 +9,7 @@ import osmo.tester.model.FSM;
  *
  * @author Teemu Kanstren
  */
-public class And implements EndCondition {
+public class And extends AbstractEndCondition {
   /** The set of end conditions to be checked. */
   private final EndCondition[] conditions;
 

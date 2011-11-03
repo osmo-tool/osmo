@@ -11,7 +11,7 @@ import osmo.tester.model.Requirements;
  *
  * @author Olli-Pekka Puolitaival
  */
-public class RequirementsCoverage implements EndCondition {
+public class RequirementsCoverage extends AbstractEndCondition {
   private static Logger log = new Logger(Length.class);
   /** The stopping threshold. */
   private final double threshold;
