@@ -2,11 +2,12 @@ package osmo.tester.generator.testsuite;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 /** @author Teemu Kanstren */
 public class ModelVariable {
   private final String name;
-  private final Collection<Object> values = new ArrayList<Object>();
+  private Collection<Object> values = new ArrayList<Object>();
 
   public ModelVariable(String name) {
     this.name = name;
@@ -30,5 +31,9 @@ public class ModelVariable {
 
   public boolean contains(Object value) {
     return values.contains(value);
+  }
+
+  public void enableMerging() {
+    values = new HashSet<Object>();
   }
 }
