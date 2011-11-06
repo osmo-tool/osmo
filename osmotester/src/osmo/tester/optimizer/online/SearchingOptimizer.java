@@ -1,5 +1,6 @@
 package osmo.tester.optimizer.online;
 
+import osmo.common.log.Logger;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
@@ -7,54 +8,65 @@ import osmo.tester.generator.testsuite.TestSuite;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+
+import static osmo.common.TestUtils.cInt;
 
 /** @author Teemu Kanstren */
 public class SearchingOptimizer {
-  private int iterations = 100;
-  private int nOfCandidates = 1000;
+  private static final Logger log = new Logger(SearchingOptimizer.class);
+  private static final FitnessComparator comparator = new FitnessComparator();
   private Collection<TestCase> population = new ArrayList<TestCase>();
+  private final SearchConfiguration config;
 
-  public void setIterations(int iterations) {
-    this.iterations = iterations;
+  public SearchingOptimizer(SearchConfiguration configuration) {
+    this.config = configuration;
   }
 
-  public void search(OSMOTester tester) {
-    Length maxLength = new Length(nOfCandidates);
+  public void search() {
+    OSMOTester tester = new OSMOTester();
+    int noc = config.getNumberOfCandidates();
+    Length maxLength = new Length(noc);
     maxLength.setStrict(true);
     tester.addTestEndCondition(maxLength);
     tester.addSuiteEndCondition(maxLength);
-    for (int i = 0 ; i < iterations ; i++) {
-      sortTests(tester);
-    }
-  }
-
-  private void sortTests(OSMOTester tester) {
     tester.generate();
     TestSuite suite = tester.getSuite();
     List<TestCase> tests = suite.getFinishedTestCases();
-    Collection<TestCase> workList = new ArrayList<TestCase>();
+    List<TestCase> workList = new ArrayList<TestCase>();
     workList.addAll(population);
     workList.addAll(tests);
-    Collection<Collection<TestCase>> candidates = new ArrayList<Collection<TestCase>>();
-    for (int i = 0 ; i < nOfCandidates ; i++) {
+    List<Candidate> candidates = new ArrayList<Candidate>();
+    for (int i = 0 ; i < noc ; i++) {
       candidates.add(createCandidate(workList));
     }
-  }
-
-  private Collection<TestCase> createCandidate(Collection<TestCase> from) {
-    Collection<TestCase> result = new ArrayList<TestCase>();
-    
-    return result;
-  }
-
-  private int calculateFitness(TestCase test) {
-    Map<String, Object> status = new HashMap<String, Object>();
-    for (TestCase tc : population) {
-      //
+    int iterations = config.getIterations();
+    for (int i = 0 ; i < iterations ; i++) {
+      candidates = nextGenerationFrom(candidates);
     }
-    return 0;
+  }
+
+  public List<Candidate> nextGenerationFrom(List<Candidate> candidates) {
+    Collections.sort(candidates, comparator);
+    return candidates;
+    //kopioi testejä toisesta setistä
+    //generoi uusia settejä
+    //laskee fitness arvot
+    //parhaat talteen
+
+  }
+
+  public Candidate createCandidate(Collection<TestCase> from) {
+    int populationSize = config.getPopulationSize();
+    if (from.size() < populationSize) {
+      throw new IllegalArgumentException("Requested population of " + populationSize + " from set of " + from.size() + " tests. Population size cannot be bigger than source set size.");
+    }
+    List<TestCase> tests = new ArrayList<TestCase>();
+    tests.addAll(from);
+    while (tests.size() > populationSize) {
+      tests.remove(cInt(0, tests.size() - 1));
+    }
+    return new Candidate(config, tests);
   }
 }
