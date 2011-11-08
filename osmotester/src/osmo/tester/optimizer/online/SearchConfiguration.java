@@ -10,6 +10,7 @@ public class SearchConfiguration {
   private int iterations = 100;
   private int numberOfCandidates = 1000;
   private int populationSize = 50;
+  private long seed = System.currentTimeMillis();
 
   public SearchConfiguration() {
   }
@@ -76,5 +77,13 @@ public class SearchConfiguration {
 
   public void setPopulationSize(int populationSize) {
     this.populationSize = populationSize;
+  }
+
+  public long getSeed() {
+    return seed;
+  }
+
+  public void setSeed(long seed) {
+    this.seed = seed;
   }
 }
