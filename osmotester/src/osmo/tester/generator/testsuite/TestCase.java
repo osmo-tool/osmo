@@ -44,6 +44,8 @@ public class TestCase {
   /** Identifier for next test case step. */
   private int nextStepId = 1;
   private Map<String, ModelVariable> variables = new HashMap<String, ModelVariable>();
+  /** For user to store their own information (e.g. script) into the generated test case from the model. */
+  private Map<String, Object> attributes = new HashMap<String, Object>();
 
   public TestCase() {
     this.id = nextId.getAndIncrement();
@@ -157,5 +159,13 @@ public class TestCase {
 
   public Map<String, ModelVariable> getVariables() {
     return variables;
+  }
+
+  public void setAttribute(String name, Object value) {
+    attributes.put(name, value);
+  }
+
+  public Object getAttribute(String name) {
+    return attributes.get(name);
   }
 }
