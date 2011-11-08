@@ -9,16 +9,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 /** @author Teemu Kanstren */
 public class Candidate {
   private static final Logger log = new Logger(Candidate.class);
-  private Collection<TestCase> tests = new ArrayList<TestCase>();
+  private List<TestCase> tests = new ArrayList<TestCase>();
   private int fitness = -1;
   private final SearchConfiguration config;
 
-  public Candidate(SearchConfiguration config, Collection<TestCase> tests) {
+  public Candidate(SearchConfiguration config, List<TestCase> tests) {
     this.tests = tests;
     this.config = config;
   }
@@ -73,8 +74,16 @@ public class Candidate {
     return tests.size();
   }
 
+  public List<TestCase> getTests() {
+    return tests;
+  }
+
   @Override
   public String toString() {
     return "candidate:fitness="+getFitness();
+  }
+
+  public TestCase get(int i) {
+    return tests.get(i);
   }
 }

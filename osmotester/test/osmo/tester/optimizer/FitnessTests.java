@@ -10,6 +10,7 @@ import osmo.tester.optimizer.online.SearchingOptimizer;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import static junit.framework.Assert.*;
 
@@ -163,7 +164,7 @@ public class FitnessTests {
     tc2.addStep(new FSMTransition("t1"));
     tc2.addVariableValue("v6", 3);
 
-    Collection <TestCase> tests = new ArrayList<TestCase>();
+    List<TestCase> tests = new ArrayList<TestCase>();
     tests.add(tc1);
     tests.add(tc2);
     return new Candidate(sc, tests);
