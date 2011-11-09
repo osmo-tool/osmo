@@ -39,6 +39,7 @@ import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -181,6 +182,31 @@ public class TestUtils {
     rnd *= diff;
     rnd += min;
     return rnd;
+  }
+
+  public static int rawWeightedRandomFrom(List<Integer> weights) {
+    Collections.sort(weights);
+    List<Integer> totals = new ArrayList<Integer>();
+    int total = 0;
+    for (Integer weight : weights) {
+      total += weight;
+      totals.add(total);
+    }
+//    System.out.println("weights:"+totals+" total:"+total);
+    return sumWeightedRandomFrom(totals);
+  }
+
+  public static int sumWeightedRandomFrom(List<Integer> summedTotals) {
+    int total = summedTotals.get(summedTotals.size()-1);
+    int target = cInt(1, total);
+//    System.out.println("target:"+target);
+    int choice = Collections.binarySearch(summedTotals, target);
+    if (choice < 0) {
+      //Java binary search returns negative index values if there is no direct match, with additional -1 added on top
+      choice = choice * -1; //make it positive again
+      choice = choice -1; //remove the -1 (with after previous line is +1)
+    }
+    return choice;
   }
 
   /**
