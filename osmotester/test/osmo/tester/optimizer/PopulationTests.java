@@ -6,10 +6,13 @@ import osmo.common.TestUtils;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.optimizer.online.Candidate;
+import osmo.tester.optimizer.online.FitnessComparator;
 import osmo.tester.optimizer.online.SearchConfiguration;
 import osmo.tester.optimizer.online.SearchingOptimizer;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -18,7 +21,7 @@ import static osmo.common.TestUtils.cInt;
 
 /** @author Teemu Kanstren */
 public class PopulationTests {
-  private SearchConfiguration sc = new SearchConfiguration();
+  private SearchConfiguration sc = new SearchConfiguration(null);
 
   @Before
   public void setup() {
@@ -27,72 +30,156 @@ public class PopulationTests {
 
   @Test
   public void sorting() {
-    SearchingOptimizer so = new SearchingOptimizer(sc);
-    List<Candidate> toSort = candidateList();
-    List<Candidate> sorted = so.nextGenerationFrom(toSort);
+    List<Candidate> candidates = candidateList();
+    FitnessComparator comparator = new FitnessComparator();
+    Collections.sort(candidates, comparator);
     int previous = -1;
-    for (Candidate candidate : sorted) {
+    Candidate best = null;
+    for (Candidate candidate : candidates) {
       int current = candidate.getFitness();
       if (previous > 0) {
-        assertTrue("Search generation should be sorted", previous >= current);
+        assertTrue("Search generation should be sorted", previous <= current);
       }
       previous = current;
+      best = candidate;
     }
+    assertEquals("Best should be saved for the last", previous, best.getFitness());
   }
 
   @Test
   public void recombinationWithNoDuplicates() {
     SearchingOptimizer so = new SearchingOptimizer(sc);
-    Candidate c1 = createCandidate(10);
-    Candidate c2 = createCandidate(10);
-    Candidate[] recombination = so.recombine(c1, c2);
-    assertEquals("Recombination should produce two offspring", 2, recombination.length);
-    Candidate c3 = recombination[0];
-    Candidate c4 = recombination[1];
-    List<TestCase> c3Tests = c3.getTests();
-    List<TestCase> c4Tests = c4.getTests();
-    assertEquals("Recombined test should have parent size", 10, c3.size());
-    assertEquals("Recombined test should have parent size", 10, c4.size());
-    c3Tests.removeAll(c1.getTests());
-    c4Tests.removeAll(c1.getTests());
-    int c3Size = c3Tests.size();
-    int c4Size = c4Tests.size();
-    assertTrue("Recombination of 10 tests should have minimum of 2 tests from each, was " + c3Size, c3Size > 2);
-    assertTrue("Recombination of 10 tests should have minimum of 2 tests from each, was " + c4Size, c4Size > 2);
+    Collection<Integer> sizes1 = new ArrayList<Integer>();
+    Collection<Integer> sizes2 = new ArrayList<Integer>();
+    for (int i = 0 ; i < 1000 ; i++) {
+      Candidate c1 = createCandidate(10);
+      Candidate c2 = createCandidate(10);
+      Candidate[] recombination = so.recombine(c1, c2);
+      assertEquals("Recombination should produce two offspring", 2, recombination.length);
+      Candidate c3 = recombination[0];
+      Candidate c4 = recombination[1];
+      List<TestCase> c3Tests = c3.getTests();
+      List<TestCase> c4Tests = c4.getTests();
+      assertEquals("Recombined test should have parent size", 10, c3.size());
+      assertEquals("Recombined test should have parent size", 10, c4.size());
+      c3Tests.removeAll(c1.getTests());
+      c4Tests.removeAll(c1.getTests());
+      sizes1.add(c3Tests.size());
+      sizes2.add(c4Tests.size());
+    }
+    assertAverage(sizes1, 5);
+    assertAverage(sizes2, 5);
+  }
+
+  private void assertAverage(Collection<Integer> from, int expected) {
+    double total = 0;
+    for (int i : from) {
+      total += i;
+    }
+    int average = (int)Math.round(total/from.size());
+    assertEquals("Average recombination size", expected, average);
   }
 
   @Test
   public void recombinationWithDuplicates() {
     SearchingOptimizer so = new SearchingOptimizer(sc);
-    Candidate c1 = createCandidate(10);
-    Candidate c2 = createCandidate(10);
-    List<TestCase> c1Tests = c1.getTests();
-    c1Tests.set(4, c2.get(0));
-    c1Tests.set(7, c2.get(1));
-    List<TestCase> c2Tests = c2.getTests();
-    c2Tests.set(3, c1.get(0));
-    c2Tests.set(7, c1.get(1));
-    Candidate[] recombination = so.recombine(c1, c2);
-    assertEquals("Recombination should produce two offspring", 2, recombination.length);
-    Candidate c3 = recombination[0];
-    Candidate c4 = recombination[1];
-    List<TestCase> c3Tests = c3.getTests();
-    List<TestCase> c4Tests = c4.getTests();
-    assertEquals("Recombined test should have parent size", 10, c3.size());
-    assertEquals("Recombined test should have parent size", 10, c4.size());
-    assertNoDuplicatesIn(c3Tests);
-    assertNoDuplicatesIn(c4Tests);
-    c3Tests.removeAll(c1Tests);
-    c4Tests.removeAll(c2Tests);
-    int c3Size = c3Tests.size();
-    int c4Size = c4Tests.size();
-    assertTrue("Recombination of 10 tests with 2 duplicates should have minimum of 3 tests from each, was " + c3Size, c3Size > 2);
-    assertTrue("Recombination of 10 tests with 2 duplicates should have minimum of 3 tests from each, was " + c4Size, c4Size > 2);
+    Collection<Integer> sizes1 = new ArrayList<Integer>();
+    Collection<Integer> sizes2 = new ArrayList<Integer>();
+    for (int i = 0 ; i < 1000 ; i++) {
+      Candidate c1 = createCandidate(10);
+      Candidate c2 = createCandidate(10);
+      List<TestCase> c1Tests = c1.getTests();
+      c1Tests.set(4, c2.get(0));
+      c1Tests.set(7, c2.get(1));
+      List<TestCase> c2Tests = c2.getTests();
+      c2Tests.set(3, c1.get(0));
+      c2Tests.set(7, c1.get(1));
+      Candidate[] recombination = so.recombine(c1, c2);
+      assertEquals("Recombination should produce two offspring", 2, recombination.length);
+      Candidate c3 = recombination[0];
+      Candidate c4 = recombination[1];
+      List<TestCase> c3Tests = c3.getTests();
+      List<TestCase> c4Tests = c4.getTests();
+      assertEquals("Recombined test should have parent size", 10, c3.size());
+      assertEquals("Recombined test should have parent size", 10, c4.size());
+      assertNoDuplicatesIn(c3Tests);
+      assertNoDuplicatesIn(c4Tests);
+      c3Tests.removeAll(c1Tests);
+      c4Tests.removeAll(c2Tests);
+      sizes1.add(c3Tests.size());
+      sizes2.add(c4Tests.size());
+    }
+    //in a set of 10 we have 4 same elements, so we should get on average 3 cell recombinations (10-4=6,6/2=3)
+    assertAverage(sizes1, 3);
+    assertAverage(sizes2, 3);
   }
 
   @Test
-  public void testSomeMore() {
-    fail("TBD some clarifying tests are needed to ensure all is fine");
+  public void recombinationWithDuplicatesInBeginning() {
+    SearchingOptimizer so = new SearchingOptimizer(sc);
+    Collection<Integer> sizes1 = new ArrayList<Integer>();
+    Collection<Integer> sizes2 = new ArrayList<Integer>();
+    for (int i = 0 ; i < 1000 ; i++) {
+      Candidate c1 = createCandidate(10);
+      Candidate c2 = createCandidate(10);
+      List<TestCase> c1Tests = c1.getTests();
+      c1Tests.set(0, c2.get(4));
+      c1Tests.set(1, c2.get(5));
+      List<TestCase> c2Tests = c2.getTests();
+      c2Tests.set(0, c1.get(2));
+      c2Tests.set(1, c1.get(3));
+      Candidate[] recombination = so.recombine(c1, c2);
+      assertEquals("Recombination should produce two offspring", 2, recombination.length);
+      Candidate c3 = recombination[0];
+      Candidate c4 = recombination[1];
+      List<TestCase> c3Tests = c3.getTests();
+      List<TestCase> c4Tests = c4.getTests();
+      assertEquals("Recombined test should have parent size", 10, c3.size());
+      assertEquals("Recombined test should have parent size", 10, c4.size());
+      assertNoDuplicatesIn(c3Tests);
+      assertNoDuplicatesIn(c4Tests);
+      c3Tests.removeAll(c1Tests);
+      c4Tests.removeAll(c2Tests);
+      sizes1.add(c3Tests.size());
+      sizes2.add(c4Tests.size());
+    }
+    //in a set of 10 we have 4 same elements, so we should get on average 3 cell recombinations (10-4=6,6/2=3)
+    assertAverage(sizes1, 3);
+    assertAverage(sizes2, 3);
+  }
+
+  @Test
+  public void recombinationWithDuplicatesInEnd() {
+    SearchingOptimizer so = new SearchingOptimizer(sc);
+    Collection<Integer> sizes1 = new ArrayList<Integer>();
+    Collection<Integer> sizes2 = new ArrayList<Integer>();
+    for (int i = 0 ; i < 1000 ; i++) {
+      Candidate c1 = createCandidate(10);
+      Candidate c2 = createCandidate(10);
+      List<TestCase> c1Tests = c1.getTests();
+      c1Tests.set(8, c2.get(0));
+      c1Tests.set(9, c2.get(1));
+      List<TestCase> c2Tests = c2.getTests();
+      c2Tests.set(7, c1.get(4));
+      c2Tests.set(6, c1.get(5));
+      Candidate[] recombination = so.recombine(c1, c2);
+      assertEquals("Recombination should produce two offspring", 2, recombination.length);
+      Candidate c3 = recombination[0];
+      Candidate c4 = recombination[1];
+      List<TestCase> c3Tests = c3.getTests();
+      List<TestCase> c4Tests = c4.getTests();
+      assertEquals("Recombined test should have parent size", 10, c3.size());
+      assertEquals("Recombined test should have parent size", 10, c4.size());
+      assertNoDuplicatesIn(c3Tests);
+      assertNoDuplicatesIn(c4Tests);
+      c3Tests.removeAll(c1Tests);
+      c4Tests.removeAll(c2Tests);
+      sizes1.add(c3Tests.size());
+      sizes2.add(c4Tests.size());
+    }
+    //in a set of 10 we have 4 same elements, so we should get on average 3 cell recombinations (10-4=6,6/2=3)
+    assertAverage(sizes1, 3);
+    assertAverage(sizes2, 3);
   }
 
   private void assertNoDuplicatesIn(List<TestCase> tests) {

@@ -12,60 +12,77 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import static osmo.common.TestUtils.cInt;
+import static osmo.common.TestUtils.*;
 
 /** @author Teemu Kanstren */
 public class SearchingOptimizer {
   private static final Logger log = new Logger(SearchingOptimizer.class);
-  private Candidate best = null;
   private static final FitnessComparator comparator = new FitnessComparator();
-  private Collection<TestCase> population = new ArrayList<TestCase>();
   private final SearchConfiguration config;
-  private final Random random;
+  private final SearchEndCondition endCondition;
+  private SearchState state = new SearchState();
 
   public SearchingOptimizer(SearchConfiguration configuration) {
     this.config = configuration;
-    random = new Random(config.getSeed());
+    this.endCondition = config.getEndCondition();
   }
 
-  public void search() {
-    OSMOTester tester = new OSMOTester();
+  public SearchState getState() {
+    return state;
+  }
+
+  public Candidate search() {
+    OSMOTester tester = config.getTester();
     int noc = config.getNumberOfCandidates();
     Length maxLength = new Length(noc);
     maxLength.setStrict(true);
-    tester.addTestEndCondition(maxLength);
     tester.addSuiteEndCondition(maxLength);
     tester.generate();
     TestSuite suite = tester.getSuite();
     List<TestCase> tests = suite.getFinishedTestCases();
-    List<TestCase> workList = new ArrayList<TestCase>();
-    workList.addAll(population);
-    workList.addAll(tests);
     List<Candidate> candidates = new ArrayList<Candidate>();
-    for (int i = 0 ; i < noc ; i++) {
-      candidates.add(createCandidate(workList));
+    for (int i = 0; i < noc; i++) {
+      Candidate candidate = createCandidate(tests);
+      candidates.add(candidate);
     }
-    int iterations = config.getIterations();
-    for (int i = 0 ; i < iterations ; i++) {
+    while (!endCondition.shouldEnd(state)) {
+      state.incrementIterationCount();
       candidates = nextGenerationFrom(candidates);
-      updateBestFrom(candidates);
     }
+    return state.getBest();
   }
 
-  private void updateBestFrom(List<Candidate> candidates) {
-    Collections.sort(candidates, comparator);
-    Candidate current = candidates.get(0);
-    if (best == null || best.getFitness() < current.getFitness()) {
-      best = current;
-    }
+  public void updateBestFrom(List<Candidate> candidates) {
+    Candidate current = candidates.get(candidates.size() - 1);
+    state.checkCandidate(current);
   }
 
   public List<Candidate> nextGenerationFrom(List<Candidate> candidates) {
-    return candidates;
-    //kopioi testejä toisesta setistä
-    //generoi uusia settejä
-    //laskee fitness arvot
-    //parhaat talteen
+    log.debug("next generation of search space being created");
+    Collections.sort(candidates, comparator);
+    int size = config.getPopulationSize();
+    List<Candidate> newPopulation = new ArrayList<Candidate>();
+    List<Integer> weights = new ArrayList<Integer>();
+    int total = 0;
+    for (Candidate candidate : candidates) {
+      int fitness = candidate.getFitness();
+      total += fitness;
+      weights.add(total);
+    }
+    while (newPopulation.size() < size) {
+      int index1 = sumWeightedRandomFrom(weights);
+      int index2 = index1;
+      while (index2 == index1) {
+        index2 = sumWeightedRandomFrom(weights);
+      }
+      Candidate parent1 = candidates.get(index1);
+      Candidate parent2 = candidates.get(index2);
+      Candidate[] offspring = recombine(parent1, parent2);
+      newPopulation.add(offspring[0]);
+      newPopulation.add(offspring[1]);
+    }
+    updateBestFrom(newPopulation);
+    return newPopulation;
   }
 
   //this implements uniform crossover
@@ -77,11 +94,11 @@ public class SearchingOptimizer {
     joint.addAll(c1.getTests());
     joint.retainAll(c2.getTests());
     //this is actually Hamming distance
-    int size = c1.size()-joint.size();
+    int size = c1.size() - joint.size();
     int i1 = 0;
     int i2 = 0;
-    for (int i = 0 ; i < size ; i++) {
-      while (joint.contains(c1.get(i+i1))) {
+    for (int i = 0; i < size; i++) {
+      while (joint.contains(c1.get(i + i1))) {
         c3Tests.add(c1.get(i + i1));
         i1++;
       }
@@ -89,9 +106,9 @@ public class SearchingOptimizer {
         c4Tests.add(c2.get(i + i2));
         i2++;
       }
-      TestCase t3 = c1.get(i+i1);
-      TestCase t4 = c2.get(i+i2);
-      double d = random.nextDouble();
+      TestCase t3 = c1.get(i + i1);
+      TestCase t4 = c2.get(i + i2);
+      double d = cDouble();
       if (d >= 0.5d) {
         TestCase t5 = t3;
         t3 = t4;
@@ -99,6 +116,15 @@ public class SearchingOptimizer {
       }
       c3Tests.add(t3);
       c4Tests.add(t4);
+    }
+    //this is needed if joint tests are in last position, otherwise they will be left out
+    for (TestCase test : joint) {
+      if (!c3Tests.contains(test)) {
+        c3Tests.add(test);
+      }
+      if (!c4Tests.contains(test)) {
+        c4Tests.add(test);
+      }
     }
     result[0] = new Candidate(config, c3Tests);
     result[1] = new Candidate(config, c4Tests);

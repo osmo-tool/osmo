@@ -1,5 +1,7 @@
 package osmo.tester.optimizer.online;
 
+import osmo.tester.OSMOTester;
+
 /** @author Teemu Kanstren */
 public class SearchConfiguration {
   private int lengthWeight = 10;
@@ -7,12 +9,21 @@ public class SearchConfiguration {
   private int valueWeight = 1;
   private int pairsWeight = 10;
   private int transitionWeight = 10;
-  private int iterations = 100;
   private int numberOfCandidates = 1000;
   private int populationSize = 50;
-  private long seed = System.currentTimeMillis();
+  private SearchEndCondition endCondition = new PeakEndCondition(50);
+  private final OSMOTester tester;
 
-  public SearchConfiguration() {
+  public SearchConfiguration(OSMOTester tester) {
+    this.tester = tester;
+  }
+
+  public SearchEndCondition getEndCondition() {
+    return endCondition;
+  }
+
+  public void setEndCondition(SearchEndCondition endCondition) {
+    this.endCondition = endCondition;
   }
 
   public int getLengthWeight() {
@@ -55,14 +66,6 @@ public class SearchConfiguration {
     this.transitionWeight = transitionWeight;
   }
 
-  public int getIterations() {
-    return iterations;
-  }
-
-  public void setIterations(int iterations) {
-    this.iterations = iterations;
-  }
-
   public int getNumberOfCandidates() {
     return numberOfCandidates;
   }
@@ -79,11 +82,7 @@ public class SearchConfiguration {
     this.populationSize = populationSize;
   }
 
-  public long getSeed() {
-    return seed;
-  }
-
-  public void setSeed(long seed) {
-    this.seed = seed;
+  public OSMOTester getTester() {
+    return tester;
   }
 }

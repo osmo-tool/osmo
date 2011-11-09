@@ -133,12 +133,12 @@ public class TestCase {
     addedRequirementsCoverage.add(requirement);
   }
 
-  @Override
-  public String toString() {
-    return "TestCase{" +
-            "steps=" + steps +
-            '}';
-  }
+//  @Override
+//  public String toString() {
+//    return "TestCase{" +
+//            "steps=" + steps +
+//            '}';
+//  }
 
   public void addVariableValue(String name, Object value, boolean merge) {
     ModelVariable variable = variables.get(name);
