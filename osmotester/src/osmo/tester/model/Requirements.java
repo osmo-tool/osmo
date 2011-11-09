@@ -130,4 +130,8 @@ public class Requirements {
     }
     return out.toString();
   }
+
+  public boolean isEmpty() {
+    return (requirements.size() == 0 && covered.size() == 0);
+  }
 }

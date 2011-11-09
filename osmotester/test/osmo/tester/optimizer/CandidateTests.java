@@ -1,11 +1,18 @@
 package osmo.tester.optimizer;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import osmo.tester.OSMOTester;
+import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.model.FSM;
+import osmo.tester.model.Requirements;
 import osmo.tester.optimizer.online.Candidate;
 import osmo.tester.optimizer.online.SearchConfiguration;
 import osmo.tester.optimizer.online.SearchingOptimizer;
+import osmo.tester.testmodels.ValidTestModel1;
+import osmo.tester.testmodels.ValidTestModel2;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,54 +21,49 @@ import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class CandidateTests {
-  private Collection<TestCase> tests = createTestSet(1000);
+  private MainGenerator generator;
+  private SearchConfiguration sc;
+  private FSM fsm;
+  private SearchingOptimizer so;
 
-  private Collection<TestCase> createTestSet(int size) {
-    Collection<TestCase> tests = new ArrayList<TestCase>();
-    for (int i = 0; i < size; i++) {
-      tests.add(new TestCase());
-    }
-    return tests;
+  @Before
+  public void init() {
+    OSMOTester tester = new OSMOTester();
+    tester.addModelObject(new ValidTestModel2(new Requirements()));
+    sc = new SearchConfiguration(tester);
+    so = new SearchingOptimizer(sc);
+
+    generator = tester.initGenerator();
+    fsm = tester.getFsm();
+    generator.initSuite(fsm);
+    so.setGenerator(generator);
+    so.setFsm(fsm);
+  }
+
+  @After
+  public void teardown() {
+    generator.endSuite(fsm);
   }
 
   @Test
   public void createOneSmallerThanMax() {
-    SearchConfiguration sc = new SearchConfiguration(null);
     sc.setPopulationSize(50);
-    SearchingOptimizer so = new SearchingOptimizer(sc);
-    Candidate candidate = so.createCandidate(tests);
+    Candidate candidate = so.createCandidate();
     assertEquals("Number of tests in population", 50, candidate.size());
   }
 
   @Test
   public void createOneEqualToMax() {
-    SearchConfiguration sc = new SearchConfiguration(null);
     sc.setPopulationSize(1000);
-    SearchingOptimizer so = new SearchingOptimizer(sc);
-    Candidate candidate = so.createCandidate(tests);
+    Candidate candidate = so.createCandidate();
     assertEquals("Number of tests in population", 1000, candidate.size());
   }
 
   @Test
-  public void createBiggerThanMax() {
-    SearchConfiguration sc = new SearchConfiguration(null);
-    sc.setPopulationSize(1001);
-    SearchingOptimizer so = new SearchingOptimizer(sc);
-    try {
-      Candidate candidate = so.createCandidate(tests);
-      fail("Requesting population bigger than source set size should fail");
-    } catch (IllegalArgumentException e) {
-      assertEquals("Exception message", "Requested population of 1001 from set of 1000 tests. Population size cannot be bigger than source set size.", e.getMessage());
-    }
-  }
-
-  @Test
   public void createTwoCandidates() {
-    SearchConfiguration sc = new SearchConfiguration(null);
     sc.setPopulationSize(50);
-    SearchingOptimizer so = new SearchingOptimizer(sc);
-    Candidate candidate1 = so.createCandidate(tests);
-    Candidate candidate2 = so.createCandidate(tests);
+    Candidate candidate1 = so.createCandidate();
+    Candidate candidate2 = so.createCandidate();
     assertEquals("Number of tests in population", 50, candidate1.size());
     assertEquals("Number of tests in population", 50, candidate2.size());
     assertFalse("Two generated test sets should not be identical", candidate1.equals(candidate2));

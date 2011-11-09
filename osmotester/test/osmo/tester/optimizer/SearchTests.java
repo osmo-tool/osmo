@@ -4,13 +4,20 @@ import org.junit.Test;
 import osmo.common.TestUtils;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOTester;
+import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.model.Requirements;
 import osmo.tester.optimizer.online.Candidate;
+import osmo.tester.optimizer.online.IterationCountEndCondition;
+import osmo.tester.optimizer.online.PeakEndCondition;
 import osmo.tester.optimizer.online.SearchConfiguration;
 import osmo.tester.optimizer.online.SearchingOptimizer;
 import osmo.tester.testmodels.ValidTestModel2;
 import osmo.tester.testmodels.VariableModel2;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 
 import static junit.framework.Assert.*;
@@ -20,17 +27,18 @@ import static junit.framework.Assert.*;
  */
 public class SearchTests {
   @Test
-  public void transitionsVariablesValuesPairsAndTransitions() {
+  public void transitionsVariablesValuesPairsRequirementsAndTransitions() {
 //    Logger.debug = true;
     TestUtils.setRandom(new Random(111));
     VariableModel2 model = new VariableModel2();
     OSMOTester tester = new OSMOTester();
     tester.addModelObject(model);
     SearchConfiguration config = new SearchConfiguration(tester);
+    config.setEndCondition(new PeakEndCondition(200));
     SearchingOptimizer optimizer = new SearchingOptimizer(config);
 //    long start = System.currentTimeMillis();
     Candidate solution = optimizer.search();
-    assertEquals("optimized fitness", 8290, solution.getFitness());
+    assertEquals("optimized fitness", 8290, solution.getFitness()); //8850
 //    long end = System.currentTimeMillis();
 //    long diff = end - start;
 //    int seconds = Math.round(diff / 1000);
@@ -56,7 +64,7 @@ public class SearchTests {
     SearchingOptimizer optimizer = new SearchingOptimizer(config);
 //    long start = System.currentTimeMillis();
     Candidate solution = optimizer.search();
-    assertEquals("optimized fitness", 2636, solution.getFitness());
+    assertEquals("optimized fitness", 2636, solution.getFitness()); //2297
 //    long end = System.currentTimeMillis();
 //    long diff = end - start;
 //    int seconds = Math.round(diff / 1000);
@@ -112,6 +120,6 @@ public class SearchTests {
     System.out.println("t1:"+solution.get(0).getSteps().size()+" reqs:"+solution.get(0).getCoveredRequirements());
     System.out.println("t2:"+solution.get(1).getSteps().size()+" reqs:"+solution.get(1).getCoveredRequirements());
     System.out.println("t3:"+solution.get(2).getSteps().size()+" reqs:"+solution.get(2).getCoveredRequirements());
-    assertEquals("optimized fitness", 30, solution.getFitness());
+    assertEquals("optimized fitness", 30, solution.getFitness()); //13
   }
 }

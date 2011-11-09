@@ -124,7 +124,4 @@
 --ADDEVENT:ModelEvent{uid='user1', description='event6', location='location6', start=Tue Jun 19 12:06:05 EEST 2001, end=Tue Jun 19 12:11:36 EEST 2001}
 generated 10 tests.
 
-No requirements defined. Not calculating or showing requirements coverage. 
-If you want to see requirements coverage you need to define a @RequirementsField
-and add some requirements and their coverage into the model.
 

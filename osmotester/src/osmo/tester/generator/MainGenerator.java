@@ -66,28 +66,42 @@ public class MainGenerator {
    * @param fsm Describes the test model in an FSM format.
    */
   public void generate(FSM fsm) {
+    initSuite(fsm);
+    while (!checkSuiteEndConditions(fsm)) {
+      next(fsm);
+    }
+    endSuite(fsm);
+  }
+
+  public void initSuite(FSM fsm) {
     initEndConditions(fsm);
     suite = fsm.initSuite();
     log.debug("Starting test suite generation");
     beforeSuite(fsm);
-    while (!checkSuiteEndConditions(fsm)) {
-      log.debug("Starting new test generation");
-      beforeTest(fsm);
-      while (!checkTestCaseEndConditions(fsm)) {
-        List<FSMTransition> enabled = getEnabled(fsm);
-        FSMTransition next = algorithm.choose(suite, enabled);
-        log.debug("Taking transition " + next.getName());
-        execute(fsm, next);
-        if (checkModelEndConditions(fsm)) {
-          //stop this test case generation if any end condition returns true
-          break;
-        }
-      }
-      afterTest(fsm);
-      log.debug("Finished new test generation");
-    }
+  }
+
+  public void endSuite(FSM fsm) {
     afterSuite(fsm);
     log.debug("Finished test suite generation");
+  }
+
+  public TestCase next(FSM fsm) {
+    log.debug("Starting new test generation");
+    beforeTest(fsm);
+    TestCase test = suite.getCurrentTest();
+    while (!checkTestCaseEndConditions(fsm)) {
+      List<FSMTransition> enabled = getEnabled(fsm);
+      FSMTransition next = algorithm.choose(suite, enabled);
+      log.debug("Taking transition " + next.getName());
+      execute(fsm, next);
+      if (checkModelEndConditions(fsm)) {
+        //stop this test case generation if any end condition returns true
+        break;
+      }
+    }
+    afterTest(fsm);
+    log.debug("Finished new test generation");
+    return test;
   }
 
   private void initEndConditions(FSM fsm) {
