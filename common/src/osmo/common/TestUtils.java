@@ -189,6 +189,9 @@ public class TestUtils {
     List<Integer> totals = new ArrayList<Integer>();
     int total = 0;
     for (Integer weight : weights) {
+      if (weight <= 0) {
+        throw new IllegalArgumentException("Weight must be > 0. Was "+weight+".");
+      }
       total += weight;
       totals.add(total);
     }

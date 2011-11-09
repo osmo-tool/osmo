@@ -9,6 +9,7 @@ public class SearchConfiguration {
   private int valueWeight = 1;
   private int pairsWeight = 10;
   private int transitionWeight = 10;
+  private int requirementWeight = 10;
   private int numberOfCandidates = 1000;
   private int populationSize = 50;
   private SearchEndCondition endCondition = new PeakEndCondition(50);
@@ -84,5 +85,13 @@ public class SearchConfiguration {
 
   public OSMOTester getTester() {
     return tester;
+  }
+
+  public void setRequirementWeight(int requirementWeight) {
+    this.requirementWeight = requirementWeight;
+  }
+
+  public int getRequirementWeight() {
+    return requirementWeight;
   }
 }

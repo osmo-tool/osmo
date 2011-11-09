@@ -174,4 +174,18 @@ public class UtilTests {
     assertEquals("Proportion of ones generated", 0.333d, op, 0.03d);
     assertEquals("Proportion of twos generated", 0.500d, tp, 0.05d);
   }
+
+  @Test
+  public void weightedRandomChoiceAllZeros() {
+    List<Integer> weights = new ArrayList<Integer>();
+    weights.add(0);
+    weights.add(0);
+    weights.add(0);
+    try {
+      rawWeightedRandomFrom(weights);
+      fail("Weight 0 should throw IllegalArgumentException");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Exception message", "Weight must be > 0. Was 0.", e.getMessage());
+    }
+  }
 }

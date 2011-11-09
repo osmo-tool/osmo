@@ -64,8 +64,15 @@ public class SearchingOptimizer {
     List<Candidate> newPopulation = new ArrayList<Candidate>();
     List<Integer> weights = new ArrayList<Integer>();
     int total = 0;
+    int low = candidates.get(0).getFitness();
+    if (low < 0) {
+      //tricks to allow negative weights
+      low *= -1;
+      low++;
+    }
     for (Candidate candidate : candidates) {
       int fitness = candidate.getFitness();
+      fitness += low;
       total += fitness;
       weights.add(total);
     }
