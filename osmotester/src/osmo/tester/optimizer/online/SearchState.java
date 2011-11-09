@@ -25,10 +25,6 @@ public class SearchState {
     return bestIteration;
   }
 
-  public void setBestIteration(int bestIteration) {
-    this.bestIteration = bestIteration;
-  }
-
   public void checkCandidate(Candidate current) {
     if (best == null || best.getFitness() < current.getFitness()) {
       best = current;

@@ -36,6 +36,7 @@ public class Candidate {
     Collection<String> transitions = new ArrayList<String>();
     Collection<String> pairs = new HashSet<String>();
     Collection<String> singles = new HashSet<String>();
+    Collection<String> requirements = new HashSet<String>();
     Map<String, ModelVariable> variables = new HashMap<String, ModelVariable>();
     for (TestCase tc : tests) {
       Collection<TestStep> steps = tc.getSteps();
@@ -57,6 +58,7 @@ public class Candidate {
         }
         var.addAll(tcVariables.get(variableName));
       }
+      requirements.addAll(tc.getCoveredRequirements());
     }
     log.debug("pairs:" + pairs);
 
@@ -67,6 +69,7 @@ public class Candidate {
     for (ModelVariable variable : variables.values()) {
       fitness += variable.getValues().size() * config.getValueWeight();
     }
+    fitness += requirements.size() * config.getRequirementWeight();
     return fitness;
   }
 

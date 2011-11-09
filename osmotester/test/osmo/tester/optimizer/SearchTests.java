@@ -4,9 +4,11 @@ import org.junit.Test;
 import osmo.common.TestUtils;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOTester;
+import osmo.tester.model.Requirements;
 import osmo.tester.optimizer.online.Candidate;
 import osmo.tester.optimizer.online.SearchConfiguration;
 import osmo.tester.optimizer.online.SearchingOptimizer;
+import osmo.tester.testmodels.ValidTestModel2;
 import osmo.tester.testmodels.VariableModel2;
 
 import java.util.Random;
@@ -90,4 +92,26 @@ public class SearchTests {
 //    System.out.println("fitness:"+solution.getFitness());
   }
 
+  @Test
+  public void shortestPathAndRequirements() {
+    //TODO: this requires full source space exploration, a good example of that ..
+    TestUtils.setRandom(new Random(111));
+    ValidTestModel2 model = new ValidTestModel2(new Requirements());
+    OSMOTester tester = new OSMOTester();
+    tester.addModelObject(model);
+    SearchConfiguration config = new SearchConfiguration(tester);
+    config.setPopulationSize(3);
+    config.setLengthWeight(-1);
+    config.setPairsWeight(0);
+    config.setTransitionWeight(0);
+    config.setValueWeight(0);
+    config.setVariableWeight(0);
+    config.setRequirementWeight(10);
+    SearchingOptimizer optimizer = new SearchingOptimizer(config);
+    Candidate solution = optimizer.search();
+    System.out.println("t1:"+solution.get(0).getSteps().size()+" reqs:"+solution.get(0).getCoveredRequirements());
+    System.out.println("t2:"+solution.get(1).getSteps().size()+" reqs:"+solution.get(1).getCoveredRequirements());
+    System.out.println("t3:"+solution.get(2).getSteps().size()+" reqs:"+solution.get(2).getCoveredRequirements());
+    assertEquals("optimized fitness", 30, solution.getFitness());
+  }
 }
