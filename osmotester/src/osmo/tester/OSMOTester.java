@@ -13,6 +13,7 @@ import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.Probability;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
+import osmo.tester.model.Requirements;
 import osmo.tester.parser.MainParser;
 import osmo.tester.parser.ModelObject;
 
@@ -72,6 +73,16 @@ public class OSMOTester {
 
   /** Invoke this to perform actual test generation from the given model, with the given algorithms and strategies. */
   public void generate() {
+    MainGenerator generator = initGenerator();
+    generator.generate(fsm);
+    System.out.println("generated " + fsm.getSuite().getFinishedTestCases().size() + " tests.\n");
+    Requirements requirements = fsm.getRequirements();
+    if (!requirements.isEmpty()) {
+      System.out.println(requirements.printCoverage());
+    }
+  }
+
+  public MainGenerator initGenerator() {
     MainGenerator generator = new MainGenerator();
     if (algorithm == null) {
       //we do this here to avoid initializing from TestUtils.getRandom() before user calls setRandom() in this class
@@ -89,9 +100,7 @@ public class OSMOTester {
     generator.setListeners(listeners);
     MainParser parser = new MainParser();
     fsm = parser.parse(modelObjects);
-    generator.generate(fsm);
-    System.out.println("generated " + fsm.getSuite().getFinishedTestCases().size() + " tests.\n");
-    System.out.println(fsm.getRequirements().printCoverage());
+    return generator;
   }
 
   public TestSuite getSuite() {

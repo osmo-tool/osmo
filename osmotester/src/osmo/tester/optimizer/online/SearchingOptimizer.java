@@ -2,9 +2,11 @@ package osmo.tester.optimizer.online;
 
 import osmo.common.log.Logger;
 import osmo.tester.OSMOTester;
+import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.FSM;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,6 +23,8 @@ public class SearchingOptimizer {
   private final SearchConfiguration config;
   private final SearchEndCondition endCondition;
   private SearchState state = new SearchState();
+  private MainGenerator generator = null;
+  private FSM fsm = null;
 
   public SearchingOptimizer(SearchConfiguration configuration) {
     this.config = configuration;
@@ -31,24 +35,32 @@ public class SearchingOptimizer {
     return state;
   }
 
+  public void setGenerator(MainGenerator generator) {
+    this.generator = generator;
+  }
+
+  public void setFsm(FSM fsm) {
+    this.fsm = fsm;
+  }
+
   public Candidate search() {
     OSMOTester tester = config.getTester();
+    this.generator = tester.initGenerator();
+    this.fsm = tester.getFsm();
     int noc = config.getNumberOfCandidates();
-    Length maxLength = new Length(noc);
-    maxLength.setStrict(true);
-    tester.addSuiteEndCondition(maxLength);
-    tester.generate();
-    TestSuite suite = tester.getSuite();
-    List<TestCase> tests = suite.getFinishedTestCases();
     List<Candidate> candidates = new ArrayList<Candidate>();
+    generator.initSuite(fsm);
     for (int i = 0; i < noc; i++) {
-      Candidate candidate = createCandidate(tests);
+      Candidate candidate = createCandidate();
       candidates.add(candidate);
     }
+    Collections.sort(candidates, comparator);
+    updateBestFrom(candidates);
     while (!endCondition.shouldEnd(state)) {
       state.incrementIterationCount();
       candidates = nextGenerationFrom(candidates);
     }
+    generator.endSuite(fsm);
     return state.getBest();
   }
 
@@ -85,11 +97,24 @@ public class SearchingOptimizer {
       Candidate parent1 = candidates.get(index1);
       Candidate parent2 = candidates.get(index2);
       Candidate[] offspring = recombine(parent1, parent2);
+      mutate(offspring[0], 0.05);
+      mutate(offspring[1], 0.05);
       newPopulation.add(offspring[0]);
       newPopulation.add(offspring[1]);
     }
     updateBestFrom(newPopulation);
     return newPopulation;
+  }
+
+  public void mutate(Candidate candidate, double probability) {
+    List<TestCase> tests = candidate.getTests();
+    int size = tests.size();
+    for (int i = 0 ; i < size ; i++) {
+      double tp = cDouble();
+      if (tp < probability) {
+        tests.set(i, generator.next(fsm));
+      }
+    }
   }
 
   //this implements uniform crossover
@@ -138,6 +163,17 @@ public class SearchingOptimizer {
     return result;
   }
 
+  public Candidate createCandidate() {
+    //TODO: validate configuration first
+    int populationSize = config.getPopulationSize();
+    List<TestCase> tests = new ArrayList<TestCase>();
+    for (int i = 0 ; i < populationSize ; i++) {
+      tests.add(generator.next(fsm));
+    }
+    return new Candidate(config, tests);
+  }
+
+  /*
   public Candidate createCandidate(Collection<TestCase> from) {
     int populationSize = config.getPopulationSize();
     if (from.size() < populationSize) {
@@ -149,5 +185,5 @@ public class SearchingOptimizer {
       tests.remove(cInt(0, tests.size() - 1));
     }
     return new Candidate(config, tests);
-  }
+  }*/
 }

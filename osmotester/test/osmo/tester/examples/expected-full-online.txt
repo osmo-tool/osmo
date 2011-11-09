@@ -99,7 +99,4 @@
 --ADDOVERLAPPINGEVENT:ModelEvent{uid='user3', description='event7', location='location7', start=Mon Aug 07 05:26:58 EEST 2006, end=Mon Aug 07 06:09:40 EEST 2006}
 generated 6 tests.
 
-No requirements defined. Not calculating or showing requirements coverage. 
-If you want to see requirements coverage you need to define a @RequirementsField
-and add some requirements and their coverage into the model.
 

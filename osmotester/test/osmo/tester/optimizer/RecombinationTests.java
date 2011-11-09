@@ -3,12 +3,15 @@ package osmo.tester.optimizer;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.common.TestUtils;
+import osmo.tester.OSMOTester;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.FSMTransition;
+import osmo.tester.model.Requirements;
 import osmo.tester.optimizer.online.Candidate;
 import osmo.tester.optimizer.online.FitnessComparator;
 import osmo.tester.optimizer.online.SearchConfiguration;
 import osmo.tester.optimizer.online.SearchingOptimizer;
+import osmo.tester.testmodels.ValidTestModel2;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,12 +23,14 @@ import static junit.framework.Assert.*;
 import static osmo.common.TestUtils.cInt;
 
 /** @author Teemu Kanstren */
-public class PopulationTests {
+public class RecombinationTests {
   private SearchConfiguration sc = new SearchConfiguration(null);
+  private SearchingOptimizer so;
 
   @Before
   public void setup() {
     TestUtils.setRandom(new Random(111));
+    so = new SearchingOptimizer(sc);
   }
 
   @Test
@@ -48,7 +53,6 @@ public class PopulationTests {
 
   @Test
   public void recombinationWithNoDuplicates() {
-    SearchingOptimizer so = new SearchingOptimizer(sc);
     Collection<Integer> sizes1 = new ArrayList<Integer>();
     Collection<Integer> sizes2 = new ArrayList<Integer>();
     for (int i = 0 ; i < 1000 ; i++) {
@@ -82,7 +86,6 @@ public class PopulationTests {
 
   @Test
   public void recombinationWithDuplicates() {
-    SearchingOptimizer so = new SearchingOptimizer(sc);
     Collection<Integer> sizes1 = new ArrayList<Integer>();
     Collection<Integer> sizes2 = new ArrayList<Integer>();
     for (int i = 0 ; i < 1000 ; i++) {
@@ -116,7 +119,6 @@ public class PopulationTests {
 
   @Test
   public void recombinationWithDuplicatesInBeginning() {
-    SearchingOptimizer so = new SearchingOptimizer(sc);
     Collection<Integer> sizes1 = new ArrayList<Integer>();
     Collection<Integer> sizes2 = new ArrayList<Integer>();
     for (int i = 0 ; i < 1000 ; i++) {
@@ -150,7 +152,6 @@ public class PopulationTests {
 
   @Test
   public void recombinationWithDuplicatesInEnd() {
-    SearchingOptimizer so = new SearchingOptimizer(sc);
     Collection<Integer> sizes1 = new ArrayList<Integer>();
     Collection<Integer> sizes2 = new ArrayList<Integer>();
     for (int i = 0 ; i < 1000 ; i++) {
