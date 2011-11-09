@@ -18,7 +18,7 @@ import static junit.framework.Assert.*;
 public class FitnessTests {
   @Test
   public void transitionsOnly() {
-    SearchConfiguration sc = new SearchConfiguration();
+    SearchConfiguration sc = new SearchConfiguration(null);
     sc.setLengthWeight(0);
     sc.setPairsWeight(0);
     sc.setValueWeight(0);
@@ -31,7 +31,7 @@ public class FitnessTests {
 
   @Test
   public void variablesOnly() {
-    SearchConfiguration sc = new SearchConfiguration();
+    SearchConfiguration sc = new SearchConfiguration(null);
     sc.setLengthWeight(0);
     sc.setPairsWeight(0);
     sc.setValueWeight(0);
@@ -44,7 +44,7 @@ public class FitnessTests {
 
   @Test
   public void valuesOnly() {
-    SearchConfiguration sc = new SearchConfiguration();
+    SearchConfiguration sc = new SearchConfiguration(null);
     sc.setLengthWeight(0);
     sc.setPairsWeight(0);
     sc.setValueWeight(10);
@@ -58,7 +58,7 @@ public class FitnessTests {
 
   @Test
   public void lengthOnly() {
-    SearchConfiguration sc = new SearchConfiguration();
+    SearchConfiguration sc = new SearchConfiguration(null);
     sc.setLengthWeight(10);
     sc.setPairsWeight(0);
     sc.setValueWeight(0);
@@ -71,7 +71,7 @@ public class FitnessTests {
 
   @Test
   public void pairsOnly() {
-    SearchConfiguration sc = new SearchConfiguration();
+    SearchConfiguration sc = new SearchConfiguration(null);
     sc.setLengthWeight(0);
     sc.setPairsWeight(10);
     sc.setValueWeight(0);
@@ -85,7 +85,7 @@ public class FitnessTests {
 
   @Test
   public void lengthAndPairs() {
-    SearchConfiguration sc = new SearchConfiguration();
+    SearchConfiguration sc = new SearchConfiguration(null);
     sc.setLengthWeight(10);
     sc.setPairsWeight(10);
     sc.setValueWeight(0);
@@ -98,7 +98,7 @@ public class FitnessTests {
 
   @Test
   public void lengthPairsAndVariables() {
-    SearchConfiguration sc = new SearchConfiguration();
+    SearchConfiguration sc = new SearchConfiguration(null);
     sc.setLengthWeight(10);
     sc.setPairsWeight(10);
     sc.setValueWeight(0);
@@ -111,7 +111,7 @@ public class FitnessTests {
 
   @Test
   public void lengthPairsVariablesValuesAndTransitions() {
-    SearchConfiguration sc = new SearchConfiguration();
+    SearchConfiguration sc = new SearchConfiguration(null);
     sc.setLengthWeight(10);
     sc.setPairsWeight(10);
     sc.setValueWeight(10);
@@ -124,7 +124,7 @@ public class FitnessTests {
 
   @Test
   public void lengthPairsVariablesValuesAndTransitionsVaryingWeights() {
-    SearchConfiguration sc = new SearchConfiguration();
+    SearchConfiguration sc = new SearchConfiguration(null);
     sc.setLengthWeight(2); //2*12=24
     sc.setPairsWeight(3); //3*10=30
     sc.setValueWeight(4); //4*10=40

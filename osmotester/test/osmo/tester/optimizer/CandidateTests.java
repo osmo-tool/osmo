@@ -26,7 +26,7 @@ public class CandidateTests {
 
   @Test
   public void createOneSmallerThanMax() {
-    SearchConfiguration sc = new SearchConfiguration();
+    SearchConfiguration sc = new SearchConfiguration(null);
     sc.setPopulationSize(50);
     SearchingOptimizer so = new SearchingOptimizer(sc);
     Candidate candidate = so.createCandidate(tests);
@@ -35,7 +35,7 @@ public class CandidateTests {
 
   @Test
   public void createOneEqualToMax() {
-    SearchConfiguration sc = new SearchConfiguration();
+    SearchConfiguration sc = new SearchConfiguration(null);
     sc.setPopulationSize(1000);
     SearchingOptimizer so = new SearchingOptimizer(sc);
     Candidate candidate = so.createCandidate(tests);
@@ -44,7 +44,7 @@ public class CandidateTests {
 
   @Test
   public void createBiggerThanMax() {
-    SearchConfiguration sc = new SearchConfiguration();
+    SearchConfiguration sc = new SearchConfiguration(null);
     sc.setPopulationSize(1001);
     SearchingOptimizer so = new SearchingOptimizer(sc);
     try {
@@ -57,7 +57,7 @@ public class CandidateTests {
 
   @Test
   public void createTwoCandidates() {
-    SearchConfiguration sc = new SearchConfiguration();
+    SearchConfiguration sc = new SearchConfiguration(null);
     sc.setPopulationSize(50);
     SearchingOptimizer so = new SearchingOptimizer(sc);
     Candidate candidate1 = so.createCandidate(tests);
