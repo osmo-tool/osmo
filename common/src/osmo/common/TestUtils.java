@@ -78,6 +78,17 @@ public class TestUtils {
   }
 
   /**
+   * Creates a new Random value generator initialized with the given seed value.
+   * See OSMOTester class and the setRandom() method in it for more info.
+   *
+   * @param seed Seed for the new random generator.
+   */
+  public static void setSeed(long seed) {
+    TestUtils.random = new Random(seed);
+  }
+
+
+  /**
    * @return A random value.
    */
   public static int cInt() {

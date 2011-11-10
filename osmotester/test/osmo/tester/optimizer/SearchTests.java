@@ -34,11 +34,12 @@ public class SearchTests {
     OSMOTester tester = new OSMOTester();
     tester.addModelObject(model);
     SearchConfiguration config = new SearchConfiguration(tester);
-    config.setEndCondition(new PeakEndCondition(200));
+    config.setNumberOfCandidates(100);
+    config.setEndCondition(new PeakEndCondition(25));
     SearchingOptimizer optimizer = new SearchingOptimizer(config);
 //    long start = System.currentTimeMillis();
     Candidate solution = optimizer.search();
-    assertEquals("optimized fitness", 8290, solution.getFitness()); //8850
+    assertEquals("optimized fitness", 7990, solution.getFitness()); //8850
 //    long end = System.currentTimeMillis();
 //    long diff = end - start;
 //    int seconds = Math.round(diff / 1000);
@@ -61,10 +62,11 @@ public class SearchTests {
     config.setTransitionWeight(2);
     config.setValueWeight(7);
     config.setVariableWeight(9);
+    config.setNumberOfCandidates(100);
     SearchingOptimizer optimizer = new SearchingOptimizer(config);
 //    long start = System.currentTimeMillis();
     Candidate solution = optimizer.search();
-    assertEquals("optimized fitness", 2636, solution.getFitness()); //2297
+    assertEquals("optimized fitness", 2882, solution.getFitness()); //2297
 //    long end = System.currentTimeMillis();
 //    long diff = end - start;
 //    int seconds = Math.round(diff / 1000);
@@ -87,6 +89,7 @@ public class SearchTests {
     config.setTransitionWeight(10);
     config.setValueWeight(0);
     config.setVariableWeight(0);
+    config.setNumberOfCandidates(100);
     SearchingOptimizer optimizer = new SearchingOptimizer(config);
 //    long start = System.currentTimeMillis();
     Candidate solution = optimizer.search();
@@ -115,11 +118,12 @@ public class SearchTests {
     config.setValueWeight(0);
     config.setVariableWeight(0);
     config.setRequirementWeight(10);
+    config.setNumberOfCandidates(100);
     SearchingOptimizer optimizer = new SearchingOptimizer(config);
     Candidate solution = optimizer.search();
     System.out.println("t1:"+solution.get(0).getSteps().size()+" reqs:"+solution.get(0).getCoveredRequirements());
     System.out.println("t2:"+solution.get(1).getSteps().size()+" reqs:"+solution.get(1).getCoveredRequirements());
     System.out.println("t3:"+solution.get(2).getSteps().size()+" reqs:"+solution.get(2).getCoveredRequirements());
-    assertEquals("optimized fitness", 30, solution.getFitness()); //13
+    assertEquals("optimized fitness", 13, solution.getFitness()); //13
   }
 }
