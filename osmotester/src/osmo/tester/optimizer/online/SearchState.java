@@ -8,6 +8,7 @@ public class SearchState {
   private int iterationCount = 0;
   private Candidate best = null;
   private int bestIteration = 0;
+  private SearchListener listener = null;
 
   public void incrementIterationCount() {
     iterationCount++;
@@ -31,6 +32,13 @@ public class SearchState {
       bestIteration = iterationCount;
       log.debug("updated best fitness, iteration " + iterationCount + " best:" + best.getFitness());
       System.out.println("updated best fitness, iteration " + iterationCount + " best:" + best.getFitness());
+      if (listener != null) {
+        listener.updateBest(best);
+      }
     }
+  }
+
+  public void setListener(SearchListener listener) {
+    this.listener = listener;
   }
 }

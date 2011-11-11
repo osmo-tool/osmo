@@ -4,6 +4,8 @@ import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Transition;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 
+import java.io.PrintStream;
+
 /**
  * Adds participants to the calendar test model.
  * Includes
@@ -17,10 +19,18 @@ public class CalendarParticipantModel {
   private final ModelState state;
   /** The scripter for creating/executing the test cases. */
   private final CalendarScripter scripter;
+  private final PrintStream out;
 
   public CalendarParticipantModel(ModelState state, CalendarScripter scripter) {
     this.state = state;
     this.scripter = scripter;
+    this.out = System.out;
+  }
+
+  public CalendarParticipantModel(ModelState state, CalendarScripter scripter, PrintStream out) {
+    this.state = state;
+    this.scripter = scripter;
+    this.out = out;
   }
 
   @Guard("LinkEventToUser")
@@ -32,7 +42,7 @@ public class CalendarParticipantModel {
   public void linkEventToUser() {
     ModelEvent event = state.getRandomExistingEvent();
     String uid = state.randomUID();
-    System.out.println("--LINKEVENTTOUSER:" + uid + " - " + event);
+    out.println("--LINKEVENTTOUSER:" + uid + " - " + event);
     state.attach(uid, event);
     scripter.linkEventToUser(event, uid);
   }
@@ -45,7 +55,7 @@ public class CalendarParticipantModel {
   @Transition("RemoveParticipantEvent")
   public void removeParticipantEvent() {
     ParticipantEvent event = state.getAndRemoveParticipantEvent();
-    System.out.println("--REMOVEPARTICIPANTEVENT:" + event);
+    out.println("--REMOVEPARTICIPANTEVENT:" + event);
     scripter.removeEvent(event.getParticipant(), event.getEvent());
   }
 }

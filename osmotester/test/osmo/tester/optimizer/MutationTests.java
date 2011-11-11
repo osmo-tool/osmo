@@ -29,8 +29,6 @@ import static osmo.common.TestUtils.cInt;
 /** @author Teemu Kanstren */
 public class MutationTests {
   private MainGenerator generator;
-  private SearchConfiguration sc;
-  private FSM fsm;
   private SearchingOptimizer so;
 
   @Before
@@ -38,19 +36,17 @@ public class MutationTests {
     TestUtils.setRandom(new Random(111));
     OSMOTester tester = new OSMOTester();
     tester.addModelObject(new ValidTestModel2(new Requirements()));
-    sc = new SearchConfiguration(tester);
+    generator = tester.initGenerator();
+    SearchConfiguration sc = new SearchConfiguration(generator);
     so = new SearchingOptimizer(sc);
 
-    generator = tester.initGenerator();
-    fsm = tester.getFsm();
-    generator.initSuite(fsm);
+    generator.initSuite();
     so.setGenerator(generator);
-    so.setFsm(fsm);
   }
 
   @After
   public void teardown() {
-    generator.endSuite(fsm);
+    generator.endSuite();
   }
 
   @Test

@@ -4,6 +4,7 @@ import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Transition;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -14,10 +15,18 @@ public class CalendarFailureModel {
   private final ModelState state;
   /** The scripter for creating/executing the test cases. */
   private final CalendarScripter scripter;
+  private final PrintStream out;
 
   public CalendarFailureModel(ModelState state, CalendarScripter scripter) {
     this.state = state;
     this.scripter = scripter;
+    this.out = System.out;
+  }
+
+  public CalendarFailureModel(ModelState state, CalendarScripter scripter, PrintStream out) {
+    this.state = state;
+    this.scripter = scripter;
+    this.out = out;
   }
 
   @Guard("Failing Assertion")
@@ -30,6 +39,6 @@ public class CalendarFailureModel {
     Collection<ModelEvent> events = new ArrayList<ModelEvent>();
     events.add(new ModelEvent("persikka", new Date(0), new Date(0), null, null));
     scripter.assertUserEvents(state.randomUID(), events);
-    System.out.println("--MUSTIKKA");
+    out.println("--MUSTIKKA");
   }
 }

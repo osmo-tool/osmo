@@ -4,6 +4,7 @@ import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Transition;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 
+import java.io.PrintStream;
 import java.util.Date;
 
 import static osmo.common.TestUtils.cLong;
@@ -23,10 +24,18 @@ public class CalendarOverlappingModel {
   private final ModelState state;
   /** The scripter for creating/executing the test cases. */
   private final CalendarScripter scripter;
+  private final PrintStream out;
 
   public CalendarOverlappingModel(ModelState state, CalendarScripter scripter) {
     this.state = state;
     this.scripter = scripter;
+    this.out = System.out;
+  }
+
+  public CalendarOverlappingModel(ModelState state, CalendarScripter scripter, PrintStream out) {
+    this.state = state;
+    this.scripter = scripter;
+    this.out = out;
   }
 
   @Guard("AddOverlappingEvent")
@@ -41,7 +50,7 @@ public class CalendarOverlappingModel {
     Date start = new Date(event.getStart().getTime() + cLong(500, diff));
     Date end = calculateEndTime(start);
     ModelEvent overLapping = state.createEvent(event.getUid(), start, end);
-    System.out.println("--ADDOVERLAPPINGEVENT:" + event);
+    out.println("--ADDOVERLAPPINGEVENT:" + event);
     scripter.addEvent(overLapping);
   }
 
@@ -54,7 +63,7 @@ public class CalendarOverlappingModel {
   public void addOverlappingTask() {
     ModelTask task = state.getRandomExistingTask();
     ModelTask overLapping = state.createTask(task.getUid(), task.getTime());
-    System.out.println("--ADDOVERLAPPINGTASK:" + overLapping);
+    out.println("--ADDOVERLAPPINGTASK:" + overLapping);
     scripter.addTask(overLapping);
   }
 
@@ -67,7 +76,7 @@ public class CalendarOverlappingModel {
   public void addTaskOverlappingEvent() {
     ModelEvent event = state.getRandomExistingEvent();
     ModelTask overLapping = state.createTask(event.getUid(), event.getStart());
-    System.out.println("--ADDTASKOVERLAPPINGEVENT:" + overLapping);
+    out.println("--ADDTASKOVERLAPPINGEVENT:" + overLapping);
     scripter.addTask(overLapping);
   }
 }
