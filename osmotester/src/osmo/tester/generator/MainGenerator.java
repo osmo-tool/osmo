@@ -9,6 +9,8 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
+import osmo.tester.model.dataflow.DataGenerationStrategy;
+import osmo.tester.model.dataflow.Input;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,9 +37,15 @@ public class MainGenerator {
   private GenerationListenerList listeners;
   /** This is set when the test should end but @EndState is not yet achieved to signal ending ASAP. */
   private boolean testEnding = false;
+  /** The parsed overall test model. */
+  private final FSM fsm;
 
-  /** Constructor. */
-  public MainGenerator() {
+  /**
+   * Constructor.
+   * @param fsm Describes the test model in an FSM format.
+   */
+  public MainGenerator(FSM fsm) {
+    this.fsm = fsm;
   }
 
   /** @param algorithm The set of enabled transitions in the current state is passed to this algorithm to pick one to execute. */
@@ -60,51 +68,47 @@ public class MainGenerator {
     this.listeners = listeners;
   }
 
-  /**
-   * Invoked to start the test generation using the configured parameters.
-   *
-   * @param fsm Describes the test model in an FSM format.
-   */
-  public void generate(FSM fsm) {
-    initSuite(fsm);
-    while (!checkSuiteEndConditions(fsm)) {
-      next(fsm);
+  /** Invoked to start the test generation using the configured parameters. */
+  public void generate() {
+    initSuite();
+    while (!checkSuiteEndConditions()) {
+      next();
     }
-    endSuite(fsm);
+    endSuite();
   }
 
-  public void initSuite(FSM fsm) {
-    initEndConditions(fsm);
+  public void initSuite() {
+    initEndConditions();
     suite = fsm.initSuite();
     log.debug("Starting test suite generation");
-    beforeSuite(fsm);
+    beforeSuite();
   }
 
-  public void endSuite(FSM fsm) {
-    afterSuite(fsm);
+  public void endSuite() {
+    afterSuite();
     log.debug("Finished test suite generation");
   }
 
-  public TestCase next(FSM fsm) {
+  public TestCase next() {
     log.debug("Starting new test generation");
-    beforeTest(fsm);
+    beforeTest();
     TestCase test = suite.getCurrentTest();
-    while (!checkTestCaseEndConditions(fsm)) {
-      List<FSMTransition> enabled = getEnabled(fsm);
+    while (!checkTestCaseEndConditions()) {
+      List<FSMTransition> enabled = getEnabled();
       FSMTransition next = algorithm.choose(suite, enabled);
       log.debug("Taking transition " + next.getName());
       execute(fsm, next);
-      if (checkModelEndConditions(fsm)) {
+      if (checkModelEndConditions()) {
         //stop this test case generation if any end condition returns true
         break;
       }
     }
-    afterTest(fsm);
+    afterTest();
     log.debug("Finished new test generation");
     return test;
   }
 
-  private void initEndConditions(FSM fsm) {
+  private void initEndConditions() {
     for (EndCondition ec : testCaseEndConditions) {
       ec.init(fsm);
     }
@@ -113,7 +117,7 @@ public class MainGenerator {
     }
   }
 
-  private boolean checkSuiteEndConditions(FSM fsm) {
+  private boolean checkSuiteEndConditions() {
     boolean shouldEnd = true;
     for (EndCondition ec : suiteEndConditions) {
       boolean temp = ec.endSuite(suite, fsm);
@@ -130,13 +134,12 @@ public class MainGenerator {
   /**
    * Check if generation of current test case should stop based on given end conditions.
    *
-   * @param fsm The model being used in test generation.
    * @return True if this test generation should stop.
    */
-  private boolean checkTestCaseEndConditions(FSM fsm) {
+  private boolean checkTestCaseEndConditions() {
     if (testEnding) {
       //allow ending only if end state annotations are not present or return true
-      return checkEndStates(fsm);
+      return checkEndStates();
     }
     boolean shouldEnd = true;
     for (EndCondition ec : testCaseEndConditions) {
@@ -154,12 +157,12 @@ public class MainGenerator {
     }
     testEnding = true;
     if (fsm.getEndStates().size() > 0) {
-      return checkEndStates(fsm);
+      return checkEndStates();
     }
     return true;
   }
 
-  private boolean checkEndStates(FSM fsm) {
+  private boolean checkEndStates() {
     Collection<InvocationTarget> endStates = fsm.getEndStates();
     for (InvocationTarget es : endStates) {
       Boolean endable = (Boolean) es.invoke();
@@ -173,10 +176,9 @@ public class MainGenerator {
   /**
    * Calls every defind end condition and if any return true, also returns true. Otherwise, false.
    *
-   * @param fsm The model object on which to invoke the methods.
    * @return true if current test case (not suite) generation should be stopped.
    */
-  private boolean checkModelEndConditions(FSM fsm) {
+  private boolean checkModelEndConditions() {
     Collection<InvocationTarget> endConditions = fsm.getEndConditions();
     for (InvocationTarget ec : endConditions) {
       Boolean result = (Boolean) ec.invoke();
@@ -187,19 +189,19 @@ public class MainGenerator {
     return false;
   }
 
-  private void beforeSuite(FSM fsm) {
+  private void beforeSuite() {
     listeners.suiteStarted(suite);
     Collection<InvocationTarget> befores = fsm.getBeforeSuites();
     invokeAll(befores);
   }
 
-  private void afterSuite(FSM fsm) {
+  private void afterSuite() {
     Collection<InvocationTarget> afters = fsm.getAfterSuites();
     invokeAll(afters);
     listeners.suiteEnded(suite);
   }
 
-  private void beforeTest(FSM fsm) {
+  private void beforeTest() {
     //update history
     suite.startTest();
     listeners.testStarted(suite.getCurrentTest());
@@ -207,7 +209,7 @@ public class MainGenerator {
     invokeAll(befores);
   }
 
-  private void afterTest(FSM fsm) {
+  private void afterTest() {
     Collection<InvocationTarget> afters = fsm.getAfters();
     invokeAll(afters);
     TestCase current = suite.getCurrentTest();
@@ -254,10 +256,9 @@ public class MainGenerator {
    * returning the set of {@link osmo.tester.annotation.Transition} methods that have no guards returning a value
    * of {@code false}.
    *
-   * @param fsm Describes the test model.
    * @return The list of enabled {@link osmo.tester.annotation.Transition} methods.
    */
-  private List<FSMTransition> getEnabled(FSM fsm) {
+  private List<FSMTransition> getEnabled() {
     Collection<FSMTransition> allTransitions = fsm.getTransitions();
     List<FSMTransition> enabled = new ArrayList<FSMTransition>();
     enabled.addAll(allTransitions);

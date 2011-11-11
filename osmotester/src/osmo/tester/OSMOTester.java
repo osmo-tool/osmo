@@ -74,7 +74,7 @@ public class OSMOTester {
   /** Invoke this to perform actual test generation from the given model, with the given algorithms and strategies. */
   public void generate() {
     MainGenerator generator = initGenerator();
-    generator.generate(fsm);
+    generator.generate();
     System.out.println("generated " + fsm.getSuite().getFinishedTestCases().size() + " tests.\n");
     Requirements requirements = fsm.getRequirements();
     if (!requirements.isEmpty()) {
@@ -83,7 +83,9 @@ public class OSMOTester {
   }
 
   public MainGenerator initGenerator() {
-    MainGenerator generator = new MainGenerator();
+    MainParser parser = new MainParser();
+    fsm = parser.parse(modelObjects);
+    MainGenerator generator = new MainGenerator(fsm);
     if (algorithm == null) {
       //we do this here to avoid initializing from TestUtils.getRandom() before user calls setRandom() in this class
       algorithm = new RandomAlgorithm();
@@ -98,8 +100,6 @@ public class OSMOTester {
     generator.setSuiteEndConditions(suiteEndConditions);
     generator.setTestCaseEndConditions(testCaseEndConditions);
     generator.setListeners(listeners);
-    MainParser parser = new MainParser();
-    fsm = parser.parse(modelObjects);
     return generator;
   }
 

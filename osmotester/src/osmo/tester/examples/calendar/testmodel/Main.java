@@ -4,6 +4,7 @@ import osmo.tester.OSMOTester;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.examples.calendar.scripter.online.OnlineScripter;
 
+import java.io.PrintStream;
 import java.util.Random;
 
 /**

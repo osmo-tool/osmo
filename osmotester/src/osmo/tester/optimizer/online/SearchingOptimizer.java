@@ -24,7 +24,6 @@ public class SearchingOptimizer {
   private final SearchEndCondition endCondition;
   private SearchState state = new SearchState();
   private MainGenerator generator = null;
-  private FSM fsm = null;
 
   public SearchingOptimizer(SearchConfiguration configuration) {
     this.config = configuration;
@@ -39,17 +38,11 @@ public class SearchingOptimizer {
     this.generator = generator;
   }
 
-  public void setFsm(FSM fsm) {
-    this.fsm = fsm;
-  }
-
   public Candidate search() {
-    OSMOTester tester = config.getTester();
-    this.generator = tester.initGenerator();
-    this.fsm = tester.getFsm();
+    this.generator = config.getGenerator();
     int noc = config.getNumberOfCandidates();
     List<Candidate> candidates = new ArrayList<Candidate>();
-    generator.initSuite(fsm);
+    generator.initSuite();
     for (int i = 0; i < noc; i++) {
       Candidate candidate = createCandidate();
       candidates.add(candidate);
@@ -60,7 +53,7 @@ public class SearchingOptimizer {
       state.incrementIterationCount();
       candidates = nextGenerationFrom(candidates);
     }
-    generator.endSuite(fsm);
+    generator.endSuite();
     return state.getBest();
   }
 
@@ -97,6 +90,7 @@ public class SearchingOptimizer {
       Candidate parent1 = candidates.get(index1);
       Candidate parent2 = candidates.get(index2);
       Candidate[] offspring = recombine(parent1, parent2);
+//      Candidate[] offspring = new Candidate[] {parent1, parent2};
       mutate(offspring[0], 0.05);
       mutate(offspring[1], 0.05);
       newPopulation.add(offspring[0]);
@@ -112,7 +106,7 @@ public class SearchingOptimizer {
     for (int i = 0 ; i < size ; i++) {
       double tp = cDouble();
       if (tp < probability) {
-        tests.set(i, generator.next(fsm));
+        tests.set(i, generator.next());
       }
     }
   }
@@ -168,7 +162,7 @@ public class SearchingOptimizer {
     int populationSize = config.getPopulationSize();
     List<TestCase> tests = new ArrayList<TestCase>();
     for (int i = 0 ; i < populationSize ; i++) {
-      tests.add(generator.next(fsm));
+      tests.add(generator.next());
     }
     return new Candidate(config, tests);
   }

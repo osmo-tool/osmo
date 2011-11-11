@@ -1,6 +1,7 @@
 package osmo.tester.optimizer.online;
 
 import osmo.tester.OSMOTester;
+import osmo.tester.generator.MainGenerator;
 
 /** @author Teemu Kanstren */
 public class SearchConfiguration {
@@ -13,10 +14,10 @@ public class SearchConfiguration {
   private int numberOfCandidates = 1000;
   private int populationSize = 50;
   private SearchEndCondition endCondition = new PeakEndCondition(50);
-  private final OSMOTester tester;
+  private final MainGenerator generator;
 
-  public SearchConfiguration(OSMOTester tester) {
-    this.tester = tester;
+  public SearchConfiguration(MainGenerator generator) {
+    this.generator = generator;
   }
 
   public SearchEndCondition getEndCondition() {
@@ -83,8 +84,8 @@ public class SearchConfiguration {
     this.populationSize = populationSize;
   }
 
-  public OSMOTester getTester() {
-    return tester;
+  public MainGenerator getGenerator() {
+    return generator;
   }
 
   public void setRequirementWeight(int requirementWeight) {

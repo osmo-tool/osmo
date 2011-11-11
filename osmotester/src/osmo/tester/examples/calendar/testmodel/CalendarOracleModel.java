@@ -3,6 +3,7 @@ package osmo.tester.examples.calendar.testmodel;
 import osmo.tester.annotation.Post;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 
+import java.io.PrintStream;
 import java.util.Collection;
 
 /**
@@ -18,10 +19,18 @@ public class CalendarOracleModel {
   private final ModelState state;
   /** The scripter for creating/executing the test cases. */
   private final CalendarScripter scripter;
+  private final PrintStream out;
 
   public CalendarOracleModel(ModelState state, CalendarScripter scripter) {
     this.state = state;
     this.scripter = scripter;
+    this.out = System.out;
+  }
+
+  public CalendarOracleModel(ModelState state, CalendarScripter scripter, PrintStream out) {
+    this.state = state;
+    this.scripter = scripter;
+    this.out = out;
   }
 
   @Post

@@ -4,6 +4,7 @@ import org.junit.Test;
 import osmo.common.TestUtils;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOTester;
+import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.model.Requirements;
@@ -33,7 +34,8 @@ public class SearchTests {
     VariableModel2 model = new VariableModel2();
     OSMOTester tester = new OSMOTester();
     tester.addModelObject(model);
-    SearchConfiguration config = new SearchConfiguration(tester);
+    MainGenerator generator = tester.initGenerator();
+    SearchConfiguration config = new SearchConfiguration(generator);
     config.setNumberOfCandidates(100);
     config.setEndCondition(new PeakEndCondition(25));
     SearchingOptimizer optimizer = new SearchingOptimizer(config);
@@ -56,7 +58,8 @@ public class SearchTests {
     VariableModel2 model = new VariableModel2();
     OSMOTester tester = new OSMOTester();
     tester.addModelObject(model);
-    SearchConfiguration config = new SearchConfiguration(tester);
+    MainGenerator generator = tester.initGenerator();
+    SearchConfiguration config = new SearchConfiguration(generator);
     config.setLengthWeight(3);
     config.setPairsWeight(4);
     config.setTransitionWeight(2);
@@ -83,7 +86,8 @@ public class SearchTests {
     VariableModel2 model = new VariableModel2();
     OSMOTester tester = new OSMOTester();
     tester.addModelObject(model);
-    SearchConfiguration config = new SearchConfiguration(tester);
+    MainGenerator generator = tester.initGenerator();
+    SearchConfiguration config = new SearchConfiguration(generator);
     config.setLengthWeight(0);
     config.setPairsWeight(0);
     config.setTransitionWeight(10);
@@ -110,7 +114,8 @@ public class SearchTests {
     ValidTestModel2 model = new ValidTestModel2(new Requirements());
     OSMOTester tester = new OSMOTester();
     tester.addModelObject(model);
-    SearchConfiguration config = new SearchConfiguration(tester);
+    MainGenerator generator = tester.initGenerator();
+    SearchConfiguration config = new SearchConfiguration(generator);
     config.setPopulationSize(3);
     config.setLengthWeight(-1);
     config.setPairsWeight(0);
@@ -121,9 +126,9 @@ public class SearchTests {
     config.setNumberOfCandidates(100);
     SearchingOptimizer optimizer = new SearchingOptimizer(config);
     Candidate solution = optimizer.search();
-    System.out.println("t1:"+solution.get(0).getSteps().size()+" reqs:"+solution.get(0).getCoveredRequirements());
-    System.out.println("t2:"+solution.get(1).getSteps().size()+" reqs:"+solution.get(1).getCoveredRequirements());
-    System.out.println("t3:"+solution.get(2).getSteps().size()+" reqs:"+solution.get(2).getCoveredRequirements());
+//    System.out.println("t1:"+solution.get(0).getSteps().size()+" reqs:"+solution.get(0).getCoveredRequirements());
+//    System.out.println("t2:"+solution.get(1).getSteps().size()+" reqs:"+solution.get(1).getCoveredRequirements());
+//    System.out.println("t3:"+solution.get(2).getSteps().size()+" reqs:"+solution.get(2).getCoveredRequirements());
     assertEquals("optimized fitness", 13, solution.getFitness()); //13
   }
 }
