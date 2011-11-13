@@ -144,13 +144,16 @@ public class TestCase {
     ModelVariable variable = variables.get(name);
     if (variable == null) {
       variable = new ModelVariable(name);
+      if (merge) {
+        variable.enableMerging();
+      }
       variables.put(name, variable);
     }
     log.debug("Variable:"+name+" add value:" + value);
-    if (!merge || !variable.contains(value)) {
-      log.debug("m:"+merge+" c:"+variable.contains(value));
+//    if (!merge || !variable.contains(value)) {
+//      log.debug("m:"+merge+" c:"+variable.contains(value));
       variable.addValue(value);
-    }
+//    }
   }
 
   public void addVariableValue(String name, Object value) {

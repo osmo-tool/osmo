@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,6 +38,13 @@ public class ModelState {
   private ValueRange<Long> startTime;
 
   public ModelState() {
+    Calendar start = Calendar.getInstance();
+    start.setTime(new Date(0));
+    start.set(2000, 0, 1, 0, 0, 0);
+    Calendar end = Calendar.getInstance();
+    end.setTime(new Date(0));
+    end.set(2010, 11, 31, 23, 59, 59);
+    startTime = new ValueRange<Long>(start.getTimeInMillis(), end.getTimeInMillis());
   }
 
   /** Used to reset the state between test generation. */
@@ -51,13 +59,6 @@ public class ModelState {
     for (int i = 1; i <= users; i++) {
       uids.add("user" + i);
     }
-    Calendar start = Calendar.getInstance();
-    start.setTime(new Date(0));
-    start.set(2000, 0, 1, 0, 0, 0);
-    Calendar end = Calendar.getInstance();
-    end.setTime(new Date(0));
-    end.set(2010, 11, 31, 23, 59, 59);
-    startTime = new ValueRange<Long>(start.getTimeInMillis(), end.getTimeInMillis());
   }
 
   public String randomUID() {
@@ -101,6 +102,7 @@ public class ModelState {
   private Collection<ModelEvent> getOrCreateEvents(String uid) {
     List<ModelEvent> events = userEvents.get(uid);
     if (events == null) {
+//      System.out.println("created:"+uid);
       events = new ArrayList<ModelEvent>();
       userEvents.put(uid, events);
     }
@@ -153,6 +155,7 @@ public class ModelState {
     }
     for (String uid : toRemove) {
       userEvents.remove(uid);
+//      System.out.println("remove:"+uid);
     }
     return event;
   }
@@ -166,6 +169,7 @@ public class ModelState {
     events.remove(event);
     if (events.size() == 0) {
       userEvents.remove(uid);
+//      System.out.println("remove:"+uid);
     }
     return participantEvent;
   }
@@ -199,7 +203,7 @@ public class ModelState {
    * @return List of participants for events.
    */
   private Collection<ParticipantEvent> getParticipantEvents() {
-    Collection<ParticipantEvent> results = new HashSet<ParticipantEvent>();
+    Collection<ParticipantEvent> results = new LinkedHashSet<ParticipantEvent>();
     for (String uid : userEvents.keySet()) {
       Collection<ModelEvent> events = userEvents.get(uid);
       for (ModelEvent event : events) {
