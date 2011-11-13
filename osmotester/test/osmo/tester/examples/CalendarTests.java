@@ -29,18 +29,22 @@ import static osmo.common.TestUtils.unifyLineSeparators;
 /** @author Teemu Kanstren */
 public class CalendarTests {
   private OSMOTester osmo = null;
+  private PrintStream out;
+  private ByteArrayOutputStream bos;
 
   @Before
   public void testSetup() {
     osmo = new OSMOTester();
     osmo.setRandom(new Random(111));
+    bos = new ByteArrayOutputStream();
+    out = new PrintStream(bos);
   }
 
   @Test
   public void baseModelOnline() {
     ModelState state = new ModelState();
     CalendarScripter scripter = new OnlineScripter();
-    osmo.addModelObject(new CalendarBaseModel(state, scripter));
+    osmo.addModelObject(new CalendarBaseModel(state, scripter, out));
     generateAndAssertOutput("expected-base-online.txt");
     scripter.write();
   }
@@ -49,29 +53,21 @@ public class CalendarTests {
   public void fullModelOnline() {
     ModelState state = new ModelState();
     CalendarScripter scripter = new OnlineScripter();
-    osmo.addModelObject(new CalendarBaseModel(state, scripter));
-    osmo.addModelObject(new CalendarOracleModel(state, scripter));
-    osmo.addModelObject(new CalendarTaskModel(state, scripter));
-    osmo.addModelObject(new CalendarOverlappingModel(state, scripter));
-    osmo.addModelObject(new CalendarParticipantModel(state, scripter));
-    osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter));
+    osmo.addModelObject(new CalendarBaseModel(state, scripter, out));
+    osmo.addModelObject(new CalendarOracleModel(state, scripter, out));
+    osmo.addModelObject(new CalendarTaskModel(state, scripter, out));
+    osmo.addModelObject(new CalendarOverlappingModel(state, scripter, out));
+    osmo.addModelObject(new CalendarParticipantModel(state, scripter, out));
+    osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter, out));
     generateAndAssertOutput("expected-full-online.txt");
     scripter.write();
   }
 
   private void generateAndAssertOutput(String expectedFile) {
-    PrintStream old = System.out;
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-    PrintStream ps = new PrintStream(out);
-    System.setOut(ps);
-    try {
-      osmo.generate();
-    } finally {
-      System.setOut(old);
-    }
+    osmo.generate();
     String expected = getResource(CalendarTests.class, expectedFile);
     expected = unifyLineSeparators(expected, "\n");
-    String actual = out.toString();
+    String actual = bos.toString();
     actual = unifyLineSeparators(actual, "\n");
     assertEquals(expected, actual);
   }

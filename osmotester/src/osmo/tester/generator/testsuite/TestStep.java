@@ -104,7 +104,7 @@ public class TestStep {
       String name = variable.getName();
       Object value = variable.getValue();
       stateValuesBefore.put(name, value);
-      parent.addVariableValue(name, ""+value, true);
+      parent.addVariableValue(name, value, true);
     }
   }
 
@@ -119,7 +119,7 @@ public class TestStep {
       String name = variable.getName();
       Object value = variable.getValue();
       stateValuesAfter.put(name, value);
-      parent.addVariableValue(name, ""+value, true);
+      parent.addVariableValue(name, value, true);
     }
   }
 }

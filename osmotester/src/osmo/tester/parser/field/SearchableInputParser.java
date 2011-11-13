@@ -20,12 +20,13 @@ public class SearchableInputParser implements AnnotationParser {
     } catch (IllegalAccessException e) {
       throw new RuntimeException("Failed to read " + SearchableInput.class.getSimpleName() + " field.", e);
     }
+    String name = field.getName();
     if (input == null) {
-      errors += field.getName() + " value was null, which is not allowed.\n";
+      errors += name + " value was null. SearchableInput must be initialized before parsing.\n";
       return errors;
     }
     if (input.getName() == null) {
-      input.setName(field.getName());
+      input.setName(name);
     }
     parameters.getFsm().addSearchableInput(input);
     return errors;

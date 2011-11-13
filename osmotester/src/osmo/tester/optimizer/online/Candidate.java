@@ -39,26 +39,21 @@ public class Candidate {
     Collection<String> requirements = new HashSet<String>();
     Map<String, ModelVariable> variables = new HashMap<String, ModelVariable>();
     for (TestCase tc : tests) {
-      Collection<TestStep> steps = tc.getSteps();
-      String previous = "init";
-      for (TestStep step : steps) {
-        String transition = step.getTransition().getName();
-        transitions.add(transition);
-        pairs.add(previous + "_" + transition);
-        singles.add(transition);
-        previous = transition;
-      }
-      Map<String, ModelVariable> tcVariables = tc.getVariables();
-      for (String variableName : tcVariables.keySet()) {
-        ModelVariable var = variables.get(variableName);
+      TestCoverage coverage = coverageFor(tc);
+      transitions.addAll(coverage.getTransitions());
+      pairs.addAll(coverage.getPairs());
+      singles.addAll(coverage.getSingles());
+      requirements.addAll(coverage.getRequirements());
+      for (ModelVariable tcVar : tc.getVariables().values()) {
+        String name = tcVar.getName();
+        ModelVariable var = variables.get(name);
         if (var == null) {
-          var = new ModelVariable(variableName);
+          var = new ModelVariable(name);
           var.enableMerging();
-          variables.put(variableName, var);
+          variables.put(name, var);
         }
-        var.addAll(tcVariables.get(variableName));
+        var.addAll(tcVar);
       }
-      requirements.addAll(tc.getCoveredRequirements());
     }
     log.debug("pairs:" + pairs);
 
@@ -71,6 +66,25 @@ public class Candidate {
     }
     fitness += requirements.size() * config.getRequirementWeight();
     return fitness;
+  }
+
+  private TestCoverage coverageFor(TestCase tc) {
+    TestCoverage coverage = new TestCoverage();
+    Collection<TestStep> steps = tc.getSteps();
+    String previous = "init";
+    for (TestStep step : steps) {
+      String transition = step.getTransition().getName();
+      coverage.addTransition(transition);
+      coverage.addPair(previous + "_" + transition);
+      previous = transition;
+    }
+    Map<String, ModelVariable> tcVariables = tc.getVariables();
+    for (String variableName : tcVariables.keySet()) {
+      ModelVariable var = coverage.getVariable(variableName);
+      var.addAll(tcVariables.get(variableName));
+    }
+    coverage.addRequirements(tc.getCoveredRequirements());
+    return coverage;
   }
 
   public int size() {
@@ -88,5 +102,36 @@ public class Candidate {
 
   public TestCase get(int i) {
     return tests.get(i);
+  }
+
+  public String matrix() {
+    String matrix = "";
+    for (TestCase test : tests) {
+      matrix += matrixFor(test);
+    }
+    return matrix;
+  }
+
+  private String matrixFor(TestCase test) {
+    String matrix = "";
+    TestCoverage coverage = coverageFor(test);
+    int pairs = coverage.getPairs().size();
+    int transitions = coverage.getTransitions().size();
+    int singles = coverage.getSingles().size();
+    int reqs = coverage.getRequirements().size();
+    Map<String, ModelVariable> variables = coverage.getVariables();
+    int variableCount = variables.keySet().size();
+    int valueCount = 0;
+    for (ModelVariable variable : variables.values()) {
+      valueCount += variable.getValues().size();
+    }
+    matrix += "test:\n";
+    matrix += "pairs = "+pairs + "\n";
+    matrix += "transitions = "+transitions + "\n";
+    matrix += "singles = "+singles + "\n";
+    matrix += "requirements = "+reqs + "\n";
+    matrix += "variables = "+variableCount + "\n";
+    matrix += "values = "+valueCount+"\n";
+    return matrix;
   }
 }

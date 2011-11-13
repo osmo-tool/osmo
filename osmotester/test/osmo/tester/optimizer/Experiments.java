@@ -36,7 +36,9 @@ public class Experiments {
   private long start = 0;
 
   public static void main(String[] args) {
-    new Experiments().run();
+    for (int i = 0 ; i < 1 ; i++) {
+      new Experiments().run();
+    }
   }
 
   public void run() {
@@ -53,6 +55,8 @@ public class Experiments {
     osmo.addModelObject(new CalendarParticipantModel(state, scripter, nps));
     osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter, nps));
     osmo.addModelObject(new CalendarFailureModel(state, scripter, nps));
+    osmo.addModelObject(state);
+//    osmo.addModelObject(new ValidTestModel2(new Requirements()));
     MainGenerator generator = osmo.initGenerator();
     SearchConfiguration config = new SearchConfiguration(generator);
     config.setNumberOfCandidates(100);
@@ -67,6 +71,7 @@ public class Experiments {
 
     System.out.println("totaltime:"+seconds());
     System.out.println("updates:\n"+listener.getUpdates());
+    System.out.println("tests:\n"+solution.matrix());
   }
 
   private long seconds() {

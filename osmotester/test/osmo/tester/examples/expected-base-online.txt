@@ -122,6 +122,4 @@
 --ADDEVENT:ModelEvent{uid='user1', description='event5', location='location5', start=Sat Aug 26 21:23:08 EEST 2000, end=Sun Aug 27 00:46:26 EEST 2000}
 --REMOVEORGANIZEREVENT:ModelEvent{uid='user1', description='event5', location='location5', start=Sat Aug 26 21:23:08 EEST 2000, end=Sun Aug 27 00:46:26 EEST 2000}
 --ADDEVENT:ModelEvent{uid='user1', description='event6', location='location6', start=Tue Jun 19 12:06:05 EEST 2001, end=Tue Jun 19 12:11:36 EEST 2001}
-generated 10 tests.
-
 

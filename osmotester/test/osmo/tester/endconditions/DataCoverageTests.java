@@ -11,6 +11,7 @@ import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.testmodels.VariableModel2;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -164,12 +165,15 @@ public class DataCoverageTests {
     List<TestCase> tests = suite.getFinishedTestCases();
     TestCase test = tests.get(0);
     assertEquals("Length of generated test", 1, test.getSteps().size());
-    String expected = "[false, true]";
-    String actual = test.getVariables().get("first").getValues().toString();
-    assertEquals("Expected value for range", expected, actual);
+    Collection<Object> actual = test.getVariables().get("first").getValues();
+    assertEquals("Expected value for range", 2, actual.size());
+    assertTrue("Should have true value", actual.contains(true));
+    assertTrue("Should have false value", actual.contains(false));
     //suite should be exactly same for one test
     String actualSuite = suite.getVariables().get("first").getValues().toString();
-    assertEquals("Expected value for suite range", expected, actualSuite);
+    assertEquals("Expected value for range", 2, actual.size());
+    assertTrue("Should have true value", actual.contains(true));
+    assertTrue("Should have false value", actual.contains(false));
   }
 
   @Test
@@ -195,17 +199,17 @@ public class DataCoverageTests {
     assertEquals("Length of generated test", 2, test.getSteps().size());
     String expected = "[false, true]";
     String actual = test.getVariables().get("first").getValues().toString();
-    assertEquals("Expected value for range", expected, actual);
+    assertEquals("Expected values for boolean variable", expected, actual);
     //suite should be exactly same for one test
     String actualSuite = suite.getVariables().get("first").getValues().toString();
-    assertEquals("Expected value for suite range", expected, actualSuite);
+    assertEquals("Expected values for suite boolean variable", expected, actualSuite);
 
     String expected2 = "[false, true]";
     String actual2 = test.getVariables().get("second").getValues().toString();
-    assertEquals("Expected value for range", expected2, actual2);
+    assertEquals("Expected values for boolean variable", expected2, actual2);
     //suite should be exactly same for one test
     String actualSuite2 = suite.getVariables().get("second").getValues().toString();
-    assertEquals("Expected value for suite range", expected2, actualSuite2);
+    assertEquals("Expected values for suite boolean variable", expected2, actualSuite2);
   }
 
   @Test

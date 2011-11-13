@@ -49,12 +49,22 @@ public class SearchingOptimizer {
     }
     Collections.sort(candidates, comparator);
     updateBestFrom(candidates);
-    while (!endCondition.shouldEnd(state)) {
-      state.incrementIterationCount();
-      candidates = nextGenerationFrom(candidates);
-    }
+    runPhase(candidates, 0);
+    runPhase(candidates, 0.01);
+    runPhase(candidates, 0.05);
+    runPhase(candidates, 0.20);
     generator.endSuite();
     return state.getBest();
+  }
+
+  private List<Candidate> runPhase(List<Candidate> candidates, double mutationProbability) {
+    state.startPhase();
+    while (!endCondition.shouldEnd(state)) {
+      generator.resetSuite();
+      state.incrementIterationCount();
+      candidates = nextGenerationFrom(candidates, mutationProbability);
+    }
+    return candidates;
   }
 
   public void updateBestFrom(List<Candidate> candidates) {
@@ -62,7 +72,7 @@ public class SearchingOptimizer {
     state.checkCandidate(current);
   }
 
-  public List<Candidate> nextGenerationFrom(List<Candidate> candidates) {
+  public List<Candidate> nextGenerationFrom(List<Candidate> candidates, double mp) {
     log.debug("next generation of search space being created");
     Collections.sort(candidates, comparator);
     int size = config.getPopulationSize();
@@ -91,8 +101,8 @@ public class SearchingOptimizer {
       Candidate parent2 = candidates.get(index2);
       Candidate[] offspring = recombine(parent1, parent2);
 //      Candidate[] offspring = new Candidate[] {parent1, parent2};
-      mutate(offspring[0], 0.05);
-      mutate(offspring[1], 0.05);
+      mutate(offspring[0], mp);
+      mutate(offspring[1], mp);
       newPopulation.add(offspring[0]);
       newPopulation.add(offspring[1]);
     }

@@ -148,12 +148,12 @@ public class MainParser {
         //and finally parse it
         errors += parser.parse(parameters);
       }
-      parseField(field, parameters);
+      errors = parseField(field, parameters, errors);
     }
     return errors;
   }
 
-  private void parseField(Field field, ParserParameters parameters) {
+  private String parseField(Field field, ParserParameters parameters, String errors) {
     log.debug("parsefield");
     Class fieldClass = field.getType();
     for (Class parserType : fieldParsers.keySet()) {
@@ -161,10 +161,12 @@ public class MainParser {
         AnnotationParser fieldParser = fieldParsers.get(parserType);
         if (fieldParser != null) {
           log.debug("field parser invocation:" + parameters);
-          fieldParser.parse(parameters);
+          errors += fieldParser.parse(parameters);
         }
       }
     }
+    //TODO: add test that this works..
+    return errors;
   }
 
   private Collection<Field> getAllFields(Class clazz) {

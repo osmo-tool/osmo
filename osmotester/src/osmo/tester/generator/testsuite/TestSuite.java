@@ -31,6 +31,14 @@ public class TestSuite {
     current = new TestCase();
   }
 
+  public void reset() {
+    current = null;
+    testCases.clear();
+    coveredRequirements.clear();
+    coveredTransitions.clear();
+    transitionCoverage.clear();
+  }
+
   /** End the current test case and moves it to the suite "history". */
   public void endTest() {
     coveredRequirements.addAll(current.getAddedRequirementsCoverage());

@@ -301,4 +301,8 @@ public class MainGenerator {
     transition.storeState(fsm);
     invokeAll(transition.getPostMethods(), transition.getPrePostParameter(), "post", transition);
   }
+
+  public void resetSuite() {
+    suite.reset();
+  }
 }
