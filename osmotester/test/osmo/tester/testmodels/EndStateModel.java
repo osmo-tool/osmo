@@ -35,7 +35,7 @@ public class EndStateModel {
 
   @Transition("hello")
   public void transition1() {
-    System.out.println("hello");
+//    System.out.println("hello");
     req.covered(REQ_HELLO);
   }
 
@@ -46,7 +46,7 @@ public class EndStateModel {
 
   @Transition("world")
   public void epix() {
-    System.out.println("world");
+//    System.out.println("world");
     req.covered(REQ_WORLD);
   }
 

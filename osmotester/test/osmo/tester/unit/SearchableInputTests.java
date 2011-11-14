@@ -9,22 +9,22 @@ import osmo.tester.model.dataflow.ValueSet;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
 
 /** @author Teemu Kanstren */
 public class SearchableInputTests {
   @Test
   public void valueRange() {
-    ValueRange<Integer> range = new ValueRange<Integer>(1,10);
+    ValueRange<Integer> range = new ValueRange<Integer>(1, 10);
     range.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     String name = "test-range";
     range.setName(name);
     TestInputObserver<Integer> observer = new TestInputObserver<Integer>(name);
     range.setObserver(observer);
     Collection<Integer> expected = new ArrayList<Integer>();
-    for (int i = 0 ; i < 11 ; i++) {
+    for (int i = 0; i < 11; i++) {
       range.next();
-      expected.add(i%10+1);
+      expected.add(i % 10 + 1);
     }
     Collection<Integer> actual = observer.getObservations();
     assertEquals("Observed generated values", expected, actual);
@@ -41,7 +41,7 @@ public class SearchableInputTests {
     Collection<String> expected = new ArrayList<String>();
     for (int i = 0; i < 5; i++) {
       set.next();
-      expected.add("v"+(i%3+1));
+      expected.add("v" + (i % 3 + 1));
     }
     Collection<String> actual = observer.getObservations();
     assertEquals("Observed generated values", expected, actual);

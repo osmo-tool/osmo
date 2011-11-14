@@ -3,11 +3,9 @@ package osmo.tester.unit;
 import org.junit.Test;
 import osmo.tester.generator.testsuite.TestCase;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public class TestModelTests {
   @Test
   public void customAttributes() {

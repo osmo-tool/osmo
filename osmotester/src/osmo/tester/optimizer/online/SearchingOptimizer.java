@@ -1,20 +1,13 @@
 package osmo.tester.optimizer.online;
 
+import osmo.common.Randomizer;
 import osmo.common.log.Logger;
-import osmo.tester.OSMOTester;
 import osmo.tester.generator.MainGenerator;
-import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.model.FSM;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
-
-import static osmo.common.TestUtils.*;
 
 /** @author Teemu Kanstren */
 public class SearchingOptimizer {
@@ -24,10 +17,12 @@ public class SearchingOptimizer {
   private final SearchEndCondition endCondition;
   private SearchState state = new SearchState();
   private MainGenerator generator = null;
+  private final Randomizer random;
 
   public SearchingOptimizer(SearchConfiguration configuration) {
     this.config = configuration;
     this.endCondition = config.getEndCondition();
+    this.random = new Randomizer(configuration.getSeed());
   }
 
   public SearchState getState() {
@@ -74,28 +69,15 @@ public class SearchingOptimizer {
 
   public List<Candidate> nextGenerationFrom(List<Candidate> candidates, double mp) {
     log.debug("next generation of search space being created");
-    Collections.sort(candidates, comparator);
-    int size = config.getPopulationSize();
     List<Candidate> newPopulation = new ArrayList<Candidate>();
-    List<Integer> weights = new ArrayList<Integer>();
-    int total = 0;
-    int low = candidates.get(0).getFitness();
-    if (low < 0) {
-      //tricks to allow negative weights
-      low *= -1;
-      low++;
-    }
-    for (Candidate candidate : candidates) {
-      int fitness = candidate.getFitness();
-      fitness += low;
-      total += fitness;
-      weights.add(total);
-    }
+    int size = config.getPopulationSize();
+    Collections.sort(candidates, comparator);
+    List<Integer> weights = getWeightLine(candidates);
     while (newPopulation.size() < size) {
-      int index1 = sumWeightedRandomFrom(weights);
+      int index1 = random.sumWeightedRandomFrom(weights);
       int index2 = index1;
       while (index2 == index1) {
-        index2 = sumWeightedRandomFrom(weights);
+        index2 = random.sumWeightedRandomFrom(weights);
       }
       Candidate parent1 = candidates.get(index1);
       Candidate parent2 = candidates.get(index2);
@@ -110,11 +92,29 @@ public class SearchingOptimizer {
     return newPopulation;
   }
 
+  private List<Integer> getWeightLine(List<Candidate> candidates) {
+    int low = candidates.get(0).getFitness();
+    if (low < 0) {
+      //tricks to allow negative weights
+      low *= -1;
+      low++;
+    }
+    List<Integer> weights = new ArrayList<Integer>();
+    int total = 0;
+    for (Candidate candidate : candidates) {
+      int fitness = candidate.getFitness();
+      fitness += low;
+      total += fitness;
+      weights.add(total);
+    }
+    return weights;
+  }
+
   public void mutate(Candidate candidate, double probability) {
     List<TestCase> tests = candidate.getTests();
     int size = tests.size();
-    for (int i = 0 ; i < size ; i++) {
-      double tp = cDouble();
+    for (int i = 0; i < size; i++) {
+      double tp = random.cDouble();
       if (tp < probability) {
         tests.set(i, generator.next());
       }
@@ -144,7 +144,7 @@ public class SearchingOptimizer {
       }
       TestCase t3 = c1.get(i + i1);
       TestCase t4 = c2.get(i + i2);
-      double d = cDouble();
+      double d = random.cDouble();
       if (d >= 0.5d) {
         TestCase t5 = t3;
         t3 = t4;
@@ -171,7 +171,7 @@ public class SearchingOptimizer {
     //TODO: validate configuration first
     int populationSize = config.getPopulationSize();
     List<TestCase> tests = new ArrayList<TestCase>();
-    for (int i = 0 ; i < populationSize ; i++) {
+    for (int i = 0; i < populationSize; i++) {
       tests.add(generator.next());
     }
     return new Candidate(config, tests);

@@ -18,19 +18,13 @@
 
 package osmo.common;
 
-import org.xml.sax.InputSource;
-
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.sax.SAXSource;
-import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -55,7 +49,7 @@ public class TestUtils {
    * Used for random number generation, practically also shared in OSMOTester in many places.
    * {@see OSMOTester} and the setRandom method in it.
    */
-  private static Random random = new Random();
+  private static Randomizer random = new Randomizer();
   public static String ln = System.getProperty("line.separator");
 
   /**
@@ -63,28 +57,26 @@ public class TestUtils {
    *
    * @return The used random generator.
    */
-  public static Random getRandom() {
+  public static Randomizer getRandom() {
     return random;
   }
 
   /**
    * Allows setting the random number generator to users own configuration.
-   * See OSMOTester class and the setRandom() method in it for more info.
    *
    * @param random The new random generator.
    */
-  public static void setRandom(Random random) {
+  public static void setRandom(Randomizer random) {
     TestUtils.random = random;
   }
 
   /**
    * Creates a new Random value generator initialized with the given seed value.
-   * See OSMOTester class and the setRandom() method in it for more info.
    *
    * @param seed Seed for the new random generator.
    */
   public static void setSeed(long seed) {
-    TestUtils.random = new Random(seed);
+    TestUtils.random.setSeed(seed);
   }
 
 
@@ -92,7 +84,7 @@ public class TestUtils {
    * @return A random value.
    */
   public static int cInt() {
-    return random.nextInt();
+    return random.cInt();
   }
 
   /**
@@ -101,17 +93,14 @@ public class TestUtils {
    * @return Random integer between the given bounds, bounds included.
    */
   public static int cInt(int min, int max) {
-    int diff = max - min + 1;
-    int rnd = random.nextInt(diff);
-    rnd += min;
-    return rnd;
+    return random.cInt(min, max);
   }
 
   /**
    * @return A random value.
    */
   public static float cFloat() {
-    return random.nextFloat();
+    return random.cFloat();
   }
 
   /**
@@ -120,17 +109,14 @@ public class TestUtils {
    * @return Random value between the given bounds, bounds included.
    */
   public static float cFloat(float min, float max) {
-    float diff = max - min;
-    float rnd = random.nextFloat() * diff;
-    rnd += min;
-    return rnd;
+    return random.cFloat(min, max);
   }
 
   /**
    * @return A random value.
    */
   public static long cLong() {
-    return random.nextLong();
+    return random.cLong();
   }
 
   /**
@@ -139,15 +125,14 @@ public class TestUtils {
    * @return Random value between the given bounds, bounds included.
    */
   public static long cLong(long min, long max) {
-    long diff = max - min + 1;
-    return min + (long) (random.nextDouble() * diff);
+    return random.cLong(min, max);
   }
 
   /**
    * @return A random value.
    */
   public static byte cByte() {
-    return (byte) cInt(Byte.MIN_VALUE, Byte.MAX_VALUE);
+    return random.cByte();
   }
 
   /**
@@ -156,14 +141,14 @@ public class TestUtils {
    * @return Random value between the given bounds, bounds included.
    */
   public static byte cByte(byte min, byte max) {
-    return (byte) cInt(min, max);
+    return random.cByte(min, max);
   }
 
   /**
    * @return A random value.
    */
   public static char cChar() {
-    return (char) cInt(Character.MIN_VALUE, Character.MAX_VALUE);
+    return random.cChar();
   }
 
   /**
@@ -172,14 +157,14 @@ public class TestUtils {
    * @return Random value between the given bounds, bounds included.
    */
   public static char cChar(char min, char max) {
-    return (char) cInt(min, max);
+    return random.cChar(min, max);
   }
 
   /**
    * @return A random value.
    */
   public static double cDouble() {
-    return random.nextDouble();
+    return random.cDouble();
   }
 
   /**
@@ -188,39 +173,15 @@ public class TestUtils {
    * @return Random value between the given bounds, bounds included.
    */
   public static double cDouble(double min, double max) {
-    double diff = max - min;
-    double rnd = random.nextDouble();
-    rnd *= diff;
-    rnd += min;
-    return rnd;
+    return random.cDouble(min, max);
   }
 
   public static int rawWeightedRandomFrom(List<Integer> weights) {
-    Collections.sort(weights);
-    List<Integer> totals = new ArrayList<Integer>();
-    int total = 0;
-    for (Integer weight : weights) {
-      if (weight <= 0) {
-        throw new IllegalArgumentException("Weight must be > 0. Was "+weight+".");
-      }
-      total += weight;
-      totals.add(total);
-    }
-//    System.out.println("weights:"+totals+" total:"+total);
-    return sumWeightedRandomFrom(totals);
+    return random.rawWeightedRandomFrom(weights);
   }
 
   public static int sumWeightedRandomFrom(List<Integer> summedTotals) {
-    int total = summedTotals.get(summedTotals.size()-1);
-    int target = cInt(1, total);
-//    System.out.println("target:"+target);
-    int choice = Collections.binarySearch(summedTotals, target);
-    if (choice < 0) {
-      //Java binary search returns negative index values if there is no direct match, with additional -1 added on top
-      choice = choice * -1; //make it positive again
-      choice = choice -1; //remove the -1 (with after previous line is +1)
-    }
-    return choice;
+    return random.sumWeightedRandomFrom(summedTotals);
   }
 
   /**
@@ -228,7 +189,7 @@ public class TestUtils {
    * @return A randomly picked item from the given list.
    */
   public static int oneOf(int[] array) {
-    return array[cInt(0, array.length - 1)];
+    return random.oneOf(array);
   }
 
   /**
@@ -236,7 +197,7 @@ public class TestUtils {
    * @return A randomly picked item from the given list.
    */
   public static <T> T oneOf(T[] array) {
-    return array[cInt(0, array.length - 1)];
+    return random.oneOf(array);
   }
 
   /**
@@ -244,8 +205,7 @@ public class TestUtils {
    * @return A randomly picked item from the given list.
    */
   public static <T> T oneOf(Collection<T> array) {
-    List<T> list = new ArrayList<T>(array);
-    return list.get(cInt(0, array.size() - 1));
+    return random.oneOf(array);
   }
 
   /**
@@ -255,13 +215,7 @@ public class TestUtils {
    * @return The minimum numeric value from the given collection.
    */
   public static <T extends Number> T minOf(Collection<T> array) {
-    T smallest = null;
-    for (T t : array) {
-      if (smallest == null || t.doubleValue() < smallest.doubleValue()) {
-        smallest = t;
-      }
-    }
-    return smallest;
+    return random.minOf(array);
   }
 
   /**

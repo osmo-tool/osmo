@@ -22,7 +22,7 @@ public class ParameterModel1 {
 
   @Transition("three-params")
   public void threeParams() {
-    System.out.println("three");
+//    System.out.println("three");
     csv.addParameter("i1", i1++);
     csv.addParameter("i2", i2++);
     csv.addParameter("i3", i3++);
@@ -30,14 +30,14 @@ public class ParameterModel1 {
 
   @Transition("two-params")
   public void twoParams() {
-    System.out.println("two");
+//    System.out.println("two");
     csv.addParameter("i1", i1++);
     csv.addParameter("i2", i2++);
   }
 
   @Transition("empty")
   public void empty() {
-    System.out.println("empty");
+//    System.out.println("empty");
   }
 
   public List<String> getResult() {

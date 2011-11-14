@@ -17,7 +17,7 @@ public class DataCoverageRequirement {
   }
 
   public void addRequirement(Object value) {
-    values.add(""+value);
+    values.add("" + value);
   }
 
   public void requireAll() {
@@ -36,7 +36,7 @@ public class DataCoverageRequirement {
   public void initializeFrom(SearchableInput input) {
     Collection options = input.getOptions();
     for (Object option : options) {
-      values.add(""+option);
+      values.add("" + option);
     }
   }
 

@@ -9,8 +9,6 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
-import osmo.tester.model.dataflow.DataGenerationStrategy;
-import osmo.tester.model.dataflow.Input;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,6 +40,7 @@ public class MainGenerator {
 
   /**
    * Constructor.
+   *
    * @param fsm Describes the test model in an FSM format.
    */
   public MainGenerator(FSM fsm) {

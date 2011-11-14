@@ -1,8 +1,6 @@
 package osmo.tester.generator.endcondition;
 
-/**
- * @author Teemu Kanstren
- */
+/** @author Teemu Kanstren */
 public abstract class AbstractEndCondition implements EndCondition {
   private boolean strict = false;
 

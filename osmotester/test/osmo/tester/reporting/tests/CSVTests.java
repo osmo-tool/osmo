@@ -6,11 +6,9 @@ import osmo.tester.generator.endcondition.Length;
 import osmo.tester.testmodels.ParameterModel1;
 
 import java.util.List;
-import java.util.Random;
 
 import static junit.framework.Assert.assertEquals;
-import static osmo.common.TestUtils.getResource;
-import static osmo.common.TestUtils.unifyLineSeparators;
+import static osmo.common.TestUtils.*;
 
 /** @author Teemu Kanstren */
 public class CSVTests {
@@ -21,7 +19,7 @@ public class CSVTests {
     osmo.addModelObject(model);
     osmo.addTestEndCondition(new Length(10));
     osmo.addSuiteEndCondition(new Length(2));
-    osmo.setRandom(new Random(1));
+    osmo.setSeed(1);
     osmo.generate();
     List<String> report = model.getResult();
 

@@ -4,8 +4,9 @@ import org.junit.Test;
 import osmo.tester.model.dataflow.DataGenerationStrategy;
 import osmo.tester.model.dataflow.ValueRange;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+import java.util.Collection;
+
+import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class ValueRangeTests {
@@ -100,5 +101,11 @@ public class ValueRangeTests {
       assertEquals(i, range.next().intValue());
     }
   }
-  //TODO: whine about reified generics
+
+  @Test
+  public void getOptions() {
+    ValueRange<Integer> range = new ValueRange<Integer>(1, 5);
+    Collection<Integer> options = range.getOptions();
+    assertEquals("Options for range 1-5", "[1, 2, 3, 4, 5]", options.toString());
+  }
 }

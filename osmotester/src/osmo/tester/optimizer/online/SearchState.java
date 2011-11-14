@@ -16,6 +16,7 @@ public class SearchState {
   private Collection<SearchPhase> phases = new ArrayList<SearchPhase>();
 
   public SearchState() {
+    SearchPhase.nextId = 0;
     startPhase();
   }
 
@@ -37,7 +38,7 @@ public class SearchState {
   }
 
   public void startPhase() {
-    System.out.println("next phase:"+phase.getId()+", "+phase.getIterationCount());
+    System.out.println("next phase:" + phase.getId() + ", " + phase.getIterationCount());
     phase.end();
     phase = new SearchPhase();
     phases.add(phase);
@@ -48,8 +49,8 @@ public class SearchState {
       best = current;
       bestIteration = totalIterationCount;
       phase.setBestIteration();
-      log.debug("updated best fitness, phase "+phase.getId()+", iteration " + phase.getIterationCount() + " best:" + best.getFitness());
-      System.out.println("updated best fitness, phase "+phase.getId()+", iteration " + phase.getIterationCount() + " best:" + best.getFitness());
+      log.debug("updated best fitness, phase " + phase.getId() + ", iteration " + phase.getIterationCount() + " best:" + best.getFitness());
+      System.out.println("updated best fitness, phase " + phase.getId() + ", iteration " + phase.getIterationCount() + " best:" + best.getFitness());
       if (listener != null) {
         listener.updateBest(best);
       }

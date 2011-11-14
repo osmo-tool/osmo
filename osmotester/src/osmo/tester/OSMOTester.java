@@ -19,7 +19,6 @@ import osmo.tester.parser.ModelObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Random;
 
 /**
  * The main class for initiating the MBT tool.
@@ -163,10 +162,10 @@ public class OSMOTester {
    * This should generally not be a problem but, for example, in trying to create deterministic test cases
    * it may cause some confusion.
    *
-   * @param random The new random number generator.
+   * @param seed The new random number generator.
    */
-  public void setRandom(Random random) {
-    TestUtils.setRandom(random);
+  public void setSeed(long seed) {
+    TestUtils.setSeed(seed);
   }
 
 }

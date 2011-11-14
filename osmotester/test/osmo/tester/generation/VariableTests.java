@@ -3,6 +3,9 @@ package osmo.tester.generation;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOTester;
+import osmo.tester.examples.calendar.scripter.MockScripter;
+import osmo.tester.examples.calendar.testmodel.CalendarBaseModel;
+import osmo.tester.examples.calendar.testmodel.ModelState;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
@@ -11,13 +14,12 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.testmodels.VariableModel1;
 import osmo.tester.testmodels.VariableModel2;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import javax.naming.event.EventContext;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
 
 /** @author Teemu Kanstren */
 public class VariableTests {
@@ -27,7 +29,7 @@ public class VariableTests {
   @Before
   public void testSetup() {
     osmo = new OSMOTester();
-    osmo.setRandom(new Random(123));
+    osmo.setSeed(123);
     listener = new VariableTestListener();
     osmo.addListener(listener);
   }
@@ -74,16 +76,16 @@ public class VariableTests {
   public void variableModel2SingleTest() {
     VariableModel2 model = new VariableModel2();
     osmo.addModelObject(model);
-    Length length3 = new Length(10);
+    Length length10 = new Length(10);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length3);
+    osmo.addTestEndCondition(length10);
     osmo.addSuiteEndCondition(length1);
     osmo.generate();
     TestSuite suite = model.getSuite();
     List<TestCase> tests = suite.getFinishedTestCases();
     TestCase test = tests.get(0);
-    String expectedSet = "[v1, v3, v3, v3, v3, v2, v3, v1]";
-    String expectedRange = "[5, 3, 2, 1, 4, 3, 2, 4]";
+    String expectedSet = "[v1, v2, v3, v3, v3, v1, v1, v3]";
+    String expectedRange = "[5, 5, 4, 3, 5, 5, 3, 4]";
     assertModel2Values(test, expectedSet, expectedRange);
   }
 
@@ -91,20 +93,20 @@ public class VariableTests {
   public void variableModel2TwoTests() {
     VariableModel2 model = new VariableModel2();
     osmo.addModelObject(model);
-    Length length3 = new Length(9);
-    Length length1 = new Length(2);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length1);
+    Length length9 = new Length(9);
+    Length length2 = new Length(2);
+    osmo.addTestEndCondition(length9);
+    osmo.addSuiteEndCondition(length2);
     osmo.generate();
     TestSuite suite = model.getSuite();
     List<TestCase> tests = suite.getFinishedTestCases();
     TestCase test = tests.get(0);
-    String expectedSet = "[v1, v3, v3, v3, v3, v2, v3]";
-    String expectedRange = "[5, 3, 2, 1, 4, 3, 2]";
+    String expectedSet = "[v1, v2, v3, v3, v3, v1, v1]";
+    String expectedRange = "[5, 5, 4, 3, 5, 5, 3]";
     assertModel2Values(test, expectedSet, expectedRange);
     test = tests.get(1);
-    expectedSet = "[v1, v3, v3, v1, v1, v1, v3, v1, v2]";
-    expectedRange = "[4, 5, 1, 4, 1, 5, 3, 2, 2]";
+    expectedSet = "[v3, v2, v3, v1, v1, v2, v2, v2, v2]";
+    expectedRange = "[4, 3, 2, 4, 4, 2, 4, 2, 4]";
     assertModel2Values(test, expectedSet, expectedRange);
   }
 
@@ -116,5 +118,35 @@ public class VariableTests {
     assertNotNull("Range variable should be present", range);
     assertEquals("Generated values for set", expectedSet, set.getValues().toString());
     assertEquals("Generated values for range", expectedRange, range.getValues().toString());
+  }
+
+  @Test
+  public void collectionCounter() {
+    ModelState state = new ModelState();
+    MockScripter scripter = new MockScripter();
+    osmo.addModelObject(new CalendarBaseModel(state, scripter, NullPrintStream.stream));
+    osmo.addModelObject(state);
+    Length length9 = new Length(9);
+    Length length2 = new Length(2);
+    osmo.addTestEndCondition(length9);
+    osmo.addSuiteEndCondition(length2);
+    osmo.generate();
+    TestSuite suite = osmo.getSuite();
+    List<TestCase> tests = suite.getFinishedTestCases();
+    TestCase test = tests.get(0);
+    Map<String, ModelVariable> variables = test.getVariables();
+    ModelVariable taskCount = variables.get("taskCount");
+    ModelVariable eventCount = variables.get("eventCount");
+    ModelVariable userCount = variables.get("userCount");
+    ModelVariable startTime = variables.get("startTime");
+    assertNotNull("TaskCount variable should be present", taskCount);
+    assertNotNull("EventCount variable should be present", eventCount);
+    assertNotNull("UserCount variable should be present", userCount);
+    assertNotNull("StartTime variable should be present", startTime);
+    assertEquals("Generated values for TaskCount", "[0]", taskCount.getValues().toString());
+    assertEquals("Generated values for EventCount", "[7]", eventCount.getValues().toString());
+    assertEquals("Generated values for UserCount", "[3]", userCount.getValues().toString());
+    assertEquals("Generated values for StartTime", "[1051370508016, 1162736432155, 1183372444441, 1155760999691, 977583440520, 1270228633469, 1120207893609]", startTime.getValues().toString());
+
   }
 }

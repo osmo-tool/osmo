@@ -1,5 +1,8 @@
 package osmo.tester.examples.calendar.testmodel;
 
+import osmo.tester.annotation.Variable;
+import osmo.tester.model.CollectionCount;
+import osmo.tester.model.VariableValue;
 import osmo.tester.model.dataflow.ValueRange;
 
 import java.util.ArrayList;
@@ -15,8 +18,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static osmo.common.TestUtils.cInt;
-import static osmo.common.TestUtils.oneOf;
+import static osmo.common.TestUtils.*;
 
 /**
  * Holds the overall state of the model.
@@ -31,11 +33,15 @@ public class ModelState {
   /** Events for each user. */
   private Map<String, List<ModelEvent>> userEvents = new LinkedHashMap<String, List<ModelEvent>>();
   /** Used to generate unique identifiers for tasks. */
+  @Variable
   private AtomicInteger taskCount = new AtomicInteger(0);
   /** Used to generate unique identifiers for events. */
+  @Variable
   private AtomicInteger eventCount = new AtomicInteger(0);
   /** Used to generate start times between January 2000 and December 2010. */
   private ValueRange<Long> startTime;
+  @Variable
+  private VariableValue userCount = new CollectionCount(uids);
 
   public ModelState() {
     Calendar start = Calendar.getInstance();

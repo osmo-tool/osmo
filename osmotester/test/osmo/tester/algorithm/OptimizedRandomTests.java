@@ -2,7 +2,6 @@ package osmo.tester.algorithm;
 
 import org.junit.Before;
 import org.junit.Test;
-import osmo.common.log.Logger;
 import osmo.tester.OSMOTester;
 import osmo.tester.generation.TestListener;
 import osmo.tester.generator.algorithm.OptimizedRandomAlgorithm;
@@ -11,7 +10,6 @@ import osmo.tester.generator.endcondition.Length;
 import osmo.tester.testmodels.ValidTestModel6;
 
 import java.util.Collection;
-import java.util.Random;
 
 import static junit.framework.Assert.assertFalse;
 
@@ -23,7 +21,7 @@ public class OptimizedRandomTests {
   @Before
   public void testSetup() {
     osmo = new OSMOTester();
-    osmo.setRandom(new Random(100));
+    osmo.setSeed(100);
     listener = new TestListener();
     osmo.addListener(listener);
   }

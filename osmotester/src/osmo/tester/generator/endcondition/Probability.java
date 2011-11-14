@@ -1,9 +1,10 @@
 package osmo.tester.generator.endcondition;
 
-import osmo.common.TestUtils;
 import osmo.common.log.Logger;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
+
+import static osmo.common.TestUtils.cDouble;
 
 /**
  * A simple end condition that takes a probability threshold for stopping test generation.
@@ -30,7 +31,7 @@ public class Probability extends AbstractEndCondition {
   }
 
   public boolean endNow(TestSuite suite, FSM fsm) {
-    double v = TestUtils.getRandom().nextDouble();
+    double v = cDouble();
     log.debug("value " + v + " threshold " + threshold);
     return v <= threshold;
   }

@@ -4,9 +4,6 @@ import osmo.tester.OSMOTester;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.examples.calendar.scripter.online.OnlineScripter;
 
-import java.io.PrintStream;
-import java.util.Random;
-
 /**
  * The class used to generate tests from the calendar example.
  *
@@ -31,7 +28,7 @@ public class Main {
     osmo.addModelObject(new CalendarParticipantModel(state, scripter));
 //    osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter));
 //    osmo.addModelObject(new CalendarFailureModel(state, scripter));
-    osmo.setRandom(new Random(111));
+    osmo.setSeed(111);
     osmo.generate();
     scripter.write();
   }

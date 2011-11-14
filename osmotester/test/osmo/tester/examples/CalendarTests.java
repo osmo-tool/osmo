@@ -19,12 +19,9 @@ import osmo.tester.examples.calendar.testmodel.ModelState;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Random;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
-import static osmo.common.TestUtils.getResource;
-import static osmo.common.TestUtils.unifyLineSeparators;
+import static junit.framework.Assert.*;
+import static osmo.common.TestUtils.*;
 
 /** @author Teemu Kanstren */
 public class CalendarTests {
@@ -35,7 +32,7 @@ public class CalendarTests {
   @Before
   public void testSetup() {
     osmo = new OSMOTester();
-    osmo.setRandom(new Random(111));
+    osmo.setSeed(111);
     bos = new ByteArrayOutputStream();
     out = new PrintStream(bos);
   }
