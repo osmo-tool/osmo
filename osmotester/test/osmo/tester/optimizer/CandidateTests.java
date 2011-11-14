@@ -5,17 +5,11 @@ import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.MainGenerator;
-import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.model.FSM;
 import osmo.tester.model.Requirements;
 import osmo.tester.optimizer.online.Candidate;
 import osmo.tester.optimizer.online.SearchConfiguration;
 import osmo.tester.optimizer.online.SearchingOptimizer;
-import osmo.tester.testmodels.ValidTestModel1;
 import osmo.tester.testmodels.ValidTestModel2;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 import static junit.framework.Assert.*;
 

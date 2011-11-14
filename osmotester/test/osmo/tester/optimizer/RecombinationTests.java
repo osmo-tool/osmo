@@ -3,21 +3,17 @@ package osmo.tester.optimizer;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.common.TestUtils;
-import osmo.tester.OSMOTester;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.FSMTransition;
-import osmo.tester.model.Requirements;
 import osmo.tester.optimizer.online.Candidate;
 import osmo.tester.optimizer.online.FitnessComparator;
 import osmo.tester.optimizer.online.SearchConfiguration;
 import osmo.tester.optimizer.online.SearchingOptimizer;
-import osmo.tester.testmodels.ValidTestModel2;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import static junit.framework.Assert.*;
 import static osmo.common.TestUtils.cInt;
@@ -29,7 +25,7 @@ public class RecombinationTests {
 
   @Before
   public void setup() {
-    TestUtils.setRandom(new Random(111));
+    TestUtils.setSeed(111);
     so = new SearchingOptimizer(sc);
   }
 
@@ -55,7 +51,7 @@ public class RecombinationTests {
   public void recombinationWithNoDuplicates() {
     Collection<Integer> sizes1 = new ArrayList<Integer>();
     Collection<Integer> sizes2 = new ArrayList<Integer>();
-    for (int i = 0 ; i < 1000 ; i++) {
+    for (int i = 0; i < 1000; i++) {
       Candidate c1 = createCandidate(10);
       Candidate c2 = createCandidate(10);
       Candidate[] recombination = so.recombine(c1, c2);
@@ -80,7 +76,7 @@ public class RecombinationTests {
     for (int i : from) {
       total += i;
     }
-    int average = (int)Math.round(total/from.size());
+    int average = (int) Math.round(total / from.size());
     assertEquals("Average recombination size", expected, average);
   }
 
@@ -88,7 +84,7 @@ public class RecombinationTests {
   public void recombinationWithDuplicates() {
     Collection<Integer> sizes1 = new ArrayList<Integer>();
     Collection<Integer> sizes2 = new ArrayList<Integer>();
-    for (int i = 0 ; i < 1000 ; i++) {
+    for (int i = 0; i < 1000; i++) {
       Candidate c1 = createCandidate(10);
       Candidate c2 = createCandidate(10);
       List<TestCase> c1Tests = c1.getTests();
@@ -121,7 +117,7 @@ public class RecombinationTests {
   public void recombinationWithDuplicatesInBeginning() {
     Collection<Integer> sizes1 = new ArrayList<Integer>();
     Collection<Integer> sizes2 = new ArrayList<Integer>();
-    for (int i = 0 ; i < 1000 ; i++) {
+    for (int i = 0; i < 1000; i++) {
       Candidate c1 = createCandidate(10);
       Candidate c2 = createCandidate(10);
       List<TestCase> c1Tests = c1.getTests();
@@ -154,7 +150,7 @@ public class RecombinationTests {
   public void recombinationWithDuplicatesInEnd() {
     Collection<Integer> sizes1 = new ArrayList<Integer>();
     Collection<Integer> sizes2 = new ArrayList<Integer>();
-    for (int i = 0 ; i < 1000 ; i++) {
+    for (int i = 0; i < 1000; i++) {
       Candidate c1 = createCandidate(10);
       Candidate c2 = createCandidate(10);
       List<TestCase> c1Tests = c1.getTests();
@@ -197,7 +193,7 @@ public class RecombinationTests {
 
   private List<Candidate> candidateList() {
     List<Candidate> candidates = new ArrayList<Candidate>();
-    for (int i = 0 ; i < 10 ; i++) {
+    for (int i = 0; i < 10; i++) {
       candidates.add(createCandidate(cInt(2, 10)));
     }
     return candidates;
@@ -205,7 +201,7 @@ public class RecombinationTests {
 
   private Candidate createCandidate(int testCount) {
     List<TestCase> tests = new ArrayList<TestCase>();
-    for (int i = 0 ; i < testCount ; i++) {
+    for (int i = 0; i < testCount; i++) {
       tests.add(testCase());
     }
     return new Candidate(sc, tests);
@@ -214,7 +210,7 @@ public class RecombinationTests {
   private TestCase testCase() {
     TestCase test = new TestCase();
     int transitions = cInt(2, 10);
-    for (int i = 0 ; i < transitions ; i++) {
+    for (int i = 0; i < transitions; i++) {
       test.addStep(new FSMTransition("v" + i));
     }
     return test;

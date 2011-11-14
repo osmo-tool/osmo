@@ -8,8 +8,6 @@ import osmo.tester.generator.algorithm.WeightedRandomAlgorithm;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.testmodels.WeightedModel1;
 
-import java.util.Random;
-
 /** @author Teemu Kanstren */
 public class WeightTests {
   private OSMOTester osmo = null;
@@ -18,7 +16,7 @@ public class WeightTests {
   @Before
   public void testSetup() {
     osmo = new OSMOTester();
-    osmo.setRandom(new Random(100));
+    osmo.setSeed(100);
     listener = new TestListener();
     osmo.addListener(listener);
   }

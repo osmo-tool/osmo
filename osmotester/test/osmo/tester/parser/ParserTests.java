@@ -2,7 +2,6 @@ package osmo.tester.parser;
 
 import org.junit.Before;
 import org.junit.Test;
-import osmo.common.log.Logger;
 import osmo.tester.annotation.Variable;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
@@ -236,7 +235,7 @@ public class ParserTests {
         return;
       }
     }
-    fail("SearchableInput "+name+" should be present in the model.");
+    fail("SearchableInput " + name + " should be present in the model.");
   }
 
   @Test

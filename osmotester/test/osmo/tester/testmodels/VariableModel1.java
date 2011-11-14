@@ -11,8 +11,7 @@ import osmo.tester.generator.testsuite.TestSuite;
 
 import java.util.Map;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class VariableModel1 {
@@ -42,7 +41,7 @@ public class VariableModel1 {
   @Pre("first")
   public void pre(Map<String, Object> state) {
     String msg = "@" + Variable.class.getSimpleName() + " should be visible in @" + Pre.class.getSimpleName() + " methods.";
-    System.out.println("pre-state:" + state);
+//    System.out.println("pre-state:" + state);
     assertNotNull(msg, state.get("i1"));
     assertNotNull(msg, state.get("f1"));
     assertNotNull(msg, state.get("d1"));
@@ -56,7 +55,7 @@ public class VariableModel1 {
   @Post("first")
   public void post(Map<String, Object> state) {
     String msg = "@" + Variable.class.getSimpleName() + " should be visible in @" + Post.class.getSimpleName() + " methods.";
-    System.out.println("post-state:" + state);
+//    System.out.println("post-state:" + state);
     Integer newI1 = (Integer) state.get("i1");
     Float newF1 = (Float) state.get("f1");
     Double newD1 = (Double) state.get("d1");

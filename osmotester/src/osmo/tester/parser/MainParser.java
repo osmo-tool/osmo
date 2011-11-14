@@ -112,9 +112,9 @@ public class MainParser {
   /**
    * Parse the relevant annotated fields and pass these to correct {@link AnnotationParser} objects.
    *
-   * @param fsm The test model object to be updated according to the parsed information.
+   * @param fsm    The test model object to be updated according to the parsed information.
    * @param prefix Prefix to add to all model element names.
-   * @param obj The model object that contains the annotations and fields/executable methods for test generation.
+   * @param obj    The model object that contains the annotations and fields/executable methods for test generation.
    * @return A string listing all found errors.
    */
   private String parseFields(FSM fsm, String prefix, Object obj) {
@@ -182,9 +182,9 @@ public class MainParser {
   /**
    * Parse the relevant annotated methods and pass these to correct {@link AnnotationParser} objects.
    *
-   * @param fsm The test model object to be updated according to the parsed information.
+   * @param fsm    The test model object to be updated according to the parsed information.
    * @param prefix Prefix to add to all model element names.
-   * @param obj The model object that contains the annotations and fields/executable methods for test generation.
+   * @param obj    The model object that contains the annotations and fields/executable methods for test generation.
    * @return String representing any errors encountered.
    */
   private String parseMethods(FSM fsm, String prefix, Object obj) {

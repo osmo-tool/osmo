@@ -1,18 +1,15 @@
 package osmo.tester.optimizer;
 
-import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.optimizer.online.Candidate;
 import osmo.tester.optimizer.online.SearchConfiguration;
-import osmo.tester.optimizer.online.SearchingOptimizer;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
 
 /** @author Teemu Kanstren */
 public class FitnessTests {

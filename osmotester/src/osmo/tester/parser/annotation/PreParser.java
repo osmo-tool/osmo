@@ -50,7 +50,7 @@ public class PreParser implements AnnotationParser {
         //without a transition
         continue;
       }
-      name = prefix+name;
+      name = prefix + name;
       FSMTransition transition = fsm.createTransition(name, -1);
       transition.addPre(target);
     }

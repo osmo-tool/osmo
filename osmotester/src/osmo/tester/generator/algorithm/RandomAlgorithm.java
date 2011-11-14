@@ -1,11 +1,11 @@
 package osmo.tester.generator.algorithm;
 
-import osmo.common.TestUtils;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
 
 import java.util.List;
-import java.util.Random;
+
+import static osmo.common.TestUtils.oneOf;
 
 /**
  * A simple algorithm that randomly picks a transition from the given set.
@@ -15,13 +15,9 @@ import java.util.Random;
  * @author Teemu Kanstren
  */
 public class RandomAlgorithm implements FSMTraversalAlgorithm {
-  /** Used to provide the randomization, along with the constant seed for deterministic test suites. */
-  private Random random = TestUtils.getRandom();
-//  private Random random = new Random(100);
 
   @Override
   public FSMTransition choose(TestSuite history, List<FSMTransition> transitions) {
-    int n = random.nextInt(transitions.size());
-    return transitions.get(n);
+    return oneOf(transitions);
   }
 }

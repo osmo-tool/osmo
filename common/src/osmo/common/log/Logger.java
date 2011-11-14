@@ -19,7 +19,7 @@ public class Logger {
   /** Log file handler, shared to keep from creating numerous log files. */
   private static FileHandler file;
   /** Name of the log file to be written. */
-  private final String filename = "osmominer.log";
+  private final String filename = "osmo.log";
   /** Used for synchronization. */
   private final Object lock = new Object();
 

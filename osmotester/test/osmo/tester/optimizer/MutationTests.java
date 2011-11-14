@@ -7,24 +7,17 @@ import osmo.common.TestUtils;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.model.FSM;
-import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
 import osmo.tester.optimizer.online.Candidate;
-import osmo.tester.optimizer.online.FitnessComparator;
 import osmo.tester.optimizer.online.SearchConfiguration;
 import osmo.tester.optimizer.online.SearchingOptimizer;
 import osmo.tester.testmodels.ValidTestModel2;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
-import static osmo.common.TestUtils.cInt;
 
 /** @author Teemu Kanstren */
 public class MutationTests {
@@ -33,11 +26,12 @@ public class MutationTests {
 
   @Before
   public void setup() {
-    TestUtils.setRandom(new Random(111));
+    TestUtils.setSeed(111);
     OSMOTester tester = new OSMOTester();
     tester.addModelObject(new ValidTestModel2(new Requirements()));
     generator = tester.initGenerator();
     SearchConfiguration sc = new SearchConfiguration(generator);
+    sc.setSeed(111);
     so = new SearchingOptimizer(sc);
 
     generator.initSuite();
@@ -51,24 +45,33 @@ public class MutationTests {
 
   @Test
   public void mutateOne() {
+    assertMutations(0.02, 1);
+  }
+
+  private void assertMutations(double mutationProbability, int expected) {
     Candidate candidate = so.createCandidate();
-    List<TestCase> tests = candidate.getTests();
-    List<TestCase> original = new ArrayList<TestCase>();
-    original.addAll(tests);
-    so.mutate(candidate, 0.05);
-    tests.removeAll(original);
-    assertEquals("Number of mutated tests", 1, tests.size());
+    Collection<Integer> mutations = new ArrayList<Integer>();
+    for (int i = 0; i < 100; i++) {
+      List<TestCase> before = new ArrayList<TestCase>();
+      before.addAll(candidate.getTests());
+      so.mutate(candidate, mutationProbability);
+      List<TestCase> after = new ArrayList<TestCase>();
+      after.addAll(candidate.getTests());
+      after.removeAll(before);
+      mutations.add(after.size());
+    }
+    assertEquals("Number of test runs", 100, mutations.size());
+    int average = 0;
+    for (Integer mutation : mutations) {
+      average += mutation;
+    }
+    average /= 100;
+    assertEquals("Average number of mutated tests", expected, average);
   }
 
   @Test
   public void mutateHalf() {
-    Candidate candidate = so.createCandidate();
-    List<TestCase> tests = candidate.getTests();
-    List<TestCase> original = new ArrayList<TestCase>();
-    original.addAll(tests);
-    so.mutate(candidate, 0.50);
-    tests.removeAll(original);
-    assertEquals("Number of mutated tests", 25, tests.size());
+    assertMutations(0.50, 25);
   }
 
   @Test
@@ -79,6 +82,6 @@ public class MutationTests {
     original.addAll(tests);
     so.mutate(candidate, 1.00);
     tests.removeAll(original);
-    assertEquals("Number of mutated tests",50, tests.size());
+    assertEquals("Number of mutated tests", 50, tests.size());
   }
 }

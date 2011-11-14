@@ -2,7 +2,6 @@ package osmo.tester.generator.endcondition.data;
 
 import osmo.common.log.Logger;
 import osmo.tester.generator.endcondition.AbstractEndCondition;
-import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /** @author Teemu Kanstren */
 public class DataCoverage extends AbstractEndCondition {
@@ -43,13 +41,14 @@ public class DataCoverage extends AbstractEndCondition {
     for (DataCoverageRequirement req : requirements.values()) {
       Collection<Object> temp = new ArrayList<Object>();
       temp.addAll(req.getValues());
-      ModelVariable variable = variables.get(req.getName());
+      String name = req.getName();
+      ModelVariable variable = variables.get(name);
       Collection<Object> values = variable.getValues();
       log.debug("values:" + values);
       for (Object value : values) {
-        temp.remove(""+value);
+        temp.remove("" + value);
       }
-      log.debug("temp:"+temp);
+      log.debug("temp:" + temp);
       if (temp.size() > 0) {
         return false;
       }
@@ -71,7 +70,7 @@ public class DataCoverage extends AbstractEndCondition {
     Collection<SearchableInput> inputs = fsm.getSearchableInputs();
     for (SearchableInput input : inputs) {
       String name = input.getName();
-      log.debug("Input:"+name);
+      log.debug("Input:" + name);
       shouldClear.remove(name);
       if (!input.isAllSupported()) {
         continue;
@@ -84,7 +83,7 @@ public class DataCoverage extends AbstractEndCondition {
         Collection<String> values = req.getValues();
         for (Object value : values) {
           if (!input.evaluateSerialized("" + value)) {
-            throw new IllegalArgumentException("Impossible coverage requirements, defined variables [" + name + "] can not have value "+value+".");
+            throw new IllegalArgumentException("Impossible coverage requirements, defined variables [" + name + "] can not have value " + value + ".");
           }
         }
       }
@@ -94,7 +93,7 @@ public class DataCoverage extends AbstractEndCondition {
       shouldClear.remove(variable.getName());
     }
     if (shouldClear.size() > 0) {
-      throw new IllegalStateException("Impossible coverage requirements, defined variables "+shouldClear+" not found.");
+      throw new IllegalStateException("Impossible coverage requirements, defined variables " + shouldClear + " not found.");
     }
   }
 }

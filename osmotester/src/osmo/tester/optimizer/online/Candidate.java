@@ -97,7 +97,7 @@ public class Candidate {
 
   @Override
   public String toString() {
-    return "candidate:fitness="+getFitness();
+    return "candidate:fitness=" + getFitness();
   }
 
   public TestCase get(int i) {
@@ -126,12 +126,12 @@ public class Candidate {
       valueCount += variable.getValues().size();
     }
     matrix += "test:\n";
-    matrix += "pairs = "+pairs + "\n";
-    matrix += "transitions = "+transitions + "\n";
-    matrix += "singles = "+singles + "\n";
-    matrix += "requirements = "+reqs + "\n";
-    matrix += "variables = "+variableCount + "\n";
-    matrix += "values = "+valueCount+"\n";
+    matrix += "pairs = " + pairs + "\n";
+    matrix += "transitions = " + transitions + "\n";
+    matrix += "singles = " + singles + "\n";
+    matrix += "requirements = " + reqs + "\n";
+    matrix += "variables = " + variableCount + "\n";
+    matrix += "values = " + valueCount + "\n";
     return matrix;
   }
 }

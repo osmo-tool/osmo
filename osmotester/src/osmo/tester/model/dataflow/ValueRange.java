@@ -49,7 +49,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
   /** History of generated values in case an optimized data generation strategy is used. */
   protected List<Number> optimizerHistory = new ArrayList<Number>();
   /** The strategy for data generation. */
-  private DataGenerationStrategy algorithm = DataGenerationStrategy.OPTIMIZED_RANDOM;
+  private DataGenerationStrategy algorithm = DataGenerationStrategy.RANDOM;
   /** The actual type of data to be generated. */
   private final DataType type;
   /** Handles boundary scan data generation strategy. */
@@ -162,7 +162,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
     }
     history.add(value);
     observe((T) value);
-    log.debug("Value:"+value);
+    log.debug("Value:" + value);
     return value;
   }
 
@@ -319,34 +319,33 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
 
   @Override
   public Collection<T> getOptions() {
-    int n = (int)Math.round((max.doubleValue()-min.doubleValue())/increment.doubleValue());
+    int n = (int) Math.round((max.doubleValue() - min.doubleValue()) / increment.doubleValue());
     if (n > 1000) {
-      throw new IllegalStateException("Currently only 1000 values in coverage are supported. You request "+n+".");
+      throw new IllegalStateException("Currently only 1000 values in coverage are supported. You request " + n + ".");
     }
-    log.debug("Number of options:"+n);
+    log.debug("Number of options:" + n);
     Number min = this.min;
     Number max = this.max;
     Collection<T> options = new ArrayList<T>();
-    while (max.doubleValue() > min.doubleValue()) {
+    while (max.doubleValue() >= min.doubleValue()) {
       T value = null;
       switch (type) {
         case INT:
-          min = min.intValue() + increment.intValue();
           value = (T) new Integer(min.intValue());
+          min = min.intValue() + increment.intValue();
           break;
         case LONG:
+          value = (T) new Long(min.longValue());
           min = min.longValue() + increment.longValue();
-          value = (T) new Long(min.intValue());
           break;
         case DOUBLE:
+          value = (T) new Double(min.doubleValue());
           min = min.doubleValue() + increment.doubleValue();
-          value = (T) new Double(min.intValue());
           break;
         default:
           throw new IllegalArgumentException("Enum type:" + type + " unsupported.");
       }
       options.add(value);
-      min = min.doubleValue()+increment.doubleValue();
     }
     return options;
   }

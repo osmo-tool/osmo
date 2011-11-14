@@ -34,18 +34,23 @@ public class VariableField {
    * this object for faster access when the value is queried.
    */
   private void checkIfVariableValue() {
-    Class<?>[] interfaces = field.getType().getInterfaces();
+    Class<?> type = field.getType();
+    checkVariableType(type);
+    Class<?>[] interfaces = type.getInterfaces();
     for (Class<?> i : interfaces) {
+      checkVariableType(i);
+    }
+  }
+
+  private void checkVariableType(Class clazz) {
       //we assume same classloader and use ==, most naughty
-      if (i == VariableValue.class) {
+      if (clazz == VariableValue.class) {
         try {
           variable = (VariableValue) field.get(modelObject);
         } catch (IllegalAccessException e) {
           throw new RuntimeException("Failed to read state variable value for field:" + field, e);
         }
-        break;
       }
-    }
   }
 
   /**

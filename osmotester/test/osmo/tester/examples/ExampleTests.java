@@ -11,7 +11,6 @@ import osmo.tester.generator.endcondition.Length;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.Random;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -26,7 +25,7 @@ public class ExampleTests {
 
   @Before
   public void setUp() {
-    osmo.setRandom(new Random(100));
+    osmo.setSeed(100);
   }
 
   @Test

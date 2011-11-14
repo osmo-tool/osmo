@@ -4,8 +4,7 @@ import org.junit.Test;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /** @author Teemu Kanstren */
 public class HistoryTests {
