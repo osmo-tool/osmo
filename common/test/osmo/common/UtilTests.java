@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -176,6 +177,47 @@ public class UtilTests {
   }
 
   @Test
+  public void weightedRandomChoiceWithDuplicates() {
+    List<Integer> weights = new ArrayList<Integer>();
+    weights.add(1);
+    weights.add(2);
+    weights.add(2);
+    weights.add(3);
+    int zeroes = 0;
+    int ones = 0;
+    int twos = 0;
+    int threes = 0;
+    for (int i = 0 ; i < 1000 ; i++) {
+      int index = rawWeightedRandomFrom(weights);
+      switch (index) {
+        case 0:
+          zeroes++;
+          break;
+        case 1:
+          ones++;
+          break;
+        case 2:
+          twos++;
+          break;
+        case 3:
+          threes++;
+          break;
+        default:
+          fail("Invalid index from weighted random (0-2 allowed):" + index);
+      }
+    }
+    assertEquals("Should have created equal number of instances to loop size", 1000, zeroes + ones + twos + threes);
+    double zp = zeroes / 1000d;
+    double op = ones / 1000d;
+    double tp = twos / 1000d;
+    double thp = threes / 1000d;
+    assertEquals("Proportion of zeroes generated", 0.125d, zp, 0.02d);
+    assertEquals("Proportion of ones generated", 0.250d, op, 0.04d);
+    assertEquals("Proportion of twos generated", 0.250d, tp, 0.04d);
+    assertEquals("Proportion of threes generated", 0.375d, thp, 0.04d);
+  }
+
+  @Test
   public void weightedRandomChoiceAllZeros() {
     List<Integer> weights = new ArrayList<Integer>();
     weights.add(0);
@@ -186,6 +228,20 @@ public class UtilTests {
       fail("Weight 0 should throw IllegalArgumentException");
     } catch (IllegalArgumentException e) {
       assertEquals("Exception message", "Weight must be > 0. Was 0.", e.getMessage());
+    }
+  }
+
+  @Test
+  public void weightedRandomChoiceAllZeroes() {
+    List<Integer> weights = new ArrayList<Integer>();
+    weights.add(0);
+    weights.add(0);
+    weights.add(0);
+    try {
+      int index = rawWeightedRandomFrom(weights);
+      fail("Weight 0 should not be allowed");
+    } catch (Exception e) {
+      //expected
     }
   }
 }

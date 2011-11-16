@@ -176,10 +176,22 @@ public class TestUtils {
     return random.cDouble(min, max);
   }
 
+  /**
+   * @see Randomizer
+   *
+   * @param weights see same method in Randomizer.
+   * @return see same method in Randomizer.
+   */
   public static int rawWeightedRandomFrom(List<Integer> weights) {
     return random.rawWeightedRandomFrom(weights);
   }
 
+  /**
+   * @see Randomizer
+   *
+   * @param summedTotals see same method in Randomizer.
+   * @return see same method in Randomizer.
+   */
   public static int sumWeightedRandomFrom(List<Integer> summedTotals) {
     return random.sumWeightedRandomFrom(summedTotals);
   }
