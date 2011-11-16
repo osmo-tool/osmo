@@ -6,7 +6,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-/** @author Teemu Kanstren */
+/**
+ * This class is similar to {@link TestUtils} but allows one to use specific configuration (random seed).
+ *
+ * @author Teemu Kanstren
+ */
 public class Randomizer {
   /**
    * Used for random number generation.
@@ -136,8 +140,19 @@ public class Randomizer {
     return rnd;
   }
 
+  /**
+   * Gives an index to the list with a weighted probability.
+   * For example, with a list of [1,2,2,3], the probability distribution is
+   * 0 = 12,5%, 1 = 25%, 2 = 25%, 3 = 37,5%.
+   * This is as 0 is the index of 1 in the list, 1 is index of first 2, 2 is index of second 2, and
+   * 3 is the index of 3 in the list. The probability distribution is calculated as in 1+2+2+3=8,
+   * and [1] (first value in the weight list) = 8/1 = 12,5%. Since the index of the first item is 0, then
+   * the value 0 is returned with this probability.
+   *
+   * @param weights List of weights and their index. LIST HAS TO BE SORTED.
+   * @return Random index into the list according to the lists.
+   */
   public int rawWeightedRandomFrom(List<Integer> weights) {
-    Collections.sort(weights);
     List<Integer> totals = new ArrayList<Integer>();
     int total = 0;
     for (Integer weight : weights) {
@@ -151,6 +166,15 @@ public class Randomizer {
     return sumWeightedRandomFrom(totals);
   }
 
+  /**
+   * Same as rawWeightedRandomFrom but allows to skip the total calculation step for higher performance.
+   * The input has to be processed in a way rawWeightedRandomFrom would process it. The example from above
+   * ([1,2,2,3]) becomes ([1,3,5,8]). That is, the first is added to the second, the result is added to the
+   * third, and so on.
+   *
+   * @param summedTotals The summed weights as described above.
+   * @return Random index into the list according to the weights.
+   */
   public int sumWeightedRandomFrom(List<Integer> summedTotals) {
     int total = summedTotals.get(summedTotals.size()-1);
     int target = cInt(1, total);
