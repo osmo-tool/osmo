@@ -5,7 +5,7 @@ import osmo.common.log.Logger;
 import java.lang.reflect.Field;
 
 /**
- * Represents a field for a state variable in the model.
+ * Represents a field for a state variable in the model as tagged by @Variable annotation.
  *
  * @author Teemu Kanstren
  */
@@ -43,14 +43,14 @@ public class VariableField {
   }
 
   private void checkVariableType(Class clazz) {
-      //we assume same classloader and use ==, most naughty
-      if (clazz == VariableValue.class) {
-        try {
-          variable = (VariableValue) field.get(modelObject);
-        } catch (IllegalAccessException e) {
-          throw new RuntimeException("Failed to read state variable value for field:" + field, e);
-        }
+    //we assume same classloader and use ==, most naughty
+    if (clazz == VariableValue.class) {
+      try {
+        variable = (VariableValue) field.get(modelObject);
+      } catch (IllegalAccessException e) {
+        throw new RuntimeException("Failed to read state variable value for field:" + field, e);
       }
+    }
   }
 
   /**

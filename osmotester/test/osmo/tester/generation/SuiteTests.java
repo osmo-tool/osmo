@@ -27,17 +27,17 @@ public class SuiteTests {
   }
 
   @Test
-  public void addedCoverage() {
+  public void totalCoverage() {
     TestSuite suite = new TestSuite();
     suite.startTest();
     suite.addStep(new FSMTransition("t1"));
     suite.addStep(new FSMTransition("t2"));
     suite.covered("r1");
 
-    int a1 = suite.getCurrentTest().getAddedRequirementsCoverage().size();
-    assertEquals("Added coverage for requirements", 1, a1);
-    int a2 = suite.getCurrentTest().getAddedTransitionCoverage().size();
-    assertEquals("Added coverage for transitions", 2, a2);
+    int a1 = suite.getCurrentTest().getCoveredRequirements().size();
+    assertEquals("Coverage for requirements", 1, a1);
+    int a2 = suite.getCurrentTest().getCoveredTransitions().size();
+    assertEquals("Coverage for transitions", 2, a2);
     suite.endTest();
 
     suite.startTest();
@@ -45,10 +45,10 @@ public class SuiteTests {
     suite.addStep(new FSMTransition("t2"));
     suite.covered("r1");
 
-    a1 = suite.getCurrentTest().getAddedRequirementsCoverage().size();
-    assertEquals("Added coverage for requirements", 0, a1);
-    a2 = suite.getCurrentTest().getAddedTransitionCoverage().size();
-    assertEquals("Added coverage for transitions", 0, a2);
+    a1 = suite.getCurrentTest().getCoveredRequirements().size();
+    assertEquals("Added coverage for requirements", 1, a1);
+    a2 = suite.getCurrentTest().getCoveredTransitions().size();
+    assertEquals("Added coverage for transitions", 2, a2);
     suite.endTest();
 
     suite.startTest();
@@ -56,10 +56,10 @@ public class SuiteTests {
     suite.addStep(new FSMTransition("t3"));
     suite.covered("r2");
 
-    a1 = suite.getCurrentTest().getAddedRequirementsCoverage().size();
-    assertEquals("Added coverage for requirements", 1, a1);
-    a2 = suite.getCurrentTest().getAddedTransitionCoverage().size();
-    assertEquals("Added coverage for transitions", 1, a2);
+    a1 = suite.getCurrentTest().getCoveredRequirements().size();
+    assertEquals("Coverage for requirements", 1, a1);
+    a2 = suite.getCurrentTest().getCoveredTransitions().size();
+    assertEquals("Coverage for transitions", 2, a2);
     suite.endTest();
 
     suite.startTest();
@@ -69,10 +69,10 @@ public class SuiteTests {
     suite.addStep(new FSMTransition("t5"));
     suite.covered("r4");
 
-    a1 = suite.getCurrentTest().getAddedRequirementsCoverage().size();
-    assertEquals("Added coverage for requirements", 2, a1);
-    a2 = suite.getCurrentTest().getAddedTransitionCoverage().size();
-    assertEquals("Added coverage for transitions", 2, a2);
+    a1 = suite.getCurrentTest().getCoveredRequirements().size();
+    assertEquals("Coverage for requirements", 2, a1);
+    a2 = suite.getCurrentTest().getCoveredTransitions().size();
+    assertEquals("Coverage for transitions", 3, a2);
     suite.endTest();
 
     assertEquals("Number of steps in current test", 0, suite.currentSteps());

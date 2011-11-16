@@ -40,6 +40,11 @@ public class ReadableWords extends SearchableInput<String> {
     }
   }
 
+  /**
+   * Not supported by this class.
+   *
+   * @param algorithm The new algorithm.
+   */
   @Override
   public void setStrategy(DataGenerationStrategy algorithm) {
     throw new UnsupportedOperationException(ReadableChars.class.getSimpleName() + " does not support setting data generation strategy.");
@@ -53,7 +58,7 @@ public class ReadableWords extends SearchableInput<String> {
   public String next() {
     int length = cInt(min, max);
     char[] c = new char[length];
-    for (int i = 0; i < length; i++) {
+    for (int i = 0 ; i < length ; i++) {
       c[i] = chars.next();
     }
     String next = new String(c);
@@ -62,14 +67,21 @@ public class ReadableWords extends SearchableInput<String> {
     return next;
   }
 
+  /** Set to only generate XML compliant characters. */
   public void enableXml() {
     chars.enableXml();
   }
 
+  /** Only a-z, A-Z, 0-9. */
   public void asciiLettersAndNumbersOnly() {
     chars.asciiLettersAndNumbersOnly();
   }
 
+  /**
+   * Reduce the set of generated chars by given set of chars.
+   *
+   * @param charsToRemove The string of chars to be removed.
+   */
   public void reduceBy(String charsToRemove) {
     chars.reduceBy(charsToRemove);
   }

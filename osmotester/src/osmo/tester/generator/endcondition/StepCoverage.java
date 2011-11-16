@@ -11,11 +11,21 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-/** @author Teemu Kanstren */
+/**
+ * An end condition that defines a set of test steps (transitions) that need to be covered.
+ *
+ * @author Teemu Kanstren
+ */
 public class StepCoverage extends AbstractEndCondition {
   private static Logger log = new Logger(StepCoverage.class);
+  /** The names of the steps (transitions) that need to be covered. */
   private Collection<String> required = new ArrayList<String>();
 
+  /**
+   * Initializes with given coverage criteria.
+   *
+   * @param stepsToCover The initial set of steps to be covered.
+   */
   public StepCoverage(String... stepsToCover) {
     Collections.addAll(required, stepsToCover);
   }
@@ -31,6 +41,13 @@ public class StepCoverage extends AbstractEndCondition {
     return checkRequiredSteps(steps);
   }
 
+  /**
+   * Check if the given set of steps cover the set of defined requirements.
+   * The given set of steps should reflect the set of steps taken so far (test generation trace).
+   *
+   * @param steps The set of covered steps.
+   * @return True if all requirements are covered by the given steps.
+   */
   private boolean checkRequiredSteps(Collection<String> steps) {
     Collection<String> remaining = new ArrayList<String>();
     log.debug("steps:" + steps);
@@ -42,6 +59,12 @@ public class StepCoverage extends AbstractEndCondition {
     return remaining.size() == 0;
   }
 
+  /**
+   * Takes the set of steps from the given test case.
+   *
+   * @param test The test case to mine.
+   * @return The names of covered steps for the given test case.
+   */
   private Collection<String> stepsFor(TestCase test) {
     Collection<TestStep> testSteps = test.getSteps();
     Collection<String> steps = new ArrayList<String>();
@@ -59,6 +82,11 @@ public class StepCoverage extends AbstractEndCondition {
     return checkRequiredSteps(steps);
   }
 
+  /**
+   * Add a new test step (transition) requirement.
+   *
+   * @param step The new requirement.
+   */
   public void addRequiredStep(String step) {
     required.add(step);
   }

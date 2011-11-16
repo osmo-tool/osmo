@@ -8,8 +8,6 @@ import osmo.tester.OSMOTester;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.Requirements;
-import osmo.tester.optimizer.online.Candidate;
-import osmo.tester.optimizer.online.SearchConfiguration;
 import osmo.tester.optimizer.online.SearchingOptimizer;
 import osmo.tester.testmodels.ValidTestModel2;
 
@@ -30,12 +28,11 @@ public class MutationTests {
     OSMOTester tester = new OSMOTester();
     tester.addModelObject(new ValidTestModel2(new Requirements()));
     generator = tester.initGenerator();
+    generator.initSuite();
     SearchConfiguration sc = new SearchConfiguration(generator);
     sc.setSeed(111);
     so = new SearchingOptimizer(sc);
 
-    generator.initSuite();
-    so.setGenerator(generator);
   }
 
   @After
@@ -51,7 +48,7 @@ public class MutationTests {
   private void assertMutations(double mutationProbability, int expected) {
     Candidate candidate = so.createCandidate();
     Collection<Integer> mutations = new ArrayList<Integer>();
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0 ; i < 100 ; i++) {
       List<TestCase> before = new ArrayList<TestCase>();
       before.addAll(candidate.getTests());
       so.mutate(candidate, mutationProbability);

@@ -18,7 +18,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static osmo.common.TestUtils.*;
+import static osmo.common.TestUtils.cInt;
+import static osmo.common.TestUtils.oneOf;
 
 /**
  * Holds the overall state of the model.
@@ -62,7 +63,7 @@ public class ModelState {
     eventCount = new AtomicInteger(0);
 
     int users = cInt(1, 5);
-    for (int i = 1; i <= users; i++) {
+    for (int i = 1 ; i <= users ; i++) {
       uids.add("user" + i);
     }
   }

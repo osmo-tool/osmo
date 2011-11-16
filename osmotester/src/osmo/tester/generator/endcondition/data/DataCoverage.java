@@ -14,11 +14,22 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-/** @author Teemu Kanstren */
+/**
+ * A coverage end condition that allows one to define a set of values for a set of given variables that
+ * need to be covered by the test/suite.
+ *
+ * @author Teemu Kanstren
+ */
 public class DataCoverage extends AbstractEndCondition {
   private static Logger log = new Logger(DataCoverage.class);
+  /** Coverage requirements for this end condition. */
   private Map<String, DataCoverageRequirement> requirements = new HashMap<String, DataCoverageRequirement>();
 
+  /**
+   * Adds a new coverage requirement that needs to be covered for the end condition to evaluate as true.
+   *
+   * @param requirement The requirement to add.
+   */
   public void addRequirement(DataCoverageRequirement requirement) {
     String variable = requirement.getName();
     if (requirements.containsKey(variable)) {
@@ -33,6 +44,12 @@ public class DataCoverage extends AbstractEndCondition {
     return checkRequirements(variables);
   }
 
+  /**
+   * Checks if the specified requirements have been covered.
+   *
+   * @param variables The variable values to be checked against requirements.
+   * @return True if all the requirements of this end condition are covered by the given variable values.
+   */
   private boolean checkRequirements(Map<String, ModelVariable> variables) {
     if (!variables.keySet().containsAll(requirements.keySet())) {
       //some variable is not covered at all
@@ -64,6 +81,9 @@ public class DataCoverage extends AbstractEndCondition {
   }
 
   @Override
+  /**
+   * Checks  that the requirements defined can be covered by the given test model.
+   */
   public void init(FSM fsm) {
     Collection<String> shouldClear = new ArrayList<String>();
     shouldClear.addAll(requirements.keySet());

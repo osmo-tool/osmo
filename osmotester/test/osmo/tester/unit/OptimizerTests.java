@@ -1,11 +1,12 @@
 package osmo.tester.unit;
 
+import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
-import osmo.tester.optimizer.offline.RequirementsOptimizer;
-import osmo.tester.optimizer.offline.TransitionOptimizer;
+import osmo.tester.optimizer.SearchConfiguration;
+import osmo.tester.optimizer.offline.GreedyOptimizer;
 
 import java.util.Collection;
 import java.util.List;
@@ -14,6 +15,19 @@ import static junit.framework.Assert.assertEquals;
 
 /** @author Teemu Kanstren */
 public class OptimizerTests {
+  private SearchConfiguration sc;
+
+  @Before
+  public void initTest() {
+    sc = new SearchConfiguration(null);
+    sc.setTransitionWeight(0);
+    sc.setLengthWeight(0);
+    sc.setPairsWeight(0);
+    sc.setValueWeight(0);
+    sc.setVariableWeight(0);
+    sc.setRequirementWeight(0);
+  }
+
   @Test
   public void requirementsOptimizer3TestsNoOverlap() {
     TestSuite suite = new TestSuite();
@@ -35,52 +49,56 @@ public class OptimizerTests {
     suite.addStep(new FSMTransition("t7"));
     suite.endTest();
 
-    RequirementsOptimizer optimizer = new RequirementsOptimizer();
-    List<TestCase> tests = optimizer.optimize(suite);
+    sc.setRequirementWeight(1);
+    GreedyOptimizer optimizer = new GreedyOptimizer(sc);
+    List<TestCase> tests = optimizer.createSortedTestSet(3, suite.getFinishedTestCases());
     assertEquals("Number of tests after optimization should match that of before.", 3, tests.size());
     TestCase testCase1 = tests.get(0);
     TestCase testCase2 = tests.get(1);
     TestCase testCase3 = tests.get(2);
-    Collection<String> added1 = testCase1.getAddedRequirementsCoverage();
-    Collection<String> added2 = testCase2.getAddedRequirementsCoverage();
-    Collection<String> added3 = testCase3.getAddedRequirementsCoverage();
-    assertEquals("Number of new requirements covered by test 1.", 3, added1.size());
-    assertEquals("Number of new requirements covered by test 2.", 1, added2.size());
-    assertEquals("Number of new requirements covered by test 3.", 0, added3.size());
+    Collection<String> reqs1 = testCase1.getCoveredRequirements();
+    Collection<String> reqs2 = testCase2.getCoveredRequirements();
+    Collection<String> reqs3 = testCase3.getCoveredRequirements();
+    assertEquals("Number of new requirements covered by test 1.", 3, reqs1.size());
+    assertEquals("Number of new requirements covered by test 2.", 1, reqs2.size());
+    assertEquals("Number of new requirements covered by test 3.", 0, reqs3.size());
   }
 
   @Test
   public void requirementsOptimizer3TestsWithOverlap() {
-    RequirementsOptimizer optimizer = new RequirementsOptimizer();
+    sc.setRequirementWeight(1);
+    GreedyOptimizer optimizer = new GreedyOptimizer(sc);
     TestSuite suite = createSuite1();
-    List<TestCase> tests = optimizer.optimize(suite);
+    List<TestCase> tests = optimizer.createSortedTestSet(3, suite.getFinishedTestCases());
     assertEquals("Number of tests after optimization should match that of before.", 3, tests.size());
     TestCase testCase1 = tests.get(0);
     TestCase testCase2 = tests.get(1);
     TestCase testCase3 = tests.get(2);
-    Collection<String> added1 = testCase1.getAddedRequirementsCoverage();
-    Collection<String> added2 = testCase2.getAddedRequirementsCoverage();
-    Collection<String> added3 = testCase3.getAddedRequirementsCoverage();
-    assertEquals("Number of new requirements covered by test 1.", 2, added1.size());
-    assertEquals("Number of new requirements covered by test 2.", 0, added2.size());
-    assertEquals("Number of new requirements covered by test 3.", 0, added3.size());
+    Collection<String> reqs1 = testCase1.getCoveredRequirements();
+    Collection<String> reqs2 = testCase2.getCoveredRequirements();
+    Collection<String> reqs3 = testCase3.getCoveredRequirements();
+    //the first test covers all requirements so the rest are basically random (as iterated)
+    assertEquals("Number of new requirements covered by test 1.", 2, reqs1.size());
+    assertEquals("Number of new requirements covered by test 2.", 1, reqs2.size());
+    assertEquals("Number of new requirements covered by test 3.", 0, reqs3.size());
   }
 
   @Test
   public void requirementsOptimizer3TestsWithCunningOverlap() {
-    RequirementsOptimizer optimizer = new RequirementsOptimizer();
+    GreedyOptimizer optimizer = new GreedyOptimizer(sc);
+    sc.setRequirementWeight(1);
     TestSuite suite = createSuite2();
-    List<TestCase> tests = optimizer.optimize(suite);
+    List<TestCase> tests = optimizer.createSortedTestSet(3, suite.getFinishedTestCases());
     assertEquals("Number of tests after optimization should match that of before.", 3, tests.size());
     TestCase testCase1 = tests.get(0);
     TestCase testCase2 = tests.get(1);
     TestCase testCase3 = tests.get(2);
-    Collection<String> added1 = testCase1.getAddedRequirementsCoverage();
-    Collection<String> added2 = testCase2.getAddedRequirementsCoverage();
-    Collection<String> added3 = testCase3.getAddedRequirementsCoverage();
-    assertEquals("Number of new requirements covered by test 1.", 3, added1.size());
-    assertEquals("Number of new requirements covered by test 2.", 2, added2.size());
-    assertEquals("Number of new requirements covered by test 3.", 1, added3.size());
+    Collection<String> reqs1 = testCase1.getCoveredRequirements();
+    Collection<String> reqs2 = testCase2.getCoveredRequirements();
+    Collection<String> reqs3 = testCase3.getCoveredRequirements();
+    assertEquals("Number of new requirements covered by test 1.", 3, reqs1.size());
+    assertEquals("Number of new requirements covered by test 2.", 2, reqs2.size());
+    assertEquals("Number of new requirements covered by test 3.", 1, reqs3.size());
   }
 
   private TestSuite createSuite1() {
@@ -136,39 +154,61 @@ public class OptimizerTests {
   @Test
   public void transitionOptimizer3TestsNoOverlap() {
     TestSuite suite = createSuite1();
-    TransitionOptimizer optimizer = new TransitionOptimizer();
-    List<TestCase> tests = optimizer.optimize(suite);
+    GreedyOptimizer optimizer = new GreedyOptimizer(sc);
+    sc.setTransitionWeight(1);
+    List<TestCase> tests = optimizer.createSortedTestSet(3, suite.getFinishedTestCases());
     assertEquals("Number of tests after optimization should match that of before.", 3, tests.size());
     TestCase testCase1 = tests.get(0);
     TestCase testCase2 = tests.get(1);
     TestCase testCase3 = tests.get(2);
-    Collection<FSMTransition> added1 = testCase1.getAddedTransitionCoverage();
-    Collection<FSMTransition> added2 = testCase2.getAddedTransitionCoverage();
-    Collection<FSMTransition> added3 = testCase3.getAddedTransitionCoverage();
-    assertEquals("Number of new transitions covered by test 1.", 4, added1.size());
-    assertEquals("Number of new transitions covered by test 2.", 3, added2.size());
-    assertEquals("Number of new transitions covered by test 3.", 1, added3.size());
+    Collection<FSMTransition> transitions1 = testCase1.getCoveredTransitions();
+    Collection<FSMTransition> transitions2 = testCase2.getCoveredTransitions();
+    Collection<FSMTransition> transitions3 = testCase3.getCoveredTransitions();
+    assertEquals("Number of new transitions covered by test 1.", 4, transitions1.size());
+    assertEquals("Number of new transitions covered by test 2.", 3, transitions2.size());
+    assertEquals("Number of new transitions covered by test 3.", 1, transitions3.size());
   }
 
   @Test
   public void transitionOptimizer3TestsWithOverlap() {
     TestSuite suite = createSuite2();
-    TransitionOptimizer optimizer = new TransitionOptimizer();
-    List<TestCase> tests = optimizer.optimize(suite);
+    GreedyOptimizer optimizer = new GreedyOptimizer(sc);
+    sc.setTransitionWeight(1);
+    List<TestCase> tests = optimizer.createSortedTestSet(3, suite.getFinishedTestCases());
     assertEquals("Number of tests after optimization should match that of before.", 3, tests.size());
     TestCase testCase1 = tests.get(0);
     TestCase testCase2 = tests.get(1);
     TestCase testCase3 = tests.get(2);
-    Collection<FSMTransition> added1 = testCase1.getAddedTransitionCoverage();
-    Collection<FSMTransition> added2 = testCase2.getAddedTransitionCoverage();
-    Collection<FSMTransition> added3 = testCase3.getAddedTransitionCoverage();
-    assertEquals("Number of new transitions covered by test 1.", 4, added1.size());
-    assertEquals("Number of new transitions covered by test 2.", 0, added2.size());
-    assertEquals("Number of new transitions covered by test 3.", 0, added3.size());
+    Collection<FSMTransition> transitions1 = testCase1.getCoveredTransitions();
+    Collection<FSMTransition> transitions2 = testCase2.getCoveredTransitions();
+    Collection<FSMTransition> transitions3 = testCase3.getCoveredTransitions();
+    assertEquals("Number of new transitions covered by test 1.", 4, transitions1.size());
+    assertEquals("Number of new transitions covered by test 2.", 3, transitions2.size());
+    assertEquals("Number of new transitions covered by test 3.", 1, transitions3.size());
   }
 
   @Test
   public void ratOptimizer() {
-    //TODO: needs to be implemented
+    TestSuite suite = createSuite2();
+    GreedyOptimizer optimizer = new GreedyOptimizer(sc);
+    sc.setTransitionWeight(1);
+    sc.setRequirementWeight(4);
+    List<TestCase> tests = optimizer.createSortedTestSet(3, suite.getFinishedTestCases());
+    assertEquals("Number of tests after optimization should match that of before.", 3, tests.size());
+    TestCase testCase1 = tests.get(0);
+    TestCase testCase2 = tests.get(1);
+    TestCase testCase3 = tests.get(2);
+    Collection<FSMTransition> transitions1 = testCase1.getCoveredTransitions();
+    Collection<FSMTransition> transitions2 = testCase2.getCoveredTransitions();
+    Collection<FSMTransition> transitions3 = testCase3.getCoveredTransitions();
+    assertEquals("Number of new transitions covered by test 1.", 4, transitions1.size());
+    assertEquals("Number of new transitions covered by test 2.", 1, transitions2.size());
+    assertEquals("Number of new transitions covered by test 3.", 3, transitions3.size());
+    Collection<String> reqs1 = testCase1.getCoveredRequirements();
+    Collection<String> reqs2 = testCase2.getCoveredRequirements();
+    Collection<String> reqs3 = testCase3.getCoveredRequirements();
+    assertEquals("Number of new requirements covered by test 1.", 3, reqs1.size());
+    assertEquals("Number of new requirements covered by test 2.", 2, reqs2.size());
+    assertEquals("Number of new requirements covered by test 3.", 1, reqs3.size());
   }
 }

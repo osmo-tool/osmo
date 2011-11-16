@@ -20,8 +20,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 
-import static junit.framework.Assert.*;
-import static osmo.common.TestUtils.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
+import static osmo.common.TestUtils.getResource;
+import static osmo.common.TestUtils.unifyLineSeparators;
 
 /** @author Teemu Kanstren */
 public class CalendarTests {

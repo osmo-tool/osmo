@@ -121,6 +121,15 @@ public class FSMTransition {
     prePostParameter.clear();
   }
 
+  /**
+   * Stores the state (@Variable tagged model variables) to the model state visible in the @Pre and @Post
+   * tagged methods.
+   * <p/>
+   * NOTE: this is not related to storing the generated data in the suite but just to
+   * sharing information between @Pre and @Post methods in models.
+   *
+   * @param fsm The model where this should be stored.
+   */
   public void storeState(FSM fsm) {
     Collection<VariableField> variables = fsm.getStateVariables();
     log.debug("Storing variables:" + variables);

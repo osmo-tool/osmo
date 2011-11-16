@@ -30,6 +30,7 @@ public class TestStep {
   private Map<String, Object> stateValuesAfter = new HashMap<String, Object>();
   /** Step identifier. */
   private final int id;
+  /** The parent test case to which this step belongs. */
   private final TestCase parent;
 
   /**
@@ -85,10 +86,12 @@ public class TestStep {
             '}';
   }
 
+  /** @return Values of state variables (tagged @Variable) before this step. */
   public Map<String, Object> getStateValuesBefore() {
     return stateValuesBefore;
   }
 
+  /** @return Values of state variables (tagged @Variable) after this step. */
   public Map<String, Object> getStateValuesAfter() {
     return stateValuesAfter;
   }
