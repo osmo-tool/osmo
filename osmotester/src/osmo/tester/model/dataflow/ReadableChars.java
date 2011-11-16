@@ -1,7 +1,5 @@
 package osmo.tester.model.dataflow;
 
-import java.util.Collection;
-
 import static osmo.common.TestUtils.cInt;
 
 /**
@@ -26,7 +24,7 @@ public class ReadableChars extends SearchableInput<Character> {
   public void reduceBy(String charsToRemove) {
     char[] r = charsToRemove.toCharArray();
     String result = "";
-    for (int ci = 0; ci < chars.toCharArray().length; ci++) {
+    for (int ci = 0 ; ci < chars.toCharArray().length ; ci++) {
       char c = chars.toCharArray()[ci];
       boolean found = false;
       for (char rc : r) {
@@ -58,17 +56,17 @@ public class ReadableChars extends SearchableInput<Character> {
     return chars.indexOf(c) >= 0;
   }
 
+  /**
+   * Removes the XML tag start and end characters from generation ("<" and ">") to allow for the
+   * generation of data that can be embedded in XML files.
+   */
   public void enableXml() {
     reduceBy("<>");
   }
 
+  /** Sets the set of generated characters to contain only a-z,A-Z,0-9. */
   public void asciiLettersAndNumbersOnly() {
     chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  }
-
-  @Override
-  public Collection<Object> getOptions() {
-    return null;
   }
 
   @Override

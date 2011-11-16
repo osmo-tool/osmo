@@ -1,8 +1,14 @@
-package osmo.tester.optimizer.online;
+package osmo.tester.optimizer;
+
+import osmo.tester.optimizer.Candidate;
 
 import java.util.Comparator;
 
-/** @author Teemu Kanstren */
+/**
+ * Used to sort the candidates according to their fitness value.
+ *
+ * @author Teemu Kanstren
+ */
 public class FitnessComparator implements Comparator<Candidate> {
   @Override
   public int compare(Candidate c1, Candidate c2) {

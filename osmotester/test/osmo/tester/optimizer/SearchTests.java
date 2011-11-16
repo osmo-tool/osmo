@@ -5,9 +5,7 @@ import osmo.common.TestUtils;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.model.Requirements;
-import osmo.tester.optimizer.online.Candidate;
 import osmo.tester.optimizer.online.PeakEndCondition;
-import osmo.tester.optimizer.online.SearchConfiguration;
 import osmo.tester.optimizer.online.SearchingOptimizer;
 import osmo.tester.testmodels.ValidTestModel2;
 import osmo.tester.testmodels.VariableModel2;
@@ -122,6 +120,6 @@ public class SearchTests {
 //    System.out.println("t1:"+solution.get(0).getSteps().size()+" reqs:"+solution.get(0).getCoveredRequirements());
 //    System.out.println("t2:"+solution.get(1).getSteps().size()+" reqs:"+solution.get(1).getCoveredRequirements());
 //    System.out.println("t3:"+solution.get(2).getSteps().size()+" reqs:"+solution.get(2).getCoveredRequirements());
-    assertEquals("optimized fitness", -5, solution.getFitness()); //13
+    assertEquals("optimized fitness", 13, solution.getFitness()); //13
   }
 }

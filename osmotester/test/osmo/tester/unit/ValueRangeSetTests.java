@@ -270,7 +270,7 @@ public class ValueRangeSetTests {
     ni.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     boolean b1 = false;
     boolean b2 = false;
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0 ; i < 100 ; i++) {
       int n = ni.nextInt();
       if (n == 1) {
         b1 = true;
@@ -321,7 +321,7 @@ public class ValueRangeSetTests {
     vr.addPartition(200, 300);
     vr.addPartition(-300, -200);
     Collection<Integer> actual = new ArrayList<Integer>();
-    for (int i = 0; i < 30; i++) {
+    for (int i = 0 ; i < 30 ; i++) {
       actual.add(vr.next());
     }
     String expected = "[0, -100, 200, -300, 100, -50, 300, -200, 1, -99, 201, -299, 101, -49, 301, -199, -1, -101, 199, -301, 99, -51, 299, -201, 2, -98, 202, -298, 102, -48]";
@@ -340,7 +340,7 @@ public class ValueRangeSetTests {
     vr.setIncrement(0.1f);
     //the valuerangeset actually converts float to double
     double[] expected = new double[]{0, -100, 200, -300, 100, -50, 300, -200, 0.1, -99.9, 200.1, -299.9, 100.1, -49.9, 300.1, -199.9, -0.1, -100.1, 199.9, -300.1, 99.9, -50.1, 299.9, -200.1, 0.2, -99.8, 200.2, -299.8, 100.2, -49.8};
-    for (int i = 0; i < 30; i++) {
+    for (int i = 0 ; i < 30 ; i++) {
       assertEquals("Generated integers for value range with boundary scan (index " + i + ")", expected[i], vr.next().doubleValue(), 0.01d);
     }
   }

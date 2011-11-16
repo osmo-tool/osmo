@@ -14,22 +14,23 @@ import osmo.tester.examples.calendar.testmodel.CalendarTaskModel;
 import osmo.tester.examples.calendar.testmodel.ModelState;
 import osmo.tester.generation.NullPrintStream;
 import osmo.tester.generator.MainGenerator;
-import osmo.tester.optimizer.online.Candidate;
+import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.optimizer.offline.GreedyOptimizer;
 import osmo.tester.optimizer.online.PeakEndCondition;
-import osmo.tester.optimizer.online.SearchConfiguration;
 import osmo.tester.optimizer.online.SearchListener;
 import osmo.tester.optimizer.online.SearchingOptimizer;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /** @author Teemu Kanstren */
 public class Experiments {
   private long start = 0;
 
   public static void main(String[] args) {
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0 ; i < 1 ; i++) {
       new Experiments().run();
     }
   }
@@ -54,18 +55,50 @@ public class Experiments {
     SearchConfiguration config = new SearchConfiguration(generator);
     config.setSeed(111);
     config.setNumberOfCandidates(100);
-    config.setEndCondition(new PeakEndCondition(250));
+    config.setPopulationSize(50);
+    config.setEndCondition(new PeakEndCondition(2500));
     SearchingOptimizer optimizer = new SearchingOptimizer(config);
+
+    List<TestCase> sortedTests = greedySort(config);
+    System.out.println("tests:" + sortedTests.size());
+
+//    optimizer.searchFromTests(sortedTests);
+
+//    greedy(config);
+
+//    if (true) return;
 
     FitnessListener listener = new FitnessListener();
     optimizer.getState().setListener(listener);
 
     start = System.currentTimeMillis();
-    Candidate solution = optimizer.search();
+    Candidate solution = optimizer.searchFromTests(sortedTests);
+//    Candidate solution = optimizer.search();
 
+    System.out.println("generated tests:" + generator.getTestCount());
     System.out.println("totaltime:" + seconds());
     System.out.println("updates:\n" + listener.getUpdates());
     System.out.println("tests:\n" + solution.matrix());
+  }
+
+  private List<TestCase> greedySort(SearchConfiguration config) {
+    GreedyOptimizer greedy = new GreedyOptimizer(config);
+    List<TestCase> sortedTestSet = greedy.createSortedTestSet(config.getPopulationSize() * config.getNumberOfCandidates());
+    List<TestCase> tests = new ArrayList<TestCase>();
+    for (int i = 0 ; i < config.getPopulationSize() ; i++) {
+      tests.add(sortedTestSet.get(i));
+    }
+    Candidate candidate = new Candidate(config, tests);
+    int fitness = candidate.getFitness();
+    System.out.println("gf:" + fitness);
+    return sortedTestSet;
+  }
+
+  private void greedy(SearchConfiguration config) {
+    GreedyOptimizer greedy = new GreedyOptimizer(config);
+    Candidate best = greedy.search();
+//    List<TestCase> tests = greedy.createSortedTestSet(config.getPopulationSize());
+    System.out.println("greedy:" + best.getFitness() + "\n" + best.matrix());
   }
 
   private long seconds() {

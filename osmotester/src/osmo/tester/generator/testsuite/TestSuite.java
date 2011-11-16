@@ -19,30 +19,28 @@ public class TestSuite {
   private TestCase current = null;
   /** The test cases generated so far, excluding the current test case. */
   private final List<TestCase> testCases = new ArrayList<TestCase>();
-  /** List of covered requirements so far, excluding the current test case under generation. */
-  private final Collection<String> coveredRequirements = new HashSet<String>();
-  /** List of covered transitions so far, excluding the current test case under generation. */
-  private final Collection<FSMTransition> coveredTransitions = new HashSet<FSMTransition>();
   /** List of covered transitions and number of how many times it exist in the test suite */
   private Map<FSMTransition, Integer> transitionCoverage = new HashMap<FSMTransition, Integer>();
 
   /** Start a new test case. */
   public void startTest() {
     current = new TestCase();
+    current.setStartTime(System.currentTimeMillis());
   }
 
+  /**
+   * Resets the suite to avoid memory leaks if test generator is used to produce long test sets,
+   * for example, in suite optimization when tests can be generated in phases.
+   */
   public void reset() {
     current = null;
     testCases.clear();
-    coveredRequirements.clear();
-    coveredTransitions.clear();
     transitionCoverage.clear();
   }
 
   /** End the current test case and moves it to the suite "history". */
   public void endTest() {
-    coveredRequirements.addAll(current.getAddedRequirementsCoverage());
-    coveredTransitions.addAll(current.getAddedTransitionCoverage());
+    current.setEndTime(System.currentTimeMillis());
     testCases.add(current);
     current = null;
   }
@@ -55,9 +53,6 @@ public class TestSuite {
    */
   public TestStep addStep(FSMTransition transition) {
     TestStep step = current.addStep(transition);
-    if (!coveredTransitions.contains(transition)) {
-      current.addAddedTransitionCoverage(transition);
-    }
     Integer count = transitionCoverage.get(transition);
     if (count == null) {
       count = 0;
@@ -73,9 +68,6 @@ public class TestSuite {
    */
   public void covered(String requirement) {
     current.covered(requirement);
-    if (!coveredRequirements.contains(requirement)) {
-      current.addAddedRequirementsCoverage(requirement);
-    }
   }
 
   /**
@@ -186,6 +178,11 @@ public class TestSuite {
     return false;
   }
 
+  /**
+   * Coverage of variables and their values for all test cases in this test suite.
+   *
+   * @return [variable name, variable coverage] mapping.
+   */
   public Map<String, ModelVariable> getVariables() {
     Map<String, ModelVariable> variables = new HashMap<String, ModelVariable>();
     for (TestCase test : testCases) {

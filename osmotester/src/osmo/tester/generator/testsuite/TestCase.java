@@ -13,11 +13,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * This class describes a single test case and all test steps that it contains.
- * This also includes a list of added coverage for model transitions and requirements.
- * Note that this coverage information may or may not hold in current testing.
- * Note that this information needs to be updated if optimization to test suite ordering etc. is applied
- * after the suite has been generated.
- * All optimizers provided with OSMOTester will also update the added coverage information of the tests.
  *
  * @author Teemu Kanstren, Olli-Pekka Puolitaival
  */
@@ -27,25 +22,20 @@ public class TestCase {
   private List<TestStep> steps = new ArrayList<TestStep>();
   /** The latest test step (being/having been generated). */
   private TestStep currentStep = null;
-  /**
-   * Newly covered transitions in relation to generation history. See class header for notes.
-   * NOTE: we use a Set to avoid duplicates if the same transition is covered multiple times.
-   */
-  private Collection<FSMTransition> addedTransitionCoverage = new HashSet<FSMTransition>();
-  /**
-   * Newly covered requirements in relation to generation history. See class header for notes.
-   * NOTE: we use a Set to avoid duplicates if the same requirement is covered multiple times.
-   */
-  private Collection<String> addedRequirementsCoverage = new HashSet<String>();
   /** Unique identifier for this test case. */
   private final int id;
   /** The next identifier in line to set for test cases. */
   private static AtomicInteger nextId = new AtomicInteger(1);
   /** Identifier for next test case step. */
   private int nextStepId = 1;
+  /** The data variables and the values covered for each in this test case. */
   private Map<String, ModelVariable> variables = new HashMap<String, ModelVariable>();
   /** For user to store their own information (e.g. script) into the generated test case from the model. */
   private Map<String, Object> attributes = new HashMap<String, Object>();
+  /** The time when the test case generation was started. Milliseconds as in System.currentTimInMillis(). */
+  private long startTime = 0;
+  /** The time when the test case generation was ended. Milliseconds as in System.currentTimInMillis(). */
+  private long endTime = 0;
 
   public TestCase() {
     this.id = nextId.getAndIncrement();
@@ -58,6 +48,26 @@ public class TestCase {
 
   public TestStep getCurrentStep() {
     return currentStep;
+  }
+
+  public long getStartTime() {
+    return startTime;
+  }
+
+  public void setStartTime(long startTime) {
+    this.startTime = startTime;
+  }
+
+  public long getEndTime() {
+    return endTime;
+  }
+
+  public void setEndTime(long endTime) {
+    this.endTime = endTime;
+  }
+
+  public long getDuration() {
+    return endTime - startTime;
   }
 
   /**
@@ -92,19 +102,6 @@ public class TestCase {
     return steps;
   }
 
-  /**
-   * Clear list of added transitions and requirements coverage.
-   * Useful in test suite optimization when these lists need to be updated.
-   */
-  public void resetCoverage() {
-    addedRequirementsCoverage.clear();
-    addedTransitionCoverage.clear();
-  }
-
-  public Collection<FSMTransition> getAddedTransitionCoverage() {
-    return addedTransitionCoverage;
-  }
-
   public Collection<FSMTransition> getCoveredTransitions() {
     Collection<FSMTransition> transitionCoverage = new HashSet<FSMTransition>();
     for (TestStep teststep : steps) {
@@ -120,26 +117,13 @@ public class TestCase {
     }
     return requirementsCoverage;
   }
-
-  public void addAddedTransitionCoverage(FSMTransition transition) {
-    addedTransitionCoverage.add(transition);
-  }
-
-  public Collection<String> getAddedRequirementsCoverage() {
-    return addedRequirementsCoverage;
-  }
-
-  public void addAddedRequirementsCoverage(String requirement) {
-    addedRequirementsCoverage.add(requirement);
-  }
-
-//  @Override
-//  public String toString() {
-//    return "TestCase{" +
-//            "steps=" + steps +
-//            '}';
-//  }
-
+  /**
+   * Aadds a value for model variable. Means a value that was generated.
+   *
+   * @param name Name of the variable.
+   * @param value The value of the variable.
+   * @param merge If true, duplicates are removed.
+   */
   public void addVariableValue(String name, Object value, boolean merge) {
     ModelVariable variable = variables.get(name);
     if (variable == null) {
@@ -170,5 +154,18 @@ public class TestCase {
 
   public Object getAttribute(String name) {
     return attributes.get(name);
+  }
+
+  /**
+   * Returns names of all transitions taken in this test case. Duplicates are not removed.
+   *
+   * @return The names of transitions.
+   */
+  public Collection<String> getAllTransitionNames() {
+    Collection<String> names = new ArrayList<String>();
+    for (TestStep teststep : steps) {
+      names.add(teststep.getTransition().getName());
+    }
+    return names;
   }
 }

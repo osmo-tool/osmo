@@ -44,7 +44,7 @@ public class ValuetSetTests {
     assertTrue(v2.equals("one") || v2.equals("two") || v2.equals("three"));
     assertTrue(v3.equals("one") || v3.equals("two") || v3.equals("three"));
     boolean fail = true;
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0 ; i < 10 ; i++) {
       String v1_2 = inv.next();
       String v2_2 = inv.next();
       String v3_2 = inv.next();
@@ -60,7 +60,7 @@ public class ValuetSetTests {
   public void optimizedRandomTestOneLoop() {
     String v6 = null;
     boolean diff = false;
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0 ; i < 10 ; i++) {
       inv = new ValueSet<String>();
       inv.setStrategy(DataGenerationStrategy.OPTIMIZED_RANDOM);
       inv.add("one");
@@ -90,7 +90,7 @@ public class ValuetSetTests {
     inv.add("three");
     inv.add("four");
     inv.add("five");
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0 ; i < 10 ; i++) {
       String reference = generateAndCheck();
       //make sure the generated values are in different order at least in once case
       if (v6 == null) {

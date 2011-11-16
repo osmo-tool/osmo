@@ -3,8 +3,6 @@ package osmo.tester.optimizer;
 import org.junit.Test;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.FSMTransition;
-import osmo.tester.optimizer.online.Candidate;
-import osmo.tester.optimizer.online.SearchConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +45,7 @@ public class FitnessTests {
     sc.setValueWeight(10);
     sc.setVariableWeight(0);
     sc.setTransitionWeight(0);
+    sc.setRequirementWeight(0);
     Candidate candidate = createCandidate(sc);
     int fitness = candidate.calculateFitness();
     //we have 10 unique values for 6 variables. that is v1=2 unique values, v2=3, v3=2, v4=1, v5=1, v6=1

@@ -25,6 +25,7 @@ public class ParserParameters {
   private Field field = null;
   /** The annotated method, if any. When fields are parsed this is null, otherwise must be non-null. */
   private Method method = null;
+  /** The prefix of the model object, to be added to names of all parsed transitions, guards, etc. for that object. */
   private String prefix = null;
 
   public FSM getFsm() {

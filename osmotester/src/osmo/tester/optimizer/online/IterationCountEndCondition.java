@@ -1,6 +1,10 @@
 package osmo.tester.optimizer.online;
 
-/** @author Teemu Kanstren */
+/**
+ * Ends search after a given set of iterations.
+ *
+ * @author Teemu Kanstren
+ */
 public class IterationCountEndCondition implements SearchEndCondition {
   private final int maxIterations;
 

@@ -14,5 +14,11 @@ public interface Output<T> {
    */
   public boolean evaluate(T item);
 
+  /**
+   * Same as evaluation but the value is provided as a String.
+   *
+   * @param item The value to evaluate.
+   * @return True if matches the rules.
+   */
   public boolean evaluateSerialized(String item);
 }

@@ -14,12 +14,11 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.testmodels.VariableModel1;
 import osmo.tester.testmodels.VariableModel2;
 
-import javax.naming.event.EventContext;
 import java.util.List;
 import java.util.Map;
 
-import static junit.framework.Assert.*;
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 
 /** @author Teemu Kanstren */
 public class VariableTests {

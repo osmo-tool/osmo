@@ -1,19 +1,36 @@
-package osmo.tester.optimizer.online;
+package osmo.tester.optimizer;
 
 import osmo.tester.generator.MainGenerator;
+import osmo.tester.optimizer.online.PeakEndCondition;
+import osmo.tester.optimizer.online.SearchEndCondition;
 
-/** @author Teemu Kanstren */
+/**
+ * Configuration for suite optimization.
+ *
+ * @author Teemu Kanstren
+ */
 public class SearchConfiguration {
+  /** Weight for length (number of non-unique transitions), used in fitness calculation. */
   private int lengthWeight = 10;
+  /** Weight for number of variables, used in fitness calculation. */
   private int variableWeight = 10;
+  /** Weight for number of unique values, used in fitness calculation. */
   private int valueWeight = 1;
+  /** Weight for number of unique transition pairs (subsequent transitions), used in fitness calculation. */
   private int pairsWeight = 10;
+  /** Weight for number of unique transitions, used in fitness calculation. */
   private int transitionWeight = 10;
+  /** Weight for number of covered requirements, used in fitness calculation. */
   private int requirementWeight = 10;
+  /** Number of candidate test suites to generate for optimization (also generates source set). */
   private int numberOfCandidates = 1000;
+  /** Size of requested optimized candidate (test suite). */
   private int populationSize = 50;
+  /** Seed value used to initialize random generator for optimizer. */
   private long seed = System.currentTimeMillis();
+  /** The end condition if using {@link osmo.tester.optimizer.online.SearchingOptimizer}. */
   private SearchEndCondition endCondition = new PeakEndCondition(50);
+  /** The generator used to generate tests. */
   private final MainGenerator generator;
 
   public SearchConfiguration(MainGenerator generator) {

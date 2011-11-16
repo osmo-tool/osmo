@@ -1,6 +1,10 @@
 package osmo.tester.optimizer.online;
 
-/** @author Teemu Kanstren */
+/**
+ * Ends search after there is no improvement observed on fitness for given number of iterations.
+ *
+ * @author Teemu Kanstren
+ */
 public class PeakEndCondition implements SearchEndCondition {
   private final int threshold;
 

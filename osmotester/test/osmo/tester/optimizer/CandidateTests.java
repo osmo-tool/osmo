@@ -6,12 +6,11 @@ import org.junit.Test;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.model.Requirements;
-import osmo.tester.optimizer.online.Candidate;
-import osmo.tester.optimizer.online.SearchConfiguration;
 import osmo.tester.optimizer.online.SearchingOptimizer;
 import osmo.tester.testmodels.ValidTestModel2;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 
 /** @author Teemu Kanstren */
 public class CandidateTests {
@@ -24,12 +23,9 @@ public class CandidateTests {
     OSMOTester tester = new OSMOTester();
     tester.addModelObject(new ValidTestModel2(new Requirements()));
     generator = tester.initGenerator();
+    generator.initSuite();
     sc = new SearchConfiguration(generator);
     so = new SearchingOptimizer(sc);
-
-    generator = tester.initGenerator();
-    generator.initSuite();
-    so.setGenerator(generator);
   }
 
   @After

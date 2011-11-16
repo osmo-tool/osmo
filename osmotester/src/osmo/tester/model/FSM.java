@@ -41,6 +41,7 @@ public class FSM {
   private Collection<InvocationTarget> endStates = new ArrayList<InvocationTarget>();
   /** List of state variables to store for each test step. */
   private Collection<VariableField> stateVariables = new ArrayList<VariableField>();
+  /** The list of {@link SearchableInput} elements parsed from model objects. */
   private Collection<SearchableInput> searchableInputs = new ArrayList<SearchableInput>();
   /** The generated test suite (or one being generated). */
   private TestSuite suite;
@@ -272,18 +273,38 @@ public class FSM {
     stateVariables.add(var);
   }
 
+  /**
+   * State variables as tagged by @Variable annotations. Does not include {@link SearchableInput} classes.
+   *
+   * @return variables tagged @Variable.
+   */
   public Collection<VariableField> getStateVariables() {
     return stateVariables;
   }
 
+  /**
+   * Model variables extending the {@link SearchableInput} class. Does not include @Variable annotated classes.
+   *
+   * @return Variables extending {@link SearchableInput} classes.
+   */
   public Collection<SearchableInput> getSearchableInputs() {
     return searchableInputs;
   }
 
+  /**
+   * Add a new variable of type {@link SearchableInput} to the model.
+   *
+   * @param input
+   */
   public void addSearchableInput(SearchableInput input) {
     searchableInputs.add(input);
   }
 
+  /**
+   * Initialize the test suite, adding observers to capture data from all registered {@link SearchableInput} variables.
+   *
+   * @return the initialized test suite.
+   */
   public TestSuite initSuite() {
     for (SearchableInput input : searchableInputs) {
       SearchableInputObserver observer = new SearchableInputObserver(suite);

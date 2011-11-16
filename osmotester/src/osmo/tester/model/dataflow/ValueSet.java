@@ -10,7 +10,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import static osmo.common.TestUtils.*;
+import static osmo.common.TestUtils.minOf;
+import static osmo.common.TestUtils.oneOf;
 
 /**
  * Represents a set of values (objects) of the given type.
