@@ -9,9 +9,9 @@ import java.util.Collection;
  * Defines coverage requirements for {@link DataCoverage} end condition for a given variable.
  * Each variable should have one or more instances of this object, with one or more values
  * defines as required. Some OSMO objects such as {@link osmo.tester.model.dataflow.ValueRange} and
+ * @{link ValueSet} can also support a definition of requiring all possible values covered.
  *
  * @author Teemu Kanstren
- * @{link ValueSet} can also support a definition of requiring all possible values covered.
  */
 public class DataCoverageRequirement {
   /** Do we require all possible values? */

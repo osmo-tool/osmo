@@ -1,0 +1,11 @@
+setting, value
+object, hello
+object, world
+algorithm, bob
+
+step, times
+add event, 1
+
+variable, values
+start time, 5
+event count, any
