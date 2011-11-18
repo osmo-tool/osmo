@@ -9,6 +9,7 @@ import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.Variable;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
@@ -27,6 +28,7 @@ public class CalculatorModel {
   private Requirements requirement = new Requirements();
   @TestSuiteField
   private TestSuite history = new TestSuite();
+  @Variable
   private int counter = 0;
   private int testCount = 1;
   private static final String REQ_INCREASE = "increase";
