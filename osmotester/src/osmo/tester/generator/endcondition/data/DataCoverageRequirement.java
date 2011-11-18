@@ -9,13 +9,15 @@ import java.util.Collection;
  * Defines coverage requirements for {@link DataCoverage} end condition for a given variable.
  * Each variable should have one or more instances of this object, with one or more values
  * defines as required. Some OSMO objects such as {@link osmo.tester.model.dataflow.ValueRange} and
- * @{link ValueSet} can also support a definition of requiring all possible values covered.
  *
  * @author Teemu Kanstren
+ * @{link ValueSet} can also support a definition of requiring all possible values covered.
  */
 public class DataCoverageRequirement {
   /** Do we require all possible values? */
   private boolean all = false;
+  /** Is any value enough? */
+  private boolean any = false;
   /** Did we already initialize this requirement? */
   private boolean initialized = true;
   /** Name of the variable for which the value requirements are defined. */
@@ -40,12 +42,24 @@ public class DataCoverageRequirement {
   /** Defines that all possible values or the variable need to be covered. */
   public void requireAll() {
     all = true;
+    any = false;
     initialized = false;
   }
 
   /** @return True if all values are required. */
   public boolean isAll() {
     return all;
+  }
+
+  /** Allows any observed value to satisfy this requirement. */
+  public void requireAny() {
+    all = false;
+    any = true;
+  }
+
+  /** @return True if any value is enough to satisfy this requirement. */
+  public boolean isAny() {
+    return any;
   }
 
   /** @return True if the requirement is already initialized. */

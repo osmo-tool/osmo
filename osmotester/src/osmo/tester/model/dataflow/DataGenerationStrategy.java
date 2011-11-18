@@ -9,9 +9,8 @@ package osmo.tester.model.dataflow;
 public enum DataGenerationStrategy {
   /** Completely random pick. */
   RANDOM,
-  //TODO: rename to WEIGHTED_RANDOM
   /** Pick a value on random but favor previously uncovered partitions or objects. */
-  OPTIMIZED_RANDOM,
+  LESS_RANDOM,
   /** Loop through all options in an order, restart from beginning after reaching end. */
   ORDERED_LOOP,
   /** Choose values at the option boundaries (below, at, above). Only works for primitives. */

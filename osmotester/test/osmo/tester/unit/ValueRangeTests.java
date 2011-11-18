@@ -14,7 +14,7 @@ public class ValueRangeTests {
   @Test
   public void optimizedRandomValueRange() {
     ValueRange vr = new ValueRange(5, 7);
-    vr.setStrategy(DataGenerationStrategy.OPTIMIZED_RANDOM);
+    vr.setStrategy(DataGenerationStrategy.LESS_RANDOM);
     boolean b5 = false;
     boolean b6 = false;
     boolean b7 = false;

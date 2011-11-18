@@ -27,8 +27,8 @@ import static osmo.common.TestUtils.oneOf;
  *
  * @author Teemu Kanstren, Olli-Pekka Puolitaival
  */
-public class OptimizedRandomAlgorithm implements FSMTraversalAlgorithm {
-  private static Logger log = new Logger(OptimizedRandomAlgorithm.class);
+public class LessRandomAlgorithm implements FSMTraversalAlgorithm {
+  private static Logger log = new Logger(LessRandomAlgorithm.class);
   /** The coverage for transitions pairs, key = source transition, value = {destination transition, coverage} */
   private Map<FSMTransition, Map<FSMTransition, Integer>> tpCoverage = new HashMap<FSMTransition, Map<FSMTransition, Integer>>();
 

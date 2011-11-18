@@ -127,7 +127,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
    */
   public ValueRange nextPartition() {
     //we use ValueSet for partitions so we only need to handle optimized random here as the valueset handles random and ordered loops
-    if (strategy != DataGenerationStrategy.OPTIMIZED_RANDOM) {
+    if (strategy != DataGenerationStrategy.LESS_RANDOM) {
       ValueRange partition = partitions.next();
       log.debug("Next interval " + partition);
       return partition;

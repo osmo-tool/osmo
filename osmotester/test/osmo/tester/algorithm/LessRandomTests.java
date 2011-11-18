@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOTester;
 import osmo.tester.generation.TestListener;
-import osmo.tester.generator.algorithm.OptimizedRandomAlgorithm;
+import osmo.tester.generator.algorithm.LessRandomAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.testmodels.ValidTestModel6;
@@ -14,7 +14,7 @@ import java.util.Collection;
 import static junit.framework.Assert.assertFalse;
 
 /** @author Teemu Kanstren */
-public class OptimizedRandomTests {
+public class LessRandomTests {
   private OSMOTester osmo = null;
   private TestListener listener;
 
@@ -34,7 +34,7 @@ public class OptimizedRandomTests {
     Length length1 = new Length(1);
     osmo.addTestEndCondition(length4);
     osmo.addSuiteEndCondition(length1);
-    osmo.setAlgorithm(new OptimizedRandomAlgorithm());
+    osmo.setAlgorithm(new LessRandomAlgorithm());
     osmo.generate();
     listener.validate("Optimized random generator steps");
     Collection<String> optimized = listener.getSteps();
@@ -57,7 +57,7 @@ public class OptimizedRandomTests {
     Length length1 = new Length(1);
     osmo.addTestEndCondition(length15);
     osmo.addSuiteEndCondition(length1);
-    osmo.setAlgorithm(new OptimizedRandomAlgorithm());
+    osmo.setAlgorithm(new LessRandomAlgorithm());
     osmo.generate();
     listener.validate("Optimized random generator steps");
     Collection<String> optimized = listener.getSteps();

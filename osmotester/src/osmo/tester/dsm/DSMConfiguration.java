@@ -1,11 +1,10 @@
 package osmo.tester.dsm;
 
 import osmo.tester.generator.algorithm.RandomAlgorithm;
-import osmo.tester.generator.algorithm.WeightedRandomAlgorithm;
+import osmo.tester.generator.algorithm.WeightedLessRandomAlgorithm;
 import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -72,10 +71,10 @@ public class DSMConfiguration {
       algorithm = RandomAlgorithm.class.getName();
     }
     if (algorithm.equalsIgnoreCase("weighted random") || algorithm.equalsIgnoreCase("weighted-random") || algorithm.equalsIgnoreCase("weightedrandom")) {
-      algorithm = WeightedRandomAlgorithm.class.getName();
+      algorithm = WeightedLessRandomAlgorithm.class.getName();
     }
     if (algorithm.equalsIgnoreCase("optimized random") || algorithm.equalsIgnoreCase("optimized-random") || algorithm.equalsIgnoreCase("optimizedrandom")) {
-      algorithm = WeightedRandomAlgorithm.class.getName();
+      algorithm = WeightedLessRandomAlgorithm.class.getName();
     }
     this.algorithm = algorithm;
   }
