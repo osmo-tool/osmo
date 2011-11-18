@@ -38,7 +38,7 @@
 			<slot id="a0y44c" name="Name">
 				<property oid="_3_430" type="Property_Name_user_3496916383"></property>
 				<value>
-					<string>Start</string>
+					<string>Start.</string>
 				</value>
 			</slot>
 			<slot id="a1atn0" name="weight">
@@ -104,7 +104,79 @@
 				</value>
 			</slot>
 		</object>
-		<object id="_3_615" oid="_3_615" type="Object_EndState_user_3496916452"></object>
+		<object id="_3_637" oid="_3_637" type="Object_GenerationSetup_user_3496952374">
+			<slot id="a0zng4" name="Name">
+				<property oid="_3_639" type="Property_Name_user_3496916383"></property>
+				<value>
+					<string>Smoke</string>
+				</value>
+			</slot>
+			<slot id="a1zo9t" name="Algorithm">
+				<property oid="_3_641" type="Property_Algorithm_user_3496952912"></property>
+				<value>
+					<string>RandomAlgorithm</string>
+				</value>
+			</slot>
+			<slot id="a2zruy" name="TestCaseEndCondition">
+				<property oid="_3_643" type="Property_TestCaseEndCondition_user_3496955237"></property>
+				<value>
+					<object oid="_3_629" type="Object_Length_user_3496955187">
+						<slot id="a0zrs5" name="Length">
+							<property oid="_3_631" type="Property_Length_user_3496955186"></property>
+							<value>
+								<int>5</int>
+							</value>
+						</slot>
+					</object>
+				</value>
+			</slot>
+			<slot id="a3zsnr" name="TestSuiteEndCondition">
+				<property oid="_3_645" type="Property_TestCaseEndCondition_user_3496955237"></property>
+				<value>
+					<object oid="_3_633" type="Object_Length_user_3496955187">
+						<slot id="a0zrs5" name="Length">
+							<property oid="_3_635" type="Property_Length_user_3496955186"></property>
+							<value>
+								<int>10</int>
+							</value>
+						</slot>
+					</object>
+				</value>
+			</slot>
+		</object>
+		<object id="_3_652" oid="_3_652" type="Object_GenerationSetup_user_3496952374">
+			<slot id="a0zng4" name="Name">
+				<property oid="_3_654" type="Property_Name_user_3496916383"></property>
+				<value>
+					<string>Regression</string>
+				</value>
+			</slot>
+			<slot id="a1zo9t" name="Algorithm">
+				<property oid="_3_656" type="Property_Algorithm_user_3496952912"></property>
+				<value>
+					<string>WeightedRandomAlgorithm</string>
+				</value>
+			</slot>
+			<slot id="a2zruy" name="TestCaseEndCondition">
+				<property oid="_3_658" type="Property_TestCaseEndCondition_user_3496955237"></property>
+				<value>
+					<object id="_3_648" oid="_3_648" type="Object_Length_user_3496955187">
+						<slot id="a0zrs5" name="Length">
+							<property oid="_3_650" type="Property_Length_user_3496955186"></property>
+							<value>
+								<int>100</int>
+							</value>
+						</slot>
+					</object>
+				</value>
+			</slot>
+			<slot id="a3zsnr" name="TestSuiteEndCondition">
+				<property oid="_3_660" type="Property_TestCaseEndCondition_user_3496955237"></property>
+				<value>
+					<object href="#_3_648"></object>
+				</value>
+			</slot>
+		</object>
 		<binding id="_3_441" nextConnectionId="3" oid="_3_441">
 			<relationship oid="_3_435" type="Relationship_FromStartTransition_user_3497016285"></relationship>
 			<connection id="1">
@@ -350,24 +422,6 @@
 				<object href="#_3_358"></object>
 			</connection>
 		</binding>
-		<binding id="_3_626" nextConnectionId="3" oid="_3_626">
-			<relationship oid="_3_618" type="Relationship_Connector_user_3496916794">
-				<slot id="a0yohp" name="Name">
-					<property oid="_3_620" type="Property_Name_user_3496916383"></property>
-					<value>
-						<string>Close app</string>
-					</value>
-				</slot>
-			</relationship>
-			<connection id="1">
-				<role oid="_3_622" type="Role_From_user_3496916730"></role>
-				<object href="#_3_358"></object>
-			</connection>
-			<connection id="2">
-				<role oid="_3_624" type="Role_To_user_3496916736"></role>
-				<object href="#_3_615"></object>
-			</connection>
-		</binding>
 		<diagram displayGrid="false" grid="10,10" timeStamp="2011-11-18T20:09:39.861Z" useGrid="true" xmlns="http://www.metacase.com/gxlGOPRRRepr">
 			<graph href="#_3_343" xmlns="http://www.metacase.com/gxlGOPRR"></graph>
 			<objectRepr id="_3_357" place="50,80" scale="1,1">
@@ -391,8 +445,11 @@
 			<objectRepr id="_3_581" place="90,390" scale="1,1">
 				<object href="#_3_575" xmlns="http://www.metacase.com/gxlGOPRR"></object>
 			</objectRepr>
-			<objectRepr id="_3_617" place="300,90" scale="1,1">
-				<object href="#_3_615" xmlns="http://www.metacase.com/gxlGOPRR"></object>
+			<objectRepr place="410,70" scale="1,1">
+				<object href="#_3_637" xmlns="http://www.metacase.com/gxlGOPRR"></object>
+			</objectRepr>
+			<objectRepr place="540,70" scale="1,1">
+				<object href="#_3_652" xmlns="http://www.metacase.com/gxlGOPRR"></object>
 			</objectRepr>
 			<bindingRepr isStraight="true" place="87,80" scale="1,1">
 				<binding href="#_3_441" xmlns="http://www.metacase.com/gxlGOPRR"></binding>
@@ -518,15 +575,6 @@
 				</connectionRepr>
 				<connectionRepr id="2">
 					<objectRepr href="#_3_364"></objectRepr>
-				</connectionRepr>
-			</bindingRepr>
-			<bindingRepr isStraight="true" place="267,152" scale="1,1">
-				<binding href="#_3_626" xmlns="http://www.metacase.com/gxlGOPRR"></binding>
-				<connectionRepr id="1">
-					<objectRepr href="#_3_364"></objectRepr>
-				</connectionRepr>
-				<connectionRepr id="2">
-					<objectRepr href="#_3_617"></objectRepr>
 				</connectionRepr>
 			</bindingRepr>
 		</diagram>
