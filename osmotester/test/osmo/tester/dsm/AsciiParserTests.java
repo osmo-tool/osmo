@@ -19,7 +19,6 @@ public class AsciiParserTests {
     parser = new AsciiParser();
   }
 
-  //TODO: test step names with space etc
   @Test
   public void oneStep() {
     String input = "setting, value\n" +

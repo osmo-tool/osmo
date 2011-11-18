@@ -2,12 +2,16 @@ package osmo.tester.endconditions;
 
 import org.junit.Before;
 import org.junit.Test;
+import osmo.tester.OSMOTester;
+import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.StepCoverage;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
+import osmo.tester.testmodels.VariableModel2;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
 
 /** @author Teemu Kanstren */
 public class StepsCoverageTests {
@@ -160,6 +164,24 @@ public class StepsCoverageTests {
     assertEnd(msg1, msg2);
   }
 
+  @Test
+  public void nonExistentStep() {
+    VariableModel2 model = new VariableModel2();
+    OSMOTester osmo = new OSMOTester();
+    osmo.addModelObject(model);
+    StepCoverage sc = new StepCoverage();
+    sc.addRequiredStep("non-existent");
+    Length length1 = new Length(1);
+    osmo.addTestEndCondition(sc);
+    osmo.addSuiteEndCondition(length1);
+    try {
+      osmo.generate();
+      fail("Generation with coverage for non-existent test step (transition) should fail.");
+    } catch (IllegalStateException e) {
+      //Expected
+      assertEquals("Reported error", "Impossible coverage requirements, defined steps [non-existent] not found.", e.getMessage());
+    }
+  }
   private void assertNoSuiteEnd(String msg) {
     boolean end = stepCoverage.endSuite(suite, fsm);
     assertEquals(msg, false, end);

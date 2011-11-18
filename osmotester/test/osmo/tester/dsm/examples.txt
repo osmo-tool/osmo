@@ -1,7 +1,6 @@
 setting, value
-object, hello
-object, world
-algorithm, bob
+model factory, osmo.tester.dsm.TestModelFactory
+algorithm, random
 
 step, times
 add event, 1
