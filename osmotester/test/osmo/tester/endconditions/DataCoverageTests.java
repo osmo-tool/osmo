@@ -176,6 +176,37 @@ public class DataCoverageTests {
   }
 
   @Test
+  public void anyCoverageRequirementForSet() {
+    VariableModel2 model = new VariableModel2();
+    osmo.addModelObject(model);
+    DataCoverage dc = new DataCoverage();
+    DataCoverageRequirement req2 = new DataCoverageRequirement("set");
+    req2.addRequirement("v2");
+    req2.requireAny();
+    dc.addRequirement(req2);
+    Length length1 = new Length(1);
+    osmo.addTestEndCondition(dc);
+    osmo.addSuiteEndCondition(length1);
+    osmo.generate();
+    TestSuite suite = model.getSuite();
+    List<TestCase> tests = suite.getFinishedTestCases();
+    TestCase test = tests.get(0);
+    String expected = "[5]";
+    String actual = test.getVariables().get("range").getValues().toString();
+    assertEquals("Expected value for range", expected, actual);
+    //suite should be exactly same for one test
+    String actualSuite = suite.getVariables().get("range").getValues().toString();
+    assertEquals("Expected value for suite range", expected, actualSuite);
+
+    String expected2 = "[v1]";
+    String actual2 = test.getVariables().get("set").getValues().toString();
+    assertEquals("Expected value for set", expected2, actual2);
+    //suite should be exactly same for one test
+    String actualSuite2 = suite.getVariables().get("set").getValues().toString();
+    assertEquals("Expected value for suite set", expected2, actualSuite2);
+  }
+
+  @Test
   public void coverageForOnePlainVariable() {
     VariableModel2 model = new VariableModel2();
     osmo.addModelObject(model);

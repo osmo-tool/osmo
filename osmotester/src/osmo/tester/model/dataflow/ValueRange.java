@@ -152,7 +152,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
     Number value = 0;
     if (algorithm == DataGenerationStrategy.ORDERED_LOOP) {
       value = nextOrderedLoop(type);
-    } else if (algorithm == DataGenerationStrategy.OPTIMIZED_RANDOM) {
+    } else if (algorithm == DataGenerationStrategy.LESS_RANDOM) {
       value = nextOptimizedRandom(type);
     } else if (algorithm == DataGenerationStrategy.BOUNDARY_SCAN) {
       value = nextBoundaryScan();

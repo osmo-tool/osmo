@@ -99,7 +99,7 @@ public class ValueRangeSetTests {
     ni.addPartition(10d, 100d);
     ni.addPartition(150d, 200d);
     ni.addPartition(250d, 300d);
-    ni.setStrategy(DataGenerationStrategy.OPTIMIZED_RANDOM);
+    ni.setStrategy(DataGenerationStrategy.LESS_RANDOM);
     double d1 = ni.nextDouble();
     double d2 = ni.nextDouble();
     double d3 = ni.nextDouble();
