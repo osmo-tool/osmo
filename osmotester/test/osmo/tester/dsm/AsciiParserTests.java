@@ -16,7 +16,6 @@ public class AsciiParserTests {
 
   @Before
   public void setUp() throws Exception {
-    Logger.debug = true;
     parser = new AsciiParser();
   }
 
@@ -24,7 +23,7 @@ public class AsciiParserTests {
   @Test
   public void oneStep() {
     String input = "setting, value\n" +
-            "model object, hello\n\n" +
+            "model factory, hello\n\n" +
             "step, times\n" +
             "bob, 5";
     DSMConfiguration reqs = parser.parse(input);
@@ -36,7 +35,7 @@ public class AsciiParserTests {
   @Test
   public void twoSteps() {
     String input = "setting, value\n" +
-            "model object, hello\n\n" +
+            "model factory, hello\n\n" +
             "step, times\n" +
             "bob, 5\n" +
             "jones, 6";
@@ -50,7 +49,7 @@ public class AsciiParserTests {
   @Test
   public void stepWithSpace() {
     String input = "setting, value\n" +
-            "model object, hello\n\n" +
+            "model factory, hello\n\n" +
             "step, times\n" +
             "bob jones, 5\n" +
             "jones bobe, 6";
@@ -64,7 +63,7 @@ public class AsciiParserTests {
   @Test
   public void noRequirementsError() {
     String input = "setting, value\n" +
-            "model object, hello\n";
+            "model factory, hello\n";
     String expected = "Input does not define any valid coverage requirements (steps or variables).";
     assertParseError(input, expected);
   }
@@ -72,7 +71,7 @@ public class AsciiParserTests {
   @Test
   public void invalidPairCount() {
     String input = "setting, value\n" +
-            "model object, hello\n\n" +
+            "model factory, hello\n\n" +
             "step, times\n" +
             "bob jones, 5\n" +
             "jones bobe";
@@ -83,7 +82,7 @@ public class AsciiParserTests {
   @Test
   public void noSteps() {
     String input = "setting, value\n" +
-            "model object, hello\n\n" +
+            "model factory, hello\n\n" +
             "step, times\n";
     String expected = "Table \"step, times\" has no content.";
     assertParseError(input, expected);
@@ -92,7 +91,7 @@ public class AsciiParserTests {
   @Test
   public void stepCountNegative() {
     String input = "setting, value\n" +
-            "model object, hello\n\n" +
+            "model factory, hello\n\n" +
             "step, times\n" +
             "bob jones, 5\n" +
             "jones bobe, -2";
@@ -103,7 +102,7 @@ public class AsciiParserTests {
   @Test
   public void stepCountZero() {
     String input = "setting, value\n" +
-            "model object, hello\n\n" +
+            "model factory, hello\n\n" +
             "step, times\n" +
             "bob jones, 0\n" +
             "jones bobe, 3";
@@ -114,7 +113,7 @@ public class AsciiParserTests {
   @Test
   public void oneVariableNoSteps() {
     String input = "setting, value\n" +
-            "model object, hello\n\n" +
+            "model factory, hello\n\n" +
             "variable, values\n" +
             "v1, 0\n";
     DSMConfiguration reqs = parser.parse(input);
@@ -126,7 +125,7 @@ public class AsciiParserTests {
   @Test
   public void oneVariableTwoValues() {
     String input = "setting, value\n" +
-            "model object, hello\n\n" +
+            "model factory, hello\n\n" +
             "variable, values\n" +
             "v1, 0\n" +
             "v1, 3\n";
@@ -139,7 +138,7 @@ public class AsciiParserTests {
   @Test
   public void twoVariables() {
     String input = "setting, value\n" +
-            "model object, hello\n\n" +
+            "model factory, hello\n\n" +
             "variable, values\n" +
             "v1, 1\n" +
             "v1, 2\n" +
@@ -172,11 +171,11 @@ public class AsciiParserTests {
   public void settingsTwoModelObject() {
     String input = "setting, value\n" +
             "algorithm, hello\n" +
-            "model object, bob\n" +
-            "model object, jones\n\n" +
+            "model factory, bob\n" +
+            "model factory, jones\n\n" +
             "variable, values\n" +
             "v1, 1\n";
-    assertParseError(input, "Only one model factory supported.");
+    assertParseError(input, "Only one model factory allowed.");
   }
 
   @Test
@@ -195,7 +194,7 @@ public class AsciiParserTests {
             "algorithm, hello\n" +
             "variable, values\n" +
             "v1, 1\n";
-    assertParseError(input, "Input does not define any model objects.");
+    assertParseError(input, "Input does not define model object factory.");
   }
 
   private void assertDataNameAndValues(DataCoverageRequirement req, String name, Object... values) {
