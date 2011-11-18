@@ -262,8 +262,12 @@ public class TestUtils {
    */
   public static String getResource(Class c, String name) {
     InputStream is = c.getResourceAsStream(name);
+    return getResource(is);
+  }
+
+  public static String getResource(InputStream in) {
     StringBuilder text = new StringBuilder();
-    Scanner scanner = new Scanner(is, "UTF-8");
+    Scanner scanner = new Scanner(in, "UTF-8");
     try {
       while (scanner.hasNextLine()) {
         String line = scanner.nextLine();
