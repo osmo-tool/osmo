@@ -2,6 +2,7 @@ package osmo.tester.generator;
 
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
 /**
@@ -10,6 +11,7 @@ import osmo.tester.model.FSMTransition;
  * @author Teemu Kanstren
  */
 public interface GenerationListener {
+  public void init(FSM fsm);
   /**
    * A guard statement has been invoked for a transition.
    *

@@ -84,6 +84,7 @@ public class MainGenerator {
     suite = fsm.initSuite();
     log.debug("Starting test suite generation");
     beforeSuite();
+    listeners.init(fsm);
   }
 
   /** Handles suite shutdown. Should be called after all tests have been generated. */

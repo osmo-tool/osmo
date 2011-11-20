@@ -8,6 +8,7 @@ import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
 import javax.swing.JFrame;
@@ -35,6 +36,10 @@ public class GraphVisualizer extends JFrame implements GenerationListener {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setSize(1024, 768);
     setVisible(true);
+  }
+
+  @Override
+  public void init(FSM fsm) {
   }
 
   @Override

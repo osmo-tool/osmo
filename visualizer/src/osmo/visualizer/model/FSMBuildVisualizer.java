@@ -16,6 +16,7 @@ import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
 import javax.swing.*;
@@ -27,7 +28,6 @@ import java.util.Set;
  * @author Teemu Kanstren
  */
 public class FSMBuildVisualizer extends JFrame implements GenerationListener {
-
   private Graph<FSMTransition, String> graph;
   private Set<String> edges = new HashSet<String>();
   private Set<FSMTransition> vertices = new HashSet<FSMTransition>();
@@ -59,6 +59,10 @@ public class FSMBuildVisualizer extends JFrame implements GenerationListener {
     setSize(1024, 768);
     pack();
     setVisible(true);
+  }
+
+  @Override
+  public void init(FSM fsm) {
   }
 
   @Override
