@@ -3,6 +3,7 @@ package osmo.tester.generation;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
 import java.util.ArrayList;
@@ -18,6 +19,10 @@ public class TestListener implements GenerationListener {
 
   public void addExpected(String... items) {
     Collections.addAll(expected, items);
+  }
+
+  @Override
+  public void init(FSM fsm) {
   }
 
   @Override

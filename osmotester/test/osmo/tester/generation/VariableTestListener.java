@@ -5,6 +5,7 @@ import osmo.tester.annotation.Pre;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
 import java.util.ArrayList;
@@ -16,6 +17,10 @@ import static junit.framework.Assert.assertTrue;
 /** @author Teemu Kanstren */
 public class VariableTestListener implements GenerationListener {
   private Collection<String> variables = new ArrayList<String>();
+
+  @Override
+  public void init(FSM fsm) {
+  }
 
   @Override
   public void guard(FSMTransition transition) {
