@@ -91,7 +91,7 @@ public class DSMConfiguration {
     if (algorithm.equalsIgnoreCase("weighted random") || algorithm.equalsIgnoreCase("weighted-random") || algorithm.equalsIgnoreCase("weightedrandom")) {
       algorithm = WeightedLessRandomAlgorithm.class.getName();
     }
-    if (algorithm.equalsIgnoreCase("optimized random") || algorithm.equalsIgnoreCase("optimized-random") || algorithm.equalsIgnoreCase("optimizedrandom")) {
+    if (algorithm.equalsIgnoreCase("less random") || algorithm.equalsIgnoreCase("less-random") || algorithm.equalsIgnoreCase("lessrandom")) {
       algorithm = WeightedLessRandomAlgorithm.class.getName();
     }
     this.algorithm = algorithm;

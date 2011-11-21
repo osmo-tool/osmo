@@ -1,5 +1,6 @@
-package osmo.tester.optimizer;
+package osmo.visualizer.custom;
 
+import osmo.common.NullPrintStream;
 import osmo.common.TestUtils;
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
@@ -12,9 +13,10 @@ import osmo.tester.examples.calendar.testmodel.CalendarOverlappingModel;
 import osmo.tester.examples.calendar.testmodel.CalendarParticipantModel;
 import osmo.tester.examples.calendar.testmodel.CalendarTaskModel;
 import osmo.tester.examples.calendar.testmodel.ModelState;
-import osmo.tester.generation.NullPrintStream;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.optimizer.Candidate;
+import osmo.tester.optimizer.SearchConfiguration;
 import osmo.tester.optimizer.offline.GreedyOptimizer;
 import osmo.tester.optimizer.online.PeakEndCondition;
 import osmo.tester.optimizer.online.SearchListener;

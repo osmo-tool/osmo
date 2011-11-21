@@ -1,9 +1,9 @@
 package osmo.tester.dsm;
 
-import osmo.tester.examples.calculator.CalculatorModel;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.Probability;
+import osmo.tester.testmodels.ValidTestModel1;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,7 +12,7 @@ import java.util.Collection;
 public class TestModelFactory implements ModelObjectFactory {
   @Override
   public Collection<Object> createModelObjects() {
-    Object model = new CalculatorModel();
+    Object model = new ValidTestModel1();
     Collection<Object> objects = new ArrayList<Object>();
     objects.add(model);
     return objects;

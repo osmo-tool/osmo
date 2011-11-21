@@ -18,7 +18,7 @@ import java.util.Map;
  * algorithm, random
  * <p/>
  * step, times
- * add event, 1
+ * add event, >=1
  * <p/>
  * variable, values
  * start time, 5
@@ -31,7 +31,7 @@ import java.util.Map;
  * <p/>
  * The settings table has the following elements:
  * model factory = The fully qualified name of a class implementing {@link osmo.tester.dsm.ModelObjectFactory}.
- * algorithm = Fully qualified name of used test generation algorithm, or "random"/"weighted random"/"optimized random"
+ * algorithm = Fully qualified name of used test generation algorithm, or "random"/"weighted random"/"less random"
  * seed = Random seed to be used by OSMOTester
  * <p/>
  * The steps table defines which steps should be covered by all generated tests, the form is:
@@ -39,9 +39,11 @@ import java.util.Map;
  * <p/>
  * The variables table defines which variable values should be covered by all generated tests. The form is:
  * "variable name", "required value". The value comparison is based on String.equals() method. To provide several
- * values for a single variable, repeat several lines for that variable with different values. "any" is a special
- * value meaning that the variable should be covered but the value does not matter. Some of the built-in data
+ * values for a single variable, repeat several lines for that variable with different values.  Some of the built-in data
  * objects support "all", meaning all values in ValueRange or ValueSet should be covered.
+ * <p/>
+ * Steps practically equal the transition names and can be defined to have to be present the number of times specified
+ * exactly (add event, == 1), minimum of that (add event, >= 1) or maximum of that (add event, <= 1)
  *
  * @author Teemu Kanstren
  */

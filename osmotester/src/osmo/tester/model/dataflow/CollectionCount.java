@@ -1,4 +1,6 @@
-package osmo.tester.model;
+package osmo.tester.model.dataflow;
+
+import osmo.tester.model.VariableValue;
 
 import java.util.Collection;
 

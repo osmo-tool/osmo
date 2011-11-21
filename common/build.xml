@@ -55,7 +55,7 @@
     <javac source="1.5" target="1.5" classpathref="class.path" srcdir="${test-src}" destdir="${test-dest}"/>
   </target>
 
-  <target name="jar" depends="compile" description="Create jar file">
+  <target name="jar" depends="clean, compile" description="Create jar file">
     <jar destfile="${jar.file}" basedir="${prod-dest}"/>
   </target>
 
