@@ -53,7 +53,7 @@ public class Boundary {
     values.add(min);
     //and the upper bound
     values.add(max);
-    for (int i = 0 ; i < count ; i++) {
+    for (int i = 0; i < count; i++) {
       switch (type) {
         case INT:
           //then we add minimum +1 and miminum -1 (or whatever the increment value)

@@ -101,7 +101,7 @@ public class StepCoverage extends AbstractEndCondition {
       toClear.remove(transition.getName());
     }
     if (!toClear.isEmpty()) {
-      throw new IllegalStateException("Impossible coverage requirements, defined steps "+toClear+" not found.");
+      throw new IllegalStateException("Impossible coverage requirements, defined steps " + toClear + " not found.");
     }
   }
 }

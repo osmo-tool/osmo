@@ -58,7 +58,7 @@ public class ReadableWords extends SearchableInput<String> {
   public String next() {
     int length = cInt(min, max);
     char[] c = new char[length];
-    for (int i = 0 ; i < length ; i++) {
+    for (int i = 0; i < length; i++) {
       c[i] = chars.next();
     }
     String next = new String(c);

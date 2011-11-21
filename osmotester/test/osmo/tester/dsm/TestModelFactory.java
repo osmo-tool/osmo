@@ -4,7 +4,6 @@ import osmo.tester.examples.calculator.CalculatorModel;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.Probability;
-import osmo.tester.testmodels.VariableModel2;
 
 import java.util.ArrayList;
 import java.util.Collection;

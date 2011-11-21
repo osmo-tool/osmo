@@ -9,8 +9,7 @@ import osmo.tester.generator.testsuite.TestSuite;
 
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
+import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class LengthTests {

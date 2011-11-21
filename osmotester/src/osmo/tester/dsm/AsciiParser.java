@@ -10,33 +10,33 @@ import java.util.Map;
 
 /**
  * Parses test definitions in ASCII format. The expected format is the following:
- *
+ * <p/>
  * ---begin example---
- *
+ * <p/>
  * setting, value
  * model factory, osmo.tester.dsm.TestModelFactory
  * algorithm, random
- *
+ * <p/>
  * step, times
  * add event, 1
- *
+ * <p/>
  * variable, values
  * start time, 5
  * event count, any
- *
+ * <p/>
  * --- end example ---
- *
+ * <p/>
  * There are three different tables in this format. It is required to provide the settings table and
  * one or both of the steps and variables tables.
- *
+ * <p/>
  * The settings table has the following elements:
  * model factory = The fully qualified name of a class implementing {@link osmo.tester.dsm.ModelObjectFactory}.
  * algorithm = Fully qualified name of used test generation algorithm, or "random"/"weighted random"/"optimized random"
  * seed = Random seed to be used by OSMOTester
- *
+ * <p/>
  * The steps table defines which steps should be covered by all generated tests, the form is:
  * "step name", "number of times to cover". Step name must match a name of a transition in a model object.
- *
+ * <p/>
  * The variables table defines which variable values should be covered by all generated tests. The form is:
  * "variable name", "required value". The value comparison is based on String.equals() method. To provide several
  * values for a single variable, repeat several lines for that variable with different values. "any" is a special
@@ -49,6 +49,10 @@ public class AsciiParser {
   private static Logger log = new Logger(AsciiParser.class);
   /** Configuration for test generation, as parsed from the ASCII input. */
   private DSMConfiguration config = new DSMConfiguration();
+
+  private static enum Relation {
+    MIN, MAX, EXACT
+  }
 
   /**
    * Parses the given input to provide a test generation configuration.
@@ -74,7 +78,7 @@ public class AsciiParser {
     String[] settings = parseTable(lines, "setting", "value");
     String algorithm = null;
     String factory = null;
-    for (int i = 0 ; i < settings.length ; i += 2) {
+    for (int i = 0; i < settings.length; i += 2) {
       String name = settings[i];
       String value = settings[i + 1];
       log.debug("Setting found:" + name + " = " + value);
@@ -97,7 +101,7 @@ public class AsciiParser {
           long seed = Long.parseLong(value);
           config.setSeed(seed);
         } catch (NumberFormatException e) {
-          throw new NumberFormatException("Seed value should be parseable to long integer, was:"+value);
+          throw new NumberFormatException("Seed value should be parseable to long integer, was:" + value + ".");
         }
       }
     }
@@ -112,14 +116,47 @@ public class AsciiParser {
     log.debug("parsing steps");
     String[] steps = parseTable(lines, "step", "times");
     log.debug("steps:" + steps.length);
-    for (int i = 0 ; i < steps.length ; i += 2) {
+    for (int i = 0; i < steps.length; i += 2) {
       String name = steps[i];
-      int times = parseTimes(name, steps[i + 1]);
-      for (int t = 0 ; t < times ; t++) {
-        config.addStep(name);
+      String times = steps[i + 1];
+      Relation r = parseMin(times);
+      times = times.substring(2);
+      times = times.trim();
+      int count = parseTimes(name, times, r);
+      switch (r) {
+        case MIN:
+          config.addStepMin(name, count);
+          break;
+        case MAX:
+          config.addStepMax(name, count);
+          break;
+        case EXACT:
+          config.addStepMin(name, count);
+          config.addStepMax(name, count);
+          break;
+        default:
+          throw new IllegalStateException("Unknown relation for step size in DSM definition.");
       }
-      log.debug("Step requirement found:" + name + " times " + times);
+      log.debug("Step requirement found:" + name + " " + r.toString() + ":" + count + " times " + times);
     }
+  }
+
+  private Relation parseMin(String times) {
+    char ch1 = times.charAt(0);
+    char ch2 = times.charAt(1);
+    if (ch2 != '=') {
+      throw new IllegalArgumentException("Step count must begin with <=(max) or >=(min).");
+    }
+    if (ch1 == '<') {
+      return Relation.MAX;
+    }
+    if (ch1 == '>') {
+      return Relation.MIN;
+    }
+    if (ch1 == '=') {
+      return Relation.EXACT;
+    }
+    throw new IllegalArgumentException("Step count must begin with <=(max) or >=(min).");
   }
 
   /**
@@ -129,15 +166,15 @@ public class AsciiParser {
    * @param from The text from which the number should be parsed.
    * @return The number of times to cover the step.
    */
-  private int parseTimes(String name, String from) {
+  private int parseTimes(String name, String from, Relation r) {
     try {
       int times = Integer.parseInt(from);
-      if (times <= 0) {
-        throw new IllegalArgumentException("Number of times the steps is required needs to be > 0. Was " + from);
+      if (times < 0 || (times == 0 && r != Relation.EXACT)) {
+        throw new IllegalArgumentException("Number of times the steps is required needs to be > 0. Was " + from + ".");
       }
       return times;
     } catch (NumberFormatException e) {
-      throw new IllegalArgumentException("Number of times should be integer, was [" + from + "] for step [" + name + "]", e);
+      throw new IllegalArgumentException("Number of times should be integer, was [" + from + "] for step [" + name + "].", e);
     }
   }
 
@@ -150,7 +187,7 @@ public class AsciiParser {
     log.debug("parsing variables");
     String[] variables = parseTable(lines, "variable", "values");
     Map<String, DataCoverageRequirement> map = new HashMap<String, DataCoverageRequirement>();
-    for (int i = 0 ; i < variables.length ; i += 2) {
+    for (int i = 0; i < variables.length; i += 2) {
       String name = variables[i].trim();
       String value = variables[i + 1].trim();
       DataCoverageRequirement req = map.get(name);
@@ -168,8 +205,8 @@ public class AsciiParser {
    * Generic parse for all the tables. Supports only 2 column tables, where each column must have content.
    *
    * @param lines The lines (rows) of the table.
-   * @param h1 Header of first column.
-   * @param h2 Header of the second column.
+   * @param h1    Header of first column.
+   * @param h2    Header of the second column.
    * @return The cells of the table, first row as cells[0], cells[1], second row as cells[2], cells[3], etc.
    */
   public String[] parseTable(String[] lines, String h1, String h2) {
@@ -178,7 +215,7 @@ public class AsciiParser {
     int i = 0;
     boolean found = false;
     //first we proceed until we find the header
-    for ( ; i < lines.length ; i++) {
+    for (; i < lines.length; i++) {
       String line = lines[i];
       log.debug("parsing line:" + line);
       String[] cells = line.split(",");
@@ -200,7 +237,7 @@ public class AsciiParser {
     //table name here is for error reporting
     String tableName = "\"" + h1 + ", " + h2 + "\"";
     //now we parse all cells
-    for (i += 1; i < lines.length ; i++) {
+    for (i += 1; i < lines.length; i++) {
       //the table cells must be separated with a comma
       String[] cells = lines[i].split(",");
       String error = "Table rows must have 2 cells. " + tableName + " had a row with " + cells.length + " cell(s).";
@@ -239,16 +276,14 @@ public class AsciiParser {
    */
   private String[] parseLines(String input) {
     String[] split = input.split("\n|\r\n|\r");
-    for (int i = 0 ; i < split.length ; i++) {
+    for (int i = 0; i < split.length; i++) {
       String s = split[i];
       split[i] = s.trim();
     }
     return split;
   }
 
-  /**
-   * Validate the overall parsed configuration.
-   */
+  /** Validate the overall parsed configuration. */
   private void validateConfiguration() {
     String errors = "";
     if (!config.hasRequiments()) {

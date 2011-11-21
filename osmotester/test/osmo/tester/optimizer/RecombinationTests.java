@@ -12,8 +12,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.*;
 import static osmo.common.TestUtils.cInt;
 
 /** @author Teemu Kanstren */
@@ -49,7 +48,7 @@ public class RecombinationTests {
   public void recombinationWithNoDuplicates() {
     Collection<Integer> sizes1 = new ArrayList<Integer>();
     Collection<Integer> sizes2 = new ArrayList<Integer>();
-    for (int i = 0 ; i < 1000 ; i++) {
+    for (int i = 0; i < 1000; i++) {
       Candidate c1 = createCandidate(10);
       Candidate c2 = createCandidate(10);
       Candidate[] recombination = so.recombine(c1, c2);
@@ -82,7 +81,7 @@ public class RecombinationTests {
   public void recombinationWithDuplicates() {
     Collection<Integer> sizes1 = new ArrayList<Integer>();
     Collection<Integer> sizes2 = new ArrayList<Integer>();
-    for (int i = 0 ; i < 1000 ; i++) {
+    for (int i = 0; i < 1000; i++) {
       Candidate c1 = createCandidate(10);
       Candidate c2 = createCandidate(10);
       List<TestCase> c1Tests = c1.getTests();
@@ -115,7 +114,7 @@ public class RecombinationTests {
   public void recombinationWithDuplicatesInBeginning() {
     Collection<Integer> sizes1 = new ArrayList<Integer>();
     Collection<Integer> sizes2 = new ArrayList<Integer>();
-    for (int i = 0 ; i < 1000 ; i++) {
+    for (int i = 0; i < 1000; i++) {
       Candidate c1 = createCandidate(10);
       Candidate c2 = createCandidate(10);
       List<TestCase> c1Tests = c1.getTests();
@@ -148,7 +147,7 @@ public class RecombinationTests {
   public void recombinationWithDuplicatesInEnd() {
     Collection<Integer> sizes1 = new ArrayList<Integer>();
     Collection<Integer> sizes2 = new ArrayList<Integer>();
-    for (int i = 0 ; i < 1000 ; i++) {
+    for (int i = 0; i < 1000; i++) {
       Candidate c1 = createCandidate(10);
       Candidate c2 = createCandidate(10);
       List<TestCase> c1Tests = c1.getTests();
@@ -191,7 +190,7 @@ public class RecombinationTests {
 
   private List<Candidate> candidateList() {
     List<Candidate> candidates = new ArrayList<Candidate>();
-    for (int i = 0 ; i < 10 ; i++) {
+    for (int i = 0; i < 10; i++) {
       candidates.add(createCandidate(cInt(2, 10)));
     }
     return candidates;
@@ -199,7 +198,7 @@ public class RecombinationTests {
 
   private Candidate createCandidate(int testCount) {
     List<TestCase> tests = new ArrayList<TestCase>();
-    for (int i = 0 ; i < testCount ; i++) {
+    for (int i = 0; i < testCount; i++) {
       tests.add(testCase());
     }
     return new Candidate(sc, tests);
@@ -208,7 +207,7 @@ public class RecombinationTests {
   private TestCase testCase() {
     TestCase test = new TestCase();
     int transitions = cInt(2, 10);
-    for (int i = 0 ; i < transitions ; i++) {
+    for (int i = 0; i < transitions; i++) {
       test.addStep(new FSMTransition("v" + i));
     }
     return test;

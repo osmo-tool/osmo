@@ -45,7 +45,7 @@ public class ASCII extends CoverageMetric {
 
   private String getSpaces(int a) {
     String ret = "";
-    for (int i = 0 ; i < a ; i++) {
+    for (int i = 0; i < a; i++) {
       ret += " ";
     }
     return ret;
@@ -100,7 +100,7 @@ public class ASCII extends CoverageMetric {
 
     String corner = "Coverage\\TC";
     String ret = corner + getSpaces(max - corner.length() + 2);
-    for (int i = 0 ; i < testcases.size() ; i++) {
+    for (int i = 0; i < testcases.size(); i++) {
       ret += "|" + i;
     }
     ret += "|\n";

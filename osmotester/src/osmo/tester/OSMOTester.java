@@ -11,6 +11,7 @@ import osmo.tester.generator.endcondition.And;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.Probability;
+import osmo.tester.generator.filter.TransitionFilter;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.Requirements;
@@ -37,8 +38,12 @@ public class OSMOTester {
   private Collection<EndCondition> suiteEndConditions = new ArrayList<EndCondition>();
   /** When do we stop generating individual tests and start a new one? */
   private Collection<EndCondition> testCaseEndConditions = new ArrayList<EndCondition>();
+  /** Set of filters to define when given transitions should not be considered for execution. */
+  private Collection<TransitionFilter> filters = new ArrayList<TransitionFilter>();
   /** The algorithm to traverse the test model to generate test steps. */
   private FSMTraversalAlgorithm algorithm;
+  /** Should we fail then test generation if there is not enabled transitions? Otherwise we just end the test. */
+  private boolean failWhenNoWayForward = true;
   /** Listeners to be notified about test generation events. */
   private GenerationListenerList listeners = new GenerationListenerList();
   /** The parsed model for test generation. */
@@ -99,6 +104,8 @@ public class OSMOTester {
     generator.setSuiteEndConditions(suiteEndConditions);
     generator.setTestCaseEndConditions(testCaseEndConditions);
     generator.setListeners(listeners);
+    generator.setFilters(filters);
+    generator.setFailWhenNoWayForward(failWhenNoWayForward);
     return generator;
   }
 
@@ -168,4 +175,12 @@ public class OSMOTester {
     TestUtils.setSeed(seed);
   }
 
+  public void setFailWhenNoWayForward(boolean fail) {
+    failWhenNoWayForward = fail;
+  }
+
+  public void addFilter(TransitionFilter filter) {
+    filters.add(filter);
+    listeners.addListener(filter);
+  }
 }

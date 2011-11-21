@@ -16,7 +16,7 @@ import java.util.List;
  * Implements search-based optimization to look for an optimal set of test cases.
  * Uses an implementation of genetic algorithms, with uniform crossover and a mutation operator of
  * generating new tests from the model.
- *
+ * <p/>
  * NOTE: Currently this has been observed to basically suck, so give it a try if interested but also try
  * the {@link osmo.tester.optimizer.offline.GreedyOptimizer} as well.
  *
@@ -50,17 +50,17 @@ public class SearchingOptimizer {
 
   /**
    * Searches the given set of tests according to the defined search configuration.
-   * 
+   *
    * @param tests The set of tests to be searched.
    * @return The optimized candidate.
    */
   public Candidate searchFromTests(List<TestCase> tests) {
     int noc = config.getNumberOfCandidates();
     List<Candidate> candidates = new ArrayList<Candidate>();
-    for (int i = 0 ; i < noc ; i++) {
+    for (int i = 0; i < noc; i++) {
       int populationSize = config.getPopulationSize();
       List<TestCase> candidateTests = new ArrayList<TestCase>();
-      for (int p = 0 ; p < populationSize ; p++) {
+      for (int p = 0; p < populationSize; p++) {
         candidateTests.add(tests.remove(0));
       }
       Candidate candidate = new Candidate(config, candidateTests);
@@ -78,7 +78,7 @@ public class SearchingOptimizer {
     int noc = config.getNumberOfCandidates();
     List<Candidate> candidates = new ArrayList<Candidate>();
     generator.initSuite();
-    for (int i = 0 ; i < noc ; i++) {
+    for (int i = 0; i < noc; i++) {
       Candidate candidate = createCandidate();
       candidates.add(candidate);
     }
@@ -105,7 +105,7 @@ public class SearchingOptimizer {
   /**
    * Runs a search on the given set of candidates with the given mutation probability.
    *
-   * @param candidates The set of candidates to search.
+   * @param candidates          The set of candidates to search.
    * @param mutationProbability The probability to mutatate (replace with another) a test.
    * @return The set of candidates order as best first, worst last.
    */
@@ -133,7 +133,7 @@ public class SearchingOptimizer {
    * Creates a new search generation for the genetic algorithm.
    *
    * @param candidates The source set of candidates for generation.
-   * @param mp The probability to mutation a test in candidate suite.
+   * @param mp         The probability to mutation a test in candidate suite.
    * @return The next generation.
    */
   public List<Candidate> nextGenerationFrom(List<Candidate> candidates, double mp) {
@@ -188,15 +188,13 @@ public class SearchingOptimizer {
   }
 
   /**
-   *
-   *
    * @param candidate
    * @param probability
    */
   public void mutate(Candidate candidate, double probability) {
     List<TestCase> tests = candidate.getTests();
     int size = tests.size();
-    for (int i = 0 ; i < size ; i++) {
+    for (int i = 0; i < size; i++) {
       double tp = random.cDouble();
       if (tp < probability) {
         tests.set(i, generator.next());
@@ -223,7 +221,7 @@ public class SearchingOptimizer {
     int size = c1.size() - joint.size();
     int i1 = 0;
     int i2 = 0;
-    for (int i = 0 ; i < size ; i++) {
+    for (int i = 0; i < size; i++) {
       while (joint.contains(c1.get(i + i1))) {
         c3Tests.add(c1.get(i + i1));
         i1++;
@@ -265,7 +263,7 @@ public class SearchingOptimizer {
   public Candidate createCandidate() {
     int populationSize = config.getPopulationSize();
     List<TestCase> tests = new ArrayList<TestCase>();
-    for (int i = 0 ; i < populationSize ; i++) {
+    for (int i = 0; i < populationSize; i++) {
       tests.add(generator.next());
     }
     return new Candidate(config, tests);

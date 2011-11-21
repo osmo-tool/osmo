@@ -1,26 +1,5 @@
 package osmo.tester.manualdrive;
 
-import java.awt.Color;
-import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
-import javax.swing.JList;
-import javax.swing.JButton;
-import java.awt.Component;
-import javax.swing.AbstractListModel;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JLabel;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.algorithm.LessRandomAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
@@ -30,13 +9,33 @@ import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import javax.swing.AbstractListModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EmptyBorder;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.EventQueue;
 import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Provide manual interface for controlling test generation
@@ -185,7 +184,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
 
   private String getSpaces(int a) {
     String ret = "";
-    for (int i = 0 ; i < a ; i++) {
+    for (int i = 0; i < a; i++) {
       ret += " ";
     }
     return ret;

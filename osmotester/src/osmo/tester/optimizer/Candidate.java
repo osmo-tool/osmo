@@ -54,9 +54,7 @@ public class Candidate {
     return suiteCoverage.fitnessFor(config);
   }
 
-  /**
-   * @return The number of tests in the candidate.
-   */
+  /** @return The number of tests in the candidate. */
   public int size() {
     return tests.size();
   }

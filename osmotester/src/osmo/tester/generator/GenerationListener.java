@@ -12,6 +12,7 @@ import osmo.tester.model.FSMTransition;
  */
 public interface GenerationListener {
   public void init(FSM fsm);
+
   /**
    * A guard statement has been invoked for a transition.
    *

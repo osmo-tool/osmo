@@ -2,7 +2,6 @@ package osmo.tester.optimizer;
 
 import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.optimizer.SearchConfiguration;
 
 import java.util.ArrayList;
 import java.util.Collection;

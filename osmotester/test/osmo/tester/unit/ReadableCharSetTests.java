@@ -14,7 +14,7 @@ public class ReadableCharSetTests {
     boolean lower = false;
     boolean upper = false;
     boolean special = false;
-    for (int i = 0 ; i < 1000 ; i++) {
+    for (int i = 0; i < 1000; i++) {
       char c = set.next();
       lower = Character.isLowerCase(c) || lower;
       upper = Character.isUpperCase(c) || upper;
@@ -84,7 +84,7 @@ public class ReadableCharSetTests {
     boolean three = false;
     boolean four = false;
     boolean five = false;
-    for (int i = 0 ; i < 1000 ; i++) {
+    for (int i = 0; i < 1000; i++) {
       String word = words.next();
       int length = word.length();
       assertTrue("Generated sequence length should be between 3-5, was " + length, length >= 3 && length <= 5);
@@ -137,7 +137,7 @@ public class ReadableCharSetTests {
   public void reduceWithWhiteSpace() {
     ReadableChars set = new ReadableChars();
     set.reduceBy(" \t");
-    for (int i = 0 ; i < 1000 ; i++) {
+    for (int i = 0; i < 1000; i++) {
       char c = set.next();
       assertFalse("Should not contain removed chars, has " + c, c == ' ' || c == '\t');
     }
@@ -147,7 +147,7 @@ public class ReadableCharSetTests {
   public void reduceWithXml() {
     ReadableChars set = new ReadableChars();
     set.reduceBy("<>");
-    for (int i = 0 ; i < 1000 ; i++) {
+    for (int i = 0; i < 1000; i++) {
       char c = set.next();
       assertFalse("Should not contain removed chars, has " + c, c == '<' || c == '>');
     }

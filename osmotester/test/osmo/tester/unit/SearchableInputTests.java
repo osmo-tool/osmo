@@ -22,7 +22,7 @@ public class SearchableInputTests {
     TestInputObserver<Integer> observer = new TestInputObserver<Integer>(name);
     range.setObserver(observer);
     Collection<Integer> expected = new ArrayList<Integer>();
-    for (int i = 0 ; i < 11 ; i++) {
+    for (int i = 0; i < 11; i++) {
       range.next();
       expected.add(i % 10 + 1);
     }
@@ -39,7 +39,7 @@ public class SearchableInputTests {
     TestInputObserver<String> observer = new TestInputObserver<String>(name);
     set.setObserver(observer);
     Collection<String> expected = new ArrayList<String>();
-    for (int i = 0 ; i < 5 ; i++) {
+    for (int i = 0; i < 5; i++) {
       set.next();
       expected.add("v" + (i % 3 + 1));
     }

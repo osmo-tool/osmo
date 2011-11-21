@@ -1,7 +1,5 @@
 package osmo.tester.optimizer;
 
-import osmo.tester.optimizer.Candidate;
-
 import java.util.Comparator;
 
 /**
