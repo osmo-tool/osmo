@@ -8,8 +8,7 @@ import osmo.tester.testmodels.ParameterModel1;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
-import static osmo.common.TestUtils.getResource;
-import static osmo.common.TestUtils.unifyLineSeparators;
+import static osmo.common.TestUtils.*;
 
 /** @author Teemu Kanstren */
 public class CSVTests {

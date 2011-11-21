@@ -6,8 +6,7 @@ import osmo.tester.model.dataflow.ValueRange;
 
 import java.util.Collection;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class ValueRangeTests {
@@ -18,8 +17,8 @@ public class ValueRangeTests {
     boolean b5 = false;
     boolean b6 = false;
     boolean b7 = false;
-    for (int a = 0 ; a < 10 ; a++) {
-      for (int i = 0 ; i < 3 ; i++) {
+    for (int a = 0; a < 10; a++) {
+      for (int i = 0; i < 3; i++) {
         int n = vr.nextInt();
         if (n == 5) {
           b5 = true;

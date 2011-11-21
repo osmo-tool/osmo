@@ -117,10 +117,11 @@ public class TestCase {
     }
     return requirementsCoverage;
   }
+
   /**
    * Aadds a value for model variable. Means a value that was generated.
    *
-   * @param name Name of the variable.
+   * @param name  Name of the variable.
    * @param value The value of the variable.
    * @param merge If true, duplicates are removed.
    */

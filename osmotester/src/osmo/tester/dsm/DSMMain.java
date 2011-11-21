@@ -7,6 +7,7 @@ import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.endcondition.StepCoverage;
 import osmo.tester.generator.endcondition.data.DataCoverage;
 import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
+import osmo.tester.generator.filter.MaxTransitionFilter;
 
 import java.io.FileInputStream;
 import java.util.Collection;
@@ -68,12 +69,24 @@ public class DSMMain {
       dc.addRequirement(req);
     }
     osmo.addTestEndCondition(dc);
+    MaxTransitionFilter filter = new MaxTransitionFilter();
     StepCoverage sc = new StepCoverage();
-    List<String> stepRequirements = config.getStepRequirements();
-    for (String req : stepRequirements) {
-      sc.addRequiredStep(req);
+    Collection<StepRequirement> stepRequirements = config.getStepRequirements();
+    for (StepRequirement req : stepRequirements) {
+      String step = req.getStep();
+      Integer min = req.getMin();
+      if (min != null) {
+        for (int i = 0; i < min; i++) {
+          sc.addRequiredStep(step);
+        }
+      }
+      Integer max = req.getMax();
+      if (max != null) {
+        filter.setMax(step, max);
+      }
     }
     osmo.addTestEndCondition(sc);
+    osmo.addFilter(filter);
     osmo.setSeed(config.getSeed());
     osmo.generate();
   }

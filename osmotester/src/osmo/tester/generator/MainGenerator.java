@@ -3,6 +3,7 @@ package osmo.tester.generator;
 import osmo.common.log.Logger;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.endcondition.EndCondition;
+import osmo.tester.generator.filter.TransitionFilter;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -31,10 +32,14 @@ public class MainGenerator {
   private Collection<EndCondition> suiteEndConditions;
   /** Defines when test case generation should be stopped. Invoked between each test step. */
   private Collection<EndCondition> testCaseEndConditions;
+  /** Defines which transitions should be filtered out. Invoked before any transition is taken. */
+  private Collection<TransitionFilter> filters;
   /** The list of listeners to be notified of new events as generation progresses. */
   private GenerationListenerList listeners;
   /** This is set when the test should end but @EndState is not yet achieved to signal ending ASAP. */
   private boolean testEnding = false;
+  /** If true, test generation will fail when no enabled transitions are found. If false, test ends. */
+  private boolean failWhenNoWayForward = true;
   /** The parsed overall test model. */
   private final FSM fsm;
   /** Keeps track of overall number of tests generated. */
@@ -64,9 +69,18 @@ public class MainGenerator {
     this.testCaseEndConditions = testCaseEndConditions;
   }
 
+  /** @param filters The new filters to define which transitions should not be taken at a given time. */
+  public void setFilters(Collection<TransitionFilter> filters) {
+    this.filters = filters;
+  }
+
   /** @param listeners Listeners to be notified about generation events. */
   public void setListeners(GenerationListenerList listeners) {
     this.listeners = listeners;
+  }
+
+  public void setFailWhenNoWayForward(boolean failWhenNoWayForward) {
+    this.failWhenNoWayForward = failWhenNoWayForward;
   }
 
   /** Invoked to start the test generation using the configured parameters. */
@@ -105,6 +119,14 @@ public class MainGenerator {
     TestCase test = suite.getCurrentTest();
     while (!checkTestCaseEndConditions()) {
       List<FSMTransition> enabled = getEnabled();
+      if (enabled.size() == 0) {
+        if (failWhenNoWayForward) {
+          throw new IllegalStateException("No transition available.");
+        } else {
+          log.debug("No enabled transitions, ending test (fail is disabled).");
+          break;
+        }
+      }
       FSMTransition next = algorithm.choose(suite, enabled);
       log.debug("Taking transition " + next.getName());
       execute(fsm, next);
@@ -278,6 +300,11 @@ public class MainGenerator {
     Collection<FSMTransition> allTransitions = fsm.getTransitions();
     List<FSMTransition> enabled = new ArrayList<FSMTransition>();
     enabled.addAll(allTransitions);
+    //filter out all non-wanted transitions
+    for (TransitionFilter filter : filters) {
+      filter.filter(enabled);
+    }
+    //then check which of the remaining are allowed by their guard statements
     for (FSMTransition transition : allTransitions) {
       for (InvocationTarget guard : transition.getGuards()) {
         listeners.guard(transition);
@@ -286,9 +313,6 @@ public class MainGenerator {
           enabled.remove(transition);
         }
       }
-    }
-    if (enabled.size() == 0) {
-      throw new IllegalStateException("No transition available.");
     }
     return enabled;
   }

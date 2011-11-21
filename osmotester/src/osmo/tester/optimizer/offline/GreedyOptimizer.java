@@ -62,7 +62,7 @@ public class GreedyOptimizer {
     MainGenerator generator = config.getGenerator();
     generator.initSuite();
     List<TestCase> all = new ArrayList<TestCase>();
-    for (int i = 0 ; i < count ; i++) {
+    for (int i = 0; i < count; i++) {
       all.add(generator.next());
     }
     TestCase high = null;
@@ -86,7 +86,7 @@ public class GreedyOptimizer {
     if (howMany > from.size()) {
       throw new IllegalArgumentException("Requested bigger greedily sorted set than source has elements.");
     }
-    for (int i = 0 ; i < howMany ; i++) {
+    for (int i = 0; i < howMany; i++) {
       int added = 0;
       for (TestCase test : from) {
         TestCoverage tc = new TestCoverage(test);

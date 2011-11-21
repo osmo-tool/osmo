@@ -30,7 +30,7 @@ public class Experiments {
   private long start = 0;
 
   public static void main(String[] args) {
-    for (int i = 0 ; i < 1 ; i++) {
+    for (int i = 0; i < 1; i++) {
       new Experiments().run();
     }
   }
@@ -85,7 +85,7 @@ public class Experiments {
     GreedyOptimizer greedy = new GreedyOptimizer(config);
     List<TestCase> sortedTestSet = greedy.createSortedTestSet(config.getPopulationSize() * config.getNumberOfCandidates());
     List<TestCase> tests = new ArrayList<TestCase>();
-    for (int i = 0 ; i < config.getPopulationSize() ; i++) {
+    for (int i = 0; i < config.getPopulationSize(); i++) {
       tests.add(sortedTestSet.get(i));
     }
     Candidate candidate = new Candidate(config, tests);

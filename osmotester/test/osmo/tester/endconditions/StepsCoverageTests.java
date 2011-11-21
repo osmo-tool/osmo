@@ -10,8 +10,7 @@ import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.testmodels.VariableModel2;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
+import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class StepsCoverageTests {
@@ -182,6 +181,7 @@ public class StepsCoverageTests {
       assertEquals("Reported error", "Impossible coverage requirements, defined steps [non-existent] not found.", e.getMessage());
     }
   }
+
   private void assertNoSuiteEnd(String msg) {
     boolean end = stepCoverage.endSuite(suite, fsm);
     assertEquals(msg, false, end);

@@ -48,9 +48,7 @@ public class SearchState {
     return phase.getBestIteration();
   }
 
-  /**
-   * Starts a new phase, with different values to use by end conditions and so on.
-   */
+  /** Starts a new phase, with different values to use by end conditions and so on. */
   public void startPhase() {
     System.out.println("next phase:" + phase.getId() + ", " + phase.getIterationCount());
     phase.end();
@@ -86,9 +84,7 @@ public class SearchState {
     this.listener = listener;
   }
 
-  /**
-   * Describes a phase of search. A phase is one of several iterations run with different mutation parameters.
-   */
+  /** Describes a phase of search. A phase is one of several iterations run with different mutation parameters. */
   private static class SearchPhase {
     /** The time when the phase was started. */
     private long startTime;

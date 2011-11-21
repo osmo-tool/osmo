@@ -7,7 +7,6 @@ import osmo.tester.generation.TestListener;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.algorithm.WeightedRandomAlgorithm;
 import osmo.tester.generator.endcondition.Length;
-import osmo.tester.testmodels.ValidTestModel6;
 import osmo.tester.testmodels.WeightedModel1;
 
 import java.util.Collection;

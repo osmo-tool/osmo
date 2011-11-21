@@ -24,7 +24,7 @@ public class ReadableChars extends SearchableInput<Character> {
   public void reduceBy(String charsToRemove) {
     char[] r = charsToRemove.toCharArray();
     String result = "";
-    for (int ci = 0 ; ci < chars.toCharArray().length ; ci++) {
+    for (int ci = 0; ci < chars.toCharArray().length; ci++) {
       char c = chars.toCharArray()[ci];
       boolean found = false;
       for (char rc : r) {
