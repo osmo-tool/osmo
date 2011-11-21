@@ -1,4 +1,4 @@
-<project name="osmo-tester" default="jar" basedir=".">
+<project name="osmo-examples" default="jar" basedir=".">
   <property environment="env"/>
   <property name="prod-src" value="src"/>
   <property name="test-src" value="test"/>
@@ -11,9 +11,10 @@
   <property name="javadoc-dir" value="${main-output}/docs/api"/>
   <property name="cobertura.home" value="${env.COBERTURA_HOME}"/>
   <property name="build.version" value="2.0.0"/>
+  <property name="osmo-tester-output" value="../osmotester/ant-out/production"/>
   <property name="osmo-common-output" value="../common/ant-out/production"/>
-  <property name="jar.file" value="osmo-tester-v${build.version}.jar"/>
-  <property name="zip.file" value="osmo-tester-v${build.version}.zip"/>
+  <property name="jar.file" value="osmo-examples-v${build.version}.jar"/>
+  <property name="zip.file" value="osmo-examples-v${build.version}.zip"/>
 
   <path id="class.path">
     <!--pathelement path="${currentenv.classpath}"/-->
@@ -21,6 +22,7 @@
       <include name="**/*.jar"/>
     </fileset>
     <path location="${prod-dest}"/>
+    <path location="${osmo-tester-output}"/>
     <path location="${osmo-common-output}"/>
   </path>
 
@@ -39,8 +41,6 @@
     <delete dir="${main-output}"/>
     <echo message="Removing jar file:${jar.file}"/>
     <delete file="${jar.file}"/>
-    <echo message="Removing zip file:${zip.file}"/>
-    <delete file="${zip.file}"/>
   </target>
 
   <!-- MK DEPLOY DIR -->
@@ -54,7 +54,7 @@
   </target>
 
   <target name="compile" depends="init">
-    <ant dir="../common" antfile="build.xml" target="jar" inheritall="false"/>
+    <ant dir="../osmotester" antfile="build.xml" target="jar" inheritall="false"/>
     <echo message="Compiling production..."/>
     <javac source="1.5" target="1.5" debug="true" classpathref="class.path" srcdir="${prod-src}"
            destdir="${prod-dest}"/>
@@ -65,7 +65,6 @@
   <target name="jar" depends="compile,copyresources" description="Create jar file">
     <jar destfile="${jar.file}">
       <fileset dir="${prod-dest}"/>
-      <fileset dir="${osmo-common-output}"/>
     </jar>
   </target>
 
@@ -100,7 +99,7 @@
   </target>
 
   <target name="javadocs">
-    <javadoc destdir="${javadoc-dir}" author="true" version="true" use="true" windowtitle="OSMO API">
+    <javadoc destdir="${javadoc-dir}" author="true" version="true" use="true" windowtitle="OSMO Examples API">
       <packageset dir="src" defaultexcludes="yes">
         <include name="osmo/tester/**"/>
       </packageset>
@@ -128,14 +127,4 @@
   </target>
 
   <target name="jenkins" depends="test, javadocs"/>
-
-  <target name="distro" depends="jar,javadocs">
-    <zip destfile="${zip.file}">
-      <zipfileset dir="." includes="osmo-guide.pdf" prefix="docs"/>
-      <zipfileset dir="${javadoc-dir}/" prefix="docs/api"/>
-      <zipfileset dir="${prod-src}/" prefix="src/prod"/>
-      <zipfileset dir="${test-src}/" prefix="src/test"/>
-      <zipfileset dir="." includes="${jar.file}"/>
-    </zip>
-  </target>
 </project>

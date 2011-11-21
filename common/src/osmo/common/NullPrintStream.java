@@ -1,4 +1,4 @@
-package osmo.tester.generation;
+package osmo.common;
 
 import java.io.IOException;
 import java.io.OutputStream;

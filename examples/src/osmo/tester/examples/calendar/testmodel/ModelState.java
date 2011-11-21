@@ -1,7 +1,7 @@
 package osmo.tester.examples.calendar.testmodel;
 
 import osmo.tester.annotation.Variable;
-import osmo.tester.model.CollectionCount;
+import osmo.tester.model.dataflow.CollectionCount;
 import osmo.tester.model.VariableValue;
 import osmo.tester.model.dataflow.ValueRange;
 

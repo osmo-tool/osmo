@@ -3,9 +3,6 @@ package osmo.tester.generation;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOTester;
-import osmo.tester.examples.calendar.scripter.MockScripter;
-import osmo.tester.examples.calendar.testmodel.CalendarBaseModel;
-import osmo.tester.examples.calendar.testmodel.ModelState;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
@@ -120,10 +117,8 @@ public class VariableTests {
 
   @Test
   public void collectionCounter() {
-    ModelState state = new ModelState();
-    MockScripter scripter = new MockScripter();
-    osmo.addModelObject(new CalendarBaseModel(state, scripter, NullPrintStream.stream));
-    osmo.addModelObject(state);
+    VariableModel2 model = new VariableModel2();
+    osmo.addModelObject(model);
     Length length9 = new Length(9);
     Length length2 = new Length(2);
     osmo.addTestEndCondition(length9);
@@ -133,18 +128,15 @@ public class VariableTests {
     List<TestCase> tests = suite.getFinishedTestCases();
     TestCase test = tests.get(0);
     Map<String, ModelVariable> variables = test.getVariables();
-    ModelVariable taskCount = variables.get("taskCount");
-    ModelVariable eventCount = variables.get("eventCount");
-    ModelVariable userCount = variables.get("userCount");
-    ModelVariable startTime = variables.get("startTime");
-    assertNotNull("TaskCount variable should be present", taskCount);
-    assertNotNull("EventCount variable should be present", eventCount);
-    assertNotNull("UserCount variable should be present", userCount);
-    assertNotNull("StartTime variable should be present", startTime);
-    assertEquals("Generated values for TaskCount", "[0]", taskCount.getValues().toString());
-    assertEquals("Generated values for EventCount", "[7]", eventCount.getValues().toString());
-    assertEquals("Generated values for UserCount", "[3]", userCount.getValues().toString());
-    assertEquals("Generated values for StartTime", "[1051370508016, 1162736432155, 1183372444441, 1155760999691, 977583440520, 1270228633469, 1120207893609]", startTime.getValues().toString());
+    ModelVariable valueCount = variables.get("valueCount");
+    ModelVariable first = variables.get("first");
+    ModelVariable second = variables.get("second");
+    assertNotNull("ValueCount variable should be present", valueCount);
+    assertNotNull("First variable should be present", first);
+    assertNotNull("Second variable should be present", second);
+    assertEquals("Generated values for ValueCount", "[0, 1, 2, 3, 4, 5, 6, 7]", valueCount.getValues().toString());
+    assertEquals("Generated values for first", "[false, true]", first.getValues().toString());
+    assertEquals("Generated values for second", "[false, true]", first.getValues().toString());
 
   }
 }

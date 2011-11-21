@@ -5,8 +5,12 @@ import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.dataflow.CollectionCount;
 import osmo.tester.model.dataflow.ValueRange;
 import osmo.tester.model.dataflow.ValueSet;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /** @author Teemu Kanstren */
 public class VariableModel2 {
@@ -18,6 +22,9 @@ public class VariableModel2 {
   private TestSuite suite = new TestSuite();
   private ValueRange<Integer> range = new ValueRange<Integer>(1, 5);
   private ValueSet<String> set = new ValueSet<String>("v1", "v2", "v3");
+  private Collection<String> values = new ArrayList<String>();
+  @Variable
+  private CollectionCount valueCount = new CollectionCount(values); 
 
   public VariableModel2() {
   }
@@ -50,7 +57,7 @@ public class VariableModel2 {
   @Transition("third")
   public void third() {
     range.next();
-    set.next();
+    values.add(set.next());
   }
 
   public TestSuite getSuite() {
