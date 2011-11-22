@@ -6,12 +6,12 @@
     <td>Name</td>
     <td>Count</td>
   </tr>
-  #foreach ($r in $requirements)
+#foreach ($r in $requirements)
   <tr>
     <td>$r.name</td>
     <td>$r.count</td>
   </tr>
-  #end
+#end
 </table>
 </body>
 </html>

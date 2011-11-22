@@ -1,5 +1,6 @@
 package osmo.tester.testmodels;
 
+import osmo.common.NullPrintStream;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
@@ -9,6 +10,7 @@ import osmo.tester.model.dataflow.CollectionCount;
 import osmo.tester.model.dataflow.ValueRange;
 import osmo.tester.model.dataflow.ValueSet;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -25,8 +27,14 @@ public class VariableModel2 {
   private Collection<String> values = new ArrayList<String>();
   @Variable
   private CollectionCount valueCount = new CollectionCount(values); 
+  private final PrintStream out;
 
   public VariableModel2() {
+    out = NullPrintStream.stream;
+  }
+
+  public VariableModel2(PrintStream out) {
+    this.out = out;
   }
 
   @Guard("first")
@@ -37,6 +45,7 @@ public class VariableModel2 {
   @Transition("first")
   public void first() {
     first = true;
+    out.println(":first:");
   }
 
   @Guard("second")
@@ -47,6 +56,7 @@ public class VariableModel2 {
   @Transition("second")
   public void second() {
     second = true;
+    out.println(":second:");
   }
 
   @Guard("third")
@@ -57,7 +67,9 @@ public class VariableModel2 {
   @Transition("third")
   public void third() {
     range.next();
-    values.add(set.next());
+    String next = set.next();
+    values.add(next);
+    out.println(":third="+next+":");
   }
 
   public TestSuite getSuite() {

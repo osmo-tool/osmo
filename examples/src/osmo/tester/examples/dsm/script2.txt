@@ -1,0 +1,15 @@
+setting, value
+model factory, hello
+
+step, times
+AddEvent, >=5
+
+variable, coverage
+taskCount,  2
+
+variable, values
+startTime, 1321959683153
+startTime, 1321950683153
+startTime, 1321910683153
+startTime, 1321930683153
+

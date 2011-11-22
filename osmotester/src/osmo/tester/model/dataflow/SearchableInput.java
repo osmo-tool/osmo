@@ -14,6 +14,7 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T> {
   private InputObserver<T> observer = null;
   /** Does the variable support "all" values need to be covered mode. */
   protected boolean allSupported = false;
+  private ScriptedValueProvider scripter = null;
 
   protected SearchableInput() {
   }
@@ -41,7 +42,16 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T> {
     observer.value(name, value);
   }
 
-  public Collection<? extends Object> getOptions() {
+  public void setScripter(ScriptedValueProvider scripter) {
+    this.scripter = scripter;
+    setStrategy(DataGenerationStrategy.SCRIPTED);
+  }
+
+  public String scriptNextSerialized() {
+    return scripter.next(name);
+  }
+
+  public Collection<?> getOptions() {
     throw new UnsupportedOperationException("This variable type does not support defining options");
   }
 }

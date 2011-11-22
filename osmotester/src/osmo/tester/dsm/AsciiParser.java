@@ -2,6 +2,7 @@ package osmo.tester.dsm;
 
 import osmo.common.log.Logger;
 import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
+import osmo.tester.model.dataflow.ScriptedValueProvider;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,8 +67,9 @@ public class AsciiParser {
     String[] lines = parseLines(input);
     parseSettingsTable(lines);
     parseStepTable(lines);
-    parseVariableTable(lines);
-    validateConfiguration();
+    parseVariableValueTable(lines);
+    parseVariableCoverageTable(lines);
+    config.validate();
     return config;
   }
 
@@ -166,6 +168,7 @@ public class AsciiParser {
    *
    * @param name The name of the step. Used for error reporting.
    * @param from The text from which the number should be parsed.
+   * @param r    The relation, as exact is allowed value 0 but others not.
    * @return The number of times to cover the step.
    */
   private int parseTimes(String name, String from, Relation r) {
@@ -185,9 +188,9 @@ public class AsciiParser {
    *
    * @param lines Text lines for the variable table.
    */
-  private void parseVariableTable(String[] lines) {
-    log.debug("parsing variables");
-    String[] variables = parseTable(lines, "variable", "values");
+  private void parseVariableCoverageTable(String[] lines) {
+    log.debug("parsing variable coverage");
+    String[] variables = parseTable(lines, "variable", "coverage");
     Map<String, DataCoverageRequirement> map = new HashMap<String, DataCoverageRequirement>();
     for (int i = 0; i < variables.length; i += 2) {
       String name = variables[i].trim();
@@ -200,6 +203,28 @@ public class AsciiParser {
       }
       req.addRequirement(value);
       log.debug("Variable requirement found:" + req);
+    }
+  }
+
+  /**
+   * Parses the variable values for test generation.
+   *
+   * @param lines Text lines for the variable table.
+   */
+  private void parseVariableValueTable(String[] lines) {
+    log.debug("parsing variable scripting");
+    String[] variables = parseTable(lines, "variable", "values");
+    if (variables.length == 0) {
+      return;
+    }
+    ScriptedValueProvider scripter = new ScriptedValueProvider();
+    config.setScripter(scripter);
+
+    for (int i = 0; i < variables.length; i += 2) {
+      String name = variables[i].trim();
+      String value = variables[i + 1].trim();
+      scripter.addValue(name, value);
+      log.debug("Variable value found:" + name + " = " + value);
     }
   }
 
@@ -285,17 +310,4 @@ public class AsciiParser {
     return split;
   }
 
-  /** Validate the overall parsed configuration. */
-  private void validateConfiguration() {
-    String errors = "";
-    if (!config.hasRequiments()) {
-      errors += "Input does not define any valid coverage requirements (steps or variables).";
-    }
-    if (config.getModelFactory() == null) {
-      errors += "Input does not define model object factory.";
-    }
-    if (errors.length() > 0) {
-      throw new IllegalArgumentException(errors);
-    }
-  }
 }

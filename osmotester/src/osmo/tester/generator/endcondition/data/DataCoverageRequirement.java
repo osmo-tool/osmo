@@ -88,4 +88,12 @@ public class DataCoverageRequirement {
   public String getName() {
     return name;
   }
+
+  @Override
+  public String toString() {
+    return "DataCoverageRequirement{" +
+            "name='" + name + '\'' +
+            ", values=" + values +
+            '}';
+  }
 }

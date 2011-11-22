@@ -3,13 +3,16 @@ package osmo.tester.model;
 import osmo.common.log.Logger;
 import osmo.tester.generator.SearchableInputObserver;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.dataflow.ScriptedValueProvider;
 import osmo.tester.model.dataflow.SearchableInput;
+import osmo.tester.model.dataflow.ValueSet;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Represents the given model object in terms of a finite state machine (FSM).
@@ -294,7 +297,7 @@ public class FSM {
   /**
    * Add a new variable of type {@link SearchableInput} to the model.
    *
-   * @param input
+   * @param input to add.
    */
   public void addSearchableInput(SearchableInput input) {
     searchableInputs.add(input);
@@ -303,13 +306,43 @@ public class FSM {
   /**
    * Initialize the test suite, adding observers to capture data from all registered {@link SearchableInput} variables.
    *
+   * @param scripter Optional scripter for input data scripting.
    * @return the initialized test suite.
    */
-  public TestSuite initSuite() {
+  public TestSuite initSuite(ScriptedValueProvider scripter) {
+    Collection<String> scriptedVariables = null;
+    if (scripter != null) {
+      scriptedVariables = initScripts(scripter);
+    }
+
     for (SearchableInput input : searchableInputs) {
       SearchableInputObserver observer = new SearchableInputObserver(suite);
       input.setObserver(observer);
+      if (scriptedVariables != null && scriptedVariables.contains(input.getName())) {
+        input.setScripter(scripter);
+      }
     }
     return suite;
+  }
+
+  private Collection<String> initScripts(ScriptedValueProvider scripter) {
+    Map<String,ValueSet<String>> scripts = scripter.getScripts();
+    Collection<String> errors = new ArrayList<String>();
+    for (String variable : scripts.keySet()) {
+      boolean found = false;
+      for (SearchableInput input : searchableInputs) {
+        if (input.getName().equals(variable)) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        errors.add(variable);
+      }
+    }
+    if (errors.size() > 0) {
+      throw new IllegalArgumentException("Scripted variable(s) not searchable in the model:"+errors);
+    }
+    return scripts.keySet();
   }
 }

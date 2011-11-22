@@ -5,6 +5,7 @@ import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.testmodels.CalculatorModel;
 import osmo.tester.testmodels.ValidTestModel1;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class LengthTests {
   }
 
   private void testWithLength(int expectedLength) {
-    ValidTestModel1 calculator = new ValidTestModel1();
+    CalculatorModel calculator = new CalculatorModel();
     OSMOTester tester = new OSMOTester(calculator);
     Length testStrategy = new Length(expectedLength);
     tester.addTestEndCondition(testStrategy);

@@ -3,9 +3,12 @@ package osmo.tester.dsm;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
+import osmo.tester.model.dataflow.ScriptedValueProvider;
+import osmo.tester.model.dataflow.ValueSet;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import static junit.framework.Assert.*;
 
@@ -128,7 +131,7 @@ public class AsciiParserTests {
   public void noRequirementsError() {
     String input = "setting, value\n" +
             "model factory, hello\n";
-    String expected = "Input does not define any valid coverage requirements (steps or variables).";
+    String expected = "Input does not define any valid coverage requirements (steps or variables) or script.";
     assertParseError(input, expected);
   }
 
@@ -208,10 +211,10 @@ public class AsciiParserTests {
   }
 
   @Test
-  public void oneVariableNoSteps() {
+  public void oneVariableCoverageNoSteps() {
     String input = "setting, value\n" +
             "model factory, hello\n\n" +
-            "variable, values\n" +
+            "variable, coverage\n" +
             "v1,  0\n";
     DSMConfiguration reqs = parser.parse(input);
     List<DataCoverageRequirement> data = reqs.getDataRequirements();
@@ -220,10 +223,10 @@ public class AsciiParserTests {
   }
 
   @Test
-  public void oneVariableTwoValues() {
+  public void oneVariableTwoValuesCoverage() {
     String input = "setting, value\n" +
             "model factory, hello\n\n" +
-            "variable, values\n" +
+            "variable, coverage\n" +
             "v1, 0\n" +
             "v1, 3\n";
     DSMConfiguration reqs = parser.parse(input);
@@ -233,10 +236,10 @@ public class AsciiParserTests {
   }
 
   @Test
-  public void twoVariables() {
+  public void twoVariablesCoverage() {
     String input = "setting, value\n" +
             "model factory, hello\n\n" +
-            "variable, values\n" +
+            "variable, coverage\n" +
             "v1, 1\n" +
             "v1, 2\n" +
             "v2, 3\n" +
@@ -249,13 +252,29 @@ public class AsciiParserTests {
   }
 
   @Test
+  public void twoScriptedVariables() {
+    String input = "setting, value\n" +
+            "model factory, hello\n\n" +
+            "variable, values\n" +
+            "v1, 1\n" +
+            "v1, 2\n" +
+            "v2, 3\n" +
+            "v1, 4\n";
+    DSMConfiguration reqs = parser.parse(input);
+    ScriptedValueProvider scripter = reqs.getScriptedValueProvider();
+    Map<String,ValueSet<String>> scripts = scripter.getScripts();
+    assertEquals("Number of data requirements", 2, scripts.size());
+    assertDataNameAndValues(scripts, "v1", 1, 2, 4);
+    assertDataNameAndValues(scripts, "v2", 3);
+  }
+
+  @Test
   public void settingsOneModelObject() {
     String input = "setting, value\n" +
             "algorithm, hello\n" +
             "model factory, bob\n\n" +
-            "variable, values\n" +
+            "variable, coverage\n" +
             "v1, 1\n";
-    //TODO: test different caps
     DSMConfiguration reqs = parser.parse(input);
     assertEquals("Configured algorithm", "hello", reqs.getAlgorithm());
     assertEquals("Model factory", "bob", reqs.getModelFactory());
@@ -270,7 +289,7 @@ public class AsciiParserTests {
             "algorithm, hello\n" +
             "model factory, bob\n" +
             "model factory, jones\n\n" +
-            "variable, values\n" +
+            "variable, coverage\n" +
             "v1, 1\n";
     assertParseError(input, "Only one model factory allowed.");
   }
@@ -280,7 +299,7 @@ public class AsciiParserTests {
     String input = "setting, value\n" +
             "algorithm, hello\n" +
             "algorithm, bob\n" +
-            "variable, values\n" +
+            "variable, coverage\n" +
             "v1, 1\n";
     assertParseError(input, "Only one algorithm allowed.");
   }
@@ -289,7 +308,7 @@ public class AsciiParserTests {
   public void settingsNoModelObject() {
     String input = "setting, value\n" +
             "algorithm, hello\n" +
-            "variable, values\n" +
+            "variable, coverage\n" +
             "v1, 1\n";
     assertParseError(input, "Input does not define model object factory.");
   }
@@ -299,6 +318,14 @@ public class AsciiParserTests {
     for (Object value : values) {
       Collection<String> actual = req.getValues();
       assertTrue("Variable " + name + " does not have required value:" + value, actual.contains("" + value));
+    }
+  }
+
+  private void assertDataNameAndValues(Map<String, ValueSet<String>> scripts, String name, Object... values) {
+    ValueSet<String> script = scripts.get(name);
+    assertNotNull("Variable should be scripted:" + name, script);
+    for (Object value : values) {
+      assertEquals("Variable " + name + " does not have required value in order:" + value+" total:"+script.getOptions(), ""+value, script.next());
     }
   }
 

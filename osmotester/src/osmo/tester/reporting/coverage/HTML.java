@@ -25,15 +25,15 @@ public class HTML extends CoverageMetric {
 
   public String getTransitionCounts() {
     //note: for this to work, you need to have the IDE or build script copy the .html files to the same location on the output dir (alongside the java classes)
-    return super.getTransitionCounts("osmo/tester/reporting/coverage/templates/transition-coverage.html");
+    return super.getTransitionCounts("osmo/tester/reporting/coverage/templates/transition-coverage.txt");
   }
 
   public String getTransitionPairCounts() {
-    return super.getTransitionPairCounts("osmo/tester/reporting/coverage/templates/transitionpair-coverage.html");
+    return super.getTransitionPairCounts("osmo/tester/reporting/coverage/templates/transitionpair-coverage.txt");
   }
 
   public String getRequirementCounts() {
-    return super.getRequirementsCounts("osmo/tester/reporting/coverage/templates/requirement-coverage.html");
+    return super.getRequirementsCounts("osmo/tester/reporting/coverage/templates/requirement-coverage.txt");
   }
 
   @Override

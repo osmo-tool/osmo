@@ -15,6 +15,7 @@ import osmo.tester.generator.filter.TransitionFilter;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.Requirements;
+import osmo.tester.model.dataflow.ScriptedValueProvider;
 import osmo.tester.parser.MainParser;
 import osmo.tester.parser.ModelObject;
 
@@ -48,6 +49,7 @@ public class OSMOTester {
   private GenerationListenerList listeners = new GenerationListenerList();
   /** The parsed model for test generation. */
   private FSM fsm = null;
+  private ScriptedValueProvider scripter;
 
   /**
    * Create the tester with the initialized test model object.
@@ -106,6 +108,7 @@ public class OSMOTester {
     generator.setListeners(listeners);
     generator.setFilters(filters);
     generator.setFailWhenNoWayForward(failWhenNoWayForward);
+    generator.setScripter(scripter);
     return generator;
   }
 
@@ -182,5 +185,9 @@ public class OSMOTester {
   public void addFilter(TransitionFilter filter) {
     filters.add(filter);
     listeners.addListener(filter);
+  }
+
+  public void setScriptedValueProvider(ScriptedValueProvider scripter) {
+    this.scripter = scripter;
   }
 }
