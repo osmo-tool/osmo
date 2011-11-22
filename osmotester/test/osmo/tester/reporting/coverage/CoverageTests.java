@@ -107,7 +107,7 @@ public class CoverageTests {
 
   @Test
   public void htmlTransitions() {
-    String expected = getResource(getClass(), "expected-transitions.html");
+    String expected = getResource(getClass(), "expected-transitions.txt");
     expected = unifyLineSeparators(expected, "\n");
     HTML html = new HTML(suite, fsm);
     String actual = html.getTransitionCounts();

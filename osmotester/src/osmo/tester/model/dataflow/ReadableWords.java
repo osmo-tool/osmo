@@ -15,6 +15,7 @@ public class ReadableWords extends SearchableInput<String> {
   private ReadableChars chars = new ReadableChars();
   /** History of generated words. */
   private Collection<String> history = new ArrayList<String>();
+  private DataGenerationStrategy strategy = DataGenerationStrategy.RANDOM;
 
   /** Constructor for default values (min=5, max=10). */
   public ReadableWords() {
@@ -47,7 +48,14 @@ public class ReadableWords extends SearchableInput<String> {
    */
   @Override
   public void setStrategy(DataGenerationStrategy algorithm) {
-    throw new UnsupportedOperationException(ReadableChars.class.getSimpleName() + " does not support setting data generation strategy.");
+    switch (algorithm) {
+      case RANDOM:
+      case SCRIPTED:
+        this.strategy = algorithm;
+        return;
+      default:
+        throw new UnsupportedOperationException(ReadableChars.class.getSimpleName() + " supports only scripted and random data generation strategy.");
+    }
   }
 
   /**
@@ -56,6 +64,17 @@ public class ReadableWords extends SearchableInput<String> {
    * @return The generated character sequence.
    */
   public String next() {
+    switch (strategy) {
+      case RANDOM:
+        return randomNext();
+      case SCRIPTED:
+        return scriptedNext();
+      default:
+        throw new IllegalStateException("Unsupported data generation strategy for "+ReadableWords.class.getName()+" (random and scripted only supported): "+strategy.getClass().getName());
+    }
+  }
+
+  private String randomNext() {
     int length = cInt(min, max);
     char[] c = new char[length];
     for (int i = 0; i < length; i++) {
@@ -64,6 +83,14 @@ public class ReadableWords extends SearchableInput<String> {
     String next = new String(c);
     history.add(next);
     observe(next);
+    return next;
+  }
+
+  private String scriptedNext() {
+    String next = scriptNextSerialized();
+    if (!evaluate(next)) {
+      throw new IllegalArgumentException("Requested invalid scripted value for variable '"+getName()+"' (must be valid set of chars and length in defined bounds of length "+min+"-"+max+"): "+next);
+    }
     return next;
   }
 
@@ -88,13 +115,17 @@ public class ReadableWords extends SearchableInput<String> {
 
   @Override
   /**
-   * Evaluate that all characters in the given char sequence are in the readable set.
+   * Evaluate that all characters in the given char sequence are in the readable set and if the length of the word
+   * is withing the bounds defined in this object.
    *
    * @param word The char sequence to evaluate.
-   * @return True if all characters are in the readable set, false otherwise.
+   * @return True if all characters are in the readable set and length is ok, false otherwise.
    */
   public boolean evaluate(String word) {
     char[] wordChars = word.toCharArray();
+    if (wordChars.length < min || wordChars.length > max) {
+      return false;
+    }
     boolean result = true;
     for (char c : wordChars) {
       boolean b = chars.evaluate(c);

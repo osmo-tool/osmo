@@ -150,21 +150,50 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
    */
   public Number next(DataType type) {
     Number value = 0;
-    if (algorithm == DataGenerationStrategy.ORDERED_LOOP) {
-      value = nextOrderedLoop(type);
-    } else if (algorithm == DataGenerationStrategy.LESS_RANDOM) {
-      value = nextOptimizedRandom(type);
-    } else if (algorithm == DataGenerationStrategy.BOUNDARY_SCAN) {
-      value = nextBoundaryScan();
-    } else {
-      //default to random
-      value = nextRandom(type);
+    switch (algorithm) {
+      case ORDERED_LOOP:
+        value = nextOrderedLoop(type);
+        break;
+      case LESS_RANDOM:
+        value = nextOptimizedRandom(type);
+        break;
+      case BOUNDARY_SCAN:
+        value = nextBoundaryScan();
+        break;
+      case SCRIPTED:
+        value = scriptedNext(scriptNextSerialized());
+        break;
+      default:
+        value = nextRandom(type);
+        break;
     }
     history.add(value);
     observe((T) value);
     log.debug("Value:" + value);
     return value;
   }
+
+  private T scriptedNext(String serialized) {
+    if (!evaluateSerialized(serialized)) {
+      throw new IllegalArgumentException("Requested invalid scripted value for variable '"+getName()+"': "+serialized);
+    }
+    Number value = null;
+    switch (type) {
+      case INT:
+        value = Integer.parseInt(serialized);
+        break;
+      case LONG:
+        value = Long.parseLong(serialized);
+        break;
+      case DOUBLE:
+        value = Double.parseDouble(serialized);
+        break;
+      default:
+        throw new IllegalArgumentException("Enum type:" + type + " unsupported.");
+    }
+    return (T)value;
+  }
+
 
   /**
    * Create next value for the ordered loop algorithm.

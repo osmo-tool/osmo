@@ -171,7 +171,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
     return oneOf(currentOptions);
   }
 
-  /** Validates that this invariant makes sense (has partitions defined etc.). */
+  /** Validates that this range makes sense (has partitions defined etc.). */
   protected void validate() {
     if (partitions.size() == 0) {
       throw new IllegalStateException("No partitions defined. Add some to use this for something.");
@@ -181,9 +181,12 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
   @Override
   public T next() {
     validate();
+    T next;
+    if (strategy == DataGenerationStrategy.SCRIPTED) {
+      return scriptedNext(scriptNextSerialized());
+    }
     ValueRange i = nextPartition();
 //    history.add(value);
-    T next;
     if (i.getType() == DataType.INT) {
       next = (T) new Integer(i.nextInt());
     } else if (i.getType() == DataType.LONG) {
@@ -193,6 +196,28 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
     }
     observe(next);
     return next;
+  }
+
+  private T scriptedNext(String serialized) {
+    if (!evaluateSerialized(serialized)) {
+      throw new IllegalArgumentException("Requested invalid scripted value for variable '"+getName()+"': "+serialized);
+    }
+    DataType type = partitions.getOptions().iterator().next().getType();
+    Number value = null;
+    switch (type) {
+      case INT:
+        value = Integer.parseInt(serialized);
+        break;
+      case LONG:
+        value = Long.parseLong(serialized);
+        break;
+      case DOUBLE:
+        value = Double.parseDouble(serialized);
+        break;
+      default:
+        throw new IllegalArgumentException("Enum type:" + type + " unsupported.");
+    }
+    return (T)value;
   }
 
   /**

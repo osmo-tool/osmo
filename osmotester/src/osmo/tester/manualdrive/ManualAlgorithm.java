@@ -256,11 +256,8 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
       case 2:
         return new WeightedRandomAlgorithm().choose(history, transitions);
       default:
-        System.out.println("Error in algrithm handler. The index was: " + algorithmComboBox.getSelectedIndex());
+        throw new RuntimeException("Error in algrithm handler. The index was: " + algorithmComboBox.getSelectedIndex());
     }
-
-    return null;
-
   }
 }
 

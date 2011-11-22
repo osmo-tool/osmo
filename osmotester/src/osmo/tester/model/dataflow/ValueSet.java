@@ -138,6 +138,9 @@ public class ValueSet<T> extends SearchableInput<T> {
       case RANDOM:
         next = oneOf(options);
         break;
+      case SCRIPTED:
+        next = scriptedNext(scriptNextSerialized());
+        break;
       default:
         throw new IllegalArgumentException("Unsupported strategy (" + strategy.name() + ") for " + ValueSet.class.getSimpleName());
     }
@@ -145,6 +148,15 @@ public class ValueSet<T> extends SearchableInput<T> {
     //log.debug("Value:"+next);
     observe(next);
     return next;
+  }
+
+  private T scriptedNext(String serialized) {
+    for (T option : options) {
+      if (option.toString().equals(serialized)) {
+        return option;
+      }
+    }
+    throw new IllegalArgumentException("Requested scripted value for variable '"+getName()+"' not found: "+serialized);
   }
 
   /**

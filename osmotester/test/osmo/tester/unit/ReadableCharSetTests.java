@@ -106,31 +106,31 @@ public class ReadableCharSetTests {
   @Test
   public void evaluateSequenceOf20NotMax() {
     ReadableWords words = new ReadableWords(10, 30);
-    assertTrue("Evaluating empty string should work.", words.evaluate("12345678901234567890"));
+    assertTrue("Evaluating 20 length string should work for 10-30.", words.evaluate("12345678901234567890"));
   }
 
   @Test
   public void evaluateBelowMinLength() {
     ReadableWords words = new ReadableWords(10, 20);
-    assertTrue("Evaluating empty string should work.", words.evaluate("123456789"));
+    assertFalse("Evaluating below minimum length should fail.", words.evaluate("123456789"));
   }
 
   @Test
   public void evaluateAboveMaxLength() {
     ReadableWords words = new ReadableWords(10, 20);
-    assertTrue("Evaluating empty string should work.", words.evaluate("123456789012345678901"));
+    assertFalse("Evaluating above maximum length should fail.", words.evaluate("123456789012345678901"));
   }
 
   @Test
   public void evaluateMaxLength() {
     ReadableWords words = new ReadableWords(10, 20);
-    assertTrue("Evaluating empty string should work.", words.evaluate("12345678901234567890"));
+    assertTrue("Evaluating at maximum length should work.", words.evaluate("12345678901234567890"));
   }
 
   @Test
   public void evaluateMinLength() {
     ReadableWords words = new ReadableWords(10, 20);
-    assertTrue("Evaluating empty string should work.", words.evaluate("1234567890"));
+    assertTrue("Evaluating at minimum length should work.", words.evaluate("1234567890"));
   }
 
   @Test

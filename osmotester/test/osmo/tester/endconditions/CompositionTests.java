@@ -7,6 +7,7 @@ import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.Or;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.testmodels.CalculatorModel;
 import osmo.tester.testmodels.ValidTestModel1;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class CompositionTests {
     Length length4 = new Length(4);
     And and = new And(length2, length4);
 
-    ValidTestModel1 calculator = new ValidTestModel1();
+    CalculatorModel calculator = new CalculatorModel();
     OSMOTester tester = new OSMOTester(calculator);
     tester.addTestEndCondition(and);
     tester.addSuiteEndCondition(length2);
@@ -41,7 +42,7 @@ public class CompositionTests {
     Length length6 = new Length(6);
     And and = new And(length2, length4, length6);
 
-    ValidTestModel1 calculator = new ValidTestModel1();
+    CalculatorModel calculator = new CalculatorModel();
     OSMOTester tester = new OSMOTester(calculator);
     tester.addTestEndCondition(and);
     tester.addSuiteEndCondition(length2);
@@ -61,7 +62,7 @@ public class CompositionTests {
     Length length6 = new Length(6);
     Or or = new Or(length2, length4, length6);
 
-    ValidTestModel1 calculator = new ValidTestModel1();
+    CalculatorModel calculator = new CalculatorModel();
     OSMOTester tester = new OSMOTester(calculator);
     tester.addTestEndCondition(or);
     tester.addSuiteEndCondition(length2);
@@ -81,7 +82,7 @@ public class CompositionTests {
     Length length6 = new Length(6);
     And and = new And(length2, length4, length6);
 
-    ValidTestModel1 calculator = new ValidTestModel1();
+    CalculatorModel calculator = new CalculatorModel();
     OSMOTester tester = new OSMOTester(calculator);
     tester.addTestEndCondition(and);
     tester.addSuiteEndCondition(and);

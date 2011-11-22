@@ -3,6 +3,7 @@ package osmo.tester.dsm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.algorithm.WeightedLessRandomAlgorithm;
 import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
+import osmo.tester.model.dataflow.ScriptedValueProvider;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,6 +27,7 @@ public class DSMConfiguration {
   private String algorithm = null;
   /** The random seed for OSMOTester. */
   private long seed = System.currentTimeMillis();
+  private ScriptedValueProvider scripter = null;
 
   public long getSeed() {
     return seed;
@@ -94,10 +96,36 @@ public class DSMConfiguration {
     if (algorithm.equalsIgnoreCase("less random") || algorithm.equalsIgnoreCase("less-random") || algorithm.equalsIgnoreCase("lessrandom")) {
       algorithm = WeightedLessRandomAlgorithm.class.getName();
     }
+    System.out.println("set algorithm:"+algorithm);
     this.algorithm = algorithm;
   }
 
   public String getAlgorithm() {
+    if (algorithm == null || algorithm.length()== 0) {
+      setAlgorithm("random");
+    }
     return algorithm;
+  }
+
+  public ScriptedValueProvider getScriptedValueProvider() {
+    return scripter;
+  }
+
+  public void setScripter(ScriptedValueProvider scripter) {
+    this.scripter = scripter;
+  }
+
+  /** Validate the overall parsed configuration. */
+  public void validate() {
+    String errors = "";
+    if (!hasRequiments() && scripter == null) {
+      errors += "Input does not define any valid coverage requirements (steps or variables) or script.";
+    }
+    if (modelFactory == null) {
+      errors += "Input does not define model object factory.";
+    }
+    if (errors.length() > 0) {
+      throw new IllegalArgumentException(errors);
+    }
   }
 }

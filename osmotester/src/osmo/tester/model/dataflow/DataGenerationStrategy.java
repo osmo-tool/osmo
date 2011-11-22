@@ -14,5 +14,7 @@ public enum DataGenerationStrategy {
   /** Loop through all options in an order, restart from beginning after reaching end. */
   ORDERED_LOOP,
   /** Choose values at the option boundaries (below, at, above). Only works for primitives. */
-  BOUNDARY_SCAN
+  BOUNDARY_SCAN,
+  /** */
+  SCRIPTED
 }

@@ -1,6 +1,7 @@
 package osmo.tester.dsm;
 
 import osmo.common.TestUtils;
+import osmo.common.log.Logger;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.endcondition.EndCondition;
@@ -27,10 +28,12 @@ public class DSMMain {
    * @throws Exception If all fails (file not found, classes not found, ...)
    */
   public static void main(String[] args) throws Exception {
+    Logger.debug = true;
     if (args.length < 1) {
       throw new IllegalArgumentException("No argument given. You need to provide the configuration filename.");
     }
     String filename = args[0];
+    System.out.println("partsing file:"+filename);
     FileInputStream in = new FileInputStream(filename);
     String input = TestUtils.getResource(in);
     AsciiParser parser = new AsciiParser();
@@ -48,12 +51,15 @@ public class DSMMain {
     OSMOTester osmo = new OSMOTester();
     Class<?> aClass = Class.forName(config.getAlgorithm());
     FSMTraversalAlgorithm algorithm = (FSMTraversalAlgorithm) aClass.newInstance();
+    System.out.println("algorithm:" + algorithm);
     osmo.setAlgorithm(algorithm);
     Class<?> fClass = Class.forName(config.getModelFactory());
     ModelObjectFactory factory = (ModelObjectFactory) fClass.newInstance();
+    System.out.println("factory:"+factory);
     Collection<Object> modelObjects = factory.createModelObjects();
     for (Object mo : modelObjects) {
       osmo.addModelObject(mo);
+      System.out.println("mo:" + mo);
     }
     Collection<EndCondition> testEndConditions = factory.createTestEndConditions();
     for (EndCondition ec : testEndConditions) {
@@ -67,6 +73,7 @@ public class DSMMain {
     DataCoverage dc = new DataCoverage();
     for (DataCoverageRequirement req : dataRequirements) {
       dc.addRequirement(req);
+      System.out.println("dr:" + req);
     }
     osmo.addTestEndCondition(dc);
     MaxTransitionFilter filter = new MaxTransitionFilter();
@@ -88,6 +95,7 @@ public class DSMMain {
     osmo.addTestEndCondition(sc);
     osmo.addFilter(filter);
     osmo.setSeed(config.getSeed());
+    osmo.setScriptedValueProvider(config.getScriptedValueProvider());
     osmo.generate();
   }
 }
