@@ -51,15 +51,12 @@ public class DSMMain {
     OSMOTester osmo = new OSMOTester();
     Class<?> aClass = Class.forName(config.getAlgorithm());
     FSMTraversalAlgorithm algorithm = (FSMTraversalAlgorithm) aClass.newInstance();
-    System.out.println("algorithm:" + algorithm);
     osmo.setAlgorithm(algorithm);
     Class<?> fClass = Class.forName(config.getModelFactory());
     ModelObjectFactory factory = (ModelObjectFactory) fClass.newInstance();
-    System.out.println("factory:"+factory);
     Collection<Object> modelObjects = factory.createModelObjects();
     for (Object mo : modelObjects) {
       osmo.addModelObject(mo);
-      System.out.println("mo:" + mo);
     }
     Collection<EndCondition> testEndConditions = factory.createTestEndConditions();
     for (EndCondition ec : testEndConditions) {
@@ -73,7 +70,6 @@ public class DSMMain {
     DataCoverage dc = new DataCoverage();
     for (DataCoverageRequirement req : dataRequirements) {
       dc.addRequirement(req);
-      System.out.println("dr:" + req);
     }
     osmo.addTestEndCondition(dc);
     MaxTransitionFilter filter = new MaxTransitionFilter();

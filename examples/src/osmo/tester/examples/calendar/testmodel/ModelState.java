@@ -3,6 +3,7 @@ package osmo.tester.examples.calendar.testmodel;
 import osmo.tester.annotation.Variable;
 import osmo.tester.model.dataflow.CollectionCount;
 import osmo.tester.model.VariableValue;
+import osmo.tester.model.dataflow.ToStringValue;
 import osmo.tester.model.dataflow.ValueRange;
 
 import java.util.ArrayList;
@@ -33,11 +34,13 @@ public class ModelState {
   /** Events for each user. */
   private Map<String, List<ModelEvent>> userEvents = new LinkedHashMap<String, List<ModelEvent>>();
   /** Used to generate unique identifiers for tasks. */
+  private AtomicInteger nextTaskId = new AtomicInteger(0);
   @Variable
-  private AtomicInteger taskCount = new AtomicInteger(0);
+  private ToStringValue taskCount = new ToStringValue(nextTaskId);
   /** Used to generate unique identifiers for events. */
+  private AtomicInteger nextEventId = new AtomicInteger(0);
   @Variable
-  private AtomicInteger eventCount = new AtomicInteger(0);
+  private ToStringValue eventCount = new ToStringValue(nextEventId);
   /** Used to generate start times between January 2000 and December 2010. */
   private ValueRange<Long> startTime;
   @Variable
@@ -58,8 +61,10 @@ public class ModelState {
     uids.clear();
     userTasks.clear();
     userEvents.clear();
-    taskCount = new AtomicInteger(0);
-    eventCount = new AtomicInteger(0);
+    nextTaskId.set(0);
+    nextEventId.set(0);
+//    nextTaskId = new AtomicInteger(0);
+//    nextEventId = new AtomicInteger(0);
 
     int users = cInt(1, 5);
     for (int i = 1; i <= users; i++) {
@@ -96,7 +101,7 @@ public class ModelState {
   }
 
   public ModelEvent createEvent(String uid, Date start, Date end) {
-    int count = eventCount.incrementAndGet();
+    int count = nextEventId.incrementAndGet();
     String description = "event" + count;
     String location = "location" + count;
     Collection<ModelEvent> events = getOrCreateEvents(uid);
@@ -116,7 +121,7 @@ public class ModelState {
   }
 
   public ModelTask createTask(String uid, Date time) {
-    String description = "task" + taskCount.incrementAndGet();
+    String description = "task" + nextTaskId.incrementAndGet();
     Collection<ModelTask> tasks = getOrCreateTasks(uid);
     ModelTask task = new ModelTask(uid, time, description);
     tasks.add(task);
