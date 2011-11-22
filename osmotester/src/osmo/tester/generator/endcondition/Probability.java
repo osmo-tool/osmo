@@ -4,7 +4,7 @@ import osmo.common.log.Logger;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 
-import static osmo.common.TestUtils.cDouble;
+import static osmo.common.TestUtils.*;
 
 /**
  * A simple end condition that takes a probability threshold for stopping test generation.
