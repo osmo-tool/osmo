@@ -28,12 +28,10 @@ public class DSMMain {
    * @throws Exception If all fails (file not found, classes not found, ...)
    */
   public static void main(String[] args) throws Exception {
-    Logger.debug = true;
     if (args.length < 1) {
       throw new IllegalArgumentException("No argument given. You need to provide the configuration filename.");
     }
     String filename = args[0];
-    System.out.println("partsing file:"+filename);
     FileInputStream in = new FileInputStream(filename);
     String input = TestUtils.getResource(in);
     AsciiParser parser = new AsciiParser();

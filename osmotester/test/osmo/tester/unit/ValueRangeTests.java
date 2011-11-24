@@ -108,4 +108,10 @@ public class ValueRangeTests {
     Collection<Integer> options = range.getOptions();
     assertEquals("Options for range 1-5", "[1, 2, 3, 4, 5]", options.toString());
   }
+
+  @Test
+  public void deSerializeLong() {
+    ValueRange<Long> range = new ValueRange<Long>(946677600000l, 1293832799000l);
+    assertTrue("Should be in range", range.evaluateSerialized("1121959683153"));
+  }
 }

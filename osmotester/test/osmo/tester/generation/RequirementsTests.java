@@ -20,7 +20,7 @@ public class RequirementsTests {
     osmo.addTestEndCondition(new Length(3));
     osmo.addSuiteEndCondition(new Length(1));
     osmo.generate();
-    assertEquals(3, req.getCovered().size());
+    assertEquals(3, req.getUniqueCoverage().size());
     assertEquals(3, req.getRequirements().size());
     assertEquals(0, req.getExcess().size());
   }
@@ -33,7 +33,7 @@ public class RequirementsTests {
     osmo.addTestEndCondition(new Length(3));
     osmo.addSuiteEndCondition(new Length(1));
     osmo.generate();
-    assertEquals(3, req.getCovered().size());
+    assertEquals(3, req.getUniqueCoverage().size());
     assertEquals(1, req.getRequirements().size());
     assertEquals(2, req.getExcess().size());
   }
@@ -45,7 +45,7 @@ public class RequirementsTests {
     osmo.addTestEndCondition(new Length(3));
     osmo.addSuiteEndCondition(new Length(1));
     osmo.generate();
-    assertEquals(3, req.getCovered().size());
+    assertEquals(3, req.getUniqueCoverage().size());
     assertEquals(0, req.getRequirements().size());
     assertEquals(3, req.getExcess().size());
   }
@@ -61,7 +61,7 @@ public class RequirementsTests {
     osmo.addTestEndCondition(new Length(3));
     osmo.addSuiteEndCondition(new Length(1));
     osmo.generate();
-    assertEquals(3, req.getCovered().size());
+    assertEquals(3, req.getUniqueCoverage().size());
     assertEquals(4, req.getRequirements().size());
     assertEquals(0, req.getExcess().size());
   }

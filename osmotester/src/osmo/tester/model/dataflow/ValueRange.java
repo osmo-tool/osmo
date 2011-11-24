@@ -332,7 +332,9 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
 
   @Override
   public boolean evaluate(Number value) {
-    return value.doubleValue() <= max.doubleValue() && value.doubleValue() >= min.doubleValue();
+    boolean high = value.doubleValue() <= max.doubleValue();
+    boolean low = value.doubleValue() >= min.doubleValue();
+    return high && low;
   }
 
   @Override
@@ -341,6 +343,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
     try {
       value = Double.parseDouble(item);
     } catch (NumberFormatException e) {
+      e.printStackTrace();
       return false;
     }
     return evaluate(value);

@@ -64,13 +64,14 @@ public class GreedyOptimizer {
     List<TestCase> all = new ArrayList<TestCase>();
     for (int i = 0; i < count; i++) {
       all.add(generator.next());
+      System.out.println("creating test:"+i);
     }
-    TestCase high = null;
+/*    TestCase high = null;
     for (TestCase test : all) {
       if (high == null || test.getSteps().size() > high.getSteps().size()) {
         high = test;
       }
-    }
+    }*/
     generator.endSuite();
     return createSortedTestSet(howMany, all);
   }
@@ -98,6 +99,7 @@ public class GreedyOptimizer {
       }
       from.remove(best);
       addBest();
+      System.out.println("chose:"+i);
     }
 
     return tests;

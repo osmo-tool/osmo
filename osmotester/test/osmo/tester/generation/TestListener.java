@@ -16,6 +16,15 @@ import static junit.framework.Assert.assertEquals;
 public class TestListener implements GenerationListener {
   private Collection<String> steps = new ArrayList<String>();
   private Collection<String> expected = new ArrayList<String>();
+  private final boolean guards;
+
+  public TestListener() {
+    this.guards = true;
+  }
+
+  public TestListener(boolean guards) {
+    this.guards = guards;
+  }
 
   public void addExpected(String... items) {
     Collections.addAll(expected, items);
@@ -27,7 +36,9 @@ public class TestListener implements GenerationListener {
 
   @Override
   public void guard(FSMTransition transition) {
-    steps.add("g:" + transition.getName());
+    if (guards) {
+      steps.add("g:" + transition.getName());
+    }
   }
 
   @Override

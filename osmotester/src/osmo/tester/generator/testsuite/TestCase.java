@@ -41,6 +41,10 @@ public class TestCase {
     this.id = nextId.getAndIncrement();
   }
 
+  public static void reset() {
+    nextId = new AtomicInteger(1);
+  }
+
   /** @return Unique id for this test case. */
   public int getId() {
     return id;
@@ -110,8 +114,16 @@ public class TestCase {
     return transitionCoverage;
   }
 
-  public Collection<String> getCoveredRequirements() {
+  public Collection<String> getUniqueRequirementsCoverage() {
     Collection<String> requirementsCoverage = new HashSet<String>();
+    for (TestStep teststep : steps) {
+      requirementsCoverage.addAll(teststep.getCoveredRequirements());
+    }
+    return requirementsCoverage;
+  }
+
+  public Collection<String> getFullRequirementsCoverage() {
+    Collection<String> requirementsCoverage = new ArrayList<String>();
     for (TestStep teststep : steps) {
       requirementsCoverage.addAll(teststep.getCoveredRequirements());
     }

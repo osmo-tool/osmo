@@ -31,7 +31,7 @@ public class RequirementsCoverage extends AbstractEndCondition {
   private boolean endNow(TestSuite suite, FSM fsm) {
     Requirements requirements = fsm.getRequirements();
     //covered includes "excess" that is the ones that are not registered so we remove those
-    double covered = requirements.getCovered().size() - requirements.getExcess().size();
+    double covered = requirements.getUniqueCoverage().size() - requirements.getExcess().size();
     double total = requirements.getRequirements().size();
 
     double percentage = 0;

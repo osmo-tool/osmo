@@ -11,7 +11,7 @@ import static junit.framework.Assert.assertEquals;
 import static osmo.common.TestUtils.*;
 
 /** @author Teemu Kanstren */
-public class CoverageTests {
+public class SummaryTests {
   private TestSuite suite = null;
   private FSM fsm = null;
 
@@ -64,7 +64,7 @@ public class CoverageTests {
   public void csvTransitions() {
     String expected = getResource(getClass(), "expected-transitions.csv");
     expected = unifyLineSeparators(expected, "\n");
-    CSV csv = new CSV(suite, fsm);
+    CSVCoverageReporter csv = new CSVCoverageReporter(suite, fsm);
     String actual = csv.getTransitionCounts();
     actual = unifyLineSeparators(actual, "\n");
 /*    System.out.println("----------------");
@@ -79,7 +79,7 @@ public class CoverageTests {
   public void csvTransitionPairs() {
     String expected = getResource(getClass(), "expected-transitionpairs.csv");
     expected = unifyLineSeparators(expected, "\n");
-    CSV csv = new CSV(suite, fsm);
+    CSVCoverageReporter csv = new CSVCoverageReporter(suite, fsm);
     String actual = csv.getTransitionPairCounts();
     actual = unifyLineSeparators(actual, "\n");
 /*    System.out.println("----------------");
@@ -94,7 +94,7 @@ public class CoverageTests {
   public void csvRequirements() {
     String expected = getResource(getClass(), "expected-requirements.csv");
     expected = unifyLineSeparators(expected, "\n");
-    CSV csv = new CSV(suite, fsm);
+    CSVCoverageReporter csv = new CSVCoverageReporter(suite, fsm);
     String actual = csv.getRequirementCounts();
     actual = unifyLineSeparators(actual, "\n");
 /*    System.out.println("----------------");
@@ -109,7 +109,7 @@ public class CoverageTests {
   public void htmlTransitions() {
     String expected = getResource(getClass(), "expected-transitions.txt");
     expected = unifyLineSeparators(expected, "\n");
-    HTML html = new HTML(suite, fsm);
+    HTMLCoverageReporter html = new HTMLCoverageReporter(suite, fsm);
     String actual = html.getTransitionCounts();
     actual = unifyLineSeparators(actual, "\n");
 /*    System.out.println("----------------");
@@ -124,7 +124,7 @@ public class CoverageTests {
   public void htmlTransitionPairs() {
     String expected = getResource(getClass(), "expected-transitionpairs.html");
     expected = unifyLineSeparators(expected, "\n");
-    HTML html = new HTML(suite, fsm);
+    HTMLCoverageReporter html = new HTMLCoverageReporter(suite, fsm);
     String actual = html.getTransitionPairCounts();
     actual = unifyLineSeparators(actual, "\n");
 /*    System.out.println("----------------");
@@ -139,7 +139,7 @@ public class CoverageTests {
   public void htmlRequirements() {
     String expected = getResource(getClass(), "expected-requirements.html");
     expected = unifyLineSeparators(expected, "\n");
-    HTML html = new HTML(suite, fsm);
+    HTMLCoverageReporter html = new HTMLCoverageReporter(suite, fsm);
     String actual = html.getRequirementCounts();
     actual = unifyLineSeparators(actual, "\n");
 /*    System.out.println("----------------");

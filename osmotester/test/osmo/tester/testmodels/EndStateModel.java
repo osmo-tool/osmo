@@ -70,6 +70,6 @@ public class EndStateModel {
 
   @EndState
   public boolean areWeThereYet() {
-    return req.getCovered().size() == 3;
+    return req.getUniqueCoverage().size() == 3;
   }
 }

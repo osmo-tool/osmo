@@ -25,7 +25,7 @@ public class Requirements {
   /** The overall set of requirements that should be covered. */
   private List<String> requirements = new ArrayList<String>();
   /** The set of requirements that have been covered. */
-  private Set<String> covered = new TreeSet<String>();
+  private Collection<String> covered = new ArrayList<String>();
   /** The set of generated tests cases, including the one currently under generation. */
   private TestSuite testSuite = null;
 
@@ -67,11 +67,22 @@ public class Requirements {
   }
 
   /**
-   * Gives the list of covered requirements defined with the "covered" method.
+   * Gives the list of covered requirements defined with the "covered" method. Removes duplicates, keeps order.
    *
    * @return List of covered requirements.
    */
-  public Collection<String> getCovered() {
+  public Collection<String> getUniqueCoverage() {
+    Collection<String> set = new TreeSet<String>();
+    set.addAll(covered);
+    return set;
+  }
+
+  /**
+   * Gives the list of covered requirements defined with the "covered" method. Keeps duplicates and order.
+   *
+   * @return List of covered requirements.
+   */
+  public Collection<String> getFullCoverage() {
     return covered;
   }
 
@@ -117,8 +128,9 @@ public class Requirements {
     StringBuilder out = new StringBuilder();
     Collections.sort(requirements);
     out.append("Requirements:" + requirements + "\n");
-    out.append("Covered:" + covered + "\n");
-    int n = covered.size() - getExcess().size();
+    Collection<String> uniqueCoverage = getUniqueCoverage();
+    out.append("Covered:" + uniqueCoverage + "\n");
+    int n = uniqueCoverage.size() - getExcess().size();
     int total = requirements.size();
     if (total > 0) {
       double p = n / total * 100;

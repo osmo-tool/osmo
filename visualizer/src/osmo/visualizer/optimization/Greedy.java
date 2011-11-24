@@ -1,4 +1,4 @@
-package osmo.visualizer.generator;
+package osmo.visualizer.optimization;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -6,6 +6,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
+import osmo.common.NullPrintStream;
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.calendar.scripter.MockScripter;
 import osmo.tester.examples.calendar.testmodel.CalendarBaseModel;
@@ -16,53 +17,69 @@ import osmo.tester.examples.calendar.testmodel.CalendarParticipantModel;
 import osmo.tester.examples.calendar.testmodel.CalendarTaskModel;
 import osmo.tester.examples.calendar.testmodel.ModelState;
 import osmo.tester.generator.GenerationListener;
-import osmo.tester.manualdrive.ManualAlgorithm;
+import osmo.tester.generator.algorithm.RandomAlgorithm;
+import osmo.tester.generator.endcondition.EndCondition;
+import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.manualdrive.ManualAlgorithm;
 import osmo.tester.manualdrive.ManualEndCondition;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
+import osmo.tester.optimizer.Candidate;
+import osmo.tester.optimizer.SearchConfiguration;
 import osmo.tester.optimizer.TestCoverage;
+import osmo.tester.optimizer.offline.GreedyOptimizer;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.io.PrintStream;
+import java.util.List;
 import java.util.Map;
 
 /** @author Teemu Kanstren */
-public class TransitionBarChart implements GenerationListener {
+public class Greedy {
   private DefaultCategoryDataset data = new DefaultCategoryDataset();
   private int nextId = 1;
 
   public static void main(String[] args) {
-    TransitionBarChart barGraph = new TransitionBarChart();
-    OSMOTester tester = new OSMOTester();
-    ManualEndCondition mec = new ManualEndCondition();
-    tester.addTestEndCondition(mec);
-    tester.addSuiteEndCondition(mec);
-    tester.addListener(barGraph);
+    Greedy barGraph = new Greedy();
+    OSMOTester osmo = new OSMOTester();
 //    tester.addModelObject(new CalculatorModel());
     ModelState state = new ModelState();
     MockScripter scripter = new MockScripter();
 //    PrintStream out = new OfflineScripter("tbc.html");
-    PrintStream out = System.out;
-//    PrintStream out = NullPrintStream.stream;
-    tester.addModelObject(state);
-    tester.addModelObject(new CalendarBaseModel(state, scripter, out));
-    tester.addModelObject(new CalendarBaseModel(state, scripter, out));
-    tester.addModelObject(new CalendarOracleModel(state, scripter, out));
-    tester.addModelObject(new CalendarTaskModel(state, scripter, out));
-    tester.addModelObject(new CalendarOverlappingModel(state, scripter, out));
-    tester.addModelObject(new CalendarParticipantModel(state, scripter, out));
-    tester.addModelObject(new CalendarErrorHandlingModel(state, scripter, out));
-    tester.setAlgorithm(new ManualAlgorithm());
-    tester.generate();
+//    PrintStream out = System.out;
+    PrintStream out = NullPrintStream.stream;
+    osmo.addModelObject(state);
+    osmo.addModelObject(new CalendarBaseModel(state, scripter, out));
+    osmo.addModelObject(new CalendarBaseModel(state, scripter, out));
+    osmo.addModelObject(new CalendarOracleModel(state, scripter, out));
+    osmo.addModelObject(new CalendarTaskModel(state, scripter, out));
+    osmo.addModelObject(new CalendarOverlappingModel(state, scripter, out));
+    osmo.addModelObject(new CalendarParticipantModel(state, scripter, out));
+    osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter, out));
+//    osmo.setAlgorithm(new ManualAlgorithm());
+    osmo.setAlgorithm(new RandomAlgorithm());
+    SearchConfiguration sc = new SearchConfiguration(osmo.initGenerator());
+    sc.setLengthWeight(-20);
+    GreedyOptimizer optimizer = new GreedyOptimizer(sc);
+//    EndCondition length15 = new Length(15);
+//    osmo.addTestEndCondition(length15);
+    Candidate candidate = optimizer.search();
+    List<TestCase> tests = candidate.getTests();
+    for (TestCase test : tests) {
+      barGraph.addTest(test);
+    }
+    barGraph.show();
   }
 
   public void show() {
     JFrame frame = new JFrame("Bar Chart");
-    JFreeChart chart = createChart("Transitions");
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    JFreeChart chart = createChart("Tests");
     ChartPanel chartPanel = new ChartPanel(chart);
     frame.setSize(new Dimension(500, 270));
     frame.setContentPane(chartPanel);
@@ -78,33 +95,7 @@ public class TransitionBarChart implements GenerationListener {
     return chart;
   }
 
-  @Override
-  public void init(FSM fsm) {
-    show();
-  }
-
-  @Override
-  public void guard(FSMTransition transition) {
-  }
-
-  @Override
-  public void transition(FSMTransition transition) {
-  }
-
-  @Override
-  public void pre(FSMTransition transition) {
-  }
-
-  @Override
-  public void post(FSMTransition transition) {
-  }
-
-  @Override
-  public void testStarted(TestCase test) {
-  }
-
-  @Override
-  public void testEnded(TestCase test) {
+  public void addTest(TestCase test) {
     TestCoverage tc = new TestCoverage(test);
     String name = "Test"+nextId++;
     data.setValue(tc.getTransitions().size(), "Transitions", name);
@@ -118,13 +109,5 @@ public class TransitionBarChart implements GenerationListener {
       values += variable.getValues().size();
     }
     data.setValue(values, "Values", name);
-  }
-
-  @Override
-  public void suiteStarted(TestSuite suite) {
-  }
-
-  @Override
-  public void suiteEnded(TestSuite suite) {
   }
 }

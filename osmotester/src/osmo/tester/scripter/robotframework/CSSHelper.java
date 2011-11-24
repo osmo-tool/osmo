@@ -20,4 +20,9 @@ public class CSSHelper {
     alt = true;
     return "";
   }
+
+  @Override
+  public String toString() {
+    return getTableClass();
+  }
 }

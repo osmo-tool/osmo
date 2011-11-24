@@ -1,8 +1,15 @@
 package osmo.tester.reporting.coverage;
 
-/** @author Teemu Kanstren */
+/**
+ * Tracks the requirements count. That is, how many times has the requirement been covered by a test case.
+ * Used in report templates through Velocity.
+ *
+ * @author Teemu Kanstren
+ */
 public class RequirementCount implements Comparable<RequirementCount> {
+  /** Requirement name. */
   private final String name;
+  /** Times covered. */
   private final int count;
 
   public RequirementCount(String name, int count) {
