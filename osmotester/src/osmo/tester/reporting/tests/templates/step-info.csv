@@ -1,5 +1,0 @@
-#foreach ($r in $rows)
-#foreach ($c in $r)
-$c,#end
-
-#end

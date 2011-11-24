@@ -146,7 +146,7 @@ public class GenerationTests {
     osmo.addTestEndCondition(length1);
     osmo.addSuiteEndCondition(length1);
     osmo.generate();
-    assertEquals("Number of covered requirements", 3, model.getRequirements().getCovered().size());
+    assertEquals("Number of covered requirements", 3, model.getRequirements().getUniqueCoverage().size());
   }
 
   @Test
@@ -157,7 +157,7 @@ public class GenerationTests {
     osmo.addTestEndCondition(length1);
     osmo.addSuiteEndCondition(length1);
     osmo.generate();
-    assertEquals("Number of covered requirements", 3, model.getRequirements().getCovered().size());
+    assertEquals("Number of covered requirements", 3, model.getRequirements().getUniqueCoverage().size());
   }
 
   @Test

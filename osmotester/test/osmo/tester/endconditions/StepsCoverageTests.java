@@ -3,6 +3,7 @@ package osmo.tester.endconditions;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOTester;
+import osmo.tester.generation.TestListener;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.StepCoverage;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -180,6 +181,24 @@ public class StepsCoverageTests {
       //Expected
       assertEquals("Reported error", "Impossible coverage requirements, defined steps [non-existent] not found.", e.getMessage());
     }
+  }
+
+  @Test
+  public void stepSeveralTimesWithGeneration() {
+    VariableModel2 model = new VariableModel2();
+    OSMOTester osmo = new OSMOTester();
+    osmo.addModelObject(model);
+    StepCoverage sc = new StepCoverage();
+    sc.addRequiredStep("third");
+    sc.addRequiredStep("third");
+    Length length1 = new Length(1);
+    osmo.addTestEndCondition(sc);
+    osmo.addSuiteEndCondition(length1);
+    TestListener listener = new TestListener(false);
+    listener.addExpected("suite-start", "start", "t:first", "t:second", "t:third", "t:third", "end", "suite-end");
+    osmo.addListener(listener);
+    osmo.generate();
+    listener.validate("Step coverage with two 'third' steps required.");
   }
 
   private void assertNoSuiteEnd(String msg) {

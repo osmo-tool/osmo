@@ -3,25 +3,18 @@ package osmo.tester.reporting.coverage;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 /**
  * This returns coverage tables in HTML format
  *
  * @author Olli-Pekka Puolitaival, Teemu Kanstrén
  */
-public class HTML extends CoverageMetric {
-  public HTML(TestSuite ts, FSM fsm) {
+public class HTMLCoverageReporter extends CoverageMetric {
+  public HTMLCoverageReporter(TestSuite ts, FSM fsm) {
     super(ts, fsm);
   }
-
-  /*
-  public static void main(String[] args) {
-    TestSuite suite = new TestSuite();
-    suite.startTest();
-    suite.addStep(new FSMTransition("test"));
-    suite.endTest();
-    System.out.println(new CSV(suite).getTransitionCounts());
-    System.out.println(new CSV(suite).getTransitionPairCounts());
-  }*/
 
   public String getTransitionCounts() {
     //note: for this to work, you need to have the IDE or build script copy the .html files to the same location on the output dir (alongside the java classes)
@@ -36,10 +29,8 @@ public class HTML extends CoverageMetric {
     return super.getRequirementsCounts("osmo/tester/reporting/coverage/templates/requirement-coverage.txt");
   }
 
-  @Override
   public String getTraceabilityMatrix() {
-    // TODO Auto-generated method stub
-    return "Not implemented yet";
+    return super.getTraceabilityMatrix("osmo/tester/reporting/coverage/templates/coverage-matrix.txt");
   }
 
 }

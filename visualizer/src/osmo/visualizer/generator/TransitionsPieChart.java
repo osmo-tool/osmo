@@ -32,6 +32,7 @@ public class TransitionsPieChart implements GenerationListener {
     OSMOTester tester = new OSMOTester();
     tester.addTestEndCondition(new Endless());
     tester.addListener(transitionsBarChart);
+//    tester.addListener(new TransitionsPieChart());
     tester.addModelObject(new CalculatorModel());
     tester.setAlgorithm(new ManualAlgorithm());
     tester.generate();

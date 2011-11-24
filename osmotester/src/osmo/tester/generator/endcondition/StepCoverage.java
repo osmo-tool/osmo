@@ -10,6 +10,7 @@ import osmo.tester.model.FSMTransition;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -95,10 +96,11 @@ public class StepCoverage extends AbstractEndCondition {
   @Override
   public void init(FSM fsm) {
     Collection<FSMTransition> transitions = fsm.getTransitions();
-    Collection<String> toClear = new ArrayList<String>();
+    Collection<String> toClear = new HashSet<String>();
     toClear.addAll(required);
     for (FSMTransition transition : transitions) {
-      toClear.remove(transition.getName());
+      String name = transition.getName();
+      boolean ok = toClear.remove(name);
     }
     if (!toClear.isEmpty()) {
       throw new IllegalStateException("Impossible coverage requirements, defined steps " + toClear + " not found.");

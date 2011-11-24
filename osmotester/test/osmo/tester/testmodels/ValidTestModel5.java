@@ -82,6 +82,6 @@ public class ValidTestModel5 {
 
   @EndCondition
   public boolean end() {
-    return req.getCovered().size() >= 2;
+    return req.getUniqueCoverage().size() >= 2;
   }
 }

@@ -23,7 +23,7 @@ public class TestCoverage {
   public void addTestCoverage(TestCase tc) {
     addTransitions(tc.getAllTransitionNames());
     addVariables(tc);
-    requirements.addAll(tc.getCoveredRequirements());
+    requirements.addAll(tc.getUniqueRequirementsCoverage());
   }
 
   public TestCoverage(TestCase tc) {

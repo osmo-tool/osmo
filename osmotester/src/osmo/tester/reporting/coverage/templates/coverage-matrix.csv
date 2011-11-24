@@ -1,0 +1,23 @@
+Test ID,#foreach ($tn in $transition_names)$tn,#end
+
+#foreach ($t in $tests)$t.name,#foreach ($tn in $transition_names)$t.transitionCount($tn),#end
+
+#end
+
+Test ID,#foreach ($rn in $requirement_names)$rn,#end
+
+#foreach ($t in $tests)$t.name,#foreach ($rn in $requirement_names)$t.requirementCount($rn),#end
+
+#end
+
+Test ID,#foreach ($tpn in $transition_pair_names)$tpn,#end
+
+#foreach ($t in $tests)$t.name,#foreach ($tpn in $transition_pair_names)$t.pairCount($tpn),#end
+
+#end
+
+Test ID,#foreach ($vn in $variable_names)$vn,#end
+
+#foreach ($t in $tests)$t.name,#foreach ($vn in $variable_names)$t.variableCoverage($vn),#end
+
+#end

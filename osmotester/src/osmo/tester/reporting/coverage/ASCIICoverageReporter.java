@@ -16,8 +16,8 @@ import java.util.Map;
  *
  * @author Olli-Pekka Puolitaival
  */
-public class ASCII extends CoverageMetric {
-  public ASCII(TestSuite ts, FSM fsm) {
+public class ASCIICoverageReporter extends CoverageMetric {
+  public ASCIICoverageReporter(TestSuite ts, FSM fsm) {
     super(ts, fsm);
   }
 
@@ -86,7 +86,6 @@ public class ASCII extends CoverageMetric {
     return "";
   }
 
-  @Override
   public String getTraceabilityMatrix() {
     List<TestCase> testcases = testSuite.getFinishedTestCases();
     Collection<FSMTransition> all = fsm.getTransitions();
