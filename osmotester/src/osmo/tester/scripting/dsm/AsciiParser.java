@@ -1,8 +1,9 @@
-package osmo.tester.dsm;
+package osmo.tester.scripting.dsm;
 
 import osmo.common.log.Logger;
 import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
 import osmo.tester.model.dataflow.ScriptedValueProvider;
+import osmo.tester.scripting.AbstractAsciiParser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +32,7 @@ import java.util.Map;
  * one or both of the steps and variables tables.
  * <p/>
  * The settings table has the following elements:
- * model factory = The fully qualified name of a class implementing {@link osmo.tester.dsm.ModelObjectFactory}.
+ * model factory = The fully qualified name of a class implementing {@link osmo.tester.scripting.dsm.ModelObjectFactory}.
  * algorithm = Fully qualified name of used test generation algorithm, or "random"/"weighted random"/"less random"
  * seed = Random seed to be used by OSMOTester
  * <p/>
@@ -48,13 +49,17 @@ import java.util.Map;
  *
  * @author Teemu Kanstren
  */
-public class AsciiParser {
+public class AsciiParser extends AbstractAsciiParser {
   private static Logger log = new Logger(AsciiParser.class);
   /** Configuration for test generation, as parsed from the ASCII input. */
   private DSMConfiguration config = new DSMConfiguration();
 
   private static enum Relation {
     MIN, MAX, EXACT
+  }
+
+  public AsciiParser() {
+    super(log);
   }
 
   /**
@@ -227,87 +232,4 @@ public class AsciiParser {
       log.debug("Variable value found:" + name + " = " + value);
     }
   }
-
-  /**
-   * Generic parse for all the tables. Supports only 2 column tables, where each column must have content.
-   *
-   * @param lines The lines (rows) of the table.
-   * @param h1    Header of first column.
-   * @param h2    Header of the second column.
-   * @return The cells of the table, first row as cells[0], cells[1], second row as cells[2], cells[3], etc.
-   */
-  public String[] parseTable(String[] lines, String h1, String h2) {
-    List<String> temp = new ArrayList<String>();
-    //this "i" holds the index of overall parsing
-    int i = 0;
-    boolean found = false;
-    //first we proceed until we find the header
-    for (; i < lines.length; i++) {
-      String line = lines[i];
-      log.debug("parsing line:" + line);
-      String[] cells = line.split(",");
-      if (cells.length < 2) {
-        continue;
-      }
-      cells[0] = cells[0].trim();
-      cells[1] = cells[1].trim();
-      if (cells[0].equalsIgnoreCase(h1) && cells[1].equalsIgnoreCase(h2)) {
-        log.debug("found table header");
-        found = true;
-        break;
-      }
-    }
-    //if we find no header, we return an empty set of cells
-    if (!found) {
-      return new String[0];
-    }
-    //table name here is for error reporting
-    String tableName = "\"" + h1 + ", " + h2 + "\"";
-    //now we parse all cells
-    for (i += 1; i < lines.length; i++) {
-      //the table cells must be separated with a comma
-      String[] cells = lines[i].split(",");
-      String error = "Table rows must have 2 cells. " + tableName + " had a row with " + cells.length + " cell(s).";
-      //the table must have exactly 2 cells on each row
-      if (cells.length > 2) {
-        throw new IllegalArgumentException(error);
-      }
-      if (cells.length == 1) {
-        //empty line ends the table
-        if (cells[0].length() == 0) {
-          //table ends
-          break;
-        }
-        //the table must have exactly 2 cells on each row
-        throw new IllegalArgumentException(error);
-      }
-      //trim any excess whitespace from the cell data
-      cells[0] = cells[0].trim();
-      cells[1] = cells[1].trim();
-      temp.add(cells[0]);
-      temp.add(cells[1]);
-    }
-    if (temp.size() == 0) {
-      //empty tables are not supported
-      throw new IllegalArgumentException("Table " + tableName + " has no content.");
-    }
-    String[] result = new String[temp.size()];
-    return temp.toArray(result);
-  }
-
-  /**
-   * Get a list of rows in given input, as separated by the different potential line separators (unix/windows/mac).
-   *
-   * @param input The text to be parsed.
-   * @return The list of rows separated by linefeeds.
-   */
-  private String[] parseLines(String input) {
-    String[] split = input.split("\n|\r\n|\r");
-    for (int i = 0; i < split.length; i++) {
-      String s = split[i];
-      split[i] = s.trim();
-    }
-    return split;
-  }
-
 }

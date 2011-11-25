@@ -103,12 +103,13 @@ public class OSMOTester {
     if (testCaseEndConditions.size() == 0) {
       addTestEndCondition(new And(new Length(1), new Probability(0.1d)));
     }
+    algorithm.init(fsm);
     generator.setSuiteEndConditions(suiteEndConditions);
     generator.setTestCaseEndConditions(testCaseEndConditions);
     generator.setListeners(listeners);
     generator.setFilters(filters);
     generator.setFailWhenNoWayForward(failWhenNoWayForward);
-    generator.setScripter(scripter);
+    generator.setValueScripter(scripter);
     return generator;
   }
 
@@ -187,7 +188,7 @@ public class OSMOTester {
     listeners.addListener(filter);
   }
 
-  public void setScriptedValueProvider(ScriptedValueProvider scripter) {
+  public void setValueScripter(ScriptedValueProvider scripter) {
     this.scripter = scripter;
   }
 }

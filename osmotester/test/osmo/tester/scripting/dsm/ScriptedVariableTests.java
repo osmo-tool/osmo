@@ -1,10 +1,8 @@
-package osmo.tester.dsm;
+package osmo.tester.scripting.dsm;
 
 import org.junit.Before;
 import org.junit.Test;
 import osmo.common.TestUtils;
-import osmo.common.log.Logger;
-import osmo.tester.generator.SearchableInputObserver;
 import osmo.tester.model.dataflow.InputObserver;
 import osmo.tester.model.dataflow.ReadableWords;
 import osmo.tester.model.dataflow.ScriptedValueProvider;

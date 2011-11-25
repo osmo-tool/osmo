@@ -1,4 +1,4 @@
-package osmo.tester.dsm;
+package osmo.tester.scripting.dsm;
 
 import org.junit.Test;
 import osmo.tester.generator.endcondition.data.DataCoverageRequirement;

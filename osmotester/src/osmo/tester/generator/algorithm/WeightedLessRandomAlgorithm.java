@@ -4,6 +4,7 @@ import osmo.common.log.Logger;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
 import java.util.ArrayList;
@@ -31,6 +32,10 @@ import static osmo.common.TestUtils.oneOf;
  */
 public class WeightedLessRandomAlgorithm implements FSMTraversalAlgorithm {
   private static final Logger log = new Logger(WeightedLessRandomAlgorithm.class);
+
+  @Override
+  public void init(FSM fsm) {
+  }
 
   @Override
   public FSMTransition choose(TestSuite history, List<FSMTransition> choices) {

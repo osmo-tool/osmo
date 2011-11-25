@@ -7,6 +7,7 @@ import osmo.tester.generator.algorithm.WeightedRandomAlgorithm;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
 import javax.swing.AbstractListModel;
@@ -223,6 +224,10 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     } catch (InterruptedException e) {
 
     }
+  }
+
+  @Override
+  public void init(FSM fsm) {
   }
 
   @Override

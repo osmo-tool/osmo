@@ -8,7 +8,9 @@ import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/** @author Teemu Kanstren */
+/**
+ * @author Teemu Kanstren
+ */
 public class EndConditionFrame extends JFrame {
   public EndConditionFrame(final ManualEndCondition mec) throws HeadlessException {
     super("Test Control");

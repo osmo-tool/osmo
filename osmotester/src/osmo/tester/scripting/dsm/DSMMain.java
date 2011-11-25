@@ -1,7 +1,6 @@
-package osmo.tester.dsm;
+package osmo.tester.scripting.dsm;
 
 import osmo.common.TestUtils;
-import osmo.common.log.Logger;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.endcondition.EndCondition;
@@ -89,7 +88,7 @@ public class DSMMain {
     osmo.addTestEndCondition(sc);
     osmo.addFilter(filter);
     osmo.setSeed(config.getSeed());
-    osmo.setScriptedValueProvider(config.getScriptedValueProvider());
+    osmo.setValueScripter(config.getScriptedValueProvider());
     osmo.generate();
   }
 }

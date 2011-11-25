@@ -1,6 +1,7 @@
 package osmo.tester.generator.algorithm;
 
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
 import java.util.List;
@@ -21,5 +22,7 @@ public interface FSMTraversalAlgorithm {
    * @param transitions The set of enabled transitions, from which the algorithm should pick one.
    * @return The transition that should be taken next.
    */
-  public abstract FSMTransition choose(TestSuite history, List<FSMTransition> transitions);
+  public FSMTransition choose(TestSuite history, List<FSMTransition> transitions);
+
+  public void init(FSM fsm);
 }

@@ -11,7 +11,7 @@ import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
-import osmo.tester.reporting.coverage.CSV;
+import osmo.tester.reporting.coverage.CSVCoverageReporter;
 
 import java.io.PrintStream;
 
@@ -132,7 +132,7 @@ public class VendingMachine2 {
     tester.generate();
 
     //Print coverage metric
-    CSV csv = new CSV(tester.getSuite(), tester.getFsm());
+    CSVCoverageReporter csv = new CSVCoverageReporter(tester.getSuite(), tester.getFsm());
     System.out.println("\n" + csv.getTransitionCounts());
   }
 }

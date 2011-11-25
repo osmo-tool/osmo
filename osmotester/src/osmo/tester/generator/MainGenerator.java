@@ -354,7 +354,7 @@ public class MainGenerator {
     return testCount;
   }
 
-  public void setScripter(ScriptedValueProvider scripter) {
+  public void setValueScripter(ScriptedValueProvider scripter) {
     this.scripter = scripter;
   }
 }
