@@ -1,5 +1,6 @@
 package osmo.tester.examples.calendar.testmodel;
 
+import osmo.tester.annotation.AfterSuite;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Transition;
@@ -41,6 +42,11 @@ public class CalendarBaseModel {
     state.reset();
     scripter.reset();
     out.println("-NEW TEST");
+  }
+
+  @AfterSuite
+  public void dump() {
+    scripter.write();
   }
 
   @Transition("AddEvent")

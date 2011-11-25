@@ -1,0 +1,1 @@
+java -classpath ../../../../../ant-out/production;../../../../../../osmotester/ant-out/production;../../../../../../common/ant-out/production;../../../../../lib/velocity-1.7-dep.jar osmo.tester.dsm.DSMMain script2.txt

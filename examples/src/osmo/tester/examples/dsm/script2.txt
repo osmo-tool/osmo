@@ -1,15 +1,15 @@
 setting, value
-model factory, hello
+model factory, osmo.tester.examples.dsm.TestModelFactory
 
 step, times
-AddEvent, >=5
+AddEvent, >=1
 
 variable, coverage
 taskCount,  2
 
 variable, values
-startTime, 1321959683153
-startTime, 1321950683153
-startTime, 1321910683153
-startTime, 1321930683153
+startTime, 1121959683153
+startTime, 1121950683153
+startTime, 1121910683153
+startTime, 1121930683153
 

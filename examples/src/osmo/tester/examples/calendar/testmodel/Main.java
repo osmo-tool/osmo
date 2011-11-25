@@ -31,7 +31,6 @@ public class Main {
 //    osmo.addModelObject(new CalendarFailureModel(state, scripter));
     osmo.setSeed(111);
     osmo.generate();
-    scripter.write();
   }
 
   //time limit = 10 years

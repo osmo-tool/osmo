@@ -127,4 +127,13 @@
   </target>
 
   <target name="jenkins" depends="test, javadocs"/>
+
+  <target name="distro" depends="jar,javadocs">
+    <zip destfile="${zip.file}">
+      <zipfileset dir="${javadoc-dir}/" prefix="docs/api"/>
+      <zipfileset dir="${prod-src}/" prefix="src/prod"/>
+      <zipfileset dir="${test-src}/" prefix="src/test"/>
+      <zipfileset dir="." includes="${jar.file}"/>
+    </zip>
+  </target>
 </project>

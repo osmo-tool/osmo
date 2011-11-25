@@ -1,4 +1,4 @@
-package osmo.tester.dsm;
+package osmo.tester.scripting.dsm;
 
 import osmo.tester.generator.endcondition.EndCondition;
 

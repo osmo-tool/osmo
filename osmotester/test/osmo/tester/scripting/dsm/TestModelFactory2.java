@@ -1,20 +1,18 @@
-package osmo.tester.dsm;
+package osmo.tester.scripting.dsm;
 
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.Probability;
-import osmo.tester.testmodels.CalculatorModel;
-import osmo.tester.testmodels.ValidTestModel1;
 import osmo.tester.testmodels.VariableModel2;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 /** @author Teemu Kanstren */
-public class TestModelFactory implements ModelObjectFactory {
+public class TestModelFactory2 implements ModelObjectFactory {
   @Override
   public Collection<Object> createModelObjects() {
-    Object model = new CalculatorModel();
+    Object model = new VariableModel2(System.out);
     Collection<Object> objects = new ArrayList<Object>();
     objects.add(model);
     return objects;

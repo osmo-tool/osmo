@@ -1,6 +1,7 @@
 package osmo.tester.generator.algorithm;
 
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
 import java.util.List;
@@ -15,6 +16,10 @@ import static osmo.common.TestUtils.*;
  * @author Teemu Kanstren
  */
 public class RandomAlgorithm implements FSMTraversalAlgorithm {
+
+  @Override
+  public void init(FSM fsm) {
+  }
 
   @Override
   public FSMTransition choose(TestSuite history, List<FSMTransition> transitions) {

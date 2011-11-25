@@ -3,6 +3,7 @@ package osmo.tester.generator.algorithm;
 import osmo.common.log.Logger;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
 import java.util.ArrayList;
@@ -30,6 +31,10 @@ public class LessRandomAlgorithm implements FSMTraversalAlgorithm {
   private static Logger log = new Logger(LessRandomAlgorithm.class);
   /** The coverage for transitions pairs, key = source transition, value = {destination transition, coverage} */
   private Map<FSMTransition, Map<FSMTransition, Integer>> tpCoverage = new HashMap<FSMTransition, Map<FSMTransition, Integer>>();
+
+  @Override
+  public void init(FSM fsm) {
+  }
 
   @Override
   public FSMTransition choose(TestSuite history, List<FSMTransition> choices) {

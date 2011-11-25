@@ -36,5 +36,22 @@ v 1.2.1 17/10/2011
 -fixes to the calendar example
 -random test generation algorithm uses the common seed now (enables determinism and model versioning)
 -valuerangeset to support boundary scan
-
-
+v 2.0.0 24/11/2011
+-several fixes to make calendar example better, including more deterministic etc.
+-separated examples to different module from core
+-added option for strict end conditions
+-added end condition for data (variable) coverage
+-added end condition for transition (step) coverage
+-added filtering support to define when some steps or values should not be used
+-added support for model prefixes
+-added support for custom (user) attributes inside test case objects (from test models)
+-improved suite optimization algorithms
+-improved checking for invalid configurations
+-created an api to use the test generator externally not just from OSMOTester class
+-improved (new) weighted random algorithm
+-renamed optimized random to less random
+-added option to use testutils functions with separate seeds at the same time (Randomizer in common module)
+-added first draft GUI for running OSMOTester manually
+-added first draft of text based domain specific language
+-added coverage matrices
+-refactored (warning: api change), fixed bugs, the usual stuff..

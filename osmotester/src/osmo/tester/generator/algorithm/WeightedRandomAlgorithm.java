@@ -2,6 +2,7 @@ package osmo.tester.generator.algorithm;
 
 import osmo.common.log.Logger;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
 import java.util.ArrayList;
@@ -19,6 +20,10 @@ import static osmo.common.TestUtils.rawWeightedRandomFrom;
  */
 public class WeightedRandomAlgorithm implements FSMTraversalAlgorithm {
   private static final Logger log = new Logger(WeightedRandomAlgorithm.class);
+
+  @Override
+  public void init(FSM fsm) {
+  }
 
   @Override
   public FSMTransition choose(TestSuite history, List<FSMTransition> choices) {
