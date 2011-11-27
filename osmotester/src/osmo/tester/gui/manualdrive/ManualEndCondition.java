@@ -1,4 +1,4 @@
-package osmo.tester.manualdrive;
+package osmo.tester.gui.manualdrive;
 
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.testsuite.TestSuite;
