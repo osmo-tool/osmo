@@ -9,7 +9,7 @@ import org.jfree.util.Rotation;
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.calculator.CalculatorModel;
 import osmo.tester.generator.GenerationListener;
-import osmo.tester.manualdrive.ManualAlgorithm;
+import osmo.tester.gui.manualdrive.ManualAlgorithm;
 import osmo.tester.generator.endcondition.Endless;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;

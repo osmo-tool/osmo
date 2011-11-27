@@ -1,6 +1,10 @@
 package osmo.tester.testmodels;
 
 import osmo.common.NullPrintStream;
+import osmo.tester.annotation.AfterSuite;
+import osmo.tester.annotation.AfterTest;
+import osmo.tester.annotation.BeforeSuite;
+import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
@@ -22,6 +26,7 @@ public class ValidTestModel2 {
   public static final String REQ_WORLD = "world";
   public static final String REQ_EPIX = "epix";
   private PrintStream out = NullPrintStream.stream;
+  private boolean printFlow = false;
 
   public ValidTestModel2(Requirements req, PrintStream out) {
     this.req = req;
@@ -30,6 +35,36 @@ public class ValidTestModel2 {
 
   public ValidTestModel2(Requirements req) {
     this.req = req;
+  }
+
+  @BeforeSuite
+  public void firstOfAll() {
+    if (printFlow) {
+      out.print(":beforesuite:");
+    }
+  }
+
+
+  @BeforeTest
+  public void setup() {
+    if (printFlow) {
+      out.print(":beforetest:");
+    }
+  }
+
+  @AfterSuite
+  public void lastOfAll() {
+    if (printFlow) {
+      out.print(":aftersuite:");
+    }
+  }
+
+
+  @AfterTest
+  public void bob() {
+    if (printFlow) {
+      out.print(":aftertest:");
+    }
   }
 
   @Guard("hello")
@@ -73,5 +108,9 @@ public class ValidTestModel2 {
   @Post("epixx")
   public void epixxO() {
     out.print(":epixx_oracle");
+  }
+
+  public void setPrintFlow(boolean printFlow) {
+    this.printFlow = printFlow;
   }
 }

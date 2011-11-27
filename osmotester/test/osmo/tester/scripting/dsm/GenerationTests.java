@@ -22,7 +22,7 @@ public class GenerationTests {
     counterReq.addRequirement(3);
     config.add(counterReq);
     config.setAlgorithm("random");
-    config.setModelFactory("osmo.tester.dsm.TestModelFactory");
+    config.setModelFactory("osmo.tester.scripting.dsm.TestModelFactory");
     config.setSeed(233);
     String expected = getResource(getClass(), "expected-generate1.txt");
     expected = unifyLineSeparators(expected, "\n");
@@ -46,7 +46,7 @@ public class GenerationTests {
     counterReq.addRequirement(3);
     config.add(counterReq);
     config.setAlgorithm("random");
-    config.setModelFactory("osmo.tester.dsm.TestModelFactory");
+    config.setModelFactory("osmo.tester.scripting.dsm.TestModelFactory");
     config.setSeed(233);
     String expected = getResource(getClass(), "expected-generate2.txt");
     expected = unifyLineSeparators(expected, "\n");
@@ -69,12 +69,13 @@ public class GenerationTests {
     scripter.addValue("set", "2");
     config.setScripter(scripter);
     config.setAlgorithm("random");
-    config.setModelFactory("osmo.tester.dsm.TestModelFactory2");
+    config.setModelFactory("osmo.tester.scripting.dsm.TestModelFactory2");
     config.setSeed(233);
     try {
       DSMMain.execute(config);
       fail("Scripted generation with invalid values should fail.");
     } catch (Exception e1) {
+      e1.printStackTrace();
       Throwable t = e1.getCause().getCause();
       assertEquals("Error message for invalid scripted values", "Requested scripted value for variable 'set' not found: 1", t.getMessage());
     }
@@ -88,7 +89,7 @@ public class GenerationTests {
     scripter.addValue("set", "v2");
 //    config.setScripter(scripter);
     config.setAlgorithm("random");
-    config.setModelFactory("osmo.tester.dsm.TestModelFactory2");
+    config.setModelFactory("osmo.tester.scripting.dsm.TestModelFactory2");
     config.setSeed(233);
     String expected = getResource(getClass(), "expected-generate3.txt");
     ByteArrayOutputStream bos = new ByteArrayOutputStream();

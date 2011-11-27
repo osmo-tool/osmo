@@ -6,6 +6,7 @@ import org.junit.Test;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.Endless;
 import osmo.tester.generator.endcondition.Length;
+import osmo.tester.generator.filter.MaxTransitionFilter;
 import osmo.tester.model.Requirements;
 import osmo.tester.testmodels.BaseModelExtension;
 import osmo.tester.testmodels.EndStateModel;
@@ -215,4 +216,18 @@ public class GenerationTests {
     assertEquals("Test length", 100, osmo.getSuite().getFinishedTestCases().get(0).getSteps().size());
   }
 
+  @Test
+  public void flow() {
+    ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
+    PrintStream ps = new PrintStream(out);
+    osmo.setSeed(145);
+    ValidTestModel2 modelObject = new ValidTestModel2(new Requirements(), ps);
+    modelObject.setPrintFlow(true);
+    osmo.addModelObject(modelObject);
+    osmo.addTestEndCondition(new Length(3));
+    osmo.addSuiteEndCondition(new Length(3));
+    osmo.generate();
+    String actual = out.toString();
+    assertEquals(":beforesuite::beforetest::hello:world:epixx_pre:epixx:epixx_oracle:aftertest::beforetest::epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:aftertest::beforetest::epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:aftertest::aftersuite:", actual);
+  }
 }

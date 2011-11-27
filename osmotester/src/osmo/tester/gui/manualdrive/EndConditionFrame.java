@@ -1,4 +1,4 @@
-package osmo.tester.manualdrive;
+package osmo.tester.gui.manualdrive;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;

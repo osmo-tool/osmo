@@ -12,7 +12,7 @@ import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.manualdrive.ManualAlgorithm;
+import osmo.tester.gui.manualdrive.ManualAlgorithm;
 import osmo.tester.model.Requirements;
 
 import java.io.PrintStream;

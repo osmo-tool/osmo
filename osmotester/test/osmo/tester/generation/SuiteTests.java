@@ -1,6 +1,8 @@
 package osmo.tester.generation;
 
 import org.junit.Test;
+import osmo.tester.generator.endcondition.Length;
+import osmo.tester.generator.filter.MaxTransitionFilter;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
 

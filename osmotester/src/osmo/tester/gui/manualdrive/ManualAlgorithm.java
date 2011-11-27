@@ -1,4 +1,4 @@
-package osmo.tester.manualdrive;
+package osmo.tester.gui.manualdrive;
 
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.algorithm.LessRandomAlgorithm;
@@ -7,6 +7,7 @@ import osmo.tester.generator.algorithm.WeightedRandomAlgorithm;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.gui.ModelHelper;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
@@ -146,9 +147,84 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     JLabel lblAutoPlayDelay = new JLabel("Auto play delay (ms)");
 
     algorithmComboBox.setModel(new DefaultComboBoxModel(new String[]{"RandomAlgorithm", "LessRandomAlgorithm", "WeightedAlgorithm"}));
+    
+    JButton btnEndTest = new JButton("End Test");
+    
+    JButton btnEndSuite = new JButton("End Suite");
+    
+    JButton btnReset = new JButton("Reset");
+    
+    JButton btnWriteScript = new JButton("Write Script");
     GroupLayout gl_contentPane = new GroupLayout(contentPane);
-    gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane.createSequentialGroup().addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false).addComponent(scrollTestLog, GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE).addComponent(lblNextTransition).addGroup(gl_contentPane.createSequentialGroup().addComponent(availableTransitionsList, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))).addComponent(lblTestLog)).addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane.createSequentialGroup().addGap(18).addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING).addComponent(lblTraceability, GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE).addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addComponent(autoPlayDelayTextPane, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE).addComponent(autoPlayButton).addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false).addComponent(algorithmComboBox, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(lblAutoPlayDelay, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))).addGroup(gl_contentPane.createSequentialGroup().addPreferredGap(ComponentPlacement.UNRELATED).addComponent(testMetricsPaneScroll, GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE))).addContainerGap()));
-    gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane.createSequentialGroup().addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE).addComponent(lblTestLog).addComponent(lblTraceability)).addPreferredGap(ComponentPlacement.RELATED).addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane.createSequentialGroup().addComponent(scrollTestLog, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(lblNextTransition)).addComponent(testMetricsPaneScroll, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE)).addPreferredGap(ComponentPlacement.RELATED).addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING).addGroup(gl_contentPane.createSequentialGroup().addComponent(algorithmComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED).addComponent(lblAutoPlayDelay).addPreferredGap(ComponentPlacement.RELATED).addComponent(autoPlayDelayTextPane, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED).addComponent(autoPlayButton)).addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE).addComponent(availableTransitionsList, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE))).addContainerGap()));
+    gl_contentPane.setHorizontalGroup(
+      gl_contentPane.createParallelGroup(Alignment.LEADING)
+        .addGroup(gl_contentPane.createSequentialGroup()
+          .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+            .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+              .addComponent(scrollTestLog, GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
+              .addComponent(lblNextTransition)
+              .addComponent(availableTransitionsList, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(lblTestLog))
+          .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+            .addGroup(gl_contentPane.createSequentialGroup()
+              .addGap(18)
+              .addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+                .addComponent(lblTraceability, GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
+                .addGroup(gl_contentPane.createSequentialGroup()
+                  .addGap(22)
+                  .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+                    .addComponent(btnEndSuite)
+                    .addComponent(btnEndTest)
+                    .addComponent(btnReset)
+                    .addComponent(btnWriteScript))
+                  .addPreferredGap(ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                  .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+                    .addComponent(autoPlayDelayTextPane, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(autoPlayButton)
+                    .addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
+                      .addComponent(algorithmComboBox, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                      .addComponent(lblAutoPlayDelay, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+            .addGroup(gl_contentPane.createSequentialGroup()
+              .addPreferredGap(ComponentPlacement.UNRELATED)
+              .addComponent(testMetricsPaneScroll, GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)))
+          .addContainerGap())
+    );
+    gl_contentPane.setVerticalGroup(
+      gl_contentPane.createParallelGroup(Alignment.LEADING)
+        .addGroup(gl_contentPane.createSequentialGroup()
+          .addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+            .addComponent(lblTestLog)
+            .addComponent(lblTraceability))
+          .addPreferredGap(ComponentPlacement.RELATED)
+          .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+            .addGroup(gl_contentPane.createSequentialGroup()
+              .addComponent(scrollTestLog, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE)
+              .addPreferredGap(ComponentPlacement.UNRELATED)
+              .addComponent(lblNextTransition))
+            .addComponent(testMetricsPaneScroll, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE))
+          .addPreferredGap(ComponentPlacement.RELATED)
+          .addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+            .addGroup(gl_contentPane.createSequentialGroup()
+              .addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+                .addGroup(gl_contentPane.createSequentialGroup()
+                  .addComponent(algorithmComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                  .addPreferredGap(ComponentPlacement.RELATED)
+                  .addComponent(lblAutoPlayDelay)
+                  .addPreferredGap(ComponentPlacement.RELATED)
+                  .addComponent(autoPlayDelayTextPane, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE))
+                .addGroup(gl_contentPane.createSequentialGroup()
+                  .addComponent(btnWriteScript)
+                  .addPreferredGap(ComponentPlacement.RELATED)
+                  .addComponent(btnReset)
+                  .addPreferredGap(ComponentPlacement.RELATED)
+                  .addComponent(btnEndTest)))
+              .addPreferredGap(ComponentPlacement.RELATED)
+              .addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+                .addComponent(autoPlayButton)
+                .addComponent(btnEndSuite)))
+            .addComponent(availableTransitionsList, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE))
+          .addContainerGap())
+    );
 
     contentPane.setLayout(gl_contentPane);
   }
@@ -263,36 +339,5 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
       default:
         throw new RuntimeException("Error in algrithm handler. The index was: " + algorithmComboBox.getSelectedIndex());
     }
-  }
-}
-
-
-/**
- * Helps to add items to the list
- *
- * @author puolol
- */
-class ModelHelper extends AbstractListModel {
-
-  private static final long serialVersionUID = 1L;
-  List<String> values = new ArrayList<String>();
-
-  public ModelHelper() {
-    this.values.add("Empty");
-  }
-
-  public ModelHelper(List<FSMTransition> transitions) {
-    values = new ArrayList<String>();
-    for (FSMTransition t : transitions) {
-      values.add(t.getName());
-    }
-  }
-
-  public int getSize() {
-    return values.size();
-  }
-
-  public Object getElementAt(int index) {
-    return values.get(index);
   }
 }
