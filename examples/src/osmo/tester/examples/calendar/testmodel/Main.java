@@ -2,10 +2,12 @@ package osmo.tester.examples.calendar.testmodel;
 
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
+import osmo.tester.examples.calendar.scripter.MockScripter;
 import osmo.tester.examples.calendar.scripter.offline.OfflineScripter;
 import osmo.tester.examples.calendar.scripter.online.OnlineScripter;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.gui.dsm.GUI2;
+import osmo.tester.gui.manualdrive.ManualAlgorithm;
 import osmo.tester.model.FSM;
 
 /**
@@ -36,7 +38,7 @@ public class Main {
     osmo.generate();
   }
 
-  public static void main(String[] args) {
+  public static void main2(String[] args) {
     OSMOTester osmo = new OSMOTester();
 //    osmo.addSuiteEndCondition(new Length(2));
     ModelState state = new ModelState();
@@ -54,6 +56,25 @@ public class Main {
     FSM fsm = osmo.getFsm();
     GUI2 g = new GUI2(fsm);
     g.setVisible(true);
+  }
+
+  public static void main(String[] args) {
+    OSMOTester osmo = new OSMOTester();
+//    osmo.addSuiteEndCondition(new Length(2));
+    ModelState state = new ModelState();
+//    CalendarScripter scripter = new OnlineScripter();
+    CalendarScripter scripter = new MockScripter();
+//    CalendarScripter scripter = new OfflineScripter("tests.html");
+    osmo.addModelObject(state);
+    osmo.addModelObject(new CalendarBaseModel(state, scripter));
+    osmo.addModelObject(new CalendarOracleModel(state, scripter));
+    osmo.addModelObject(new CalendarTaskModel(state, scripter));
+    osmo.addModelObject(new CalendarOverlappingModel(state, scripter));
+    osmo.addModelObject(new CalendarParticipantModel(state, scripter));
+    osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter));
+//    osmo.addModelObject(new CalendarFailureModel(state, scripter));
+    osmo.setAlgorithm(new ManualAlgorithm());
+    osmo.generate();
   }
 
   //time limit = 10 years

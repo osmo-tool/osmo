@@ -111,6 +111,7 @@
     <copy todir="${prod-dest}">
       <fileset dir="${prod-src}">
         <include name="**/*.html"/>
+        <include name="**/*.txt"/>
         <include name="**/*.csv"/>
         <include name="**/*.xml"/>
         <include name="**/*.vm"/>
