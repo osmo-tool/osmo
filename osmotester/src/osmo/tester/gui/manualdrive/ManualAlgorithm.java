@@ -62,6 +62,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
 
   /** Create the frame. */
   public ManualAlgorithm() {
+    setTitle("OSMOTester Manual Script Generation");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setBounds(100, 100, 600, 460);
     contentPane = new JPanel();
