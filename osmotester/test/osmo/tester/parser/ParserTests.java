@@ -3,6 +3,7 @@ package osmo.tester.parser;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.annotation.Variable;
+import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
@@ -72,7 +73,7 @@ public class ParserTests {
       String msg = e.getMessage();
       String expected = "Invalid FSM:\n" +
               "Only one @RequirementsField allowed in the model.\n" +
-              "Only one @TestSuiteField allowed in the model.\n" +
+              "Only one @TestSuiteField object allowed in the model. You can use several @TestSuiteField fields in several model objects, but the variable value must be the same object.\n" +
               "Guard/Pre/Post without transition:foo\n";
       assertEquals(expected, msg);
     }
@@ -149,8 +150,9 @@ public class ParserTests {
   @Test
   public void testPartialModels() {
     Requirements req = new Requirements();
-    PartialModel1 model1 = new PartialModel1(req, null);
-    PartialModel2 model2 = new PartialModel2(req, null);
+    TestSuite suite = new TestSuite();
+    PartialModel1 model1 = new PartialModel1(req, null, suite);
+    PartialModel2 model2 = new PartialModel2(req, null, suite);
     Collection<ModelObject> models = new ArrayList<ModelObject>();
     models.add(mo(model1));
     models.add(mo(model2));

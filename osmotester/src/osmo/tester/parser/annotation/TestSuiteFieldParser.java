@@ -40,7 +40,7 @@ public class TestSuiteFieldParser implements AnnotationParser {
         return errors;
       }
       if (this.suite != null && this.suite != suite) {
-        errors += "Only one " + name + " allowed in the model.\n";
+        errors += "Only one " + name + " object allowed in the model. You can use several "+name+" fields in several model objects, but the variable value must be the same object.\n";
       }
       this.suite = suite;
       parameters.getFsm().setSuite(suite);

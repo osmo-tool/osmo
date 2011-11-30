@@ -88,9 +88,11 @@ public class MainGenerator {
   /** Invoked to start the test generation using the configured parameters. */
   public void generate() {
     initSuite();
-    while (!checkSuiteEndConditions()) {
+    while (!checkSuiteEndConditions() && !suite.shouldEndSuite()) {
+      suite.setShouldEndTest(false);
       next();
     }
+    System.out.println("SUITE ENDS");
     endSuite();
   }
 
@@ -130,6 +132,9 @@ public class MainGenerator {
         }
       }
       FSMTransition next = algorithm.choose(suite, enabled);
+      if (suite.shouldEndTest()) {
+        break;
+      }
       log.debug("Taking transition " + next.getName());
       execute(fsm, next);
       if (checkModelEndConditions()) {

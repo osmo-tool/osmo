@@ -10,7 +10,7 @@
   <property name="coverage-dir" value="${main-output}/coverage"/>
   <property name="javadoc-dir" value="${main-output}/docs/api"/>
   <property name="cobertura.home" value="${env.COBERTURA_HOME}"/>
-  <property name="build.version" value="2.0.0"/>
+  <property name="build.version" value="2.0.1"/>
   <property name="osmo-common-output" value="../common/ant-out/production"/>
   <property name="jar.file" value="osmo-tester-v${build.version}.jar"/>
   <property name="zip.file" value="osmo-tester-v${build.version}.zip"/>
@@ -133,6 +133,7 @@
   <target name="distro" depends="jar,javadocs">
     <zip destfile="${zip.file}">
       <zipfileset dir="." includes="osmo-guide.pdf" prefix="docs"/>
+      <zipfileset dir="lib" prefix="lib"/>
       <zipfileset dir="${javadoc-dir}/" prefix="docs/api"/>
       <zipfileset dir="${prod-src}/" prefix="src/prod"/>
       <zipfileset dir="${test-src}/" prefix="src/test"/>

@@ -59,6 +59,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
   private static JTextPane autoPlayDelayTextPane = new JTextPane();
   private static JComboBox algorithmComboBox = new JComboBox();
   private static boolean running = false;
+  private static TestSuite suite = null;
 
   /** Create the frame. */
   public ManualAlgorithm() {
@@ -150,9 +151,22 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     algorithmComboBox.setModel(new DefaultComboBoxModel(new String[]{"RandomAlgorithm", "LessRandomAlgorithm", "WeightedAlgorithm"}));
     
     JButton btnEndTest = new JButton("End Test");
+    btnEndTest.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        suite.setShouldEndTest(true);
+      }
+    });
     
     JButton btnEndSuite = new JButton("End Suite");
-    
+    btnEndSuite.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        suite.setShouldEndTest(true);
+        suite.setShouldEndSuite(true);
+      }
+    });
+
     JButton btnReset = new JButton("Reset");
     
     JButton btnWriteScript = new JButton("Write Script");
@@ -230,8 +244,9 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     contentPane.setLayout(gl_contentPane);
   }
 
-  public void run() {
+  public void run(TestSuite suite) {
     if (!running) {
+      ManualAlgorithm.suite = suite;
       EventQueue.invokeLater(new Runnable() {
         public void run() {
           try {
@@ -290,6 +305,9 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     } else {
       do {
         if (choiceFromList != null || autoplay) break;
+        if (suite.shouldEndSuite() || suite.shouldEndTest()) {
+          break;
+        }
         sleep(100);
       } while (true);
     }
@@ -309,7 +327,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
 
   @Override
   public FSMTransition choose(TestSuite history, List<FSMTransition> transitions) {
-    run();
+    run(history);
 
     //Make some updates
     testLogPane.setText(historyText(history));
@@ -320,6 +338,9 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
 
     //Waiting for selection
     waitForSelection();
+    if (suite.shouldEndTest() || suite.shouldEndSuite()) {
+      return null;
+    }
 
     //Make selection
     for (FSMTransition t : transitions) {
