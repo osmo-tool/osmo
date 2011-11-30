@@ -7,7 +7,9 @@ import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.RequirementsField;
+import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
+import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
 
 import java.io.PrintStream;
@@ -16,14 +18,17 @@ import java.io.PrintStream;
 public class PartialModel2 {
   @RequirementsField
   private final Requirements req;
+  @TestSuiteField
+  private final TestSuite history;
   public static final String REQ_HELLO = "hello";
   public static final String REQ_WORLD = "world";
   public static final String REQ_EPIX = "epix";
   private final PrintStream out;
 
-  public PartialModel2(Requirements req, PrintStream out) {
+  public PartialModel2(Requirements req, PrintStream out, TestSuite suite) {
     this.req = req;
     this.out = out;
+    this.history = suite;
   }
 
   @AfterSuite

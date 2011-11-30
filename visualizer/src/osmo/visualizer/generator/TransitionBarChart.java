@@ -16,6 +16,7 @@ import osmo.tester.examples.calendar.testmodel.CalendarParticipantModel;
 import osmo.tester.examples.calendar.testmodel.CalendarTaskModel;
 import osmo.tester.examples.calendar.testmodel.ModelState;
 import osmo.tester.generator.GenerationListener;
+import osmo.tester.generator.endcondition.Length;
 import osmo.tester.gui.manualdrive.ManualAlgorithm;
 import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
@@ -38,9 +39,9 @@ public class TransitionBarChart implements GenerationListener {
   public static void main(String[] args) {
     TransitionBarChart barGraph = new TransitionBarChart();
     OSMOTester tester = new OSMOTester();
-    ManualEndCondition mec = new ManualEndCondition();
-    tester.addTestEndCondition(mec);
-    tester.addSuiteEndCondition(mec);
+//    ManualEndCondition mec = new ManualEndCondition();
+    tester.addTestEndCondition(new Length(10));
+    tester.addSuiteEndCondition(new Length(10));
     tester.addListener(barGraph);
 //    tester.addModelObject(new CalculatorModel());
     ModelState state = new ModelState();
@@ -49,7 +50,6 @@ public class TransitionBarChart implements GenerationListener {
     PrintStream out = System.out;
 //    PrintStream out = NullPrintStream.stream;
     tester.addModelObject(state);
-    tester.addModelObject(new CalendarBaseModel(state, scripter, out));
     tester.addModelObject(new CalendarBaseModel(state, scripter, out));
     tester.addModelObject(new CalendarOracleModel(state, scripter, out));
     tester.addModelObject(new CalendarTaskModel(state, scripter, out));

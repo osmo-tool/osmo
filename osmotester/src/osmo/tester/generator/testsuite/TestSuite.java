@@ -19,6 +19,8 @@ public class TestSuite {
   private final List<TestCase> testCases = new ArrayList<TestCase>();
   /** List of covered transitions and number of how many times it exist in the test suite */
   private Map<FSMTransition, Integer> transitionCoverage = new HashMap<FSMTransition, Integer>();
+  private boolean shouldEndTest = false;
+  private boolean shouldEndSuite = false;
 
   /** Start a new test case. */
   public void startTest() {
@@ -196,5 +198,21 @@ public class TestSuite {
       }
     }
     return variables;
+  }
+
+  public boolean shouldEndTest() {
+    return shouldEndTest;
+  }
+
+  public boolean shouldEndSuite() {
+    return shouldEndSuite;
+  }
+
+  public void setShouldEndTest(boolean shouldEndTest) {
+    this.shouldEndTest = shouldEndTest;
+  }
+
+  public void setShouldEndSuite(boolean shouldEndSuite) {
+    this.shouldEndSuite = shouldEndSuite;
   }
 }

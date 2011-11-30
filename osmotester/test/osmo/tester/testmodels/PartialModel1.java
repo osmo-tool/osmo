@@ -19,15 +19,16 @@ public class PartialModel1 {
   @RequirementsField
   private final Requirements req;
   @TestSuiteField
-  private TestSuite history = new TestSuite();
+  private final TestSuite history;
   public static final String REQ_HELLO = "hello";
   public static final String REQ_WORLD = "world";
   public static final String REQ_EPIX = "epix";
   private final PrintStream out;
 
-  public PartialModel1(Requirements req, PrintStream out) {
+  public PartialModel1(Requirements req, PrintStream out, TestSuite suite) {
     this.req = req;
     this.out = out;
+    this.history = suite;
   }
 
   public TestSuite getHistory() {
