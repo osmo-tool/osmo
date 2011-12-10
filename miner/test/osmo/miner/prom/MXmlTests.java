@@ -1,7 +1,7 @@
 package osmo.miner.prom;
 
 import org.junit.Test;
-import osmo.miner.model.program.Suite;
+import osmo.miner.testminer.testcase.Suite;
 import osmo.miner.testmodels.TestModels1;
 
 import java.io.ByteArrayOutputStream;

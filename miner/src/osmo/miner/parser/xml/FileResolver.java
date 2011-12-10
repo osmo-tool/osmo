@@ -1,6 +1,6 @@
 package osmo.miner.parser.xml;
 
-import osmo.miner.model.program.Program;
+import osmo.miner.testminer.testcase.TestCase;
 import osmo.miner.parser.ProgramResolver;
 
 import java.io.File;
@@ -11,7 +11,7 @@ import java.io.IOException;
  */
 public class FileResolver implements ProgramResolver {
   @Override
-  public Program resolve(String reference) {
+  public TestCase resolve(String reference) {
     XmlProgramParser parser = new XmlProgramParser();
     try {
       return parser.parse(new File(reference));

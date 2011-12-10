@@ -2,8 +2,8 @@ package osmo.miner.parser;
 
 import osmo.common.log.Logger;
 import osmo.miner.Config;
-import osmo.miner.model.program.Program;
-import osmo.miner.model.program.Step;
+import osmo.miner.testminer.testcase.TestCase;
+import osmo.miner.testminer.testcase.Step;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.Map;
 public class StartEndVariableResolver {
   private static final Logger log = new Logger(StartEndVariableResolver.class);
 
-  public void resolve(Program program) {
+  public void resolve(TestCase program) {
     Map<String,String> variables = program.getVariables();
     List<Step> steps = program.getSteps();
     log.debug("Resolving program:" + program.getName());

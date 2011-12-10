@@ -1,10 +1,10 @@
 package osmo.miner.parser;
 
-import osmo.miner.model.program.Program;
+import osmo.miner.testminer.testcase.TestCase;
 
 /**
  * @author Teemu Kanstren
  */
 public interface ProgramResolver {
-  public Program resolve(String reference);
+  public TestCase resolve(String reference);
 }

@@ -4,9 +4,9 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import osmo.common.log.Logger;
 import osmo.miner.Config;
-import osmo.miner.model.program.Program;
-import osmo.miner.model.program.Step;
-import osmo.miner.model.program.Suite;
+import osmo.miner.testminer.testcase.TestCase;
+import osmo.miner.testminer.testcase.Step;
+import osmo.miner.testminer.testcase.Suite;
 import osmo.miner.parser.xml.XmlProgramParser;
 
 import javax.swing.JFileChooser;
@@ -73,13 +73,13 @@ public class XmlToMXml {
 
   public String createProgramStrings(Suite suite) {
     StringWriter sw = new StringWriter();
-    for (Program program : suite.getPrograms()) {
+    for (TestCase program : suite.getTests()) {
       sw.append(createProgramString(program));
     }
     return sw.toString();
   }
 
-  public String createProgramString(Program main) {
+  public String createProgramString(TestCase main) {
     VelocityContext vc = new VelocityContext();
 
     String entries = createMethodStrings(main);
@@ -94,7 +94,7 @@ public class XmlToMXml {
     return sw.toString();
   }
 
-  public String createMethodStrings(Program program) {
+  public String createMethodStrings(TestCase program) {
     VelocityContext vc = new VelocityContext();
 
     Collection<Step> steps = program.getSteps();
