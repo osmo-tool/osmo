@@ -16,6 +16,7 @@ import osmo.tester.examples.calendar.testmodel.CalendarOverlappingModel;
 import osmo.tester.examples.calendar.testmodel.CalendarParticipantModel;
 import osmo.tester.examples.calendar.testmodel.CalendarTaskModel;
 import osmo.tester.examples.calendar.testmodel.ModelState;
+import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
@@ -39,6 +40,7 @@ public class Greedy {
   public static void main(String[] args) {
     Greedy barGraph = new Greedy();
     OSMOTester osmo = new OSMOTester();
+    osmo.setSeed(333);
 //    tester.addModelObject(new CalculatorModel());
     ModelState state = new ModelState();
     MockScripter scripter = new MockScripter();
@@ -47,7 +49,6 @@ public class Greedy {
     PrintStream out = NullPrintStream.stream;
     osmo.addModelObject(state);
     osmo.addModelObject(new CalendarBaseModel(state, scripter, out));
-    osmo.addModelObject(new CalendarBaseModel(state, scripter, out));
     osmo.addModelObject(new CalendarOracleModel(state, scripter, out));
     osmo.addModelObject(new CalendarTaskModel(state, scripter, out));
     osmo.addModelObject(new CalendarOverlappingModel(state, scripter, out));
@@ -55,11 +56,19 @@ public class Greedy {
     osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter, out));
 //    osmo.setAlgorithm(new ManualAlgorithm());
     osmo.setAlgorithm(new RandomAlgorithm());
-    SearchConfiguration sc = new SearchConfiguration(osmo.initGenerator());
+    MainGenerator generator = osmo.initGenerator();
+    SearchConfiguration sc = new SearchConfiguration(generator);
     sc.setLengthWeight(-20);
     GreedyOptimizer optimizer = new GreedyOptimizer(sc);
 //    EndCondition length15 = new Length(15);
 //    osmo.addTestEndCondition(length15);
+    generator.initSuite();
+    for (int i = 0 ; i < 50 ; i++) {
+      barGraph.addTest(generator.next());
+    }
+    barGraph.show();
+
+    if (true) return;
     Candidate candidate = optimizer.search();
     List<TestCase> tests = candidate.getTests();
     for (TestCase test : tests) {

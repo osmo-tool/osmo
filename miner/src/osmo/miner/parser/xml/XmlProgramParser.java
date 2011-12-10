@@ -1,6 +1,6 @@
 package osmo.miner.parser.xml;
 
-import osmo.miner.model.program.Program;
+import osmo.miner.testminer.testcase.TestCase;
 import osmo.miner.parser.StartEndVariableResolver;
 
 import javax.xml.parsers.SAXParser;
@@ -14,15 +14,15 @@ import java.io.InputStream;
  * @author Teemu Kanstren
  */
 public class XmlProgramParser {
-  public Program parse(File file) throws IOException {
+  public TestCase parse(File file) throws IOException {
     FileInputStream in = new FileInputStream(file);
-    Program program = parse(in, file.getName());
+    TestCase program = parse(in, file.getName());
     StartEndVariableResolver vr = new StartEndVariableResolver();
     vr.resolve(program);
     return program;
   }
 
-  public Program parse(InputStream in, String name) {
+  public TestCase parse(InputStream in, String name) {
     ProgramHandler handler = new ProgramHandler(name);
     SAXParserFactory factory = SAXParserFactory.newInstance();
     factory.setValidating(true);
@@ -33,7 +33,7 @@ public class XmlProgramParser {
     } catch (Exception e) {
       throw new RuntimeException("Failed to create SAX (XML) parser.", e);
     }
-    Program program = handler.getProgram();
+    TestCase program = handler.getProgram();
     return program;
   }
 }

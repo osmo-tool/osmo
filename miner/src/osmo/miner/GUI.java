@@ -1,10 +1,10 @@
 package osmo.miner;
 
 import osmo.common.log.Logger;
-import osmo.miner.miner.MainMiner;
-import osmo.miner.miner.dataflow.ValueRangeMiner;
-import osmo.miner.miner.dataflow.ValueSetMiner;
-import osmo.miner.model.program.Suite;
+import osmo.miner.testminer.MainTCMiner;
+import osmo.miner.testminer.dataflow.ValueRangeMiner;
+import osmo.miner.testminer.dataflow.ValueSetMiner;
+import osmo.miner.testminer.testcase.Suite;
 import osmo.miner.parser.xml.XmlProgramParser;
 
 import javax.swing.JFileChooser;
@@ -30,7 +30,7 @@ public class GUI {
       log.debug("Parsing file:" + file);
       suite.add(parser.parse(file));
     }
-    MainMiner miner = new MainMiner();
+    MainTCMiner miner = new MainTCMiner();
     ValueRangeMiner vrMiner = new ValueRangeMiner();
     miner.addMiner(vrMiner);
     miner.addMiner(new ValueSetMiner());

@@ -50,7 +50,6 @@ public class Experiments {
     osmo.addModelObject(new CalendarOverlappingModel(state, scripter, nps));
     osmo.addModelObject(new CalendarParticipantModel(state, scripter, nps));
     osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter, nps));
-    osmo.addModelObject(new CalendarFailureModel(state, scripter, nps));
     osmo.addModelObject(state);
 //    osmo.addModelObject(new ValidTestModel2(new Requirements()));
     MainGenerator generator = osmo.initGenerator();

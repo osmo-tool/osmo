@@ -1,8 +1,8 @@
 package osmo.miner.testmodels;
 
-import osmo.miner.model.program.Program;
-import osmo.miner.model.program.Step;
-import osmo.miner.model.program.Suite;
+import osmo.miner.testminer.testcase.TestCase;
+import osmo.miner.testminer.testcase.Step;
+import osmo.miner.testminer.testcase.Suite;
 
 /**
  * @author Teemu Kanstren
@@ -11,7 +11,7 @@ public class TestModels1 {
   public static Suite model1() {
     Suite model = new Suite();
 
-    Program program1 = new Program("TestProgram1");
+    TestCase program1 = new TestCase("TestProgram1");
     program1.addVariable("v1", "hello");
     Step step1_1 = program1.createStep("step1");
     step1_1.addVariable("s1v1", "1");
@@ -26,7 +26,7 @@ public class TestModels1 {
     step1_4.addVariable("s4v1", "1");
     step1_4.addVariable("s4v2", "2");
 
-    Program program2 = new Program("TestProgram2");
+    TestCase program2 = new TestCase("TestProgram2");
     Step step2_1 = program2.createStep("step1");
     Step step2_2 = program2.createStep("step2");
     step2_2.addVariable("s2v1", "7");
@@ -41,7 +41,7 @@ public class TestModels1 {
   public static Suite modelWithOverlapError() {
     Suite model = new Suite();
 
-    Program program1 = new Program("TestProgram1");
+    TestCase program1 = new TestCase("TestProgram1");
     program1.addVariable("v1", "hello");
     Step step1_1 = program1.createStep("step1");
     step1_1.addVariable("s1v1", "1");
@@ -56,7 +56,7 @@ public class TestModels1 {
     step1_4.addVariable("s4v1", "1");
     step1_4.addVariable("s4v1", "2");
 
-    Program program2 = new Program("TestProgram2");
+    TestCase program2 = new TestCase("TestProgram2");
     Step step2_1 = program2.createStep("step1");
     Step step2_2 = program2.createStep("step2");
     step2_2.addVariable("s2v1", "7");
