@@ -42,7 +42,7 @@ import java.util.Map;
 /**
  * Provide manual interface for controlling test generation
  *
- * @author Olli-Pekka Puolitaival
+ * @author Olli-Pekka Puolitaival, Teemu Kanstrén
  */
 public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
 
@@ -266,6 +266,12 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     }
   }
 
+  /**
+   * Builds the description of generated test cases.
+   *
+   * @param history Generated tests.
+   * @return String to show to user.
+   */
   private String historyText(TestSuite history) {
     String ret = "";
 
@@ -394,14 +400,16 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     }
   }
 
-  public void updateTestLog() {
-    List<TestCase> tests = suite.getAllTestCases();
-    for (TestCase test : tests) {
-
-    }
-  }
-
+/*
+  String input = "action, name, value\n" +
+          "new test,,\n" +
+          "step, foo,\n" +
+          "variable, bob1, who1?\n" +
+          "step, foo,\n" +
+          "variable, bob2, who2?\n";
+*/
   public void writeScript() {
-
+    ManualScriptWriter writer = new ManualScriptWriter();
+    writer.write(suite);
   }
 }

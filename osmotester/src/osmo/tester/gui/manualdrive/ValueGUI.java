@@ -17,6 +17,7 @@ import java.awt.event.ActionListener;
 public abstract class ValueGUI extends JFrame {
   protected final SearchableInput input;
   protected Object value = null;
+  private boolean observed = false;
 
   public ValueGUI(SearchableInput input) throws HeadlessException {
     this.input = input;
@@ -49,6 +50,7 @@ public abstract class ValueGUI extends JFrame {
         value = ValueGUI.this.input.next();
         ValueGUI.this.input.enableGUI();
         setVisible(false);
+        observed = true;
         synchronized (ValueGUI.this) {
           ValueGUI.this.notify();
         }
@@ -85,6 +87,7 @@ public abstract class ValueGUI extends JFrame {
   protected abstract Object value();
 
   public Object next() {
+    observed = false;
     setVisible(true);
     synchronized (this) {
       try {
@@ -93,7 +96,9 @@ public abstract class ValueGUI extends JFrame {
         //ignored
       }
     }
-    input.observe(value);
+    if (!observed) {
+      input.observe(value);
+    }
     return value;
   }
 }
