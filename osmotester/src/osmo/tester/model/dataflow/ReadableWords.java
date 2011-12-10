@@ -1,5 +1,7 @@
 package osmo.tester.model.dataflow;
 
+import osmo.tester.gui.manualdrive.WordGUI;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -15,6 +17,7 @@ public class ReadableWords extends SearchableInput<String> {
   private ReadableChars chars = new ReadableChars();
   /** History of generated words. */
   private Collection<String> history = new ArrayList<String>();
+  /** How are the characters generated? */
   private DataGenerationStrategy strategy = DataGenerationStrategy.RANDOM;
 
   /** Constructor for default values (min=5, max=10). */
@@ -63,7 +66,11 @@ public class ReadableWords extends SearchableInput<String> {
    *
    * @return The generated character sequence.
    */
+  @Override
   public String next() {
+    if (gui != null) {
+      return (String)gui.next();
+    }
     switch (strategy) {
       case RANDOM:
         return randomNext();
@@ -141,5 +148,10 @@ public class ReadableWords extends SearchableInput<String> {
 
   public Collection<String> getHistory() {
     return history;
+  }
+
+  @Override
+  public void enableGUI() {
+    gui = new WordGUI(this);
   }
 }

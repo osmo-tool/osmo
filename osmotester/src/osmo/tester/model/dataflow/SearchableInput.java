@@ -1,5 +1,7 @@
 package osmo.tester.model.dataflow;
 
+import osmo.tester.gui.manualdrive.ValueGUI;
+
 import java.util.Collection;
 
 /**
@@ -14,7 +16,10 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T> {
   private InputObserver<T> observer = null;
   /** Does the variable support "all" values need to be covered mode. */
   protected boolean allSupported = false;
+  /** Provides values for this variable in playback mode. */
   private ScriptedValueProvider scripter = null;
+  /** For providing values manually through a GUI. Enabled if non-null. */
+  protected ValueGUI gui = null;
 
   protected SearchableInput() {
   }
@@ -53,5 +58,11 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T> {
 
   public Collection<?> getOptions() {
     throw new UnsupportedOperationException("This variable type does not support defining options");
+  }
+
+  public abstract void enableGUI();
+
+  public void disableGUI() {
+    gui = null;
   }
 }

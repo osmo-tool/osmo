@@ -1,6 +1,7 @@
 package osmo.tester.model.dataflow;
 
 import osmo.common.log.Logger;
+import osmo.tester.gui.manualdrive.ValueRangeSetGUI;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,10 +47,14 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
    */
   public void setPartitionStrategy(DataGenerationStrategy strategy) {
     this.partitionStrategy = strategy;
-    Collection<ValueRange> all = partitions.getAll();
+    Collection<ValueRange> all = partitions.getOptions();
     for (ValueRange range : all) {
       range.setStrategy(partitionStrategy);
     }
+  }
+
+  public ValueRange getPartition(int i) {
+    return partitions.getOptions().get(i);
   }
 
   /**
@@ -58,7 +63,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
    * @param increment Increment for value range partitions.
    */
   public void setIncrement(Number increment) {
-    Collection<ValueRange> all = partitions.getAll();
+    Collection<ValueRange> all = partitions.getOptions();
     for (ValueRange range : all) {
       range.setIncrement(increment);
     }
@@ -142,7 +147,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
    */
   private ValueRange optimizedRandomPartition() {
     log.debug("Optimized random partition choice start");
-    Collection<ValueRange> options = partitions.getAll();
+    Collection<ValueRange> options = partitions.getOptions();
     if (options.size() == 1) {
       ValueRange partition = options.iterator().next();
       log.debug("Single partition found, returning it:" + partition);
@@ -181,6 +186,9 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
   @Override
   public T next() {
     validate();
+    if (gui != null) {
+      return (T)gui.next();
+    }
     T next;
     if (strategy == DataGenerationStrategy.SCRIPTED) {
       return scriptedNext(scriptNextSerialized());
@@ -264,7 +272,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
    */
   @Override
   public boolean evaluate(Number value) {
-    Collection<ValueRange> partitions = this.partitions.getAll();
+    Collection<ValueRange> partitions = this.partitions.getOptions();
     log.debug("Evaluating value:" + value);
     for (ValueRange partition : partitions) {
       log.debug("Checking partition:" + partition);
@@ -285,6 +293,11 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
       return false;
     }
     return evaluate(value);
+  }
+
+  @Override
+  public void enableGUI() {
+    gui = new ValueRangeSetGUI(this);
   }
 
   @Override

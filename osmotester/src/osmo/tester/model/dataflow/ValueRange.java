@@ -1,6 +1,7 @@
 package osmo.tester.model.dataflow;
 
 import osmo.common.log.Logger;
+import osmo.tester.gui.manualdrive.ValueRangeGUI;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -139,6 +140,9 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
 
   @Override
   public T next() {
+    if (gui != null) {
+      return (T)gui.next();
+    }
     return (T) next(type);
   }
 
@@ -380,6 +384,11 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
       options.add(value);
     }
     return options;
+  }
+
+  @Override
+  public void enableGUI() {
+    gui = new ValueRangeGUI(this);
   }
 
   @Override

@@ -4,12 +4,14 @@ import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.algorithm.LessRandomAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.algorithm.WeightedRandomAlgorithm;
+import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.gui.ModelHelper;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
+import osmo.tester.model.dataflow.SearchableInput;
 
 import javax.swing.AbstractListModel;
 import javax.swing.DefaultComboBoxModel;
@@ -24,18 +26,16 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.EventQueue;
-import java.awt.SystemColor;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -63,6 +63,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
 
   /** Create the frame. */
   public ManualAlgorithm() {
+    setNimbus();
     setTitle("OSMOTester Manual Script Generation");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setBounds(100, 100, 600, 460);
@@ -166,10 +167,14 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
         suite.setShouldEndSuite(true);
       }
     });
-
-    JButton btnReset = new JButton("Reset");
     
     JButton btnWriteScript = new JButton("Write Script");
+    btnWriteScript.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        writeScript();
+      }
+    });
     GroupLayout gl_contentPane = new GroupLayout(contentPane);
     gl_contentPane.setHorizontalGroup(
       gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -190,7 +195,6 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
                   .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
                     .addComponent(btnEndSuite)
                     .addComponent(btnEndTest)
-                    .addComponent(btnReset)
                     .addComponent(btnWriteScript))
                   .addPreferredGap(ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                   .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -230,8 +234,6 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
                 .addGroup(gl_contentPane.createSequentialGroup()
                   .addComponent(btnWriteScript)
                   .addPreferredGap(ComponentPlacement.RELATED)
-                  .addComponent(btnReset)
-                  .addPreferredGap(ComponentPlacement.RELATED)
                   .addComponent(btnEndTest)))
               .addPreferredGap(ComponentPlacement.RELATED)
               .addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
@@ -267,9 +269,21 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
   private String historyText(TestSuite history) {
     String ret = "";
 
-    for (TestCase tc : history.getAllTestCases()) {
+    int tcId = 1;
+    List<TestCase> tests = history.getAllTestCases();
+    for (TestCase tc : tests) {
+      ret = "New test "+tcId+"\n"+ret;
+      tcId++;
       for (TestStep ts : tc.getSteps()) {
-        ret = ts.getId() + ". " + ts.getTransition().getName() + "\n" + ret;
+        int tsId = ts.getId();
+        String added = tsId + ". " + ts.getTransition().getName() + "\n";
+        List<ModelVariable> values = ts.getVariableValues();
+        int i = 1;
+        for (ModelVariable value : values) {
+          added += tsId+"."+i+". "+value.getName()+" = "+value.getValues()+"\n";
+          i++;
+        }
+        ret =  added + ret;
       }
     }
     return ret;
@@ -323,6 +337,10 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
 
   @Override
   public void init(FSM fsm) {
+    Collection<SearchableInput> inputs = fsm.getSearchableInputs();
+    for (SearchableInput input : inputs) {
+      input.enableGUI();
+    }
   }
 
   @Override
@@ -361,5 +379,29 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
       default:
         throw new RuntimeException("Error in algrithm handler. The index was: " + algorithmComboBox.getSelectedIndex());
     }
+  }
+
+  public void setNimbus() {
+    try {
+      for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+        if ("Nimbus".equals(info.getName())) {
+          UIManager.setLookAndFeel(info.getClassName());
+          break;
+        }
+      }
+    } catch (Exception e) {
+      // If Nimbus is not available, you can set the GUI to another look and feel.
+    }
+  }
+
+  public void updateTestLog() {
+    List<TestCase> tests = suite.getAllTestCases();
+    for (TestCase test : tests) {
+
+    }
+  }
+
+  public void writeScript() {
+
   }
 }

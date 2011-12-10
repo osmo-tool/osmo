@@ -150,6 +150,9 @@ public class TestCase {
 //    if (!merge || !variable.contains(value)) {
 //      log.debug("m:"+merge+" c:"+variable.contains(value));
     variable.addValue(value);
+    if (!merge) {
+      currentStep.addVariableValue(name, value);
+    }
 //    }
   }
 
