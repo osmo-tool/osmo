@@ -8,6 +8,8 @@ import osmo.tester.model.dataflow.SearchableInput;
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -19,6 +21,8 @@ public class GUI2 extends JFrame {
   private JTextField trnRuleField;
   private JTextField varRuleField;
   private JTextField modelFactoryField;
+  private final JList trnRuleList = new JList();
+  private final JList varRuleList = new JList();
   private List<String> transitionRules = new ArrayList<String>();
   private List<String> variableRules = new ArrayList<String>();
 
@@ -28,6 +32,7 @@ public class GUI2 extends JFrame {
   }
 
   public GUI2(FSM fsm) {
+    setNimbus();
     Collection<FSMTransition> fsmTransitions = fsm.getTransitions();
     Collection<SearchableInput> inputs = fsm.getSearchableInputs();
     Collection<VariableField> stateVariables = fsm.getStateVariables();
@@ -46,6 +51,7 @@ public class GUI2 extends JFrame {
     init(transitions, variables);
   }
 
+  /** @wbp.parser.constructor */
   public GUI2(List<String> transitions, List<String> variables) {
     init(transitions, variables);
   }
@@ -56,10 +62,19 @@ public class GUI2 extends JFrame {
     setBounds(100, 100, 740, 500);
     setResizable(false);
 
-    JComboBox algorithmCombo = new JComboBox();
-    algorithmCombo.setModel(new DefaultComboBoxModel(new String[]{"RandomAlgorithm", "BalancingAlgorithm", "WeightedAlgorithm"}));
+    final JComboBox algorithmCombo = new JComboBox();
+    algorithmCombo.setModel(new DefaultComboBoxModel(new String[]{"Random", "Balancing", "Weighted"}));
 
     JButton btnWriteScript = new JButton("Write Script");
+    btnWriteScript.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        DSMScriptWriter writer = new DSMScriptWriter();
+        String algorithm = algorithmCombo.getSelectedItem().toString();
+        String modelFactory = modelFactoryField.getText();
+        writer.write(algorithm, modelFactory, transitionRules, variableRules);
+      }
+    });
     JLabel lblTransitions = new JLabel("Transitions:");
     JScrollPane trnScrollPane = new JScrollPane();
     JLabel lblVariables = new JLabel("Variables:");
@@ -91,14 +106,123 @@ public class GUI2 extends JFrame {
     modelFactoryField = new JTextField();
     modelFactoryField.setColumns(12);
 
-    GroupLayout groupLayout = new GroupLayout(getContentPane());
-    groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout.createSequentialGroup().addContainerGap().addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(algorithmCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(modelFactoryField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(btnWriteScript).addComponent(lblModelFactory)).addPreferredGap(ComponentPlacement.RELATED).addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(lblVariables).addComponent(lblTransitions).addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false).addComponent(varScrollPane, Alignment.LEADING, 0, 0, Short.MAX_VALUE).addComponent(trnScrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))).addPreferredGap(ComponentPlacement.UNRELATED).addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(btnTrnAdd).addGroup(groupLayout.createSequentialGroup().addComponent(ruleCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED).addComponent(trnRuleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addComponent(varRuleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(btnVarAdd)).addPreferredGap(ComponentPlacement.UNRELATED).addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(lblTransitionRules).addComponent(trnRulePane, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE).addComponent(varRulePane, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE).addComponent(lblVariableRules)).addGap(72)));
-    groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout.createSequentialGroup().addGap(4).addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(lblTransitions).addComponent(lblTransitionRules)).addPreferredGap(ComponentPlacement.RELATED).addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout.createSequentialGroup().addComponent(algorithmCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED).addComponent(lblModelFactory).addPreferredGap(ComponentPlacement.RELATED).addComponent(modelFactoryField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnWriteScript)).addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(trnScrollPane, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE).addComponent(trnRulePane, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE))).addPreferredGap(ComponentPlacement.UNRELATED).addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(lblVariables).addComponent(lblVariableRules)).addPreferredGap(ComponentPlacement.RELATED).addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(varScrollPane, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE).addComponent(varRulePane, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)).addContainerGap()).addGroup(groupLayout.createSequentialGroup().addGap(49).addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(ruleCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(trnRuleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addPreferredGap(ComponentPlacement.RELATED).addComponent(btnTrnAdd).addPreferredGap(ComponentPlacement.RELATED, 200, Short.MAX_VALUE).addComponent(varRuleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnVarAdd).addGap(114)));
+    JButton btnRemoveTrn = new JButton("Remove");
+    btnRemoveTrn.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        int index = trnRuleList.getSelectedIndex();
+        if (index < 0) {
+          JOptionPane.showMessageDialog(GUI2.this, "No transition rule selected!");
+          return;
+        }
+        transitionRules.remove(index);
+        trnRuleList.setModel(new StringListModel(transitionRules));
+      }
+    });
 
-    final JList varRuleList = new JList();
+    JButton btnRemoveVar = new JButton("Remove");
+    btnRemoveVar.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        int index = varRuleList.getSelectedIndex();
+        if (index < 0) {
+          JOptionPane.showMessageDialog(GUI2.this, "No variable rule selected!");
+          return;
+        }
+        variableRules.remove(index);
+        varRuleList.setModel(new StringListModel(variableRules));
+      }
+    });
+    
+    JLabel lblAlgorithm = new JLabel("Algorithm:");
+
+    GroupLayout groupLayout = new GroupLayout(getContentPane());
+    groupLayout.setHorizontalGroup(
+      groupLayout.createParallelGroup(Alignment.LEADING)
+        .addGroup(groupLayout.createSequentialGroup()
+          .addContainerGap()
+          .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+            .addComponent(algorithmCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+            .addComponent(modelFactoryField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+            .addComponent(btnWriteScript)
+            .addComponent(lblModelFactory)
+            .addComponent(lblAlgorithm))
+          .addPreferredGap(ComponentPlacement.RELATED)
+          .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+            .addComponent(lblVariables)
+            .addComponent(lblTransitions)
+            .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+              .addComponent(varScrollPane, Alignment.LEADING, 0, 0, Short.MAX_VALUE)
+              .addComponent(trnScrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)))
+          .addPreferredGap(ComponentPlacement.UNRELATED)
+          .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+            .addComponent(btnTrnAdd)
+            .addGroup(groupLayout.createSequentialGroup()
+              .addComponent(ruleCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+              .addPreferredGap(ComponentPlacement.RELATED)
+              .addComponent(trnRuleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+            .addComponent(varRuleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+            .addComponent(btnVarAdd)
+            .addComponent(btnRemoveTrn)
+            .addComponent(btnRemoveVar))
+          .addPreferredGap(ComponentPlacement.UNRELATED)
+          .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+            .addComponent(lblTransitionRules)
+            .addComponent(trnRulePane, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+            .addComponent(varRulePane, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+            .addComponent(lblVariableRules))
+          .addGap(72))
+    );
+    groupLayout.setVerticalGroup(
+      groupLayout.createParallelGroup(Alignment.LEADING)
+        .addGroup(groupLayout.createSequentialGroup()
+          .addGap(4)
+          .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+            .addComponent(lblTransitions)
+            .addComponent(lblTransitionRules)
+            .addComponent(lblAlgorithm))
+          .addPreferredGap(ComponentPlacement.RELATED)
+          .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+            .addGroup(groupLayout.createSequentialGroup()
+              .addComponent(algorithmCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+              .addPreferredGap(ComponentPlacement.RELATED)
+              .addComponent(lblModelFactory)
+              .addPreferredGap(ComponentPlacement.RELATED)
+              .addComponent(modelFactoryField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+              .addPreferredGap(ComponentPlacement.UNRELATED)
+              .addComponent(btnWriteScript))
+            .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+              .addComponent(trnScrollPane, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+              .addComponent(trnRulePane, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)))
+          .addPreferredGap(ComponentPlacement.UNRELATED)
+          .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+            .addComponent(lblVariables)
+            .addComponent(lblVariableRules))
+          .addPreferredGap(ComponentPlacement.RELATED)
+          .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+            .addComponent(varScrollPane, GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
+            .addComponent(varRulePane, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE))
+          .addContainerGap())
+        .addGroup(groupLayout.createSequentialGroup()
+          .addGap(49)
+          .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+            .addComponent(ruleCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+            .addComponent(trnRuleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+          .addPreferredGap(ComponentPlacement.RELATED)
+          .addComponent(btnTrnAdd)
+          .addPreferredGap(ComponentPlacement.RELATED)
+          .addComponent(btnRemoveTrn)
+          .addPreferredGap(ComponentPlacement.RELATED, 177, Short.MAX_VALUE)
+          .addComponent(varRuleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+          .addPreferredGap(ComponentPlacement.UNRELATED)
+          .addComponent(btnVarAdd)
+          .addPreferredGap(ComponentPlacement.RELATED)
+          .addComponent(btnRemoveVar)
+          .addGap(85))
+    );
+
     varRulePane.setViewportView(varRuleList);
 
-    final JList trnRuleList = new JList();
     trnRuleList.setModel(new StringListModel(transitionRules));
     trnRulePane.setViewportView(trnRuleList);
 
@@ -114,21 +238,48 @@ public class GUI2 extends JFrame {
     btnTrnAdd.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        String transition = trnList.getSelectedValue().toString();
+        Object selectedValue = trnList.getSelectedValue();
+        if (selectedValue == null) {
+          return;
+        }
+        String transition = selectedValue.toString();
         String rule = ruleCombo.getSelectedItem().toString();
         String value = trnRuleField.getText();
-        transitionRules.add(transition + "," + rule + "," + value);
+        try {
+          Integer.parseInt(value);
+        } catch (NumberFormatException e1) {
+          JOptionPane.showMessageDialog(GUI2.this, "Value [" + value + "] is not a valid number");
+          return;
+        }
+        transitionRules.add(transition + "," + rule + value);
         trnRuleList.setModel(new StringListModel(transitionRules));
       }
     });
     btnVarAdd.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        String variable = varList.getSelectedValue().toString();
+        Object selectedValue = varList.getSelectedValue();
+        if (selectedValue == null) {
+          return;
+        }
+        String variable = selectedValue.toString();
         String value = varRuleField.getText();
         variableRules.add(variable + "," + value);
         varRuleList.setModel(new StringListModel(variableRules));
       }
     });
+  }
+
+  public void setNimbus() {
+    try {
+      for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+        if ("Nimbus".equals(info.getName())) {
+          UIManager.setLookAndFeel(info.getClassName());
+          break;
+        }
+      }
+    } catch (Exception e) {
+      // If Nimbus is not available, you can set the GUI to another look and feel.
+    }
   }
 }

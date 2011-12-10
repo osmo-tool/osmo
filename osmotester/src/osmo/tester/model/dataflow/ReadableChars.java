@@ -81,4 +81,8 @@ public class ReadableChars extends SearchableInput<Character> {
     }
     return evaluate(item.charAt(0));
   }
+
+  @Override
+  public void enableGUI() {
+  }
 }

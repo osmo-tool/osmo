@@ -1,6 +1,7 @@
 package osmo.tester.model.dataflow;
 
 import osmo.common.log.Logger;
+import osmo.tester.gui.manualdrive.ValueSetGUI;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -127,6 +128,9 @@ public class ValueSet<T> extends SearchableInput<T> {
     if (options.size() == 0) {
       throw new IllegalStateException("No value to provide (add some options).");
     }
+    if (gui != null) {
+      return (T)gui.next();
+    }
     T next = null;
     switch (strategy) {
       case ORDERED_LOOP:
@@ -222,13 +226,13 @@ public class ValueSet<T> extends SearchableInput<T> {
    *
    * @return All the objects in this set.
    */
-  public Collection<T> getAll() {
+  public List<T> getOptions() {
     return options;
   }
 
   @Override
-  public Collection<T> getOptions() {
-    return getAll();
+  public void enableGUI() {
+    gui = new ValueSetGUI(this);
   }
 
   @Override

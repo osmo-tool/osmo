@@ -1,5 +1,6 @@
 package osmo.tester.generator.testsuite;
 
+import osmo.common.log.Logger;
 import osmo.tester.annotation.Variable;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,6 +22,7 @@ import java.util.Map;
  * @author Teemu Kanstren
  */
 public class TestStep {
+  private static Logger log = new Logger(TestStep.class);
   /** The transition that was taken in this test step. */
   private final FSMTransition transition;
   /** The set of requirements covered by this test step. */
@@ -28,6 +31,8 @@ public class TestStep {
   private Map<String, Object> stateValuesBefore = new HashMap<String, Object>();
   /** Stores values of all {@link Variable} annotated fields in the model after this step was generated. */
   private Map<String, Object> stateValuesAfter = new HashMap<String, Object>();
+  /** The data variables and the values covered for each in this test case. */
+  private List<ModelVariable> values = new ArrayList<ModelVariable>();
   /** Step identifier. */
   private final int id;
   /** The parent test case to which this step belongs. */
@@ -124,5 +129,25 @@ public class TestStep {
       stateValuesAfter.put(name, value);
       parent.addVariableValue(name, value, true);
     }
+  }
+
+  /**
+   * Aadds a value for model variable. Means a value that was generated.
+   *
+   * @param name  Name of the variable.
+   * @param value The value of the variable.
+   */
+  public void addVariableValue(String name, Object value) {
+    ModelVariable mv = new ModelVariable(name);
+    log.debug("Variable:" + name + " add value:" + value);
+//    if (!merge || !variable.contains(value)) {
+//      log.debug("m:"+merge+" c:"+variable.contains(value));
+    mv.addValue(value);
+    values.add(mv);
+//    }
+  }
+
+  public List<ModelVariable> getVariableValues() {
+    return values;
   }
 }

@@ -62,10 +62,13 @@ public class GreedyOptimizer {
     MainGenerator generator = config.getGenerator();
     generator.initSuite();
     List<TestCase> all = new ArrayList<TestCase>();
+    long start = System.currentTimeMillis();
     for (int i = 0; i < count; i++) {
       all.add(generator.next());
-      System.out.println("creating test:"+i);
     }
+    long end = System.currentTimeMillis();
+    long diff = end - start;
+    System.out.println("created "+count+" tests in "+diff+" millis");
 /*    TestCase high = null;
     for (TestCase test : all) {
       if (high == null || test.getSteps().size() > high.getSteps().size()) {
@@ -87,6 +90,7 @@ public class GreedyOptimizer {
     if (howMany > from.size()) {
       throw new IllegalArgumentException("Requested bigger greedily sorted set than source has elements.");
     }
+    long start = System.currentTimeMillis();
     for (int i = 0; i < howMany; i++) {
       int added = 0;
       for (TestCase test : from) {
@@ -99,9 +103,11 @@ public class GreedyOptimizer {
       }
       from.remove(best);
       addBest();
-      System.out.println("chose:"+i);
+//      System.out.println("chose:"+i);
     }
-
+    long end = System.currentTimeMillis();
+    long diff = end-start;
+    System.out.println("sorted set greedily in "+diff+" millis");
     return tests;
   }
 
