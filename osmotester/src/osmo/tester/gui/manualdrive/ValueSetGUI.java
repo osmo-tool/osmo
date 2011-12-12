@@ -1,6 +1,5 @@
 package osmo.tester.gui.manualdrive;
 
-import osmo.tester.gui.ModelHelper;
 import osmo.tester.model.dataflow.SearchableInput;
 import osmo.tester.model.dataflow.ValueSet;
 
@@ -12,17 +11,16 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * GUI to manually define value for a value set.
+ *
  * @author Teemu Kanstren
  */
 public class ValueSetGUI extends ValueGUI {
+  /** For the user to define the value. */
   private JComboBox combo;
 
   public ValueSetGUI(SearchableInput input) throws HeadlessException {
     super(input);
-  }
-
-  @Override
-  protected void build() {
   }
 
   @Override

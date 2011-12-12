@@ -2,7 +2,6 @@ package osmo.tester.reporting.coverage;
 
 import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.optimizer.TestCoverage;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,7 +33,7 @@ public class SingleTestCoverage {
    * @param tc The test for which to get the coverage.
    */
   public SingleTestCoverage(TestCase tc) {
-    this.name = "Test"+tc.getId();
+    this.name = "Test" + tc.getId();
     countRequirements(tc);
     countTransitions(tc);
     collectVariableValues(tc);
@@ -52,7 +51,7 @@ public class SingleTestCoverage {
     String previous = "init";
     for (String name : names) {
       incrementCountFor(transitionCount, name);
-      String pair = previous + "->"+name;
+      String pair = previous + "->" + name;
       incrementCountFor(pairCount, pair);
       previous = name;
     }
@@ -122,7 +121,7 @@ public class SingleTestCoverage {
    * @return The times covered in this test case.
    */
   public int pairCount(String pair) {
-    return countFor(pairCount,  pair);
+    return countFor(pairCount, pair);
   }
 
   /**
@@ -136,5 +135,5 @@ public class SingleTestCoverage {
     return variableValues.get(variable);
   }
 
-  
+
 }

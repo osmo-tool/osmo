@@ -54,8 +54,8 @@
     }
     .osmo-table tr.alt td
     {
-    color:#000000;
-    background-color:#EAF2D3;
+      color:#000000;
+      background-color:#EAF2D3;
     }
     .osmo-table tr:hover th[scope=row], .osmo-table tr:hover td
     {
@@ -88,12 +88,12 @@
     </thead>
     <tbody>
 #foreach ($t in $tests)
-    <tr$alt>
-      <th class='testhead' scope='row'>$t.name</th>
+      <tr$alt>
+        <th class='testhead' scope='row'>$t.name</th>
 #foreach ($tn in $transition_names)
-      <td>$t.transitionCount($tn)</td>
+        <td>$t.transitionCount($tn)</td>
 #end
-    </tr>
+      </tr>
 #end
     </tbody>
   </table>
@@ -107,7 +107,7 @@
       </tr>
       <tr>
 #foreach ($rn in $requirement_names)
-      <th class='colhead' scope='col'>$rn</th>
+        <th class='colhead' scope='col'>$rn</th>
 #end
       </tr>
     </thead>
@@ -132,7 +132,7 @@
       </tr>
       <tr>
 #foreach ($tpn in $transition_pair_names)
-      <th class='colhead' scope='col'>$tpn</th>
+        <th class='colhead' scope='col'>$tpn</th>
 #end
       </tr>
     </thead>

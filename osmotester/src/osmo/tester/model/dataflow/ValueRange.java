@@ -141,7 +141,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
   @Override
   public T next() {
     if (gui != null) {
-      return (T)gui.next();
+      return (T) gui.next();
     }
     return (T) next(type);
   }
@@ -179,7 +179,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
 
   private T scriptedNext(String serialized) {
     if (!evaluateSerialized(serialized)) {
-      throw new IllegalArgumentException("Requested invalid scripted value for variable '"+getName()+"': "+serialized);
+      throw new IllegalArgumentException("Requested invalid scripted value for variable '" + getName() + "': " + serialized);
     }
     Number value = null;
     switch (type) {
@@ -195,7 +195,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
       default:
         throw new IllegalArgumentException("Enum type:" + type + " unsupported.");
     }
-    return (T)value;
+    return (T) value;
   }
 
 

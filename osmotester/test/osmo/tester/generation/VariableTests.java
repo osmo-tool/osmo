@@ -14,7 +14,8 @@ import osmo.tester.testmodels.VariableModel2;
 import java.util.List;
 import java.util.Map;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 
 /** @author Teemu Kanstren */
 public class VariableTests {

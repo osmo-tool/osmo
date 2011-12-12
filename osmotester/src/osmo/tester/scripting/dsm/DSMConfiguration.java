@@ -27,21 +27,39 @@ public class DSMConfiguration {
   private String algorithm = null;
   /** The random seed for OSMOTester. */
   private long seed = System.currentTimeMillis();
+  /** Allows the DSM to define the exact values for a variable to be used. */
   private ScriptedValueProvider scripter = null;
 
   public long getSeed() {
     return seed;
   }
 
+  /**
+   * Set the random generation seed.
+   *
+   * @param seed The seed.
+   */
   public void setSeed(long seed) {
     this.seed = seed;
   }
 
+  /**
+   * Add minimum number for how many times a step needs to be taken.
+   *
+   * @param step The step (transition) name.
+   * @param min  The minimum number it must be taken.
+   */
   public void addStepMin(String step, int min) {
     StepRequirement req = getStepRequirement(step);
     req.setMin(min);
   }
 
+  /**
+   * Add maximum number for how many times a step can be taken.
+   *
+   * @param step The step (transition) name.
+   * @param max  The maximum number it can be taken.
+   */
   public void addStepMax(String step, int max) {
     StepRequirement req = getStepRequirement(step);
     req.setMax(max);
@@ -100,7 +118,7 @@ public class DSMConfiguration {
   }
 
   public String getAlgorithm() {
-    if (algorithm == null || algorithm.length()== 0) {
+    if (algorithm == null || algorithm.length() == 0) {
       setAlgorithm("random");
     }
     return algorithm;
@@ -110,6 +128,11 @@ public class DSMConfiguration {
     return scripter;
   }
 
+  /**
+   * Allows setting required specific values to be used.
+   *
+   * @param scripter The scripter.
+   */
   public void setScripter(ScriptedValueProvider scripter) {
     this.scripter = scripter;
   }

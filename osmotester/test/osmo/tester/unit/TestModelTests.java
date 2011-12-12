@@ -3,6 +3,7 @@ package osmo.tester.unit;
 import org.junit.Test;
 import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.model.FSMTransition;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -22,6 +23,7 @@ public class TestModelTests {
   @Test
   public void variablesNoMerging() {
     TestCase test = new TestCase();
+    test.addStep(new FSMTransition("bob"));
     test.addVariableValue("v1", "hello", false);
     test.addVariableValue("v1", "world");
     test.addVariableValue("v1", "world", false);

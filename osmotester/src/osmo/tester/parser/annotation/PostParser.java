@@ -43,11 +43,11 @@ public class PostParser implements AnnotationParser {
         fsm.addGenericPost(target);
         //generic post should not be have their own transition or it will fail the FSM check since it is a guard
         //without a transition
-        log.debug("added generic post:"+name);
+        log.debug("added generic post:" + name);
         continue;
       }
       name = prefix + name;
-      log.debug("created specific post:"+name);
+      log.debug("created specific post:" + name);
       FSMTransition transition = fsm.createTransition(name, -1);
       transition.addPost(target);
     }

@@ -1,10 +1,13 @@
 package osmo.tester.gui.dsm;
 
-import javax.swing.*;
-import javax.swing.event.ListDataListener;
+import javax.swing.AbstractListModel;
 import java.util.List;
 
-/** @author Teemu Kanstren */
+/**
+ * A model allowing using a JList to display a list of Strings.
+ *
+ * @author Teemu Kanstren
+ */
 public class StringListModel extends AbstractListModel {
   private final List<String> items;
 

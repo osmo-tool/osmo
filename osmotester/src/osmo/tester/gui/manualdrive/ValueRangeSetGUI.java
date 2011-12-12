@@ -6,21 +6,21 @@ import osmo.tester.model.dataflow.ValueRangeSet;
 
 import javax.swing.JComponent;
 import javax.swing.JTextArea;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.HeadlessException;
 
 /**
+ * GUI to manually define value for a value range set.
+ *
  * @author Teemu Kanstren
  */
 public class ValueRangeSetGUI extends ValueGUI {
+  /** For the user to define the value. */
   private JTextArea area;
 
   public ValueRangeSetGUI(SearchableInput input) throws HeadlessException {
     super(input);
     pack();
-  }
-
-  @Override
-  protected void build() {
   }
 
   @Override

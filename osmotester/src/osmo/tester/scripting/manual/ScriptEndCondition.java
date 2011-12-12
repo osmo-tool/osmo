@@ -4,9 +4,11 @@ import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 
-import java.util.List;
-
-/** @author Teemu Kanstren */
+/**
+ * End condition for ending test execution (generation) according to manually defined test scripts.
+ *
+ * @author Teemu Kanstren
+ */
 public class ScriptEndCondition implements EndCondition {
   private final ScriptAlgorithm algorithm;
 

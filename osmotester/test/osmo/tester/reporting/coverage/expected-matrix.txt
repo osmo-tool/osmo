@@ -54,8 +54,8 @@
     }
     .osmo-table tr.alt td
     {
-    color:#000000;
-    background-color:#EAF2D3;
+      color:#000000;
+      background-color:#EAF2D3;
     }
     .osmo-table tr:hover th[scope=row], .osmo-table tr:hover td
     {
@@ -93,30 +93,30 @@
       </tr>
     </thead>
     <tbody>
-    <tr>
-      <th class='testhead' scope='row'>Test1</th>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr class='alt'>
-      <th class='testhead' scope='row'>Test2</th>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>3</td>
-    </tr>
+      <tr>
+        <th class='testhead' scope='row'>Test1</th>
+        <td>0</td>
+        <td>1</td>
+        <td>0</td>
+        <td>1</td>
+        <td>2</td>
+        <td>2</td>
+        <td>2</td>
+        <td>0</td>
+        <td>0</td>
+      </tr>
+      <tr class='alt'>
+        <th class='testhead' scope='row'>Test2</th>
+        <td>0</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td>1</td>
+        <td>3</td>
+      </tr>
     </tbody>
   </table>
 
@@ -128,9 +128,9 @@
         <th scope='col' colspan='3'>Requirement coverage</th>
       </tr>
       <tr>
-      <th class='colhead' scope='col'>req-one</th>
-      <th class='colhead' scope='col'>req-two</th>
-      <th class='colhead' scope='col'>req-three</th>
+        <th class='colhead' scope='col'>req-one</th>
+        <th class='colhead' scope='col'>req-two</th>
+        <th class='colhead' scope='col'>req-three</th>
       </tr>
     </thead>
     <tbody>
@@ -157,88 +157,88 @@
         <th scope='col' colspan='82'>Transition-pair coverage</th>
       </tr>
       <tr>
-      <th class='colhead' scope='col'>one->eight</th>
-      <th class='colhead' scope='col'>six->seven</th>
-      <th class='colhead' scope='col'>one->two</th>
-      <th class='colhead' scope='col'>ten->eight</th>
-      <th class='colhead' scope='col'>ten->three</th>
-      <th class='colhead' scope='col'>three->three</th>
-      <th class='colhead' scope='col'>ten->seven</th>
-      <th class='colhead' scope='col'>three->five</th>
-      <th class='colhead' scope='col'>eight->six</th>
-      <th class='colhead' scope='col'>four->eight</th>
-      <th class='colhead' scope='col'>five->one</th>
-      <th class='colhead' scope='col'>ten->four</th>
-      <th class='colhead' scope='col'>four->five</th>
-      <th class='colhead' scope='col'>seven->two</th>
-      <th class='colhead' scope='col'>eight->two</th>
-      <th class='colhead' scope='col'>seven->five</th>
-      <th class='colhead' scope='col'>seven->six</th>
-      <th class='colhead' scope='col'>two->ten</th>
-      <th class='colhead' scope='col'>four->six</th>
-      <th class='colhead' scope='col'>three->two</th>
-      <th class='colhead' scope='col'>two->seven</th>
-      <th class='colhead' scope='col'>two->one</th>
-      <th class='colhead' scope='col'>two->three</th>
-      <th class='colhead' scope='col'>three->ten</th>
-      <th class='colhead' scope='col'>ten->ten</th>
-      <th class='colhead' scope='col'>six->four</th>
-      <th class='colhead' scope='col'>ten->two</th>
-      <th class='colhead' scope='col'>two->four</th>
-      <th class='colhead' scope='col'>two->two</th>
-      <th class='colhead' scope='col'>five->six</th>
-      <th class='colhead' scope='col'>Start->one</th>
-      <th class='colhead' scope='col'>six->eight</th>
-      <th class='colhead' scope='col'>four->seven</th>
-      <th class='colhead' scope='col'>eight->one</th>
-      <th class='colhead' scope='col'>eight->five</th>
-      <th class='colhead' scope='col'>seven->one</th>
-      <th class='colhead' scope='col'>three->eight</th>
-      <th class='colhead' scope='col'>one->seven</th>
-      <th class='colhead' scope='col'>six->two</th>
-      <th class='colhead' scope='col'>seven->three</th>
-      <th class='colhead' scope='col'>five->two</th>
-      <th class='colhead' scope='col'>one->ten</th>
-      <th class='colhead' scope='col'>eight->eight</th>
-      <th class='colhead' scope='col'>three->seven</th>
-      <th class='colhead' scope='col'>one->four</th>
-      <th class='colhead' scope='col'>eight->three</th>
-      <th class='colhead' scope='col'>seven->ten</th>
-      <th class='colhead' scope='col'>five->eight</th>
-      <th class='colhead' scope='col'>two->five</th>
-      <th class='colhead' scope='col'>six->one</th>
-      <th class='colhead' scope='col'>eight->four</th>
-      <th class='colhead' scope='col'>one->three</th>
-      <th class='colhead' scope='col'>four->two</th>
-      <th class='colhead' scope='col'>five->four</th>
-      <th class='colhead' scope='col'>one->six</th>
-      <th class='colhead' scope='col'>five->ten</th>
-      <th class='colhead' scope='col'>eight->ten</th>
-      <th class='colhead' scope='col'>six->three</th>
-      <th class='colhead' scope='col'>ten->one</th>
-      <th class='colhead' scope='col'>one->five</th>
-      <th class='colhead' scope='col'>three->four</th>
-      <th class='colhead' scope='col'>ten->six</th>
-      <th class='colhead' scope='col'>four->three</th>
-      <th class='colhead' scope='col'>three->one</th>
-      <th class='colhead' scope='col'>seven->seven</th>
-      <th class='colhead' scope='col'>four->ten</th>
-      <th class='colhead' scope='col'>two->six</th>
-      <th class='colhead' scope='col'>four->one</th>
-      <th class='colhead' scope='col'>ten->five</th>
-      <th class='colhead' scope='col'>six->five</th>
-      <th class='colhead' scope='col'>two->eight</th>
-      <th class='colhead' scope='col'>seven->four</th>
-      <th class='colhead' scope='col'>six->six</th>
-      <th class='colhead' scope='col'>seven->eight</th>
-      <th class='colhead' scope='col'>eight->seven</th>
-      <th class='colhead' scope='col'>four->four</th>
-      <th class='colhead' scope='col'>six->ten</th>
-      <th class='colhead' scope='col'>one->one</th>
-      <th class='colhead' scope='col'>five->three</th>
-      <th class='colhead' scope='col'>three->six</th>
-      <th class='colhead' scope='col'>five->seven</th>
-      <th class='colhead' scope='col'>five->five</th>
+        <th class='colhead' scope='col'>one->eight</th>
+        <th class='colhead' scope='col'>six->seven</th>
+        <th class='colhead' scope='col'>one->two</th>
+        <th class='colhead' scope='col'>ten->eight</th>
+        <th class='colhead' scope='col'>ten->three</th>
+        <th class='colhead' scope='col'>three->three</th>
+        <th class='colhead' scope='col'>ten->seven</th>
+        <th class='colhead' scope='col'>three->five</th>
+        <th class='colhead' scope='col'>eight->six</th>
+        <th class='colhead' scope='col'>four->eight</th>
+        <th class='colhead' scope='col'>five->one</th>
+        <th class='colhead' scope='col'>ten->four</th>
+        <th class='colhead' scope='col'>four->five</th>
+        <th class='colhead' scope='col'>seven->two</th>
+        <th class='colhead' scope='col'>eight->two</th>
+        <th class='colhead' scope='col'>seven->five</th>
+        <th class='colhead' scope='col'>seven->six</th>
+        <th class='colhead' scope='col'>two->ten</th>
+        <th class='colhead' scope='col'>four->six</th>
+        <th class='colhead' scope='col'>three->two</th>
+        <th class='colhead' scope='col'>two->seven</th>
+        <th class='colhead' scope='col'>two->one</th>
+        <th class='colhead' scope='col'>two->three</th>
+        <th class='colhead' scope='col'>three->ten</th>
+        <th class='colhead' scope='col'>ten->ten</th>
+        <th class='colhead' scope='col'>six->four</th>
+        <th class='colhead' scope='col'>ten->two</th>
+        <th class='colhead' scope='col'>two->four</th>
+        <th class='colhead' scope='col'>two->two</th>
+        <th class='colhead' scope='col'>five->six</th>
+        <th class='colhead' scope='col'>Start->one</th>
+        <th class='colhead' scope='col'>six->eight</th>
+        <th class='colhead' scope='col'>four->seven</th>
+        <th class='colhead' scope='col'>eight->one</th>
+        <th class='colhead' scope='col'>eight->five</th>
+        <th class='colhead' scope='col'>seven->one</th>
+        <th class='colhead' scope='col'>three->eight</th>
+        <th class='colhead' scope='col'>one->seven</th>
+        <th class='colhead' scope='col'>six->two</th>
+        <th class='colhead' scope='col'>seven->three</th>
+        <th class='colhead' scope='col'>five->two</th>
+        <th class='colhead' scope='col'>one->ten</th>
+        <th class='colhead' scope='col'>eight->eight</th>
+        <th class='colhead' scope='col'>three->seven</th>
+        <th class='colhead' scope='col'>one->four</th>
+        <th class='colhead' scope='col'>eight->three</th>
+        <th class='colhead' scope='col'>seven->ten</th>
+        <th class='colhead' scope='col'>five->eight</th>
+        <th class='colhead' scope='col'>two->five</th>
+        <th class='colhead' scope='col'>six->one</th>
+        <th class='colhead' scope='col'>eight->four</th>
+        <th class='colhead' scope='col'>one->three</th>
+        <th class='colhead' scope='col'>four->two</th>
+        <th class='colhead' scope='col'>five->four</th>
+        <th class='colhead' scope='col'>one->six</th>
+        <th class='colhead' scope='col'>five->ten</th>
+        <th class='colhead' scope='col'>eight->ten</th>
+        <th class='colhead' scope='col'>six->three</th>
+        <th class='colhead' scope='col'>ten->one</th>
+        <th class='colhead' scope='col'>one->five</th>
+        <th class='colhead' scope='col'>three->four</th>
+        <th class='colhead' scope='col'>ten->six</th>
+        <th class='colhead' scope='col'>four->three</th>
+        <th class='colhead' scope='col'>three->one</th>
+        <th class='colhead' scope='col'>seven->seven</th>
+        <th class='colhead' scope='col'>four->ten</th>
+        <th class='colhead' scope='col'>two->six</th>
+        <th class='colhead' scope='col'>four->one</th>
+        <th class='colhead' scope='col'>ten->five</th>
+        <th class='colhead' scope='col'>six->five</th>
+        <th class='colhead' scope='col'>two->eight</th>
+        <th class='colhead' scope='col'>seven->four</th>
+        <th class='colhead' scope='col'>six->six</th>
+        <th class='colhead' scope='col'>seven->eight</th>
+        <th class='colhead' scope='col'>eight->seven</th>
+        <th class='colhead' scope='col'>four->four</th>
+        <th class='colhead' scope='col'>six->ten</th>
+        <th class='colhead' scope='col'>one->one</th>
+        <th class='colhead' scope='col'>five->three</th>
+        <th class='colhead' scope='col'>three->six</th>
+        <th class='colhead' scope='col'>five->seven</th>
+        <th class='colhead' scope='col'>five->five</th>
       </tr>
     </thead>
     <tbody>

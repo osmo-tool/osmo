@@ -49,6 +49,7 @@ public class OSMOTester {
   private GenerationListenerList listeners = new GenerationListenerList();
   /** The parsed model for test generation. */
   private FSM fsm = null;
+  /** Provides scripted values for variables. */
   private ScriptedValueProvider scripter;
 
   /**

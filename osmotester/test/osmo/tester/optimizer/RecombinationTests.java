@@ -12,7 +12,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 import static osmo.common.TestUtils.cInt;
 
 /** @author Teemu Kanstren */

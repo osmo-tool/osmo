@@ -5,9 +5,7 @@ import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
 import osmo.tester.model.dataflow.ScriptedValueProvider;
 import osmo.tester.scripting.AbstractAsciiParser;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

@@ -10,7 +10,7 @@ public class ScriptedValueProvider {
   public String next(String variable) {
     ValueSet<String> values = scripts.get(variable);
     if (values == null) {
-      throw new IllegalArgumentException("Script requests unknown variable:"+variable);
+      throw new IllegalArgumentException("Script requests unknown variable:" + variable);
     }
     return values.next();
   }

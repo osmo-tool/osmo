@@ -35,7 +35,7 @@ public class TransitionParser implements AnnotationParser {
     String prefix = parameters.getPrefix();
     name = prefix + name;
     int weight = t.weight();
-    log.debug("creating transition:"+name);
+    log.debug("creating transition:" + name);
     FSMTransition transition = parameters.getFsm().createTransition(name, weight);
     transition.setTransition(new InvocationTarget(parameters, Transition.class));
     return "";

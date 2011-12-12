@@ -8,7 +8,8 @@ import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
 
 import static junit.framework.Assert.assertEquals;
-import static osmo.common.TestUtils.*;
+import static osmo.common.TestUtils.getResource;
+import static osmo.common.TestUtils.unifyLineSeparators;
 
 /** @author Teemu Kanstren */
 public class SummaryTests {
@@ -122,7 +123,7 @@ public class SummaryTests {
 
   @Test
   public void htmlTransitionPairs() {
-    String expected = getResource(getClass(), "expected-transitionpairs.html");
+    String expected = getResource(getClass(), "expected-transitionpairs.txt");
     expected = unifyLineSeparators(expected, "\n");
     HTMLCoverageReporter html = new HTMLCoverageReporter(suite, fsm);
     String actual = html.getTransitionPairCounts();
@@ -137,7 +138,7 @@ public class SummaryTests {
 
   @Test
   public void htmlRequirements() {
-    String expected = getResource(getClass(), "expected-requirements.html");
+    String expected = getResource(getClass(), "expected-requirements.txt");
     expected = unifyLineSeparators(expected, "\n");
     HTMLCoverageReporter html = new HTMLCoverageReporter(suite, fsm);
     String actual = html.getRequirementCounts();

@@ -6,11 +6,8 @@ import org.junit.Test;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.Endless;
 import osmo.tester.generator.endcondition.Length;
-import osmo.tester.generator.filter.MaxTransitionFilter;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.model.FSM;
 import osmo.tester.model.Requirements;
-import osmo.tester.parser.ModelObject;
 import osmo.tester.testmodels.BaseModelExtension;
 import osmo.tester.testmodels.EndStateModel;
 import osmo.tester.testmodels.PartialModel1;
@@ -24,11 +21,8 @@ import osmo.tester.testmodels.VariableModel2;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collection;
 
 import static junit.framework.Assert.*;
-import static junit.framework.Assert.assertEquals;
 
 /**
  * Test cases that exercise the model generator, checking the output for the given test models.

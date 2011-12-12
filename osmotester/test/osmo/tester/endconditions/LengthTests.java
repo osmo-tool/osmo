@@ -6,11 +6,11 @@ import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.testmodels.CalculatorModel;
-import osmo.tester.testmodels.ValidTestModel1;
 
 import java.util.List;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
 
 /** @author Teemu Kanstren */
 public class LengthTests {

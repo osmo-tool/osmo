@@ -69,7 +69,7 @@ public class ReadableWords extends SearchableInput<String> {
   @Override
   public String next() {
     if (gui != null) {
-      return (String)gui.next();
+      return (String) gui.next();
     }
     switch (strategy) {
       case RANDOM:
@@ -77,7 +77,7 @@ public class ReadableWords extends SearchableInput<String> {
       case SCRIPTED:
         return scriptedNext();
       default:
-        throw new IllegalStateException("Unsupported data generation strategy for "+ReadableWords.class.getName()+" (random and scripted only supported): "+strategy.getClass().getName());
+        throw new IllegalStateException("Unsupported data generation strategy for " + ReadableWords.class.getName() + " (random and scripted only supported): " + strategy.getClass().getName());
     }
   }
 
@@ -96,7 +96,7 @@ public class ReadableWords extends SearchableInput<String> {
   private String scriptedNext() {
     String next = scriptNextSerialized();
     if (!evaluate(next)) {
-      throw new IllegalArgumentException("Requested invalid scripted value for variable '"+getName()+"' (must be valid set of chars and length in defined bounds of length "+min+"-"+max+"): "+next);
+      throw new IllegalArgumentException("Requested invalid scripted value for variable '" + getName() + "' (must be valid set of chars and length in defined bounds of length " + min + "-" + max + "): " + next);
     }
     return next;
   }
