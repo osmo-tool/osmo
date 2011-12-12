@@ -7,16 +7,24 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
+ * Base GUI for variable values.
+ *
  * @author Teemu Kanstren
  */
 public abstract class ValueGUI extends JFrame {
+  /** The input variable the this GUI is for. */
   protected final SearchableInput input;
+  /** The value to provide next. */
   protected Object value = null;
+  /** A hack to prevent calling SearchableInputObserver twice if automated (skip) option is chosen. */
   private boolean observed = false;
 
   public ValueGUI(SearchableInput input) throws HeadlessException {
@@ -63,6 +71,7 @@ public abstract class ValueGUI extends JFrame {
         ValueGUI.this.input.disableGUI();
         value = ValueGUI.this.input.next();
         setVisible(false);
+        observed = true;
         synchronized (ValueGUI.this) {
           ValueGUI.this.notify();
         }
@@ -73,19 +82,37 @@ public abstract class ValueGUI extends JFrame {
     panel.add(skip);
     panel.add(auto);
     pane.add(panel, BorderLayout.SOUTH);
-    build();
     pack();
     setLocationRelativeTo(null);
   }
 
+  /**
+   * Should create the label for the window to describe what value is requested.
+   *
+   * @return The label.
+   */
   protected abstract String createValueLabel();
 
+  /**
+   * Should create the JComponent to request the value from the user.
+   *
+   * @return The JComponent to get the value.
+   */
   protected abstract JComponent createValueComponent();
 
-  protected abstract void build();
-
+  /**
+   * Gives the value for variable as parsed from user input. If this returns null, it is considered an
+   * invalid value and the GUI is left open to request a new valid value.
+   *
+   * @return The defined value.
+   */
   protected abstract Object value();
 
+  /**
+   * Provides the next value for the associated input.
+   *
+   * @return The next defined input value.
+   */
   public Object next() {
     observed = false;
     setVisible(true);

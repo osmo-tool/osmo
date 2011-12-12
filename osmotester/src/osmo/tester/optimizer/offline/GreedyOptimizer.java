@@ -68,7 +68,7 @@ public class GreedyOptimizer {
     }
     long end = System.currentTimeMillis();
     long diff = end - start;
-    System.out.println("created "+count+" tests in "+diff+" millis");
+    System.out.println("created " + count + " tests in " + diff + " millis");
 /*    TestCase high = null;
     for (TestCase test : all) {
       if (high == null || test.getSteps().size() > high.getSteps().size()) {
@@ -106,8 +106,8 @@ public class GreedyOptimizer {
 //      System.out.println("chose:"+i);
     }
     long end = System.currentTimeMillis();
-    long diff = end-start;
-    System.out.println("sorted set greedily in "+diff+" millis");
+    long diff = end - start;
+    System.out.println("sorted set greedily in " + diff + " millis");
     return tests;
   }
 

@@ -6,12 +6,16 @@ import osmo.tester.model.dataflow.ValueRange;
 
 import javax.swing.JComponent;
 import javax.swing.JTextArea;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.HeadlessException;
 
 /**
+ * GUI to manually define value for a value range.
+ *
  * @author Teemu Kanstren
  */
 public class ValueRangeGUI extends ValueGUI {
+  /** For the user to define the value. */
   private JTextArea area;
 
   public ValueRangeGUI(SearchableInput input) throws HeadlessException {
@@ -20,13 +24,9 @@ public class ValueRangeGUI extends ValueGUI {
   }
 
   @Override
-  protected void build() {
-  }
-
-  @Override
   protected String createValueLabel() {
     ValueRange range = (ValueRange) input;
-    return "Give value (range ["+range.min()+" - "+range.max()+"])";
+    return "Give value (range [" + range.min() + " - " + range.max() + "])";
   }
 
   @Override

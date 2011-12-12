@@ -4,9 +4,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/** @author Teemu Kanstren */
+/**
+ * A manually defined script for a test case.
+ *
+ * @author Teemu Kanstren
+ */
 public class TestScript implements Iterable<ScriptStep> {
+  /** The list of steps for the test case, in order. */
   private List<ScriptStep> steps = new ArrayList<ScriptStep>();
+  /** The step to which add variable values. */
   private ScriptStep lastAdded = null;
 
   public void addStep(String name) {
@@ -15,6 +21,12 @@ public class TestScript implements Iterable<ScriptStep> {
     steps.add(step);
   }
 
+  /**
+   * Adds a value for the given variable to the latest added test step.
+   *
+   * @param variable The name of the variable.
+   * @param value    The value for the variable.
+   */
   public void addValue(String variable, String value) {
     lastAdded.addValue(variable, value);
   }

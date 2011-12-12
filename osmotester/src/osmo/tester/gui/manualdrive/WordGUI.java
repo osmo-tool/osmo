@@ -5,21 +5,21 @@ import osmo.tester.model.dataflow.SearchableInput;
 
 import javax.swing.JComponent;
 import javax.swing.JTextArea;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.HeadlessException;
 
 /**
+ * GUI to manually define value for a readable word.
+ *
  * @author Teemu Kanstren
  */
 public class WordGUI extends ValueGUI {
+  /** For the user to define the value. */
   private JTextArea area;
 
   public WordGUI(SearchableInput input) throws HeadlessException {
     super(input);
     pack();
-  }
-
-  @Override
-  protected void build() {
   }
 
   @Override

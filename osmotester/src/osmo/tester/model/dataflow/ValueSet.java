@@ -11,7 +11,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import static osmo.common.TestUtils.*;
+import static osmo.common.TestUtils.minOf;
+import static osmo.common.TestUtils.oneOf;
 
 /**
  * Represents a set of values (objects) of the given type.
@@ -129,7 +130,7 @@ public class ValueSet<T> extends SearchableInput<T> {
       throw new IllegalStateException("No value to provide (add some options).");
     }
     if (gui != null) {
-      return (T)gui.next();
+      return (T) gui.next();
     }
     T next = null;
     switch (strategy) {
@@ -160,7 +161,7 @@ public class ValueSet<T> extends SearchableInput<T> {
         return option;
       }
     }
-    throw new IllegalArgumentException("Requested scripted value for variable '"+getName()+"' not found: "+serialized);
+    throw new IllegalArgumentException("Requested scripted value for variable '" + getName() + "' not found: " + serialized);
   }
 
   /**

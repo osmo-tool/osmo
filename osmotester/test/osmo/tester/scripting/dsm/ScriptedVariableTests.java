@@ -10,8 +10,8 @@ import osmo.tester.model.dataflow.ValueRange;
 import osmo.tester.model.dataflow.ValueRangeSet;
 import osmo.tester.model.dataflow.ValueSet;
 
-import static junit.framework.Assert.*;
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
 
 /** @author Teemu Kanstren */
 public class ScriptedVariableTests {
@@ -25,7 +25,7 @@ public class ScriptedVariableTests {
   public void start() {
     set = new ValueSet<Integer>(1, 4, 9);
     range = new ValueRange<Integer>(1, 5);
-    rangeSet  = new ValueRangeSet<Double>();
+    rangeSet = new ValueRangeSet<Double>();
     words = new ReadableWords(8, 13);
 
     TestUtils.setSeed(111);
@@ -47,8 +47,8 @@ public class ScriptedVariableTests {
   public void valueSetNoScript() {
     String expected = "4,9,4,9,9,4,1,9,4,1,9,1,9,9,4,9,1,9,9,1,";
     String actual = "";
-    for (int i = 0 ; i < 20 ; i++) {
-      actual += set.next()+",";
+    for (int i = 0; i < 20; i++) {
+      actual += set.next() + ",";
     }
     assertEquals("Value from scripted set", expected, actual);
   }
@@ -60,8 +60,8 @@ public class ScriptedVariableTests {
     set.setScripter(scripter);
     String expected = "4,9,4,9,4,9,4,9,4,9,4,9,4,9,4,9,4,9,4,9,";
     String actual = "";
-    for (int i = 0 ; i < 20 ; i++) {
-      actual += set.next()+",";
+    for (int i = 0; i < 20; i++) {
+      actual += set.next() + ",";
     }
     assertEquals("Value from scripted set", expected, actual);
   }
@@ -84,8 +84,8 @@ public class ScriptedVariableTests {
   public void valueRangeNoScript() {
     String expected = "4,1,3,3,5,1,5,3,3,1,1,5,5,5,4,4,1,2,1,1,";
     String actual = "";
-    for (int i = 0 ; i < 20 ; i++) {
-      actual += range.next()+",";
+    for (int i = 0; i < 20; i++) {
+      actual += range.next() + ",";
     }
     assertEquals("Value from scripted range", expected, actual);
   }
@@ -97,8 +97,8 @@ public class ScriptedVariableTests {
     range.setScripter(scripter);
     String expected = "2,4,2,4,2,4,2,4,2,4,2,4,2,4,2,4,2,4,2,4,";
     String actual = "";
-    for (int i = 0 ; i < 20 ; i++) {
-      actual += range.next()+",";
+    for (int i = 0; i < 20; i++) {
+      actual += range.next() + ",";
     }
     assertEquals("Value from scripted range", expected, actual);
   }
@@ -121,8 +121,8 @@ public class ScriptedVariableTests {
   public void valueRangeSetNoScript() {
     String expected = "9,9,104,3,7,73,75,9,3,91,9,2,2,88,7,76,74,97,8,82,";
     String actual = "";
-    for (int i = 0 ; i < 20 ; i++) {
-      actual += rangeSet.next()+",";
+    for (int i = 0; i < 20; i++) {
+      actual += rangeSet.next() + ",";
     }
     assertEquals("Value from scripted ValueRangeSet", expected, actual);
   }
@@ -135,8 +135,8 @@ public class ScriptedVariableTests {
     rangeSet.setScripter(scripter);
     String expected = "2,69,7,2,69,7,2,69,7,2,69,7,2,69,7,2,69,7,2,69,";
     String actual = "";
-    for (int i = 0 ; i < 20 ; i++) {
-      actual += rangeSet.next()+",";
+    for (int i = 0; i < 20; i++) {
+      actual += rangeSet.next() + ",";
     }
     assertEquals("Value from scripted ValueRangeSet", expected, actual);
   }
@@ -161,8 +161,8 @@ public class ScriptedVariableTests {
   public void readableWordNoScript() {
     String expected = "8/bjL',.f,4EöF30]eE-,ZAÄÅVÅ4/X\"0uM,=Y'ka'CQ,\tm0%DhDPJ>X<,Nwt[´!+h=|T8,+<;[PiellPn:\\,Z9^rUOaÅUC.M,=k=.iw91 ,Åiä<DyYR¨{QzH,MyB;6Z*S%Q,6mu8`::G,zBög6ov4zx2,LG.A6Z(~,-v_/1ÄyEi7\"a,{´l&>gö\\Q%P/,.P´5qwåÖW\t,zÅ`1ä:n4,rV'´#\"4sq,F|\"]I?^#H,";
     String actual = "";
-    for (int i = 0 ; i < 20 ; i++) {
-      actual += words.next()+",";
+    for (int i = 0; i < 20; i++) {
+      actual += words.next() + ",";
     }
     assertEquals("Value from scripted ReadableWords", expected, actual);
 
@@ -176,8 +176,8 @@ public class ScriptedVariableTests {
     words.setScripter(scripter);
     String expected = "all your,base are,belong to us!,all your,base are,belong to us!,all your,base are,belong to us!,all your,base are,belong to us!,all your,base are,belong to us!,all your,base are,belong to us!,all your,base are,";
     String actual = "";
-    for (int i = 0 ; i < 20 ; i++) {
-      actual += words.next()+",";
+    for (int i = 0; i < 20; i++) {
+      actual += words.next() + ",";
     }
     assertEquals("Value from scripted ReadableWords", expected, actual);
   }

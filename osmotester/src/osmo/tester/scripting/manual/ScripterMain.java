@@ -6,7 +6,11 @@ import osmo.tester.model.dataflow.ScriptedValueProvider;
 import java.util.Collection;
 import java.util.List;
 
-/** @author Teemu Kanstren */
+/**
+ * The main class for executing manually defined scripts.
+ *
+ * @author Teemu Kanstren
+ */
 public class ScripterMain {
   public void run(Collection<Object> modelObjects, List<TestScript> scripts) {
     OSMOTester osmo = new OSMOTester();

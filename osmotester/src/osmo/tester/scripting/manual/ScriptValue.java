@@ -1,8 +1,14 @@
 package osmo.tester.scripting.manual;
 
-/** @author Teemu Kanstren */
+/**
+ * A value for a given variable in a test step.
+ *
+ * @author Teemu Kanstren
+ */
 public class ScriptValue {
+  /** The name of the variable. */
   private final String variable;
+  /** The value for the variable. */
   private final String value;
 
   public ScriptValue(String variable, String value) {

@@ -10,7 +10,6 @@ import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
 import osmo.tester.model.VariableField;
 import osmo.tester.model.dataflow.SearchableInput;
-import osmo.tester.optimizer.TestCoverage;
 import osmo.tester.scripter.robotframework.CSSHelper;
 
 import java.io.FileOutputStream;

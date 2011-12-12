@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Represents the given model object in terms of a finite state machine (FSM).
@@ -326,7 +325,7 @@ public class FSM {
   }
 
   private Collection<String> initScripts(ScriptedValueProvider scripter) {
-    Map<String,ValueSet<String>> scripts = scripter.getScripts();
+    Map<String, ValueSet<String>> scripts = scripter.getScripts();
     Collection<String> errors = new ArrayList<String>();
     for (String variable : scripts.keySet()) {
       boolean found = false;
@@ -341,7 +340,7 @@ public class FSM {
       }
     }
     if (errors.size() > 0) {
-      throw new IllegalArgumentException("Scripted variable(s) not searchable in the model:"+errors);
+      throw new IllegalArgumentException("Scripted variable(s) not searchable in the model:" + errors);
     }
     return scripts.keySet();
   }

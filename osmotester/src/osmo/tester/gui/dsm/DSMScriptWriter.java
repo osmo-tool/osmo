@@ -7,10 +7,20 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** @author Teemu Kanstren */
+/**
+ * Used for writing the DSM script from the DSM GUI to a file.
+ *
+ * @author Teemu Kanstren
+ */
 public class DSMScriptWriter {
   private static final Logger log = new Logger(DSMScriptWriter.class);
 
+  /**
+   * @param algorithm       The test generation algorithm to use in processing the DSM.
+   * @param modelFactory    The (fully qualified) name of the class to use for creating the model objects.
+   * @param transitionRules Defined rules considering transitions.
+   * @param variableRules   Defined rules considering variable values.
+   */
   public void write(String algorithm, String modelFactory, List<String> transitionRules, List<String> variableRules) {
     BufferedWriter fw = null;
     try {

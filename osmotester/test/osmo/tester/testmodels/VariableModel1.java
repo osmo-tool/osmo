@@ -11,7 +11,8 @@ import osmo.tester.generator.testsuite.TestSuite;
 
 import java.util.Map;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 
 /** @author Teemu Kanstren */
 public class VariableModel1 {

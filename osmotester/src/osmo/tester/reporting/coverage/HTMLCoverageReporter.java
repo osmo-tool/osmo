@@ -3,9 +3,6 @@ package osmo.tester.reporting.coverage;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 /**
  * This returns coverage tables in HTML format
  *

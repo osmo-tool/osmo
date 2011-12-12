@@ -6,7 +6,6 @@ import osmo.common.log.Logger;
 
 import java.util.List;
 
-import static junit.framework.Assert.*;
 import static junit.framework.Assert.assertEquals;
 
 /** @author Teemu Kanstren */
@@ -74,7 +73,7 @@ public class AsciiParserTests {
             "variable, bob1, wonderland\n" +
             "variable, bob2, eggbasket\n" +
             "step, foo,\n" +
-            "variable, bob2, basketcase\n"+
+            "variable, bob2, basketcase\n" +
             "variable, bob2, case-in\n";
     List<TestScript> scripts = parser.parse(input);
     assertEquals("Number of tests", 2, scripts.size());
@@ -95,9 +94,9 @@ public class AsciiParserTests {
     ScriptStep step = steps.get(index);
     assertEquals("Step name", stepName, step.getTransition());
     List<ScriptValue> values = step.getValues();
-    assertEquals("Number of variables in step", variables.length/2, values.size());
-    for (int i = 0 ; i < variables.length ; i += 2) {
-      assertVariable(variables[i], variables[i+1], values.get(i/2));
+    assertEquals("Number of variables in step", variables.length / 2, values.size());
+    for (int i = 0; i < variables.length; i += 2) {
+      assertVariable(variables[i], variables[i + 1], values.get(i / 2));
     }
   }
 

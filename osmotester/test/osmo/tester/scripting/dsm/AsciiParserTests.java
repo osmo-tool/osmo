@@ -2,7 +2,6 @@ package osmo.tester.scripting.dsm;
 
 import org.junit.Before;
 import org.junit.Test;
-import osmo.common.log.Logger;
 import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
 import osmo.tester.model.dataflow.ScriptedValueProvider;
 import osmo.tester.model.dataflow.ValueSet;
@@ -263,7 +262,7 @@ public class AsciiParserTests {
             "v1, 4\n";
     DSMConfiguration reqs = parser.parse(input);
     ScriptedValueProvider scripter = reqs.getScriptedValueProvider();
-    Map<String,ValueSet<String>> scripts = scripter.getScripts();
+    Map<String, ValueSet<String>> scripts = scripter.getScripts();
     assertEquals("Number of data requirements", 2, scripts.size());
     assertDataNameAndValues(scripts, "v1", 1, 2, 4);
     assertDataNameAndValues(scripts, "v2", 3);
@@ -326,7 +325,7 @@ public class AsciiParserTests {
     ValueSet<String> script = scripts.get(name);
     assertNotNull("Variable should be scripted:" + name, script);
     for (Object value : values) {
-      assertEquals("Variable " + name + " does not have required value in order:" + value+" total:"+script.getOptions(), ""+value, script.next());
+      assertEquals("Variable " + name + " does not have required value in order:" + value + " total:" + script.getOptions(), "" + value, script.next());
     }
   }
 

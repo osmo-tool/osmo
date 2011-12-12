@@ -1,7 +1,6 @@
 package osmo.tester.scripting.manual;
 
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
-import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
@@ -13,11 +12,19 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-/** @author Teemu Kanstren */
+/**
+ * A test generation algorithm for running manually defined scripts.
+ *
+ * @author Teemu Kanstren
+ */
 public class ScriptAlgorithm implements FSMTraversalAlgorithm {
+  /** The scripts to run. */
   private List<TestScript> scripts = new ArrayList<TestScript>();
+  /** For iterating over the tests to be executed. */
   private Iterator<TestScript> testIterator;
+  /** For iterating the steps in current test cases. */
   private Iterator<ScriptStep> stepIterator;
+  /** The FSM based on which the tests will be executed. */
   private FSM fsm;
 
   public void addScript(TestScript script) {
@@ -32,6 +39,7 @@ public class ScriptAlgorithm implements FSMTraversalAlgorithm {
     stepIterator = testIterator.next().iterator();
   }
 
+  /** Validate the test scripts against the FSM. */
   private void validate() {
     Collection<String> transitions = new ArrayList<String>();
     Collection<String> variables = new ArrayList<String>();
@@ -67,13 +75,13 @@ public class ScriptAlgorithm implements FSMTraversalAlgorithm {
       }
     }
     if (missingTransitions.size() > 0) {
-      errors += "Transitions "+missingTransitions+" not found in model.";
+      errors += "Transitions " + missingTransitions + " not found in model.";
     }
     if (missingVariables.size() > 0) {
-      errors += "Variables "+missingVariables+" not found in model.";
+      errors += "Variables " + missingVariables + " not found in model.";
     }
     if (errors.length() > 0) {
-      throw new IllegalStateException("Validating given script against given model objects failed:"+errors);
+      throw new IllegalStateException("Validating given script against given model objects failed:" + errors);
     }
   }
 
@@ -84,6 +92,11 @@ public class ScriptAlgorithm implements FSMTraversalAlgorithm {
     return fsm.getTransition(transition);
   }
 
+  /**
+   * Check if current test is finished.
+   *
+   * @return True if done.
+   */
   public boolean isTestDone() {
     boolean done = !stepIterator.hasNext();
     if (done && testIterator.hasNext()) {
@@ -92,6 +105,11 @@ public class ScriptAlgorithm implements FSMTraversalAlgorithm {
     return done;
   }
 
+  /**
+   * Check if suite is finished.
+   *
+   * @return True if done.
+   */
   public boolean isSuiteDone() {
     boolean stepsRemain = stepIterator.hasNext();
     boolean testsRemain = testIterator.hasNext();

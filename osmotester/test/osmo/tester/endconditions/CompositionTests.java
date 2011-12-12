@@ -8,7 +8,6 @@ import osmo.tester.generator.endcondition.Or;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.testmodels.CalculatorModel;
-import osmo.tester.testmodels.ValidTestModel1;
 
 import java.util.List;
 

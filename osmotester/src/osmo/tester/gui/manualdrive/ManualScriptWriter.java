@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * Writes the manually defined script to a file.
+ *
  * @author Teemu Kanstren
  */
 public class ManualScriptWriter {

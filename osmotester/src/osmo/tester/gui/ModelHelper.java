@@ -2,7 +2,7 @@ package osmo.tester.gui;
 
 import osmo.tester.model.FSMTransition;
 
-import javax.swing.*;
+import javax.swing.AbstractListModel;
 import java.util.ArrayList;
 import java.util.List;
 

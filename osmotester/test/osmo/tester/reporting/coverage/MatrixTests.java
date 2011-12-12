@@ -8,8 +8,9 @@ import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
 
-import static junit.framework.Assert.*;
-import static osmo.common.TestUtils.*;
+import static junit.framework.Assert.assertEquals;
+import static osmo.common.TestUtils.getResource;
+import static osmo.common.TestUtils.unifyLineSeparators;
 
 /** @author Teemu Kanstren */
 public class MatrixTests {
@@ -73,7 +74,7 @@ public class MatrixTests {
 
   @Test
   public void htmlMatrix() {
-    String expected = getResource(MatrixTests.class, "expected-matrix.html");
+    String expected = getResource(MatrixTests.class, "expected-matrix.txt");
     HTMLCoverageReporter html = new HTMLCoverageReporter(suite, fsm);
     String actual = html.getTraceabilityMatrix();
     expected = unifyLineSeparators(expected, "\n");

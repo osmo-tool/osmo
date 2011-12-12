@@ -26,7 +26,7 @@ public class VariableModel2 {
   private ValueSet<String> set = new ValueSet<String>("v1", "v2", "v3");
   private Collection<String> values = new ArrayList<String>();
   @Variable
-  private CollectionCount valueCount = new CollectionCount(values); 
+  private CollectionCount valueCount = new CollectionCount(values);
   private final PrintStream out;
 
   public VariableModel2() {
@@ -69,7 +69,7 @@ public class VariableModel2 {
     range.next();
     String next = set.next();
     values.add(next);
-    out.println(":third="+next+":");
+    out.println(":third=" + next + ":");
   }
 
   public TestSuite getSuite() {

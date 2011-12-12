@@ -45,6 +45,7 @@ public class MainGenerator {
   private final FSM fsm;
   /** Keeps track of overall number of tests generated. */
   private static int testCount = 0;
+  /** Provides variable values if running a manually defined script. */
   private ScriptedValueProvider scripter = null;
 
   /**
@@ -92,7 +93,6 @@ public class MainGenerator {
       suite.setShouldEndTest(false);
       next();
     }
-    System.out.println("SUITE ENDS");
     endSuite();
   }
 
