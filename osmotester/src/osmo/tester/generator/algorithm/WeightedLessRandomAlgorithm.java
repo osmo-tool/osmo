@@ -17,7 +17,7 @@ import java.util.Set;
 import static osmo.common.TestUtils.oneOf;
 
 /**
- * A test generation algorithm that is similar to the {@link LessRandomAlgorithm}
+ * A test generation algorithm that is similar to the {@link BalancingAlgorithm}
  * but also takes into account weights assigned to transitions. For example, consider a model that has 2 transitions A and B,
  * and both have been visited twice. Now if A has a weight of 2 and B a weight of 3, the algorithm favors B due to
  * its combined weight and coverage values. The formula is (number of times a transition is visited/transition weight).
