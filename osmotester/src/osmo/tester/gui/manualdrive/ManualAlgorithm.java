@@ -1,7 +1,7 @@
 package osmo.tester.gui.manualdrive;
 
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
-import osmo.tester.generator.algorithm.LessRandomAlgorithm;
+import osmo.tester.generator.algorithm.BalancingAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.algorithm.WeightedRandomAlgorithm;
 import osmo.tester.generator.testsuite.ModelVariable;
@@ -414,7 +414,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
       case 0:
         return new RandomAlgorithm().choose(history, transitions);
       case 1:
-        return new LessRandomAlgorithm().choose(history, transitions);
+        return new BalancingAlgorithm().choose(history, transitions);
       case 2:
         return new WeightedRandomAlgorithm().choose(history, transitions);
       default:
