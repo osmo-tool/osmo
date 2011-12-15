@@ -21,7 +21,6 @@ import osmo.tester.gui.manualdrive.ManualAlgorithm;
 import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.gui.manualdrive.ManualEndCondition;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.optimizer.TestCoverage;

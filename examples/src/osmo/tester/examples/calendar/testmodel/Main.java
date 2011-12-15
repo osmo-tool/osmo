@@ -6,7 +6,7 @@ import osmo.tester.examples.calendar.scripter.MockScripter;
 import osmo.tester.examples.calendar.scripter.offline.OfflineScripter;
 import osmo.tester.examples.calendar.scripter.online.OnlineScripter;
 import osmo.tester.generator.MainGenerator;
-import osmo.tester.gui.dsm.GUI2;
+import osmo.tester.gui.dsm.DSMGUI;
 import osmo.tester.gui.manualdrive.ManualAlgorithm;
 import osmo.tester.model.FSM;
 
@@ -38,7 +38,7 @@ public class Main {
     osmo.generate();
   }
 
-  public static void main2(String[] args) {
+  public static void main(String[] args) {
     OSMOTester osmo = new OSMOTester();
 //    osmo.addSuiteEndCondition(new Length(2));
     ModelState state = new ModelState();
@@ -54,11 +54,11 @@ public class Main {
     osmo.addModelObject(new CalendarFailureModel(state, scripter));
     MainGenerator generator = osmo.initGenerator();
     FSM fsm = osmo.getFsm();
-    GUI2 g = new GUI2(fsm);
+    DSMGUI g = new DSMGUI(fsm);
     g.setVisible(true);
   }
 
-  public static void main(String[] args) {
+  public static void main3(String[] args) {
     OSMOTester osmo = new OSMOTester();
 //    osmo.addSuiteEndCondition(new Length(2));
     ModelState state = new ModelState();
