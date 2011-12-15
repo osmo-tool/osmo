@@ -40,14 +40,13 @@ public class DSMGUI extends JFrame {
   private JTextField varRuleField;
   /** For defining the model factory (that creates the model objects). */
   private JTextField modelFactoryField;
-  /** The GUI list of defined transition rules. */
-  private final JList trnRuleList = new JList();
-  /** The GUI list of defined variable rules. */
-  private final JList varRuleList = new JList();
   /** The String list of transition rules. */
   private List<String> transitionRules = new ArrayList<String>();
   /** The String list of variable rules. */
   private List<String> variableRules = new ArrayList<String>();
+  /** The String list of variable options. */
+  private List<String> variableOptions = new ArrayList<String>();
+  private JTextField varOptionField;
 
   public static void main(String[] args) {
     DSMGUI g = new DSMGUI(new ArrayList<String>(), new ArrayList<String>());
@@ -58,6 +57,7 @@ public class DSMGUI extends JFrame {
    * Creates the GUI.
    *
    * @param fsm The FSM that defines what transitions and variables are available.
+   * @wbp.parser.constructor
    */
   public DSMGUI(FSM fsm) {
     setNimbus();
@@ -98,7 +98,7 @@ public class DSMGUI extends JFrame {
   public void init(List<String> transitions, List<String> variables) {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setTitle("DSM Script Builder");
-    setBounds(100, 100, 740, 500);
+    setBounds(100, 100, 720, 500);
     setResizable(false);
 
     final JComboBox algorithmCombo = new JComboBox();
@@ -122,7 +122,7 @@ public class DSMGUI extends JFrame {
     final JComboBox ruleCombo = new JComboBox();
     ruleCombo.setModel(new DefaultComboBoxModel(new String[]{">=", "<=", "=="}));
 
-    JButton btnTrnAdd = new JButton("Add");
+    JButton btnTrnAdd = new JButton("+");
 
     trnRuleField = new JTextField();
     trnRuleField.setColumns(5);
@@ -138,14 +138,16 @@ public class DSMGUI extends JFrame {
     varRuleField = new JTextField();
     varRuleField.setColumns(9);
 
-    JButton btnVarAdd = new JButton("Add");
+    JButton btnVarAdd = new JButton("+");
 
     JLabel lblModelFactory = new JLabel("Model Factory:");
 
     modelFactoryField = new JTextField();
     modelFactoryField.setColumns(12);
 
-    JButton btnRemoveTrn = new JButton("Remove");
+    final JList trnRuleList = new JList();
+
+    JButton btnRemoveTrn = new JButton("-");
     btnRemoveTrn.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -159,7 +161,9 @@ public class DSMGUI extends JFrame {
       }
     });
 
-    JButton btnRemoveVar = new JButton("Remove");
+    final JList varRuleList = new JList();
+
+    JButton btnRemoveVar = new JButton("-");
     btnRemoveVar.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -175,90 +179,145 @@ public class DSMGUI extends JFrame {
 
     JLabel lblAlgorithm = new JLabel("Algorithm:");
 
+    JLabel lblVariableValueOptions = new JLabel("Variable value options:");
+
+    JScrollPane varOptionPane = new JScrollPane();
+
+    varOptionField = new JTextField();
+    varOptionField.setColumns(9);
+
+    JButton btnVarOptionAdd = new JButton("+");
+
+    JButton btnVarOptionRemove = new JButton("-");
+
     GroupLayout groupLayout = new GroupLayout(getContentPane());
     groupLayout.setHorizontalGroup(
-            groupLayout.createParallelGroup(Alignment.LEADING)
-                    .addGroup(groupLayout.createSequentialGroup()
-                            .addContainerGap()
-                            .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-                                    .addComponent(algorithmCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(modelFactoryField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnWriteScript)
-                                    .addComponent(lblModelFactory)
-                                    .addComponent(lblAlgorithm))
-                            .addPreferredGap(ComponentPlacement.RELATED)
-                            .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-                                    .addComponent(lblVariables)
-                                    .addComponent(lblTransitions)
-                                    .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-                                            .addComponent(varScrollPane, Alignment.LEADING, 0, 0, Short.MAX_VALUE)
-                                            .addComponent(trnScrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)))
-                            .addPreferredGap(ComponentPlacement.UNRELATED)
-                            .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-                                    .addComponent(btnTrnAdd)
-                                    .addGroup(groupLayout.createSequentialGroup()
-                                            .addComponent(ruleCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(ComponentPlacement.RELATED)
-                                            .addComponent(trnRuleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(varRuleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnVarAdd)
-                                    .addComponent(btnRemoveTrn)
-                                    .addComponent(btnRemoveVar))
-                            .addPreferredGap(ComponentPlacement.UNRELATED)
-                            .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-                                    .addComponent(lblTransitionRules)
-                                    .addComponent(trnRulePane, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(varRulePane, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblVariableRules))
-                            .addGap(72))
+    	groupLayout.createParallelGroup(Alignment.LEADING)
+    		.addGroup(groupLayout.createSequentialGroup()
+    			.addContainerGap()
+    			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+    				.addComponent(algorithmCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+    				.addComponent(modelFactoryField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+    				.addComponent(btnWriteScript)
+    				.addComponent(lblModelFactory)
+    				.addComponent(lblAlgorithm))
+    			.addPreferredGap(ComponentPlacement.RELATED)
+    			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+    				.addComponent(lblVariables)
+    				.addComponent(lblTransitions)
+    				.addComponent(trnScrollPane, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+    				.addComponent(varScrollPane, 0, 0, Short.MAX_VALUE))
+    			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+    				.addGroup(groupLayout.createSequentialGroup()
+    					.addPreferredGap(ComponentPlacement.RELATED)
+    					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+    						.addGroup(groupLayout.createSequentialGroup()
+    							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+    								.addComponent(btnTrnAdd)
+    								.addComponent(ruleCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+    							.addPreferredGap(ComponentPlacement.RELATED)
+    							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+    								.addComponent(trnRuleField, GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE)
+    								.addComponent(btnRemoveTrn)))
+    						.addComponent(varRuleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+    						.addGroup(groupLayout.createSequentialGroup()
+    							.addComponent(btnVarOptionAdd)
+    							.addPreferredGap(ComponentPlacement.RELATED)
+    							.addComponent(btnVarOptionRemove)
+    							.addGap(23))
+    						.addComponent(varOptionField))
+    					.addPreferredGap(ComponentPlacement.RELATED)
+    					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+    						.addComponent(lblVariableValueOptions)
+    						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+    							.addGroup(groupLayout.createSequentialGroup()
+    								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+    									.addComponent(varRulePane, 0, 0, Short.MAX_VALUE)
+    									.addComponent(lblTransitionRules)
+    									.addComponent(trnRulePane, GroupLayout.PREFERRED_SIZE, 202, GroupLayout.PREFERRED_SIZE)
+    									.addComponent(lblVariableRules))
+    								.addPreferredGap(ComponentPlacement.RELATED))
+    							.addGroup(groupLayout.createSequentialGroup()
+    								.addComponent(varOptionPane, GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+    								.addGap(1)))))
+    				.addGroup(groupLayout.createSequentialGroup()
+    					.addGap(20)
+    					.addComponent(btnVarAdd)
+    					.addPreferredGap(ComponentPlacement.RELATED)
+    					.addComponent(btnRemoveVar)
+    					.addGap(44)))
+    			.addGap(33))
     );
     groupLayout.setVerticalGroup(
-            groupLayout.createParallelGroup(Alignment.LEADING)
-                    .addGroup(groupLayout.createSequentialGroup()
-                            .addGap(4)
-                            .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-                                    .addComponent(lblTransitions)
-                                    .addComponent(lblTransitionRules)
-                                    .addComponent(lblAlgorithm))
-                            .addPreferredGap(ComponentPlacement.RELATED)
-                            .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-                                    .addGroup(groupLayout.createSequentialGroup()
-                                            .addComponent(algorithmCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(ComponentPlacement.RELATED)
-                                            .addComponent(lblModelFactory)
-                                            .addPreferredGap(ComponentPlacement.RELATED)
-                                            .addComponent(modelFactoryField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(ComponentPlacement.UNRELATED)
-                                            .addComponent(btnWriteScript))
-                                    .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-                                            .addComponent(trnScrollPane, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(trnRulePane, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)))
-                            .addPreferredGap(ComponentPlacement.UNRELATED)
-                            .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-                                    .addComponent(lblVariables)
-                                    .addComponent(lblVariableRules))
-                            .addPreferredGap(ComponentPlacement.RELATED)
-                            .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-                                    .addComponent(varScrollPane, GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
-                                    .addComponent(varRulePane, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE))
-                            .addContainerGap())
-                    .addGroup(groupLayout.createSequentialGroup()
-                            .addGap(49)
-                            .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-                                    .addComponent(ruleCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(trnRuleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(ComponentPlacement.RELATED)
-                            .addComponent(btnTrnAdd)
-                            .addPreferredGap(ComponentPlacement.RELATED)
-                            .addComponent(btnRemoveTrn)
-                            .addPreferredGap(ComponentPlacement.RELATED, 177, Short.MAX_VALUE)
-                            .addComponent(varRuleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(ComponentPlacement.UNRELATED)
-                            .addComponent(btnVarAdd)
-                            .addPreferredGap(ComponentPlacement.RELATED)
-                            .addComponent(btnRemoveVar)
-                            .addGap(85))
+    	groupLayout.createParallelGroup(Alignment.LEADING)
+    		.addGroup(groupLayout.createSequentialGroup()
+    			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+    				.addGroup(groupLayout.createSequentialGroup()
+    					.addGap(4)
+    					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+    						.addComponent(lblTransitions)
+    						.addComponent(lblAlgorithm)
+    						.addComponent(lblTransitionRules))
+    					.addPreferredGap(ComponentPlacement.RELATED)
+    					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+    						.addGroup(groupLayout.createSequentialGroup()
+    							.addComponent(algorithmCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+    							.addPreferredGap(ComponentPlacement.RELATED)
+    							.addComponent(lblModelFactory)
+    							.addPreferredGap(ComponentPlacement.RELATED)
+    							.addComponent(modelFactoryField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+    							.addPreferredGap(ComponentPlacement.UNRELATED)
+    							.addComponent(btnWriteScript))
+    						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+    							.addComponent(trnScrollPane, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+    							.addComponent(trnRulePane, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)))
+    					.addPreferredGap(ComponentPlacement.UNRELATED)
+    					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+    						.addGroup(groupLayout.createSequentialGroup()
+    							.addComponent(lblVariables)
+    							.addPreferredGap(ComponentPlacement.RELATED)
+    							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+    								.addComponent(varScrollPane, GroupLayout.PREFERRED_SIZE, 203, GroupLayout.PREFERRED_SIZE)
+    								.addGroup(groupLayout.createSequentialGroup()
+    									.addGap(17)
+    									.addComponent(varRuleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+    									.addGap(3)
+    									.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+    										.addComponent(btnVarAdd)
+    										.addComponent(btnRemoveVar))
+    									.addGap(19)
+    									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+    										.addComponent(lblVariableValueOptions)
+    										.addGroup(groupLayout.createSequentialGroup()
+    											.addGap(28)
+    											.addComponent(varOptionField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+    											.addGap(1)
+    											.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+    												.addComponent(btnVarOptionAdd)
+    												.addComponent(btnVarOptionRemove))))
+    									.addGap(39))))
+    						.addGroup(groupLayout.createSequentialGroup()
+    							.addComponent(lblVariableRules)
+    							.addPreferredGap(ComponentPlacement.RELATED)
+    							.addComponent(varRulePane, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
+    							.addPreferredGap(ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+    							.addComponent(varOptionPane, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+    							.addGap(15))))
+    				.addGroup(groupLayout.createSequentialGroup()
+    					.addGap(49)
+    					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+    						.addComponent(ruleCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+    						.addComponent(trnRuleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+    					.addPreferredGap(ComponentPlacement.RELATED)
+    					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+    						.addComponent(btnRemoveTrn)
+    						.addComponent(btnTrnAdd))))
+    			.addContainerGap())
     );
+
+    final JList varOptionList = new JList();
+    varOptionList.setModel(new StringListModel(variableOptions));
+    varOptionPane.setViewportView(varOptionList);
 
     varRulePane.setViewportView(varRuleList);
 
@@ -305,6 +364,31 @@ public class DSMGUI extends JFrame {
         String value = varRuleField.getText();
         variableRules.add(variable + "," + value);
         varRuleList.setModel(new StringListModel(variableRules));
+      }
+    });
+    btnVarOptionAdd.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        Object selectedValue = varList.getSelectedValue();
+        if (selectedValue == null) {
+          return;
+        }
+        String variable = selectedValue.toString();
+        String value = varOptionField.getText();
+        variableOptions.add(variable + "," + value);
+        varOptionList.setModel(new StringListModel(variableOptions));
+      }
+    });
+    btnVarOptionRemove.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        int index = varOptionList.getSelectedIndex();
+        if (index < 0) {
+          JOptionPane.showMessageDialog(DSMGUI.this, "No variable option selected!");
+          return;
+        }
+        variableOptions.remove(index);
+        varOptionList.setModel(new StringListModel(variableOptions));
       }
     });
   }
