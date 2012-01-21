@@ -17,6 +17,8 @@ import osmo.tester.testmodels.EmptyTestModel5;
 import osmo.tester.testmodels.EmptyTestModel6;
 import osmo.tester.testmodels.PartialModel1;
 import osmo.tester.testmodels.PartialModel2;
+import osmo.tester.testmodels.StepAndTransitionModel;
+import osmo.tester.testmodels.TestStepModel;
 import osmo.tester.testmodels.ValidTestModel3;
 import osmo.tester.testmodels.VariableModel1;
 import osmo.tester.testmodels.VariableModel2;
@@ -266,6 +268,56 @@ public class ParserTests {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
     ValidTestModel3 model = new ValidTestModel3(ps);
+    Collection<ModelObject> models = new ArrayList<ModelObject>();
+    models.add(mo("ap_", model));
+    models.add(mo("ip_", model));
+    models.add(mo(model));
+    FSM fsm = parser.parse(models);
+    assertTransitionPresent(fsm, "hello", 1, 3);
+    assertTransitionPresent(fsm, "ap_hello", 1, 3);
+    assertTransitionPresent(fsm, "ip_hello", 1, 3);
+    assertTransitionPresent(fsm, "world", 1, 3);
+    assertTransitionPresent(fsm, "ap_world", 1, 3);
+    assertTransitionPresent(fsm, "ip_world", 1, 3);
+    assertTransitionPresent(fsm, "epixx", 1, 4);
+    assertTransitionPresent(fsm, "ap_epixx", 1, 4);
+    assertTransitionPresent(fsm, "ip_epixx", 1, 4);
+    assertEquals("Number of @BeforeTest elements", 3, fsm.getBefores().size());
+    assertEquals("Number of @BeforeSuite elements", 3, fsm.getBeforeSuites().size());
+    assertEquals("Number of @AfterTest elements", 3, fsm.getAfters().size());
+    assertEquals("Number of @AfterSuite elements", 3, fsm.getAfterSuites().size());
+  }
+
+  @Test
+  public void testStepsOnly() {
+    ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
+    PrintStream ps = new PrintStream(out);
+    TestStepModel model = new TestStepModel(ps);
+    Collection<ModelObject> models = new ArrayList<ModelObject>();
+    models.add(mo("ap_", model));
+    models.add(mo("ip_", model));
+    models.add(mo(model));
+    FSM fsm = parser.parse(models);
+    assertTransitionPresent(fsm, "hello", 1, 3);
+    assertTransitionPresent(fsm, "ap_hello", 1, 3);
+    assertTransitionPresent(fsm, "ip_hello", 1, 3);
+    assertTransitionPresent(fsm, "world", 1, 3);
+    assertTransitionPresent(fsm, "ap_world", 1, 3);
+    assertTransitionPresent(fsm, "ip_world", 1, 3);
+    assertTransitionPresent(fsm, "epixx", 1, 4);
+    assertTransitionPresent(fsm, "ap_epixx", 1, 4);
+    assertTransitionPresent(fsm, "ip_epixx", 1, 4);
+    assertEquals("Number of @BeforeTest elements", 3, fsm.getBefores().size());
+    assertEquals("Number of @BeforeSuite elements", 3, fsm.getBeforeSuites().size());
+    assertEquals("Number of @AfterTest elements", 3, fsm.getAfters().size());
+    assertEquals("Number of @AfterSuite elements", 3, fsm.getAfterSuites().size());
+  }
+
+  @Test
+  public void hybridWithStepsAndTransitions() {
+    ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
+    PrintStream ps = new PrintStream(out);
+    StepAndTransitionModel model = new StepAndTransitionModel(ps);
     Collection<ModelObject> models = new ArrayList<ModelObject>();
     models.add(mo("ap_", model));
     models.add(mo("ip_", model));

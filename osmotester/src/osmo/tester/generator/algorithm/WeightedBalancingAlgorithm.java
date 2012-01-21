@@ -30,8 +30,8 @@ import static osmo.common.TestUtils.oneOf;
  *
  * @author Teemu Kanstren
  */
-public class WeightedLessRandomAlgorithm implements FSMTraversalAlgorithm {
-  private static final Logger log = new Logger(WeightedLessRandomAlgorithm.class);
+public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
+  private static final Logger log = new Logger(WeightedBalancingAlgorithm.class);
 
   @Override
   public void init(FSM fsm) {
