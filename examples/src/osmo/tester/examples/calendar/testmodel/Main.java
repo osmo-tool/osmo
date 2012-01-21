@@ -4,7 +4,6 @@ import osmo.tester.OSMOTester;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.examples.calendar.scripter.MockScripter;
 import osmo.tester.examples.calendar.scripter.offline.OfflineScripter;
-import osmo.tester.examples.calendar.scripter.online.OnlineScripter;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.gui.dsm.DSMGUI;
 import osmo.tester.gui.manualdrive.ManualAlgorithm;
