@@ -158,7 +158,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
       case ORDERED_LOOP:
         value = nextOrderedLoop(type);
         break;
-      case LESS_RANDOM:
+      case BALANCING:
         value = nextOptimizedRandom(type);
         break;
       case BOUNDARY_SCAN:

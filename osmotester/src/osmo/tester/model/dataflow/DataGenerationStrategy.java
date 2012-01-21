@@ -10,7 +10,7 @@ public enum DataGenerationStrategy {
   /** Completely random pick. */
   RANDOM,
   /** Pick a value on random but favor previously uncovered partitions or objects. */
-  LESS_RANDOM,
+  BALANCING,
   /** Loop through all options in an order, restart from beginning after reaching end. */
   ORDERED_LOOP,
   /** Choose values at the option boundaries (below, at, above). Only works for primitives. */

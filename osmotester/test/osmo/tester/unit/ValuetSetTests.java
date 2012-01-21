@@ -62,7 +62,7 @@ public class ValuetSetTests {
     boolean diff = false;
     for (int i = 0; i < 10; i++) {
       inv = new ValueSet<String>();
-      inv.setStrategy(DataGenerationStrategy.LESS_RANDOM);
+      inv.setStrategy(DataGenerationStrategy.BALANCING);
       inv.add("one");
       inv.add("two");
       inv.add("three");
@@ -84,7 +84,7 @@ public class ValuetSetTests {
     String v6 = null;
     boolean diff = false;
     inv = new ValueSet<String>();
-    inv.setStrategy(DataGenerationStrategy.LESS_RANDOM);
+    inv.setStrategy(DataGenerationStrategy.BALANCING);
     inv.add("one");
     inv.add("two");
     inv.add("three");

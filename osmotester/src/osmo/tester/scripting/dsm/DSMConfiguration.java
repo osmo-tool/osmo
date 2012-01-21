@@ -1,7 +1,7 @@
 package osmo.tester.scripting.dsm;
 
 import osmo.tester.generator.algorithm.RandomAlgorithm;
-import osmo.tester.generator.algorithm.WeightedLessRandomAlgorithm;
+import osmo.tester.generator.algorithm.WeightedBalancingAlgorithm;
 import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
 import osmo.tester.model.dataflow.ScriptedValueProvider;
 
@@ -109,10 +109,10 @@ public class DSMConfiguration {
       algorithm = RandomAlgorithm.class.getName();
     }
     if (algorithm.equalsIgnoreCase("weighted random") || algorithm.equalsIgnoreCase("weighted-random") || algorithm.equalsIgnoreCase("weightedrandom")) {
-      algorithm = WeightedLessRandomAlgorithm.class.getName();
+      algorithm = WeightedBalancingAlgorithm.class.getName();
     }
     if (algorithm.equalsIgnoreCase("less random") || algorithm.equalsIgnoreCase("less-random") || algorithm.equalsIgnoreCase("lessrandom")) {
-      algorithm = WeightedLessRandomAlgorithm.class.getName();
+      algorithm = WeightedBalancingAlgorithm.class.getName();
     }
     this.algorithm = algorithm;
   }

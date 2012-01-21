@@ -11,6 +11,7 @@ import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.RequirementsField;
+import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
@@ -57,6 +58,7 @@ public class MainParser {
   public MainParser() {
     //we set up the parser objects for the different annotation types
     annotationParsers.put(Transition.class, new TransitionParser());
+    annotationParsers.put(TestStep.class, new TransitionParser());
     annotationParsers.put(Guard.class, new GuardParser());
     annotationParsers.put(AfterTest.class, new AfterTestParser());
     annotationParsers.put(BeforeTest.class, new BeforeTestParser());

@@ -137,7 +137,7 @@ public class ValueSet<T> extends SearchableInput<T> {
       case ORDERED_LOOP:
         next = orderedLoopChoice();
         break;
-      case LESS_RANDOM:
+      case BALANCING:
         next = optimizedRandomChoice();
         break;
       case RANDOM:

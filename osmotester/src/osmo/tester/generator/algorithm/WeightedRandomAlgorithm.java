@@ -12,7 +12,7 @@ import java.util.List;
 import static osmo.common.TestUtils.rawWeightedRandomFrom;
 
 /**
- * Implements a more realistic weighted random algorithm than {@link WeightedLessRandomAlgorithm}.
+ * Implements a more realistic weighted random algorithm than {@link WeightedBalancingAlgorithm}.
  * That is, a transition is picked from the given set of options based on probability propertional to the weight of
  * each transition.
  *
