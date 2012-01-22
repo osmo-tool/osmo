@@ -1,11 +1,16 @@
 package osmo.tester.scripting.dsm;
 
+import osmo.common.TestUtils;
 import osmo.common.log.Logger;
 import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
 import osmo.tester.model.dataflow.ScriptedValueProvider;
 import osmo.tester.scripting.AbstractAsciiParser;
+import osmo.tester.scripting.manual.TestScript;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,6 +56,12 @@ public class AsciiParser extends AbstractAsciiParser {
   private static Logger log = new Logger(AsciiParser.class);
   /** Configuration for test generation, as parsed from the ASCII input. */
   private DSMConfiguration config = new DSMConfiguration();
+
+  public DSMConfiguration loadAndParse(String fileName) throws IOException {
+    FileInputStream in = new FileInputStream(fileName);
+    String script = TestUtils.getResource(in);
+    return parse(script);
+  }
 
   private static enum Relation {
     MIN, MAX, EXACT

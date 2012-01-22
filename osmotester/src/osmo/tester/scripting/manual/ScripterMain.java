@@ -12,6 +12,8 @@ import java.util.List;
  * @author Teemu Kanstren
  */
 public class ScripterMain {
+  private long seed = System.currentTimeMillis();
+
   public void run(Collection<Object> modelObjects, List<TestScript> scripts) {
     OSMOTester osmo = new OSMOTester();
     for (Object mo : modelObjects) {
@@ -31,9 +33,14 @@ public class ScripterMain {
     }
     osmo.setValueScripter(valueProvider);
     osmo.setAlgorithm(algorithm);
+    osmo.setSeed(seed);
     ScriptEndCondition sec = new ScriptEndCondition(algorithm);
     osmo.addTestEndCondition(sec);
     osmo.addSuiteEndCondition(sec);
     osmo.generate();
+  }
+
+  public void setSeed(long seed) {
+    this.seed = seed;
   }
 }

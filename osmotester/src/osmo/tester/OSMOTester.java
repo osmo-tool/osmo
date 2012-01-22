@@ -119,6 +119,9 @@ public class OSMOTester {
   }
 
   public FSM getFsm() {
+    if (fsm == null) {
+      initGenerator();
+    }
     return fsm;
   }
 
