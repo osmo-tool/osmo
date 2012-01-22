@@ -1,8 +1,11 @@
 package osmo.tester.scripting.manual;
 
+import osmo.common.TestUtils;
 import osmo.common.log.Logger;
 import osmo.tester.scripting.AbstractAsciiParser;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,5 +68,11 @@ public class AsciiParser extends AbstractAsciiParser {
       }
     }
     return tests;
+  }
+
+  public List<TestScript> loadAndParse(String fileName) throws IOException {
+    FileInputStream in = new FileInputStream(fileName);
+    String script = TestUtils.getResource(in);
+    return parse(script);
   }
 }
