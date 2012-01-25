@@ -1,0 +1,13 @@
+<testsuite>
+#foreach ($tc in $tests)
+  <testcase>
+#foreach ($ts in $tc.steps)
+    <step name="$ts.name">
+#foreach ($arg in $ts.args)
+      <arg name="$arg.name" value="$arg.value"/>
+#end
+    </step>
+#end
+  </testcase>
+#end
+</testsuite>
