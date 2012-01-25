@@ -16,7 +16,7 @@ public class HelloModel {
   private int worldCount = 0;
   private ValueSet<String> names = new ValueSet<String>("teemu", "bob");
   private ValueSet<String> worlds = new ValueSet<String>("mars", "venus");
-  private ReadableWords words = new ReadableWords(3, 7);
+//  private ReadableWords words = new ReadableWords(3, 7);
   private ValueSet<Integer> sizes = new ValueSet<Integer>(1,2,6);
   private ValueRange<Double> ranges = new ValueRange<Double>(0.1d, 5.2d);
 
@@ -55,7 +55,7 @@ public class HelloModel {
 
   @TestStep("world")
   public void sayWorld() {
-    System.out.println("WORLD "+words.next()+" ("+ranges.next()+")");
+    System.out.println("WORLD "+worlds.next()+" ("+ranges.next()+")");
     worldCount++;
   }
 }

@@ -44,7 +44,9 @@ public class WordGUI extends ValueGUI {
   }
 
   public static void main(String[] args) {
-    WordGUI gui = new WordGUI(new ReadableWords());
+    ReadableWords words = new ReadableWords();
+    words.setName("userName");
+    WordGUI gui = new WordGUI(words);
     gui.setVisible(true);
   }
 }

@@ -2,11 +2,7 @@ package osmo.tester.gui.manualdrive;
 
 import osmo.tester.model.dataflow.SearchableInput;
 
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
@@ -127,5 +123,19 @@ public abstract class ValueGUI extends JFrame {
       input.observe(value);
     }
     return value;
+  }
+
+  /** Enables the Nimbus look and feel. */
+  public static void setNimbus() {
+    try {
+      for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+        if ("Nimbus".equals(info.getName())) {
+          UIManager.setLookAndFeel(info.getClassName());
+          break;
+        }
+      }
+    } catch (Exception e) {
+      // If Nimbus is not available, you can set the GUI to another look and feel.
+    }
   }
 }
