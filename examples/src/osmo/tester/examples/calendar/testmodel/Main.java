@@ -37,7 +37,7 @@ public class Main {
     osmo.generate();
   }
 
-  public static void main(String[] args) {
+  public static void main2(String[] args) {
     OSMOTester osmo = new OSMOTester();
 //    osmo.addSuiteEndCondition(new Length(2));
     ModelState state = new ModelState();
@@ -57,7 +57,7 @@ public class Main {
     g.setVisible(true);
   }
 
-  public static void main3(String[] args) {
+  public static void main(String[] args) {
     OSMOTester osmo = new OSMOTester();
 //    osmo.addSuiteEndCondition(new Length(2));
     ModelState state = new ModelState();
