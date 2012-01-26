@@ -6,32 +6,27 @@ import osmo.tester.annotation.*;
 public class ErrorModel7 {
   @BeforeTest
   public void start1() {
-    throw new RuntimeException("@BeforeTest fail");
   }
 
   @AfterTest
   public void end() {
-    throw new RuntimeException("@AfterTest fail");
   }
 
   @BeforeSuite
   public void beforeAll() {
-    throw new RuntimeException("@BeforeSuite fail");
   }
 
   @AfterSuite
   public void endAll() {
-    throw new RuntimeException("@AfterSuite fail");
   }
 
   @Transition("hello")
   public void transition1() {
-    throw new RuntimeException("@Transition fail");
   }
 
-  @Guard("world")
+  @Guard("hello")
   public boolean listCheck() {
-    throw new RuntimeException("@Guard fail");
+    return true;
   }
 
   @Post
@@ -41,11 +36,10 @@ public class ErrorModel7 {
 
   @Pre
   public void beforeEpixx() {
-    throw new RuntimeException("@Pre fail");
   }
 
   @EndCondition
   public boolean end1() {
-    throw new RuntimeException("@EndCondition fail");
+    return false;
   }
 }
