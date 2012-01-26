@@ -64,7 +64,7 @@ public class Greedy {
 //    osmo.addTestEndCondition(length15);
     generator.initSuite();
     for (int i = 0 ; i < 50 ; i++) {
-      barGraph.addTest(generator.next());
+      barGraph.addTest(generator.nextTest());
     }
     barGraph.show();
 

@@ -197,7 +197,7 @@ public class SearchingOptimizer {
     for (int i = 0; i < size; i++) {
       double tp = random.cDouble();
       if (tp < probability) {
-        tests.set(i, generator.next());
+        tests.set(i, generator.nextTest());
       }
     }
   }
@@ -264,7 +264,7 @@ public class SearchingOptimizer {
     int populationSize = config.getPopulationSize();
     List<TestCase> tests = new ArrayList<TestCase>();
     for (int i = 0; i < populationSize; i++) {
-      tests.add(generator.next());
+      tests.add(generator.nextTest());
     }
     return new Candidate(config, tests);
   }
