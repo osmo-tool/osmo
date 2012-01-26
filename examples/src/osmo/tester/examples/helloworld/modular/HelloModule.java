@@ -1,4 +1,4 @@
-package osmo.tester.examples.helloworld;
+package osmo.tester.examples.helloworld.modular;
 
 import osmo.tester.annotation.*;
 

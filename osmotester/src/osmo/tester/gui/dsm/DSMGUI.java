@@ -111,7 +111,7 @@ public class DSMGUI extends JFrame {
         DSMScriptWriter writer = new DSMScriptWriter();
         String algorithm = algorithmCombo.getSelectedItem().toString();
         String modelFactory = modelFactoryField.getText();
-        writer.write(algorithm, modelFactory, transitionRules, variableRules);
+        writer.write(algorithm, modelFactory, transitionRules, variableRules, variableOptions);
       }
     });
     JLabel lblTransitions = new JLabel("Transitions:");

@@ -1,9 +1,8 @@
-package osmo.tester.examples.helloworld;
+package osmo.tester.examples.helloworld.modular;
 
-import osmo.tester.annotation.AfterTest;
-import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
+import osmo.tester.examples.helloworld.modular.SeparateState;
 
 /** @author Teemu Kanstren */
 public class WorldModule {

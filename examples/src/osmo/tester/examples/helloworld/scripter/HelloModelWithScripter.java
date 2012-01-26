@@ -21,10 +21,6 @@ public class HelloModelWithScripter {
 
   public HelloModelWithScripter(HelloScripter scripter) {
     this.scripter = scripter;
-  }
-
-  @BeforeSuite
-  public void init() {
     names.setStrategy(DataGenerationStrategy.BALANCING);
   }
 

@@ -1,4 +1,4 @@
-package osmo.tester.examples.helloworld;
+package osmo.tester.examples.helloworld.modular;
 
 import osmo.tester.model.dataflow.DataGenerationStrategy;
 import osmo.tester.model.dataflow.ValueRange;
