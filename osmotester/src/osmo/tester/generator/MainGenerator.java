@@ -41,6 +41,8 @@ public class MainGenerator {
   private boolean testEnding = false;
   /** If true, test generation will fail when no enabled transitions are found. If false, test ends. */
   private boolean failWhenNoWayForward = true;
+  /** Should we fail test generation if an Exception is thrown? */
+  private boolean failWhenError = true;
   /** The parsed overall test model. */
   private final FSM fsm;
   /** Keeps track of overall number of tests generated. */
@@ -86,12 +88,16 @@ public class MainGenerator {
     this.failWhenNoWayForward = failWhenNoWayForward;
   }
 
+  public void setFailWhenError(boolean failWhenError) {
+    this.failWhenError = failWhenError;
+  }
+
   /** Invoked to start the test generation using the configured parameters. */
   public void generate() {
     initSuite();
     while (!checkSuiteEndConditions() && !suite.shouldEndSuite()) {
       suite.setShouldEndTest(false);
-      next();
+      nextTest();
     }
     endSuite();
   }
@@ -116,35 +122,51 @@ public class MainGenerator {
    *
    * @return The generated test case.
    */
-  public TestCase next() {
+  public TestCase nextTest() {
     testCount++;
     log.debug("Starting new test generation");
     beforeTest();
     TestCase test = suite.getCurrentTest();
-    while (!checkTestCaseEndConditions()) {
-      List<FSMTransition> enabled = getEnabled();
-      if (enabled.size() == 0) {
-        if (failWhenNoWayForward) {
-          throw new IllegalStateException("No transition available.");
-        } else {
-          log.debug("No enabled transitions, ending test (fail is disabled).");
+    try {
+      while (!checkTestCaseEndConditions()) {
+        boolean stepOk = nextStep();
+        if (!stepOk) {
           break;
         }
       }
-      FSMTransition next = algorithm.choose(suite, enabled);
-      if (suite.shouldEndTest()) {
-        break;
+    } catch (RuntimeException e) {
+      log.error("Error in test generation", e);
+      if (failWhenError) {
+        throw e;
       }
-      log.debug("Taking transition " + next.getName());
-      execute(fsm, next);
-      if (checkModelEndConditions()) {
-        //stop this test case generation if any end condition returns true
-        break;
-      }
+      log.debug("Skipped test error due to settings (no fail when error)");
     }
     afterTest();
     log.debug("Finished new test generation");
     return test;
+  }
+
+  private boolean nextStep() {
+    List<FSMTransition> enabled = getEnabled();
+    if (enabled.size() == 0) {
+      if (failWhenNoWayForward) {
+        throw new IllegalStateException("No transition available.");
+      } else {
+        log.debug("No enabled transitions, ending test (fail is disabled).");
+        return false;
+      }
+    }
+    FSMTransition next = algorithm.choose(suite, enabled);
+    if (suite.shouldEndTest()) {
+      return false;
+    }
+    log.debug("Taking transition " + next.getName());
+    execute(fsm, next);
+    if (checkModelEndConditions()) {
+      //stop this test case generation if any end condition returns true
+      return false;
+    }
+    return true;
   }
 
   private void initEndConditions() {

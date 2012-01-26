@@ -45,6 +45,8 @@ public class OSMOTester {
   private FSMTraversalAlgorithm algorithm;
   /** Should we fail then test generation if there is not enabled transitions? Otherwise we just end the test. */
   private boolean failWhenNoWayForward = true;
+  /** Should we fail test generation if an Exception is thrown? */
+  private boolean failWhenError = true;
   /** Listeners to be notified about test generation events. */
   private GenerationListenerList listeners = new GenerationListenerList();
   /** The parsed model for test generation. */
@@ -110,6 +112,7 @@ public class OSMOTester {
     generator.setListeners(listeners);
     generator.setFilters(filters);
     generator.setFailWhenNoWayForward(failWhenNoWayForward);
+    generator.setFailWhenError(failWhenError);
     generator.setValueScripter(scripter);
     return generator;
   }
@@ -185,6 +188,10 @@ public class OSMOTester {
 
   public void setFailWhenNoWayForward(boolean fail) {
     failWhenNoWayForward = fail;
+  }
+
+  public void setFailWhenError(boolean failWhenError) {
+    this.failWhenError = failWhenError;
   }
 
   public void addFilter(TransitionFilter filter) {

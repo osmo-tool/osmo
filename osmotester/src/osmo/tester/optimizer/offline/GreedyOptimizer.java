@@ -64,7 +64,7 @@ public class GreedyOptimizer {
     List<TestCase> all = new ArrayList<TestCase>();
     long start = System.currentTimeMillis();
     for (int i = 0; i < count; i++) {
-      all.add(generator.next());
+      all.add(generator.nextTest());
     }
     long end = System.currentTimeMillis();
     long diff = end - start;
