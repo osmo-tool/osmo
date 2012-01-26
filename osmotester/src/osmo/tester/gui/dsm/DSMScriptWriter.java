@@ -19,9 +19,10 @@ public class DSMScriptWriter {
    * @param algorithm       The test generation algorithm to use in processing the DSM.
    * @param modelFactory    The (fully qualified) name of the class to use for creating the model objects.
    * @param transitionRules Defined rules considering transitions.
-   * @param variableRules   Defined rules considering variable values.
+   * @param variableCoverage  Defined rules for variable coverage.
+   * @param variableValues Defined options for variable values.
    */
-  public void write(String algorithm, String modelFactory, List<String> transitionRules, List<String> variableRules) {
+  public void write(String algorithm, String modelFactory, List<String> transitionRules, List<String> variableCoverage, List<String> variableValues) {
     BufferedWriter fw = null;
     try {
       fw = new BufferedWriter(new FileWriter("osmo-dsl.txt"));
@@ -43,7 +44,14 @@ public class DSMScriptWriter {
       fw.newLine();
       fw.write("variable, coverage");
       fw.newLine();
-      for (String line : variableRules) {
+      for (String line : variableCoverage) {
+        fw.write(line);
+        fw.newLine();
+      }
+      fw.newLine();
+      fw.write("variable, values");
+      fw.newLine();
+      for (String line : variableValues) {
         fw.write(line);
         fw.newLine();
       }

@@ -69,7 +69,10 @@ public class ValueSet<T> extends SearchableInput<T> {
    */
   @Override
   public void setStrategy(DataGenerationStrategy strategy) {
-    this.strategy = strategy;
+    if (this.strategy != DataGenerationStrategy.SCRIPTED) {
+      this.strategy = strategy;
+    }
+    //otherwise we just ignore it since we are running in scripted mode
   }
 
   /**
