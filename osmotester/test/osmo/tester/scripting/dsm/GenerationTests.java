@@ -76,7 +76,6 @@ public class GenerationTests {
       DSMMain.execute(config);
       fail("Scripted generation with invalid values should fail.");
     } catch (Exception e1) {
-      e1.printStackTrace();
       Throwable t = e1.getCause().getCause();
       assertEquals("Error message for invalid scripted values", "Requested scripted value for variable 'set' not found: 1", t.getMessage());
     }

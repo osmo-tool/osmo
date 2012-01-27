@@ -36,6 +36,8 @@ public class OSMOConfiguration {
   private GenerationListenerList listeners = new GenerationListenerList();
   /** Provides scripted values for variables. */
   private ScriptedValueProvider scripter;
+  /** Number of tests to generate when using over JUnit. */
+  private int junitLength = -1;
 
   /**
    * Adds a new model object, to be composed by OSMO to a single internal model along with other model objects.
@@ -70,16 +72,17 @@ public class OSMOConfiguration {
   }
 
   public FSMTraversalAlgorithm getAlgorithm() {
-    if (algorithm == null) {
-      //we do this here to avoid initializing from TestUtils.getRandom() before user calls setRandom() in this class
-      algorithm = new RandomAlgorithm();
-    }
     return algorithm;
   }
 
   public Collection<EndCondition> getSuiteEndConditions() {
     if (suiteEndConditions.size() == 0) {
       addSuiteEndCondition(new And(new Length(1), new Probability(0.05d)));
+    }
+    //if JUnitLength is defined, it overrides any other definition because JUnit can only handle length
+    if (junitLength > 0) {
+      suiteEndConditions.clear();
+      suiteEndConditions.add(new Length(junitLength));
     }
     return suiteEndConditions;
   }
@@ -143,7 +146,11 @@ public class OSMOConfiguration {
   }
 
   public void init(FSM fsm) {
+    if (algorithm == null) {
+      algorithm = new RandomAlgorithm();
+    }
     fsm.initSuite(scripter);
+    FSMTraversalAlgorithm algo = getAlgorithm();
     algorithm.init(fsm);
     for (EndCondition ec : testCaseEndConditions) {
       ec.init(fsm);
@@ -160,5 +167,13 @@ public class OSMOConfiguration {
 
   public void setFailWhenNoWayForward(boolean fail) {
     this.failWhenNoWayForward = fail;
+  }
+
+  public int getJUnitLength() {
+    return junitLength;
+  }
+
+  public void setJunitLength(int junitLength) {
+    this.junitLength = junitLength;
   }
 }
