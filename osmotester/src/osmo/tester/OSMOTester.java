@@ -33,26 +33,10 @@ import java.util.Collection;
  * @author Teemu Kanstren
  */
 public class OSMOTester {
-  /** The set of test model objects, given by the user. */
-  private final Collection<ModelObject> modelObjects = new ArrayList<ModelObject>();
-  /** When do we stop generating the overall test suite? (stopping all test generation) */
-  private Collection<EndCondition> suiteEndConditions = new ArrayList<EndCondition>();
-  /** When do we stop generating individual tests and start a new one? */
-  private Collection<EndCondition> testCaseEndConditions = new ArrayList<EndCondition>();
-  /** Set of filters to define when given transitions should not be considered for execution. */
-  private Collection<TransitionFilter> filters = new ArrayList<TransitionFilter>();
-  /** The algorithm to traverse the test model to generate test steps. */
-  private FSMTraversalAlgorithm algorithm;
-  /** Should we fail then test generation if there is not enabled transitions? Otherwise we just end the test. */
-  private boolean failWhenNoWayForward = true;
-  /** Should we fail test generation if an Exception is thrown? */
-  private boolean failWhenError = true;
-  /** Listeners to be notified about test generation events. */
-  private GenerationListenerList listeners = new GenerationListenerList();
   /** The parsed model for test generation. */
   private FSM fsm = null;
-  /** Provides scripted values for variables. */
-  private ScriptedValueProvider scripter;
+  /** Configuration for test generation. */
+  private OSMOConfiguration config = new OSMOConfiguration();
 
   /**
    * Create the tester with the initialized test model object.
@@ -73,11 +57,17 @@ public class OSMOTester {
    * @param modelObject The model object (with OSMO annotations) to be added.
    */
   public void addModelObject(Object modelObject) {
-    modelObjects.add(new ModelObject(modelObject));
+    config.addModelObject(modelObject);
   }
-
+  /**
+   * Adds a model object with a given prefix, allowing the same object class to be re-used with different configuration
+   * where the names of transitions (test steps), guards and other elements is preceded by the given prefix.
+   *
+   * @param prefix The model prefix.
+   * @param modelObject The model object itself.
+   */
   public void addModelObject(String prefix, Object modelObject) {
-    modelObjects.add(new ModelObject(prefix, modelObject));
+    config.addModelObject(prefix, modelObject);
   }
 
   /** Invoke this to perform actual test generation from the given model, with the given algorithms and strategies. */
@@ -93,27 +83,25 @@ public class OSMOTester {
 
   public MainGenerator initGenerator() {
     MainParser parser = new MainParser();
-    fsm = parser.parse(modelObjects);
-    MainGenerator generator = new MainGenerator(fsm);
-    if (algorithm == null) {
-      //we do this here to avoid initializing from TestUtils.getRandom() before user calls setRandom() in this class
-      algorithm = new RandomAlgorithm();
-    }
-    generator.setAlgorithm(algorithm);
-    if (suiteEndConditions.size() == 0) {
-      addSuiteEndCondition(new And(new Length(1), new Probability(0.05d)));
-    }
-    if (testCaseEndConditions.size() == 0) {
-      addTestEndCondition(new And(new Length(1), new Probability(0.1d)));
-    }
-    algorithm.init(fsm);
-    generator.setSuiteEndConditions(suiteEndConditions);
-    generator.setTestCaseEndConditions(testCaseEndConditions);
-    generator.setListeners(listeners);
-    generator.setFilters(filters);
-    generator.setFailWhenNoWayForward(failWhenNoWayForward);
-    generator.setFailWhenError(failWhenError);
-    generator.setValueScripter(scripter);
+    fsm = parser.parse(config);
+    MainGenerator generator = new MainGenerator(fsm, config);
+    FSMTraversalAlgorithm algorithm = config.getAlgorithm();
+    config.init(fsm);
+//    generator.setAlgorithm(algorithm);
+//    if (suiteEndConditions.size() == 0) {
+//      addSuiteEndCondition(new And(new Length(1), new Probability(0.05d)));
+//    }
+//    if (testCaseEndConditions.size() == 0) {
+//      addTestEndCondition(new And(new Length(1), new Probability(0.1d)));
+//    }
+//    algorithm.init(fsm);
+//    generator.setSuiteEndConditions(suiteEndConditions);
+//    generator.setTestCaseEndConditions(testCaseEndConditions);
+//    generator.setListeners(listeners);
+//    generator.setFilters(filters);
+//    generator.setFailWhenNoWayForward(failWhenNoWayForward);
+//    generator.setFailWhenError(failWhenError);
+//    generator.setValueScripter(scripter);
     return generator;
   }
 
@@ -134,7 +122,7 @@ public class OSMOTester {
    * @param condition The new condition to stop overall suite generation.
    */
   public void addSuiteEndCondition(EndCondition condition) {
-    suiteEndConditions.add(condition);
+    config.addSuiteEndCondition(condition);
   }
 
   /**
@@ -143,7 +131,7 @@ public class OSMOTester {
    * @param condition The new condition to stop individual test generation.
    */
   public void addTestEndCondition(EndCondition condition) {
-    testCaseEndConditions.add(condition);
+    config.addTestEndCondition(condition);
   }
 
   /**
@@ -152,7 +140,7 @@ public class OSMOTester {
    * @param algorithm New test generation algorithm.
    */
   public void setAlgorithm(FSMTraversalAlgorithm algorithm) {
-    this.algorithm = algorithm;
+    config.setAlgorithm(algorithm);
   }
 
   /**
@@ -165,7 +153,7 @@ public class OSMOTester {
   }
 
   public void addListener(GenerationListener listener) {
-    listeners.addListener(listener);
+    config.addListener(listener);
   }
 
   /**
@@ -186,20 +174,15 @@ public class OSMOTester {
     TestUtils.setSeed(seed);
   }
 
-  public void setFailWhenNoWayForward(boolean fail) {
-    failWhenNoWayForward = fail;
-  }
-
-  public void setFailWhenError(boolean failWhenError) {
-    this.failWhenError = failWhenError;
-  }
-
   public void addFilter(TransitionFilter filter) {
-    filters.add(filter);
-    listeners.addListener(filter);
+    config.addFilter(filter);
   }
 
   public void setValueScripter(ScriptedValueProvider scripter) {
-    this.scripter = scripter;
+    config.setScripter(scripter);
+  }
+
+  public OSMOConfiguration getConfig() {
+    return config;
   }
 }

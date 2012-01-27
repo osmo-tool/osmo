@@ -1,6 +1,7 @@
 package osmo.tester.generator;
 
 import osmo.common.log.Logger;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.filter.TransitionFilter;
@@ -25,71 +26,29 @@ import java.util.List;
  */
 public class MainGenerator {
   private static Logger log = new Logger(MainGenerator.class);
+  /** The test generation configuration. */
+  private final OSMOConfiguration config;
   /** Test generation history. */
   private TestSuite suite;
-  /** The set of enabled transitions in the current state is passed to this algorithm to pick one to execute. */
-  private FSMTraversalAlgorithm algorithm;
-  /** Defines when test suite generation should be stopped. Invoked between each test case. */
-  private Collection<EndCondition> suiteEndConditions;
-  /** Defines when test case generation should be stopped. Invoked between each test step. */
-  private Collection<EndCondition> testCaseEndConditions;
-  /** Defines which transitions should be filtered out. Invoked before any transition is taken. */
-  private Collection<TransitionFilter> filters;
   /** The list of listeners to be notified of new events as generation progresses. */
   private GenerationListenerList listeners;
   /** This is set when the test should end but @EndState is not yet achieved to signal ending ASAP. */
   private boolean testEnding = false;
-  /** If true, test generation will fail when no enabled transitions are found. If false, test ends. */
-  private boolean failWhenNoWayForward = true;
-  /** Should we fail test generation if an Exception is thrown? */
-  private boolean failWhenError = true;
   /** The parsed overall test model. */
   private final FSM fsm;
   /** Keeps track of overall number of tests generated. */
   private static int testCount = 0;
-  /** Provides variable values if running a manually defined script. */
-  private ScriptedValueProvider scripter = null;
 
   /**
    * Constructor.
    *
    * @param fsm Describes the test model in an FSM format.
+   * @param config The configuration for test generation parameters.
    */
-  public MainGenerator(FSM fsm) {
+  public MainGenerator(FSM fsm, OSMOConfiguration config) {
     this.fsm = fsm;
-  }
-
-  /** @param algorithm The set of enabled transitions in the current state is passed to this algorithm to pick one to execute. */
-  public void setAlgorithm(FSMTraversalAlgorithm algorithm) {
-    this.algorithm = algorithm;
-  }
-
-  /** @param suiteEndConditions Defines when test suite generation should be stopped. Invoked between each test case. */
-  public void setSuiteEndConditions(Collection<EndCondition> suiteEndConditions) {
-    this.suiteEndConditions = suiteEndConditions;
-  }
-
-  /** @param testCaseEndConditions Defines when test case generation should be stopped. Invoked between each test step. */
-  public void setTestCaseEndConditions(Collection<EndCondition> testCaseEndConditions) {
-    this.testCaseEndConditions = testCaseEndConditions;
-  }
-
-  /** @param filters The new filters to define which transitions should not be taken at a given time. */
-  public void setFilters(Collection<TransitionFilter> filters) {
-    this.filters = filters;
-  }
-
-  /** @param listeners Listeners to be notified about generation events. */
-  public void setListeners(GenerationListenerList listeners) {
-    this.listeners = listeners;
-  }
-
-  public void setFailWhenNoWayForward(boolean failWhenNoWayForward) {
-    this.failWhenNoWayForward = failWhenNoWayForward;
-  }
-
-  public void setFailWhenError(boolean failWhenError) {
-    this.failWhenError = failWhenError;
+    this.config = config;
+    this.listeners = config.getListeners();
   }
 
   /** Invoked to start the test generation using the configured parameters. */
@@ -104,11 +63,13 @@ public class MainGenerator {
 
   /** Initializes test generation. Should be called before any tests are generated. */
   public void initSuite() {
-    initEndConditions();
-    suite = fsm.initSuite(scripter);
+//    initEndConditions();
+//    suite = fsm.initSuite(config.getScripter());
+    suite = fsm.getSuite();
     log.debug("Starting test suite generation");
     beforeSuite();
-    listeners.init(fsm);
+    //this is here so that FSM already has the suite initialized
+//    listeners.init(fsm);
   }
 
   /** Handles suite shutdown. Should be called after all tests have been generated. */
@@ -136,7 +97,7 @@ public class MainGenerator {
       }
     } catch (RuntimeException e) {
       log.error("Error in test generation", e);
-      if (failWhenError) {
+      if (config.shouldFailWhenError()) {
         throw e;
       }
       log.debug("Skipped test error due to settings (no fail when error)");
@@ -149,13 +110,14 @@ public class MainGenerator {
   private boolean nextStep() {
     List<FSMTransition> enabled = getEnabled();
     if (enabled.size() == 0) {
-      if (failWhenNoWayForward) {
+      if (config.shouldFailWhenNoWayForward()) {
         throw new IllegalStateException("No transition available.");
       } else {
         log.debug("No enabled transitions, ending test (fail is disabled).");
         return false;
       }
     }
+    FSMTraversalAlgorithm algorithm = config.getAlgorithm();
     FSMTransition next = algorithm.choose(suite, enabled);
     if (suite.shouldEndTest()) {
       return false;
@@ -169,15 +131,6 @@ public class MainGenerator {
     return true;
   }
 
-  private void initEndConditions() {
-    for (EndCondition ec : testCaseEndConditions) {
-      ec.init(fsm);
-    }
-    for (EndCondition ec : suiteEndConditions) {
-      ec.init(fsm);
-    }
-  }
-
   /**
    * Checks if suite generation should stop.
    *
@@ -185,7 +138,7 @@ public class MainGenerator {
    */
   private boolean checkSuiteEndConditions() {
     boolean shouldEnd = true;
-    for (EndCondition ec : suiteEndConditions) {
+    for (EndCondition ec : config.getSuiteEndConditions()) {
       boolean temp = ec.endSuite(suite, fsm);
       if (ec.isStrict() && temp) {
         return true;
@@ -208,7 +161,7 @@ public class MainGenerator {
       return checkEndStates();
     }
     boolean shouldEnd = true;
-    for (EndCondition ec : testCaseEndConditions) {
+    for (EndCondition ec : config.getTestCaseEndConditions()) {
       //check if all end conditions are met
       boolean temp = ec.endTest(suite, fsm);
       if (ec.isStrict() && temp) {
@@ -330,7 +283,7 @@ public class MainGenerator {
     List<FSMTransition> enabled = new ArrayList<FSMTransition>();
     enabled.addAll(allTransitions);
     //filter out all non-wanted transitions
-    for (TransitionFilter filter : filters) {
+    for (TransitionFilter filter : config.getFilters()) {
       filter.filter(enabled);
     }
     //then check which of the remaining are allowed by their guard statements
@@ -379,9 +332,5 @@ public class MainGenerator {
   /** @return Number of tests generated by this generator. Not affected by suite reset. */
   public int getTestCount() {
     return testCount;
-  }
-
-  public void setValueScripter(ScriptedValueProvider scripter) {
-    this.scripter = scripter;
   }
 }

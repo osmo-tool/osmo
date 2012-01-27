@@ -1,6 +1,7 @@
 package osmo.tester.parser;
 
 import osmo.common.log.Logger;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.annotation.AfterSuite;
 import osmo.tester.annotation.AfterTest;
 import osmo.tester.annotation.BeforeSuite;
@@ -81,24 +82,24 @@ public class MainParser {
    * @param model Model object to be parsed.
    * @return The FSM for the given object.
    */
-  public FSM parse(ModelObject model) {
-    Collection<ModelObject> models = new ArrayList<ModelObject>();
-    models.add(model);
-    return parse(models);
-  }
+//  public FSM parse(ModelObject model) {
+//    Collection<ModelObject> models = new ArrayList<ModelObject>();
+//    models.add(model);
+//    return parse(models);
+//  }
 
   /**
    * Initiates parsing the given model object for the annotation that define the finite state machine (FSM) aspects
    * of the test model.
    *
-   * @param modelObjects The set of test model objects to be parsed.
+   * @param config The test generation configuration containing set of test model objects to be parsed.
    * @return The FSM object created from the given model object that can be used for test generation.
    */
-  public FSM parse(Collection<ModelObject> modelObjects) {
+  public FSM parse(OSMOConfiguration config) {
     log.debug("parsing");
     FSM fsm = new FSM();
     String errors = "";
-    for (ModelObject mo : modelObjects) {
+    for (ModelObject mo : config.getModelObjects()) {
       //first we check any annotated fields that are relevant
       String prefix = mo.getPrefix();
       Object obj = mo.getObject();

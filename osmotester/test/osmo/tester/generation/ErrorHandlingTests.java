@@ -2,6 +2,7 @@ package osmo.tester.generation;
 
 import org.junit.Before;
 import org.junit.Test;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.testmodels.ErrorModel1;
@@ -25,11 +26,13 @@ import static junit.framework.Assert.fail;
 public class ErrorHandlingTests {
   private OSMOTester osmo = null;
   private TestListener listener;
+  private OSMOConfiguration config;
 
   @Before
   public void testSetup() {
     osmo = new OSMOTester();
     osmo.setSeed(100);
+    config = osmo.getConfig();
     listener = new TestListener();
     osmo.addListener(listener);
   }
@@ -52,7 +55,7 @@ public class ErrorHandlingTests {
   @Test
   public void beforeTestWithTrap() {
     osmo.addModelObject(new ErrorModel1());
-    osmo.setFailWhenError(false);
+    config.setFailWhenError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
     osmo.addTestEndCondition(length3);
@@ -83,7 +86,7 @@ public class ErrorHandlingTests {
   @Test
   public void beforeSuiteWithTrap() {
     osmo.addModelObject(new ErrorModel3());
-    osmo.setFailWhenError(false);
+    config.setFailWhenError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
     osmo.addTestEndCondition(length3);
@@ -114,7 +117,7 @@ public class ErrorHandlingTests {
   @Test
   public void afterTestWithTrap() {
     osmo.addModelObject(new ErrorModel2());
-    osmo.setFailWhenError(false);
+    config.setFailWhenError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
     osmo.addTestEndCondition(length3);
@@ -145,7 +148,7 @@ public class ErrorHandlingTests {
   @Test
   public void afterSuiteWithTrap() {
     osmo.addModelObject(new ErrorModel4());
-    osmo.setFailWhenError(false);
+    config.setFailWhenError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
     osmo.addTestEndCondition(length3);
@@ -177,7 +180,7 @@ public class ErrorHandlingTests {
   public void guardWithTrap() {
     listener.addExpected("suite-start", "start", "g:hello", "end", "suite-end");
     osmo.addModelObject(new ErrorModel6());
-    osmo.setFailWhenError(false);
+    config.setFailWhenError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
     osmo.addTestEndCondition(length3);
@@ -205,7 +208,7 @@ public class ErrorHandlingTests {
   public void transitionWithTrap() {
     listener.addExpected("suite-start", "start", "g:hello", "pre:hello", "t:hello", "end", "suite-end");
     osmo.addModelObject(new ErrorModel5());
-    osmo.setFailWhenError(false);
+    config.setFailWhenError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
     osmo.addTestEndCondition(length3);
@@ -233,7 +236,7 @@ public class ErrorHandlingTests {
   public void preWithTrap() {
     listener.addExpected("suite-start", "start", "g:hello", "pre:hello", "end", "suite-end");
     osmo.addModelObject(new ErrorModel8());
-    osmo.setFailWhenError(false);
+    config.setFailWhenError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
     osmo.addTestEndCondition(length3);
@@ -261,7 +264,7 @@ public class ErrorHandlingTests {
   public void postWithTrap() {
     listener.addExpected("suite-start", "start", "g:hello", "pre:hello", "t:hello", "post:hello", "end", "suite-end");
     osmo.addModelObject(new ErrorModel7());
-    osmo.setFailWhenError(false);
+    config.setFailWhenError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
     osmo.addTestEndCondition(length3);
@@ -289,7 +292,7 @@ public class ErrorHandlingTests {
   public void endConditionWithTrap() {
     listener.addExpected("suite-start", "start", "g:hello", "pre:hello", "t:hello", "post:hello", "end", "suite-end");
     osmo.addModelObject(new ErrorModel9());
-    osmo.setFailWhenError(false);
+    config.setFailWhenError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
     osmo.addTestEndCondition(length3);
