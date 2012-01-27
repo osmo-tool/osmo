@@ -2,6 +2,7 @@ package osmo.tester.filter;
 
 import org.junit.Before;
 import org.junit.Test;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generation.TestListener;
 import osmo.tester.generator.endcondition.Length;
@@ -20,6 +21,7 @@ import static org.junit.Assert.fail;
 /** @author Teemu Kanstren */
 public class MaxFilterTests {
   private OSMOTester osmo = null;
+  private OSMOConfiguration config;
   private ByteArrayOutputStream out;
   private PrintStream ps;
   private ValidTestModel2 validTestModel2;
@@ -29,6 +31,7 @@ public class MaxFilterTests {
     out = new ByteArrayOutputStream(1000);
     ps = new PrintStream(out);
     osmo = new OSMOTester();
+    config = osmo.getConfig();
     osmo.setSeed(123);
     validTestModel2 = new ValidTestModel2(new Requirements(), ps);
   }
@@ -54,7 +57,7 @@ public class MaxFilterTests {
     MaxTransitionFilter filter = new MaxTransitionFilter();
     filter.setMax("world", 0);
     osmo.addFilter(filter);
-    osmo.setFailWhenNoWayForward(false);
+    config.setFailWhenNoWayForward(false);
     osmo.generate();
     assertTransitions(":hello");
   }
@@ -82,7 +85,7 @@ public class MaxFilterTests {
     filter.setMax("epixx", 1);
     osmo.addFilter(filter);
     osmo.addSuiteEndCondition(new Length(1));
-    osmo.setFailWhenNoWayForward(false);
+    config.setFailWhenNoWayForward(false);
     osmo.generate();
     assertTransitions(":hello:world:epixx_pre:epixx:epixx_oracle");
   }
@@ -113,7 +116,7 @@ public class MaxFilterTests {
     filter.setMax("epixx", 2);
     osmo.addFilter(filter);
     osmo.addSuiteEndCondition(new Length(1));
-    osmo.setFailWhenNoWayForward(false);
+    config.setFailWhenNoWayForward(false);
     osmo.generate();
     assertTransitions(":hello:world:epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle");
   }
