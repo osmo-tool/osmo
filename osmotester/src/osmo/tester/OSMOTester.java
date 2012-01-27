@@ -85,23 +85,7 @@ public class OSMOTester {
     MainParser parser = new MainParser();
     fsm = parser.parse(config);
     MainGenerator generator = new MainGenerator(fsm, config);
-    FSMTraversalAlgorithm algorithm = config.getAlgorithm();
     config.init(fsm);
-//    generator.setAlgorithm(algorithm);
-//    if (suiteEndConditions.size() == 0) {
-//      addSuiteEndCondition(new And(new Length(1), new Probability(0.05d)));
-//    }
-//    if (testCaseEndConditions.size() == 0) {
-//      addTestEndCondition(new And(new Length(1), new Probability(0.1d)));
-//    }
-//    algorithm.init(fsm);
-//    generator.setSuiteEndConditions(suiteEndConditions);
-//    generator.setTestCaseEndConditions(testCaseEndConditions);
-//    generator.setListeners(listeners);
-//    generator.setFilters(filters);
-//    generator.setFailWhenNoWayForward(failWhenNoWayForward);
-//    generator.setFailWhenError(failWhenError);
-//    generator.setValueScripter(scripter);
     return generator;
   }
 
@@ -184,5 +168,9 @@ public class OSMOTester {
 
   public OSMOConfiguration getConfig() {
     return config;
+  }
+
+  public void setConfig(OSMOConfiguration config) {
+    this.config = config;
   }
 }
