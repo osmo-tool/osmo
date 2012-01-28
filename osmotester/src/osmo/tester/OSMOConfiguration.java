@@ -2,6 +2,7 @@ package osmo.tester;
 
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.GenerationListenerList;
+import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.endcondition.And;
@@ -38,6 +39,7 @@ public class OSMOConfiguration {
   private ScriptedValueProvider scripter;
   /** Number of tests to generate when using over JUnit. */
   private int junitLength = -1;
+  private MainGenerator generator = null;
 
   /**
    * Adds a new model object, to be composed by OSMO to a single internal model along with other model objects.
@@ -78,11 +80,6 @@ public class OSMOConfiguration {
   public Collection<EndCondition> getSuiteEndConditions() {
     if (suiteEndConditions.size() == 0) {
       addSuiteEndCondition(new And(new Length(1), new Probability(0.05d)));
-    }
-    //if JUnitLength is defined, it overrides any other definition because JUnit can only handle length
-    if (junitLength > 0) {
-      suiteEndConditions.clear();
-      suiteEndConditions.add(new Length(junitLength));
     }
     return suiteEndConditions;
   }
@@ -150,7 +147,6 @@ public class OSMOConfiguration {
       algorithm = new RandomAlgorithm();
     }
     fsm.initSuite(scripter);
-    FSMTraversalAlgorithm algo = getAlgorithm();
     algorithm.init(fsm);
     for (EndCondition ec : testCaseEndConditions) {
       ec.init(fsm);
@@ -175,5 +171,9 @@ public class OSMOConfiguration {
 
   public void setJunitLength(int junitLength) {
     this.junitLength = junitLength;
+  }
+
+  public void setGenerator(MainGenerator generator) {
+    this.generator = generator;
   }
 }

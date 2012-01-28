@@ -24,9 +24,9 @@ public class OSMOJUnitTest extends FrameworkMethod {
   }
 
   public void execute() {
-    System.out.println("TEST EXECUTES "+name);
+//    System.out.println("TEST EXECUTES "+name);
     generator.nextTest();
-    System.out.println();
+//    System.out.println();
   }
 
   @Override
