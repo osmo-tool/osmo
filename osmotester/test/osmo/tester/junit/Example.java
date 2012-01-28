@@ -3,12 +3,8 @@ package osmo.tester.junit;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.runner.RunWith;
-import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
-import osmo.tester.model.Requirements;
 import osmo.tester.testmodels.CalculatorModel;
-import osmo.tester.testmodels.ValidTestModel1;
-import osmo.tester.testmodels.ValidTestModel2;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -35,7 +31,7 @@ public class Example {
   public static OSMOConfiguration giefConf() {
     OSMOConfiguration config = new OSMOConfiguration();
     config.addModelObject(new CalculatorModel(ps));
-    config.setJunitLength(5);
+    config.setJUnitLength(5);
     return config;
   }
 
