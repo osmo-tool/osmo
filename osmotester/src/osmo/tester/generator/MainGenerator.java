@@ -1,5 +1,6 @@
 package osmo.tester.generator;
 
+import osmo.common.OSMOException;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
@@ -11,8 +12,8 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
-import osmo.tester.model.dataflow.ScriptedValueProvider;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -98,6 +99,10 @@ public class MainGenerator {
     } catch (RuntimeException e) {
       log.error("Error in test generation", e);
       if (config.shouldFailWhenError()) {
+        System.out.println("DUDE");
+        if (config.shouldUnwrapExceptions()) {
+          e = unwrap(e);
+        }
         throw e;
       }
       log.debug("Skipped test error due to settings (no fail when error)");
@@ -105,6 +110,23 @@ public class MainGenerator {
     afterTest();
     log.debug("Finished new test generation");
     return test;
+  }
+
+  private RuntimeException unwrap(RuntimeException e) {
+    Throwable cause = e.getCause();
+    if (cause != null) {
+      if (e.getClass().equals(OSMOException.class)) {
+        if (cause.getClass().equals(InvocationTargetException.class)) {
+          cause = cause.getCause();
+          if (cause.getClass().equals(RuntimeException.class)) {
+            return (RuntimeException)cause;
+          }
+          //hack to avoid Java reflection + compiler checking incompatibilities
+          return new RuntimeException(cause);
+        }
+      }
+    }
+    return e;
   }
 
   private boolean nextStep() {

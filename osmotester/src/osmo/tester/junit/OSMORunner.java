@@ -62,7 +62,6 @@ public class OSMORunner extends BlockJUnit4ClassRunner {
     OSMOTester osmo = new OSMOTester();
     osmo.setConfig(config);
     MainGenerator generator = osmo.initGenerator();
-    config.setGenerator(generator);
     generator.initSuite();
     config.addListener(new JUnitGenerationListener(config.getJUnitLength(), generator));
 
