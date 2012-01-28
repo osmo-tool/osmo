@@ -17,9 +17,9 @@ public class SearchTests {
   @Test
   public void transitionsVariablesValuesPairsRequirementsAndTransitions() {
 //    Logger.debug = true;
-    TestUtils.setSeed(111);
     VariableModel2 model = new VariableModel2();
     OSMOTester tester = new OSMOTester();
+    tester.setSeed(111);
     tester.addModelObject(model);
     MainGenerator generator = tester.initGenerator();
     SearchConfiguration config = new SearchConfiguration(generator);
@@ -42,9 +42,9 @@ public class SearchTests {
   @Test
   public void transitionsVariablesValuesPairsAndTransitions2() {
 //    Logger.debug = true;
-    TestUtils.setSeed(121);
     VariableModel2 model = new VariableModel2();
     OSMOTester tester = new OSMOTester();
+    tester.setSeed(121);
     tester.addModelObject(model);
     MainGenerator generator = tester.initGenerator();
     SearchConfiguration config = new SearchConfiguration(generator);
@@ -71,9 +71,9 @@ public class SearchTests {
   @Test
   public void transitionsOnly() {
 //    Logger.debug = true;
-    TestUtils.setSeed(111);
     VariableModel2 model = new VariableModel2();
     OSMOTester tester = new OSMOTester();
+    tester.setSeed(111);
     tester.addModelObject(model);
     MainGenerator generator = tester.initGenerator();
     SearchConfiguration config = new SearchConfiguration(generator);
@@ -100,9 +100,9 @@ public class SearchTests {
   @Test
   public void shortestPathAndRequirements() {
     //TODO: this requires full source space exploration, a good example of that ..
-    TestUtils.setSeed(111);
     ValidTestModel2 model = new ValidTestModel2(new Requirements());
     OSMOTester tester = new OSMOTester();
+    tester.setSeed(111);
     tester.addModelObject(model);
     MainGenerator generator = tester.initGenerator();
     SearchConfiguration config = new SearchConfiguration(generator);

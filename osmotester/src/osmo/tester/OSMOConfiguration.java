@@ -40,6 +40,7 @@ public class OSMOConfiguration {
   /** Number of tests to generate when using over JUnit. */
   private int junitLength = -1;
   private boolean unwrapExceptions = false;
+  private long seed = System.currentTimeMillis();
 
   /**
    * Adds a new model object, to be composed by OSMO to a single internal model along with other model objects.
@@ -169,7 +170,7 @@ public class OSMOConfiguration {
     return junitLength;
   }
 
-  public void setJunitLength(int junitLength) {
+  public void setJUnitLength(int junitLength) {
     this.junitLength = junitLength;
   }
 
@@ -179,5 +180,13 @@ public class OSMOConfiguration {
 
   public void setUnwrapExceptions(boolean unwrapExceptions) {
     this.unwrapExceptions = unwrapExceptions;
+  }
+
+  public long getSeed() {
+    return seed;
+  }
+
+  public void setSeed(long seed) {
+    this.seed = seed;
   }
 }

@@ -99,11 +99,13 @@ public class MainGenerator {
     } catch (RuntimeException e) {
       log.error("Error in test generation", e);
       if (config.shouldFailWhenError()) {
-        System.out.println("DUDE");
         if (config.shouldUnwrapExceptions()) {
           e = unwrap(e);
         }
         throw e;
+      } else {
+        e.printStackTrace();
+        System.out.println("Configuration set not to fail - continuing with next test");
       }
       log.debug("Skipped test error due to settings (no fail when error)");
     }

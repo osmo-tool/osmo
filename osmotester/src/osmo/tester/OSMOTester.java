@@ -82,6 +82,7 @@ public class OSMOTester {
   }
 
   public MainGenerator initGenerator() {
+    TestUtils.setSeed(config.getSeed());
     MainParser parser = new MainParser();
     fsm = parser.parse(config);
     MainGenerator generator = new MainGenerator(fsm, config);
@@ -155,7 +156,7 @@ public class OSMOTester {
    * @param seed The new random number generator.
    */
   public void setSeed(long seed) {
-    TestUtils.setSeed(seed);
+    config.setSeed(seed);
   }
 
   public void addFilter(TransitionFilter filter) {
