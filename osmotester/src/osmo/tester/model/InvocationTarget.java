@@ -1,5 +1,6 @@
 package osmo.tester.model;
 
+import osmo.common.OSMOException;
 import osmo.common.log.Logger;
 import osmo.tester.parser.ParserParameters;
 
@@ -30,7 +31,7 @@ public class InvocationTarget {
     try {
       return method.invoke(modelObject);
     } catch (Exception e) {
-      throw new RuntimeException("Failed to invoke " + type + " method on the model object.", e);
+      throw new OSMOException("Failed to invoke " + type + " method on the model object.", e);
     }
   }
 
@@ -42,7 +43,7 @@ public class InvocationTarget {
     try {
       return method.invoke(modelObject, arg);
     } catch (Exception e) {
-      throw new RuntimeException("Failed to invoke " + type + " method on the model object.", e);
+      throw new OSMOException("Failed to invoke " + type + " method on the model object.", e);
     }
   }
 

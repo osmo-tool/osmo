@@ -39,7 +39,7 @@ public class OSMOConfiguration {
   private ScriptedValueProvider scripter;
   /** Number of tests to generate when using over JUnit. */
   private int junitLength = -1;
-  private MainGenerator generator = null;
+  private boolean unwrapExceptions = false;
 
   /**
    * Adds a new model object, to be composed by OSMO to a single internal model along with other model objects.
@@ -173,7 +173,11 @@ public class OSMOConfiguration {
     this.junitLength = junitLength;
   }
 
-  public void setGenerator(MainGenerator generator) {
-    this.generator = generator;
+  public boolean shouldUnwrapExceptions() {
+    return unwrapExceptions || junitLength > 0;
+  }
+
+  public void setUnwrapExceptions(boolean unwrapExceptions) {
+    this.unwrapExceptions = unwrapExceptions;
   }
 }
