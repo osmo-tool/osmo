@@ -48,14 +48,6 @@ public class ParserTests {
     return config;
   }
 
-  private OSMOConfiguration como(Collection<ModelObject> modelObjects) {
-    OSMOConfiguration config = new OSMOConfiguration();
-    for (ModelObject mo : modelObjects) {
-      config.addModelObject(mo);
-    }
-    return config;
-  }
-
   @Test
   public void testModel1() throws Exception {
     EmptyTestModel1 model = new EmptyTestModel1();
@@ -252,10 +244,10 @@ public class ParserTests {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
     ValidTestModel3 model = new ValidTestModel3(ps);
-    Collection<ModelObject> models = new ArrayList<ModelObject>();
-    models.add(new ModelObject("ap_", model));
-    models.add(new ModelObject("ip_", model));
-    FSM fsm = parser.parse(como(models));
+    OSMOConfiguration config = new OSMOConfiguration();
+    config.addModelObject("ap_", model);
+    config.addModelObject("ip_", model);
+    FSM fsm = parser.parse(config);
     assertTransitionPresent(fsm, "ap_hello", 1, 2);
     assertTransitionPresent(fsm, "ip_hello", 1, 2);
     assertTransitionPresent(fsm, "ap_world", 1, 2);
@@ -273,11 +265,11 @@ public class ParserTests {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
     ValidTestModel3 model = new ValidTestModel3(ps);
-    Collection<ModelObject> models = new ArrayList<ModelObject>();
-    models.add(new ModelObject("ap_", model));
-    models.add(new ModelObject("ip_", model));
-    models.add(new ModelObject(model));
-    FSM fsm = parser.parse(como(models));
+    OSMOConfiguration config = new OSMOConfiguration();
+    config.addModelObject("ap_", model);
+    config.addModelObject("ip_", model);
+    config.addModelObject(model);
+    FSM fsm = parser.parse(config);
     assertTransitionPresent(fsm, "hello", 1, 3);
     assertTransitionPresent(fsm, "ap_hello", 1, 3);
     assertTransitionPresent(fsm, "ip_hello", 1, 3);
@@ -298,11 +290,11 @@ public class ParserTests {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
     TestStepModel model = new TestStepModel(ps);
-    Collection<ModelObject> models = new ArrayList<ModelObject>();
-    models.add(new ModelObject("ap_", model));
-    models.add(new ModelObject("ip_", model));
-    models.add(new ModelObject(model));
-    FSM fsm = parser.parse(como(models));
+    OSMOConfiguration config = new OSMOConfiguration();
+    config.addModelObject("ap_", model);
+    config.addModelObject("ip_", model);
+    config.addModelObject(model);
+    FSM fsm = parser.parse(config);
     assertTransitionPresent(fsm, "hello", 1, 3);
     assertTransitionPresent(fsm, "ap_hello", 1, 3);
     assertTransitionPresent(fsm, "ip_hello", 1, 3);
@@ -323,11 +315,11 @@ public class ParserTests {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
     StepAndTransitionModel model = new StepAndTransitionModel(ps);
-    Collection<ModelObject> models = new ArrayList<ModelObject>();
-    models.add(new ModelObject("ap_", model));
-    models.add(new ModelObject("ip_", model));
-    models.add(new ModelObject(model));
-    FSM fsm = parser.parse(como(models));
+    OSMOConfiguration config = new OSMOConfiguration();
+    config.addModelObject("ap_", model);
+    config.addModelObject("ip_", model);
+    config.addModelObject(model);
+    FSM fsm = parser.parse(config);
     assertTransitionPresent(fsm, "hello", 1, 3);
     assertTransitionPresent(fsm, "ap_hello", 1, 3);
     assertTransitionPresent(fsm, "ip_hello", 1, 3);

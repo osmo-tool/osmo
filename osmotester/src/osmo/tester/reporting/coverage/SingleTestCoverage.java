@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Coverage values for a single test case (as opposed to suite in {@Link TestCoverage}.
+ * Coverage values for a single test case (as opposed to suite in {@link osmo.tester.optimizer.TestCoverage}.
  * Used in reporting for coverage matrix. Number of times different elements were covered or the values for
  * variables.
  *
