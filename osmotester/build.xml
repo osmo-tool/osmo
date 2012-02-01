@@ -70,11 +70,11 @@
     </target>
 
     <target name="test" depends="clean, compile, copyresources">
-        <cobertura-instrument todir="${instrumented-dest}">
+        <!--cobertura-instrument todir="${instrumented-dest}">
             <fileset dir="${prod-dest}">
                 <include name="**/*.class"/>
             </fileset>
-        </cobertura-instrument>
+        </cobertura-instrument-->
 
         <junit printsummary="yes" haltonfailure="no">
             <classpath>
@@ -95,8 +95,8 @@
             </batchtest>
         </junit>
 
-        <cobertura-report format="xml" srcdir="${prod-src}" destdir="${coverage-dir}"/>
-        <cobertura-report format="html" srcdir="${prod-src}" destdir="${coverage-dir}/html"/>
+        <!--cobertura-report format="xml" srcdir="${prod-src}" destdir="${coverage-dir}"/>
+        <cobertura-report format="html" srcdir="${prod-src}" destdir="${coverage-dir}/html"/-->
     </target>
 
     <target name="javadocs">
