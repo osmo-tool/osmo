@@ -9,7 +9,7 @@
   <property name="instrumented-dest" value="${main-output}/instrumented"/>
   <property name="coverage-dir" value="${main-output}/coverage"/>
   <property name="javadoc-dir" value="${main-output}/docs/api"/>
-  <property name="cobertura.home" value="${env.COBERTURA_HOME}"/>
+  <!--property name="cobertura.home" value="${env.COBERTURA_HOME}"/-->
   <property name="build.version" value="1.0.0"/>
   <property name="jar.file" value="osmo-common-v${build.version}.jar"/>
 
@@ -21,14 +21,14 @@
     <path location="${prod-dest}"/>
   </path>
 
-  <path id="cobertura.classpath">
+  <!--path id="cobertura.classpath">
     <fileset dir="${cobertura.home}">
       <include name="cobertura.jar"/>
       <include name="lib/**/*.jar"/>
     </fileset>
-  </path>
+  </path-->
 
-  <taskdef classpathref="cobertura.classpath" resource="tasks.properties"/>
+  <!--taskdef classpathref="cobertura.classpath" resource="tasks.properties"/-->
 
   <!-- CLEAN -->
   <target name="clean">
@@ -60,18 +60,18 @@
   </target>
 
   <target name="test" depends="clean, compile">
-    <cobertura-instrument todir="${instrumented-dest}">
+    <!--cobertura-instrument todir="${instrumented-dest}">
       <fileset dir="${prod-dest}">
         <include name="**/*.class"/>
       </fileset>
-    </cobertura-instrument>
+    </cobertura-instrument-->
 
     <junit printsummary="yes" haltonfailure="no">
       <classpath>
         <pathelement location="${instrumented-dest}"/>
         <pathelement location="${test-dest}"/>
         <path refid="class.path"/>
-        <path refid="cobertura.classpath"/>
+        <!--path refid="cobertura.classpath"/-->
       </classpath>
 
       <formatter type="xml"/>
@@ -85,8 +85,8 @@
       </batchtest>
     </junit>
 
-    <cobertura-report format="xml" srcdir="${prod-src}" destdir="${coverage-dir}"/>
-    <cobertura-report format="html" srcdir="${prod-src}" destdir="${coverage-dir}/html"/>
+    <!--cobertura-report format="xml" srcdir="${prod-src}" destdir="${coverage-dir}"/>
+    <cobertura-report format="html" srcdir="${prod-src}" destdir="${coverage-dir}/html"/-->
   </target>
 
   <target name="javadocs">
