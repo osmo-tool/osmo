@@ -1,0 +1,7 @@
+      <AuditTrailEntry>
+        <Data>
+$params        </Data>
+        <WorkflowModelElement>$method</WorkflowModelElement>
+        <EventType>complete</EventType>
+        <Originator>$orig</Originator>
+      </AuditTrailEntry>

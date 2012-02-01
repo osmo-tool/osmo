@@ -1,0 +1,57 @@
+v0.1 06/2011
+initial release
+v0.2 12/07/2011
+added features based on v0.1 experiences and feedback, and invariance taxonomy
+-added weights to transitions
+-added weighted random algorithm
+-added @EndState annotation
+-renamed generation algorithms to FSM traversal algorithms
+-renamed strategies to end conditions
+-added compositional end conditions (or/and) for test cases and test suites
+-added support for several end conditions for both test case and test suite
+-added data generation and evaluation components, including readable characters, value range, and value range set
+-added implementation for basic test suite optimizers
+-fixed some bugs and did some refactoring to clarify code
+v0.3 16/07/2011
+-split oracle to pre and post methods
+v0.4 02/08/2011
+-added @Variable annotation and resulting state storage to TestStep? and @Pre and @Post parameters.
+-fixed some bugs and did some optimizations
+v1.0 24/08/2011
+-This is the first version to provide some stable interface
+-Cleaned up excess parameters from TestSuite and TestStep
+-Fixed spamming over several log files ( issue #7 )
+-Changed TestSuite? initialization to require non-null value
+-Added requirements coverage and test data reporters ( issue #6 ,  issue #11 )
+-Added basic boundary scan algorithm to dataflow generators ( issue #9 )
+-Defined common interfaces for dataflow input and output ( issue #8 )
+v1.1.0 09/09/2011
+-fixes to make random numbers more uniformly distributed
+-added transitioncoverage endcondition
+v1.2.0 04/10/2011
+-added extensive calendar example (in source code) and tutorial (in manual)
+-added robot framework scripter
+-added ASCII reporting
+v 1.2.1 17/10/2011
+-fixes to the calendar example
+-random test generation algorithm uses the common seed now (enables determinism and model versioning)
+-valuerangeset to support boundary scan
+v 2.0.0 24/11/2011
+-several fixes to make calendar example better, including more deterministic etc.
+-separated examples to different module from core
+-added option for strict end conditions
+-added end condition for data (variable) coverage
+-added end condition for transition (step) coverage
+-added filtering support to define when some steps or values should not be used
+-added support for model prefixes
+-added support for custom (user) attributes inside test case objects (from test models)
+-improved suite optimization algorithms
+-improved checking for invalid configurations
+-created an api to use the test generator externally not just from OSMOTester class
+-improved (new) weighted random algorithm
+-renamed optimized random to less random
+-added option to use testutils functions with separate seeds at the same time (Randomizer in common module)
+-added first draft GUI for running OSMOTester manually
+-added first draft of text based domain specific language
+-added coverage matrices
+-refactored (warning: api change), fixed bugs, the usual stuff..

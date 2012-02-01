@@ -1,0 +1,136 @@
+<project name="osmo-miner" default="jar" basedir=".">
+  <property environment="env"/>
+  <property name="prod-src" value="src"/>
+  <property name="test-src" value="test"/>
+  <property name="main-output" value="ant-out"/>
+  <property name="prod-dest" value="${main-output}/production"/>
+  <property name="test-dest" value="${main-output}/testing"/>
+  <property name="test-report" value="${main-output}/junit-report"/>
+  <property name="instrumented-dest" value="${main-output}/instrumented"/>
+  <property name="coverage-dir" value="${main-output}/coverage"/>
+  <property name="javadoc-dir" value="${main-output}/docs/api"/>
+  <property name="cobertura.home" value="${env.COBERTURA_HOME}"/>
+  <property name="build.version" value="0.1.0"/>
+  <property name="osmo-common-output" value="../common/ant-out/production"/>
+  <property name="jar.file" value="osmo-miner-v${build.version}.jar"/>
+  <property name="zip.file" value="osmo-miner-v${build.version}.zip"/>
+
+  <path id="class.path">
+    <!--pathelement path="${currentenv.classpath}"/-->
+    <fileset dir="lib">
+      <include name="**/*.jar"/>
+    </fileset>
+    <path location="${prod-dest}"/>
+  </path>
+
+  <path id="cobertura.classpath">
+    <fileset dir="${cobertura.home}">
+      <include name="cobertura.jar"/>
+      <include name="lib/**/*.jar"/>
+    </fileset>
+  </path>
+
+  <taskdef classpathref="cobertura.classpath" resource="tasks.properties"/>
+
+  <!-- CLEAN -->
+  <target name="clean">
+    <echo message="Removing old directory structure..."/>
+    <delete dir="${main-output}"/>
+  </target>
+
+  <!-- MK DEPLOY DIR -->
+  <target name="init">
+    <mkdir dir="${prod-dest}"/>
+    <mkdir dir="${test-dest}"/>
+    <mkdir dir="${test-report}"/>
+    <mkdir dir="${instrumented-dest}"/>
+    <mkdir dir="${coverage-dir}"/>
+    <mkdir dir="${javadoc-dir}"/>
+  </target>
+
+  <target name="compile" depends="init">
+    <echo message="Compiling production..."/>
+    <javac source="1.5" target="1.5" debug="true" classpathref="class.path" srcdir="${prod-src}" destdir="${prod-dest}"/>
+    <echo message="Compiling tests..."/>
+    <javac source="1.5" target="1.5" classpathref="class.path" srcdir="${test-src}" destdir="${test-dest}"/>
+  </target>
+
+  <target name="jar" depends="compile, copyresources" description="Create jar file">
+    <ant dir="../common" antfile="build.xml" target="jar" inheritAll="false"/>
+    <jar destfile="${jar.file}">
+      <manifest>
+        <attribute name="Main-Class" value="osmo.miner.GUI"/>
+        <attribute name="Class-Path" value=". velocity-1.7-dep.jar"/>
+      </manifest>
+      <fileset dir="${prod-dest}"/>
+      <fileset dir="${osmo-common-output}"/>
+    </jar>
+
+  </target>
+
+  <target name="test" depends="clean, compile">
+    <cobertura-instrument todir="${instrumented-dest}">
+      <fileset dir="${prod-dest}">
+        <include name="**/*.class"/>
+      </fileset>
+    </cobertura-instrument>
+
+    <junit printsummary="yes" haltonfailure="no">
+      <classpath>
+        <pathelement location="${instrumented-dest}"/>
+        <pathelement location="${test-dest}"/>
+        <path refid="class.path"/>
+        <path refid="cobertura.classpath"/>
+      </classpath>
+
+      <formatter type="xml"/>
+
+      <batchtest fork="once" todir="${test-report}">
+        <fileset dir="${test-src}">
+          <include name="**/*Tests.java"/>
+          <exclude name="**/*Interface*.java"/>
+          <exclude name="**/TestObject.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
+
+    <cobertura-report format="xml" srcdir="${prod-src}" destdir="${coverage-dir}"/>
+    <cobertura-report format="html" srcdir="${prod-src}" destdir="${coverage-dir}/html"/>
+  </target>
+
+  <target name="copyresources" depends="init,compile">
+    <copy todir="${prod-dest}">
+      <fileset dir="${prod-src}">
+        <include name="**/*.html"/>
+        <include name="**/*.csv"/>
+        <include name="**/*.xml"/>
+        <include name="**/*.vm"/>
+      </fileset>
+    </copy>
+    <copy todir="${test-dest}">
+      <fileset dir="${test-src}">
+        <include name="**/*.html"/>
+        <include name="**/*.csv"/>
+        <include name="**/*.xml"/>
+        <include name="**/*.vm"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="javadocs">
+    <javadoc destdir="${javadoc-dir}" author="true" version="true" use="true" windowtitle="OSMO Miner API">
+      <packageset dir="src" defaultexcludes="yes">
+        <include name="osmo/miner/**"/>
+      </packageset>
+    </javadoc>
+  </target>
+
+  <target name="distro" depends="jar">
+    <zip destfile="${zip.file}">
+      <zipfileset dir="lib" includes="velocity-1.7-dep.jar"/>
+      <zipfileset dir="." includes="${jar.file},osmo-miner.properties"/>
+    </zip>
+  </target>
+
+  <target name="jenkins" depends="test, javadocs"/>
+</project>

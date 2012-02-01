@@ -1,0 +1,11 @@
+Mined invariants for $program
+
+#foreach ($scope in $scopes)
+#foreach ($var in $scope.variables)
+${scope.name}:${var.name}
+#foreach ($inv in $var.invariants)
+$inv
+#end
+
+#end
+#end
