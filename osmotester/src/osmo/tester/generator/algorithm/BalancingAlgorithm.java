@@ -6,12 +6,7 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static osmo.common.TestUtils.minOf;
 import static osmo.common.TestUtils.oneOf;
@@ -83,12 +78,24 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
   private Collection<FSMTransition> coverageBasedOptions(TestSuite history, List<FSMTransition> choices, Map<FSMTransition, Integer> currentTPCoverage) {
     Map<FSMTransition, Integer> tCoverage = history.getTransitionCoverage();
 
+    Map<FSMTransition, Integer> choiceTC = new HashMap<FSMTransition, Integer>();
+    for (FSMTransition choice : choices) {
+      choiceTC.put(choice, tCoverage.get(choice));
+    }
+
+    Map<FSMTransition, Integer> choiceTPC = new HashMap<FSMTransition, Integer>();
+    for (FSMTransition choice : choices) {
+      choiceTPC.put(choice, currentTPCoverage.get(choice));
+    }
+
     Collection<FSMTransition> options = new HashSet<FSMTransition>();
+
     //we have covered everything at least once so lets count the coverage instead
-    int smallest = minOf(tCoverage.values());
+    int smallest = minOf(choiceTC.values());
 //    Map<FSMTransition, Integer> currentTPCoverage = checkTPCoverageFor(current, choices);
-    int smallestTP = minOf(currentTPCoverage.values());
+    int smallestTP = minOf(choiceTPC.values());
     log.debug("smallest:" + smallest + " stp:" + smallestTP);
+    log.debug("choices:"+choices);
 
     for (FSMTransition t : choices) {
       if (tCoverage.get(t) == smallest) {
