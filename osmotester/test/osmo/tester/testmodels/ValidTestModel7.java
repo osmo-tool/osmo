@@ -2,11 +2,14 @@ package osmo.tester.testmodels;
 
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
-import osmo.tester.annotation.Transition;
 
 import java.io.PrintStream;
 
-/** @author Teemu Kanstren */
+/**
+ * This model runs steps in an order where the lest covered is not always enabled.
+ *
+ * @author Teemu Kanstren
+ */
 public class ValidTestModel7 {
   private int count1 = 0;
   private int count2 = 0;
