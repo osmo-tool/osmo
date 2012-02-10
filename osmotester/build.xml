@@ -72,16 +72,21 @@
     </jar>
   </target>
 
+  <target name="init.clover">
+    <clover-clean/>
+    <clover-setup>
+      <files>
+        <exclude name="osmo/tester/gui/**/*.java"/>
+      </files>
+    </clover-setup>
+  </target>
+
   <target name="test" depends="clean, compile, copyresources">
     <!--cobertura-instrument todir="${instrumented-dest}">
       <fileset dir="${prod-dest}">
         <include name="**/*.class"/>
       </fileset>
     </cobertura-instrument-->
-
-    <clover-setup>
-
-    </clover-setup>
 
     <junit printsummary="yes" haltonfailure="no">
       <classpath>
