@@ -109,6 +109,7 @@
 
 
     <clover-html-report outdir="clover_html" title="OSMO Tester"/>
+    <clover-pdf-report outfile="coverage.pdf" title="OSMO Tester"/>
     <!--cobertura-report format="xml" srcdir="${prod-src}" destdir="${coverage-dir}"/>
     <cobertura-report format="html" srcdir="${prod-src}" destdir="${coverage-dir}/html"/-->
   </target>
