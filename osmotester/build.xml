@@ -1,143 +1,152 @@
 <project name="osmo-tester" default="jar" basedir=".">
-    <property environment="env"/>
-    <property name="prod-src" value="src"/>
-    <property name="test-src" value="test"/>
-    <property name="main-output" value="ant-out"/>
-    <property name="prod-dest" value="${main-output}/production"/>
-    <property name="test-dest" value="${main-output}/testing"/>
-    <property name="test-report" value="${main-output}/junit-report"/>
-    <property name="instrumented-dest" value="${main-output}/instrumented"/>
-    <property name="coverage-dir" value="${main-output}/coverage"/>
-    <property name="javadoc-dir" value="${main-output}/docs/api"/>
-    <!--property name="cobertura.home" value="${env.COBERTURA_HOME}"/-->
-    <property name="build.version" value="2.2.0"/>
-    <property name="osmo-common-output" value="../common/ant-out/production"/>
-    <property name="jar.file" value="osmo-tester-v${build.version}.jar"/>
-    <property name="zip.file" value="osmo-tester-v${build.version}.zip"/>
+  <property environment="env"/>
+  <property name="prod-src" value="src"/>
+  <property name="test-src" value="test"/>
+  <property name="main-output" value="ant-out"/>
+  <property name="prod-dest" value="${main-output}/production"/>
+  <property name="test-dest" value="${main-output}/testing"/>
+  <property name="test-report" value="${main-output}/junit-report"/>
+  <property name="instrumented-dest" value="${main-output}/instrumented"/>
+  <property name="coverage-dir" value="${main-output}/coverage"/>
+  <property name="javadoc-dir" value="${main-output}/docs/api"/>
+  <property name="clover.home" value="${env.CLOVER_HOME}"/>
+  <property name="cobertura.home" value="${env.COBERTURA_HOME}"/>
+  <property name="build.version" value="2.2.0"/>
+  <property name="osmo-common-output" value="../common/ant-out/production"/>
+  <property name="jar.file" value="osmo-tester-v${build.version}.jar"/>
+  <property name="zip.file" value="osmo-tester-v${build.version}.zip"/>
 
-    <path id="class.path">
-        <!--pathelement path="${currentenv.classpath}"/-->
-        <fileset dir="lib">
-            <include name="**/*.jar"/>
+  <path id="class.path">
+    <!--pathelement path="${currentenv.classpath}"/-->
+    <fileset dir="lib">
+      <include name="**/*.jar"/>
+    </fileset>
+    <path location="${prod-dest}"/>
+    <path location="${osmo-common-output}"/>
+  </path>
+
+  <!--path id="cobertura.classpath">
+    <fileset dir="${cobertura.home}">
+      <include name="cobertura.jar"/>
+      <include name="lib/**/*.jar"/>
+    </fileset>
+  </path-->
+
+  <taskdef resource="cloverlib.xml" classpath="${clover.home}/lib/clover.jar"/>
+
+  <!--taskdef classpathref="cobertura.classpath" resource="tasks.properties"/-->
+
+  <!-- CLEAN -->
+  <target name="clean">
+    <echo message="Removing old directory structure..."/>
+    <delete dir="${main-output}"/>
+    <echo message="Removing jar file:${jar.file}"/>
+    <delete file="${jar.file}"/>
+    <echo message="Removing zip file:${zip.file}"/>
+    <delete file="${zip.file}"/>
+  </target>
+
+  <!-- MK DEPLOY DIR -->
+  <target name="init">
+    <mkdir dir="${prod-dest}"/>
+    <mkdir dir="${test-dest}"/>
+    <mkdir dir="${test-report}"/>
+    <mkdir dir="${instrumented-dest}"/>
+    <mkdir dir="${coverage-dir}"/>
+    <mkdir dir="${javadoc-dir}"/>
+  </target>
+
+  <target name="compile" depends="init">
+    <ant dir="../common" antfile="build.xml" target="jar" inheritall="false"/>
+    <echo message="Compiling production..."/>
+    <javac source="1.5" target="1.5" debug="true" classpathref="class.path" srcdir="${prod-src}"
+           destdir="${prod-dest}"/>
+    <echo message="Compiling tests..."/>
+    <javac source="1.5" target="1.5" classpathref="class.path" srcdir="${test-src}" destdir="${test-dest}"/>
+  </target>
+
+  <target name="jar" depends="compile,copyresources" description="Create jar file">
+    <jar destfile="${jar.file}">
+      <fileset dir="${prod-dest}"/>
+      <fileset dir="${osmo-common-output}"/>
+    </jar>
+  </target>
+
+  <target name="test" depends="clean, compile, copyresources">
+    <!--cobertura-instrument todir="${instrumented-dest}">
+      <fileset dir="${prod-dest}">
+        <include name="**/*.class"/>
+      </fileset>
+    </cobertura-instrument-->
+
+    <clover-setup>
+
+    </clover-setup>
+
+    <junit printsummary="yes" haltonfailure="no">
+      <classpath>
+        <pathelement location="${instrumented-dest}"/>
+        <pathelement location="${test-dest}"/>
+        <path refid="class.path"/>
+        <!--path refid="cobertura.classpath"/-->
+      </classpath>
+
+      <formatter type="xml"/>
+
+      <batchtest fork="once" todir="${test-report}">
+        <fileset dir="${test-src}">
+          <include name="**/*Tests.java"/>
+          <exclude name="**/*Interface*.java"/>
+          <exclude name="**/TestObject.java"/>
         </fileset>
-        <path location="${prod-dest}"/>
-        <path location="${osmo-common-output}"/>
-    </path>
+      </batchtest>
+    </junit>
 
-    <!--path id="cobertura.classpath">
-        <fileset dir="${cobertura.home}">
-            <include name="cobertura.jar"/>
-            <include name="lib/**/*.jar"/>
-        </fileset>
-    </path-->
 
-    <!--taskdef classpathref="cobertura.classpath" resource="tasks.properties"/-->
+    <clover-html-report outdir="clover_html" title="OSMO Tester"/>
+    <!--cobertura-report format="xml" srcdir="${prod-src}" destdir="${coverage-dir}"/>
+    <cobertura-report format="html" srcdir="${prod-src}" destdir="${coverage-dir}/html"/-->
+  </target>
 
-    <!-- CLEAN -->
-    <target name="clean">
-        <echo message="Removing old directory structure..."/>
-        <delete dir="${main-output}"/>
-        <echo message="Removing jar file:${jar.file}"/>
-        <delete file="${jar.file}"/>
-        <echo message="Removing zip file:${zip.file}"/>
-        <delete file="${zip.file}"/>
-    </target>
+  <target name="javadocs">
+    <javadoc destdir="${javadoc-dir}" author="true" version="true" use="true" windowtitle="OSMO API">
+      <packageset dir="src" defaultexcludes="yes">
+        <include name="osmo/tester/**"/>
+      </packageset>
+    </javadoc>
+  </target>
 
-    <!-- MK DEPLOY DIR -->
-    <target name="init">
-        <mkdir dir="${prod-dest}"/>
-        <mkdir dir="${test-dest}"/>
-        <mkdir dir="${test-report}"/>
-        <mkdir dir="${instrumented-dest}"/>
-        <mkdir dir="${coverage-dir}"/>
-        <mkdir dir="${javadoc-dir}"/>
-    </target>
+  <target name="copyresources" depends="init,compile">
+    <copy todir="${prod-dest}">
+      <fileset dir="${prod-src}">
+        <include name="**/*.html"/>
+        <include name="**/*.txt"/>
+        <include name="**/*.csv"/>
+        <include name="**/*.xml"/>
+        <include name="**/*.vm"/>
+      </fileset>
+    </copy>
+    <copy todir="${test-dest}">
+      <fileset dir="${test-src}">
+        <include name="**/*.html"/>
+        <include name="**/*.csv"/>
+        <include name="**/*.xml"/>
+        <include name="**/*.vm"/>
+        <include name="**/*.txt"/>
+      </fileset>
+    </copy>
+  </target>
 
-    <target name="compile" depends="init">
-        <ant dir="../common" antfile="build.xml" target="jar" inheritall="false"/>
-        <echo message="Compiling production..."/>
-        <javac source="1.5" target="1.5" debug="true" classpathref="class.path" srcdir="${prod-src}"
-               destdir="${prod-dest}"/>
-        <echo message="Compiling tests..."/>
-        <javac source="1.5" target="1.5" classpathref="class.path" srcdir="${test-src}" destdir="${test-dest}"/>
-    </target>
+  <target name="jenkins" depends="test, javadocs"/>
 
-    <target name="jar" depends="compile,copyresources" description="Create jar file">
-        <jar destfile="${jar.file}">
-            <fileset dir="${prod-dest}"/>
-            <fileset dir="${osmo-common-output}"/>
-        </jar>
-    </target>
-
-    <target name="test" depends="clean, compile, copyresources">
-        <!--cobertura-instrument todir="${instrumented-dest}">
-            <fileset dir="${prod-dest}">
-                <include name="**/*.class"/>
-            </fileset>
-        </cobertura-instrument-->
-
-        <junit printsummary="yes" haltonfailure="no">
-            <classpath>
-                <pathelement location="${instrumented-dest}"/>
-                <pathelement location="${test-dest}"/>
-                <path refid="class.path"/>
-                <!--path refid="cobertura.classpath"/-->
-            </classpath>
-
-            <formatter type="xml"/>
-
-            <batchtest fork="once" todir="${test-report}">
-                <fileset dir="${test-src}">
-                    <include name="**/*Tests.java"/>
-                    <exclude name="**/*Interface*.java"/>
-                    <exclude name="**/TestObject.java"/>
-                </fileset>
-            </batchtest>
-        </junit>
-
-        <!--cobertura-report format="xml" srcdir="${prod-src}" destdir="${coverage-dir}"/>
-        <cobertura-report format="html" srcdir="${prod-src}" destdir="${coverage-dir}/html"/-->
-    </target>
-
-    <target name="javadocs">
-        <javadoc destdir="${javadoc-dir}" author="true" version="true" use="true" windowtitle="OSMO API">
-            <packageset dir="src" defaultexcludes="yes">
-                <include name="osmo/tester/**"/>
-            </packageset>
-        </javadoc>
-    </target>
-
-    <target name="copyresources" depends="init,compile">
-        <copy todir="${prod-dest}">
-            <fileset dir="${prod-src}">
-                <include name="**/*.html"/>
-                <include name="**/*.txt"/>
-                <include name="**/*.csv"/>
-                <include name="**/*.xml"/>
-                <include name="**/*.vm"/>
-            </fileset>
-        </copy>
-        <copy todir="${test-dest}">
-            <fileset dir="${test-src}">
-                <include name="**/*.html"/>
-                <include name="**/*.csv"/>
-                <include name="**/*.xml"/>
-                <include name="**/*.vm"/>
-                <include name="**/*.txt"/>
-            </fileset>
-        </copy>
-    </target>
-
-    <target name="jenkins" depends="test, javadocs"/>
-
-    <target name="distro" depends="jar,javadocs">
-        <zip destfile="${zip.file}">
-            <zipfileset dir="doc" includes="*.pdf" prefix="docs"/>
-            <zipfileset dir="lib" prefix="lib"/>
-            <zipfileset dir="${javadoc-dir}/" prefix="docs/api"/>
-            <zipfileset dir="${prod-src}/" prefix="src/prod"/>
-            <zipfileset dir="${test-src}/" prefix="src/test"/>
-            <zipfileset dir="." includes="${jar.file}"/>
-        </zip>
-    </target>
+  <target name="distro" depends="jar,javadocs">
+    <zip destfile="${zip.file}">
+      <zipfileset dir="doc" includes="*.pdf" prefix="docs"/>
+      <zipfileset dir="lib" prefix="lib"/>
+      <zipfileset dir="${javadoc-dir}/" prefix="docs/api"/>
+      <zipfileset dir="${prod-src}/" prefix="src/prod"/>
+      <zipfileset dir="${test-src}/" prefix="src/test"/>
+      <zipfileset dir="." includes="${jar.file}"/>
+    </zip>
+  </target>
 </project>
