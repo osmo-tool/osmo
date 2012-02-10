@@ -81,7 +81,7 @@
     </clover-setup>
   </target>
 
-  <target name="test" depends="clean, compile, copyresources">
+  <target name="test" depends="init.clover, clean, compile, copyresources">
     <!--cobertura-instrument todir="${instrumented-dest}">
       <fileset dir="${prod-dest}">
         <include name="**/*.class"/>
