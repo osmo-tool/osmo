@@ -22,7 +22,7 @@ import static junit.framework.Assert.*;
  */
 public class OnlineScripter implements CalendarScripter {
   /** Maps user identifiers to CalendarUser objects. */
-  private Map<String, CalendarUser> users = new LinkedHashMap<String, CalendarUser>();
+  private Map<String, CalendarUser> users = new LinkedHashMap<>();
 
   public OnlineScripter() {
   }

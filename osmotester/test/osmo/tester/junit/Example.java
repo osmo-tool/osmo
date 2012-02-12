@@ -9,8 +9,6 @@ import osmo.tester.testmodels.CalculatorModel;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import static junit.framework.Assert.assertEquals;
-
 /** @author Teemu Kanstren */
 @RunWith(OSMORunner.class)
 public class Example {

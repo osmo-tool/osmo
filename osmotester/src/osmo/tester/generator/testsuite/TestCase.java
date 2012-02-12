@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class TestCase {
   private static Logger log = new Logger(TestCase.class);
   /** The test steps (taken) for this test case. */
-  private List<TestStep> steps = new ArrayList<TestStep>();
+  private List<TestStep> steps = new ArrayList<>();
   /** The latest test step (being/having been generated). */
   private TestStep currentStep = null;
   /** Unique identifier for this test case. */
@@ -29,9 +29,9 @@ public class TestCase {
   /** Identifier for next test case step. */
   private int nextStepId = 1;
   /** The data variables and the values covered for each in this test case. */
-  private Map<String, ModelVariable> variables = new HashMap<String, ModelVariable>();
+  private Map<String, ModelVariable> variables = new HashMap<>();
   /** For user to store their own information (e.g. script) into the generated test case from the model. */
-  private Map<String, Object> attributes = new HashMap<String, Object>();
+  private Map<String, Object> attributes = new HashMap<>();
   /** The time when the test case generation was started. Milliseconds as in System.currentTimInMillis(). */
   private long startTime = 0;
   /** The time when the test case generation was ended. Milliseconds as in System.currentTimInMillis(). */
@@ -107,7 +107,7 @@ public class TestCase {
   }
 
   public Collection<FSMTransition> getCoveredTransitions() {
-    Collection<FSMTransition> transitionCoverage = new HashSet<FSMTransition>();
+    Collection<FSMTransition> transitionCoverage = new HashSet<>();
     for (TestStep teststep : steps) {
       transitionCoverage.add(teststep.getTransition());
     }
@@ -115,7 +115,7 @@ public class TestCase {
   }
 
   public Collection<String> getUniqueRequirementsCoverage() {
-    Collection<String> requirementsCoverage = new HashSet<String>();
+    Collection<String> requirementsCoverage = new HashSet<>();
     for (TestStep teststep : steps) {
       requirementsCoverage.addAll(teststep.getCoveredRequirements());
     }
@@ -123,7 +123,7 @@ public class TestCase {
   }
 
   public Collection<String> getFullRequirementsCoverage() {
-    Collection<String> requirementsCoverage = new ArrayList<String>();
+    Collection<String> requirementsCoverage = new ArrayList<>();
     for (TestStep teststep : steps) {
       requirementsCoverage.addAll(teststep.getCoveredRequirements());
     }
@@ -178,7 +178,7 @@ public class TestCase {
    * @return The names of transitions.
    */
   public Collection<String> getAllTransitionNames() {
-    Collection<String> names = new ArrayList<String>();
+    Collection<String> names = new ArrayList<>();
     for (TestStep teststep : steps) {
       names.add(teststep.getTransition().getName());
     }

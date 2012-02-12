@@ -285,27 +285,27 @@ public class ValueRangeSetTests {
 
   @Test
   public void generics() {
-    ValueRangeSet<Integer> vrs1 = new ValueRangeSet<Integer>();
+    ValueRangeSet<Integer> vrs1 = new ValueRangeSet<>();
     vrs1.addPartition(1, 2);
     Integer o1 = vrs1.next();
     assertEquals("Integer value range should produce integers..", Integer.class, o1.getClass());
 
-    ValueRangeSet<Long> vrs2 = new ValueRangeSet<Long>();
+    ValueRangeSet<Long> vrs2 = new ValueRangeSet<>();
     vrs2.addPartition(Long.class, 1, 2);
     Long o2 = vrs2.next();
     assertEquals("Long value range should produce longs..", Long.class, o2.getClass());
 
-    ValueRangeSet<Long> vrs3 = new ValueRangeSet<Long>();
+    ValueRangeSet<Long> vrs3 = new ValueRangeSet<>();
     vrs3.addPartition(1l, 2l);
     Long o3 = vrs3.next();
     assertEquals("Long value range should produce longs..", Long.class, o3.getClass());
 
-    ValueRangeSet<Double> vrs4 = new ValueRangeSet<Double>();
+    ValueRangeSet<Double> vrs4 = new ValueRangeSet<>();
     vrs4.addPartition(Double.class, 1, 2);
     Double o4 = vrs4.next();
     assertEquals("Double value range should produce doubles..", Double.class, o4.getClass());
 
-    ValueRangeSet<Double> vrs5 = new ValueRangeSet<Double>();
+    ValueRangeSet<Double> vrs5 = new ValueRangeSet<>();
     vrs5.addPartition(1d, 2d);
     Double o5 = vrs5.next();
     assertEquals("Double value range should produce doubles..", Double.class, o5.getClass());
@@ -313,14 +313,14 @@ public class ValueRangeSetTests {
 
   @Test
   public void boundaryScanningInteger() {
-    ValueRangeSet<Integer> vr = new ValueRangeSet<Integer>();
+    ValueRangeSet<Integer> vr = new ValueRangeSet<>();
     vr.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     vr.setPartitionStrategy(DataGenerationStrategy.BOUNDARY_SCAN);
     vr.addPartition(0, 100);
     vr.addPartition(-100, -50);
     vr.addPartition(200, 300);
     vr.addPartition(-300, -200);
-    Collection<Integer> actual = new ArrayList<Integer>();
+    Collection<Integer> actual = new ArrayList<>();
     for (int i = 0; i < 30; i++) {
       actual.add(vr.next());
     }
@@ -330,7 +330,7 @@ public class ValueRangeSetTests {
 
   @Test
   public void boundaryScanningFloat() {
-    ValueRangeSet<Double> vr = new ValueRangeSet<Double>();
+    ValueRangeSet<Double> vr = new ValueRangeSet<>();
     vr.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     vr.setPartitionStrategy(DataGenerationStrategy.BOUNDARY_SCAN);
     vr.addPartition(0f, 100f);
@@ -341,7 +341,7 @@ public class ValueRangeSetTests {
     //the valuerangeset actually converts float to double
     double[] expected = new double[]{0, -100, 200, -300, 100, -50, 300, -200, 0.1, -99.9, 200.1, -299.9, 100.1, -49.9, 300.1, -199.9, -0.1, -100.1, 199.9, -300.1, 99.9, -50.1, 299.9, -200.1, 0.2, -99.8, 200.2, -299.8, 100.2, -49.8};
     for (int i = 0; i < 30; i++) {
-      assertEquals("Generated integers for value range with boundary scan (index " + i + ")", expected[i], vr.next().doubleValue(), 0.01d);
+      assertEquals("Generated integers for value range with boundary scan (index " + i + ")", expected[i], vr.next(), 0.01d);
     }
   }
 

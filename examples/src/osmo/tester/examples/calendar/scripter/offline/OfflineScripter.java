@@ -116,7 +116,7 @@ public class OfflineScripter implements CalendarScripter {
   @Override
   public void assertUserTasks(String uid, Collection<ModelTask> tasks) {
     if (tasks == null) {
-      tasks = new ArrayList<ModelTask>();
+      tasks = new ArrayList<>();
     }
     RFParameter uidRef = new RFParameter(uid, true);
     RFParameter expectedSize = new RFParameter("" + tasks.size(), false);
@@ -132,7 +132,7 @@ public class OfflineScripter implements CalendarScripter {
   @Override
   public void assertUserEvents(String uid, Collection<ModelEvent> events) {
     if (events == null) {
-      events = new ArrayList<ModelEvent>();
+      events = new ArrayList<>();
     }
     RFParameter uidRef = new RFParameter(uid, true);
     RFParameter expectedCount = new RFParameter("" + events.size(), false);

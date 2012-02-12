@@ -160,7 +160,7 @@ public class FitnessTests {
     tc2.addStep(new FSMTransition("t1"));
     tc2.addVariableValue("v6", 3);
 
-    List<TestCase> tests = new ArrayList<TestCase>();
+    List<TestCase> tests = new ArrayList<>();
     tests.add(tc1);
     tests.add(tc2);
     return new Candidate(sc, tests);

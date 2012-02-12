@@ -51,7 +51,7 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
       }
     }
     //create list of actual options, being the ones with the lowest scores and in the set of choices
-    Collection<FSMTransition> options = new ArrayList<FSMTransition>();
+    Collection<FSMTransition> options = new ArrayList<>();
     for (FSMTransition transition : choices) {
       if (scores.get(transition) == smallest) {
         options.add(transition);
@@ -76,7 +76,7 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
    * @return A mapping of transitions to their scores.
    */
   private Map<FSMTransition, Double> countScore(TestSuite history, List<FSMTransition> available) {
-    Map<FSMTransition, Integer> coverage = new HashMap<FSMTransition, Integer>(1);
+    Map<FSMTransition, Integer> coverage = new HashMap<>(1);
     List<TestCase> tests = history.getAllTestCases();
     //first we count how many times a transition has been covered
     for (TestCase test : tests) {
@@ -98,7 +98,7 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
       }
     }
     log.debug("coverage" + coverage);
-    Map<FSMTransition, Double> scores = new HashMap<FSMTransition, Double>();
+    Map<FSMTransition, Double> scores = new HashMap<>();
     //then we divide each score by the weight of the transition
     Set<FSMTransition> transitions = coverage.keySet();
     for (FSMTransition transition : transitions) {

@@ -13,7 +13,7 @@ public class ScopeVariables {
   private final String name;
   private final boolean program;
   private final boolean global;
-  private final Map<String, VariableInvariants> variables = new HashMap<String, VariableInvariants>();
+  private final Map<String, VariableInvariants> variables = new HashMap<>();
 
   public ScopeVariables(String name, boolean program, boolean global) {
     this.name = name;

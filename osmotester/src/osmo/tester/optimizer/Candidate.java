@@ -17,7 +17,7 @@ import java.util.Map;
 public class Candidate {
   private static final Logger log = new Logger(Candidate.class);
   /** The set of tests for this candidate. */
-  private List<TestCase> tests = new ArrayList<TestCase>();
+  private List<TestCase> tests = new ArrayList<>();
   /** Candidate fitness, if > -1 it is not recalculated. Higher fitness = better candidate. */
   private int fitness = -1;
   /** The configuration to use in this search, used for fitness calculation. */

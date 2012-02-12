@@ -2,7 +2,12 @@ package osmo.tester.gui.manualdrive;
 
 import osmo.tester.model.dataflow.SearchableInput;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;

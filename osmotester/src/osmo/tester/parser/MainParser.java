@@ -52,9 +52,9 @@ import java.util.Map;
 public class MainParser {
   private static Logger log = new Logger(MainParser.class);
   /** Key = Annotation type, Value = The parser object for that annotation. */
-  private final Map<Class<? extends Annotation>, AnnotationParser> annotationParsers = new HashMap<Class<? extends Annotation>, AnnotationParser>();
+  private final Map<Class<? extends Annotation>, AnnotationParser> annotationParsers = new HashMap<>();
   /** Key = Annotation type, Value = The parser object for that annotation. */
-  private final Map<Class, AnnotationParser> fieldParsers = new HashMap<Class, AnnotationParser>();
+  private final Map<Class, AnnotationParser> fieldParsers = new HashMap<>();
 
   public MainParser() {
     //we set up the parser objects for the different annotation types
@@ -174,7 +174,7 @@ public class MainParser {
 
   private Collection<Field> getAllFields(Class clazz) {
     Class<?> superclass = clazz.getSuperclass();
-    Collection<Field> fields = new ArrayList<Field>();
+    Collection<Field> fields = new ArrayList<>();
     if (superclass != null) {
       fields.addAll(getAllFields(superclass));
     }
@@ -227,7 +227,7 @@ public class MainParser {
 
   private Collection<Method> getAllMethods(Class clazz) {
     Class<?> superclass = clazz.getSuperclass();
-    Collection<Method> methods = new ArrayList<Method>();
+    Collection<Method> methods = new ArrayList<>();
     if (superclass != null) {
       methods.addAll(getAllMethods(superclass));
     }

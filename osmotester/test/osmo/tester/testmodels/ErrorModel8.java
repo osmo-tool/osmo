@@ -1,6 +1,14 @@
 package osmo.tester.testmodels;
 
-import osmo.tester.annotation.*;
+import osmo.tester.annotation.AfterSuite;
+import osmo.tester.annotation.AfterTest;
+import osmo.tester.annotation.BeforeSuite;
+import osmo.tester.annotation.BeforeTest;
+import osmo.tester.annotation.EndCondition;
+import osmo.tester.annotation.Guard;
+import osmo.tester.annotation.Post;
+import osmo.tester.annotation.Pre;
+import osmo.tester.annotation.Transition;
 
 /** @author Teemu Kanstren */
 public class ErrorModel8 {

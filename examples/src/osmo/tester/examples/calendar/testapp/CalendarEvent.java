@@ -21,7 +21,7 @@ public class CalendarEvent {
   /** Location of the event. */
   private String location = null;
   /** The participants in the event. */
-  private Collection<String> participants = new HashSet<String>();
+  private Collection<String> participants = new HashSet<>();
   /** Unique identifier for the event. */
   private final String id;
   /** Organizer of the event (their unique user id) */

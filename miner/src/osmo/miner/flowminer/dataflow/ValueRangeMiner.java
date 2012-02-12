@@ -11,7 +11,7 @@ import java.util.Set;
 
 /** @author Teemu Kanstren */
 public class ValueRangeMiner {
-  private Map<String, ValueRange> ranges = new HashMap<String, ValueRange>();
+  private Map<String, ValueRange> ranges = new HashMap<>();
 
   public void process(String name, String value) {
     ValueRange range = ranges.get(name);
@@ -26,7 +26,7 @@ public class ValueRangeMiner {
   }
 
   public Map<String, ValueRange> getRanges() {
-    Map<String, ValueRange> result = new HashMap<String, ValueRange>();
+    Map<String, ValueRange> result = new HashMap<>();
     for (ValueRange range : ranges.values()) {
       if (range.isValid()) {
         result.put(range.getName(), range);

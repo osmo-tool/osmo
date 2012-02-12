@@ -58,7 +58,7 @@ public abstract class CoverageMetric {
   }
 
   protected List<TransitionPairCount> countTransitionPairs() {
-    Map<TransitionPair, Integer> coverage = new HashMap<TransitionPair, Integer>();
+    Map<TransitionPair, Integer> coverage = new HashMap<>();
 
     for (TestCase tc : testSuite.getFinishedTestCases()) {
       FSMTransition previous = new FSMTransition("Start");
@@ -84,7 +84,7 @@ public abstract class CoverageMetric {
       }
     }
 
-    List<TransitionPairCount> tpc = new ArrayList<TransitionPairCount>();
+    List<TransitionPairCount> tpc = new ArrayList<>();
     for (Map.Entry<TransitionPair, Integer> entry : coverage.entrySet()) {
       TransitionPair pair = entry.getKey();
       TransitionPairCount count = new TransitionPairCount(pair, entry.getValue());
@@ -94,7 +94,7 @@ public abstract class CoverageMetric {
   }
 
   protected List<RequirementCount> countRequirements() {
-    Map<String, Integer> coverage = new HashMap<String, Integer>();
+    Map<String, Integer> coverage = new HashMap<>();
 
     for (TestCase tc : testSuite.getFinishedTestCases()) {
       for (TestStep ts : tc.getSteps()) {
@@ -117,7 +117,7 @@ public abstract class CoverageMetric {
       }
     }
 
-    List<RequirementCount> rc = new ArrayList<RequirementCount>();
+    List<RequirementCount> rc = new ArrayList<>();
     for (Map.Entry<String, Integer> entry : coverage.entrySet()) {
       String name = entry.getKey();
       RequirementCount count = new RequirementCount(name, entry.getValue());
@@ -135,7 +135,7 @@ public abstract class CoverageMetric {
    */
   public String getTransitionCounts(String templateName) {
     Map<FSMTransition, Integer> coverage = countTransitions();
-    List<TransitionCount> counts = new ArrayList<TransitionCount>();
+    List<TransitionCount> counts = new ArrayList<>();
 
     for (Map.Entry<FSMTransition, Integer> a : coverage.entrySet()) {
       TransitionCount count = new TransitionCount(a.getKey(), a.getValue());
@@ -205,7 +205,7 @@ public abstract class CoverageMetric {
   }
 
   private List<SingleTestCoverage> getTestCoverage() {
-    List<SingleTestCoverage> result = new ArrayList<SingleTestCoverage>();
+    List<SingleTestCoverage> result = new ArrayList<>();
     List<TestCase> tests = testSuite.getFinishedTestCases();
     for (TestCase test : tests) {
       result.add(new SingleTestCoverage(test));
@@ -214,7 +214,7 @@ public abstract class CoverageMetric {
   }
 
   private List<String> getTransitions() {
-    List<String> result = new ArrayList<String>();
+    List<String> result = new ArrayList<>();
     Collection<FSMTransition> transitions = fsm.getTransitions();
     for (FSMTransition transition : transitions) {
       result.add(transition.getName());
@@ -224,7 +224,7 @@ public abstract class CoverageMetric {
 
   private List<String> getTransitionPairs() {
     List<TransitionPairCount> pairCounts = countTransitionPairs();
-    List<String> pairs = new ArrayList<String>();
+    List<String> pairs = new ArrayList<>();
     for (TransitionPairCount count : pairCounts) {
       String from = count.getFrom().getName();
       String to = count.getTo().getName();
@@ -234,11 +234,11 @@ public abstract class CoverageMetric {
   }
 
   private List<String> getRequirements() {
-    Collection<String> temp = new HashSet<String>();
+    Collection<String> temp = new HashSet<>();
     Requirements fsmRequirements = fsm.getRequirements();
     temp.addAll(fsmRequirements.getRequirements());
     temp.addAll(fsmRequirements.getExcess());
-    List<String> requirements = new ArrayList<String>();
+    List<String> requirements = new ArrayList<>();
     requirements.addAll(temp);
     return requirements;
   }
@@ -246,7 +246,7 @@ public abstract class CoverageMetric {
   private List<String> getVariables() {
     Collection<VariableField> stateVariables = fsm.getStateVariables();
     Collection<SearchableInput> inputs = fsm.getSearchableInputs();
-    List<String> result = new ArrayList<String>();
+    List<String> result = new ArrayList<>();
     for (VariableField field : stateVariables) {
       result.add(field.getName());
     }

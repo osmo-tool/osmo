@@ -32,7 +32,7 @@ public class VendingExample {
   private int cents = 0;
   private int bottles = 10;
   private final int PRICE = 100;
-  private final Input<Integer> coins = new ValueSet<Integer>(10, 20, 50);
+  private final Input<Integer> coins = new ValueSet<>(10, 20, 50);
   @TestSuiteField
   private TestSuite testSuite = new TestSuite();
 

@@ -47,8 +47,8 @@ public class RecombinationTests {
 
   @Test
   public void recombinationWithNoDuplicates() {
-    Collection<Integer> sizes1 = new ArrayList<Integer>();
-    Collection<Integer> sizes2 = new ArrayList<Integer>();
+    Collection<Integer> sizes1 = new ArrayList<>();
+    Collection<Integer> sizes2 = new ArrayList<>();
     for (int i = 0; i < 1000; i++) {
       Candidate c1 = createCandidate(10);
       Candidate c2 = createCandidate(10);
@@ -80,8 +80,8 @@ public class RecombinationTests {
 
   @Test
   public void recombinationWithDuplicates() {
-    Collection<Integer> sizes1 = new ArrayList<Integer>();
-    Collection<Integer> sizes2 = new ArrayList<Integer>();
+    Collection<Integer> sizes1 = new ArrayList<>();
+    Collection<Integer> sizes2 = new ArrayList<>();
     for (int i = 0; i < 1000; i++) {
       Candidate c1 = createCandidate(10);
       Candidate c2 = createCandidate(10);
@@ -113,8 +113,8 @@ public class RecombinationTests {
 
   @Test
   public void recombinationWithDuplicatesInBeginning() {
-    Collection<Integer> sizes1 = new ArrayList<Integer>();
-    Collection<Integer> sizes2 = new ArrayList<Integer>();
+    Collection<Integer> sizes1 = new ArrayList<>();
+    Collection<Integer> sizes2 = new ArrayList<>();
     for (int i = 0; i < 1000; i++) {
       Candidate c1 = createCandidate(10);
       Candidate c2 = createCandidate(10);
@@ -146,8 +146,8 @@ public class RecombinationTests {
 
   @Test
   public void recombinationWithDuplicatesInEnd() {
-    Collection<Integer> sizes1 = new ArrayList<Integer>();
-    Collection<Integer> sizes2 = new ArrayList<Integer>();
+    Collection<Integer> sizes1 = new ArrayList<>();
+    Collection<Integer> sizes2 = new ArrayList<>();
     for (int i = 0; i < 1000; i++) {
       Candidate c1 = createCandidate(10);
       Candidate c2 = createCandidate(10);
@@ -190,7 +190,7 @@ public class RecombinationTests {
   }
 
   private List<Candidate> candidateList() {
-    List<Candidate> candidates = new ArrayList<Candidate>();
+    List<Candidate> candidates = new ArrayList<>();
     for (int i = 0; i < 10; i++) {
       candidates.add(createCandidate(cInt(2, 10)));
     }
@@ -198,7 +198,7 @@ public class RecombinationTests {
   }
 
   private Candidate createCandidate(int testCount) {
-    List<TestCase> tests = new ArrayList<TestCase>();
+    List<TestCase> tests = new ArrayList<>();
     for (int i = 0; i < testCount; i++) {
       tests.add(testCase());
     }

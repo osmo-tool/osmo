@@ -21,7 +21,7 @@ import java.util.List;
 public class StepCoverage extends AbstractEndCondition {
   private static Logger log = new Logger(StepCoverage.class);
   /** The names of the steps (transitions) that need to be covered. */
-  private Collection<String> required = new ArrayList<String>();
+  private Collection<String> required = new ArrayList<>();
 
   /**
    * Initializes with given coverage criteria.
@@ -36,7 +36,7 @@ public class StepCoverage extends AbstractEndCondition {
   public boolean endSuite(TestSuite suite, FSM fsm) {
     log.debug("suite check");
     List<TestCase> allTests = suite.getAllTestCases();
-    Collection<String> steps = new ArrayList<String>();
+    Collection<String> steps = new ArrayList<>();
     for (TestCase test : allTests) {
       steps.addAll(stepsFor(test));
     }
@@ -51,7 +51,7 @@ public class StepCoverage extends AbstractEndCondition {
    * @return True if all requirements are covered by the given steps.
    */
   private boolean checkRequiredSteps(Collection<String> steps) {
-    Collection<String> remaining = new ArrayList<String>();
+    Collection<String> remaining = new ArrayList<>();
     log.debug("steps:" + steps);
     remaining.addAll(required);
     for (String step : steps) {
@@ -69,7 +69,7 @@ public class StepCoverage extends AbstractEndCondition {
    */
   private Collection<String> stepsFor(TestCase test) {
     Collection<TestStep> testSteps = test.getSteps();
-    Collection<String> steps = new ArrayList<String>();
+    Collection<String> steps = new ArrayList<>();
     for (TestStep step : testSteps) {
       steps.add(step.getTransition().getName());
     }
@@ -96,7 +96,7 @@ public class StepCoverage extends AbstractEndCondition {
   @Override
   public void init(FSM fsm) {
     Collection<FSMTransition> transitions = fsm.getTransitions();
-    Collection<String> toClear = new HashSet<String>();
+    Collection<String> toClear = new HashSet<>();
     toClear.addAll(required);
     for (FSMTransition transition : transitions) {
       String name = transition.getName();

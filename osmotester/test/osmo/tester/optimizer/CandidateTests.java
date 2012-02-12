@@ -9,8 +9,7 @@ import osmo.tester.model.Requirements;
 import osmo.tester.optimizer.online.SearchingOptimizer;
 import osmo.tester.testmodels.ValidTestModel2;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class CandidateTests {

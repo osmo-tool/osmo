@@ -13,7 +13,7 @@ package osmo.tester.model.dataflow;
  */
 public class Boundary {
   /** The set of values to be provided, initialized and startup on call to init() */
-  private ValueSet<Number> values = new ValueSet<Number>(DataGenerationStrategy.ORDERED_LOOP);
+  private ValueSet<Number> values = new ValueSet<>(DataGenerationStrategy.ORDERED_LOOP);
   /** How many values will be generated for each boundary. */
   private int count = 5;
   /** The value by which the boundary is incremented / decremented in the scan. */

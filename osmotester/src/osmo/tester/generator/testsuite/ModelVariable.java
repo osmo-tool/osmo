@@ -16,7 +16,7 @@ public class ModelVariable {
   /** The name of the variable. */
   private final String name;
   /** The values to cover or covered. Must be list to allow several coverage requirements for single value. */
-  private Collection<Object> values = new ArrayList<Object>();
+  private Collection<Object> values = new ArrayList<>();
 
   public ModelVariable(String name) {
     this.name = name;
@@ -60,7 +60,7 @@ public class ModelVariable {
       return;
     }
     Collection<Object> temp = values;
-    values = new HashSet<Object>();
+    values = new HashSet<>();
     values.addAll(temp);
   }
 }

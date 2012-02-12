@@ -26,7 +26,7 @@ public class CalculatorLibrary {
   /** Library version for robot framework. Specific RF configuration. */
   public static final String ROBOT_LIBRARY_VERSION = "1.0.0";
   /** Maps user id to calendar user object. */
-  private Map<String, CalendarUser> users = new HashMap<String, CalendarUser>();
+  private Map<String, CalendarUser> users = new HashMap<>();
   /** For parsing string formatted dates passed from offline scripter. */
   private SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy 'at' HH:mm:ss z", Locale.ENGLISH);
 

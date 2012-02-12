@@ -14,8 +14,8 @@ import static junit.framework.Assert.assertEquals;
 
 /** @author Teemu Kanstren */
 public class TestListener implements GenerationListener {
-  private Collection<String> steps = new ArrayList<String>();
-  private Collection<String> expected = new ArrayList<String>();
+  private Collection<String> steps = new ArrayList<>();
+  private Collection<String> expected = new ArrayList<>();
   private final boolean guards;
 
   public TestListener() {

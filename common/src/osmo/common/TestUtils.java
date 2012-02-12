@@ -267,8 +267,7 @@ public class TestUtils {
 
   public static String getResource(InputStream in) {
     StringBuilder text = new StringBuilder();
-    Scanner scanner = new Scanner(in, "UTF-8");
-    try {
+    try (Scanner scanner = new Scanner(in, "UTF-8")) {
       while (scanner.hasNextLine()) {
         String line = scanner.nextLine();
         text.append(line);
@@ -276,9 +275,8 @@ public class TestUtils {
           text.append("\n");
         }
       }
-    } finally {
-      scanner.close();
     }
+
     return text.toString();
   }
 

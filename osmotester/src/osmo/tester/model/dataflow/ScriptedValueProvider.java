@@ -5,7 +5,7 @@ import java.util.Map;
 
 /** @author Teemu Kanstren */
 public class ScriptedValueProvider {
-  private Map<String, ValueSet<String>> scripts = new HashMap<String, ValueSet<String>>();
+  private Map<String, ValueSet<String>> scripts = new HashMap<>();
 
   public String next(String variable) {
     ValueSet<String> values = scripts.get(variable);
@@ -18,7 +18,7 @@ public class ScriptedValueProvider {
   public void addValue(String variable, String value) {
     ValueSet<String> values = scripts.get(variable);
     if (values == null) {
-      values = new ValueSet<String>(DataGenerationStrategy.ORDERED_LOOP);
+      values = new ValueSet<>(DataGenerationStrategy.ORDERED_LOOP);
       scripts.put(variable, values);
     }
     values.add(value);

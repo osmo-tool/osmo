@@ -6,7 +6,7 @@ import osmo.tester.generator.endcondition.Length;
 import osmo.tester.model.Requirements;
 import osmo.tester.testmodels.ValidTestModel2;
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class RequirementsTests {

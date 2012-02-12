@@ -22,9 +22,9 @@ public class Scripter {
   /** For storing template variables. */
   private VelocityContext vc = new VelocityContext();
   /** The test case variables. */
-  private Map<String, String> variables = new HashMap<String, String>();
+  private Map<String, String> variables = new HashMap<>();
   /** The test cases to be generated. */
-  private Collection<RFTestCase> tests = new ArrayList<RFTestCase>();
+  private Collection<RFTestCase> tests = new ArrayList<>();
   /** Test currently being scripted. */
   private RFTestCase currentTest = null;
   /** How many cells should the RF test script table have? Used to fill empty cells and make a nice looking table. */
@@ -127,7 +127,7 @@ public class Scripter {
    * @return The Argument headers for the test table, according to the number of cells defined.
    */
   private Collection<String> getArgumentHeaders() {
-    Collection<String> headers = new ArrayList<String>();
+    Collection<String> headers = new ArrayList<>();
     for (int i = 0; i < cellCount; i++) {
       headers.add("Argument");
     }

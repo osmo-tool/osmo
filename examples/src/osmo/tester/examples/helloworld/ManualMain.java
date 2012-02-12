@@ -18,7 +18,7 @@ public class ManualMain {
     List<TestScript> scripts = parser.loadAndParse("osmo-tests.txt");
     ScripterMain main = new ScripterMain();
     main.setSeed(345);
-    Collection<Object> models = new ArrayList<Object>();
+    Collection<Object> models = new ArrayList<>();
     models.add(new HelloModel());
     main.run(models, scripts);
   }

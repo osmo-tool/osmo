@@ -24,9 +24,9 @@ public class CalendarApplication {
   /** The server manages links between events, allowing cascading deletes from organizer. */
   private final CalendarServer server = CalendarServer.getServer();
   /** The set of tasks in this calendar. */
-  private Collection<CalendarTask> tasks = new HashSet<CalendarTask>();
+  private Collection<CalendarTask> tasks = new HashSet<>();
   /** The set of events in this calendar. */
-  private Collection<CalendarEvent> events = new HashSet<CalendarEvent>();
+  private Collection<CalendarEvent> events = new HashSet<>();
   /** The identifier of the user whose calendar this is. */
   private final String uid;
 

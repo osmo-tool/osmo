@@ -5,7 +5,7 @@ import java.util.Collection;
 
 /** @author Teemu Kanstren */
 public class TestCase {
-  private Collection<TestStep> steps = new ArrayList<TestStep>();
+  private Collection<TestStep> steps = new ArrayList<>();
 
   public void addStep(TestStep step) {
     steps.add(step);

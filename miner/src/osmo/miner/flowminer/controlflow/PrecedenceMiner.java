@@ -10,14 +10,14 @@ import java.util.Set;
 /**
  * @author Teemu Kanstren */
 public class PrecedenceMiner {
-  private Collection<String> invalidated = new HashSet<String>();
-  private Map<String, Collection<String>> previous = new HashMap<String, Collection<String>>();
+  private Collection<String> invalidated = new HashSet<>();
+  private Map<String, Collection<String>> previous = new HashMap<>();
 
   public void process(String name) {
 //    System.out.println("name:"+name);
     Collection<String> previouses = previous.get(name);
     if (previouses == null) {
-      previouses = new ArrayList<String>();
+      previouses = new ArrayList<>();
       previous.put(name, previouses);
       for (String huuh : previous.keySet()) {
         String invalid = name + "->" + huuh;
@@ -42,7 +42,7 @@ public class PrecedenceMiner {
   }
 
   public Collection<String> getPatterns() {
-    Collection<String> result = new ArrayList<String>();
+    Collection<String> result = new ArrayList<>();
     for (String name : previous.keySet()) {
       Collection<String> values = previous.get(name);
       for (String value : values) {

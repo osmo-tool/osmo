@@ -16,7 +16,7 @@ import static junit.framework.Assert.assertTrue;
 
 /** @author Teemu Kanstren */
 public class VariableTestListener implements GenerationListener {
-  private Collection<String> variables = new ArrayList<String>();
+  private Collection<String> variables = new ArrayList<>();
 
   @Override
   public void init(FSM fsm) {

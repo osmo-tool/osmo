@@ -111,7 +111,7 @@ public class XmlToMXml {
   }
 
   public String createAttributes(Map<String, String> variables) {
-    List<String> names = new ArrayList<String>();
+    List<String> names = new ArrayList<>();
     names.addAll(variables.keySet());
     Collections.sort(names);
     StringWriter sw = new StringWriter();

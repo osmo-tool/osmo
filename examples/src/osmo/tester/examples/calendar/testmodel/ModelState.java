@@ -28,11 +28,11 @@ import static osmo.common.TestUtils.*;
  */
 public class ModelState {
   /** Test users with calendars. */
-  private Collection<String> uids = new ArrayList<String>();
+  private Collection<String> uids = new ArrayList<>();
   /** Tasks for each user. */
-  private Map<String, List<ModelTask>> userTasks = new LinkedHashMap<String, List<ModelTask>>();
+  private Map<String, List<ModelTask>> userTasks = new LinkedHashMap<>();
   /** Events for each user. */
-  private Map<String, List<ModelEvent>> userEvents = new LinkedHashMap<String, List<ModelEvent>>();
+  private Map<String, List<ModelEvent>> userEvents = new LinkedHashMap<>();
   /** Used to generate unique identifiers for tasks. */
   private AtomicInteger nextTaskId = new AtomicInteger(0);
   @Variable
@@ -53,7 +53,7 @@ public class ModelState {
     Calendar end = Calendar.getInstance();
     end.setTime(new Date(0));
     end.set(2010, 11, 31, 23, 59, 59);
-    startTime = new ValueRange<Long>(start.getTimeInMillis(), end.getTimeInMillis());
+    startTime = new ValueRange<>(start.getTimeInMillis(), end.getTimeInMillis());
   }
 
   /** Used to reset the state between test generation. */
@@ -81,7 +81,7 @@ public class ModelState {
   }
 
   private String keyFor(Set<String> keys) {
-    List<String> items = new ArrayList<String>();
+    List<String> items = new ArrayList<>();
     items.addAll(keys);
     Collections.sort(items);
     return oneOf(items);
@@ -114,7 +114,7 @@ public class ModelState {
     List<ModelEvent> events = userEvents.get(uid);
     if (events == null) {
 //      System.out.println("created:"+uid);
-      events = new ArrayList<ModelEvent>();
+      events = new ArrayList<>();
       userEvents.put(uid, events);
     }
     return events;
@@ -131,7 +131,7 @@ public class ModelState {
   private Collection<ModelTask> getOrCreateTasks(String uid) {
     List<ModelTask> tasks = userTasks.get(uid);
     if (tasks == null) {
-      tasks = new ArrayList<ModelTask>();
+      tasks = new ArrayList<>();
       userTasks.put(uid, tasks);
     }
     return tasks;
@@ -156,7 +156,7 @@ public class ModelState {
   public ModelEvent getAndRemoveOrganizerEvent() {
     Collection<ModelEvent> uniqueEvents = getUniqueEvents();
     ModelEvent event = oneOf(uniqueEvents);
-    Collection<String> toRemove = new HashSet<String>();
+    Collection<String> toRemove = new HashSet<>();
     for (String uid : userEvents.keySet()) {
       Collection<ModelEvent> events = userEvents.get(uid);
       events.remove(event);
@@ -214,7 +214,7 @@ public class ModelState {
    * @return List of participants for events.
    */
   private Collection<ParticipantEvent> getParticipantEvents() {
-    Collection<ParticipantEvent> results = new LinkedHashSet<ParticipantEvent>();
+    Collection<ParticipantEvent> results = new LinkedHashSet<>();
     for (String uid : userEvents.keySet()) {
       Collection<ModelEvent> events = userEvents.get(uid);
       for (ModelEvent event : events) {
@@ -232,7 +232,7 @@ public class ModelState {
    * @return Set of unique events.
    */
   private Collection<ModelEvent> getUniqueEvents() {
-    Collection<ModelEvent> results = new ArrayList<ModelEvent>();
+    Collection<ModelEvent> results = new ArrayList<>();
     for (String uid : userEvents.keySet()) {
       List<ModelEvent> events = userEvents.get(uid);
       for (ModelEvent event : events) {

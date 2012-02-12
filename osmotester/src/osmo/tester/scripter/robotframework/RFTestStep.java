@@ -40,7 +40,7 @@ public class RFTestStep {
   }
 
   public Collection<String> getParameters() {
-    Collection<String> parameters = new ArrayList<String>();
+    Collection<String> parameters = new ArrayList<>();
     if (returnValueVariableName != null) {
       parameters.add(action);
     }

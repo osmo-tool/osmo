@@ -20,9 +20,9 @@ import java.util.Map;
 public class MaxTransitionFilter implements TransitionFilter {
   private static Logger log = new Logger(MaxTransitionFilter.class);
   /** Maximum allowed for transitions. Key = transition name, value = maximum number of times to take. */
-  private Map<String, Integer> maximums = new HashMap<String, Integer>();
+  private Map<String, Integer> maximums = new HashMap<>();
   /** The actual count of times a transition has been taken. Key = transition name, value = number of times taken. */
-  private Map<String, Integer> taken = new HashMap<String, Integer>();
+  private Map<String, Integer> taken = new HashMap<>();
 
   /**
    * Define the maximum number of times a transition is allowed to be taken.
@@ -65,7 +65,7 @@ public class MaxTransitionFilter implements TransitionFilter {
   @Override
   public void init(FSM fsm) {
     Collection<FSMTransition> transitions = fsm.getTransitions();
-    Collection<String> shouldClear = new ArrayList<String>();
+    Collection<String> shouldClear = new ArrayList<>();
     shouldClear.addAll(maximums.keySet());
     for (FSMTransition transition : transitions) {
       String name = transition.getName();

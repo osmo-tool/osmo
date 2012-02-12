@@ -1,7 +1,7 @@
 package osmo.tester.gui.manualdrive;
 
-import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.algorithm.BalancingAlgorithm;
+import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.algorithm.WeightedRandomAlgorithm;
 import osmo.tester.generator.testsuite.ModelVariable;

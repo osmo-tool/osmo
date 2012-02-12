@@ -18,9 +18,9 @@ import java.util.Map;
  */
 public class DSMConfiguration {
   /** List of names for test steps that need to be covered. */
-  private final Map<String, StepRequirement> stepRequirements = new HashMap<String, StepRequirement>();
+  private final Map<String, StepRequirement> stepRequirements = new HashMap<>();
   /** List of data values for variables that needs to be covered. */
-  private final List<DataCoverageRequirement> dataRequirements = new ArrayList<DataCoverageRequirement>();
+  private final List<DataCoverageRequirement> dataRequirements = new ArrayList<>();
   /** The object providing model objects. */
   private String modelFactory = null;
   /** The test generation algorithm. */

@@ -22,29 +22,29 @@ import java.util.Map;
 public class FSM {
   private static final Logger log = new Logger(FSM.class);
   /** Key = transition name (from @Transition("name")), Value = transition object */
-  private Map<String, FSMTransition> transitions = new HashMap<String, FSMTransition>();
+  private Map<String, FSMTransition> transitions = new HashMap<>();
   /** List of generic guards that apply to all transitions. */
-  private Collection<InvocationTarget> genericGuards = new ArrayList<InvocationTarget>();
+  private Collection<InvocationTarget> genericGuards = new ArrayList<>();
   /** List of generic pre-methods that apply to all transitions. */
-  private Collection<InvocationTarget> genericPre = new ArrayList<InvocationTarget>();
+  private Collection<InvocationTarget> genericPre = new ArrayList<>();
   /** List of generic post-methods that apply to all transitions. */
-  private Collection<InvocationTarget> genericPost = new ArrayList<InvocationTarget>();
+  private Collection<InvocationTarget> genericPost = new ArrayList<>();
   /** List of methods to be executed before each test case. */
-  private Collection<InvocationTarget> befores = new ArrayList<InvocationTarget>();
+  private Collection<InvocationTarget> befores = new ArrayList<>();
   /** List of methods to be executed after each test case. */
-  private Collection<InvocationTarget> afters = new ArrayList<InvocationTarget>();
+  private Collection<InvocationTarget> afters = new ArrayList<>();
   /** List of methods to be executed before the overall test suite. */
-  private Collection<InvocationTarget> beforeSuites = new ArrayList<InvocationTarget>();
+  private Collection<InvocationTarget> beforeSuites = new ArrayList<>();
   /** List of methods to be executed after the overall test suite. */
-  private Collection<InvocationTarget> afterSuites = new ArrayList<InvocationTarget>();
+  private Collection<InvocationTarget> afterSuites = new ArrayList<>();
   /** List of conditions when to stop (prematurely) test generation (single test, not suite). */
-  private Collection<InvocationTarget> endConditions = new ArrayList<InvocationTarget>();
+  private Collection<InvocationTarget> endConditions = new ArrayList<>();
   /** List of conditions when the models allows to stop test generation. */
-  private Collection<InvocationTarget> endStates = new ArrayList<InvocationTarget>();
+  private Collection<InvocationTarget> endStates = new ArrayList<>();
   /** List of state variables to store for each test step. */
-  private Collection<VariableField> stateVariables = new ArrayList<VariableField>();
+  private Collection<VariableField> stateVariables = new ArrayList<>();
   /** The list of {@link SearchableInput} elements parsed from model objects. */
-  private Collection<SearchableInput> searchableInputs = new ArrayList<SearchableInput>();
+  private Collection<SearchableInput> searchableInputs = new ArrayList<>();
   /** The generated test suite (or one being generated). */
   private TestSuite suite;
   /** The list of requirements that needs to be covered. */
@@ -326,7 +326,7 @@ public class FSM {
 
   private Collection<String> initScripts(ScriptedValueProvider scripter) {
     Map<String, ValueSet<String>> scripts = scripter.getScripts();
-    Collection<String> errors = new ArrayList<String>();
+    Collection<String> errors = new ArrayList<>();
     for (String variable : scripts.keySet()) {
       boolean found = false;
       for (SearchableInput input : searchableInputs) {

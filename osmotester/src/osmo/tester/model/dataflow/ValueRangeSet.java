@@ -21,7 +21,7 @@ import static osmo.common.TestUtils.oneOf;
 public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
   private static final Logger log = new Logger(ValueRangeSet.class);
   /** The different partitions in the domain. */
-  private ValueSet<ValueRange> partitions = new ValueSet<ValueRange>();
+  private ValueSet<ValueRange> partitions = new ValueSet<>();
   /** The strategy for selecting a partition. */
   private DataGenerationStrategy strategy = DataGenerationStrategy.RANDOM;
   /** The strategy for input data generation from the partitions. */
@@ -81,11 +81,11 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
     validateRange(min, max);
     ValueRange range = null;
     if (min instanceof Integer) {
-      range = new ValueRange<Integer>(Integer.class, min, max);
+      range = new ValueRange<>(Integer.class, min, max);
     } else if (min instanceof Long) {
-      range = new ValueRange<Long>(Long.class, min, max);
+      range = new ValueRange<>(Long.class, min, max);
     } else {
-      range = new ValueRange<Double>(Double.class, min, max);
+      range = new ValueRange<>(Double.class, min, max);
     }
     range.setStrategy(partitionStrategy);
     range.setIncrement(increment);
@@ -104,7 +104,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
   public void addPartition(Class<T> type, Number min, Number max) {
     log.debug("Adding partition min(" + min + ") max(" + max + ")");
     validateRange(min, max);
-    partitions.add(new ValueRange<T>(type, min, max));
+    partitions.add(new ValueRange<>(type, min, max));
   }
 
   private void validateRange(Number min, Number max) {
@@ -164,7 +164,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
     }
     log.debug("Min coverage:" + min);
     //then we find all that have coverage equal to smallest
-    Collection<ValueRange> currentOptions = new ArrayList<ValueRange>();
+    Collection<ValueRange> currentOptions = new ArrayList<>();
     for (ValueRange option : options) {
       int count = option.getHistory().size();
       log.debug("Coverage for current option " + option + ":" + count);

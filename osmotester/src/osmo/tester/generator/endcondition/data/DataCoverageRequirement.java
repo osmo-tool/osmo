@@ -23,7 +23,7 @@ public class DataCoverageRequirement {
   /** Name of the variable for which the value requirements are defined. */
   private final String name;
   /** The values that need to be covered. */
-  private Collection<String> values = new ArrayList<String>();
+  private Collection<String> values = new ArrayList<>();
 
   /** @param name The name of the variable for which this requirement is defined. */
   public DataCoverageRequirement(String name) {

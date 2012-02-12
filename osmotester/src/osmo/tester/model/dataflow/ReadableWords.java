@@ -16,7 +16,7 @@ public class ReadableWords extends SearchableInput<String> {
   /** Used to create characters for words. */
   private ReadableChars chars = new ReadableChars();
   /** History of generated words. */
-  private Collection<String> history = new ArrayList<String>();
+  private Collection<String> history = new ArrayList<>();
   /** How are the characters generated? */
   private DataGenerationStrategy strategy = DataGenerationStrategy.RANDOM;
 

@@ -15,7 +15,7 @@ import java.util.Collection;
  */
 public class GenerationListenerList implements GenerationListener {
   /** The list of listeners to be invoked. */
-  private Collection<GenerationListener> listeners = new ArrayList<GenerationListener>();
+  private Collection<GenerationListener> listeners = new ArrayList<>();
 
   /**
    * Add a new listener to be invoked.

@@ -46,9 +46,9 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
   /** Amount to increment with if using ordered loop data generation strategy. */
   private Number increment = 1;
   /** Keeps a history of all the data values created as input from this value range. */
-  protected List<Number> history = new ArrayList<Number>();
+  protected List<Number> history = new ArrayList<>();
   /** History of generated values in case an optimized data generation strategy is used. */
-  protected List<Number> optimizerHistory = new ArrayList<Number>();
+  protected List<Number> optimizerHistory = new ArrayList<>();
   /** The strategy for data generation. */
   private DataGenerationStrategy algorithm = DataGenerationStrategy.RANDOM;
   /** The actual type of data to be generated. */
@@ -362,7 +362,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
     log.debug("Number of options:" + n);
     Number min = this.min;
     Number max = this.max;
-    Collection<T> options = new ArrayList<T>();
+    Collection<T> options = new ArrayList<>();
     while (max.doubleValue() >= min.doubleValue()) {
       T value = null;
       switch (type) {

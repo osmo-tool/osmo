@@ -14,8 +14,8 @@ import java.util.Map;
 public class TestCase {
   private static final Logger log = new Logger(TestCase.class);
   private final String name;
-  private Map<String, String> variables = new HashMap<String, String>();
-  private Map<String, Step> steps = new LinkedHashMap<String, Step>();
+  private Map<String, String> variables = new HashMap<>();
+  private Map<String, Step> steps = new LinkedHashMap<>();
 
   public TestCase(String name) {
     this.name = name;
@@ -34,7 +34,7 @@ public class TestCase {
   }
 
   public List<Step> getSteps() {
-    List<Step> result = new ArrayList<Step>();
+    List<Step> result = new ArrayList<>();
     result.addAll(steps.values());
     return result;
   }

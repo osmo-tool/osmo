@@ -46,7 +46,7 @@ public class AbstractAsciiParser {
       tableName += ", " + headers[h];
     }
     tableName += "\"";
-    List<String> temp = new ArrayList<String>();
+    List<String> temp = new ArrayList<>();
     //this "i" holds the index of overall parsing
     int i = 0;
     int cols = headers.length;

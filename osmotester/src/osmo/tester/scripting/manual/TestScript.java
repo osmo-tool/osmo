@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class TestScript implements Iterable<ScriptStep> {
   /** The list of steps for the test case, in order. */
-  private List<ScriptStep> steps = new ArrayList<ScriptStep>();
+  private List<ScriptStep> steps = new ArrayList<>();
   /** The step to which add variable values. */
   private ScriptStep lastAdded = null;
 

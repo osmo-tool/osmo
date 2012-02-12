@@ -14,8 +14,8 @@ public class Step {
   private static final Logger log = new Logger(Step.class);
   private final TestCase parent;
   private final String name;
-  private Map<String, String> variables = new HashMap<String, String>();
-  private Map<String, Step> subSteps = new HashMap<String, Step>();
+  private Map<String, String> variables = new HashMap<>();
+  private Map<String, Step> subSteps = new HashMap<>();
 
   public Step(TestCase parent, String name) {
     this.parent = parent;
@@ -61,7 +61,7 @@ public class Step {
   }
 
   public List<Step> getSubSteps() {
-    List<Step> steps = new ArrayList<Step>();
+    List<Step> steps = new ArrayList<>();
     steps.addAll(subSteps.values());
     return steps;
   }

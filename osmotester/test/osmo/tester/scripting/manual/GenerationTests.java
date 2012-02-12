@@ -17,10 +17,10 @@ public class GenerationTests {
   @Test
   public void calculatorScript() {
     CalculatorModel model = new CalculatorModel(System.out);
-    Collection<Object> modelObjects = new ArrayList<Object>();
+    Collection<Object> modelObjects = new ArrayList<>();
     modelObjects.add(model);
     ScripterMain main = new ScripterMain();
-    List<TestScript> scripts = new ArrayList<TestScript>();
+    List<TestScript> scripts = new ArrayList<>();
     TestScript script = new TestScript();
     script.addStep("start");
     script.addStep("increase");
@@ -31,10 +31,10 @@ public class GenerationTests {
   @Test
   public void invalidTransitionsAndVariables() {
     VariableModel2 model = new VariableModel2();
-    Collection<Object> modelObjects = new ArrayList<Object>();
+    Collection<Object> modelObjects = new ArrayList<>();
     modelObjects.add(model);
     ScripterMain main = new ScripterMain();
-    List<TestScript> scripts = new ArrayList<TestScript>();
+    List<TestScript> scripts = new ArrayList<>();
     TestScript script = new TestScript();
     script.addStep("start");
     script.addStep("increase");
@@ -52,10 +52,10 @@ public class GenerationTests {
   public void variableScript() {
     TestUtils.setSeed(2421);
     VariableModel2 model = new VariableModel2(System.out);
-    Collection<Object> modelObjects = new ArrayList<Object>();
+    Collection<Object> modelObjects = new ArrayList<>();
     modelObjects.add(model);
     ScripterMain main = new ScripterMain();
-    List<TestScript> scripts = new ArrayList<TestScript>();
+    List<TestScript> scripts = new ArrayList<>();
     TestScript script = new TestScript();
     script.addStep("first");
     script.addStep("second");

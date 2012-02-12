@@ -49,41 +49,41 @@ public class ValueRangeTests {
 
   @Test
   public void generics() {
-    ValueRange<Integer> vr = new ValueRange<Integer>(1, 5);
+    ValueRange<Integer> vr = new ValueRange<>(1, 5);
     Object o = vr.next();
     assertEquals("Integer value range should produce integers..", Integer.class, o.getClass());
 
-    ValueRange<Long> vr2 = new ValueRange<Long>(1l, 5l);
+    ValueRange<Long> vr2 = new ValueRange<>(1l, 5l);
     Object o2 = vr2.next();
     assertEquals("Long value range should produce longs..", Long.class, o2.getClass());
 
-    ValueRange<Double> vr3 = new ValueRange<Double>(1d, 5d);
+    ValueRange<Double> vr3 = new ValueRange<>(1d, 5d);
     Object o3 = vr3.next();
     assertEquals("Double value range should produce doubles..", Double.class, o3.getClass());
 
-    ValueRange<Integer> vr4 = new ValueRange<Integer>(Integer.class, 1, 5);
+    ValueRange<Integer> vr4 = new ValueRange<>(Integer.class, 1, 5);
     Object o4 = vr4.next();
     assertEquals("Integer value range should produce integers..", Integer.class, o4.getClass());
 
-    ValueRange<Long> vr5 = new ValueRange<Long>(Long.class, 1, 5);
+    ValueRange<Long> vr5 = new ValueRange<>(Long.class, 1, 5);
     Object o5 = vr5.next();
     assertEquals("Long value range should produce longs..", Long.class, o5.getClass());
 
-    ValueRange<Double> vr6 = new ValueRange<Double>(Double.class, 1, 5);
+    ValueRange<Double> vr6 = new ValueRange<>(Double.class, 1, 5);
     Object o6 = vr6.next();
     assertEquals("Double value range should produce doubles..", Double.class, o6.getClass());
   }
 
   @Test
   public void boundaryScanDefault() {
-    ValueRange<Integer> range = new ValueRange<Integer>(10, 20);
+    ValueRange<Integer> range = new ValueRange<>(10, 20);
     range.setStrategy(DataGenerationStrategy.BOUNDARY_SCAN);
     assertValues(range, 10, 20, 11, 21, 9, 19, 12, 22, 8, 18, 13, 23, 7, 17, 14, 24, 6, 16, 15, 25, 5, 15, 10, 20);
   }
 
   @Test
   public void boundaryScan0() {
-    ValueRange<Integer> range = new ValueRange<Integer>(10, 20);
+    ValueRange<Integer> range = new ValueRange<>(10, 20);
     range.setStrategy(DataGenerationStrategy.BOUNDARY_SCAN);
     range.setCount(0);
     assertValues(range, 10, 20, 10, 20);
@@ -91,7 +91,7 @@ public class ValueRangeTests {
 
   @Test
   public void boundaryScan1() {
-    ValueRange<Integer> range = new ValueRange<Integer>(10, 20);
+    ValueRange<Integer> range = new ValueRange<>(10, 20);
     range.setStrategy(DataGenerationStrategy.BOUNDARY_SCAN);
     range.setCount(1);
     assertValues(range, 10, 20, 11, 21, 9, 19, 10, 20, 11, 21, 9, 19, 10, 20);
@@ -105,14 +105,14 @@ public class ValueRangeTests {
 
   @Test
   public void getOptions() {
-    ValueRange<Integer> range = new ValueRange<Integer>(1, 5);
+    ValueRange<Integer> range = new ValueRange<>(1, 5);
     Collection<Integer> options = range.getOptions();
     assertEquals("Options for range 1-5", "[1, 2, 3, 4, 5]", options.toString());
   }
 
   @Test
   public void deSerializeLong() {
-    ValueRange<Long> range = new ValueRange<Long>(946677600000l, 1293832799000l);
+    ValueRange<Long> range = new ValueRange<>(946677600000l, 1293832799000l);
     assertTrue("Should be in range", range.evaluateSerialized("1121959683153"));
   }
 }

@@ -15,13 +15,13 @@ import static junit.framework.Assert.assertEquals;
 public class SearchableInputTests {
   @Test
   public void valueRange() {
-    ValueRange<Integer> range = new ValueRange<Integer>(1, 10);
+    ValueRange<Integer> range = new ValueRange<>(1, 10);
     range.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     String name = "test-range";
     range.setName(name);
-    TestInputObserver<Integer> observer = new TestInputObserver<Integer>(name);
+    TestInputObserver<Integer> observer = new TestInputObserver<>(name);
     range.setObserver(observer);
-    Collection<Integer> expected = new ArrayList<Integer>();
+    Collection<Integer> expected = new ArrayList<>();
     for (int i = 0; i < 11; i++) {
       range.next();
       expected.add(i % 10 + 1);
@@ -32,13 +32,13 @@ public class SearchableInputTests {
 
   @Test
   public void valueSet() {
-    ValueSet<String> set = new ValueSet<String>("v1", "v2", "v3");
+    ValueSet<String> set = new ValueSet<>("v1", "v2", "v3");
     set.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     String name = "test-set";
     set.setName(name);
-    TestInputObserver<String> observer = new TestInputObserver<String>(name);
+    TestInputObserver<String> observer = new TestInputObserver<>(name);
     set.setObserver(observer);
-    Collection<String> expected = new ArrayList<String>();
+    Collection<String> expected = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
       set.next();
       expected.add("v" + (i % 3 + 1));
@@ -48,7 +48,7 @@ public class SearchableInputTests {
   }
 
   private class TestInputObserver<T> implements InputObserver<T> {
-    private Collection<T> observations = new ArrayList<T>();
+    private Collection<T> observations = new ArrayList<>();
     private final String name;
 
     private TestInputObserver(String name) {

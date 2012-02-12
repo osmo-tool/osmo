@@ -74,7 +74,7 @@ public class MessageSequenceVisualizer extends JFrame implements Visualizer {
       writer.flush();
 
       // Get the response
-      StringBuffer answer = new StringBuffer();
+      StringBuilder answer = new StringBuilder();
       BufferedReader reader = new BufferedReader(new InputStreamReader(
               conn.getInputStream()));
       String line;
@@ -107,8 +107,6 @@ public class MessageSequenceVisualizer extends JFrame implements Visualizer {
       out.close();
 
       tabbedPane.addTab(testCaseID, new ImagePanel(url));
-    } catch (MalformedURLException ex) {
-      ex.printStackTrace();
     } catch (IOException ex) {
       ex.printStackTrace();
     }

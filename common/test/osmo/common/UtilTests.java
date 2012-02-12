@@ -25,14 +25,19 @@ public class UtilTests {
     boolean s3 = false;
     for (int i = 0 ; i < 50 ; i++) {
       String s = oneOf(array);
-      if (s.equals("s1")) {
-        s1 = true;
-      } else if (s.equals("s2")) {
-        s2 = true;
-      } else if (s.equals("s3")) {
-        s3 = true;
-      } else {
-        fail("Unexpected value generated (should be one of 's1', 's2', 's3'):" + s);
+      switch (s) {
+        case "s1":
+          s1 = true;
+          break;
+        case "s2":
+          s2 = true;
+          break;
+        case "s3":
+          s3 = true;
+          break;
+        default:
+          fail("Unexpected value generated (should be one of 's1', 's2', 's3'):" + s);
+          break;
       }
     }
     assertTrue("String 's1' should be generated", s1);
@@ -65,7 +70,7 @@ public class UtilTests {
 
   @Test
   public void createInt() {
-    Map<Integer, Integer> values = new HashMap<Integer, Integer>();
+    Map<Integer, Integer> values = new HashMap<>();
     for (int x = 0 ; x < 1000 ; x++) {
       int i = cInt(0, 9);
       Integer count = values.get(i);
@@ -84,7 +89,7 @@ public class UtilTests {
 
   @Test
   public void createLong() {
-    Map<Long, Integer> values = new HashMap<Long, Integer>();
+    Map<Long, Integer> values = new HashMap<>();
     for (int x = 0; x < 1000; x++) {
       long i = cLong(11111111110l, 11111111119l);
       Integer count = values.get(i);
@@ -103,7 +108,7 @@ public class UtilTests {
 
   @Test
   public void createByte() {
-    Map<Byte, Integer> values = new HashMap<Byte, Integer>();
+    Map<Byte, Integer> values = new HashMap<>();
     for (int x = 0; x < 1000; x++) {
       byte i = cByte((byte) -15, (byte) -6);
       Integer count = values.get(i);
@@ -122,7 +127,7 @@ public class UtilTests {
 
   @Test
   public void createDouble() {
-    Collection<Double> values = new ArrayList<Double>();
+    Collection<Double> values = new ArrayList<>();
     for (int x = 0; x < 1000; x++) {
       double i = cDouble(5d, 6d);
       values.add(i);
@@ -133,7 +138,7 @@ public class UtilTests {
 
   @Test
   public void createFloat() {
-    Collection<Float> values = new ArrayList<Float>();
+    Collection<Float> values = new ArrayList<>();
     for (int x = 0; x < 1000; x++) {
       float i = cFloat(5f, 6f);
       values.add(i);
@@ -144,7 +149,7 @@ public class UtilTests {
 
   @Test
   public void weightedRandomChoice() {
-    List<Integer> weights = new ArrayList<Integer>();
+    List<Integer> weights = new ArrayList<>();
     weights.add(1);
     weights.add(2);
     weights.add(3);
@@ -178,7 +183,7 @@ public class UtilTests {
 
   @Test
   public void weightedRandomChoiceWithDuplicates() {
-    List<Integer> weights = new ArrayList<Integer>();
+    List<Integer> weights = new ArrayList<>();
     weights.add(1);
     weights.add(2);
     weights.add(2);
@@ -219,7 +224,7 @@ public class UtilTests {
 
   @Test
   public void weightedRandomChoiceAllZeros() {
-    List<Integer> weights = new ArrayList<Integer>();
+    List<Integer> weights = new ArrayList<>();
     weights.add(0);
     weights.add(0);
     weights.add(0);
@@ -233,7 +238,7 @@ public class UtilTests {
 
   @Test
   public void weightedRandomChoiceAllZeroes() {
-    List<Integer> weights = new ArrayList<Integer>();
+    List<Integer> weights = new ArrayList<>();
     weights.add(0);
     weights.add(0);
     weights.add(0);

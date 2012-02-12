@@ -16,9 +16,9 @@ public class TestSuite {
   /** The current test being generated. */
   private TestCase current = null;
   /** The test cases generated so far, excluding the current test case. */
-  private final List<TestCase> testCases = new ArrayList<TestCase>();
+  private final List<TestCase> testCases = new ArrayList<>();
   /** List of covered transitions and number of how many times it exist in the test suite */
-  private Map<FSMTransition, Integer> transitionCoverage = new HashMap<FSMTransition, Integer>();
+  private Map<FSMTransition, Integer> transitionCoverage = new HashMap<>();
   private boolean shouldEndTest = false;
   private boolean shouldEndSuite = false;
 
@@ -111,7 +111,7 @@ public class TestSuite {
    * @return The test cases.
    */
   public List<TestCase> getAllTestCases() {
-    List<TestCase> all = new ArrayList<TestCase>(testCases.size() + 1);
+    List<TestCase> all = new ArrayList<>(testCases.size() + 1);
     all.addAll(testCases);
     if (current != null) {
       //current is null if we finished test generation
@@ -184,7 +184,7 @@ public class TestSuite {
    * @return [variable name, variable coverage] mapping.
    */
   public Map<String, ModelVariable> getVariables() {
-    Map<String, ModelVariable> variables = new HashMap<String, ModelVariable>();
+    Map<String, ModelVariable> variables = new HashMap<>();
     for (TestCase test : testCases) {
       Map<String, ModelVariable> testVariables = test.getVariables();
       for (ModelVariable testVar : testVariables.values()) {

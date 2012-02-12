@@ -1,7 +1,6 @@
 package osmo.tester.optimizer;
 
 import org.junit.Test;
-import osmo.common.TestUtils;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.model.Requirements;
@@ -10,7 +9,7 @@ import osmo.tester.optimizer.online.SearchingOptimizer;
 import osmo.tester.testmodels.ValidTestModel2;
 import osmo.tester.testmodels.VariableModel2;
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class SearchTests {

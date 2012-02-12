@@ -25,13 +25,13 @@ import static osmo.common.TestUtils.oneOf;
 public class ValueSet<T> extends SearchableInput<T> {
   private static final Logger log = new Logger(ValueSet.class);
   /** The options for data generation and evaluation. */
-  private List<T> options = new ArrayList<T>();
+  private List<T> options = new ArrayList<>();
   /** The input strategy to choose an object. */
   private DataGenerationStrategy strategy = DataGenerationStrategy.RANDOM;
   /** Index for next item if using ORDERED_LOOP. Using this instead of iterator to allow modification of options in runtime. */
   private int next = 0;
   /** The history of chosen input value objects for this invariant. */
-  private Collection<T> history = new ArrayList<T>();
+  private Collection<T> history = new ArrayList<>();
 
   /** Constructor for when no initial options are provided. Options need to be added later with addOption(). */
   public ValueSet() {
@@ -43,6 +43,7 @@ public class ValueSet<T> extends SearchableInput<T> {
    *
    * @param items The initial set of items.
    */
+  @SafeVarargs
   public ValueSet(T... items) {
     Collections.addAll(options, items);
     init();
@@ -173,13 +174,13 @@ public class ValueSet<T> extends SearchableInput<T> {
    * @return The next item according to this strategy.
    */
   private T optimizedRandomChoice() {
-    Collection<T> choices = new HashSet<T>();
+    Collection<T> choices = new HashSet<>();
     choices.addAll(options);
     choices.removeAll(history);
     //choices now has all items that have never been covered
 
     if (choices.size() == 0) {
-      Map<T, Integer> coverage = new HashMap<T, Integer>();
+      Map<T, Integer> coverage = new HashMap<>();
       for (T t : history) {
         Integer count = coverage.get(t);
         //when first encountered, the object will have "null" instances so we translate that to 0
@@ -206,7 +207,7 @@ public class ValueSet<T> extends SearchableInput<T> {
    * @return The next item according to this strategy.
    */
   private T orderedLoopChoice() {
-    List<T> currentOptions = new ArrayList<T>();
+    List<T> currentOptions = new ArrayList<>();
     currentOptions.addAll(options);
     if (next >= currentOptions.size()) {
       next = 0;
