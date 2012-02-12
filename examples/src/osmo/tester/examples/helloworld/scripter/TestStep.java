@@ -6,7 +6,7 @@ import java.util.Collection;
 /** @author Teemu Kanstren */
 public class TestStep {
   private final String name;
-  private Collection<StepArg> args = new ArrayList<StepArg>();
+  private Collection<StepArg> args = new ArrayList<>();
 
   public TestStep(String name) {
     this.name = name;

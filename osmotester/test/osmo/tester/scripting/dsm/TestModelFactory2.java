@@ -13,21 +13,21 @@ public class TestModelFactory2 implements ModelObjectFactory {
   @Override
   public Collection<Object> createModelObjects() {
     Object model = new VariableModel2(System.out);
-    Collection<Object> objects = new ArrayList<Object>();
+    Collection<Object> objects = new ArrayList<>();
     objects.add(model);
     return objects;
   }
 
   @Override
   public Collection<EndCondition> createTestEndConditions() {
-    Collection<EndCondition> end = new ArrayList<EndCondition>();
+    Collection<EndCondition> end = new ArrayList<>();
     end.add(new Probability(0.05));
     return end;
   }
 
   @Override
   public Collection<EndCondition> createSuiteEndConditions() {
-    Collection<EndCondition> end = new ArrayList<EndCondition>();
+    Collection<EndCondition> end = new ArrayList<>();
     end.add(new Length(3));
     return end;
   }

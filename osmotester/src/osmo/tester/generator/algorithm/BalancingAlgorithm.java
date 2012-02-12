@@ -6,7 +6,12 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 import static osmo.common.TestUtils.minOf;
 import static osmo.common.TestUtils.oneOf;
@@ -26,7 +31,7 @@ import static osmo.common.TestUtils.oneOf;
 public class BalancingAlgorithm implements FSMTraversalAlgorithm {
   private static Logger log = new Logger(BalancingAlgorithm.class);
   /** The coverage for transitions pairs, key = source transition, value = {destination transition, coverage} */
-  private Map<FSMTransition, Map<FSMTransition, Integer>> tpCoverage = new HashMap<FSMTransition, Map<FSMTransition, Integer>>();
+  private Map<FSMTransition, Map<FSMTransition, Integer>> tpCoverage = new HashMap<>();
 
   @Override
   public void init(FSM fsm) {
@@ -42,7 +47,7 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
     }
 
     //we use a hashset to avoid duplicates from different calculations
-    Collection<FSMTransition> options = new HashSet<FSMTransition>();
+    Collection<FSMTransition> options = new HashSet<>();
     options.addAll(choices);
     options.removeAll(tCoverage.keySet());
     log.debug("uncovered options:" + options);
@@ -78,24 +83,24 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
   private Collection<FSMTransition> coverageBasedOptions(TestSuite history, List<FSMTransition> choices, Map<FSMTransition, Integer> currentTPCoverage) {
     Map<FSMTransition, Integer> tCoverage = history.getTransitionCoverage();
 
-    Map<FSMTransition, Integer> choiceTC = new HashMap<FSMTransition, Integer>();
+    Map<FSMTransition, Integer> choiceTC = new HashMap<>();
     for (FSMTransition choice : choices) {
       choiceTC.put(choice, tCoverage.get(choice));
     }
 
-    Map<FSMTransition, Integer> choiceTPC = new HashMap<FSMTransition, Integer>();
+    Map<FSMTransition, Integer> choiceTPC = new HashMap<>();
     for (FSMTransition choice : choices) {
       choiceTPC.put(choice, currentTPCoverage.get(choice));
     }
 
-    Collection<FSMTransition> options = new HashSet<FSMTransition>();
+    Collection<FSMTransition> options = new HashSet<>();
 
     //we have covered everything at least once so lets count the coverage instead
     int smallest = minOf(choiceTC.values());
 //    Map<FSMTransition, Integer> currentTPCoverage = checkTPCoverageFor(current, choices);
     int smallestTP = minOf(choiceTPC.values());
     log.debug("smallest:" + smallest + " stp:" + smallestTP);
-    log.debug("choices:"+choices);
+    log.debug("choices:" + choices);
 
     for (FSMTransition t : choices) {
       if (tCoverage.get(t) == smallest) {
@@ -121,7 +126,7 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
   private Map<FSMTransition, Integer> getTPCoverageFor(FSMTransition previous, List<FSMTransition> choices) {
     Map<FSMTransition, Integer> currentTPCoverage = tpCoverage.get(previous);
     if (currentTPCoverage == null) {
-      currentTPCoverage = new HashMap<FSMTransition, Integer>();
+      currentTPCoverage = new HashMap<>();
       tpCoverage.put(previous, currentTPCoverage);
     }
     for (FSMTransition t : choices) {
@@ -140,12 +145,12 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
    * @param choices  The possible choices for the next transition to be taken (pair destination).
    */
   private void addUncoveredTP(FSMTransition previous, Collection<FSMTransition> options, Collection<FSMTransition> choices) {
-    Collection<FSMTransition> uncoveredTP = new ArrayList<FSMTransition>();
+    Collection<FSMTransition> uncoveredTP = new ArrayList<>();
     uncoveredTP.addAll(choices);
     if (previous != null) {
       Map<FSMTransition, Integer> map = tpCoverage.get(previous);
       if (map == null) {
-        map = new HashMap<FSMTransition, Integer>();
+        map = new HashMap<>();
         tpCoverage.put(previous, map);
       }
       for (FSMTransition t : map.keySet()) {

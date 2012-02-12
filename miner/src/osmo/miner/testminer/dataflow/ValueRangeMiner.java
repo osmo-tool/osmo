@@ -16,8 +16,8 @@ import java.util.Set;
  * @author Teemu Kanstren
  */
 public class ValueRangeMiner implements TCInvariantMiner {
-  private Map<String, ValueRangeInt> globalRanges = new HashMap<String, ValueRangeInt>();
-  private Map<String, Map<String, ValueRangeInt>> localRanges = new HashMap<String, Map<String, ValueRangeInt>>();
+  private Map<String, ValueRangeInt> globalRanges = new HashMap<>();
+  private Map<String, Map<String, ValueRangeInt>> localRanges = new HashMap<>();
 
   @Override
   public InvariantCollection getInvariants() {
@@ -46,7 +46,7 @@ public class ValueRangeMiner implements TCInvariantMiner {
     if (!global) {
       ranges = localRanges.get(scope);
       if (ranges == null) {
-        ranges = new HashMap<String, ValueRangeInt>();
+        ranges = new HashMap<>();
         localRanges.put(scope, ranges);
       }
     }

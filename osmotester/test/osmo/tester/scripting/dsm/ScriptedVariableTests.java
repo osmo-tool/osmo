@@ -23,9 +23,9 @@ public class ScriptedVariableTests {
 
   @Before
   public void start() {
-    set = new ValueSet<Integer>(1, 4, 9);
-    range = new ValueRange<Integer>(1, 5);
-    rangeSet = new ValueRangeSet<Double>();
+    set = new ValueSet<>(1, 4, 9);
+    range = new ValueRange<>(1, 5);
+    rangeSet = new ValueRangeSet<>();
     words = new ReadableWords(8, 13);
 
     TestUtils.setSeed(111);

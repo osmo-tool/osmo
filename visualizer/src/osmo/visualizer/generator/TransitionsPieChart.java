@@ -25,7 +25,7 @@ import java.util.Map;
 /** @author Teemu Kanstren */
 public class TransitionsPieChart implements GenerationListener {
   private DefaultPieDataset data = new DefaultPieDataset();
-  private Map<String, Integer> values = new HashMap<String, Integer>();
+  private Map<String, Integer> values = new HashMap<>();
 
   public static void main(String[] args) {
     TransitionsPieChart transitionsBarChart = new TransitionsPieChart();

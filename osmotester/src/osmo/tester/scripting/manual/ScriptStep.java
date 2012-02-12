@@ -12,7 +12,7 @@ public class ScriptStep {
   /** Name of the step transition. */
   private final String transition;
   /** List of values for this test step. Processed in given order. */
-  private final List<ScriptValue> values = new ArrayList<ScriptValue>();
+  private final List<ScriptValue> values = new ArrayList<>();
 
   public ScriptStep(String transition) {
     this.transition = transition;

@@ -16,8 +16,8 @@ import java.util.Set;
  * @author Teemu Kanstren
  */
 public class ValueSetMiner implements TCInvariantMiner {
-  private Map<String, ValueSet> globalSets = new HashMap<String, ValueSet>();
-  private Map<String, Map<String, ValueSet>> localSets = new HashMap<String, Map<String, ValueSet>>();
+  private Map<String, ValueSet> globalSets = new HashMap<>();
+  private Map<String, Map<String, ValueSet>> localSets = new HashMap<>();
 
   @Override
   public InvariantCollection getInvariants() {
@@ -48,7 +48,7 @@ public class ValueSetMiner implements TCInvariantMiner {
     if (!global) {
       sets = localSets.get(scope);
       if (sets == null) {
-        sets = new HashMap<String, ValueSet>();
+        sets = new HashMap<>();
         localSets.put(scope, sets);
       }
     }

@@ -10,7 +10,7 @@ import java.util.Collection;
 
 /** @author Teemu Kanstren */
 public class HelloVelocityScripter implements HelloScripter {
-  private Collection<TestCase> tests = new ArrayList<TestCase>();
+  private Collection<TestCase> tests = new ArrayList<>();
   private TestCase test = null;
 
   public void hello(String name, double size) {

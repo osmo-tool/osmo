@@ -11,11 +11,11 @@ import java.util.Map;
 
 /** @author Teemu Kanstren */
 public class TestCoverage {
-  private Collection<String> transitions = new ArrayList<String>();
-  private Collection<String> pairs = new HashSet<String>();
-  private Collection<String> singles = new HashSet<String>();
-  private Collection<String> requirements = new HashSet<String>();
-  private Map<String, ModelVariable> variables = new HashMap<String, ModelVariable>();
+  private Collection<String> transitions = new ArrayList<>();
+  private Collection<String> pairs = new HashSet<>();
+  private Collection<String> singles = new HashSet<>();
+  private Collection<String> requirements = new HashSet<>();
+  private Map<String, ModelVariable> variables = new HashMap<>();
 
   public TestCoverage() {
   }
@@ -80,7 +80,7 @@ public class TestCoverage {
     fitness += pairs.size() * config.getPairsWeight();
     fitness += variables.size() * config.getVariableWeight();
     for (ModelVariable variable : variables.values()) {
-      Collection<Object> values = new HashSet<Object>();
+      Collection<Object> values = new HashSet<>();
       values.addAll(variable.getValues());
       fitness += values.size() * config.getValueWeight();
     }

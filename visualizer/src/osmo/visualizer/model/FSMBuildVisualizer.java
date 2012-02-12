@@ -29,25 +29,25 @@ import java.util.Set;
  */
 public class FSMBuildVisualizer extends JFrame implements GenerationListener {
   private Graph<FSMTransition, String> graph;
-  private Set<String> edges = new HashSet<String>();
-  private Set<FSMTransition> vertices = new HashSet<FSMTransition>();
+  private Set<String> edges = new HashSet<>();
+  private Set<FSMTransition> vertices = new HashSet<>();
   private FSMTransition current = new FSMTransition("init");
   private int index = 0;
   private VisualizationViewer<FSMTransition, String> vv;
 
   public FSMBuildVisualizer() {
     super("Model Visualizer");
-    graph = new SparseMultigraph<FSMTransition, String>();
+    graph = new SparseMultigraph<>();
     graph.addVertex(current);
 //    Layout<FSMTransition, String> layout = new CircleLayout<FSMTransition, String>(graph);
-    Layout<FSMTransition, String> layout = new FRLayout<FSMTransition, String>(graph);
+    Layout<FSMTransition, String> layout = new FRLayout<>(graph);
     layout.setSize(new Dimension(800, 600)); // sets the initial size of the space
-    vv = new VisualizationViewer<FSMTransition, String>(layout);
+    vv = new VisualizationViewer<>(layout);
     vv.setPreferredSize(new Dimension(800, 600)); //Sets the viewing area size
     vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
     vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller());
     vv.getRenderer().getVertexLabelRenderer().setPosition(Position.CNTR);
-    VertexLabelAsShapeRenderer<FSMTransition, String> vlasr = new VertexLabelAsShapeRenderer<FSMTransition, String>(vv.getRenderContext());
+    VertexLabelAsShapeRenderer<FSMTransition, String> vlasr = new VertexLabelAsShapeRenderer<>(vv.getRenderContext());
 //    vv.getRenderContext().setVertexShapeTransformer(vlasr);
     vv.getRenderContext().setVertexShapeTransformer(new EllipseVertexTransformer());
 //    vv.getRenderContext().setVertexLabelRenderer(new TransitionVertextLabelRenderer(Color.GREEN));

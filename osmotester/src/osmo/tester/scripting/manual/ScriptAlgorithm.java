@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class ScriptAlgorithm implements FSMTraversalAlgorithm {
   /** The scripts to run. */
-  private List<TestScript> scripts = new ArrayList<TestScript>();
+  private List<TestScript> scripts = new ArrayList<>();
   /** For iterating over the tests to be executed. */
   private Iterator<TestScript> testIterator;
   /** For iterating the steps in current test cases. */
@@ -41,8 +41,8 @@ public class ScriptAlgorithm implements FSMTraversalAlgorithm {
 
   /** Validate the test scripts against the FSM. */
   private void validate() {
-    Collection<String> transitions = new ArrayList<String>();
-    Collection<String> variables = new ArrayList<String>();
+    Collection<String> transitions = new ArrayList<>();
+    Collection<String> variables = new ArrayList<>();
     Collection<FSMTransition> fsmTransitions = fsm.getTransitions();
     for (FSMTransition fsmTransition : fsmTransitions) {
       transitions.add(fsmTransition.getName());
@@ -57,8 +57,8 @@ public class ScriptAlgorithm implements FSMTraversalAlgorithm {
     }
 
     String errors = "";
-    Collection<String> missingTransitions = new ArrayList<String>();
-    Collection<String> missingVariables = new ArrayList<String>();
+    Collection<String> missingTransitions = new ArrayList<>();
+    Collection<String> missingVariables = new ArrayList<>();
     for (TestScript script : scripts) {
       for (ScriptStep step : script) {
         String name = step.getTransition();

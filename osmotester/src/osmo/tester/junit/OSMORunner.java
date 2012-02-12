@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class OSMORunner extends BlockJUnit4ClassRunner {
   /** The list of tests to be executed (and generated in our case). */
-  protected List<FrameworkMethod> tests = new ArrayList<FrameworkMethod>();
+  protected List<FrameworkMethod> tests = new ArrayList<>();
 
   public OSMORunner(Class<?> klass) throws InitializationError {
     super(klass);
@@ -62,7 +62,7 @@ public class OSMORunner extends BlockJUnit4ClassRunner {
       throw new IllegalArgumentException("OSMORunner requires a @OsmoConfigurationFactory method");
     }
     if (factoryCount > 1) {
-      throw new IllegalArgumentException("OSMORunner supports only one @OsmoConfigurationFactory method (had "+ factoryCount + ")");
+      throw new IllegalArgumentException("OSMORunner supports only one @OsmoConfigurationFactory method (had " + factoryCount + ")");
     }
     FrameworkMethod method = factories.get(0);
 
@@ -73,16 +73,16 @@ public class OSMORunner extends BlockJUnit4ClassRunner {
     // Execute the method (statically)
     Object obj = method.getMethod().invoke(getTestClass().getJavaClass());
     if (obj == null) {
-      throw new IllegalArgumentException("@"+OSMOConfigurationFactory.class.getSimpleName()+" method must return a value of type "+OSMOConfiguration.class.getSimpleName()+" was null");
+      throw new IllegalArgumentException("@" + OSMOConfigurationFactory.class.getSimpleName() + " method must return a value of type " + OSMOConfiguration.class.getSimpleName() + " was null");
     }
     if (!(obj instanceof OSMOConfiguration)) {
-      throw new IllegalArgumentException("@"+OSMOConfigurationFactory.class.getSimpleName()+" method must return a value of type "+OSMOConfiguration.class.getSimpleName()+" was "+obj.getClass().getSimpleName());
+      throw new IllegalArgumentException("@" + OSMOConfigurationFactory.class.getSimpleName() + " method must return a value of type " + OSMOConfiguration.class.getSimpleName() + " was " + obj.getClass().getSimpleName());
     }
     OSMOConfiguration config = (OSMOConfiguration) obj;
 
     int count = config.getJUnitLength();
     if (count <= 0) {
-      throw new IllegalArgumentException(OSMOConfiguration.class.getSimpleName()+" with JUnit must define value for JUnitLength");
+      throw new IllegalArgumentException(OSMOConfiguration.class.getSimpleName() + " with JUnit must define value for JUnitLength");
     }
 
     //now we configure the test generator according to the given configuration
@@ -94,8 +94,8 @@ public class OSMORunner extends BlockJUnit4ClassRunner {
     //add the listener to take case of teardown after all tests have been generated
     config.addListener(new JUnitGenerationListener(config.getJUnitLength(), generator));
 
-    List<FrameworkMethod> tests = new ArrayList<FrameworkMethod>();
-    for (int i = 0 ; i < count ; i++) {
+    List<FrameworkMethod> tests = new ArrayList<>();
+    for (int i = 0; i < count; i++) {
       Method execute = OSMOJUnitTest.class.getMethod("execute");
       //create the test delegate which points to the "execute" method in OSMOJUnitTest
       OSMOJUnitTest test = new OSMOJUnitTest(generator, execute);
@@ -106,6 +106,7 @@ public class OSMORunner extends BlockJUnit4ClassRunner {
 
   /**
    * Capture any @Test annotated basic JUnit tests as well if any are defined.
+   *
    * @return
    */
   @Override
@@ -113,9 +114,7 @@ public class OSMORunner extends BlockJUnit4ClassRunner {
     return tests;
   }
 
-  /**
-    *this should be unused (so the doc says and it is deprecated) but yet without this JUnit nullpointers..
-   */
+  /** this should be unused (so the doc says and it is deprecated) but yet without this JUnit nullpointers.. */
   @Override
   protected void validateInstanceMethods(List<Throwable> errors) {
     return;

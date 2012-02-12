@@ -24,7 +24,7 @@ public class OSMOJUnitTest extends FrameworkMethod {
   public OSMOJUnitTest(MainGenerator generator, Method method) {
     super(method);
     this.generator = generator;
-    this.name = "test"+index;
+    this.name = "test" + index;
     index++;
   }
 

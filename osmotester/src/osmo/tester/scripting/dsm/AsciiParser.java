@@ -5,12 +5,10 @@ import osmo.common.log.Logger;
 import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
 import osmo.tester.model.dataflow.ScriptedValueProvider;
 import osmo.tester.scripting.AbstractAsciiParser;
-import osmo.tester.scripting.manual.TestScript;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -205,7 +203,7 @@ public class AsciiParser extends AbstractAsciiParser {
   private void parseVariableCoverageTable(String[] lines) {
     log.debug("parsing variable coverage");
     String[] variables = parseTable(lines, "variable", "coverage");
-    Map<String, DataCoverageRequirement> map = new HashMap<String, DataCoverageRequirement>();
+    Map<String, DataCoverageRequirement> map = new HashMap<>();
     for (int i = 0; i < variables.length; i += 2) {
       String name = variables[i].trim();
       String value = variables[i + 1].trim();

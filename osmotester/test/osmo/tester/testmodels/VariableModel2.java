@@ -22,9 +22,9 @@ public class VariableModel2 {
   private boolean second = false;
   @TestSuiteField
   private TestSuite suite = new TestSuite();
-  private ValueRange<Integer> range = new ValueRange<Integer>(1, 5);
-  private ValueSet<String> set = new ValueSet<String>("v1", "v2", "v3");
-  private Collection<String> values = new ArrayList<String>();
+  private ValueRange<Integer> range = new ValueRange<>(1, 5);
+  private ValueSet<String> set = new ValueSet<>("v1", "v2", "v3");
+  private Collection<String> values = new ArrayList<>();
   @Variable
   private CollectionCount valueCount = new CollectionCount(values);
   private final PrintStream out;

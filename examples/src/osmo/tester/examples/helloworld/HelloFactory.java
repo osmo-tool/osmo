@@ -12,21 +12,21 @@ public class HelloFactory implements ModelObjectFactory {
   @Override
   public Collection<Object> createModelObjects() {
     Object model = new HelloModel();
-    Collection<Object> objects = new ArrayList<Object>();
+    Collection<Object> objects = new ArrayList<>();
     objects.add(model);
     return objects;
   }
 
   @Override
   public Collection<EndCondition> createTestEndConditions() {
-    Collection<EndCondition> end = new ArrayList<EndCondition>();
+    Collection<EndCondition> end = new ArrayList<>();
     end.add(new Length(5));
     return end;
   }
 
   @Override
   public Collection<EndCondition> createSuiteEndConditions() {
-    Collection<EndCondition> end = new ArrayList<EndCondition>();
+    Collection<EndCondition> end = new ArrayList<>();
     end.add(new Length(3));
     return end;
   }

@@ -9,14 +9,14 @@ import java.util.Map;
  * @author Teemu Kanstren
  */
 public class Suite {
-  private Map<String, TestCase> tests = new HashMap<String, TestCase>();
+  private Map<String, TestCase> tests = new HashMap<>();
 
   public void add(TestCase test) {
     tests.put(test.getName(), test);
   }
 
   public List<TestCase> getTests() {
-    List<TestCase> result = new ArrayList<TestCase>();
+    List<TestCase> result = new ArrayList<>();
     result.addAll(tests.values());
     return result;
   }

@@ -17,11 +17,11 @@ import static org.junit.Assert.fail;
 public class HelloModel {
   private int helloCount = 0;
   private int worldCount = 0;
-  private ValueSet<String> names = new ValueSet<String>("teemu", "bob");
-  private ValueSet<String> worlds = new ValueSet<String>("mars", "venus");
+  private ValueSet<String> names = new ValueSet<>("teemu", "bob");
+  private ValueSet<String> worlds = new ValueSet<>("mars", "venus");
 //  private ReadableWords words = new ReadableWords(3, 7);
-  private ValueSet<Integer> sizes = new ValueSet<Integer>(1,2,6);
-  private ValueRange<Double> ranges = new ValueRange<Double>(0.1d, 5.2d);
+  private ValueSet<Integer> sizes = new ValueSet<>(1,2,6);
+  private ValueRange<Double> ranges = new ValueRange<>(0.1d, 5.2d);
 
   @BeforeSuite
   public void init() {

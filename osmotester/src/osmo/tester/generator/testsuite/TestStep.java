@@ -28,11 +28,11 @@ public class TestStep {
   /** The set of requirements covered by this test step. */
   private Collection<String> coveredRequirements = null;
   /** Stores values of all {@link Variable} annotated fields in the model before this step was generated. */
-  private Map<String, Object> stateValuesBefore = new HashMap<String, Object>();
+  private Map<String, Object> stateValuesBefore = new HashMap<>();
   /** Stores values of all {@link Variable} annotated fields in the model after this step was generated. */
-  private Map<String, Object> stateValuesAfter = new HashMap<String, Object>();
+  private Map<String, Object> stateValuesAfter = new HashMap<>();
   /** The data variables and the values covered for each in this test case. */
-  private List<ModelVariable> values = new ArrayList<ModelVariable>();
+  private List<ModelVariable> values = new ArrayList<>();
   /** Step identifier. */
   private final int id;
   /** The parent test case to which this step belongs. */
@@ -61,7 +61,7 @@ public class TestStep {
    */
   public synchronized void covered(String requirement) {
     if (coveredRequirements == null) {
-      coveredRequirements = new ArrayList<String>();
+      coveredRequirements = new ArrayList<>();
     }
     coveredRequirements.add(requirement);
   }
@@ -75,7 +75,7 @@ public class TestStep {
     if (coveredRequirements == null) {
       return Collections.EMPTY_LIST;
     }
-    Collection<String> result = new ArrayList<String>();
+    Collection<String> result = new ArrayList<>();
     result.addAll(coveredRequirements);
     return result;
   }

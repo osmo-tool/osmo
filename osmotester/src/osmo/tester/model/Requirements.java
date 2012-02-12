@@ -22,9 +22,9 @@ import java.util.TreeSet;
 public class Requirements {
   private static Logger log = new Logger(Requirements.class);
   /** The overall set of requirements that should be covered. */
-  private List<String> requirements = new ArrayList<String>();
+  private List<String> requirements = new ArrayList<>();
   /** The set of requirements that have been covered. */
-  private Collection<String> covered = new ArrayList<String>();
+  private Collection<String> covered = new ArrayList<>();
   /** The set of generated tests cases, including the one currently under generation. */
   private TestSuite testSuite = null;
 
@@ -71,7 +71,7 @@ public class Requirements {
    * @return List of covered requirements.
    */
   public Collection<String> getUniqueCoverage() {
-    Collection<String> set = new TreeSet<String>();
+    Collection<String> set = new TreeSet<>();
     set.addAll(covered);
     return set;
   }
@@ -92,7 +92,7 @@ public class Requirements {
    * @return The number of covered but unexpected requirements.
    */
   public Collection<String> getExcess() {
-    Collection<String> excess = new ArrayList<String>();
+    Collection<String> excess = new ArrayList<>();
     excess.addAll(covered);
     excess.removeAll(requirements);
     return excess;

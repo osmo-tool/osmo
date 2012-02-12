@@ -11,7 +11,7 @@ import java.util.List;
 public class Node implements TreeNode {
   private final Node parent;
   private final String name;
-  private ArrayList<Node> children = new ArrayList<Node>();
+  private ArrayList<Node> children = new ArrayList<>();
   private List<ValuePair> attributes;
 
   public Node(Node parent, String name, List<ValuePair> attributes) {

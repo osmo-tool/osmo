@@ -47,12 +47,12 @@ public class MutationTests {
 
   private void assertMutations(double mutationProbability, int expected) {
     Candidate candidate = so.createCandidate();
-    Collection<Integer> mutations = new ArrayList<Integer>();
+    Collection<Integer> mutations = new ArrayList<>();
     for (int i = 0; i < 100; i++) {
-      List<TestCase> before = new ArrayList<TestCase>();
+      List<TestCase> before = new ArrayList<>();
       before.addAll(candidate.getTests());
       so.mutate(candidate, mutationProbability);
-      List<TestCase> after = new ArrayList<TestCase>();
+      List<TestCase> after = new ArrayList<>();
       after.addAll(candidate.getTests());
       after.removeAll(before);
       mutations.add(after.size());
@@ -75,7 +75,7 @@ public class MutationTests {
   public void mutateAll() {
     Candidate candidate = so.createCandidate();
     List<TestCase> tests = candidate.getTests();
-    List<TestCase> original = new ArrayList<TestCase>();
+    List<TestCase> original = new ArrayList<>();
     original.addAll(tests);
     so.mutate(candidate, 1.00);
     tests.removeAll(original);

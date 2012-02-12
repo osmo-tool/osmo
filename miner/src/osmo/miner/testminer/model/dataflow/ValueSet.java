@@ -12,7 +12,7 @@ import java.util.Map;
  * @author Teemu Kanstren
  */
 public class ValueSet extends DataFlowInvariant {
-  private Map<String, Integer> observations = new HashMap<String, Integer>();
+  private Map<String, Integer> observations = new HashMap<>();
 
   public ValueSet(String scope, String variable, boolean program, boolean global) {
     super(scope, variable, program, global);
@@ -32,10 +32,10 @@ public class ValueSet extends DataFlowInvariant {
 
   @Override
   public void fill(VelocityContext vc) {
-    Collection<ValuePair<String>> values = new ArrayList<ValuePair<String>>();
+    Collection<ValuePair<String>> values = new ArrayList<>();
     for (String key : observations.keySet()) {
       int count = observations.get(key);
-      values.add(new ValuePair<String>(key, ""+count));
+      values.add(new ValuePair<>(key, ""+count));
     }
     vc.put("values", values);
   }

@@ -43,7 +43,7 @@ public class MainGenerator {
   /**
    * Constructor.
    *
-   * @param fsm Describes the test model in an FSM format.
+   * @param fsm    Describes the test model in an FSM format.
    * @param config The configuration for test generation parameters.
    */
   public MainGenerator(FSM fsm, OSMOConfiguration config) {
@@ -121,7 +121,7 @@ public class MainGenerator {
         if (cause.getClass().equals(InvocationTargetException.class)) {
           cause = cause.getCause();
           if (cause.getClass().equals(RuntimeException.class)) {
-            return (RuntimeException)cause;
+            return (RuntimeException) cause;
           }
           //hack to avoid Java reflection + compiler checking incompatibilities
           return new RuntimeException(cause);
@@ -304,7 +304,7 @@ public class MainGenerator {
    */
   private List<FSMTransition> getEnabled() {
     Collection<FSMTransition> allTransitions = fsm.getTransitions();
-    List<FSMTransition> enabled = new ArrayList<FSMTransition>();
+    List<FSMTransition> enabled = new ArrayList<>();
     enabled.addAll(allTransitions);
     //filter out all non-wanted transitions
     for (TransitionFilter filter : config.getFilters()) {

@@ -13,7 +13,7 @@ import java.util.List;
  * @author Teemu Kanstren
  */
 public class MainTCMiner implements TCInvariantMiner {
-  private Collection<TCInvariantMiner> miners = new ArrayList<TCInvariantMiner>();
+  private Collection<TCInvariantMiner> miners = new ArrayList<>();
 
   public void addMiner(TCInvariantMiner miner) {
     miners.add(miner);

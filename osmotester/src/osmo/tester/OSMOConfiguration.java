@@ -2,7 +2,6 @@ package osmo.tester;
 
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.GenerationListenerList;
-import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.endcondition.And;
@@ -24,13 +23,13 @@ import java.util.Collection;
  */
 public class OSMOConfiguration {
   /** The set of test model objects, given by the user. */
-  private final Collection<ModelObject> modelObjects = new ArrayList<ModelObject>();
+  private final Collection<ModelObject> modelObjects = new ArrayList<>();
   /** When do we stop generating the overall test suite? (stopping all test generation). Ignored if junitLength is set. */
-  private Collection<EndCondition> suiteEndConditions = new ArrayList<EndCondition>();
+  private Collection<EndCondition> suiteEndConditions = new ArrayList<>();
   /** When do we stop generating individual tests and start a new one? */
-  private Collection<EndCondition> testCaseEndConditions = new ArrayList<EndCondition>();
+  private Collection<EndCondition> testCaseEndConditions = new ArrayList<>();
   /** Set of filters to define when given transitions should not be considered for execution. */
-  private Collection<TransitionFilter> filters = new ArrayList<TransitionFilter>();
+  private Collection<TransitionFilter> filters = new ArrayList<>();
   /** The algorithm to traverse the test model to generate test steps. */
   private FSMTraversalAlgorithm algorithm;
   /** Should we fail then test generation if there is not enabled transitions? Otherwise we just end the test. */

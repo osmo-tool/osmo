@@ -40,7 +40,7 @@ public class AsciiParser extends AbstractAsciiParser {
    * @return List of parsed tests from the input.
    */
   private List<TestScript> parseTests(String[] script) {
-    List<TestScript> tests = new ArrayList<TestScript>();
+    List<TestScript> tests = new ArrayList<>();
     TestScript test = null;
     for (int i = 0; i < script.length; i += 3) {
       String action = script[i];

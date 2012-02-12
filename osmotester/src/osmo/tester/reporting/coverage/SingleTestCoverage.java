@@ -19,13 +19,13 @@ public class SingleTestCoverage {
   /** Test name. */
   private final String name;
   /** Key=requirement name, value=times covered in this test. */
-  private final Map<String, Integer> requirementCount = new HashMap<String, Integer>();
+  private final Map<String, Integer> requirementCount = new HashMap<>();
   /** Key=transition name, value=times covered in this test. */
-  private final Map<String, Integer> transitionCount = new HashMap<String, Integer>();
+  private final Map<String, Integer> transitionCount = new HashMap<>();
   /** Key=transition pair name ("T1->T2"), value=times covered in this test. */
-  private final Map<String, Integer> pairCount = new HashMap<String, Integer>();
+  private final Map<String, Integer> pairCount = new HashMap<>();
   /** Key=variable name, value=values covered in this test. */
-  private final Map<String, Collection<Object>> variableValues = new HashMap<String, Collection<Object>>();
+  private final Map<String, Collection<Object>> variableValues = new HashMap<>();
 
   /**
    * Counts and collects the coverage of the given test.
@@ -72,7 +72,7 @@ public class SingleTestCoverage {
       ModelVariable modelVariable = variables.get(var);
       Collection<Object> values = variableValues.get(var);
       if (values == null) {
-        values = new ArrayList<Object>();
+        values = new ArrayList<>();
         variableValues.put(var, values);
       }
       values.addAll(modelVariable.getValues());

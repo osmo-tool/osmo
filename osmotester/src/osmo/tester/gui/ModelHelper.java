@@ -13,14 +13,14 @@ import java.util.List;
  */
 public class ModelHelper extends AbstractListModel {
   private static final long serialVersionUID = 1L;
-  private List<String> values = new ArrayList<String>();
+  private List<String> values = new ArrayList<>();
 
   public ModelHelper() {
     this.values.add("Empty");
   }
 
   public ModelHelper(List<FSMTransition> transitions) {
-    values = new ArrayList<String>();
+    values = new ArrayList<>();
     for (FSMTransition t : transitions) {
       values.add(t.getName());
     }

@@ -3,24 +3,15 @@ package osmo.tester;
 import osmo.common.TestUtils;
 import osmo.common.log.Logger;
 import osmo.tester.generator.GenerationListener;
-import osmo.tester.generator.GenerationListenerList;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
-import osmo.tester.generator.algorithm.RandomAlgorithm;
-import osmo.tester.generator.endcondition.And;
 import osmo.tester.generator.endcondition.EndCondition;
-import osmo.tester.generator.endcondition.Length;
-import osmo.tester.generator.endcondition.Probability;
 import osmo.tester.generator.filter.TransitionFilter;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.Requirements;
 import osmo.tester.model.dataflow.ScriptedValueProvider;
 import osmo.tester.parser.MainParser;
-import osmo.tester.parser.ModelObject;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * The main class for initiating the MBT tool.
@@ -59,11 +50,12 @@ public class OSMOTester {
   public void addModelObject(Object modelObject) {
     config.addModelObject(modelObject);
   }
+
   /**
    * Adds a model object with a given prefix, allowing the same object class to be re-used with different configuration
    * where the names of transitions (test steps), guards and other elements is preceded by the given prefix.
    *
-   * @param prefix The model prefix.
+   * @param prefix      The model prefix.
    * @param modelObject The model object itself.
    */
   public void addModelObject(String prefix, Object modelObject) {

@@ -56,10 +56,10 @@ public class SearchingOptimizer {
    */
   public Candidate searchFromTests(List<TestCase> tests) {
     int noc = config.getNumberOfCandidates();
-    List<Candidate> candidates = new ArrayList<Candidate>();
+    List<Candidate> candidates = new ArrayList<>();
     for (int i = 0; i < noc; i++) {
       int populationSize = config.getPopulationSize();
-      List<TestCase> candidateTests = new ArrayList<TestCase>();
+      List<TestCase> candidateTests = new ArrayList<>();
       for (int p = 0; p < populationSize; p++) {
         candidateTests.add(tests.remove(0));
       }
@@ -76,7 +76,7 @@ public class SearchingOptimizer {
    */
   public Candidate search() {
     int noc = config.getNumberOfCandidates();
-    List<Candidate> candidates = new ArrayList<Candidate>();
+    List<Candidate> candidates = new ArrayList<>();
     generator.initSuite();
     for (int i = 0; i < noc; i++) {
       Candidate candidate = createCandidate();
@@ -138,7 +138,7 @@ public class SearchingOptimizer {
    */
   public List<Candidate> nextGenerationFrom(List<Candidate> candidates, double mp) {
     log.debug("next generation of search space being created");
-    List<Candidate> newPopulation = new ArrayList<Candidate>();
+    List<Candidate> newPopulation = new ArrayList<>();
     int size = config.getPopulationSize();
     Collections.sort(candidates, comparator);
     List<Integer> weights = getWeightLine(candidates);
@@ -176,7 +176,7 @@ public class SearchingOptimizer {
       low *= -1;
       low++;
     }
-    List<Integer> weights = new ArrayList<Integer>();
+    List<Integer> weights = new ArrayList<>();
     int total = 0;
     for (Candidate candidate : candidates) {
       int fitness = candidate.getFitness();
@@ -212,9 +212,9 @@ public class SearchingOptimizer {
    */
   public Candidate[] recombine(Candidate c1, Candidate c2) {
     Candidate[] result = new Candidate[2];
-    List<TestCase> c3Tests = new ArrayList<TestCase>();
-    List<TestCase> c4Tests = new ArrayList<TestCase>();
-    List<TestCase> joint = new ArrayList<TestCase>();
+    List<TestCase> c3Tests = new ArrayList<>();
+    List<TestCase> c4Tests = new ArrayList<>();
+    List<TestCase> joint = new ArrayList<>();
     joint.addAll(c1.getTests());
     joint.retainAll(c2.getTests());
     //this is actually Hamming distance
@@ -262,7 +262,7 @@ public class SearchingOptimizer {
    */
   public Candidate createCandidate() {
     int populationSize = config.getPopulationSize();
-    List<TestCase> tests = new ArrayList<TestCase>();
+    List<TestCase> tests = new ArrayList<>();
     for (int i = 0; i < populationSize; i++) {
       tests.add(generator.nextTest());
     }

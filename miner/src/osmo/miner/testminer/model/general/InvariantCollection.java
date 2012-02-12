@@ -20,8 +20,8 @@ import static osmo.common.TestUtils.getResource;
  */
 public class InvariantCollection {
   private static Logger log = new Logger(InvariantCollection.class);
-  private Map<String, ScopeVariables> scopes = new HashMap<String, ScopeVariables>();
-  private Collection<DataFlowInvariant> all = new ArrayList<DataFlowInvariant>();
+  private Map<String, ScopeVariables> scopes = new HashMap<>();
+  private Collection<DataFlowInvariant> all = new ArrayList<>();
 
   public VariableInvariants getInvariants(String scope, String variable) {
     return scopes.get(scope).getInvariantsFor(variable);
@@ -54,9 +54,9 @@ public class InvariantCollection {
   }
 
   public Collection<ScopeVariables> getSortedScopes() {
-    List<ScopeVariables> result = new ArrayList<ScopeVariables>();
-    List<ScopeVariables> globalScope = new ArrayList<ScopeVariables>();
-    List<ScopeVariables> programScope = new ArrayList<ScopeVariables>();
+    List<ScopeVariables> result = new ArrayList<>();
+    List<ScopeVariables> globalScope = new ArrayList<>();
+    List<ScopeVariables> programScope = new ArrayList<>();
     for (ScopeVariables scope : scopes.values()) {
       if (scope.isGlobal()) {
         globalScope.add(scope);

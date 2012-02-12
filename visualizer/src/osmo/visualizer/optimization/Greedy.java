@@ -68,13 +68,13 @@ public class Greedy {
     }
     barGraph.show();
 
-    if (true) return;
-    Candidate candidate = optimizer.search();
-    List<TestCase> tests = candidate.getTests();
-    for (TestCase test : tests) {
-      barGraph.addTest(test);
-    }
-    barGraph.show();
+//    if (true) return;
+//    Candidate candidate = optimizer.search();
+//    List<TestCase> tests = candidate.getTests();
+//    for (TestCase test : tests) {
+//      barGraph.addTest(test);
+//    }
+//    barGraph.show();
   }
 
   public void show() {

@@ -5,7 +5,7 @@ import java.util.Map;
 
 /** @author Teemu Kanstren */
 public class VariableCountMiner {
-  private Map<String, Integer> counts = new HashMap<String, Integer>();
+  private Map<String, Integer> counts = new HashMap<>();
 
   public void process(String name, String value) {
     Integer count = counts.get(name);

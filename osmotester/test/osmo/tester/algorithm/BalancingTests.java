@@ -2,7 +2,6 @@ package osmo.tester.algorithm;
 
 import org.junit.Before;
 import org.junit.Test;
-import osmo.common.log.Logger;
 import osmo.tester.OSMOTester;
 import osmo.tester.generation.TestListener;
 import osmo.tester.generator.algorithm.BalancingAlgorithm;
@@ -89,7 +88,7 @@ public class BalancingTests {
   public void testModel7Length200() {
 //    Logger.debug = true;
     osmo.addModelObject(new ValidTestModel7());
-    Length length200= new Length(200);
+    Length length200 = new Length(200);
     Length length1 = new Length(1);
     osmo.addTestEndCondition(length200);
     osmo.addSuiteEndCondition(length1);

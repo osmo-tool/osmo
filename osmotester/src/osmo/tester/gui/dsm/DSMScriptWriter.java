@@ -16,11 +16,11 @@ public class DSMScriptWriter {
   private static final Logger log = new Logger(DSMScriptWriter.class);
 
   /**
-   * @param algorithm       The test generation algorithm to use in processing the DSM.
-   * @param modelFactory    The (fully qualified) name of the class to use for creating the model objects.
-   * @param transitionRules Defined rules considering transitions.
-   * @param variableCoverage  Defined rules for variable coverage.
-   * @param variableValues Defined options for variable values.
+   * @param algorithm        The test generation algorithm to use in processing the DSM.
+   * @param modelFactory     The (fully qualified) name of the class to use for creating the model objects.
+   * @param transitionRules  Defined rules considering transitions.
+   * @param variableCoverage Defined rules for variable coverage.
+   * @param variableValues   Defined options for variable values.
    */
   public void write(String algorithm, String modelFactory, List<String> transitionRules, List<String> variableCoverage, List<String> variableValues) {
     BufferedWriter fw = null;

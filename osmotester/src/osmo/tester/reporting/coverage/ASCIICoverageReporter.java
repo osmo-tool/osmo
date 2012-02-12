@@ -24,7 +24,7 @@ public class ASCIICoverageReporter extends CoverageMetric {
   public String getTransitionCounts() {
     int maxNumb = 0;
     Map<FSMTransition, Integer> coverage = countTransitions();
-    List<TransitionCount> counts = new ArrayList<TransitionCount>();
+    List<TransitionCount> counts = new ArrayList<>();
 
     for (Map.Entry<FSMTransition, Integer> a : coverage.entrySet()) {
       TransitionCount count = new TransitionCount(a.getKey(), a.getValue());

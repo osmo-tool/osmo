@@ -24,7 +24,7 @@ public class SearchState {
   /** The search phase running, used to run several iterations of iterations with different mutation values. */
   private SearchPhase phase = new SearchPhase();
   /** The iterations that have been run. */
-  private Collection<SearchPhase> phases = new ArrayList<SearchPhase>();
+  private Collection<SearchPhase> phases = new ArrayList<>();
 
   public SearchState() {
     SearchPhase.nextId = 0;

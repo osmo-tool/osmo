@@ -48,7 +48,7 @@ public class TransitionCoverage extends AbstractEndCondition {
 
     Map<FSMTransition, Integer> coverage = suite.getTransitionCoverage();
     if (!suiteCheck) {
-      coverage = new HashMap<FSMTransition, Integer>();
+      coverage = new HashMap<>();
       List<TestStep> steps = suite.getCurrentTest().getSteps();
       for (TestStep step : steps) {
         FSMTransition t = step.getTransition();
@@ -59,7 +59,7 @@ public class TransitionCoverage extends AbstractEndCondition {
         coverage.put(t, count + 1);
       }
     }
-    Collection<FSMTransition> temp = new ArrayList<FSMTransition>();
+    Collection<FSMTransition> temp = new ArrayList<>();
     Collection<FSMTransition> all = fsm.getTransitions();
     int allCount = all.size();
     temp.addAll(coverage.keySet());

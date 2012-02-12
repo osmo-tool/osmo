@@ -6,7 +6,7 @@ import java.util.Map;
 /** @author Teemu Kanstren */
 public class ValueSet {
   private final String name;
-  private Map<String, Integer> values = new HashMap<String, Integer>();
+  private Map<String, Integer> values = new HashMap<>();
 
   public ValueSet(String name) {
     this.name = name;

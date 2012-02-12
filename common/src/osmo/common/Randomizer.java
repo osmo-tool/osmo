@@ -153,7 +153,7 @@ public class Randomizer {
    * @return Random index into the list according to the lists.
    */
   public int rawWeightedRandomFrom(List<Integer> weights) {
-    List<Integer> totals = new ArrayList<Integer>();
+    List<Integer> totals = new ArrayList<>();
     int total = 0;
     for (Integer weight : weights) {
       if (weight <= 0) {
@@ -209,7 +209,7 @@ public class Randomizer {
    * @return A randomly picked item from the given list.
    */
   public <T> T oneOf(Collection<T> array) {
-    List<T> list = new ArrayList<T>(array);
+    List<T> list = new ArrayList<>(array);
     return list.get(cInt(0, array.size() - 1));
   }
 

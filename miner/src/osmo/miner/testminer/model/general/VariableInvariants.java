@@ -10,7 +10,7 @@ import java.util.Collection;
  */
 public class VariableInvariants {
   private final String name;
-  private final Collection<DataFlowInvariant> invariants = new ArrayList<DataFlowInvariant>();
+  private final Collection<DataFlowInvariant> invariants = new ArrayList<>();
 
   public VariableInvariants(String name) {
     this.name = name;

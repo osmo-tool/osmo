@@ -24,7 +24,7 @@ import java.util.Locale;
 public class TestModelFactory implements ModelObjectFactory {
   @Override
   public Collection<Object> createModelObjects() {
-    Collection<Object> objects = new ArrayList<Object>();
+    Collection<Object> objects = new ArrayList<>();
     ModelState state = new ModelState();
     CalendarScripter scripter = new OfflineScripter("tests.html");
     objects.add(state);
@@ -40,14 +40,14 @@ public class TestModelFactory implements ModelObjectFactory {
 
   @Override
   public Collection<EndCondition> createTestEndConditions() {
-    Collection<EndCondition> end = new ArrayList<EndCondition>();
+    Collection<EndCondition> end = new ArrayList<>();
     end.add(new Probability(0.05));
     return end;
   }
 
   @Override
   public Collection<EndCondition> createSuiteEndConditions() {
-    Collection<EndCondition> end = new ArrayList<EndCondition>();
+    Collection<EndCondition> end = new ArrayList<>();
     end.add(new Length(3));
     return end;
   }

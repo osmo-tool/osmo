@@ -13,7 +13,7 @@ public class ValuetSetTests {
 
   @Before
   public void setup() {
-    inv = new ValueSet<String>();
+    inv = new ValueSet<>();
     inv.add("one");
     inv.add("two");
     inv.add("three");
@@ -61,7 +61,7 @@ public class ValuetSetTests {
     String v6 = null;
     boolean diff = false;
     for (int i = 0; i < 10; i++) {
-      inv = new ValueSet<String>();
+      inv = new ValueSet<>();
       inv.setStrategy(DataGenerationStrategy.BALANCING);
       inv.add("one");
       inv.add("two");
@@ -83,7 +83,7 @@ public class ValuetSetTests {
   public void optimizedRandomTestSeveralLoops() {
     String v6 = null;
     boolean diff = false;
-    inv = new ValueSet<String>();
+    inv = new ValueSet<>();
     inv.setStrategy(DataGenerationStrategy.BALANCING);
     inv.add("one");
     inv.add("two");

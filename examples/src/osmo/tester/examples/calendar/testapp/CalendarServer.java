@@ -12,7 +12,7 @@ public class CalendarServer {
   /** Self. */
   private static final CalendarServer singleton = new CalendarServer();
   /** Maps user identifiers to calendars. */
-  private Map<String, CalendarApplication> calendars = new HashMap<String, CalendarApplication>();
+  private Map<String, CalendarApplication> calendars = new HashMap<>();
 
   private CalendarServer() {
   }

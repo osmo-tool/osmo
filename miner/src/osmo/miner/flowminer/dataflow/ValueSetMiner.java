@@ -7,7 +7,7 @@ import java.util.Map;
 
 /** @author Teemu Kanstren */
 public class ValueSetMiner {
-  private Map<String, ValueSet> sets = new HashMap<String, ValueSet>();
+  private Map<String, ValueSet> sets = new HashMap<>();
 
   public void process(String name, String value) {
     ValueSet set = sets.get(name);

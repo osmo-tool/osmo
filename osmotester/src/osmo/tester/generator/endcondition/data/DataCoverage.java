@@ -23,7 +23,7 @@ import java.util.Map;
 public class DataCoverage extends AbstractEndCondition {
   private static Logger log = new Logger(DataCoverage.class);
   /** Coverage requirements for this end condition. */
-  private Map<String, DataCoverageRequirement> requirements = new HashMap<String, DataCoverageRequirement>();
+  private Map<String, DataCoverageRequirement> requirements = new HashMap<>();
 
   /**
    * Adds a new coverage requirement that needs to be covered for the end condition to evaluate as true.
@@ -56,7 +56,7 @@ public class DataCoverage extends AbstractEndCondition {
       return false;
     }
     for (DataCoverageRequirement req : requirements.values()) {
-      Collection<Object> temp = new ArrayList<Object>();
+      Collection<Object> temp = new ArrayList<>();
       temp.addAll(req.getValues());
       String name = req.getName();
       ModelVariable variable = variables.get(name);
@@ -91,7 +91,7 @@ public class DataCoverage extends AbstractEndCondition {
    * Checks  that the requirements defined can be covered by the given test model.
    */
   public void init(FSM fsm) {
-    Collection<String> shouldClear = new ArrayList<String>();
+    Collection<String> shouldClear = new ArrayList<>();
     shouldClear.addAll(requirements.keySet());
     Collection<SearchableInput> inputs = fsm.getSearchableInputs();
     for (SearchableInput input : inputs) {

@@ -85,7 +85,7 @@ public class Experiments {
   private List<TestCase> greedySort(SearchConfiguration config) {
     GreedyOptimizer greedy = new GreedyOptimizer(config);
     List<TestCase> sortedTestSet = greedy.createSortedTestSet(config.getPopulationSize() * config.getNumberOfCandidates());
-    List<TestCase> tests = new ArrayList<TestCase>();
+    List<TestCase> tests = new ArrayList<>();
     for (int i = 0; i < config.getPopulationSize(); i++) {
       tests.add(sortedTestSet.get(i));
     }
@@ -110,7 +110,7 @@ public class Experiments {
   }
 
   private class FitnessListener implements SearchListener {
-    private Collection<String> updates = new ArrayList<String>();
+    private Collection<String> updates = new ArrayList<>();
 
     @Override
     public void updateBest(Candidate candidate) {

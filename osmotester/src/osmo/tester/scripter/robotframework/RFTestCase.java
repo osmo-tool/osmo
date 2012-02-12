@@ -10,7 +10,7 @@ import java.util.Collection;
  */
 public class RFTestCase {
   /** The test steps in this test case. */
-  private Collection<RFTestStep> steps = new ArrayList<RFTestStep>();
+  private Collection<RFTestStep> steps = new ArrayList<>();
   /** The name of the test case. */
   private final String name;
   /** Defines is the name has been queried or not, used to only print the name once in the table, while having a simple template. */

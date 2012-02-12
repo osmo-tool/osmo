@@ -28,6 +28,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import static junit.framework.Assert.*;
 
@@ -88,15 +90,38 @@ public class ParserTests {
       fail("Should throw exception");
     } catch (Exception e) {
       String msg = e.getMessage();
+      msg = sortErrors(msg);
       String expected = "Invalid FSM:\n" +
-              "@RequirementsField class must be of type " + Requirements.class.getName() + ". Was " + String.class.getName() + ".\n" +
+              "@RequirementsField class must be of type osmo.tester.model.Requirements. Was java.lang.String.\n" +
               "@TestSuiteField class must be of type osmo.tester.generator.testsuite.TestSuite. Was java.lang.String.\n" +
               "Invalid return type for @EndCondition (\"end()\"):void. Should be boolean.\n" +
-              "Invalid return type for guard (\"hello()\"):class java.lang.String.\n" +
               "Invalid return type for @EndState (\"toEnd()\"):void. Should be boolean.\n" +
-              "Post-methods are allowed to have only one parameter of type Map<String, Object>: \"wrong()\" has one of type class java.lang.String.\n";
+              "Invalid return type for guard (\"hello()\"):class java.lang.String.\n" +
+              "Post-methods are allowed to have only one parameter of type Map<String, Object>: \"wrong()\" has one of type class java.lang.String.\n" +
+              "";
       assertEquals(expected, msg);
     }
+  }
+
+  /**
+   * This is used to sort the error messages in a predictable way for test oracle assertions.
+   * It seems the JDK7 does not iterate reflected methods predictably so this is needed as a workaround.
+   *
+   * @param errors The set of errors to be sorted, with lines separated by "\n"
+   * @return The given error lines sorted by Collections.sort, exlucing the header which remains on top.
+   */
+  private String sortErrors(String errors) {
+    String[] split = errors.split("\n");
+    List<String> sorted = new ArrayList<>();
+    Collections.addAll(sorted, split);
+    String header = sorted.remove(0);
+    Collections.sort(sorted);
+    StringBuilder bob = new StringBuilder();
+    bob.append(header).append("\n");
+    for (String line : sorted) {
+      bob.append(line).append("\n");
+    }
+    return bob.toString();
   }
 
   @Test
@@ -108,11 +133,12 @@ public class ParserTests {
       //note that this exception checking will swallow real errors so it can be useful to print them..
 //      e.printStackTrace();
       String msg = e.getMessage();
+      msg = sortErrors(msg);
       String expected = "Invalid FSM:\n" +
-              "@RequirementsField value was null, which is not allowed.\n" +
-              "Guard methods are not allowed to have parameters: \"hello()\" has 1 parameters.\n" +
               "@EndCondition methods are not allowed to have parameters: \"ending()\" has 1 parameters.\n" +
               "@EndState methods are not allowed to have parameters: \"endd()\" has 1 parameters.\n" +
+              "@RequirementsField value was null, which is not allowed.\n" +
+              "Guard methods are not allowed to have parameters: \"hello()\" has 1 parameters.\n" +
               "";
       assertEquals(expected, msg);
     }

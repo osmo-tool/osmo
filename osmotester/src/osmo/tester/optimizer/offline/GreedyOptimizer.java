@@ -27,7 +27,7 @@ public class GreedyOptimizer {
   /** The coverage of the best test in each iteration, used to find the best of each iteration. */
   private TestCoverage bestTestCoverage = new TestCoverage();
   /** Here we will store the result of optimization. */
-  private List<TestCase> tests = new ArrayList<TestCase>();
+  private List<TestCase> tests = new ArrayList<>();
   /** The best test case of each iteration, added to test suite to increase fitness the most. */
   private TestCase best = null;
 
@@ -61,7 +61,7 @@ public class GreedyOptimizer {
     count *= populationSize;
     MainGenerator generator = config.getGenerator();
     generator.initSuite();
-    List<TestCase> all = new ArrayList<TestCase>();
+    List<TestCase> all = new ArrayList<>();
     long start = System.currentTimeMillis();
     for (int i = 0; i < count; i++) {
       all.add(generator.nextTest());
