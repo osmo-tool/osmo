@@ -2,11 +2,9 @@ package osmo.tester.examples.calendar.testmodel;
 
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
-import osmo.tester.examples.calendar.scripter.MockScripter;
 import osmo.tester.examples.calendar.scripter.offline.OfflineScripter;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.gui.dsm.DSMGUI;
-import osmo.tester.gui.manualdrive.ManualAlgorithm;
 import osmo.tester.model.FSM;
 
 /**
@@ -62,8 +60,8 @@ public class Main {
 //    osmo.addSuiteEndCondition(new Length(2));
     ModelState state = new ModelState();
 //    CalendarScripter scripter = new OnlineScripter();
-    CalendarScripter scripter = new MockScripter();
-//    CalendarScripter scripter = new OfflineScripter("tests.html");
+//    CalendarScripter scripter = new MockScripter();
+    CalendarScripter scripter = new OfflineScripter("tests.html");
     osmo.addModelObject(state);
     osmo.addModelObject(new CalendarBaseModel(state, scripter));
     osmo.addModelObject(new CalendarOracleModel(state, scripter));
@@ -72,7 +70,8 @@ public class Main {
     osmo.addModelObject(new CalendarParticipantModel(state, scripter));
     osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter));
 //    osmo.addModelObject(new CalendarFailureModel(state, scripter));
-    osmo.setAlgorithm(new ManualAlgorithm());
+//    osmo.setAlgorithm(new ManualAlgorithm());
+//    osmo.setAlgorithm(new ManualAlgorithm());
     osmo.generate();
   }
 

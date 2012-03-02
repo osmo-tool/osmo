@@ -1,5 +1,9 @@
 package osmo.tester.model.dataflow;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import static osmo.common.TestUtils.cInt;
 
 /**
@@ -80,6 +84,16 @@ public class ReadableChars extends SearchableInput<Character> {
       return false;
     }
     return evaluate(item.charAt(0));
+  }
+
+  @Override
+  public Collection<Character> getOptions() {
+    List<Character> result = new ArrayList<>();
+    char[] temp = chars.toCharArray();
+    for (char c : temp) {
+      result.add(c);
+    }
+    return result;
   }
 
   @Override

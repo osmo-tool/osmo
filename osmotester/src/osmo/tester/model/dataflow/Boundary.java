@@ -1,5 +1,7 @@
 package osmo.tester.model.dataflow;
 
+import java.util.List;
+
 /**
  * Implements boundary scanning for given numeric boundary values.
  * To use, define min and max of boundaries, as well the increment of values for the boundary scan.
@@ -83,6 +85,10 @@ public class Boundary {
           break;
       }
     }
+  }
+
+  public List<Number> getOptions() {
+    return values.getOptions();
   }
 
   /** @return The next boundary value. */
