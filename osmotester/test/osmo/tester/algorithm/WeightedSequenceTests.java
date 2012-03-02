@@ -3,26 +3,29 @@ package osmo.tester.algorithm;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOTester;
-import osmo.tester.generation.TestListener;
+import osmo.tester.generation.TestDistributionListener;
+import osmo.tester.generation.TestSequenceListener;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
+import osmo.tester.generator.algorithm.WeightedBalancingAlgorithm;
 import osmo.tester.generator.algorithm.WeightedRandomAlgorithm;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.testmodels.WeightedModel1;
 
 import java.util.Collection;
+import java.util.Map;
 
 import static junit.framework.Assert.assertFalse;
 
 /** @author Teemu Kanstren */
-public class WeightedRandomTests {
+public class WeightedSequenceTests {
   private OSMOTester osmo = null;
-  private TestListener listener;
+  private TestSequenceListener listener;
 
   @Before
   public void testSetup() {
     osmo = new OSMOTester();
     osmo.setSeed(100);
-    listener = new TestListener();
+    listener = new TestSequenceListener();
     osmo.addListener(listener);
   }
 
@@ -36,7 +39,7 @@ public class WeightedRandomTests {
     osmo.addSuiteEndCondition(length1);
     osmo.setAlgorithm(new WeightedRandomAlgorithm());
     osmo.generate();
-    listener.validate("Optimized random generator steps");
+    listener.validate("Weighted random generator steps");
     Collection<String> optimized = listener.getSteps();
 
     testSetup();
@@ -46,7 +49,7 @@ public class WeightedRandomTests {
     osmo.setAlgorithm(new RandomAlgorithm());
     osmo.generate();
     Collection<String> random = listener.getSteps();
-    assertFalse("Optimized generator should be different from random", random.equals(optimized));
+    assertFalse("Weighted generator should be different from random", random.equals(optimized));
   }
 
   @Test
@@ -59,7 +62,7 @@ public class WeightedRandomTests {
     osmo.addSuiteEndCondition(length1);
     osmo.setAlgorithm(new WeightedRandomAlgorithm());
     osmo.generate();
-    listener.validate("Optimized random generator steps");
+    listener.validate("Weighted random generator steps");
     Collection<String> optimized = listener.getSteps();
 
     testSetup();
@@ -69,6 +72,6 @@ public class WeightedRandomTests {
     osmo.setAlgorithm(new RandomAlgorithm());
     osmo.generate();
     Collection<String> random = listener.getSteps();
-    assertFalse("Optimized generator should be different from random", random.equals(optimized));
+    assertFalse("Weighted generator should be different from random", random.equals(optimized));
   }
 }

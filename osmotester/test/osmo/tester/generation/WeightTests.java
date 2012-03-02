@@ -11,13 +11,13 @@ import osmo.tester.testmodels.WeightedModel1;
 /** @author Teemu Kanstren */
 public class WeightTests {
   private OSMOTester osmo = null;
-  private TestListener listener;
+  private TestSequenceListener listener;
 
   @Before
   public void testSetup() {
     osmo = new OSMOTester();
     osmo.setSeed(100);
-    listener = new TestListener();
+    listener = new TestSequenceListener();
     osmo.addListener(listener);
   }
 

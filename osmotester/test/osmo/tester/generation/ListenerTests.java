@@ -17,12 +17,12 @@ import static junit.framework.Assert.fail;
 /** @author Teemu Kanstren */
 public class ListenerTests {
   private OSMOTester osmo = null;
-  private TestListener listener;
+  private TestSequenceListener listener;
 
   @Before
   public void testSetup() {
     osmo = new OSMOTester();
-    listener = new TestListener();
+    listener = new TestSequenceListener();
     osmo.addListener(listener);
   }
 

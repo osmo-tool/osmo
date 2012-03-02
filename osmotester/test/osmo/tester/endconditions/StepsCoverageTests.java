@@ -3,7 +3,7 @@ package osmo.tester.endconditions;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOTester;
-import osmo.tester.generation.TestListener;
+import osmo.tester.generation.TestSequenceListener;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.StepCoverage;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -195,7 +195,7 @@ public class StepsCoverageTests {
     Length length1 = new Length(1);
     osmo.addTestEndCondition(sc);
     osmo.addSuiteEndCondition(length1);
-    TestListener listener = new TestListener(false);
+    TestSequenceListener listener = new TestSequenceListener(false);
     listener.addExpected("suite-start", "start", "t:first", "t:second", "t:third", "t:third", "end", "suite-end");
     osmo.addListener(listener);
     osmo.generate();

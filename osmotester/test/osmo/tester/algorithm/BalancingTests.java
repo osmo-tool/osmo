@@ -3,7 +3,7 @@ package osmo.tester.algorithm;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOTester;
-import osmo.tester.generation.TestListener;
+import osmo.tester.generation.TestSequenceListener;
 import osmo.tester.generator.algorithm.BalancingAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.endcondition.Length;
@@ -17,13 +17,13 @@ import static junit.framework.Assert.assertFalse;
 /** @author Teemu Kanstren */
 public class BalancingTests {
   private OSMOTester osmo = null;
-  private TestListener listener;
+  private TestSequenceListener listener;
 
   @Before
   public void testSetup() {
     osmo = new OSMOTester();
     osmo.setSeed(100);
-    listener = new TestListener();
+    listener = new TestSequenceListener();
     osmo.addListener(listener);
   }
 
@@ -37,7 +37,7 @@ public class BalancingTests {
     osmo.addSuiteEndCondition(length1);
     osmo.setAlgorithm(new BalancingAlgorithm());
     osmo.generate();
-    listener.validate("Optimized random generator steps");
+    listener.validate("Balancing random generator steps");
     Collection<String> optimized = listener.getSteps();
 
     testSetup();
@@ -47,7 +47,7 @@ public class BalancingTests {
     osmo.setAlgorithm(new RandomAlgorithm());
     osmo.generate();
     Collection<String> random = listener.getSteps();
-    assertFalse("Optimized generator should be different from random", random.equals(optimized));
+    assertFalse("Balancing generator should be different from random", random.equals(optimized));
   }
 
   @Test
@@ -60,7 +60,7 @@ public class BalancingTests {
     osmo.addSuiteEndCondition(length1);
     osmo.setAlgorithm(new BalancingAlgorithm());
     osmo.generate();
-    listener.validate("Optimized random generator steps");
+    listener.validate("Balancing random generator steps");
     Collection<String> optimized = listener.getSteps();
 
     testSetup();
@@ -70,7 +70,7 @@ public class BalancingTests {
     osmo.setAlgorithm(new RandomAlgorithm());
     osmo.generate();
     Collection<String> random = listener.getSteps();
-    assertFalse("Optimized generator should be different from random", random.equals(optimized));
+    assertFalse("Balancing generator should be different from random", random.equals(optimized));
   }
 
   @Test
