@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
-import osmo.tester.generation.TestListener;
+import osmo.tester.generation.TestSequenceListener;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.filter.MaxTransitionFilter;
 import osmo.tester.model.Requirements;
@@ -92,7 +92,7 @@ public class MaxFilterTests {
 
   @Test
   public void onceWithAlternative() {
-    TestListener listener = new TestListener();
+    TestSequenceListener listener = new TestSequenceListener();
     osmo.addListener(listener);
     ValidTestModel6 model = new ValidTestModel6();
     osmo.addModelObject(model);

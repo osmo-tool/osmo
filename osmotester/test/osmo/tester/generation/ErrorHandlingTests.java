@@ -25,7 +25,7 @@ import static junit.framework.Assert.fail;
  */
 public class ErrorHandlingTests {
   private OSMOTester osmo = null;
-  private TestListener listener;
+  private TestSequenceListener listener;
   private OSMOConfiguration config;
 
   @Before
@@ -33,7 +33,7 @@ public class ErrorHandlingTests {
     osmo = new OSMOTester();
     osmo.setSeed(100);
     config = osmo.getConfig();
-    listener = new TestListener();
+    listener = new TestSequenceListener();
     osmo.addListener(listener);
   }
 

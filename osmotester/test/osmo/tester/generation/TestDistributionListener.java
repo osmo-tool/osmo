@@ -9,25 +9,18 @@ import osmo.tester.model.FSMTransition;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
-public class TestListener implements GenerationListener {
-  private Collection<String> steps = new ArrayList<>();
-  private Collection<String> expected = new ArrayList<>();
-  private final boolean guards;
+public class TestDistributionListener implements GenerationListener {
+  private Map<String, Integer> steps = new HashMap<>();
+  private Map<String, Integer> expected = new HashMap<>();
 
-  public TestListener() {
-    this.guards = true;
-  }
-
-  public TestListener(boolean guards) {
-    this.guards = guards;
-  }
-
-  public void addExpected(String... items) {
-    Collections.addAll(expected, items);
+  public void setExpected(String step, int count) {
+    expected.put(step, count);
   }
 
   @Override
@@ -36,51 +29,48 @@ public class TestListener implements GenerationListener {
 
   @Override
   public void guard(FSMTransition transition) {
-    if (guards) {
-      steps.add("g:" + transition.getName());
-    }
   }
 
   @Override
   public void transition(FSMTransition transition) {
-    steps.add("t:" + transition.getName());
+    String name = transition.getName();
+    Integer count = steps.get(name);
+    if (count == null) {
+      count = 0;
+    }
+    count++;
+    steps.put(name, count);
   }
 
   @Override
   public void pre(FSMTransition transition) {
-    steps.add("pre:" + transition.getName());
   }
 
   @Override
   public void post(FSMTransition transition) {
-    steps.add("post:" + transition.getName());
   }
 
   @Override
   public void testStarted(TestCase test) {
-    steps.add("start");
   }
 
   @Override
   public void testEnded(TestCase test) {
-    steps.add("end");
   }
 
   @Override
   public void suiteStarted(TestSuite suite) {
-    steps.add("suite-start");
   }
 
   @Override
   public void suiteEnded(TestSuite suite) {
-    steps.add("suite-end");
   }
 
   public void validate(String msg) {
     assertEquals(msg, expected, steps);
   }
 
-  public Collection<String> getSteps() {
+  public Map<String, Integer> getSteps() {
     return steps;
   }
 }

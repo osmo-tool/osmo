@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static osmo.common.TestUtils.oneOf;
+import static osmo.common.TestUtils.*;
 
 /**
  * A test generation algorithm that is similar to the {@link BalancingAlgorithm}
@@ -41,26 +41,19 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
   public FSMTransition choose(TestSuite history, List<FSMTransition> choices) {
     log.debug("choosing from:" + choices);
     //count weighted score for all transitions in the current test suite as well as any new ones in the list of transitions
-    Map<FSMTransition, Double> scores = countScore(history, choices);
-    double smallest = Integer.MAX_VALUE;
-    //find the lowest score
-    for (FSMTransition transition : choices) {
-      Double score = scores.get(transition);
-      if (score < smallest) {
-        smallest = score;
-      }
+    Map<FSMTransition, Double> scoreMap = countScore(history, choices);
+
+    List<FSMTransition> steps = new ArrayList<>();
+    List<Integer> scores = new ArrayList<>();
+    int i = 0;
+    for (Map.Entry<FSMTransition, Double> entry : scoreMap.entrySet()) {
+      steps.add(entry.getKey());
+      int value = (int) Math.round(entry.getValue()*1E6);
+      scores.add(value);
     }
-    //create list of actual options, being the ones with the lowest scores and in the set of choices
-    Collection<FSMTransition> options = new ArrayList<>();
-    for (FSMTransition transition : choices) {
-      if (scores.get(transition) == smallest) {
-        options.add(transition);
-      }
-    }
-    if (options.size() == 0) {
-      options = choices;
-    }
-    return oneOf(options);
+
+    int index = rawWeightedRandomFrom(scores);
+    return steps.get(index);
   }
 
   /**
@@ -91,10 +84,14 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
         coverage.put(transition, count + 1);
       }
     }
+    int max = Integer.MAX_VALUE;
     //if one was never covered, we set it to default start value of 1 to get correct values overall
     for (FSMTransition transition : available) {
       if (coverage.get(transition) == null) {
         coverage.put(transition, 1);
+      }
+      if (coverage.get(transition) < max) {
+        max = coverage.get(transition);
       }
     }
     log.debug("coverage" + coverage);
@@ -102,11 +99,22 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
     //then we divide each score by the weight of the transition
     Set<FSMTransition> transitions = coverage.keySet();
     for (FSMTransition transition : transitions) {
-      double score = coverage.get(transition);
-      score /= transition.getWeight();
+      double score = transition.getWeight();
+      //+1 is needed to avoid multiplication by 0, which would lead the highest weighted never to happen
+      score /= coverage.get(transition);
       scores.put(transition, score);
     }
     log.debug("weighted scores:" + scores);
     return scores;
   }
+  //2x2=1, 3x5=0.6
+  //2x3=0.666, 3x5=0.6
+  //2x4=0.5, 3x5=0.6
+  //###|||||--
+  //1-10000
+  //5->10000=10000/5*5
+  /*
+  2/2=0.5, 3/5=0.6
+  
+   */
 }
