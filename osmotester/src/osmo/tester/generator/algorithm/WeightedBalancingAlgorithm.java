@@ -20,9 +20,11 @@ import static osmo.common.TestUtils.*;
  * A test generation algorithm that is similar to the {@link BalancingAlgorithm}
  * but also takes into account weights assigned to transitions. For example, consider a model that has 2 transitions A and B,
  * and both have been visited twice. Now if A has a weight of 2 and B a weight of 3, the algorithm favors B due to
- * its combined weight and coverage values. The formula is (number of times a transition is visited/transition weight).
- * From the resulting set of values, the one with the smallest score is taken. If several share the same score, the
- * choice of transition is random from these.
+ * its combined weight and coverage values. 
+ * THe formula is: 
+ * -for each possible choice: transition weight / number of times transitions covered
+ * -multiply coverage values until you get a values with some over 1000
+ * -use the resulting values as the "weight" to pick one of the transitions
  * <p/>
  * Note than in calculation, a transition that is never visited has a visited value of 1 (and one that is visited once
  * has a value of 2 and so on) to allow for simplified calculation of transition visit scores (otherwise all
@@ -32,28 +34,56 @@ import static osmo.common.TestUtils.*;
  */
 public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
   private static final Logger log = new Logger(WeightedBalancingAlgorithm.class);
+  private Map<FSMTransition, Integer> coverage;
 
   @Override
   public void init(FSM fsm) {
+    coverage = new HashMap<>(fsm.getTransitions().size());
   }
 
   @Override
   public FSMTransition choose(TestSuite history, List<FSMTransition> choices) {
     log.debug("choosing from:" + choices);
     //count weighted score for all transitions in the current test suite as well as any new ones in the list of transitions
-    Map<FSMTransition, Double> scoreMap = countScore(history, choices);
+    Map<FSMTransition, Double> scoreMap = countScore(choices);
 
     List<FSMTransition> steps = new ArrayList<>();
-    List<Integer> scores = new ArrayList<>();
+    double[] tempScores = new double[scoreMap.size()];
     int i = 0;
     for (Map.Entry<FSMTransition, Double> entry : scoreMap.entrySet()) {
       steps.add(entry.getKey());
-      int value = (int) Math.round(entry.getValue()*1E6);
-      scores.add(value);
+      tempScores[i++] = entry.getValue();
+    }
+
+    //here we multiply the scores until we get big enough integers than can be passed to rawWeightedRandomFrom()
+    boolean done = false;
+    while (!done) {
+      done = true;
+      for (int j = 0; j < tempScores.length; j++) {
+        tempScores[j] *= 10000;
+        if (tempScores[j] < 10) {
+          done = false;
+        }
+      }
+    }
+    List<Integer> scores = new ArrayList<>();
+    for (double tempScore : tempScores) {
+      scores.add((int) (Math.round(tempScore)));
     }
 
     int index = rawWeightedRandomFrom(scores);
-    return steps.get(index);
+    FSMTransition transition = steps.get(index);
+    updateCoverage(transition);
+    return transition;
+  }
+
+  private void updateCoverage(FSMTransition transition) {
+    Integer count = coverage.get(transition);
+    if (count == null) {
+      //we use 1 as the starting value since 0 divided by any weight would be 0 and mess up the model initialization
+      count = 1;
+    }
+    coverage.put(transition, count + 1);
   }
 
   /**
@@ -64,34 +94,19 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
    * the highest score may be also the highest in the next round and we cannot simply take them in order from a single
    * calculation (even if the available set was the same).
    *
-   * @param history   The test generation history.
    * @param available The set of available transitions (for which scores are calculated).
    * @return A mapping of transitions to their scores.
    */
-  private Map<FSMTransition, Double> countScore(TestSuite history, List<FSMTransition> available) {
+  private Map<FSMTransition, Double> countScore(List<FSMTransition> available) {
     Map<FSMTransition, Integer> coverage = new HashMap<>(1);
-    List<TestCase> tests = history.getAllTestCases();
-    //first we count how many times a transition has been covered
-    for (TestCase test : tests) {
-      List<TestStep> steps = test.getSteps();
-      for (TestStep step : steps) {
-        FSMTransition transition = step.getTransition();
-        Integer count = coverage.get(transition);
-        if (count == null) {
-          //we use 1 as the starting value since 0 divided by any weight would be 0 and mess up the model initialization
-          count = 1;
-        }
-        coverage.put(transition, count + 1);
-      }
-    }
-    int max = Integer.MAX_VALUE;
+    int min = Integer.MAX_VALUE;
     //if one was never covered, we set it to default start value of 1 to get correct values overall
     for (FSMTransition transition : available) {
       if (coverage.get(transition) == null) {
         coverage.put(transition, 1);
       }
-      if (coverage.get(transition) < max) {
-        max = coverage.get(transition);
+      if (coverage.get(transition) < min) {
+        min = coverage.get(transition);
       }
     }
     log.debug("coverage" + coverage);
@@ -107,14 +122,4 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
     log.debug("weighted scores:" + scores);
     return scores;
   }
-  //2x2=1, 3x5=0.6
-  //2x3=0.666, 3x5=0.6
-  //2x4=0.5, 3x5=0.6
-  //###|||||--
-  //1-10000
-  //5->10000=10000/5*5
-  /*
-  2/2=0.5, 3/5=0.6
-  
-   */
 }
