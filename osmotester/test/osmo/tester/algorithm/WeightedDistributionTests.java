@@ -57,15 +57,17 @@ public class WeightedDistributionTests {
 
   @Test
   public void balancingLength1000() {
-    listener.setExpected("bob1", 157);
-    listener.setExpected("bob2", 240);
-    listener.setExpected("bob3", 267);
-    listener.setExpected("bob4", 336);
+    //TODO: figure out why this slows down hugely with large numbers
+    listener.setExpected("bob1", 1007);
+    listener.setExpected("bob2", 1975);
+    listener.setExpected("bob3", 2983);
+    listener.setExpected("bob4", 4035);
     osmo.addModelObject(new WeightedModel1());
-    Length length4 = new Length(1000);
+    Length length4 = new Length(10000);
     Length length1 = new Length(1);
     osmo.addTestEndCondition(length4);
     osmo.addSuiteEndCondition(length1);
+//    osmo.setAlgorithm(new RandomAlgorithm());
     osmo.setAlgorithm(new WeightedBalancingAlgorithm());
     osmo.generate();
     listener.validate("Weighted balancing generator steps");
