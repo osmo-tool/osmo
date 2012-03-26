@@ -38,7 +38,7 @@ v 1.2.1 17/10/2011
 -valuerangeset to support boundary scan
 v 2.0.0 24/11/2011
 -several fixes to make calendar example better, including more deterministic etc.
--separated examples to different module from core
+-separated osmo.visualizer.examples to different module from core
 -added option for strict end conditions
 -added end condition for data (variable) coverage
 -added end condition for transition (step) coverage

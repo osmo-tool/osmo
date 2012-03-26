@@ -50,7 +50,7 @@ public class HelloVelocityScripter implements HelloScripter {
     velocity.setProperty("resource.loader", "class");
     velocity.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
     StringWriter sw = new StringWriter();
-    velocity.mergeTemplate("osmo/tester/examples/helloworld/scripter/hello-template.vm", "UTF8", vc, sw);
+    velocity.mergeTemplate("osmo/tester/osmo.visualizer.examples/helloworld/scripter/hello-template.vm", "UTF8", vc, sw);
     return sw.toString();
  }
 }

@@ -50,7 +50,7 @@ public class AbstractAsciiParser {
     //this "i" holds the index of overall parsing
     int i = 0;
     int cols = headers.length;
-    boolean found = false;
+    boolean found = true;
     //first we proceed until we find the header
     for (; i < lines.length; i++) {
       String line = lines[i];
@@ -59,15 +59,17 @@ public class AbstractAsciiParser {
       if (cells.length < cols) {
         continue;
       }
+      //TODO: test with two variable tables, test with more and less of columns than headers
+      found = true;
       for (int s = 0; s < cols; s++) {
         cells[s] = cells[s].trim();
-        if (cells[s].equalsIgnoreCase(headers[s])) {
-          log.debug("found table header");
-          found = true;
+        if (!cells[s].equalsIgnoreCase(headers[s])) {
+          found = false;
           break;
         }
       }
       if (found) {
+        log.debug("found table header");
         break;
       }
     }

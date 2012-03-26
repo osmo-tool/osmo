@@ -7,7 +7,6 @@ import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.util.Rotation;
 import osmo.tester.OSMOTester;
-import osmo.tester.examples.calculator.CalculatorModel;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.gui.manualdrive.ManualAlgorithm;
 import osmo.tester.generator.endcondition.Endless;
@@ -26,17 +25,6 @@ import java.util.Map;
 public class TransitionsPieChart implements GenerationListener {
   private DefaultPieDataset data = new DefaultPieDataset();
   private Map<String, Integer> values = new HashMap<>();
-
-  public static void main(String[] args) {
-    TransitionsPieChart transitionsBarChart = new TransitionsPieChart();
-    OSMOTester tester = new OSMOTester();
-    tester.addTestEndCondition(new Endless());
-    tester.addListener(transitionsBarChart);
-//    tester.addListener(new TransitionsPieChart());
-    tester.addModelObject(new CalculatorModel());
-    tester.setAlgorithm(new ManualAlgorithm());
-    tester.generate();
-  }
 
   public void show() {
     JFrame frame = new JFrame("Bar Chart");
