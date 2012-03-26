@@ -88,7 +88,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     JScrollPane scrollTestLog = new JScrollPane(testLogPane);
     JScrollPane testMetricsPaneScroll = new JScrollPane(testMetricsPane);
     JLabel lblTestLog = new JLabel("Test log");
-    JLabel lblNextTransition = new JLabel("Next transition");
+    JLabel lblNextStep = new JLabel("Next Step");
     JLabel lblTraceability = new JLabel("Metrics");
 
     autoPlayButton.addMouseListener(new MouseAdapter() {
@@ -195,7 +195,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
                             .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
                                     .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
                                             .addComponent(scrollTestLog, GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
-                                            .addComponent(lblNextTransition)
+                                            .addComponent(lblNextStep)
                                             .addComponent(availableTransitionsList, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                     .addComponent(lblTestLog))
                             .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -232,7 +232,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
                                     .addGroup(gl_contentPane.createSequentialGroup()
                                             .addComponent(scrollTestLog, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE)
                                             .addPreferredGap(ComponentPlacement.UNRELATED)
-                                            .addComponent(lblNextTransition))
+                                            .addComponent(lblNextStep))
                                     .addComponent(testMetricsPaneScroll, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE))
                             .addPreferredGap(ComponentPlacement.RELATED)
                             .addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)

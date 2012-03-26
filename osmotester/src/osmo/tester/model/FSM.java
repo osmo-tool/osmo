@@ -326,6 +326,7 @@ public class FSM {
 
   private Collection<String> initScripts(ScriptedValueProvider scripter) {
     Map<String, ValueSet<String>> scripts = scripter.getScripts();
+    log.debug("scripts loaded:"+scripts);
     Collection<String> errors = new ArrayList<>();
     for (String variable : scripts.keySet()) {
       boolean found = false;

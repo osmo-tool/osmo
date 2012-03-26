@@ -1,6 +1,7 @@
 package osmo.visualizer.model;
 
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
+import edu.uci.ics.jung.graph.DirectedSparseMultigraph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
@@ -10,8 +11,6 @@ import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.renderers.VertexLabelAsShapeRenderer;
-import osmo.tester.OSMOTester;
-import osmo.tester.examples.calculator.CalculatorModel;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
@@ -37,7 +36,7 @@ public class FSMBuildVisualizer extends JFrame implements GenerationListener {
 
   public FSMBuildVisualizer() {
     super("Model Visualizer");
-    graph = new SparseMultigraph<>();
+    graph = new DirectedSparseMultigraph<>();
     graph.addVertex(current);
 //    Layout<FSMTransition, String> layout = new CircleLayout<FSMTransition, String>(graph);
     Layout<FSMTransition, String> layout = new FRLayout<>(graph);
@@ -52,6 +51,7 @@ public class FSMBuildVisualizer extends JFrame implements GenerationListener {
     vv.getRenderContext().setVertexShapeTransformer(new EllipseVertexTransformer());
 //    vv.getRenderContext().setVertexLabelRenderer(new TransitionVertextLabelRenderer(Color.GREEN));
     DefaultModalGraphMouse gm = new DefaultModalGraphMouse();
+    vv.addKeyListener(gm.getModeKeyListener());
     gm.setMode(ModalGraphMouse.Mode.TRANSFORMING);
     vv.setGraphMouse(gm);
     getContentPane().add(vv);
@@ -109,50 +109,5 @@ public class FSMBuildVisualizer extends JFrame implements GenerationListener {
 
   @Override
   public void suiteEnded(TestSuite suite) {
-  }
-
-  public static void main(String[] args) {
-/*
-    Graph<FSMTransition, String> g = new SparseMultigraph<FSMTransition, String>();
-    FSMTransition one = new FSMTransition("1");
-    g.addVertex(one);
-    FSMTransition two = new FSMTransition("2");
-    g.addVertex(two);
-    FSMTransition three = new FSMTransition("3");
-    g.addVertex(three);
-    // Note that the default is for undirected edges, our Edges are Strings.
-    g.addEdge("Edge-A", one, two); // Note that Java 1.5 auto-boxes primitives
-    g.addEdge("Edge-B", two, three);
-
-// The Layout<V, E> is parameterized by the vertex and edge types
-    Layout<FSMTransition, String> layout = new CircleLayout<FSMTransition, String>(g);
-    layout.setSize(new Dimension(300, 300)); // sets the initial size of the space
-// The BasicVisualizationServer<V,E> is parameterized by the edge types
-    BasicVisualizationServer<FSMTransition, String> vv = new BasicVisualizationServer<FSMTransition, String>(layout);
-    vv.setPreferredSize(new Dimension(350, 350)); //Sets the viewing area size
-    Transformer<FSMTransition, Paint> vertexPaint = new Transformer<FSMTransition, Paint>() {
-      public Paint transform(FSMTransition t) {
-        return Color.GREEN;
-      }
-    };
-    vv.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
-    vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
-    vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller());
-    vv.getRenderer().getVertexLabelRenderer().setPosition(Position.CNTR);
-//    vv.getRenderContext().setVertexShapeTransformer(new EllipseVertexTransformer());
-    JFrame frame = new JFrame("Simple Graph View");
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.getContentPane().add(vv);
-    frame.pack();
-    frame.setVisible(true);
-*/
-
-    FSMBuildVisualizer gv = new FSMBuildVisualizer();
-    OSMOTester osmo = new OSMOTester(new CalculatorModel());
-    osmo.addTestEndCondition(new Length(15));
-    osmo.addSuiteEndCondition(new Length(5));
-    osmo.addListener(gv);
-    osmo.generate();
-    System.out.println("s:" + gv.graph.getVertexCount());
   }
 }

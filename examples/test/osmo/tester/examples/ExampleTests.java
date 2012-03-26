@@ -15,7 +15,7 @@ import java.io.PrintStream;
 import static junit.framework.Assert.assertEquals;
 
 /**
- * Test cases to verify the example models in osmo.tester.examples package.
+ * Test cases to verify the example models in osmo.tester.osmo.visualizer.examples package.
  *
  * @author Teemu Kanstren
  */

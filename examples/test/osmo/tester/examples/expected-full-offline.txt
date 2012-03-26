@@ -95,7 +95,7 @@
   </tr>
   <tr>
     <td>Library</td>
-    <td>osmo.tester.examples.calendar.scripter.offline.CalculatorLibrary</td>
+    <td>osmo.tester.osmo.visualizer.examples.calendar.scripter.offline.CalculatorLibrary</td>
     <td></td>
     <td></td>
   </tr>
