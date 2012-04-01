@@ -67,7 +67,7 @@ public class FSMBuildVisualizer extends JFrame implements GenerationListener {
 
   @Override
   public void guard(FSMTransition t) {
-    String edge = current.getName() + "->" + t.getName();
+/*    String edge = current.getName() + "->" + t.getName();
     if (!edges.contains(edge)) {
       System.out.println("EDGE+" + edge);
       if (!vertices.contains(t)) {
@@ -79,11 +79,24 @@ public class FSMBuildVisualizer extends JFrame implements GenerationListener {
       graph.addEdge("" + index, current, t);
       index++;
       vv.repaint();
-    }
+    }*/
   }
 
   @Override
   public void transition(FSMTransition t) {
+    String edge = current.getName() + "->" + t.getName();
+    if (!edges.contains(edge)) {
+//      System.out.println("EDGE+" + edge);
+      if (!vertices.contains(t)) {
+//        System.out.println("VERTEX+" + t);
+        graph.addVertex(t);
+        vertices.add(t);
+      }
+      edges.add(edge);
+      graph.addEdge("" + index, current, t);
+      index++;
+      vv.repaint();
+    }
     current = t;
   }
 

@@ -13,6 +13,7 @@
     <property name="build.version" value="2.0.0"/>
     <property name="osmo-tester-output" value="../osmotester/ant-out/production"/>
     <property name="osmo-common-output" value="../common/ant-out/production"/>
+    <property name="osmo-visualizer-output" value="../visualizer/ant-out/production"/>
     <property name="jar.file" value="osmo-examples-v${build.version}.jar"/>
     <property name="zip.file" value="osmo-examples-v${build.version}.zip"/>
 
@@ -24,6 +25,7 @@
         <path location="${prod-dest}"/>
         <path location="${osmo-tester-output}"/>
         <path location="${osmo-common-output}"/>
+        <path location="${osmo-visualizer-output}"/>
     </path>
 
     <!--path id="cobertura.classpath">

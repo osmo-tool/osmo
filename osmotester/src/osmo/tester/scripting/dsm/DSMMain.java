@@ -46,6 +46,9 @@ public class DSMMain {
    */
   public static void execute(DSMConfiguration config) throws Exception {
     OSMOTester osmo = new OSMOTester();
+    if (config.getListener() != null) {
+      osmo.addListener(config.getListener());
+    }
     Class<?> aClass = Class.forName(config.getAlgorithm());
     FSMTraversalAlgorithm algorithm = (FSMTraversalAlgorithm) aClass.newInstance();
     osmo.setAlgorithm(algorithm);
