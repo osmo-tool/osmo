@@ -1,5 +1,6 @@
 package osmo.tester.scripting.dsm;
 
+import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.algorithm.WeightedBalancingAlgorithm;
 import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
@@ -29,6 +30,7 @@ public class DSMConfiguration {
   private long seed = System.currentTimeMillis();
   /** Allows the DSM to define the exact values for a variable to be used. */
   private ScriptedValueProvider scripter = null;
+  private GenerationListener listener = null;
 
   public long getSeed() {
     return seed;
@@ -41,6 +43,15 @@ public class DSMConfiguration {
    */
   public void setSeed(long seed) {
     this.seed = seed;
+  }
+
+
+  public GenerationListener getListener() {
+    return listener;
+  }
+
+  public void setListener(GenerationListener listener) {
+    this.listener = listener;
   }
 
   /**

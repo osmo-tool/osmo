@@ -18,6 +18,7 @@ import osmo.tester.model.FSM;
 import osmo.tester.scripting.dsm.AsciiParser;
 import osmo.tester.scripting.dsm.DSMConfiguration;
 import osmo.tester.scripting.dsm.DSMMain;
+import osmo.visualizer.model.FSMBuildVisualizer;
 
 /**
  * The class used to generate tests from the calendar example.
@@ -25,7 +26,7 @@ import osmo.tester.scripting.dsm.DSMMain;
  * @author Teemu Kanstren
  */
 public class DSLMain {
-  public static void main2(String[] args) {
+  public static void main1(String[] args) {
     OSMOTester osmo = new OSMOTester();
 //    osmo.addSuiteEndCondition(new Length(2));
     ModelState state = new ModelState();
@@ -46,9 +47,10 @@ public class DSLMain {
   }
 
   public static void main(String[] args) throws Exception {
-    Logger.debug = true;
+//    Logger.debug = true;
     AsciiParser parser = new AsciiParser();
     DSMConfiguration conf = parser.loadAndParse("osmo-dsl.txt");
+    conf.setListener(new FSMBuildVisualizer());
     DSMMain.execute(conf);
   }
 

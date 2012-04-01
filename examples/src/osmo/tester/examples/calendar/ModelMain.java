@@ -14,8 +14,10 @@ import osmo.tester.examples.calendar.testmodel.CalendarTaskModel;
 import osmo.tester.examples.calendar.testmodel.ModelState;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.endcondition.Length;
+import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.gui.dsm.DSMGUI;
 import osmo.tester.model.FSM;
+import osmo.tester.reporting.coverage.HTMLCoverageReporter;
 import osmo.visualizer.model.FSMBuildVisualizer;
 
 /**
@@ -66,11 +68,11 @@ public class ModelMain {
     g.setVisible(true);
   }
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws Exception {
     OSMOTester osmo = new OSMOTester();
     OSMOConfiguration config = new OSMOConfiguration();
-    FSMBuildVisualizer visu = new FSMBuildVisualizer();
-    config.addListener(visu);
+//    FSMBuildVisualizer visu = new FSMBuildVisualizer();
+//    config.addListener(visu);
     osmo.setConfig(config);
     osmo.addSuiteEndCondition(new Length(20));
     ModelState state = new ModelState();
@@ -88,6 +90,11 @@ public class ModelMain {
 //    osmo.setAlgorithm(new ManualAlgorithm());
 //    osmo.setAlgorithm(new ManualAlgorithm());
     osmo.generate();
+    TestSuite suite = osmo.getSuite();
+    FSM fsm = osmo.getFsm();
+    HTMLCoverageReporter html = new HTMLCoverageReporter(suite, fsm);
+    String report = html.getTraceabilityMatrix();
+    html.write(report, "coverage.html");
   }
 
   //time limit = 10 years

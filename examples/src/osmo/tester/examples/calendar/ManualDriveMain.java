@@ -12,6 +12,7 @@ import osmo.tester.examples.calendar.testmodel.CalendarParticipantModel;
 import osmo.tester.examples.calendar.testmodel.CalendarTaskModel;
 import osmo.tester.examples.calendar.testmodel.ModelState;
 import osmo.tester.generator.MainGenerator;
+import osmo.tester.generator.endcondition.Endless;
 import osmo.tester.gui.dsm.DSMGUI;
 import osmo.tester.gui.manualdrive.ManualAlgorithm;
 import osmo.tester.model.FSM;
@@ -19,6 +20,7 @@ import osmo.tester.model.dataflow.ScriptedValueProvider;
 import osmo.tester.scripting.manual.AsciiParser;
 import osmo.tester.scripting.manual.ScripterMain;
 import osmo.tester.scripting.manual.TestScript;
+import osmo.visualizer.model.FSMBuildVisualizer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,10 +50,13 @@ public class ManualDriveMain {
     osmo.addModelObject(new CalendarParticipantModel(state, scripter));
     osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter));
     osmo.addModelObject(state);
+    osmo.addTestEndCondition(new Endless());
+    osmo.addSuiteEndCondition(new Endless());
+    osmo.addListener(new FSMBuildVisualizer());
 //    osmo.addModelObject(new CalendarFailureModel(state, scripter));
     osmo.setSeed(111);
     osmo.setAlgorithm(new ManualAlgorithm());
-    osmo.setValueScripter(new ScriptedValueProvider());
+    //osmo.setValueScripter(new ScriptedValueProvider());
     osmo.generate();
   }
 

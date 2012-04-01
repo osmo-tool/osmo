@@ -95,9 +95,10 @@ public class ReadableWords extends SearchableInput<String> {
 
   private String scriptedNext() {
     String next = scriptNextSerialized();
-    if (!evaluate(next)) {
-      throw new IllegalArgumentException("Requested invalid scripted value for variable '" + getName() + "' (must be valid set of chars and length in defined bounds of length " + min + "-" + max + "): " + next);
-    }
+    //TODO:
+//    if (!evaluate(next)) {
+//      throw new IllegalArgumentException("Requested invalid scripted value for variable '" + getName() + "' (must be valid set of chars and length in defined bounds of length " + min + "-" + max + "): " + next);
+//    }
     return next;
   }
 
