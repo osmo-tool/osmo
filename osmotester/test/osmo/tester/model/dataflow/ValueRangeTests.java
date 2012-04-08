@@ -1,4 +1,4 @@
-package osmo.tester.unit;
+package osmo.tester.model.dataflow;
 
 import org.junit.Test;
 import osmo.tester.model.dataflow.DataGenerationStrategy;
@@ -6,8 +6,7 @@ import osmo.tester.model.dataflow.ValueRange;
 
 import java.util.Collection;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class ValueRangeTests {
@@ -78,11 +77,11 @@ public class ValueRangeTests {
   public void boundaryScanDefault() {
     ValueRange<Integer> range = new ValueRange<>(10, 20);
     range.setStrategy(DataGenerationStrategy.BOUNDARY_SCAN);
-    assertValues(range, 10, 20, 11, 21, 9, 19, 12, 22, 8, 18, 13, 23, 7, 17, 14, 24, 6, 16, 15, 25, 5, 15, 10, 20);
+    assertValues(range, 10, 20, 11, 19, 12, 18, 13, 17, 14, 16, 15, 15, 10, 20, 11, 19);
   }
 
   @Test
-  public void boundaryScan0() {
+  public void boundaryScanRange0() {
     ValueRange<Integer> range = new ValueRange<>(10, 20);
     range.setStrategy(DataGenerationStrategy.BOUNDARY_SCAN);
     range.setCount(0);
@@ -90,11 +89,43 @@ public class ValueRangeTests {
   }
 
   @Test
-  public void boundaryScan1() {
+  public void boundaryScanRange0Fuzzy() {
+    ValueRange<Integer> range = new ValueRange<>(10, 20);
+    range.setStrategy(DataGenerationStrategy.FUZZY_BOUNDARY_SCAN);
+    range.setCount(0);
+    try {
+      range.next();
+      fail("Fuzzy scan with 0 size boundary count should fail");
+    } catch (IllegalStateException e) {
+      //there is nothing to provide with 0 configuration for a fuzzy boundary, since the boundary itself is considered "Non-fuzzy"
+    }
+  }
+
+  @Test
+  public void boundaryScanRange1() {
     ValueRange<Integer> range = new ValueRange<>(10, 20);
     range.setStrategy(DataGenerationStrategy.BOUNDARY_SCAN);
     range.setCount(1);
-    assertValues(range, 10, 20, 11, 21, 9, 19, 10, 20, 11, 21, 9, 19, 10, 20);
+    assertValues(range, 10, 20, 11, 19, 10, 20, 11, 19, 10, 20);
+  }
+
+  @Test
+  public void boundaryScanNegativeRange() {
+    ValueRange<Integer> range = new ValueRange<>(10, 20);
+    range.setStrategy(DataGenerationStrategy.BOUNDARY_SCAN);
+    try {
+      range.setCount(-1);
+      fail("Boundary scan with negative range should fail.");
+    } catch (Exception e) {
+      //expected
+    }
+  }
+
+  @Test
+  public void boundaryScanDefaultFuzzy() {
+    ValueRange<Integer> range = new ValueRange<>(10, 20);
+    range.setStrategy(DataGenerationStrategy.FUZZY_BOUNDARY_SCAN);
+    assertValues(range, 21, 9, 22, 8, 23, 7, 24, 6, 25, 5, 21, 9);
   }
 
   private void assertValues(ValueRange<Integer> range, int... expected) {

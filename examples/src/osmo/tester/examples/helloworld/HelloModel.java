@@ -6,7 +6,6 @@ import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.model.dataflow.DataGenerationStrategy;
-import osmo.tester.model.dataflow.ReadableWords;
 import osmo.tester.model.dataflow.ValueRange;
 import osmo.tester.model.dataflow.ValueSet;
 
@@ -19,7 +18,7 @@ public class HelloModel {
   private int worldCount = 0;
   private ValueSet<String> names = new ValueSet<>("teemu", "bob");
   private ValueSet<String> worlds = new ValueSet<>("mars", "venus");
-//  private ReadableWords words = new ReadableWords(3, 7);
+//  private Words words = new Words(3, 7);
   private ValueSet<Integer> sizes = new ValueSet<>(1,2,6);
   private ValueRange<Double> ranges = new ValueRange<>(0.1d, 5.2d);
 

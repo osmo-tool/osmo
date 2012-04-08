@@ -1,4 +1,7 @@
-package osmo.tester.model.dataflow;
+package osmo.tester.model;
+
+import osmo.tester.model.dataflow.DataGenerationStrategy;
+import osmo.tester.model.dataflow.ValueSet;
 
 import java.util.HashMap;
 import java.util.Map;

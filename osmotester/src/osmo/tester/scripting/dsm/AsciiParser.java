@@ -3,7 +3,7 @@ package osmo.tester.scripting.dsm;
 import osmo.common.TestUtils;
 import osmo.common.log.Logger;
 import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
-import osmo.tester.model.dataflow.ScriptedValueProvider;
+import osmo.tester.model.ScriptedValueProvider;
 import osmo.tester.scripting.AbstractAsciiParser;
 
 import java.io.FileInputStream;

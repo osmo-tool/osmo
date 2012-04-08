@@ -35,9 +35,10 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
    * @param strategy The new strategy.
    */
   @Override
-  public void setStrategy(DataGenerationStrategy strategy) {
+  public ValueRangeSet<T> setStrategy(DataGenerationStrategy strategy) {
     this.strategy = strategy;
     partitions.setStrategy(strategy);
+    return this;
   }
 
   /**
@@ -193,14 +194,14 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
     if (strategy == DataGenerationStrategy.SCRIPTED) {
       return scriptedNext(scriptNextSerialized());
     }
-    ValueRange i = nextPartition();
+    ValueRange vr = nextPartition();
 //    history.add(value);
-    if (i.getType() == DataType.INT) {
-      next = (T) new Integer(i.nextInt());
-    } else if (i.getType() == DataType.LONG) {
-      next = (T) new Long(i.nextLong());
+    if (vr.getType() == DataType.INT) {
+      next = (T) new Integer(vr.nextInt());
+    } else if (vr.getType() == DataType.LONG) {
+      next = (T) new Long(vr.nextLong());
     } else {
-      next = (T) new Double(i.nextDouble());
+      next = (T) new Double(vr.nextDouble());
     }
     observe(next);
     return next;
@@ -302,9 +303,8 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
 
   @Override
   public String toString() {
-    return "ValuePartitionSet{" +
-            "strategy=" + strategy +
-            ", partitions=" + partitions +
+    return "ValueRangeSet{" +
+            "partitions=" + partitions +
             '}';
   }
 }

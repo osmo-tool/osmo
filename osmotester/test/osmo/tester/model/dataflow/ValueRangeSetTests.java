@@ -1,4 +1,4 @@
-package osmo.tester.unit;
+package osmo.tester.model.dataflow;
 
 import org.junit.Test;
 import osmo.tester.OSMOTester;
@@ -324,7 +324,24 @@ public class ValueRangeSetTests {
     for (int i = 0; i < 30; i++) {
       actual.add(vr.next());
     }
-    String expected = "[0, -100, 200, -300, 100, -50, 300, -200, 1, -99, 201, -299, 101, -49, 301, -199, -1, -101, 199, -301, 99, -51, 299, -201, 2, -98, 202, -298, 102, -48]";
+    String expected = "[0, -100, 200, -300, 100, -50, 300, -200, 1, -99, 201, -299, 99, -51, 299, -201, 2, -98, 202, -298, 98, -52, 298, -202, 3, -97, 203, -297, 97, -53]";
+    assertEquals("Generated integers for value range with boundary scan", expected, actual.toString());
+  }
+
+  @Test
+  public void boundaryScanningFuzzyInteger() {
+    ValueRangeSet<Integer> vr = new ValueRangeSet<>();
+    vr.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
+    vr.setPartitionStrategy(DataGenerationStrategy.FUZZY_BOUNDARY_SCAN);
+    vr.addPartition(0, 100);
+    vr.addPartition(-100, -50);
+    vr.addPartition(200, 300);
+    vr.addPartition(-300, -200);
+    Collection<Integer> actual = new ArrayList<>();
+    for (int i = 0; i < 30; i++) {
+      actual.add(vr.next());
+    }
+    String expected = "[101, -49, 301, -199, -1, -101, 199, -301, 102, -48, 302, -198, -2, -102, 198, -302, 103, -47, 303, -197, -3, -103, 197, -303, 104, -46, 304, -196, -4, -104]";
     assertEquals("Generated integers for value range with boundary scan", expected, actual.toString());
   }
 
@@ -339,7 +356,7 @@ public class ValueRangeSetTests {
     vr.addPartition(-300f, -200f);
     vr.setIncrement(0.1f);
     //the valuerangeset actually converts float to double
-    double[] expected = new double[]{0, -100, 200, -300, 100, -50, 300, -200, 0.1, -99.9, 200.1, -299.9, 100.1, -49.9, 300.1, -199.9, -0.1, -100.1, 199.9, -300.1, 99.9, -50.1, 299.9, -200.1, 0.2, -99.8, 200.2, -299.8, 100.2, -49.8};
+    double[] expected = new double[]{0, -100, 200, -300, 100, -50, 300, -200, 0.1, -99.9, 200.1, -299.9, 99.9, -50.1, 299.9, -200.1, 0.2, -99.8, 200.2, -299.8, 99.8, -50.2, 299.8, -200.2, 0.3, -99.7, 200.3, -299.7, 99.7, -50.3};
     for (int i = 0; i < 30; i++) {
       assertEquals("Generated integers for value range with boundary scan (index " + i + ")", expected[i], vr.next(), 0.01d);
     }

@@ -1,6 +1,7 @@
 package osmo.tester.model.dataflow;
 
 import osmo.tester.gui.manualdrive.ValueGUI;
+import osmo.tester.model.ScriptedValueProvider;
 
 import java.util.Collection;
 
@@ -65,4 +66,9 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T> {
   public void disableGUI() {
     gui = null;
   }
+  
+  public TemplateWrapper wrapper() {
+    return new TemplateWrapper(this);
+  }
+
 }

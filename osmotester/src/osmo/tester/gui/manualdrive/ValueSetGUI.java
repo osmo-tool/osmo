@@ -1,6 +1,6 @@
 package osmo.tester.gui.manualdrive;
 
-import osmo.tester.model.dataflow.ReadableWords;
+import osmo.tester.model.dataflow.Words;
 import osmo.tester.model.dataflow.SearchableInput;
 import osmo.tester.model.dataflow.ValueSet;
 
@@ -45,7 +45,7 @@ public class ValueSetGUI extends ValueGUI {
 
   public static void main(String[] args) {
     setNimbus();
-    ReadableWords words = new ReadableWords(5, 7);
+    Words words = new Words(5, 7);
     words.asciiLettersAndNumbersOnly();
     ValueSet<String> set = new ValueSet<>();
     set.add(words.next());

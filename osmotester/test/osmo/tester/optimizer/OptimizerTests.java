@@ -1,4 +1,4 @@
-package osmo.tester.unit;
+package osmo.tester.optimizer;
 
 import org.junit.Before;
 import org.junit.Test;

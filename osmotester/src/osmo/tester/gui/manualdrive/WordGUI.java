@@ -1,6 +1,6 @@
 package osmo.tester.gui.manualdrive;
 
-import osmo.tester.model.dataflow.ReadableWords;
+import osmo.tester.model.dataflow.Words;
 import osmo.tester.model.dataflow.SearchableInput;
 
 import javax.swing.JComponent;
@@ -44,7 +44,7 @@ public class WordGUI extends ValueGUI {
   }
 
   public static void main(String[] args) {
-    ReadableWords words = new ReadableWords();
+    Words words = new Words();
     words.setName("userName");
     WordGUI gui = new WordGUI(words);
     gui.setVisible(true);

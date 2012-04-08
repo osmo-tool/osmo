@@ -18,6 +18,6 @@ public interface Input<T> {
    *
    * @param algorithm The new algorithm.
    */
-  public void setStrategy(DataGenerationStrategy algorithm);
+  public Input<T> setStrategy(DataGenerationStrategy algorithm);
 
 }

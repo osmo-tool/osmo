@@ -21,9 +21,9 @@ import static osmo.common.TestUtils.*;
  * but also takes into account weights assigned to transitions. For example, consider a model that has 2 transitions A and B,
  * and both have been visited twice. Now if A has a weight of 2 and B a weight of 3, the algorithm favors B due to
  * its combined weight and coverage values. 
- * THe formula is: 
+ * The formula is: 
  * -for each possible choice: transition weight / number of times transitions covered
- * -multiply coverage values until you get a values with some over 1000
+ * -multiply coverage values until you get a value over 1000
  * -use the resulting values as the "weight" to pick one of the transitions
  * <p/>
  * Note than in calculation, a transition that is never visited has a visited value of 1 (and one that is visited once
@@ -46,7 +46,7 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
     log.debug("choosing from:" + choices);
     //count weighted score for all transitions in the current test suite as well as any new ones in the list of transitions
     Map<FSMTransition, Double> scoreMap = countScore(choices);
-
+    
     List<FSMTransition> steps = new ArrayList<>();
     double[] tempScores = new double[scoreMap.size()];
     int i = 0;
@@ -98,7 +98,7 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
    * @return A mapping of transitions to their scores.
    */
   private Map<FSMTransition, Double> countScore(List<FSMTransition> available) {
-    Map<FSMTransition, Integer> coverage = new HashMap<>(1);
+//    Map<FSMTransition, Integer> coverage = new HashMap<>(1);
     int min = Integer.MAX_VALUE;
     //if one was never covered, we set it to default start value of 1 to get correct values overall
     for (FSMTransition transition : available) {

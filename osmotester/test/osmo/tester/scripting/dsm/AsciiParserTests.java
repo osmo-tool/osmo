@@ -3,7 +3,7 @@ package osmo.tester.scripting.dsm;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
-import osmo.tester.model.dataflow.ScriptedValueProvider;
+import osmo.tester.model.ScriptedValueProvider;
 import osmo.tester.model.dataflow.ValueSet;
 
 import java.util.Collection;
