@@ -4,8 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import osmo.common.TestUtils;
 import osmo.tester.model.dataflow.InputObserver;
-import osmo.tester.model.dataflow.ReadableWords;
-import osmo.tester.model.dataflow.ScriptedValueProvider;
+import osmo.tester.model.dataflow.Words;
+import osmo.tester.model.ScriptedValueProvider;
 import osmo.tester.model.dataflow.ValueRange;
 import osmo.tester.model.dataflow.ValueRangeSet;
 import osmo.tester.model.dataflow.ValueSet;
@@ -18,7 +18,7 @@ public class ScriptedVariableTests {
   private ValueSet<Integer> set;
   private ValueRange<Integer> range;
   private ValueRangeSet<Double> rangeSet;
-  private ReadableWords words;
+  private Words words;
   private ScriptedValueProvider scripter;
 
   @Before
@@ -26,7 +26,7 @@ public class ScriptedVariableTests {
     set = new ValueSet<>(1, 4, 9);
     range = new ValueRange<>(1, 5);
     rangeSet = new ValueRangeSet<>();
-    words = new ReadableWords(8, 13);
+    words = new Words(8, 13);
 
     TestUtils.setSeed(111);
     scripter = new ScriptedValueProvider();
@@ -158,13 +158,13 @@ public class ScriptedVariableTests {
   }
 
   @Test
-  public void readableWordNoScript() {
-    String expected = "8/bjL',.f,4EöF30]eE-,ZAÄÅVÅ4/X\"0uM,=Y'ka'CQ,\tm0%DhDPJ>X<,Nwt[´!+h=|T8,+<;[PiellPn:\\,Z9^rUOaÅUC.M,=k=.iw91 ,Åiä<DyYR¨{QzH,MyB;6Z*S%Q,6mu8`::G,zBög6ov4zx2,LG.A6Z(~,-v_/1ÄyEi7\"a,{´l&>gö\\Q%P/,.P´5qwåÖW\t,zÅ`1ä:n4,rV'´#\"4sq,F|\"]I?^#H,";
+  public void wordsNoScript() {
+    String expected = "ZB4åS}j(_,%O)+e5+JÅ],NL\"lGHa9Ö~\"ö=,xZ<:Ä2=~,+_&r{8 4^0w2,h<#V]C*?TOÅW,RvPwvh[.+0,;C,G3uDHä\"DL+.^,9*RWÄ9(Ef,_[_h%..s´HV\"g,2zh?2öwdTA,ÖhJr)tSz,w_6\\X4#,pÅ+,='Y=-Lk+,] l]'=mä8¨´[,=b&vI;}]0ÖI9,JQTxä^b\"id,QX1MehOg,=ö(T|7Szi,c~=,u-~,3,";
     String actual = "";
     for (int i = 0; i < 20; i++) {
       actual += words.next() + ",";
     }
-    assertEquals("Value from scripted ReadableWords", expected, actual);
+    assertEquals("Value from scripted Words", expected, actual);
 
   }
 
@@ -179,22 +179,20 @@ public class ScriptedVariableTests {
     for (int i = 0; i < 20; i++) {
       actual += words.next() + ",";
     }
-    assertEquals("Value from scripted ReadableWords", expected, actual);
+    assertEquals("Value from scripted Words", expected, actual);
   }
 
   @Test
-  public void readableWordInvalid() {
+  public void scriptedWordsOutOfBounds() {
     scripter.addValue("zerowing", "all your");
     scripter.addValue("zerowing", "base");
     scripter.addValue("zerowing", "belong to us!");
     words.setScripter(scripter);
-    words.next();
-    try {
-      words.next();
-      fail("Scripting values not in ReadableWords should fail.");
-    } catch (IllegalArgumentException e) {
-      assertEquals("Error message", "Requested invalid scripted value for variable 'zerowing' (must be valid set of chars and length in defined bounds of length 8-13): base", e.getMessage());
-    }
+    String word = words.next();
+    assertEquals("Generated word", "all your", word);    
+    word = words.next();
+    //this is less than minimum size
+    assertEquals("Generated word", "base", word);
   }
 
   private static class MockObserver implements InputObserver {

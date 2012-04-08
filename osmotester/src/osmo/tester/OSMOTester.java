@@ -10,7 +10,7 @@ import osmo.tester.generator.filter.TransitionFilter;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.Requirements;
-import osmo.tester.model.dataflow.ScriptedValueProvider;
+import osmo.tester.model.ScriptedValueProvider;
 import osmo.tester.parser.MainParser;
 
 /**

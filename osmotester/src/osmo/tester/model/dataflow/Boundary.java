@@ -15,7 +15,9 @@ import java.util.List;
  */
 public class Boundary {
   /** The set of values to be provided, initialized and startup on call to init() */
-  private ValueSet<Number> values = new ValueSet<>(DataGenerationStrategy.ORDERED_LOOP);
+  private ValueSet<Number> validValues = new ValueSet<>(DataGenerationStrategy.ORDERED_LOOP);
+  /** The set of values to be provided, initialized and startup on call to init() */
+  private ValueSet<Number> invalidValues = new ValueSet<>(DataGenerationStrategy.ORDERED_LOOP);
   /** How many values will be generated for each boundary. */
   private int count = 5;
   /** The value by which the boundary is incremented / decremented in the scan. */
@@ -26,6 +28,8 @@ public class Boundary {
   private final Number min;
   /** Upper bound. */
   private final Number max;
+  /** Create values in or out of bounds? */
+  private boolean fuzzy = false;
 
   public Boundary(DataType type, Number min, Number max) {
     this.type = type;
@@ -38,6 +42,9 @@ public class Boundary {
   }
 
   public void setCount(int count) {
+    if (count < 0) {
+      throw new IllegalArgumentException("Boundary count must be >= 1, was given "+count);
+    }
     this.count = count;
   }
 
@@ -49,38 +56,43 @@ public class Boundary {
     this.increment = increment;
   }
 
+  public void setFuzzy(boolean fuzzy) {
+    this.fuzzy = fuzzy;
+  }
+
   private void init() {
     Number addReduce = increment;
     //first we add the minimum bound to test set
-    values.add(min);
+    validValues.add(min);
     //and the upper bound
-    values.add(max);
+    validValues.add(max);
     for (int i = 0; i < count; i++) {
       switch (type) {
         case INT:
           //then we add minimum +1 and miminum -1 (or whatever the increment value)
           //and in subsequent loops we increase this to +2, -2, +3, -3, and so on
-          values.add(min.intValue() + addReduce.intValue());
-          values.add(max.intValue() + addReduce.intValue());
-          //and do the same for maximum bound
-          values.add(min.intValue() - addReduce.intValue());
-          values.add(max.intValue() - addReduce.intValue());
+          //TODO: test with valid values going out of bounds with small range
+          validValues.add(min.intValue() + addReduce.intValue());
+          validValues.add(max.intValue() - addReduce.intValue());
+          //and do the same for invalid values
+          invalidValues.add(max.intValue() + addReduce.intValue());
+          invalidValues.add(min.intValue() - addReduce.intValue());
           //update the increment for next loop
           addReduce = addReduce.intValue() + increment.intValue();
           break;
         //the following do the same as above but with long and double data types
         case LONG:
-          values.add(min.longValue() + addReduce.longValue());
-          values.add(max.longValue() + addReduce.longValue());
-          values.add(min.longValue() - addReduce.longValue());
-          values.add(max.longValue() - addReduce.longValue());
+          validValues.add(min.longValue() + addReduce.longValue());
+          validValues.add(max.longValue() - addReduce.longValue());
+          invalidValues.add(max.longValue() + addReduce.longValue());
+          invalidValues.add(min.longValue() - addReduce.longValue());
           addReduce = addReduce.longValue() + increment.longValue();
           break;
         case DOUBLE:
-          values.add(min.doubleValue() + addReduce.doubleValue());
-          values.add(max.doubleValue() + addReduce.doubleValue());
-          values.add(min.doubleValue() - addReduce.doubleValue());
-          values.add(max.doubleValue() - addReduce.doubleValue());
+          validValues.add(min.doubleValue() + addReduce.doubleValue());
+          validValues.add(max.doubleValue() - addReduce.doubleValue());
+          invalidValues.add(max.doubleValue() + addReduce.doubleValue());
+          invalidValues.add(min.doubleValue() - addReduce.doubleValue());
           addReduce = addReduce.doubleValue() + increment.doubleValue();
           break;
       }
@@ -88,14 +100,22 @@ public class Boundary {
   }
 
   public List<Number> getOptions() {
-    return values.getOptions();
+    if (fuzzy) {
+      return invalidValues.getOptions();
+    }
+    return validValues.getOptions();
   }
 
   /** @return The next boundary value. */
   public Number next() {
-    if (values.size() == 0) {
+    //we assume that there can at least one valid value, the boundary itself..
+    if (validValues.size() == 0) {
       init();
     }
-    return values.next();
+    if (fuzzy) {
+      return invalidValues.next();
+    } else {
+      return validValues.next();
+    }
   }
 }

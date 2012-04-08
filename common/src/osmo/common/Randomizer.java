@@ -149,7 +149,7 @@ public class Randomizer {
    * and [1] (first value in the weight list) = 8/1 = 12,5%. Since the index of the first item is 0, then
    * the value 0 is returned with this probability.
    *
-   * @param weights List of weights and their index. LIST HAS TO BE SORTED.
+   * @param weights List of weights and their index.
    * @return Random index into the list according to the lists.
    */
   public int rawWeightedRandomFrom(List<Integer> weights) {

@@ -69,10 +69,11 @@ public class ValueSet<T> extends SearchableInput<T> {
    * @param strategy The new strategy.
    */
   @Override
-  public void setStrategy(DataGenerationStrategy strategy) {
+  public ValueSet<T> setStrategy(DataGenerationStrategy strategy) {
     if (this.strategy != DataGenerationStrategy.SCRIPTED) {
       this.strategy = strategy;
     }
+    return this;
     //otherwise we just ignore it since we are running in scripted mode
   }
 
@@ -242,9 +243,8 @@ public class ValueSet<T> extends SearchableInput<T> {
 
   @Override
   public String toString() {
-    return "ObjectSet{" +
-            "strategy=" + strategy +
-            ", options=" + options +
+    return "ValueSet{" +
+            "options=" + options +
             '}';
   }
 }

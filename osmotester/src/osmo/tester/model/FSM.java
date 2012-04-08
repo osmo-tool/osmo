@@ -3,7 +3,6 @@ package osmo.tester.model;
 import osmo.common.log.Logger;
 import osmo.tester.generator.SearchableInputObserver;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.model.dataflow.ScriptedValueProvider;
 import osmo.tester.model.dataflow.SearchableInput;
 import osmo.tester.model.dataflow.ValueSet;
 

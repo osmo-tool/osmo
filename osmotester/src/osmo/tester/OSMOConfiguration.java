@@ -10,7 +10,7 @@ import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.Probability;
 import osmo.tester.generator.filter.TransitionFilter;
 import osmo.tester.model.FSM;
-import osmo.tester.model.dataflow.ScriptedValueProvider;
+import osmo.tester.model.ScriptedValueProvider;
 import osmo.tester.parser.ModelObject;
 
 import java.util.ArrayList;

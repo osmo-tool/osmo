@@ -1,7 +1,7 @@
 package osmo.tester.scripting.manual;
 
 import osmo.tester.OSMOTester;
-import osmo.tester.model.dataflow.ScriptedValueProvider;
+import osmo.tester.model.ScriptedValueProvider;
 
 import java.util.Collection;
 import java.util.List;

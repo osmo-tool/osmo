@@ -57,11 +57,10 @@ public class WeightedDistributionTests {
 
   @Test
   public void balancingLength1000() {
-    //TODO: figure out why this slows down hugely with large numbers
-    listener.setExpected("bob1", 1007);
-    listener.setExpected("bob2", 1975);
-    listener.setExpected("bob3", 2983);
-    listener.setExpected("bob4", 4035);
+    listener.setExpected("bob1", 1619);
+    listener.setExpected("bob2", 2314);
+    listener.setExpected("bob3", 2828);
+    listener.setExpected("bob4", 3239);
     osmo.addModelObject(new WeightedModel1());
     Length length4 = new Length(10000);
     Length length1 = new Length(1);
@@ -111,10 +110,10 @@ public class WeightedDistributionTests {
 
   @Test
   public void balancingLength200Suite6() {
-    listener.setExpected("bob1", 190);
-    listener.setExpected("bob2", 275);
-    listener.setExpected("bob3", 323);
-    listener.setExpected("bob4", 412);
+    listener.setExpected("bob1", 196);
+    listener.setExpected("bob2", 278);
+    listener.setExpected("bob3", 327);
+    listener.setExpected("bob4", 399);
     osmo.addModelObject(new WeightedModel1());
     Length length4 = new Length(200);
     Length length1 = new Length(6);

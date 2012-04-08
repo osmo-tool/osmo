@@ -1,4 +1,4 @@
-package osmo.tester.unit;
+package osmo.tester.model.dataflow;
 
 import org.junit.Before;
 import org.junit.Test;

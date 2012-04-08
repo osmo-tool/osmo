@@ -134,8 +134,14 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
   }
 
   @Override
-  public void setStrategy(DataGenerationStrategy algorithm) {
+  public ValueRange<T> setStrategy(DataGenerationStrategy algorithm) {
     this.algorithm = algorithm;
+    if (algorithm == DataGenerationStrategy.FUZZY_BOUNDARY_SCAN) {
+      boundary.setFuzzy(true);
+    } else {
+      boundary.setFuzzy(false);
+    }
+    return this;
   }
 
   @Override
@@ -162,6 +168,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
         value = nextOptimizedRandom(type);
         break;
       case BOUNDARY_SCAN:
+      case FUZZY_BOUNDARY_SCAN:
         value = nextBoundaryScan();
         break;
       case SCRIPTED:
@@ -282,6 +289,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
   }
 
   private Number nextBoundaryScan() {
+    
     return boundary.next();
   }
 
@@ -393,6 +401,9 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
 
   @Override
   public String toString() {
-    return "min (" + min + "), max (" + max + ')';
+    return "ValueRange{" +
+            "min=" + min +
+            ", max=" + max +
+            '}';
   }
 }
