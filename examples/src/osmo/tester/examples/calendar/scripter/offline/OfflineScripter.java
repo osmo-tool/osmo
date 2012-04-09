@@ -36,6 +36,8 @@ public class OfflineScripter implements CalendarScripter {
   private SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy 'at' HH:mm:ss z", Locale.ENGLISH);
   /** Name of the file where the script will be stored. */
   private final String fileName;
+  /** The script once created. */
+  private String script = null;
 
   public OfflineScripter(String fileName) {
     this.fileName = fileName;
@@ -51,12 +53,26 @@ public class OfflineScripter implements CalendarScripter {
   }
 
   /**
-   * Create the actual script from the RF scripter.
+   * Get the actual script from the RF scripter. If it has been created before, it is returned. If not, it is first
+   * created.
    *
    * @return The complete test script.
    */
   public String getScript() {
-    return scripter.createScript();
+    if (script != null) {
+      return script;
+    }
+    return createScript();
+  }
+
+  /**
+   * Create the actual script from the RF scripter.
+   *
+   * @return The complete test script.
+   */
+  public String createScript() {
+    script = scripter.createScript();
+    return script;
   }
 
   @Override

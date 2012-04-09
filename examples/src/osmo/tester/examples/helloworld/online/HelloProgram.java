@@ -9,11 +9,11 @@ public class HelloProgram {
     if (counter % 15 == 10) {
       return "whoopsidaisy";
     }
-    return "hi dude, "+name;
+    return "hi dude, " + name;
   }
 
   public String world(String world, double range) {
     counter++;
-    return range+"? thats pretty mighty, dude";
+    return range + "? thats pretty mighty, dude";
   }
 }

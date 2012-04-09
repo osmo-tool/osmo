@@ -1,6 +1,5 @@
 package osmo.tester.examples.calendar;
 
-import osmo.common.log.Logger;
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.examples.calendar.scripter.offline.OfflineScripter;
@@ -13,11 +12,11 @@ import osmo.tester.examples.calendar.testmodel.CalendarParticipantModel;
 import osmo.tester.examples.calendar.testmodel.CalendarTaskModel;
 import osmo.tester.examples.calendar.testmodel.ModelState;
 import osmo.tester.generator.MainGenerator;
-import osmo.tester.gui.dsm.DSMGUI;
+import osmo.tester.gui.slicing.SlicingGUI;
 import osmo.tester.model.FSM;
-import osmo.tester.scripting.dsm.AsciiParser;
-import osmo.tester.scripting.dsm.DSMConfiguration;
-import osmo.tester.scripting.dsm.DSMMain;
+import osmo.tester.scripting.slicing.AsciiParser;
+import osmo.tester.scripting.slicing.SlicerMain;
+import osmo.tester.scripting.slicing.SlicingConfiguration;
 import osmo.visualizer.model.FSMBuildVisualizer;
 
 /**
@@ -42,16 +41,16 @@ public class DSLMain {
     osmo.addModelObject(new CalendarFailureModel(state, scripter));
     MainGenerator generator = osmo.initGenerator();
     FSM fsm = osmo.getFsm();
-    DSMGUI g = new DSMGUI(fsm);
+    SlicingGUI g = new SlicingGUI(fsm);
     g.setVisible(true);
   }
 
   public static void main(String[] args) throws Exception {
 //    Logger.debug = true;
     AsciiParser parser = new AsciiParser();
-    DSMConfiguration conf = parser.loadAndParse("osmo-dsl.txt");
+    SlicingConfiguration conf = parser.loadAndParse("osmo-dsl.txt");
     conf.setListener(new FSMBuildVisualizer());
-    DSMMain.execute(conf);
+    SlicerMain.execute(conf);
   }
 
   //time limit = 10 years

@@ -9,7 +9,7 @@ import osmo.tester.model.dataflow.DataGenerationStrategy;
 import osmo.tester.model.dataflow.ValueRange;
 import osmo.tester.model.dataflow.ValueSet;
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class OnlineHelloModel {
@@ -17,9 +17,9 @@ public class OnlineHelloModel {
   private int worldCount = 0;
   private ValueSet<String> names = new ValueSet<>("teemu", "bob");
   private ValueSet<String> worlds = new ValueSet<>("mars", "venus");
-  private ValueSet<Integer> sizes = new ValueSet<>(1,2,6);
+  private ValueSet<Integer> sizes = new ValueSet<>(1, 2, 6);
   private ValueRange<Double> ranges = new ValueRange<>(0.1d, 5.2d);
-  private HelloProgram sut = new HelloProgram();
+  private HelloProgram sut = null;
 
   @BeforeSuite
   public void init() {
@@ -28,6 +28,7 @@ public class OnlineHelloModel {
 
   @BeforeTest
   public void startTest() {
+    sut = new HelloProgram();
     helloCount = 0;
     worldCount = 0;
     System.out.println("TEST START");
@@ -47,7 +48,7 @@ public class OnlineHelloModel {
   public void sayHello() {
     String name = names.next();
     String response = sut.hello(name, sizes.next());
-    assertEquals("hi dude, "+name, response);
+    assertEquals("hi dude, " + name, response);
     System.out.println("HELLO");
     helloCount++;
   }
@@ -61,7 +62,7 @@ public class OnlineHelloModel {
   public void sayWorld() {
     double range = ranges.next();
     String response = sut.world(worlds.next(), range);
-    assertEquals(range+"? thats pretty mighty, dude", response);
+    assertEquals(range + "? thats pretty mighty, dude", response);
     System.out.println("WORLD");
     worldCount++;
   }

@@ -1,0 +1,12 @@
+TEST START
+HELLO teemu (6)
+TEST END
+TEST START
+HELLO teemu (6)
+TEST END
+TEST START
+HELLO teemu (2)
+TEST END
+generated 3 tests.
+
+

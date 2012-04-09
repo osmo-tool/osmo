@@ -147,13 +147,10 @@ public class TestCase {
       variables.put(name, variable);
     }
     log.debug("Variable:" + name + " add value:" + value);
-//    if (!merge || !variable.contains(value)) {
-//      log.debug("m:"+merge+" c:"+variable.contains(value));
     variable.addValue(value);
     if (!merge) {
       currentStep.addVariableValue(name, value);
     }
-//    }
   }
 
   public void addVariableValue(String name, Object value) {

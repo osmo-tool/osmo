@@ -39,7 +39,7 @@ public class ValueRangeGUI extends ValueGUI {
     ValueRange range = new ValueRange(1, 100);
     range.enableGUI();
 
-//    ValueRangeGUI gui = new ValueRangeGUI(range);
+//    ValueRangeGUI helloworld = new ValueRangeGUI(range);
     System.out.println(range.next());
   }
 

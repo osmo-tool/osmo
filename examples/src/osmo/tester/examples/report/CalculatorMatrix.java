@@ -1,6 +1,5 @@
 package osmo.tester.examples.report;
 
-import osmo.common.TestUtils;
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.calculator.CalculatorModel;
 import osmo.tester.generator.endcondition.Length;

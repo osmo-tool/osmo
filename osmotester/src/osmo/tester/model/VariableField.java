@@ -80,4 +80,11 @@ public class VariableField {
       throw new RuntimeException("Failed to read state variable value for field:" + field, e);
     }
   }
+
+  @Override
+  public String toString() {
+    return "VariableField{" +
+            "name='" + name + '\'' +
+            '}';
+  }
 }

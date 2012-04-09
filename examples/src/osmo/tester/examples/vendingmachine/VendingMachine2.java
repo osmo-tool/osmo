@@ -15,7 +15,7 @@ import osmo.tester.reporting.coverage.CSVCoverageReporter;
 
 import java.io.PrintStream;
 
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.*;
 
 /**
  * Example of a vending machine.

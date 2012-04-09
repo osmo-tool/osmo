@@ -82,24 +82,6 @@ public class Scripter {
     currentTest.addStepWithResult(keyword, variableName, params);
   }
 
-/*
-  public void addStep(String keyword, String... params) {
-    RFParameter[] rfParams = new RFParameter[params.length];
-    for (int i = 0 ; i < params.length ; i++) {
-      rfParams[i] = new RFParameter(params[i]);
-    }
-    currentTest.addStep(keyword, rfParams);
-  }
-
-  public void addStepWithResult(String keyword, String variableName, String... params) {
-    RFParameter[] rfParams = new RFParameter[params.length];
-    for (int i = 0 ; i < params.length ; i++) {
-      rfParams[i] = new RFParameter(params[i]);
-    }
-    currentTest.addStepWithResult(keyword, variableName, rfParams);
-  }
-*/
-
   /**
    * Creates the test script based on the given test cases, test steps, variables, and the template.
    *

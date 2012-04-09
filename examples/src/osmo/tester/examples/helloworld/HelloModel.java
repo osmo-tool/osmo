@@ -5,21 +5,21 @@ import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
+import osmo.tester.annotation.Variable;
 import osmo.tester.model.dataflow.DataGenerationStrategy;
 import osmo.tester.model.dataflow.ValueRange;
 import osmo.tester.model.dataflow.ValueSet;
 
-import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 /** @author Teemu Kanstren */
 public class HelloModel {
+  @Variable
   private int helloCount = 0;
+  @Variable
   private int worldCount = 0;
   private ValueSet<String> names = new ValueSet<>("teemu", "bob");
   private ValueSet<String> worlds = new ValueSet<>("mars", "venus");
-//  private Words words = new Words(3, 7);
-  private ValueSet<Integer> sizes = new ValueSet<>(1,2,6);
+  //  private Words words = new Words(3, 7);
+  private ValueSet<Integer> sizes = new ValueSet<>(1, 2, 6);
   private ValueRange<Double> ranges = new ValueRange<>(0.1d, 5.2d);
 
   @BeforeSuite
@@ -46,7 +46,7 @@ public class HelloModel {
 
   @TestStep("hello")
   public void sayHello() {
-    System.out.println("HELLO "+names.next()+" ("+sizes.next()+")");
+    System.out.println("HELLO " + names.next() + " (" + sizes.next() + ")");
     helloCount++;
   }
 
@@ -57,7 +57,7 @@ public class HelloModel {
 
   @TestStep("world")
   public void sayWorld() {
-    System.out.println("WORLD "+worlds.next()+" ("+ranges.next()+")");
+    System.out.println("WORLD " + worlds.next() + " (" + ranges.next() + ")");
     worldCount++;
   }
 }

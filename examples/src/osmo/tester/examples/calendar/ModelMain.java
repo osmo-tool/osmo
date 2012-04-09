@@ -15,10 +15,9 @@ import osmo.tester.examples.calendar.testmodel.ModelState;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.gui.dsm.DSMGUI;
+import osmo.tester.gui.slicing.SlicingGUI;
 import osmo.tester.model.FSM;
 import osmo.tester.reporting.coverage.HTMLCoverageReporter;
-import osmo.visualizer.model.FSMBuildVisualizer;
 
 /**
  * The class used to generate tests from the calendar example.
@@ -64,7 +63,7 @@ public class ModelMain {
     osmo.addModelObject(new CalendarFailureModel(state, scripter));
     MainGenerator generator = osmo.initGenerator();
     FSM fsm = osmo.getFsm();
-    DSMGUI g = new DSMGUI(fsm);
+    SlicingGUI g = new SlicingGUI(fsm);
     g.setVisible(true);
   }
 

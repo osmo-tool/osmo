@@ -1,0 +1,71 @@
+generated 3 tests.
+
+<testsuite>
+  <testcase>
+    <step name="hello">
+      <arg name="name" value="bob"/>
+      <arg name="size" value="1.0"/>
+    </step>
+    <step name="world">
+      <arg name="name" value="mars"/>
+      <arg name="range" value="3.1562892313483015"/>
+    </step>
+    <step name="hello">
+      <arg name="name" value="teemu"/>
+      <arg name="size" value="2.0"/>
+    </step>
+    <step name="world">
+      <arg name="name" value="mars"/>
+      <arg name="range" value="1.4289575493440612"/>
+    </step>
+    <step name="hello">
+      <arg name="name" value="bob"/>
+      <arg name="size" value="2.0"/>
+    </step>
+  </testcase>
+  <testcase>
+    <step name="hello">
+      <arg name="name" value="teemu"/>
+      <arg name="size" value="1.0"/>
+    </step>
+    <step name="world">
+      <arg name="name" value="venus"/>
+      <arg name="range" value="3.279034197651822"/>
+    </step>
+    <step name="hello">
+      <arg name="name" value="teemu"/>
+      <arg name="size" value="2.0"/>
+    </step>
+    <step name="world">
+      <arg name="name" value="mars"/>
+      <arg name="range" value="2.814722267683214"/>
+    </step>
+    <step name="hello">
+      <arg name="name" value="bob"/>
+      <arg name="size" value="1.0"/>
+    </step>
+  </testcase>
+  <testcase>
+    <step name="hello">
+      <arg name="name" value="teemu"/>
+      <arg name="size" value="1.0"/>
+    </step>
+    <step name="world">
+      <arg name="name" value="mars"/>
+      <arg name="range" value="1.96781339845851"/>
+    </step>
+    <step name="hello">
+      <arg name="name" value="bob"/>
+      <arg name="size" value="6.0"/>
+    </step>
+    <step name="world">
+      <arg name="name" value="venus"/>
+      <arg name="range" value="2.7852251942158026"/>
+    </step>
+    <step name="hello">
+      <arg name="name" value="bob"/>
+      <arg name="size" value="1.0"/>
+    </step>
+  </testcase>
+</testsuite>
+
