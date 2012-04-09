@@ -59,6 +59,7 @@ public class DataCoverage extends AbstractEndCondition {
       Collection<Object> temp = new ArrayList<>();
       temp.addAll(req.getValues());
       String name = req.getName();
+      log.debug("name:"+name);
       ModelVariable variable = variables.get(name);
       Collection<Object> values = variable.getValues();
       if (req.isAny()) {

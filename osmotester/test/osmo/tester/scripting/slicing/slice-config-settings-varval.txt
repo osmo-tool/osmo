@@ -1,0 +1,7 @@
+setting, value
+algorithm, Random
+model factory, osmo.tester.scripting.slicing.TestModelFactory2
+
+variable, values
+range,2
+

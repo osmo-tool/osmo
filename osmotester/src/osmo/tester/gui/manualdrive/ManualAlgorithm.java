@@ -11,6 +11,7 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.gui.ModelHelper;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
+import osmo.tester.model.VariableField;
 import osmo.tester.model.dataflow.SearchableInput;
 
 import javax.swing.AbstractListModel;
@@ -56,7 +57,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
   /** History of taken transitions and variables. */
   private static JTextPane testLogPane = new JTextPane();
   /** Overall metrics for taken transitions. */
-  private static JTextPane testMetricsPane = new JTextPane();
+  private static JTextPane statePane = new JTextPane();
   /** Used to pass the list choice between inner classes. */
   private static String choiceFromList = null;
   /** If the autoplay is enabled. */
@@ -73,6 +74,8 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
   private static boolean running = false;
   /** The suite of created test cases. */
   private static TestSuite suite = null;
+  /** The model we are using for generation. */
+  private FSM fsm = null;
 
   /** Create the frame. */
   public ManualAlgorithm() {
@@ -86,7 +89,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     testLogPane.setText("First Test Case starts");
     setContentPane(contentPane);
     JScrollPane scrollTestLog = new JScrollPane(testLogPane);
-    JScrollPane testMetricsPaneScroll = new JScrollPane(testMetricsPane);
+    JScrollPane testMetricsPaneScroll = new JScrollPane(statePane);
     JLabel lblTestLog = new JLabel("Test log");
     JLabel lblNextStep = new JLabel("Next Step");
     JLabel lblTraceability = new JLabel("Metrics");
@@ -122,8 +125,8 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
       }
     });
 
-    testMetricsPane.setBackground(SystemColor.menu);
-    testMetricsPane.setText("Test metrics");
+    statePane.setBackground(SystemColor.menu);
+    statePane.setText("Test metrics");
 
     availableTransitionsList = new JList();
     availableTransitionsList.addMouseListener(new MouseAdapter() {
@@ -296,7 +299,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     int tcId = 1;
     List<TestCase> tests = history.getAllTestCases();
     for (TestCase tc : tests) {
-      ret = "New test " + tcId + "\n" + ret;
+      ret += "----== NEW TEST " + tcId + " ==----\n";
       tcId++;
       for (TestStep ts : tc.getSteps()) {
         int tsId = ts.getId();
@@ -307,7 +310,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
           added += tsId + "." + i + ". " + value.getName() + " = " + value.getValues() + "\n";
           i++;
         }
-        ret = added + ret;
+        ret += added;
       }
     }
     return ret;
@@ -340,6 +343,19 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
       ret += t.getName() + getSpaces(30 - t.getName().length()) + "\t" + a.get(t) + "\n";
     }
     return ret;
+  }
+  
+  private String stateText() {
+    String text = "";
+    Collection<SearchableInput> inputs = fsm.getSearchableInputs();
+    for (SearchableInput input : inputs) {
+      text += input.getName()+": "+input.getLatestValue()+"\n";
+    }
+    Collection<VariableField> variables = fsm.getStateVariables();
+    for (VariableField variable : variables) {
+      text += variable.getName()+": "+variable.getValue()+"\n";
+    }
+    return text;
   }
 
   /** Just waiting that user make the selection to the next transition */
@@ -378,6 +394,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
 
   @Override
   public void init(FSM fsm) {
+    this.fsm = fsm;
     Collection<SearchableInput> inputs = fsm.getSearchableInputs();
     for (SearchableInput input : inputs) {
       input.enableGUI();
@@ -390,7 +407,9 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
 
     //Make some updates
     testLogPane.setText(historyText(history));
-    testMetricsPane.setText(coverageText(history));
+    testLogPane.setCaretPosition(testLogPane.getText().length());
+    statePane.setText(stateText());
+//    statePane.setText(coverageText(history));
 
     //Set available transitions to the UI
     availableTransitionsList.setModel(new ModelHelper(transitions));

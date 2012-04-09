@@ -1,0 +1,10 @@
+setting, value
+model factory, osmo.tester.scripting.slicing.TestModelFactory
+algorithm, random
+
+step, times
+add event, 1
+
+variable, values
+start time, 5
+event count, any

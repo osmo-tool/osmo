@@ -1,10 +1,7 @@
 package osmo.tester.examples.helloworld;
 
 import osmo.tester.OSMOTester;
-import osmo.tester.generator.endcondition.And;
 import osmo.tester.generator.endcondition.Length;
-import osmo.tester.generator.endcondition.Probability;
-import osmo.tester.gui.manualdrive.ManualAlgorithm;
 
 /** @author Teemu Kanstren */
 public class Main {

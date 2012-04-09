@@ -3,13 +3,8 @@ package osmo.tester.examples.calendar;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
-import osmo.tester.examples.calendar.scripter.offline.OfflineScripter;
 import osmo.tester.examples.calendar.scripter.online.OnlineScripter;
 import osmo.tester.examples.calendar.testmodel.CalendarBaseModel;
-import osmo.tester.examples.calendar.testmodel.CalendarFailureModel;
-import osmo.tester.examples.calendar.testmodel.CalendarOverlappingModel;
-import osmo.tester.examples.calendar.testmodel.CalendarParticipantModel;
-import osmo.tester.examples.calendar.testmodel.CalendarTaskModel;
 import osmo.tester.examples.calendar.testmodel.ModelState;
 import osmo.tester.generator.endcondition.Length;
 

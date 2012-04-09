@@ -1,5 +1,6 @@
 package osmo.tester;
 
+import osmo.common.TestUtils;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.GenerationListenerList;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
@@ -45,7 +46,7 @@ public class OSMOConfiguration {
   /** Should we try to throw original exception if model throws (remove OSMO Tester trace from the top)? */
   private boolean unwrapExceptions = false;
   /** Seed to be used for test generation. */
-  private long seed = System.currentTimeMillis();
+  private Long seed = TestUtils.getRandom().getSeed();
 
   /**
    * Adds a new model object, to be composed by OSMO to a single internal model along with other model objects.
@@ -242,6 +243,9 @@ public class OSMOConfiguration {
   }
 
   public void setSeed(long seed) {
+    //we store and set the seed here as confusion might arise otherwise if using the methods from TestUtils before
+    //invoking OSMOTester.generate(). For example, to initialize model state (as in Calendar example).
     this.seed = seed;
+    TestUtils.setSeed(seed);
   }
 }

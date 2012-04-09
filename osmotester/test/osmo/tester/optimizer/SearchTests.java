@@ -28,7 +28,7 @@ public class SearchTests {
     SearchingOptimizer optimizer = new SearchingOptimizer(config);
 //    long start = System.currentTimeMillis();
     Candidate solution = optimizer.search();
-    assertEquals("optimized fitness", 8650, solution.getFitness()); //8850
+    assertEquals("optimized fitness", 8020, solution.getFitness()); //8850
 //    long end = System.currentTimeMillis();
 //    long diff = end - start;
 //    int seconds = Math.round(diff / 1000);
@@ -57,7 +57,7 @@ public class SearchTests {
     SearchingOptimizer optimizer = new SearchingOptimizer(config);
 //    long start = System.currentTimeMillis();
     Candidate solution = optimizer.search();
-    assertEquals("optimized fitness", 8747, solution.getFitness()); //2297
+    assertEquals("optimized fitness", 3170, solution.getFitness()); //2297
 //    long end = System.currentTimeMillis();
 //    long diff = end - start;
 //    int seconds = Math.round(diff / 1000);

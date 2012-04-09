@@ -1,8 +1,8 @@
 package osmo.tester.examples.calendar.testmodel;
 
 import osmo.tester.annotation.Variable;
-import osmo.tester.model.dataflow.CollectionCount;
 import osmo.tester.model.VariableValue;
+import osmo.tester.model.dataflow.CollectionCount;
 import osmo.tester.model.dataflow.ToStringValue;
 import osmo.tester.model.dataflow.ValueRange;
 
@@ -67,7 +67,7 @@ public class ModelState {
 //    nextEventId = new AtomicInteger(0);
 
     int users = cInt(1, 5);
-    for (int i = 1; i <= users; i++) {
+    for (int i = 1 ; i <= users ; i++) {
       uids.add("user" + i);
     }
   }

@@ -101,8 +101,8 @@ public class VariableTests {
     String expectedRange = "[5, 5, 4, 3, 5, 5, 3]";
     assertModel2Values(test, expectedSet, expectedRange);
     test = tests.get(1);
-    expectedSet = "[v3, v2, v3, v1, v1, v2, v2, v2, v2]";
-    expectedRange = "[4, 3, 2, 4, 4, 2, 4, 2, 4]";
+    expectedSet = "[v2, v2, v1, v2, v2, v1, v2]";
+    expectedRange = "[4, 5, 1, 1, 1, 3, 5]";
     assertModel2Values(test, expectedSet, expectedRange);
   }
 

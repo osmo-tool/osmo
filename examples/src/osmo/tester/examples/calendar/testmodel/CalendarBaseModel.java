@@ -9,7 +9,7 @@ import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import java.io.PrintStream;
 import java.util.Date;
 
-import static osmo.tester.examples.calendar.testmodel.ModelHelper.calculateEndTime;
+import static osmo.tester.examples.calendar.testmodel.ModelHelper.*;
 
 /**
  * The base test model for the calendar. Includes

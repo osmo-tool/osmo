@@ -16,12 +16,19 @@ public class Randomizer {
    * Used for random number generation.
    */
   private Random random = new Random();
+  /** The seed in use. */
+  private long seed = System.currentTimeMillis();
 
   public Randomizer(long seed) {
     setSeed(seed);
   }
 
   public Randomizer() {
+    setSeed(seed);
+  }
+
+  public long getSeed() {
+    return seed;
   }
 
   /**

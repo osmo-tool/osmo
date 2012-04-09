@@ -21,8 +21,14 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T> {
   private ScriptedValueProvider scripter = null;
   /** For providing values manually through a GUI. Enabled if non-null. */
   protected ValueGUI gui = null;
+  /** The latest value that was generated. */
+  private T latestValue = null;
 
   protected SearchableInput() {
+  }
+
+  public T getLatestValue() {
+    return latestValue;
   }
 
   public boolean isAllSupported() {
@@ -42,6 +48,7 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T> {
   }
 
   public void observe(T value) {
+    latestValue = value;
     if (name == null) {
       return;
     }

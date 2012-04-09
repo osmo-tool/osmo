@@ -2,7 +2,7 @@ package osmo.tester.examples.calendar.testmodel;
 
 import java.util.Date;
 
-import static osmo.common.TestUtils.cLong;
+import static osmo.common.TestUtils.*;
 
 /**
  * Class to hold static helper methods for the model objects.

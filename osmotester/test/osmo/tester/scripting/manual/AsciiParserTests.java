@@ -14,7 +14,7 @@ public class AsciiParserTests {
 
   @Before
   public void setUp() throws Exception {
-    Logger.debug = true;
+    //Logger.debug = true;
     parser = new AsciiParser();
   }
 

@@ -1,6 +1,7 @@
 package osmo.tester.testmodels;
 
 import osmo.common.NullPrintStream;
+import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
@@ -36,6 +37,15 @@ public class VariableModel2 {
   public VariableModel2(PrintStream out) {
     this.out = out;
   }
+  
+  @BeforeTest 
+  public void reset() {
+    //TODO: hint
+    first = false;
+    second = false;
+    values.clear();
+    out.println("NEW TEST");
+  }
 
   @Guard("first")
   public boolean allowFirst() {
@@ -66,7 +76,7 @@ public class VariableModel2 {
 
   @Transition("third")
   public void third() {
-    range.next();
+    out.println("range:"+range.next());
     String next = set.next();
     values.add(next);
     out.println(":third=" + next + ":");

@@ -74,7 +74,9 @@ public class OSMOTester {
   }
 
   public MainGenerator initGenerator() {
-    TestUtils.setSeed(config.getSeed());
+    //We do not initialize seed here since that would cause problems if model objects are initialized already with
+    //TestUtils static methods (which use the seed, which would not be set..)
+    //TestUtils.setSeed(config.getSeed());
     MainParser parser = new MainParser();
     fsm = parser.parse(config);
     MainGenerator generator = new MainGenerator(fsm, config);

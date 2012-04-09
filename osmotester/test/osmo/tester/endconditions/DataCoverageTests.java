@@ -330,13 +330,13 @@ public class DataCoverageTests {
     assertEquals("Number of tests", 5, tests.size());
 
     assertRange(tests.get(0), "[5, 5, 4]");
-    assertRange(tests.get(1), "[3, 5, 5, 3, 4]");
-    assertRange(tests.get(2), "[3, 2, 4, 4, 2]");
-    assertRange(tests.get(3), "[4, 2, 4, 5, 4]");
-    assertRange(tests.get(4), "[4, 5, 1, 4, 1]");
+    assertRange(tests.get(1), "[3, 1, 3]");
+    assertRange(tests.get(2), "[4, 2, 3]");
+    assertRange(tests.get(3), "[4, 2, 4]");
+    assertRange(tests.get(4), "[1, 2, 5]");
 
     //suite is evaluated after each test, so the last tests gets two 1's even if just one is enough to end suite
-    String expectedSuite = "[5, 5, 4, 3, 5, 5, 3, 4, 3, 2, 4, 4, 2, 4, 2, 4, 5, 4, 4, 5, 1, 4, 1]";
+    String expectedSuite = "[5, 5, 4, 3, 1, 3, 4, 2, 3, 4, 2, 4, 1, 2, 5]";
     String actualSuite = suite.getVariables().get("range").getValues().toString();
     assertEquals("Expected value for suite range", expectedSuite, actualSuite);
   }
