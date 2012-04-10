@@ -150,4 +150,24 @@ public class SummaryTests {
     System.out.println("----------------");*/
     assertEquals("Generated HTML report for requirement coverage", expected, actual);
   }
+
+  @Test
+  public void asciiTransitions() {
+    String expected = getResource(getClass(), "expected-transitions-ascii.txt");
+    expected = unifyLineSeparators(expected, "\n");
+    ASCIICoverageReporter ascii = new ASCIICoverageReporter(suite, fsm);
+    String actual = ascii.getTransitionCounts();
+    actual = unifyLineSeparators(actual, "\n");
+    assertEquals("Generated ASCII report for transition coverage", expected, actual);
+  }
+
+  @Test
+  public void asciiTransitionPairs() {
+    String expected = getResource(getClass(), "expected-transitionpairs-ascii.txt");
+    expected = unifyLineSeparators(expected, "\n");
+    ASCIICoverageReporter ascii = new ASCIICoverageReporter(suite, fsm);
+    String actual = ascii.getTransitionPairCounts();
+    actual = unifyLineSeparators(actual, "\n");
+    assertEquals("Generated ASCII report for transition coverage", expected, actual);
+  }
 }
