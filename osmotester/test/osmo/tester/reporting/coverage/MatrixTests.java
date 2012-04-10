@@ -89,6 +89,16 @@ public class MatrixTests {
     String actual = csv.getTraceabilityMatrix();
     expected = unifyLineSeparators(expected, "\n");
     actual = unifyLineSeparators(actual, "\n");
-    assertEquals("Generated HTML coverage matrix", expected, actual);
+    assertEquals("Generated ASCII coverage matrix", expected, actual);
+  }
+
+  @Test
+  public void asciiMatrix() {
+    String expected = getResource(MatrixTests.class, "expected-matrix-ascii.txt");
+    ASCIICoverageReporter ascii = new ASCIICoverageReporter(suite, fsm);
+    String actual = ascii.getTraceabilityMatrix();
+    expected = unifyLineSeparators(expected, "\n");
+    actual = unifyLineSeparators(actual, "\n");
+    assertEquals("Generated ASCII coverage matrix", expected, actual);
   }
 }
