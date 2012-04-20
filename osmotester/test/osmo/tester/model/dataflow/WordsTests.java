@@ -1,11 +1,8 @@
 package osmo.tester.model.dataflow;
 
 import org.junit.Test;
-import osmo.common.log.Logger;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static junit.framework.Assert.*;
@@ -112,41 +109,41 @@ public class WordsTests {
   }
 
   @Test
-  public void fuzzLength() {
-    testLength(DataGenerationStrategy.FUZZY_LOOP);
-    testLength(DataGenerationStrategy.FUZZY_RANDOM);
+  public void invalidLength() {
+    testLength(DataGenerationStrategy.ORDERED_LOOP_INVALID);
+    testLength(DataGenerationStrategy.RANDOM_INVALID);
     testLength(DataGenerationStrategy.RANDOM);
   }
 
   private void testLength(DataGenerationStrategy strategy) {
     Words words = new Words(10, 20);
     words.setStrategy(strategy);
-    words.fuzzLength(true);
+    words.enableInvalidLength(true);
     Set<Integer> lengths = new HashSet<>();
     for (int i = 0 ; i < 100 ; i++) {
       String word = words.next();
       int length = word.length();
       lengths.add(length);
-      assertTrue("Fuzzed length for 10-20+5 should first be 21-25, was:" + length, length > 20 && length <= 25);
+      assertTrue("Invalid length for 10-20+5 should first be 21-25, was:" + length, length > 20 && length <= 25);
 
       word = words.next();
       length = word.length();
       lengths.add(length);
-      assertTrue("Fuzzed length for 10-20+5 should second be 5-9, was:" + length, length >= 5 && length < 10);
+      assertTrue("Invalid length for 10-20+5 should second be 5-9, was:" + length, length >= 5 && length < 10);
     }
-    assertEquals("Number of different lengths of fuzziness", 10, lengths.size());
+    assertEquals("Number of different lengths of invalid values", 10, lengths.size());
   }
 
   @Test
-  public void fuzzRandom() {
+  public void invalidRandom() {
     Words words = new Words(10, 20);
-    words.setStrategy(DataGenerationStrategy.FUZZY_RANDOM);
+    words.setStrategy(DataGenerationStrategy.RANDOM_INVALID);
     words.asciiLettersAndNumbersOnly();
     String word = words.next();
     int invalid = countInvalidAsciiCharsIn(word);
     int valid = word.length() - invalid;
-    assertTrue("Number of valid chars in random fuzz should be > 0, was " + valid, valid > 0);
-    assertTrue("Number of invalid chars in random fuzz should be > 0, was " + invalid, invalid > 0);
+    assertTrue("Number of valid chars in random invalid should be > 0, was " + valid, valid > 0);
+    assertTrue("Number of invalid chars in random invalid should be > 0, was " + invalid, invalid > 0);
   }
 
   private int countInvalidAsciiCharsIn(String word) {
@@ -165,33 +162,33 @@ public class WordsTests {
   }
 
   @Test
-  public void fuzzZeroLength() {
+  public void invalidZeroLength() {
     Words words = new Words(10, 20);
-    words.setZeroSize(true);
+    words.enableZeroSize(true);
     String word = words.next();
     int length = word.length();
-    assertTrue("Zero size enabled with length fuzzing disabled should produce no effect", length >= 10 && length <= 20);
+    assertTrue("Zero size enabled with invalid length disabled should produce no effect", length >= 10 && length <= 20);
 
     words = new Words(10, 20);
-    words.setZeroSize(true);
-    words.fuzzLength(true);
+    words.enableZeroSize(true);
+    words.enableInvalidLength(true);
     word = words.next();
-    assertEquals("Zero size enabled with length fuzzing enabled should produce zero size as first item.", 0, word.length());
-    word = words.next();
-    length = word.length();
-    assertTrue("Zero size enabled with length fuzzing enabled should produce >max size as second item.", length > 20);
+    assertEquals("Zero size enabled with invalid length enabled should produce zero size as first item.", 0, word.length());
     word = words.next();
     length = word.length();
-    assertTrue("Zero size enabled with length fuzzing enabled should produce <min size as second item.", length < 10);
+    assertTrue("Zero size enabled with invalid length enabled should produce >max size as second item.", length > 20);
+    word = words.next();
+    length = word.length();
+    assertTrue("Zero size enabled with invalid length enabled should produce <min size as second item.", length < 10);
   }
 
   @Test
-  public void fuzzLoop() {
+  public void invalidLoop() {
     Words words = new Words(10, 10);
-    words.setStrategy(DataGenerationStrategy.FUZZY_LOOP);
+    words.setStrategy(DataGenerationStrategy.ORDERED_LOOP_INVALID);
     words.asciiLettersAndNumbersOnly();
     assertOneAndTwoInvalidChars(words);
-    //roll over until the full string should be fuzzed
+    //roll over until the full string should be invalid
     for (int i = 0 ; i < 8 + 7 + 6 + 5 + 4 + 3 + 2 ; i++) {
       String word = words.next();
     }
@@ -221,63 +218,63 @@ public class WordsTests {
   public void invalidConfig() {
     Words words = new Words(10, 20);
     try {
-      words.setFuzzProbability(-1);
-      fail("Negative values should not be allowed for fuzz probability.");
+      words.setInvalidProbability(-1);
+      fail("Negative values should not be allowed for invalid probability.");
     } catch (IllegalArgumentException e) {
-      assertEquals("Error for negative fuzz probability", "Probability must be between 0-1, was -1.0", e.getMessage());
+      assertEquals("Error for negative invalid probability", "Probability must be between 0-1, was -1.0", e.getMessage());
     }
     try {
-      words.setFuzzProbability(1.01f);
-      fail("Values >1 should not be allowed for fuzz probability.");
+      words.setInvalidProbability(1.01f);
+      fail("Values >1 should not be allowed for invalid probability.");
     } catch (IllegalArgumentException e) {
-      assertEquals("Error for negative fuzz probability", "Probability must be between 0-1, was 1.01", e.getMessage());
+      assertEquals("Error for negative invalid probability", "Probability must be between 0-1, was 1.01", e.getMessage());
     }
 
     try {
       words.setOffset(-1, 5);
     } catch (IllegalArgumentException e) {
-      assertEquals("Error for negative fuzz offset", "Minimum and maximum length are not allowed to be negative (was -1, 5)", e.getMessage());
+      assertEquals("Error for negative invalid offset", "Minimum and maximum length are not allowed to be negative (was -1, 5)", e.getMessage());
     }
     try {
       words.setOffset(9, 5);
     } catch (IllegalArgumentException e) {
-      assertEquals("Error for min fuzz offset larger than max", "Maximum length is not allowed to be less than minimum length.", e.getMessage());
+      assertEquals("Error for min invalid offset larger than max", "Maximum length is not allowed to be less than minimum length.", e.getMessage());
     }
   }
 
   @Test
-  public void fuzzProbabilityZero() {
+  public void invalidProbabilityZero() {
     Words words = new Words(10, 10);
     words.asciiLettersAndNumbersOnly();
-    words.setStrategy(DataGenerationStrategy.FUZZY_RANDOM);
-    words.setFuzzProbability(0);
+    words.setStrategy(DataGenerationStrategy.RANDOM_INVALID);
+    words.setInvalidProbability(0);
     String word = words.next();
     int count = countInvalidAsciiCharsIn(word);
-    assertEquals("Number of invalid chars with zero fuzz probability", 0, count);
+    assertEquals("Number of invalid chars with zero invalid probability", 0, count);
   }
 
   @Test
-  public void fuzzProbabilityFull() {
+  public void invalidProbabilityFull() {
     Words words = new Words(10, 10);
     words.asciiLettersAndNumbersOnly();
-    words.setStrategy(DataGenerationStrategy.FUZZY_RANDOM);
-    words.setFuzzProbability(1);
+    words.setStrategy(DataGenerationStrategy.RANDOM_INVALID);
+    words.setInvalidProbability(1);
     String word = words.next();
     int count = countInvalidAsciiCharsIn(word);
-    assertEquals("All chars should be fuzzed with full fuzz probability", 10, count);
+    assertEquals("All chars should be invalid with full invalid probability", 10, count);
   }
 
   @Test
-  public void fuzzLengthToNegative() {
+  public void invalidLengthToNegative() {
     Words words = new Words(1, 2);
     words.asciiLettersAndNumbersOnly();
     words.setOffset(1, 5);
-    words.fuzzLength(true);
+    words.enableInvalidLength(true);
     for (int i = 0 ; i < 100 ; i++) {
       String word = words.next();
 //      System.out.println(word.length()+":"+word);
-      assertNotNull("Fuzzing should always produce a word or exception, not null", word);
-      assertTrue("Fuzzing should never go over max size + max offset", word.length() < 8);
+      assertNotNull("Invalid generation should always produce a word or exception, not null", word);
+      assertTrue("Invalid should never go over max size + max offset", word.length() < 8);
     }
   }
 }

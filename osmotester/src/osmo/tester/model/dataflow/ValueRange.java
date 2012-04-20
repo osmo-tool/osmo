@@ -136,10 +136,10 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
   @Override
   public ValueRange<T> setStrategy(DataGenerationStrategy algorithm) {
     this.algorithm = algorithm;
-    if (algorithm == DataGenerationStrategy.FUZZY_BOUNDARY_SCAN) {
-      boundary.setFuzzy(true);
+    if (algorithm == DataGenerationStrategy.BOUNDARY_SCAN_INVALID) {
+      boundary.setInvalid(true);
     } else {
-      boundary.setFuzzy(false);
+      boundary.setInvalid(false);
     }
     return this;
   }
@@ -168,7 +168,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
         value = nextOptimizedRandom(type);
         break;
       case BOUNDARY_SCAN:
-      case FUZZY_BOUNDARY_SCAN:
+      case BOUNDARY_SCAN_INVALID:
         value = nextBoundaryScan();
         break;
       case SCRIPTED:
@@ -289,7 +289,6 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
   }
 
   private Number nextBoundaryScan() {
-    
     return boundary.next();
   }
 

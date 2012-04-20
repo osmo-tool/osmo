@@ -25,24 +25,24 @@ public class Words extends SearchableInput<String> {
   private Collection<String> history = new ArrayList<>();
   /** How are the characters generated? */
   private DataGenerationStrategy strategy = DataGenerationStrategy.RANDOM;
-  /** Produce words of invalid length? Invalid is what we call length fuzziness here.. */
-  private boolean invalidLength = false;
-  /** Was it below or above min/max length when length fuzziness is applied? */
+  /** Produce words of invalid length? Invalid is what we call length outside configured bounds.. */
+  private boolean invalid = false;
+  /** Was it below or above min/max length when invalid length is applied? */
   private int previousLength = -1;
-  /** Min number to go over size if length fuzziness is applied. */
+  /** Min number to go over size if invalid length is applied. */
   private int minOffset = 1;
-  /** Max number to go over size if length fuzziness is applied. */
+  /** Max number to go over size if invalid length is applied. */
   private int maxOffset = 5;
   /** Should we create one input of size zero? */
   private boolean zeroSize = false;
   /** Did we already provide zero size? */
   private boolean zeroDone = false;
   /** The probability that we will provide an invalid character in the generated string (between 0-1). */
-  private float fuzzProbability = 0.5f;
-  /** Index in result that we are fuzzing when in fuzz loop. */
-  private int fuzzIndex = 0;
-  /** Number of chars we fuzz at index while in fuzz loop. */
-  private int fuzzLength = 1;
+  private float invalidProbability = 0.5f;
+  /** Index in result for invalid loop. */
+  private int invalidIndex = 0;
+  /** Number of chars we create at index while in invalid loop mode. */
+  private int invalidSize = 1;
 
   /** Constructor for default values (min=5, max=10). */
   public Words() {
@@ -61,24 +61,24 @@ public class Words extends SearchableInput<String> {
   }
 
   /**
-   * Set the probability that a character for a string will be "fuzzed" meaning an invalid value will be
+   * Set the probability that an invalid character for a string will be 
    * inserted instead of valid value.
    * 
-   * @param fuzzProbability Value between 0 (0%) and 1 (100%).
+   * @param invalidProbability Value between 0 (0%) and 1 (100%).
    */
-  public void setFuzzProbability(float fuzzProbability) {
-    if (fuzzProbability < 0 || fuzzProbability > 1) {
-      throw new IllegalArgumentException("Probability must be between 0-1, was "+fuzzProbability);
+  public void setInvalidProbability(float invalidProbability) {
+    if (invalidProbability < 0 || invalidProbability > 1) {
+      throw new IllegalArgumentException("Probability must be between 0-1, was "+ invalidProbability);
     }
-    this.fuzzProbability = fuzzProbability;
+    this.invalidProbability = invalidProbability;
   }
 
   /**
-   * Enable or disable production of zero size strings in fuzzing. By default this is disabled.
+   * Enable or disable production of zero size strings in invalid data generation. By default this is disabled.
    * 
    * @param zeroSize Enable/disable flag.
    */
-  public void setZeroSize(boolean zeroSize) {
+  public void enableZeroSize(boolean zeroSize) {
     this.zeroSize = zeroSize;
   }
 
@@ -95,7 +95,7 @@ public class Words extends SearchableInput<String> {
   }
 
   /**
-   * Set the min and max offsets for how much smaller/bigger strings will be generated when length fuzziness is applied.
+   * Set the min and max offsets for how much smaller/bigger strings will be generated when invalid length is applied.
    * Note that strings of less that 0 size will never be generated (doh!). To exclude/include 0 size always, enable
    * the zeroSize attribute.
    * 
@@ -118,12 +118,12 @@ public class Words extends SearchableInput<String> {
     switch (algorithm) {
       case RANDOM:
       case SCRIPTED:
-      case FUZZY_LOOP:
-      case FUZZY_RANDOM:
+      case ORDERED_LOOP_INVALID:
+      case RANDOM_INVALID:
         this.strategy = algorithm;
         return this;
       default:
-        throw new UnsupportedOperationException(CharSet.class.getSimpleName() + " supports only Scripted, RAndom and Fuzzy data generation strategy.");
+        throw new UnsupportedOperationException(CharSet.class.getSimpleName() + " supports only Scripted, Random and Invalid data generation strategy.");
     }
   }
 
@@ -142,10 +142,10 @@ public class Words extends SearchableInput<String> {
         return randomNext();
       case SCRIPTED:
         return scriptedNext();
-      case FUZZY_RANDOM:
-        return fuzzyRandomNext();
-      case FUZZY_LOOP:
-        return fuzzyLoopNext();
+      case RANDOM_INVALID:
+        return invalidRandomNext();
+      case ORDERED_LOOP_INVALID:
+        return invalidLoopNext();
       default:
         throw new IllegalStateException("Unsupported data generation strategy for " + Words.class.getName() + " (random and scripted only supported): " + strategy.getClass().getName());
     }
@@ -153,7 +153,7 @@ public class Words extends SearchableInput<String> {
 
   private int length() {
     int length = -1;
-    if (!invalidLength) {
+    if (!invalid) {
       length = cInt(min, max);
     } else {
       if (zeroSize && !zeroDone) {
@@ -195,19 +195,19 @@ public class Words extends SearchableInput<String> {
   /**
    * Creates values that are different from expected, replacing chars with invalid ones using some heuristics and 
    * random probability.
-   * Relates to data, length is controlled with the invalidLength variable.
+   * Relates to data, length is controlled with the invalid variable.
    * 
    * @return the next generated value.
    */
-  private String fuzzyRandomNext() {
+  private String invalidRandomNext() {
     int length = length();
     char[] c = new char[length];
     for (int i = 0; i < length; i++) {
       float f = cFloat(0,1);
-      if (f > fuzzProbability) {
+      if (f > invalidProbability) {
         c[i] = chars.next();
       } else {
-        c[i] = chars.nextFuzzyRandom();
+        c[i] = chars.nextInvalidRandom();
       }
     }
     String next = new String(c);
@@ -219,28 +219,28 @@ public class Words extends SearchableInput<String> {
   /**
    * Creates values that are different from expected, replacing with invalid ones using some heuristics and by looping
    * through the chars in the word one at a time.
-   * Relates to data, length is controlled with the invalidLength variable.
+   * Relates to data, length is controlled with the invalid variable.
    *
    * @return the next generated value.
    */
-  private String fuzzyLoopNext() {
+  private String invalidLoopNext() {
     int length = length();
-    log.debug("Fuzzy loop length:"+length);
+    log.debug("Invalid loop length:"+length);
     char[] c = new char[length];
     for (int i = 0; i < length; i++) {
-      if (i >= fuzzIndex && i < fuzzIndex+fuzzLength) {
-        c[i] = chars.nextFuzzyLoop();
+      if (i >= invalidIndex && i < invalidIndex + invalidSize) {
+        c[i] = chars.nextInvalidLoop();
       } else {
         c[i] = chars.next();
       }
     }
-    fuzzIndex++;
+    invalidIndex++;
     //rotate loop and size of change until it overflows and restart from beginning
-    if (fuzzIndex+fuzzLength > length) {
-      fuzzIndex = 0;
-      fuzzLength++;
-      if (fuzzIndex+fuzzLength > length) {
-        fuzzLength = 1;
+    if (invalidIndex + invalidSize > length) {
+      invalidIndex = 0;
+      invalidSize++;
+      if (invalidIndex + invalidSize > length) {
+        invalidSize = 1;
       }
     }
     String next = new String(c);
@@ -304,8 +304,8 @@ public class Words extends SearchableInput<String> {
     gui = new WordGUI(this);
   }
 
-  public void fuzzLength(boolean fuzz) {
-    this.invalidLength = fuzz;
+  public void enableInvalidLength(boolean invalid) {
+    this.invalid = invalid;
   }
 
 }
