@@ -2,6 +2,7 @@ package osmo.tester.model.dataflow;
 
 import osmo.tester.gui.manualdrive.ValueGUI;
 import osmo.tester.model.ScriptedValueProvider;
+import osmo.tester.model.dataflow.wrappers.ToStringWrapper;
 
 import java.util.Collection;
 
@@ -74,8 +75,8 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T> {
     gui = null;
   }
   
-  public TemplateWrapper wrapper() {
-    return new TemplateWrapper(this);
+  public ToStringWrapper wrapper() {
+    return new ToStringWrapper(this);
   }
 
 }

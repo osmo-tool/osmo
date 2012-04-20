@@ -1,10 +1,12 @@
-package osmo.tester.model.dataflow;
+package osmo.tester.model.dataflow.wrappers;
+
+import osmo.tester.model.dataflow.SearchableInput;
 
 /** @author Teemu Kanstren */
-public class TemplateWrapper {
+public class ToStringWrapper {
   private final SearchableInput input;
 
-  public TemplateWrapper(SearchableInput input) {
+  public ToStringWrapper(SearchableInput input) {
     this.input = input;
   }
 

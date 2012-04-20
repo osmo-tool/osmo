@@ -1,8 +1,6 @@
 package osmo.tester.model.dataflow;
 
 import org.junit.Test;
-import osmo.tester.model.dataflow.DataGenerationStrategy;
-import osmo.tester.model.dataflow.ValueRange;
 
 import java.util.Collection;
 
@@ -89,15 +87,15 @@ public class ValueRangeTests {
   }
 
   @Test
-  public void boundaryScanRange0Fuzzy() {
+  public void boundaryScanRange0Invalid() {
     ValueRange<Integer> range = new ValueRange<>(10, 20);
-    range.setStrategy(DataGenerationStrategy.FUZZY_BOUNDARY_SCAN);
+    range.setStrategy(DataGenerationStrategy.BOUNDARY_SCAN_INVALID);
     range.setCount(0);
     try {
       range.next();
-      fail("Fuzzy scan with 0 size boundary count should fail");
+      fail("Invalid scan with 0 size boundary count should fail");
     } catch (IllegalStateException e) {
-      //there is nothing to provide with 0 configuration for a fuzzy boundary, since the boundary itself is considered "Non-fuzzy"
+      //there is nothing to provide with 0 configuration for an invalid boundary, since the boundary itself is considered valid
     }
   }
 
@@ -122,9 +120,9 @@ public class ValueRangeTests {
   }
 
   @Test
-  public void boundaryScanDefaultFuzzy() {
+  public void boundaryScanDefaultInvalid() {
     ValueRange<Integer> range = new ValueRange<>(10, 20);
-    range.setStrategy(DataGenerationStrategy.FUZZY_BOUNDARY_SCAN);
+    range.setStrategy(DataGenerationStrategy.BOUNDARY_SCAN_INVALID);
     assertValues(range, 21, 9, 22, 8, 23, 7, 24, 6, 25, 5, 21, 9);
   }
 

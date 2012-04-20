@@ -29,7 +29,7 @@ public class Boundary {
   /** Upper bound. */
   private final Number max;
   /** Create values in or out of bounds? */
-  private boolean fuzzy = false;
+  private boolean invalid = false;
 
   public Boundary(DataType type, Number min, Number max) {
     this.type = type;
@@ -56,8 +56,8 @@ public class Boundary {
     this.increment = increment;
   }
 
-  public void setFuzzy(boolean fuzzy) {
-    this.fuzzy = fuzzy;
+  public void setInvalid(boolean invalid) {
+    this.invalid = invalid;
   }
 
   private void init() {
@@ -100,7 +100,7 @@ public class Boundary {
   }
 
   public List<Number> getOptions() {
-    if (fuzzy) {
+    if (invalid) {
       return invalidValues.getOptions();
     }
     return validValues.getOptions();
@@ -112,7 +112,7 @@ public class Boundary {
     if (validValues.size() == 0) {
       init();
     }
-    if (fuzzy) {
+    if (invalid) {
       return invalidValues.next();
     } else {
       return validValues.next();

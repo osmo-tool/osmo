@@ -2,8 +2,6 @@ package osmo.tester.model.dataflow;
 
 import org.junit.Test;
 import osmo.tester.OSMOTester;
-import osmo.tester.model.dataflow.DataGenerationStrategy;
-import osmo.tester.model.dataflow.ValueRangeSet;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -329,10 +327,10 @@ public class ValueRangeSetTests {
   }
 
   @Test
-  public void boundaryScanningFuzzyInteger() {
+  public void boundaryScanningInvalidInteger() {
     ValueRangeSet<Integer> vr = new ValueRangeSet<>();
     vr.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
-    vr.setPartitionStrategy(DataGenerationStrategy.FUZZY_BOUNDARY_SCAN);
+    vr.setPartitionStrategy(DataGenerationStrategy.BOUNDARY_SCAN_INVALID);
     vr.addPartition(0, 100);
     vr.addPartition(-100, -50);
     vr.addPartition(200, 300);

@@ -6,12 +6,12 @@ import static osmo.common.TestUtils.*;
 
 /** @author Teemu Kanstren */
 public class VectorSet extends ValueSet<String> {
-  public static final String LDAP = "ldap";
-  public static final String SQL_ACTIVE = "sql_active";
-  public static final String SQL_PASSIVE = "sql_passive";
-  public static final String XML = "xml";
-  public static final String XPATH = "xpath";
-  public static final String XSS = "xss";
+  public static final String LDAP = "owasp/ldap";
+  public static final String SQL_ACTIVE = "owasp/sql_active";
+  public static final String SQL_PASSIVE = "owasp/sql_passive";
+  public static final String XML = "owasp/xml";
+  public static final String XPATH = "owasp/xpath";
+  public static final String XSS = "owasp/xss";
   
   private final String name;
 

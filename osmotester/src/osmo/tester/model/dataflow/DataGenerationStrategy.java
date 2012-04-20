@@ -16,11 +16,11 @@ public enum DataGenerationStrategy {
   /** Choose values at the option boundaries (below, at, above). Only works for primitives. */
   BOUNDARY_SCAN,
   /** Same as boundary but with invalid values (out of bounds). */
-  FUZZY_BOUNDARY_SCAN,
+  BOUNDARY_SCAN_INVALID,
   /** Values are provided as a list of values to be used in order. Typically from Manual Drive Algorithm. */
   SCRIPTED,
   /** Provide random invalid values. */
-  FUZZY_RANDOM,
-  /** Provide invalid values loop.ing through the set of options. */
-  FUZZY_LOOP,
+  RANDOM_INVALID,
+  /** Provide invalid values looping through the set of options. */
+  ORDERED_LOOP_INVALID,
 }

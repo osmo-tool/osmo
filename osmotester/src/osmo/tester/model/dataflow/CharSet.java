@@ -35,14 +35,14 @@ public class CharSet extends SearchableInput<Character> {
     switch (strategy) {
       case RANDOM:
       case ORDERED_LOOP:
-      case FUZZY_LOOP:
-      case FUZZY_RANDOM:
+      case ORDERED_LOOP_INVALID:
+      case RANDOM_INVALID:
         this.strategy = strategy;
         loopIndex = 0;
         return this;
       default:
         String name = CharSet.class.getSimpleName();
-        String msg = name + " only supports Random, Looping, and Fuzzy generation strategies. Given:"+strategy;
+        String msg = name + " only supports Random, Looping, and Invalid generation strategies. Given:"+strategy;
         throw new UnsupportedOperationException(msg);
     }
   }
@@ -83,10 +83,10 @@ public class CharSet extends SearchableInput<Character> {
         return nextRandom();
       case ORDERED_LOOP:
         return nextLoop();
-      case FUZZY_RANDOM:
-        return nextFuzzyRandom();
-      case FUZZY_LOOP:
-        return nextFuzzyLoop();
+      case RANDOM_INVALID:
+        return nextInvalidRandom();
+      case ORDERED_LOOP_INVALID:
+        return nextInvalidLoop();
       default:
         String name = CharSet.class.getSimpleName();
         throw new IllegalArgumentException("DataGenerationStrategy "+strategy+" not supported by "+name+".");
@@ -109,14 +109,14 @@ public class CharSet extends SearchableInput<Character> {
     return c;
   }
 
-  public Character nextFuzzyRandom() {
+  public Character nextInvalidRandom() {
     int min = 0;
     int max = invalidChars.length() - 1;
     int index = cInt(min, max);
     return invalidChars.charAt(index);
   }
 
-  public Character nextFuzzyLoop() {
+  public Character nextInvalidLoop() {
     loopIndex++;
     if (loopIndex >= invalidChars.length()) {
       loopIndex = 0;
@@ -163,7 +163,7 @@ public class CharSet extends SearchableInput<Character> {
   public Collection<Character> getOptions() {
     List<Character> result = new ArrayList<>();
     char[] temp = validChars.toCharArray();
-    if (strategy == DataGenerationStrategy.FUZZY_LOOP || strategy == DataGenerationStrategy.FUZZY_RANDOM) {
+    if (strategy == DataGenerationStrategy.ORDERED_LOOP_INVALID || strategy == DataGenerationStrategy.RANDOM_INVALID) {
       temp = invalidChars.toCharArray();
     }
     for (char c : temp) {
