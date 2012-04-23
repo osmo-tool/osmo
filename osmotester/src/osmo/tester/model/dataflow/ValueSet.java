@@ -25,7 +25,7 @@ import static osmo.common.TestUtils.oneOf;
 public class ValueSet<T> extends SearchableInput<T> {
   private static final Logger log = new Logger(ValueSet.class);
   /** The options for data generation and evaluation. */
-  private List<T> options = new ArrayList<>();
+  private List<ValueItem<T>> options = new ArrayList<>();
   /** The input strategy to choose an object. */
   private DataGenerationStrategy strategy = DataGenerationStrategy.RANDOM;
   /** Index for next item if using ORDERED_LOOP. Using this instead of iterator to allow modification of options in runtime. */
@@ -45,7 +45,9 @@ public class ValueSet<T> extends SearchableInput<T> {
    */
   @SafeVarargs
   public ValueSet(T... items) {
-    Collections.addAll(options, items);
+    for (T item : items) {
+      add(item);
+    }
     init();
   }
 
@@ -83,7 +85,16 @@ public class ValueSet<T> extends SearchableInput<T> {
    * @param option The object to be added.
    */
   public void add(T option) {
-    options.add(option);
+    options.add(new ValueItem<T>(option, 10));
+  }
+
+  /**
+   * Adds a new value to the set as potential input and accepted output (evaluation parameter).
+   *
+   * @param option The object to be added.
+   */
+  public void add(T option, int weight) {
+    options.add(new ValueItem<T>(option, weight));
   }
 
   /**
@@ -115,8 +126,8 @@ public class ValueSet<T> extends SearchableInput<T> {
 
   @Override
   public boolean evaluateSerialized(String item) {
-    for (T option : options) {
-      if (option.toString().equals(item)) {
+    for (ValueItem<T> option : options) {
+      if (option.item().toString().equals(item)) {
         return true;
       }
     }
@@ -246,5 +257,23 @@ public class ValueSet<T> extends SearchableInput<T> {
     return "ValueSet{" +
             "options=" + options +
             '}';
+  }
+  
+  private static class ValueItem<T> {
+    private final T item;
+    private final int weight;
+
+    private ValueItem(T item, int weight) {
+      this.item = item;
+      this.weight = weight;
+    }
+
+    public T item() {
+      return item;
+    }
+
+    public int getWeight() {
+      return weight;
+    }
   }
 }
