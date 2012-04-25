@@ -25,7 +25,7 @@ import static osmo.common.TestUtils.oneOf;
 public class ValueSet<T> extends SearchableInput<T> {
   private static final Logger log = new Logger(ValueSet.class);
   /** The options for data generation and evaluation. */
-  private List<ValueItem<T>> options = new ArrayList<>();
+  private List<T> options = new ArrayList<>();
   /** The input strategy to choose an object. */
   private DataGenerationStrategy strategy = DataGenerationStrategy.RANDOM;
   /** Index for next item if using ORDERED_LOOP. Using this instead of iterator to allow modification of options in runtime. */
@@ -85,16 +85,23 @@ public class ValueSet<T> extends SearchableInput<T> {
    * @param option The object to be added.
    */
   public void add(T option) {
-    options.add(new ValueItem<T>(option, 10));
+    options.add(option);
   }
 
   /**
-   * Adds a new value to the set as potential input and accepted output (evaluation parameter).
+   * Adds a new value to the set as potential input and accepted output (evaluation parameter) with a weight.
+   * The weight means that the given object will have "weight" number of instances in this set, whereas the
+   * ones added with the non-weighted add() method only have one instance. For example, add("teemu");add("bob",6)
+   * results in "teemu" being provided once and "bob" six times with looping strategy. With random strategy,
+   * "bob" will just have 6 times higher probability to appear. Just as if add("bob") had been called six times.
    *
    * @param option The object to be added.
+   * @param weight The weight of the option, resulting in this many calls to add().
    */
   public void add(T option, int weight) {
-    options.add(new ValueItem<T>(option, weight));
+    for (int i = 0 ; i < weight ; i++) {
+      options.add(option);
+    }
   }
 
   /**
@@ -126,8 +133,10 @@ public class ValueSet<T> extends SearchableInput<T> {
 
   @Override
   public boolean evaluateSerialized(String item) {
-    for (ValueItem<T> option : options) {
-      if (option.item().toString().equals(item)) {
+    for (T option : options) {
+      //avoid nullpointer if null option is given
+      String str = "" + option;
+      if (str.equals(item)) {
         return true;
       }
     }
@@ -257,23 +266,5 @@ public class ValueSet<T> extends SearchableInput<T> {
     return "ValueSet{" +
             "options=" + options +
             '}';
-  }
-  
-  private static class ValueItem<T> {
-    private final T item;
-    private final int weight;
-
-    private ValueItem(T item, int weight) {
-      this.item = item;
-      this.weight = weight;
-    }
-
-    public T item() {
-      return item;
-    }
-
-    public int getWeight() {
-      return weight;
-    }
   }
 }
