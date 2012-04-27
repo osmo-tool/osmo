@@ -195,9 +195,6 @@ public class OSMOConfiguration {
     }
     fsm.initSuite(scripter);
     algorithm.init(fsm);
-    for (EndCondition ec : testCaseEndConditions) {
-      ec.init(fsm);
-    }
     for (EndCondition ec : suiteEndConditions) {
       ec.init(fsm);
     }

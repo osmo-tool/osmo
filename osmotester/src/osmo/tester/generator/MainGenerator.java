@@ -85,6 +85,9 @@ public class MainGenerator {
    * @return The generated test case.
    */
   public TestCase nextTest() {
+    for (EndCondition ec : config.getTestCaseEndConditions()) {
+      ec.init(fsm);
+    }
     testCount++;
     log.debug("Starting new test generation");
     beforeTest();
