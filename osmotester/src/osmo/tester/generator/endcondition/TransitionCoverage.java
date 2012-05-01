@@ -103,4 +103,11 @@ public class TransitionCoverage extends AbstractEndCondition {
   @Override
   public void init(FSM fsm) {
   }
+
+  @Override
+  public String toString() {
+    return "TransitionCoverage{" +
+            "threshold=" + threshold +
+            '}';
+  }
 }

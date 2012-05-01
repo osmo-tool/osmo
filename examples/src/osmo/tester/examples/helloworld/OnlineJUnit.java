@@ -4,8 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import osmo.tester.OSMOConfiguration;
-import osmo.tester.junit.OSMOConfigurationFactory;
-import osmo.tester.junit.OSMORunner;
+import osmo.tester.reporting.junit.OSMOConfigurationFactory;
+import osmo.tester.reporting.junit.OSMORunner;
 
 /** @author Teemu Kanstren */
 @RunWith(OSMORunner.class)

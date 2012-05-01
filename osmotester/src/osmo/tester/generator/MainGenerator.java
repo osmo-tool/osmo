@@ -105,8 +105,10 @@ public class MainGenerator {
         if (config.shouldUnwrapExceptions()) {
           e = unwrap(e);
         }
+        listeners.testError(test, e);
         throw e;
       } else {
+        listeners.testError(test, unwrap(e));
         e.printStackTrace();
         System.out.println("Configuration set not to fail - continuing with next test");
       }

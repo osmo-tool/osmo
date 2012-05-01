@@ -6,6 +6,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.gui.manualdrive.ManualAlgorithm;
@@ -45,7 +46,7 @@ public class TransitionBarChart implements GenerationListener {
   }
 
   @Override
-  public void init(FSM fsm) {
+  public void init(FSM fsm, OSMOConfiguration config) {
     show();
   }
 
@@ -92,5 +93,9 @@ public class TransitionBarChart implements GenerationListener {
 
   @Override
   public void suiteEnded(TestSuite suite) {
+  }
+
+  @Override
+  public void testError(TestCase test, Exception error) {
   }
 }

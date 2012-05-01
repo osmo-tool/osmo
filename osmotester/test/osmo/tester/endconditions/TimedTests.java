@@ -3,8 +3,7 @@ package osmo.tester.endconditions;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOTester;
-import osmo.tester.generator.endcondition.Length;
-import osmo.tester.generator.endcondition.TimedEndCondition;
+import osmo.tester.generator.endcondition.Time;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.testmodels.CalculatorModel;
@@ -28,9 +27,9 @@ public class TimedTests {
 
   @Test
   public void sameMillisForTestAndSuite() {
-    tester.addTestEndCondition(new TimedEndCondition(1000, TimeUnit.MILLISECONDS));
+    tester.addTestEndCondition(new Time(1000, TimeUnit.MILLISECONDS));
     //it is not that predictable that we could do 1000+1000
-    tester.addSuiteEndCondition(new TimedEndCondition(800, TimeUnit.MILLISECONDS));
+    tester.addSuiteEndCondition(new Time(800, TimeUnit.MILLISECONDS));
 //    tester.addTestEndCondition(new TimedEndCondition(500, TimeUnit.MILLISECONDS));
     long start = System.currentTimeMillis();
     tester.generate();
@@ -43,8 +42,8 @@ public class TimedTests {
 
   @Test
   public void shorterTimeForSuite() {
-    tester.addTestEndCondition(new TimedEndCondition(1000, TimeUnit.MILLISECONDS));
-    tester.addSuiteEndCondition(new TimedEndCondition(500, TimeUnit.MILLISECONDS));
+    tester.addTestEndCondition(new Time(1000, TimeUnit.MILLISECONDS));
+    tester.addSuiteEndCondition(new Time(500, TimeUnit.MILLISECONDS));
     long start = System.currentTimeMillis();
     tester.generate();
     long diff = System.currentTimeMillis() - start;
@@ -57,8 +56,8 @@ public class TimedTests {
 
   @Test
   public void longerTimeForSuite() {
-    tester.addTestEndCondition(new TimedEndCondition(1000, TimeUnit.MILLISECONDS));
-    tester.addSuiteEndCondition(new TimedEndCondition(1500, TimeUnit.MILLISECONDS));
+    tester.addTestEndCondition(new Time(1000, TimeUnit.MILLISECONDS));
+    tester.addSuiteEndCondition(new Time(1500, TimeUnit.MILLISECONDS));
     long start = System.currentTimeMillis();
     tester.generate();
     long diff = System.currentTimeMillis() - start;
@@ -71,8 +70,8 @@ public class TimedTests {
 
   @Test
   public void seconds() {
-    tester.addTestEndCondition(new TimedEndCondition(1, TimeUnit.SECONDS));
-    tester.addSuiteEndCondition(new TimedEndCondition(2, TimeUnit.SECONDS));
+    tester.addTestEndCondition(new Time(1, TimeUnit.SECONDS));
+    tester.addSuiteEndCondition(new Time(2, TimeUnit.SECONDS));
     long start = System.currentTimeMillis();
     tester.generate();
     long diff = System.currentTimeMillis() - start;
@@ -86,12 +85,12 @@ public class TimedTests {
   @Test
   public void negativeTime() {
     try {
-      tester.addTestEndCondition(new TimedEndCondition(-1, TimeUnit.SECONDS));
+      tester.addTestEndCondition(new Time(-1, TimeUnit.SECONDS));
     } catch (IllegalArgumentException e) {
       assertTrue("Error message should have bad value embedded (-1):"+e.getMessage(), e.getMessage().contains("-1"));
     }
     try {
-      tester.addSuiteEndCondition(new TimedEndCondition(-2, TimeUnit.SECONDS));
+      tester.addSuiteEndCondition(new Time(-2, TimeUnit.SECONDS));
     } catch (Exception e) {
       assertTrue("Error message should have bad value embedded (-2):" + e.getMessage(), e.getMessage().contains("-2"));
     }

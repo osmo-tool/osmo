@@ -11,6 +11,7 @@ import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.renderers.VertexLabelAsShapeRenderer;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
@@ -62,7 +63,7 @@ public class FSMBuildVisualizer extends JFrame implements GenerationListener {
   }
 
   @Override
-  public void init(FSM fsm) {
+  public void init(FSM fsm, OSMOConfiguration config) {
   }
 
   @Override
@@ -122,5 +123,9 @@ public class FSMBuildVisualizer extends JFrame implements GenerationListener {
 
   @Override
   public void suiteEnded(TestSuite suite) {
+  }
+
+  @Override
+  public void testError(TestCase test, Exception error) {
   }
 }

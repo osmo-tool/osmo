@@ -1,5 +1,6 @@
 package osmo.tester.generator;
 
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
@@ -17,6 +18,10 @@ public class GenerationListenerList implements GenerationListener {
   /** The list of listeners to be invoked. */
   private Collection<GenerationListener> listeners = new ArrayList<>();
 
+  public Collection<GenerationListener> getListeners() {
+    return listeners;
+  }
+
   /**
    * Add a new listener to be invoked.
    *
@@ -27,9 +32,9 @@ public class GenerationListenerList implements GenerationListener {
   }
 
   @Override
-  public void init(FSM fsm) {
+  public void init(FSM fsm, OSMOConfiguration config) {
     for (GenerationListener listener : listeners) {
-      listener.init(fsm);
+      listener.init(fsm, config);
     }
   }
 
@@ -86,6 +91,13 @@ public class GenerationListenerList implements GenerationListener {
   public void suiteEnded(TestSuite suite) {
     for (GenerationListener listener : listeners) {
       listener.suiteEnded(suite);
+    }
+  }
+
+  @Override
+  public void testError(TestCase test, Exception error) {
+    for (GenerationListener listener : listeners) {
+      listener.testError(test, error);
     }
   }
 }

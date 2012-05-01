@@ -3,6 +3,8 @@ package osmo.tester.generator.endcondition;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 
+import java.util.Arrays;
+
 /**
  * Allows one to compose several end conditions into a single one, where one of the conditions must be met before
  * test generation should end.
@@ -46,5 +48,12 @@ public class Or extends AbstractEndCondition {
 
   @Override
   public void init(FSM fsm) {
+  }
+
+  @Override
+  public String toString() {
+    return "Or{" +
+            "conditions=" + (conditions == null ? null : Arrays.asList(conditions)) +
+            '}';
   }
 }

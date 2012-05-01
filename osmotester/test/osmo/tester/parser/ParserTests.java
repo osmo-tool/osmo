@@ -183,7 +183,7 @@ public class ParserTests {
     PartialModel2 model2 = new PartialModel2(req, null, suite);
     FSM fsm = parser.parse(conf(model1, model2));
     assertEquals("Number of @Before methods", 2, fsm.getBefores().size());
-    assertEquals("Number of @BeforeSuite methods", 1, fsm.getBeforeSuites().size());
+    assertEquals("Number of @BeforeSuite methods", 2, fsm.getBeforeSuites().size());
     assertEquals("Number of @After methods", 2, fsm.getAfters().size());
     assertEquals("Number of @AfterSuite methods", 1, fsm.getAfterSuites().size());
     //these also test for the correct number of guards

@@ -1,6 +1,7 @@
 package osmo.tester.generator.filter;
 
 import osmo.common.log.Logger;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
@@ -63,7 +64,7 @@ public class MaxTransitionFilter implements TransitionFilter {
   }
 
   @Override
-  public void init(FSM fsm) {
+  public void init(FSM fsm, OSMOConfiguration config) {
     Collection<FSMTransition> transitions = fsm.getTransitions();
     Collection<String> shouldClear = new ArrayList<>();
     shouldClear.addAll(maximums.keySet());
@@ -119,5 +120,9 @@ public class MaxTransitionFilter implements TransitionFilter {
 
   @Override
   public void suiteEnded(TestSuite suite) {
+  }
+
+  @Override
+  public void testError(TestCase test, Exception error) {
   }
 }

@@ -198,7 +198,7 @@ public class OSMOConfiguration {
     for (EndCondition ec : suiteEndConditions) {
       ec.init(fsm);
     }
-    listeners.init(fsm);
+    listeners.init(fsm, this);
   }
 
   public void setFailWhenError(boolean fail) {

@@ -3,8 +3,8 @@ package osmo.tester.examples.helloworld.online;
 import org.junit.runner.RunWith;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.endcondition.Length;
-import osmo.tester.junit.OSMOConfigurationFactory;
-import osmo.tester.junit.OSMORunner;
+import osmo.tester.reporting.junit.OSMOConfigurationFactory;
+import osmo.tester.reporting.junit.OSMORunner;
 
 /** @author Teemu Kanstren */
 @RunWith(OSMORunner.class)

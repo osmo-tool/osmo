@@ -1,4 +1,4 @@
-package osmo.tester.junit;
+package osmo.tester.reporting.junit;
 
 import org.junit.AfterClass;
 import org.junit.Before;

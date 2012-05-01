@@ -1,4 +1,4 @@
-package osmo.tester.junit;
+package osmo.tester.reporting.junit;
 
 import org.junit.runners.model.FrameworkMethod;
 import osmo.tester.generator.MainGenerator;

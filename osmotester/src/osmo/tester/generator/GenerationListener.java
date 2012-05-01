@@ -1,5 +1,6 @@
 package osmo.tester.generator;
 
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
@@ -11,7 +12,7 @@ import osmo.tester.model.FSMTransition;
  * @author Teemu Kanstren
  */
 public interface GenerationListener {
-  public void init(FSM fsm);
+  public void init(FSM fsm, OSMOConfiguration config);
 
   /**
    * A guard statement has been invoked for a transition.
@@ -54,6 +55,14 @@ public interface GenerationListener {
    * @param test The associated test object.
    */
   public void testEnded(TestCase test);
+
+  /**
+   * Test generation has produced an exception.
+   * 
+   * @param test The test case being generated.
+   * @param error The exception observed.
+   */
+  public void testError(TestCase test, Exception error);
 
   /**
    * Test suite generation has started.

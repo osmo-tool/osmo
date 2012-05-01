@@ -2,6 +2,7 @@ package osmo.tester.testmodels;
 
 import osmo.tester.annotation.AfterSuite;
 import osmo.tester.annotation.AfterTest;
+import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
@@ -23,12 +24,23 @@ public class PartialModel2 {
   public static final String REQ_HELLO = "hello";
   public static final String REQ_WORLD = "world";
   public static final String REQ_EPIX = "epix";
-  private final PrintStream out;
+  private PrintStream out;
+
+  public PartialModel2(Requirements req, TestSuite suite) {
+    this(req, null, suite);
+  }
 
   public PartialModel2(Requirements req, PrintStream out, TestSuite suite) {
     this.req = req;
     this.out = out;
     this.history = suite;
+  }
+
+  @BeforeSuite
+  public void beforeAll() {
+    if (out == null) {
+      out = System.out;
+    }
   }
 
   @AfterSuite

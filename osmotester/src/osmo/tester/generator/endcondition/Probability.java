@@ -49,4 +49,11 @@ public class Probability extends AbstractEndCondition {
   @Override
   public void init(FSM fsm) {
   }
+
+  @Override
+  public String toString() {
+    return "Probability{" +
+            "threshold=" + threshold +
+            '}';
+  }
 }

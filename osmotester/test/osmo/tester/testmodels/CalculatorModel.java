@@ -34,10 +34,10 @@ public class CalculatorModel {
   private int testCount = 1;
   private static final String REQ_INCREASE = "increase";
   private static final String REQ_DECREASE = "decrease";
-  private final PrintStream out;
+  private PrintStream out;
 
   public CalculatorModel() {
-    this(System.out);
+    this(null);
   }
 
   public CalculatorModel(PrintStream out) {
@@ -52,6 +52,9 @@ public class CalculatorModel {
 
   @BeforeSuite
   public void first() {
+    if (out == null) {
+      out = System.out;
+    }
     out.println("first");
   }
 

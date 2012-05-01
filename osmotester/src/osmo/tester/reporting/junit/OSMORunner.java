@@ -1,4 +1,4 @@
-package osmo.tester.junit;
+package osmo.tester.reporting.junit;
 
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
