@@ -1,0 +1,315 @@
+<testsuite name="OSMO Test Suite" timestamp="1.1.1970 2:00:01" hostname="OSMO rules" tests="150" failures="0" errors="0" time="2.00">
+  <properties>
+    <property name="Algorithm" value="osmo.tester.generator.algorithm.RandomAlgorithm"/>
+    <property name="Scripter" value="Null"/>
+    <property name="Listener" value="osmo.tester.reporting.jenkins.JenkinsReportGenerator"/>
+    <property name="Model Object" value="osmo.tester.testmodels.PartialModel1"/>
+    <property name="Model Object" value="osmo.tester.testmodels.PartialModel2"/>
+    <property name="Seed" value="333"/>
+    <property name="Suite End Condition" value="And{conditions=[Length{length=1}, Probability{threshold=0.05}]}"/>
+    <property name="Test Case End Condition" value="And{conditions=[Length{length=1}, Probability{threshold=0.1}]}"/>
+  </properties>
+  <testcase name="hello" classname="osmo.tester.testmodels.PartialModel1" time="0.00">
+  </testcase>
+  <testcase name="world" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="hello" classname="osmo.tester.testmodels.PartialModel1" time="0.00">
+  </testcase>
+  <testcase name="world" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="hello" classname="osmo.tester.testmodels.PartialModel1" time="0.00">
+  </testcase>
+  <testcase name="world" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="hello" classname="osmo.tester.testmodels.PartialModel1" time="0.00">
+  </testcase>
+  <testcase name="world" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="hello" classname="osmo.tester.testmodels.PartialModel1" time="0.00">
+  </testcase>
+  <testcase name="world" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="hello" classname="osmo.tester.testmodels.PartialModel1" time="0.00">
+  </testcase>
+  <testcase name="world" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="hello" classname="osmo.tester.testmodels.PartialModel1" time="0.00">
+  </testcase>
+  <testcase name="world" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="hello" classname="osmo.tester.testmodels.PartialModel1" time="0.00">
+  </testcase>
+  <testcase name="hello" classname="osmo.tester.testmodels.PartialModel1" time="0.00">
+  </testcase>
+  <testcase name="world" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="hello" classname="osmo.tester.testmodels.PartialModel1" time="0.00">
+  </testcase>
+  <testcase name="world" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="hello" classname="osmo.tester.testmodels.PartialModel1" time="0.00">
+  </testcase>
+  <testcase name="world" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="hello" classname="osmo.tester.testmodels.PartialModel1" time="0.00">
+  </testcase>
+  <testcase name="world" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="hello" classname="osmo.tester.testmodels.PartialModel1" time="0.00">
+  </testcase>
+  <testcase name="world" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="hello" classname="osmo.tester.testmodels.PartialModel1" time="0.00">
+  </testcase>
+  <testcase name="world" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="hello" classname="osmo.tester.testmodels.PartialModel1" time="0.00">
+  </testcase>
+  <testcase name="world" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <testcase name="epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
+  </testcase>
+  <system-out>:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle</system-out>
+  <system-err></system-err>
+</testsuite>
+

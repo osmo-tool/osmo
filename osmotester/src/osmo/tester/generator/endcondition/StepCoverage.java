@@ -106,4 +106,11 @@ public class StepCoverage extends AbstractEndCondition {
       throw new IllegalStateException("Impossible coverage requirements, defined steps " + toClear + " not found.");
     }
   }
+
+  @Override
+  public String toString() {
+    return "StepCoverage{" +
+            "required=" + required +
+            '}';
+  }
 }

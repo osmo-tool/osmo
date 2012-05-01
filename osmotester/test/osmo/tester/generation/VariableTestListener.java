@@ -1,5 +1,6 @@
 package osmo.tester.generation;
 
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
 import osmo.tester.generator.GenerationListener;
@@ -19,7 +20,7 @@ public class VariableTestListener implements GenerationListener {
   private Collection<String> variables = new ArrayList<>();
 
   @Override
-  public void init(FSM fsm) {
+  public void init(FSM fsm, OSMOConfiguration config) {
   }
 
   @Override
@@ -61,5 +62,9 @@ public class VariableTestListener implements GenerationListener {
 
   @Override
   public void suiteEnded(TestSuite suite) {
+  }
+
+  @Override
+  public void testError(TestCase test, Exception error) {
   }
 }

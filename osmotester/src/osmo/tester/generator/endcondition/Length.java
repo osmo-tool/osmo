@@ -42,4 +42,11 @@ public class Length extends AbstractEndCondition {
   @Override
   public void init(FSM fsm) {
   }
+
+  @Override
+  public String toString() {
+    return "Length{" +
+            "length=" + length +
+            '}';
+  }
 }

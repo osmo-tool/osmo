@@ -2,6 +2,7 @@ package osmo.visualizer.tests;
 
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.endcondition.Length;
@@ -38,7 +39,7 @@ public class GraphVisualizer extends JFrame implements GenerationListener {
   }
 
   @Override
-  public void init(FSM fsm) {
+  public void init(FSM fsm, OSMOConfiguration config) {
   }
 
   @Override
@@ -93,5 +94,9 @@ public class GraphVisualizer extends JFrame implements GenerationListener {
 
   @Override
   public void suiteEnded(TestSuite suite) {
+  }
+
+  @Override
+  public void testError(TestCase test, Exception error) {
   }
 }

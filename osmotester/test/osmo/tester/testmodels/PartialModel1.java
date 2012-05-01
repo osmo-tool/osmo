@@ -23,7 +23,11 @@ public class PartialModel1 {
   public static final String REQ_HELLO = "hello";
   public static final String REQ_WORLD = "world";
   public static final String REQ_EPIX = "epix";
-  private final PrintStream out;
+  private PrintStream out;
+
+  public PartialModel1(Requirements req, TestSuite suite) {
+    this(req, null, suite);
+  }
 
   public PartialModel1(Requirements req, PrintStream out, TestSuite suite) {
     this.req = req;
@@ -37,7 +41,9 @@ public class PartialModel1 {
 
   @BeforeSuite
   public void beforeAll() {
-
+    if (out == null) {
+      out = System.out;
+    }
   }
 
   @BeforeTest

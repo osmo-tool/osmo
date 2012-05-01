@@ -47,6 +47,10 @@ public class InvocationTarget {
     }
   }
 
+  public Object getModelObject() {
+    return modelObject;
+  }
+
   public Method getMethod() {
     return method;
   }

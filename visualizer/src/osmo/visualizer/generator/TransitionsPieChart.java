@@ -6,6 +6,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.util.Rotation;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.gui.manualdrive.ManualAlgorithm;
@@ -45,7 +46,7 @@ public class TransitionsPieChart implements GenerationListener {
   }
 
   @Override
-  public void init(FSM fsm) {
+  public void init(FSM fsm, OSMOConfiguration config) {
     Collection<FSMTransition> transitions = fsm.getTransitions();
     for (FSMTransition t : transitions) {
       values.put(t.getName(), 0);
@@ -94,5 +95,9 @@ public class TransitionsPieChart implements GenerationListener {
 
   @Override
   public void suiteEnded(TestSuite suite) {
+  }
+
+  @Override
+  public void testError(TestCase test, Exception error) {
   }
 }

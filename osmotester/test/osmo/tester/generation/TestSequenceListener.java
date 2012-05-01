@@ -1,5 +1,6 @@
 package osmo.tester.generation;
 
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -31,7 +32,7 @@ public class TestSequenceListener implements GenerationListener {
   }
 
   @Override
-  public void init(FSM fsm) {
+  public void init(FSM fsm, OSMOConfiguration config) {
   }
 
   @Override
@@ -82,5 +83,9 @@ public class TestSequenceListener implements GenerationListener {
 
   public Collection<String> getSteps() {
     return steps;
+  }
+
+  @Override
+  public void testError(TestCase test, Exception error) {
   }
 }
