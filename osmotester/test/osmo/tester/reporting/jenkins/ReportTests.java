@@ -11,10 +11,12 @@ import osmo.tester.testmodels.PartialModel2;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
-import static junit.framework.Assert.*;
-import static osmo.common.TestUtils.*;
+import static junit.framework.Assert.assertEquals;
+import static osmo.common.TestUtils.getResource;
+import static osmo.common.TestUtils.unifyLineSeparators;
 
 
 /** @author Teemu Kanstren */
@@ -25,6 +27,7 @@ public class ReportTests {
   public void setup() {
     tester = new OSMOTester();
     tester.setSeed(333);
+    JenkinsSuite.format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
   }
 
   @Test
@@ -114,7 +117,7 @@ public class ReportTests {
     expected = unifyLineSeparators(expected, "\n");
     assertEquals("Jenkins report for steps", expected, actual);
   }
-  
+
   private String readFile(String name) throws IOException {
     StringBuilder text = new StringBuilder();
     try (Scanner scanner = new Scanner(new FileInputStream(name))) {

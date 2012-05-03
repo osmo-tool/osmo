@@ -6,11 +6,7 @@ import osmo.tester.generator.testsuite.TestStep;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /** @author Teemu Kanstren */
 public class JenkinsSuite {
@@ -24,7 +20,7 @@ public class JenkinsSuite {
   private PrintStream oldErr;
   private PrintStream newOut;
   private PrintStream newErr;
-  private static final DateFormat format = DateFormat.getDateTimeInstance();
+  public static DateFormat format = DateFormat.getDateTimeInstance();
 
   public JenkinsSuite(String name) {
     this.name = name;
@@ -41,7 +37,7 @@ public class JenkinsSuite {
     System.setOut(newOut);
     System.setErr(newErr);
   }
-  
+
   public void end() {
     endTime = System.currentTimeMillis();
     System.setOut(oldOut);
@@ -55,11 +51,11 @@ public class JenkinsSuite {
   public String getSystemOut() {
     return out.toString();
   }
-  
+
   public String getSystemErr() {
     return err.toString();
   }
-  
+
   public String getDuration() {
     long duration = endTime - startTime;
     double seconds = duration / 1000d;
@@ -76,7 +72,7 @@ public class JenkinsSuite {
     }
     tests.add(newTest);
   }
-  
+
   public Collection<JenkinsStep> getSteps() {
     Collection<JenkinsStep> steps = new ArrayList<>();
     for (JenkinsTest test : tests) {
@@ -88,7 +84,7 @@ public class JenkinsSuite {
   public Collection<JenkinsTest> getTests() {
     return tests;
   }
-  
+
   public int getStepCount() {
     int count = 0;
     for (JenkinsTest test : tests) {
@@ -96,11 +92,11 @@ public class JenkinsSuite {
     }
     return count;
   }
-  
+
   public int getTestCount() {
     return tests.size();
   }
-  
+
   public int getErrorCount() {
     int count = 0;
     for (JenkinsTest test : tests) {
@@ -124,7 +120,7 @@ public class JenkinsSuite {
 
   /**
    * For testing only.
-   * 
+   *
    * @param startTime Test value for deterministic output.
    */
   public void setStartTime(long startTime) {
