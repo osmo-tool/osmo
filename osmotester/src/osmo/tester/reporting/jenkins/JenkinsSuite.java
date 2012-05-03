@@ -31,6 +31,7 @@ public class JenkinsSuite {
   }
 
   public void start() {
+    JenkinsTest.resetId();
     startTime = System.currentTimeMillis();
     oldOut = System.out;
     oldErr = System.err;
@@ -64,11 +65,12 @@ public class JenkinsSuite {
 
   public void add(TestCase test) {
     JenkinsTest newTest = new JenkinsTest();
+    JenkinsStep.resetId();
     List<TestStep> steps = test.getSteps();
     for (TestStep step : steps) {
       String className = step.getTransition().getTransition().getModelObject().getClass().getName();
       String stepName = step.getTransition().getName();
-      newTest.add(new JenkinsStep(className, stepName));
+      newTest.add(new JenkinsStep(className, newTest, stepName));
     }
     tests.add(newTest);
   }

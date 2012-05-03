@@ -3,7 +3,8 @@ package osmo.tester.reporting.jenkins;
 import org.junit.Before;
 import org.junit.Test;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 
 /** @author Teemu Kanstren */
 public class StepTests {
@@ -11,7 +12,8 @@ public class StepTests {
 
   @Before
   public void setUp() throws Exception {
-    step = new JenkinsStep(StepTests.class.getName(), "duration");
+    JenkinsTest test = new JenkinsTest();
+    step = new JenkinsStep(StepTests.class.getName(), test, "duration");
   }
 
   @Test

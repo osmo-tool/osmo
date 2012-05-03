@@ -11,33 +11,33 @@
   </properties>
   <testcase name="Test1" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
+  <testcase name="Test2" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
+  <testcase name="Test3" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
+  <testcase name="Test4" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
+  <testcase name="Test5" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
+  <testcase name="Test6" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
+  <testcase name="Test7" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.PartialModel1]" time="0.00">
+  <testcase name="Test8" classname="[osmo.tester.testmodels.PartialModel1]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
+  <testcase name="Test9" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
+  <testcase name="Test10" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
+  <testcase name="Test11" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
+  <testcase name="Test12" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
+  <testcase name="Test13" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
+  <testcase name="Test14" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
+  <testcase name="Test15" classname="[osmo.tester.testmodels.PartialModel1, osmo.tester.testmodels.PartialModel2]" time="0.00">
   </testcase>
   <system-out>:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle</system-out>
   <system-err></system-err>

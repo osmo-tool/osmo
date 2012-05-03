@@ -2,8 +2,8 @@ package osmo.tester.reporting.jenkins;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.text.DecimalFormat;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /** @author Teemu Kanstren */
 public class JenkinsStep {
@@ -12,10 +12,16 @@ public class JenkinsStep {
   private long startTime;
   private long endTime;
   private Exception error = null;
+  private static final AtomicInteger nextId = new AtomicInteger(0);
 
-  public JenkinsStep(String className, String name) {
+  public JenkinsStep(String className, JenkinsTest parent, String name) {
     this.className = className;
-    this.name = name;
+    int id = nextId.incrementAndGet();
+    this.name = parent.getName() + "_step_" + id + "_" + name;
+  }
+
+  public static void resetId() {
+    nextId.set(0);
   }
 
   public String getDuration() {
@@ -39,7 +45,7 @@ public class JenkinsStep {
   public String getName() {
     return name;
   }
-  
+
   public String getError() {
     if (error == null) {
       return null;
@@ -52,7 +58,7 @@ public class JenkinsStep {
 
   /**
    * For testing only.
-   * 
+   *
    * @param startTime Time (in milliseconds) when step execution was started.
    */
   public void setStartTime(long startTime) {
@@ -61,7 +67,7 @@ public class JenkinsStep {
 
   /**
    * For testing only.
-   * 
+   *
    * @param endTime Time (in milliseconds) when step execution ended.
    */
   public void setEndTime(long endTime) {
