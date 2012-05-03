@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Parses test definitions in ASCII format. The expected format is the following:
+ * Parses model slicing definitions in ASCII format. The expected format is the following:
  * <p/>
  * ---begin example---
  * <p/>
@@ -34,7 +34,7 @@ import java.util.Map;
  * <p/>
  * The settings table has the following elements:
  * model factory = The fully qualified name of a class implementing {@link osmo.tester.scripting.OSMOConfigurationFactory}.
- * algorithm = Fully qualified name of used test generation algorithm, or "random"/"weighted random"/"less random"
+ * algorithm = Fully qualified name of used test generation algorithm, or "random"/"weighted random"/"balancing"
  * seed = Random seed to be used by OSMOTester
  * <p/>
  * The steps table defines which steps should be covered by all generated tests, the form is:

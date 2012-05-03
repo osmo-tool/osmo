@@ -8,7 +8,12 @@ import osmo.tester.examples.calendar.testmodel.*;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.reporting.jenkins.JenkinsReportGenerator;
 
-/** @author Teemu Kanstren */
+/** 
+ * Example for running as a Java Ant task in Jenkins to generate JUnit test reports for Jenkins.
+ * The build.xml for this example module contains a task "calendar-jenkins" showing how to run this.
+ * 
+ * @author Teemu Kanstren 
+ */
 public class CalendarJenkins {
   public static void main(String[] args) throws Exception {
     OSMOTester osmo = new OSMOTester();

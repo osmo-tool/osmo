@@ -17,7 +17,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * The main class to be used as a basis to start the DSM based test generation.
+ * The main class to be used as a basis to start the model slicing based test generation.
  * Reads the configuration from a file. The filename is given as argument from command-line.
  *
  * @author Teemu Kanstren
@@ -43,7 +43,7 @@ public class SlicerMain {
   }
 
   /**
-   * Generates tests based on DSM configuration.
+   * Generates tests based on model slicing configuration.
    *
    * @param slicingConfig The configuration for test generation.
    * @throws Exception If classes cannot instantiated, etc.

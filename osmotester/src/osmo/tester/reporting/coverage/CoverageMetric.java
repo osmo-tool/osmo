@@ -45,6 +45,11 @@ public abstract class CoverageMetric {
     velocity.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
   }
 
+  /**
+   * Count the number of times a transition has been covered.
+   * 
+   * @return Key = transition, Value = number of times covered.
+   */
   protected Map<FSMTransition, Integer> countTransitions() {
     Map<FSMTransition, Integer> covered = testSuite.getTransitionCoverage();
 
@@ -57,6 +62,14 @@ public abstract class CoverageMetric {
     return covered;
   }
 
+  /**
+   * Count the number of times each transition pair has been covered.
+   * A transition pair is A->B, meaning that transition B was taken after A.
+   * If the number of times taken is 0, the value 0 is given for that pair.
+   * Thus, each pair should be represented in the result(s).
+   * 
+   * @return List defining how often each pair has been taken so far.
+   */
   protected List<TransitionPairCount> countTransitionPairs() {
     Map<TransitionPair, Integer> coverage = new HashMap<>();
 
@@ -93,6 +106,13 @@ public abstract class CoverageMetric {
     return tpc;
   }
 
+  /**
+   * Counts the number of times each requirement has been covered.
+   * If the requirement has not been covered at all, value of 0 is inserted.
+   * Thus, all requirements should be listed in the results.
+   * 
+   * @return The coverage count for each requirement.
+   */
   protected List<RequirementCount> countRequirements() {
     Map<String, Integer> coverage = new HashMap<>();
 
@@ -185,6 +205,13 @@ public abstract class CoverageMetric {
     return sw.toString();
   }
 
+  /**
+   * Creates a traceability matrix based on the given Velocity template.
+   * The matrix shows how many times each test case has covered the different coverage measure.
+   * 
+   * @param templateName The name of the Velocity template to user for the report.
+   * @return The formatted traceability matrix.
+   */
   public String getTraceabilityMatrix(String templateName) {
     List<SingleTestCoverage> tc = getTestCoverage();
     List<String> transitions = getTransitions();
@@ -213,6 +240,11 @@ public abstract class CoverageMetric {
     return result;
   }
 
+  /**
+   * Provides a list of all transitions in the active model objects.
+   * 
+   * @return The transition names.
+   */
   private List<String> getTransitions() {
     List<String> result = new ArrayList<>();
     Collection<FSMTransition> transitions = fsm.getTransitions();
@@ -222,6 +254,11 @@ public abstract class CoverageMetric {
     return result;
   }
 
+  /**
+   * Provides a list of transition pairs.
+   * 
+   * @return The pair names, with transitions separated by "->".
+   */
   private List<String> getTransitionPairs() {
     List<TransitionPairCount> pairCounts = countTransitionPairs();
     List<String> pairs = new ArrayList<>();
@@ -233,6 +270,11 @@ public abstract class CoverageMetric {
     return pairs;
   }
 
+  /**
+   * Get the list of requirements defined in the model.
+   * 
+   * @return The requirement names.
+   */
   private List<String> getRequirements() {
     Collection<String> temp = new HashSet<>();
     Requirements fsmRequirements = fsm.getRequirements();
@@ -243,6 +285,12 @@ public abstract class CoverageMetric {
     return requirements;
   }
 
+  /**
+   * Gives a list of all model variables. Include those tagged as @Variable
+   * and those with type of {@link SearchableInput}
+   * 
+   * @return The variable names.
+   */
   private List<String> getVariables() {
     Collection<VariableField> stateVariables = fsm.getStateVariables();
     Collection<SearchableInput> inputs = fsm.getSearchableInputs();

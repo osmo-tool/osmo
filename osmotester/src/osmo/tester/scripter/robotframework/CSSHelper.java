@@ -6,6 +6,7 @@ package osmo.tester.scripter.robotframework;
  * @author Teemu Kanstren
  */
 public class CSSHelper {
+  /** We alter between different colors/ui classes for HTML rows. */
   private boolean alt = false;
 
   public void reset() {

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Configuration for a DSM configured test generation session.
+ * Configuration for a model slicing configured test generation session.
  *
  * @author Teemu Kanstren
  */
@@ -31,6 +31,7 @@ public class SlicingConfiguration {
   private Long seed = null;
   /** Allows the DSM to define the exact values for a variable to be used. */
   private ScriptedValueProvider scripter = null;
+  /** If the user wants to add a listener, this is the place to do it. */
   private GenerationListener listener = null;
 
   public Long getSeed() {
@@ -45,7 +46,6 @@ public class SlicingConfiguration {
   public void setSeed(long seed) {
     this.seed = seed;
   }
-
 
   public GenerationListener getListener() {
     return listener;
