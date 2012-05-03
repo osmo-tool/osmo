@@ -7,21 +7,24 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * A simple end condition to stop test case generation when the time is ended in generating test case or test suite
- * 
- * @author Olli-Pekka Puolitaival
+ * Signals generation ending when the given time has elapsed.
+ *
+ * @author Teemu Kanstren, Olli-Pekka Puolitaival
  */
 public class Time extends AbstractEndCondition {
+  /** Indicates whether time has passed or not, meaning should generation be stopped. */
   private boolean shouldEnd = false;
+  /** The number of time units until this should return true. */
   private final long delay;
+  /** The time unit used for evaluating time until signalling end. */
   private final TimeUnit timeUnit;
 
   public Time(long hours, long minutes, long seconds) {
-    this(hours*60*60+minutes*60+seconds);
+    this(hours * 60 * 60 + minutes * 60 + seconds);
   }
 
   public Time(long minutes, long seconds) {
-    this(minutes*60+seconds);
+    this(minutes * 60 + seconds);
   }
 
   public Time(long seconds) {
@@ -30,7 +33,7 @@ public class Time extends AbstractEndCondition {
 
   public Time(long delay, TimeUnit timeUnit) {
     if (delay <= 0) {
-      throw new IllegalArgumentException("Time for "+Time.class.getSimpleName()+" should be > 0, was "+delay);
+      throw new IllegalArgumentException("Time for " + Time.class.getSimpleName() + " should be > 0, was " + delay);
     }
     this.delay = delay;
     this.timeUnit = timeUnit;
