@@ -21,13 +21,22 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
 
-/** @author Teemu Kanstren */
+/**
+ * Listens to OSMO Tester test generation and builds a test report suitable for the Jenkins JUnit reporting task.
+ * To use, add this as a listener to OSMO Tester and once generation is finished, call methods writeStepReport()
+ * or writeTestReport() to produce a suitable report. The step report reports each test step as a different test case
+ * in Jenkins. The test report reports test cases as Jenkins tests.
+ * 
+ * @author Teemu Kanstren 
+ */
 public class JenkinsReportGenerator implements GenerationListener {
   /** For template->report generation. */
   private VelocityEngine velocity = new VelocityEngine();
   /** For storing template variables. */
   private VelocityContext vc = new VelocityContext();
+  /** We use the generation configuration to provide us with properties to the test report. */
   private OSMOConfiguration config = null;
+  /** The Jenkins (Ant) report format requires a name for the test suite. */
   private final JenkinsSuite suite = new JenkinsSuite("OSMO Test Suite");
 
   public JenkinsReportGenerator() {
@@ -78,6 +87,14 @@ public class JenkinsReportGenerator implements GenerationListener {
     this.suite.end();
   }
 
+  /**
+   * Generates a test report where each taken test step is reported as a separate test case.
+   * This makes Jenkins show reports, where each model object class is reported as its own test class and
+   * each time a step is taken, this is also shown.
+   * In the end, it is possible to identify failed test steps from this..
+   * 
+   * @param filename The name where to save the file. Remember to add ".xml" to the end.
+   */
   public void writeStepReport(String filename) {
     String report = generateReport("steps");
     try {

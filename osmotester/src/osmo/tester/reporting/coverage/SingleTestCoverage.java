@@ -39,6 +39,11 @@ public class SingleTestCoverage {
     collectVariableValues(tc);
   }
 
+  /**
+   * Count the number of times different requirements have been covered.
+   * 
+   * @param tc The test case to count the requirements from..
+   */
   private void countRequirements(TestCase tc) {
     Collection<String> covered = tc.getFullRequirementsCoverage();
     for (String req : covered) {
@@ -46,6 +51,12 @@ public class SingleTestCoverage {
     }
   }
 
+  /**
+   * Count the number of times each transition and transition pair has been covered in a given test case.
+   * If coverage is 0, nothing is given for that transition/pair.
+   * 
+   * @param tc The test case for which to get the coverage.
+   */
   private void countTransitions(TestCase tc) {
     Collection<String> names = tc.getAllTransitionNames();
     String previous = "init";
@@ -57,6 +68,12 @@ public class SingleTestCoverage {
     }
   }
 
+  /**
+   * Increment the count for the given key in the given map.
+   * 
+   * @param map Where to find the value.
+   * @param name The name of the key for the value.
+   */
   private void incrementCountFor(Map<String, Integer> map, String name) {
     Integer count = map.get(name);
     if (count == null) {
@@ -66,6 +83,11 @@ public class SingleTestCoverage {
     map.put(name, count);
   }
 
+  /**
+   * Captures all values that different model variables have received in a given test case.
+   * 
+   * @param tc To get the values from.
+   */
   private void collectVariableValues(TestCase tc) {
     Map<String, ModelVariable> variables = tc.getVariables();
     for (String var : variables.keySet()) {
@@ -83,6 +105,13 @@ public class SingleTestCoverage {
     return name;
   }
 
+  /**
+   * Gives the coverage count for the given key.
+   * 
+   * @param map Where to get the coverage count from.
+   * @param name The key name to get the count for.
+   * @return The coverage count for the given key.
+   */
   private int countFor(Map<String, Integer> map, String name) {
     Integer count = map.get(name);
     if (count == null) {

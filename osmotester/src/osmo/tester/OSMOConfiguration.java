@@ -33,7 +33,7 @@ public class OSMOConfiguration {
   private Collection<TransitionFilter> filters = new ArrayList<>();
   /** The algorithm to traverse the test model to generate test steps. */
   private FSMTraversalAlgorithm algorithm;
-  /** Should we fail then test generation if there is not enabled transitions? Otherwise we just end the test. */
+  /** Should we fail then test generation if there is no enabled transition? Otherwise we just end the test. */
   private boolean failWhenNoWayForward = true;
   /** Should we fail test generation if an Exception is thrown? */
   private boolean failWhenError = true;
