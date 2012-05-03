@@ -1,17 +1,17 @@
 package osmo.tester.reporting.jenkins;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /** @author Teemu Kanstren */
 public class JenkinsTest {
   private List<JenkinsStep> steps = new ArrayList<>();
-  private AtomicInteger nextId = new AtomicInteger(0);
+  private static AtomicInteger nextId = new AtomicInteger(0);
   private final int id;
+
+  public static void resetId() {
+    nextId.set(0);
+  }
 
   public JenkinsTest() {
     id = nextId.incrementAndGet();
@@ -20,11 +20,11 @@ public class JenkinsTest {
   public void add(JenkinsStep step) {
     steps.add(step);
   }
-  
+
   public String getName() {
-    return "Test"+id;
+    return "Test" + id;
   }
-  
+
   public String getClassName() {
     Collection<JenkinsStep> mySteps = new LinkedHashSet<>();
     mySteps.addAll(steps);
@@ -34,13 +34,13 @@ public class JenkinsTest {
     }
     return name.toString();
   }
-  
+
   public String getDuration() {
     if (steps.size() == 0) {
       return "!test has no steps!";
     }
     JenkinsStep first = steps.get(0);
-    JenkinsStep last = steps.get(steps.size()-1);
+    JenkinsStep last = steps.get(steps.size() - 1);
     long startTime = first.getStartTime();
     long endTime = last.getEndTime();
     long duration = endTime - startTime;

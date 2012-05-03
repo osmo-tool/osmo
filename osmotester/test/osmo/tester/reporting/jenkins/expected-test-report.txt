@@ -10,33 +10,33 @@
   </properties>
   <testcase name="Test1" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
+  <testcase name="Test2" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
+  <testcase name="Test3" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
+  <testcase name="Test4" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
+  <testcase name="Test5" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
+  <testcase name="Test6" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
+  <testcase name="Test7" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
+  <testcase name="Test8" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
+  <testcase name="Test9" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
+  <testcase name="Test10" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
+  <testcase name="Test11" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
+  <testcase name="Test12" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
+  <testcase name="Test13" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
+  <testcase name="Test14" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
   </testcase>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
+  <testcase name="Test15" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
   </testcase>
   <system-out>first
 Starting new test case 1
