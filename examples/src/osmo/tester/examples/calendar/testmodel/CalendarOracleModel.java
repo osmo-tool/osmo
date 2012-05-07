@@ -7,6 +7,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 
 /**
@@ -38,32 +39,34 @@ public class CalendarOracleModel {
 
   @Post
   public void genericOracle() {
+    Collection<String> users = state.getUsers();
     Map<String, Collection<ModelTask>> tasks = new HashMap<>();
+    Map<String, Collection<ModelEvent>> events = new HashMap<>();
+    for (String user : users) {
+      tasks.put(user, new LinkedHashSet<ModelTask>());
+      events.put(user, new LinkedHashSet<ModelEvent>());
+    }
+
     for (ModelTask task : state.getTasks()) {
       String uid = task.getUid();
       Collection<ModelTask> userTasks = tasks.get(uid);
-      if (userTasks == null) {
-        userTasks = new ArrayList<>();
-        tasks.put(uid, userTasks);
-      }
       userTasks.add(task);
     }
 
-    Map<String, Collection<ModelEvent>> events = new HashMap<>();
     for (ModelEvent event : state.getEvents()) {
       String uid = event.getUid();
       Collection<ModelEvent> userEvents = events.get(uid);
-      if (userEvents == null) {
-        userEvents = new ArrayList<>();
-        events.put(uid, userEvents);
-      }
       userEvents.add(event);
       Collection<String> participants = event.getParticipants();
       for (String participant : participants) {
-
+        Collection<ModelEvent> participantEvents = events.get(participant);
+        participantEvents.add(event);
       }
     }
-    scripter.assertUserTasks(uid, tasks);
-    scripter.assertUserEvents(uid, events);
+
+    for (String user : users) {
+      scripter.assertUserTasks(user, tasks.get(user));
+      scripter.assertUserEvents(user, events.get(user));
+    }
   }
 }

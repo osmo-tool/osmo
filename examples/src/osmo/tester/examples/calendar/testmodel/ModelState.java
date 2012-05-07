@@ -89,7 +89,9 @@ public class ModelState {
   }
 
   public Collection<String> getUsers() {
-    return users.getOptions();
+    Collection<String> result = new ArrayList<>();
+    result.addAll(users.getOptions());
+    return result;
   }
 
   public Collection<ModelTask> getTasks() {
@@ -115,16 +117,22 @@ public class ModelState {
     return ownerEvent;
   }
 
-  public ModelEvent getAndRemoveParticipantEvent() {
-    Collection<ModelEvent> participants = getParticipants();
-    return oneOf(participants);
+  public ParticipantEvent getAndRemoveParticipantEvent() {
+    Collection<ParticipantEvent> participants = getParticipants();
+    ParticipantEvent participantEvent = oneOf(participants);
+    String participant = participantEvent.getParticipant();
+    ModelEvent event = participantEvent.getEvent();
+    event.removeParticipant(participant);
+    return participantEvent;
   }
 
-  private Collection<ModelEvent> getParticipants() {
+  private Collection<ParticipantEvent> getParticipants() {
     List<ModelEvent> options = events.getOptions();
-    Collection<ModelEvent> participants = new ArrayList<>();
+    Collection<ParticipantEvent> participants = new ArrayList<>();
     for (ModelEvent event : options) {
-      participants.add(event);
+      for (String participant : event.getParticipants()) {
+        participants.add(new ParticipantEvent(participant, event));
+      }
     }
     return participants;
   }
@@ -138,8 +146,7 @@ public class ModelState {
   }
 
   public boolean hasParticipants() {
-    Collection<ModelEvent> participants = getParticipants();
-    return participants.size() > 0;
+    return getParticipants().size() > 0;
   }
 
   public Date randomStartTime() {
@@ -153,4 +160,18 @@ public class ModelState {
             '}';
   }
 
+  public Collection<ModelEvent> getEventsWithSpace() {
+    int max = getUsers().size()-1;    
+    Collection<ModelEvent> result = new ArrayList<>();
+    for (ModelEvent event : events.getOptions()) {
+      if (event.getParticipants().size() < max) {
+        result.add(event);
+      }
+    }
+    return result;
+  }
+
+  public ModelEvent getEventWithSpace() {
+    return oneOf(getEventsWithSpace());
+  }
 }

@@ -168,7 +168,6 @@ public class MainParser {
         }
       }
     }
-    //TODO: add test that this works..
     return errors;
   }
 

@@ -4,6 +4,7 @@ import osmo.common.log.Logger;
 import osmo.tester.generator.SearchableInputObserver;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.dataflow.SearchableInput;
+import osmo.tester.model.dataflow.SearchableInputField;
 import osmo.tester.model.dataflow.ValueSet;
 
 import java.lang.reflect.Method;
@@ -44,6 +45,8 @@ public class FSM {
   private Collection<VariableField> stateVariables = new ArrayList<>();
   /** The list of {@link SearchableInput} elements parsed from model objects. */
   private Collection<SearchableInput> searchableInputs = new ArrayList<>();
+  /** We read the {@link SearchableInput} values from these when tests start. */
+  private Collection<SearchableInputField> searchableInputFields = new ArrayList<>();
   /** The generated test suite (or one being generated). */
   private TestSuite suite;
   /** The list of requirements that needs to be covered. */
@@ -284,12 +287,37 @@ public class FSM {
   }
 
   /**
+   * These provide access to the {@link SearchableInput} elements, to enable capturing changes between tests.
+   * 
+   * @return The access codes for the searchable inputs.
+   */
+  public Collection<SearchableInputField> getSearchableInputFields() {
+    return searchableInputFields;
+  }
+
+  /**
    * Model variables extending the {@link SearchableInput} class. Does not include @Variable annotated classes.
    *
    * @return Variables extending {@link SearchableInput} classes.
    */
   public Collection<SearchableInput> getSearchableInputs() {
     return searchableInputs;
+  }
+
+  /**
+   * Resets the stores fields for new test.
+   */
+  public void clearSearchableInputs() {
+    searchableInputs.clear();
+  }
+
+  /**
+   * Add a new access method for a {@link SearchableInput} to the model.
+   *
+   * @param field to add.
+   */
+  public void addSearchableInputField(SearchableInputField field) {
+    searchableInputFields.add(field);
   }
 
   /**

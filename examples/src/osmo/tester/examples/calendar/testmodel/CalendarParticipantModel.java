@@ -5,6 +5,7 @@ import osmo.tester.annotation.Transition;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 
 import java.io.PrintStream;
+import java.util.Collection;
 
 /**
  * Adds participants to the calendar test model.
@@ -35,12 +36,14 @@ public class CalendarParticipantModel {
 
   @Guard("LinkEventToUser")
   public boolean guardLinkEventToUser() {
-    return state.hasEvents();
+    return state.getEventsWithSpace().size() > 0;
   }
 
   @Transition("LinkEventToUser")
   public void linkEventToUser() {
-    ModelEvent event = state.getRandomExistingEvent();
+    Collection<String> users = state.getUsers();
+    ModelEvent event = state.getEventWithSpace();
+    //TODO: and this one has to check that the UID given is not the same as with the ModelEvent
     String uid = state.randomUID();
     out.println("--LINKEVENTTOUSER:" + uid + " - " + event);
     event.addParticipant(uid);
