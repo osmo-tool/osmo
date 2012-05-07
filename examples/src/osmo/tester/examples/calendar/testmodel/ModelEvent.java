@@ -60,8 +60,12 @@ public class ModelEvent { // implements Comparable<ModelEvent> {
     this.eventId = eventId;
   }
 
-  public void addParticipant(String uid) {
-    participants.add(uid);
+  public void addParticipant(String user) {
+    participants.add(user);
+  }
+  
+  public void removeParticipant(String user) {
+    participants.remove(user);
   }
 
   public Collection<String> getParticipants() {

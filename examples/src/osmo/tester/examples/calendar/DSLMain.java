@@ -25,7 +25,7 @@ import osmo.visualizer.model.FSMBuildVisualizer;
  * @author Teemu Kanstren
  */
 public class DSLMain {
-  public static void main1(String[] args) {
+  public static void main(String[] args) {
     OSMOTester osmo = new OSMOTester();
 //    osmo.addSuiteEndCondition(new Length(2));
     ModelState state = new ModelState();
@@ -45,7 +45,7 @@ public class DSLMain {
     g.setVisible(true);
   }
 
-  public static void main(String[] args) throws Exception {
+  public static void main1(String[] args) throws Exception {
 //    Logger.debug = true;
     AsciiParser parser = new AsciiParser();
     SlicingConfiguration conf = parser.loadAndParse("osmo-dsl.txt");

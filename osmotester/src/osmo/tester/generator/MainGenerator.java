@@ -12,6 +12,8 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
+import osmo.tester.model.dataflow.SearchableInput;
+import osmo.tester.model.dataflow.SearchableInputField;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -64,13 +66,9 @@ public class MainGenerator {
 
   /** Initializes test generation. Should be called before any tests are generated. */
   public void initSuite() {
-//    initEndConditions();
-//    suite = fsm.initSuite(config.getScripter());
     suite = fsm.getSuite();
     log.debug("Starting test suite generation");
     beforeSuite();
-    //this is here so that FSM already has the suite initialized
-//    listeners.init(fsm);
   }
 
   /** Handles suite shutdown. Should be called after all tests have been generated. */
@@ -86,11 +84,13 @@ public class MainGenerator {
    */
   public TestCase nextTest() {
     for (EndCondition ec : config.getTestCaseEndConditions()) {
+      //re-initialize end conditions before new tests to remove previous test state
       ec.init(fsm);
     }
     testCount++;
     log.debug("Starting new test generation");
     beforeTest();
+    captureSearchableInputs();
     TestCase test = suite.getCurrentTest();
     try {
       while (!checkTestCaseEndConditions()) {
@@ -117,6 +117,15 @@ public class MainGenerator {
     afterTest();
     log.debug("Finished new test generation");
     return test;
+  }
+
+  private void captureSearchableInputs() {
+    Collection<SearchableInputField> inputs = fsm.getSearchableInputFields();
+    fsm.clearSearchableInputs();
+    for (SearchableInputField input : inputs) {
+      fsm.addSearchableInput(input.getInput());
+    }
+    fsm.initSuite(config.getScripter());
   }
 
   private RuntimeException unwrap(RuntimeException e) {
@@ -251,7 +260,7 @@ public class MainGenerator {
   }
 
   private void beforeTest() {
-    //update history
+    //update suite
     suite.startTest();
     listeners.testStarted(suite.getCurrentTest());
     Collection<InvocationTarget> befores = fsm.getBefores();

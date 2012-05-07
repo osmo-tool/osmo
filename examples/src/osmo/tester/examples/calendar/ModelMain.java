@@ -4,6 +4,7 @@ import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.examples.calendar.scripter.offline.OfflineScripter;
+import osmo.tester.examples.calendar.scripter.online.OnlineScripter;
 import osmo.tester.examples.calendar.testmodel.CalendarBaseModel;
 import osmo.tester.examples.calendar.testmodel.CalendarErrorHandlingModel;
 import osmo.tester.examples.calendar.testmodel.CalendarFailureModel;
@@ -75,9 +76,9 @@ public class ModelMain {
     osmo.setConfig(config);
     osmo.addSuiteEndCondition(new Length(20));
     ModelState state = new ModelState();
-//    CalendarScripter scripter = new OnlineScripter();
+    CalendarScripter scripter = new OnlineScripter();
 //    CalendarScripter scripter = new MockScripter();
-    CalendarScripter scripter = new OfflineScripter("tests.html");
+//    CalendarScripter scripter = new OfflineScripter("tests.html");
     osmo.addModelObject(state);
     osmo.addModelObject(new CalendarBaseModel(state, scripter));
     osmo.addModelObject(new CalendarOracleModel(state, scripter));
@@ -85,7 +86,7 @@ public class ModelMain {
     osmo.addModelObject(new CalendarOverlappingModel(state, scripter));
     osmo.addModelObject(new CalendarParticipantModel(state, scripter));
     osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter));
-    osmo.addModelObject(new CalendarFailureModel(state, scripter));
+//    osmo.addModelObject(new CalendarFailureModel(state, scripter));
 //    osmo.setAlgorithm(new ManualAlgorithm());
 //    osmo.setAlgorithm(new ManualAlgorithm());
     osmo.generate();
