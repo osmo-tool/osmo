@@ -1,5 +1,7 @@
 package osmo.tester.examples.calendar.testmodel;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -20,6 +22,7 @@ public class ModelEvent { // implements Comparable<ModelEvent> {
   private String uid;
   /** Unique ID for the event. */
   private String eventId;
+  private Collection<String> participants = new ArrayList<>();
 
   public ModelEvent(String uid, Date start, Date end, String description, String location) {
     this.start = start;
@@ -55,6 +58,14 @@ public class ModelEvent { // implements Comparable<ModelEvent> {
 
   public void setEventId(String eventId) {
     this.eventId = eventId;
+  }
+
+  public void addParticipant(String uid) {
+    participants.add(uid);
+  }
+
+  public Collection<String> getParticipants() {
+    return participants;
   }
 
   @Override

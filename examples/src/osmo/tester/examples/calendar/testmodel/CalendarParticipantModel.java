@@ -43,13 +43,13 @@ public class CalendarParticipantModel {
     ModelEvent event = state.getRandomExistingEvent();
     String uid = state.randomUID();
     out.println("--LINKEVENTTOUSER:" + uid + " - " + event);
-    state.attach(uid, event);
+    event.addParticipant(uid);
     scripter.linkEventToUser(event, uid);
   }
 
   @Guard("RemoveParticipantEvent")
   public boolean guardRemoveParticipantEvent() {
-    return state.hasParticipantEvents();
+    return state.hasParticipants();
   }
 
   @Transition("RemoveParticipantEvent")
