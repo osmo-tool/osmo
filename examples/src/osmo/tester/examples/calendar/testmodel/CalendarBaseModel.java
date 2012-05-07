@@ -9,7 +9,7 @@ import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import java.io.PrintStream;
 import java.util.Date;
 
-import static osmo.tester.examples.calendar.testmodel.ModelHelper.*;
+import static osmo.tester.examples.calendar.testmodel.ModelHelper.calculateEndTime;
 
 /**
  * The base test model for the calendar. Includes
@@ -66,7 +66,7 @@ public class CalendarBaseModel {
 
   @Transition("RemoveOrganizerEvent")
   public void removeOrganizerEvent() {
-    ModelEvent event = state.getAndRemoveOrganizerEvent();
+    ModelEvent event = state.getAndRemoveOwnerEvent();
     out.println("--REMOVEORGANIZEREVENT:" + event);
     scripter.removeEvent(event.getUid(), event);
   }
