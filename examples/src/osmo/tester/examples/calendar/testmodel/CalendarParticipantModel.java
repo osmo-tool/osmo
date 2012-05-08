@@ -7,6 +7,8 @@ import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import java.io.PrintStream;
 import java.util.Collection;
 
+import static osmo.common.TestUtils.oneOf;
+
 /**
  * Adds participants to the calendar test model.
  * Includes
@@ -43,11 +45,13 @@ public class CalendarParticipantModel {
   public void linkEventToUser() {
     Collection<String> users = state.getUsers();
     ModelEvent event = state.getEventWithSpace();
-    //TODO: and this one has to check that the UID given is not the same as with the ModelEvent
-    String uid = state.randomUID();
-    out.println("--LINKEVENTTOUSER:" + uid + " - " + event);
-    event.addParticipant(uid);
-    scripter.linkEventToUser(event, uid);
+    Collection<String> participants = event.getParticipants();
+    users.removeAll(participants);
+    users.remove(event.getUid());
+    String user = oneOf(users);
+    out.println("--LINKEVENTTOUSER:" + user + " - " + event);
+    event.addParticipant(user);
+    scripter.linkEventToUser(event, user);
   }
 
   @Guard("RemoveParticipantEvent")

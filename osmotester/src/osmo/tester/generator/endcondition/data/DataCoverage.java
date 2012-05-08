@@ -59,7 +59,7 @@ public class DataCoverage extends AbstractEndCondition {
       Collection<Object> temp = new ArrayList<>();
       temp.addAll(req.getValues());
       String name = req.getName();
-      log.debug("name:"+name);
+      log.debug("name:" + name);
       ModelVariable variable = variables.get(name);
       Collection<Object> values = variable.getValues();
       if (req.isAny()) {
@@ -95,6 +95,7 @@ public class DataCoverage extends AbstractEndCondition {
     Collection<String> shouldClear = new ArrayList<>();
     shouldClear.addAll(requirements.keySet());
     Collection<SearchableInput> inputs = fsm.getSearchableInputs();
+    log.debug("inputs:" + inputs);
     for (SearchableInput input : inputs) {
       String name = input.getName();
       log.debug("Input:" + name);

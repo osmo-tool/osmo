@@ -50,6 +50,11 @@ public class OfflineScripter implements CalendarScripter {
     scripter.addVariable("user3", "OSMO " + words.next());
     scripter.addVariable("user4", "OSMO " + words.next());
     scripter.addVariable("user5", "OSMO " + words.next());
+    scripter.addVariable("user6", "OSMO " + words.next());
+    scripter.addVariable("user7", "OSMO " + words.next());
+    scripter.addVariable("user8", "OSMO " + words.next());
+    scripter.addVariable("user9", "OSMO " + words.next());
+    scripter.addVariable("user10", "OSMO " + words.next());
   }
 
   /**

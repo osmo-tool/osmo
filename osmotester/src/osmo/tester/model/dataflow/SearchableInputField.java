@@ -31,4 +31,8 @@ public class SearchableInputField {
     }
     return input;
   }
+
+  public String getName() {
+    return field.getName();
+  }
 }

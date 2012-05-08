@@ -81,6 +81,7 @@ public class OSMOTester {
     fsm = parser.parse(config);
     MainGenerator generator = new MainGenerator(fsm, config);
     config.init(fsm);
+    generator.initSuite();
     return generator;
   }
 

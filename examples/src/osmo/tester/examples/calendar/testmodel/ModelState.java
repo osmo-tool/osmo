@@ -6,7 +6,6 @@ import osmo.tester.model.dataflow.ValueSet;
 
 import java.util.*;
 
-import static osmo.common.TestUtils.cInt;
 import static osmo.common.TestUtils.oneOf;
 
 /**
@@ -15,18 +14,20 @@ import static osmo.common.TestUtils.oneOf;
  * @author Teemu Kanstren
  */
 public class ModelState {
+  /** How many users? */
+  private ValueRange<Integer> userCount = new ValueRange<>(1, 10);
   /** Users with calendars. */
-  private ValueSet<String> users;
+  private ValueSet<String> users = new ValueSet<>();
   /** Tasks for each user. */
-  private ValueSet<ModelTask> tasks;
+  private ValueSet<ModelTask> tasks = new ValueSet<>();
   /** Events for each user. */
-  private ValueSet<ModelEvent> events;
+  private ValueSet<ModelEvent> events = new ValueSet<>();
   /** Used to generate unique identifiers for tasks. */
-  private ValueRange<Integer> taskId;
+  private ValueRange<Integer> taskId = new ValueRange<>(0, Integer.MAX_VALUE);
   /** Used to generate unique identifiers for events. */
-  private ValueRange<Integer> eventId;
+  private ValueRange<Integer> eventId = new ValueRange<>(0, Integer.MAX_VALUE);
   /** Used to generate start times between January 2000 and December 2010. */
-  private ValueRange<Long> startTime;
+  private ValueRange<Long> startTime = new ValueRange<>(0, 0);
 
   public ModelState() {
     Calendar start = Calendar.getInstance();
@@ -36,22 +37,23 @@ public class ModelState {
     end.setTime(new Date(0));
     end.set(2010, Calendar.DECEMBER, 31, 23, 59, 59);
     startTime = new ValueRange<>(start.getTimeInMillis(), end.getTimeInMillis());
+
+    userCount.setStrategy(DataGenerationStrategy.RANDOM);
+    users = new ValueSet<>(DataGenerationStrategy.RANDOM);
+    int n = userCount.next();
+    for (int i = 1; i <= n; i++) {
+      this.users.add("user" + i);
+    }
   }
 
   /** Used to reset the state between test generation. */
   public void reset() {
-    users = new ValueSet<>(DataGenerationStrategy.RANDOM);
     taskId = new ValueRange<>(0, Integer.MAX_VALUE);
     eventId = new ValueRange<>(0, Integer.MAX_VALUE);
     taskId.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     eventId.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     tasks = new ValueSet<>();
     events = new ValueSet<>();
-
-    int users = cInt(1, 5);
-    for (int i = 1; i <= users; i++) {
-      this.users.add("user" + i);
-    }
   }
 
   public String randomUID() {
@@ -161,7 +163,7 @@ public class ModelState {
   }
 
   public Collection<ModelEvent> getEventsWithSpace() {
-    int max = getUsers().size()-1;    
+    int max = getUsers().size() - 1;
     Collection<ModelEvent> result = new ArrayList<>();
     for (ModelEvent event : events.getOptions()) {
       if (event.getParticipants().size() < max) {
