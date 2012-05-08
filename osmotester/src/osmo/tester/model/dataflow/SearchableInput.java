@@ -1,5 +1,6 @@
 package osmo.tester.model.dataflow;
 
+import osmo.common.log.Logger;
 import osmo.tester.gui.manualdrive.ValueGUI;
 import osmo.tester.model.ScriptedValueProvider;
 import osmo.tester.model.dataflow.wrappers.ToStringWrapper;
@@ -12,6 +13,7 @@ import java.util.Collection;
  * @author Teemu Kanstren
  */
 public abstract class SearchableInput<T> implements Input<T>, Output<T> {
+  private static Logger log = new Logger(SearchableInput.class);
   /** Variable name. */
   private String name;
   /** The observer to be notified when variable data is generated. */
@@ -45,6 +47,7 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T> {
   }
 
   public void setObserver(InputObserver<T> observer) {
+    log.debug("Setting observer:"+observer);
     this.observer = observer;
   }
 

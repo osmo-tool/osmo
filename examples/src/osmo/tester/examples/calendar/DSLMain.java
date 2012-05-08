@@ -19,7 +19,7 @@ import osmo.visualizer.model.FSMBuildVisualizer;
  * @author Teemu Kanstren
  */
 public class DSLMain {
-  public static void main(String[] args) {
+  public static void main1(String[] args) {
     OSMOTester osmo = new OSMOTester();
 //    osmo.addSuiteEndCondition(new Length(2));
     ModelState state = new ModelState();
@@ -35,15 +35,15 @@ public class DSLMain {
     osmo.addModelObject(new CalendarFailureModel(state, scripter));
     MainGenerator generator = osmo.initGenerator();
     //TODO: move these to SlicerMain
-//    generator.initSuite();
+//    generator.initSearchableInputs();
 //    generator.nextTest();
     FSM fsm = osmo.getFsm();
     SlicingGUI g = new SlicingGUI(fsm);
     g.setVisible(true);
   }
 
-  public static void main1(String[] args) throws Exception {
-    Logger.debug = true;
+  public static void main(String[] args) throws Exception {
+//    Logger.debug = true;
     AsciiParser parser = new AsciiParser();
     SlicingConfiguration conf = parser.loadAndParse("osmo-dsl.txt");
     conf.setListener(new FSMBuildVisualizer());

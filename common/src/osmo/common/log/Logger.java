@@ -16,6 +16,8 @@ public class Logger {
   private java.util.logging.Logger logger;
   /** When set to true, debug information will be printed to log file/console. */
   public static boolean debug = false;
+  /** When set to true, warning information will be printed to log file/console. */
+  public static boolean warn = true;
   /** Log file handler, shared to keep from creating numerous log files. */
   private static FileHandler file;
   /** Name of the log file to be written. */
@@ -41,7 +43,11 @@ public class Logger {
 
   private void init(String name) {
     logger = java.util.logging.Logger.getLogger(name);
-    if (!debug) {
+    if (warn && !debug) {
+      logger.setLevel(Level.WARNING);
+      return;
+    }
+    if (!warn && !debug) {
       logger.setLevel(Level.OFF);
       return;
     }
@@ -68,11 +74,21 @@ public class Logger {
   /**
    * Prints debug level messages. If debug level is not enabled, nothing is printed.
    *
-   * @param msg The mesage to be printed.
+   * @param msg The message to be printed.
    */
   public void debug(String msg) {
 //    System.out.println("hello:"+msg);
     logger.fine(msg);
+  }
+
+  /**
+   * Prints warning level messages. If warning level is not enabled, nothing is printed.
+   *
+   * @param msg The message to be printed.
+   */
+  public void warn(String msg) {
+//    System.out.println("hello:"+msg);
+    logger.warning(msg);
   }
 
   /**

@@ -4,6 +4,7 @@ import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.examples.calendar.scripter.offline.OfflineScripter;
+import osmo.tester.examples.calendar.scripter.online.OnlineScripter;
 import osmo.tester.examples.calendar.testmodel.*;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.endcondition.Length;
@@ -27,8 +28,8 @@ public class ModelMain {
     OSMOTester osmo = new OSMOTester();
 //    osmo.addSuiteEndCondition(new Length(2));
     ModelState state = new ModelState();
-//    CalendarScripter scripter = new OnlineScripter();
-    CalendarScripter scripter = new OfflineScripter("tests.html");
+    CalendarScripter scripter = new OnlineScripter();
+//    CalendarScripter scripter = new OfflineScripter("tests.html");
     osmo.addModelObject(new CalendarBaseModel(state, scripter));
 //    osmo.addModelObject(new CalendarOracleModel(state, scripter));
     osmo.addModelObject(new CalendarTaskModel(state, scripter));

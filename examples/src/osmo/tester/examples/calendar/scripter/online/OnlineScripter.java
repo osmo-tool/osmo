@@ -107,7 +107,7 @@ public class OnlineScripter implements CalendarScripter {
   public void assertUserEvents(String uid, Collection<ModelEvent> events) {
     CalendarApplication calendar = getCalendarFor(uid);
     Collection<CalendarEvent> calendarEvents = calendar.getEvents();
-    System.out.println("uid:"+uid+" events:"+events+" cevents:"+calendarEvents);
+//    System.out.println("uid:"+uid+" events:"+events+" cevents:"+calendarEvents);
     if (events == null) {
       if (calendarEvents != null && calendarEvents.size() > 0) {
         fail("Events are null in model, should be empty also in calendar");
