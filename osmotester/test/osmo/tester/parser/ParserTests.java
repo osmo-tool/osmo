@@ -250,6 +250,7 @@ public class ParserTests {
   public void searchableInputParsing() {
     VariableModel2 model = new VariableModel2();
     FSM fsm = parser.parse(conf(model));
+    fsm.initSearchableInputs(null);
     Collection<SearchableInput> inputs = fsm.getSearchableInputs();
     assertEquals("Number of inputs", 2, inputs.size());
     assertSearchableInputPresent(inputs, "range");

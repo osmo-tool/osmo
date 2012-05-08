@@ -49,34 +49,32 @@ public class SlicerMain {
    * @throws Exception If classes cannot instantiated, etc.
    */
   public static void execute(SlicingConfiguration slicingConfig) throws Exception {
-    OSMOTester osmo = new OSMOTester();
+    Class<?> fClass = Class.forName(slicingConfig.getModelFactory());
+    OSMOConfigurationFactory factory = (OSMOConfigurationFactory) fClass.newInstance();
+    OSMOConfiguration osmoConfig = factory.createConfiguration();
     log.debug("Starting slicer execution");
     GenerationListener listener = slicingConfig.getListener();
     if (listener != null) {
       log.debug("Adding listener:"+listener);
-      osmo.addListener(listener);
+      osmoConfig.addListener(listener);
     }
     if (slicingConfig.getAlgorithm() != null) {
       Class<?> aClass = Class.forName(slicingConfig.getAlgorithm());
       FSMTraversalAlgorithm algorithm = (FSMTraversalAlgorithm) aClass.newInstance();
       log.debug("Setting algorithm:"+algorithm);
-      osmo.setAlgorithm(algorithm);
+      osmoConfig.setAlgorithm(algorithm);
     }
-    Class<?> fClass = Class.forName(slicingConfig.getModelFactory());
-    OSMOConfigurationFactory factory = (OSMOConfigurationFactory) fClass.newInstance();
-    OSMOConfiguration osmoConfig = factory.createConfiguration();
     log.debug("Created OSMO Configuration:"+osmoConfig);
     if (slicingConfig.getSeed() != null) {
       osmoConfig.setSeed(slicingConfig.getSeed());
     }
-    osmo.setConfig(osmoConfig);
     List<DataCoverageRequirement> dataRequirements = slicingConfig.getDataRequirements();
     DataCoverage dc = new DataCoverage();
     for (DataCoverageRequirement req : dataRequirements) {
       log.debug("Adding data coverage requirement:"+req);
       dc.addRequirement(req);
     }
-    osmo.addTestEndCondition(dc);
+    osmoConfig.addTestEndCondition(dc);
     MaxTransitionFilter filter = new MaxTransitionFilter();
     StepCoverage sc = new StepCoverage();
     Collection<StepRequirement> stepRequirements = slicingConfig.getStepRequirements();
@@ -94,11 +92,13 @@ public class SlicerMain {
         filter.setMax(step, max);
       }
     }
-    osmo.addTestEndCondition(sc);
-    osmo.addFilter(filter);
-    osmo.setSeed(osmoConfig.getSeed());
-    osmo.setValueScripter(slicingConfig.getScriptedValueProvider());
+    osmoConfig.addTestEndCondition(sc);
+    osmoConfig.addFilter(filter);
+    osmoConfig.setSeed(osmoConfig.getSeed());
+    osmoConfig.setScripter(slicingConfig.getScriptedValueProvider());
     log.debug("Starting generator");
+    OSMOTester osmo = new OSMOTester();
+    osmo.setConfig(osmoConfig);
     osmo.generate();
   }
 }

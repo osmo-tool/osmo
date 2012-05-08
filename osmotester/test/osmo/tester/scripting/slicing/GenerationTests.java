@@ -1,5 +1,6 @@
 package osmo.tester.scripting.slicing;
 
+import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
@@ -96,5 +97,10 @@ public class GenerationTests {
     config.setSeed(233);
     SlicerMain.execute(config);
     assertResult("expected-generate3.txt");
+  }
+  
+  @Test
+  public void customFilter() {
+    Assert.fail("TBD");
   }
 }

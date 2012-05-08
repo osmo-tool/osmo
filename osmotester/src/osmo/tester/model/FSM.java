@@ -47,6 +47,8 @@ public class FSM {
   private Collection<SearchableInput> searchableInputs = new ArrayList<>();
   /** We read the {@link SearchableInput} values from these when tests start. */
   private Collection<SearchableInputField> searchableInputFields = new ArrayList<>();
+  /** Scripter used for {@link SearchableInput}. */
+  private ScriptedValueProvider scripter;
   /** The generated test suite (or one being generated). */
   private TestSuite suite;
   /** The list of requirements that needs to be covered. */
@@ -333,7 +335,11 @@ public class FSM {
    * @param scripter Optional scripter for input data scripting.
    * @return the initialized test suite.
    */
-  public TestSuite initSuite(ScriptedValueProvider scripter) {
+  public TestSuite initSearchableInputs(ScriptedValueProvider scripter) {
+    this.scripter = scripter;
+    //initial capture to allow FSM to have names, etc. for algorithm initialization
+    captureSearchableInputs();
+
     Collection<String> scriptedVariables = null;
     if (scripter != null) {
       scriptedVariables = initScripts(scripter);
@@ -347,6 +353,14 @@ public class FSM {
       }
     }
     return suite;
+  }
+
+  private void captureSearchableInputs() {
+    Collection<SearchableInputField> inputs = getSearchableInputFields();
+    clearSearchableInputs();
+    for (SearchableInputField input : inputs) {
+      addSearchableInput(input.getInput());
+    }
   }
 
   private Collection<String> initScripts(ScriptedValueProvider scripter) {

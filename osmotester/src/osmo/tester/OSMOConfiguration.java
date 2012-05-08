@@ -193,7 +193,7 @@ public class OSMOConfiguration {
     if (algorithm == null) {
       algorithm = new RandomAlgorithm();
     }
-    fsm.initSuite(scripter);
+    fsm.initSearchableInputs(scripter);
     algorithm.init(fsm);
     for (EndCondition ec : suiteEndConditions) {
       ec.init(fsm);

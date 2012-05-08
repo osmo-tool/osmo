@@ -12,7 +12,6 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
-import osmo.tester.model.dataflow.SearchableInputField;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -68,8 +67,6 @@ public class MainGenerator {
     suite = fsm.getSuite();
     log.debug("Starting test suite generation");
     beforeSuite();
-    //initial capture to allow FSM to have names, etc. for algorithm initialization
-    captureSearchableInputs();
   }
 
   /** Handles suite shutdown. Should be called after all tests have been generated. */
@@ -91,7 +88,7 @@ public class MainGenerator {
     testCount++;
     log.debug("Starting new test generation");
     beforeTest();
-    captureSearchableInputs();
+    fsm.initSearchableInputs(config.getScripter());
     TestCase test = suite.getCurrentTest();
     try {
       while (!checkTestCaseEndConditions()) {
@@ -111,22 +108,12 @@ public class MainGenerator {
       } else {
         listeners.testError(test, unwrap(e));
         e.printStackTrace();
-        System.out.println("Configuration set not to fail - continuing with next test");
       }
       log.debug("Skipped test error due to settings (no fail when error)");
     }
     afterTest();
     log.debug("Finished new test generation");
     return test;
-  }
-
-  public void captureSearchableInputs() {
-    Collection<SearchableInputField> inputs = fsm.getSearchableInputFields();
-    fsm.clearSearchableInputs();
-    for (SearchableInputField input : inputs) {
-      fsm.addSearchableInput(input.getInput());
-    }
-    fsm.initSuite(config.getScripter());
   }
 
   private RuntimeException unwrap(RuntimeException e) {
