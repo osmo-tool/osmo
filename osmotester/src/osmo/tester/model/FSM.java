@@ -288,7 +288,7 @@ public class FSM {
 
   /**
    * These provide access to the {@link SearchableInput} elements, to enable capturing changes between tests.
-   * 
+   *
    * @return The access codes for the searchable inputs.
    */
   public Collection<SearchableInputField> getSearchableInputFields() {
@@ -304,9 +304,7 @@ public class FSM {
     return searchableInputs;
   }
 
-  /**
-   * Resets the stores fields for new test.
-   */
+  /** Resets the stores fields for new test. */
   public void clearSearchableInputs() {
     searchableInputs.clear();
   }
@@ -353,11 +351,11 @@ public class FSM {
 
   private Collection<String> initScripts(ScriptedValueProvider scripter) {
     Map<String, ValueSet<String>> scripts = scripter.getScripts();
-    log.debug("scripts loaded:"+scripts);
+    log.debug("scripts loaded:" + scripts);
     Collection<String> errors = new ArrayList<>();
     for (String variable : scripts.keySet()) {
       boolean found = false;
-      for (SearchableInput input : searchableInputs) {
+      for (SearchableInputField input : searchableInputFields) {
         if (input.getName().equals(variable)) {
           found = true;
           break;

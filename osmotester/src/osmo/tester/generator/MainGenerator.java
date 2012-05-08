@@ -12,7 +12,6 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
-import osmo.tester.model.dataflow.SearchableInput;
 import osmo.tester.model.dataflow.SearchableInputField;
 
 import java.lang.reflect.InvocationTargetException;
@@ -69,6 +68,8 @@ public class MainGenerator {
     suite = fsm.getSuite();
     log.debug("Starting test suite generation");
     beforeSuite();
+    //initial capture to allow FSM to have names, etc. for algorithm initialization
+    captureSearchableInputs();
   }
 
   /** Handles suite shutdown. Should be called after all tests have been generated. */
@@ -119,7 +120,7 @@ public class MainGenerator {
     return test;
   }
 
-  private void captureSearchableInputs() {
+  public void captureSearchableInputs() {
     Collection<SearchableInputField> inputs = fsm.getSearchableInputFields();
     fsm.clearSearchableInputs();
     for (SearchableInputField input : inputs) {

@@ -63,7 +63,7 @@ public class ModelEvent { // implements Comparable<ModelEvent> {
   public void addParticipant(String user) {
     participants.add(user);
   }
-  
+
   public void removeParticipant(String user) {
     participants.remove(user);
   }
@@ -75,11 +75,13 @@ public class ModelEvent { // implements Comparable<ModelEvent> {
   @Override
   public String toString() {
     return "ModelEvent{" +
-            "uid='" + uid + '\'' +
+            "start=" + start +
+            ", end=" + end +
             ", description='" + description + '\'' +
             ", location='" + location + '\'' +
-            ", start=" + start +
-            ", end=" + end +
+            ", uid='" + uid + '\'' +
+            ", eventId='" + eventId + '\'' +
+            ", participants=" + participants +
             '}';
   }
 

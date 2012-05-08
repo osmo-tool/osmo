@@ -1,16 +1,10 @@
 package osmo.tester.examples.calendar;
 
+import osmo.common.log.Logger;
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.examples.calendar.scripter.offline.OfflineScripter;
-import osmo.tester.examples.calendar.testmodel.CalendarBaseModel;
-import osmo.tester.examples.calendar.testmodel.CalendarErrorHandlingModel;
-import osmo.tester.examples.calendar.testmodel.CalendarFailureModel;
-import osmo.tester.examples.calendar.testmodel.CalendarOracleModel;
-import osmo.tester.examples.calendar.testmodel.CalendarOverlappingModel;
-import osmo.tester.examples.calendar.testmodel.CalendarParticipantModel;
-import osmo.tester.examples.calendar.testmodel.CalendarTaskModel;
-import osmo.tester.examples.calendar.testmodel.ModelState;
+import osmo.tester.examples.calendar.testmodel.*;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.gui.slicing.SlicingGUI;
 import osmo.tester.model.FSM;
@@ -40,13 +34,16 @@ public class DSLMain {
     osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter));
     osmo.addModelObject(new CalendarFailureModel(state, scripter));
     MainGenerator generator = osmo.initGenerator();
+    //TODO: move these to SlicerMain
+//    generator.initSuite();
+//    generator.nextTest();
     FSM fsm = osmo.getFsm();
     SlicingGUI g = new SlicingGUI(fsm);
     g.setVisible(true);
   }
 
   public static void main1(String[] args) throws Exception {
-//    Logger.debug = true;
+    Logger.debug = true;
     AsciiParser parser = new AsciiParser();
     SlicingConfiguration conf = parser.loadAndParse("osmo-dsl.txt");
     conf.setListener(new FSMBuildVisualizer());
