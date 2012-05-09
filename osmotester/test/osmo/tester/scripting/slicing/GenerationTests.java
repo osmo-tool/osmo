@@ -1,10 +1,10 @@
 package osmo.tester.scripting.slicing;
 
-import junit.framework.Assert;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import osmo.tester.generation.TestSequenceListener;
 import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
-import osmo.tester.model.ScriptedValueProvider;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -18,7 +18,7 @@ import static osmo.common.TestUtils.unifyLineSeparators;
 public class GenerationTests {
   private PrintStream old = null;
   private ByteArrayOutputStream bos = null;
-  
+
   @Before
   public void setup() {
     old = System.out;
@@ -26,7 +26,12 @@ public class GenerationTests {
     PrintStream out = new PrintStream(bos);
     System.setOut(out);
   }
-  
+
+  @After
+  public void teardown() {
+    System.setOut(old);
+  }
+
   private void assertResult(String filename) {
     System.setOut(old);
     String expected = getResource(getClass(), filename);
@@ -35,7 +40,7 @@ public class GenerationTests {
     actual = unifyLineSeparators(actual, "\n");
     assertEquals("Print from model", expected, actual);
   }
-  
+
   @Test
   public void generateMinOnly() throws Exception {
     SlicingConfiguration config = new SlicingConfiguration();
@@ -69,10 +74,8 @@ public class GenerationTests {
   @Test
   public void scriptedWithInvalidValues() throws Exception {
     SlicingConfiguration config = new SlicingConfiguration();
-    ScriptedValueProvider scripter = new ScriptedValueProvider();
-    scripter.addValue("set", "1");
-    scripter.addValue("set", "2");
-    config.setScripter(scripter);
+    config.addValue("set", "1");
+    config.addValue("set", "2");
     config.setAlgorithm("random");
     config.setModelFactory("osmo.tester.scripting.slicing.TestModelFactory2");
     config.setSeed(233);
@@ -88,19 +91,25 @@ public class GenerationTests {
   @Test
   public void scriptedWithSetValues() throws Exception {
     SlicingConfiguration config = new SlicingConfiguration();
-    ScriptedValueProvider scripter = new ScriptedValueProvider();
-    scripter.addValue("set", "v1");
-    scripter.addValue("set", "v2");
-//    config.setScripter(scripter);
+    config.addValue("set", "v1");
+    config.addValue("set", "v2");
     config.setAlgorithm("random");
     config.setModelFactory("osmo.tester.scripting.slicing.TestModelFactory2");
     config.setSeed(233);
     SlicerMain.execute(config);
     assertResult("expected-generate3.txt");
   }
-  
+
   @Test
-  public void customFilter() {
-    Assert.fail("TBD");
+  public void customListener() throws Exception {
+    SlicingConfiguration config = new SlicingConfiguration();
+    TestSequenceListener listener = new TestSequenceListener();
+    config.setListener(listener);
+    config.setAlgorithm("random");
+    config.setModelFactory("osmo.tester.scripting.slicing.TestModelFactory2");
+    config.setSeed(233);
+    SlicerMain.execute(config);
+    assertEquals("Listener capture in slicing", "[suite-start, start, g:second, g:third, g:first, t:first, g:second, g:third, g:first, t:second, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, end, start, g:second, g:third, g:first, t:first, g:second, g:third, g:first, t:second, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, end, start, g:second, g:third, g:first, t:first, g:second, g:third, g:first, t:second, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, g:second, g:third, g:first, t:third, end, suite-end]", listener.getSteps().toString());
+    assertResult("expected-generate4.txt");
   }
 }

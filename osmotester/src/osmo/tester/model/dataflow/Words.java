@@ -6,12 +6,13 @@ import osmo.tester.gui.manualdrive.WordGUI;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static osmo.common.TestUtils.*;
+import static osmo.common.TestUtils.cFloat;
+import static osmo.common.TestUtils.cInt;
 
 /**
  * For generating words, meaning strings of characters matching the given specification.
- * 
- * @author Teemu Kanstren 
+ *
+ * @author Teemu Kanstren
  */
 public class Words extends SearchableInput<String> {
   private static final Logger log = new Logger(Words.class);
@@ -61,21 +62,21 @@ public class Words extends SearchableInput<String> {
   }
 
   /**
-   * Set the probability that an invalid character for a string will be 
+   * Set the probability that an invalid character for a string will be
    * inserted instead of valid value.
-   * 
+   *
    * @param invalidProbability Value between 0 (0%) and 1 (100%).
    */
   public void setInvalidProbability(float invalidProbability) {
     if (invalidProbability < 0 || invalidProbability > 1) {
-      throw new IllegalArgumentException("Probability must be between 0-1, was "+ invalidProbability);
+      throw new IllegalArgumentException("Probability must be between 0-1, was " + invalidProbability);
     }
     this.invalidProbability = invalidProbability;
   }
 
   /**
    * Enable or disable production of zero size strings in invalid data generation. By default this is disabled.
-   * 
+   *
    * @param zeroSize Enable/disable flag.
    */
   public void enableZeroSize(boolean zeroSize) {
@@ -98,7 +99,7 @@ public class Words extends SearchableInput<String> {
    * Set the min and max offsets for how much smaller/bigger strings will be generated when invalid length is applied.
    * Note that strings of less that 0 size will never be generated (doh!). To exclude/include 0 size always, enable
    * the zeroSize attribute.
-   * 
+   *
    * @param min Minimum of more/less.
    * @param max Maximum of more/less.
    */
@@ -125,6 +126,13 @@ public class Words extends SearchableInput<String> {
       default:
         throw new UnsupportedOperationException(CharSet.class.getSimpleName() + " supports only Scripted, Random and Invalid data generation strategy.");
     }
+  }
+
+  @Override
+  public void addSlice(String serialized) {
+    String name = CharSet.class.getSimpleName();
+    String msg = name + " does not support slicing.";
+    throw new UnsupportedOperationException(msg);
   }
 
   /**
@@ -164,9 +172,9 @@ public class Words extends SearchableInput<String> {
       }
       int offset = cInt(minOffset, maxOffset);
       if (previousLength < min) {
-        length = max+offset;
+        length = max + offset;
       } else {
-        length = min-offset;
+        length = min - offset;
       }
       if (length < 0) {
         length = 0;
@@ -175,7 +183,7 @@ public class Words extends SearchableInput<String> {
     previousLength = length;
     return length;
   }
-  
+
   private String randomNext() {
     int length = length();
     char[] c = new char[length];
@@ -187,23 +195,23 @@ public class Words extends SearchableInput<String> {
     observe(next);
     return next;
   }
-  
+
   private String scriptedNext() {
     return scriptNextSerialized();
   }
 
   /**
-   * Creates values that are different from expected, replacing chars with invalid ones using some heuristics and 
+   * Creates values that are different from expected, replacing chars with invalid ones using some heuristics and
    * random probability.
    * Relates to data, length is controlled with the invalid variable.
-   * 
+   *
    * @return the next generated value.
    */
   private String invalidRandomNext() {
     int length = length();
     char[] c = new char[length];
     for (int i = 0; i < length; i++) {
-      float f = cFloat(0,1);
+      float f = cFloat(0, 1);
       if (f > invalidProbability) {
         c[i] = chars.next();
       } else {
@@ -225,7 +233,7 @@ public class Words extends SearchableInput<String> {
    */
   private String invalidLoopNext() {
     int length = length();
-    log.debug("Invalid loop length:"+length);
+    log.debug("Invalid loop length:" + length);
     char[] c = new char[length];
     for (int i = 0; i < length; i++) {
       if (i >= invalidIndex && i < invalidIndex + invalidSize) {

@@ -8,11 +8,11 @@ import osmo.tester.examples.calendar.testmodel.*;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.reporting.jenkins.JenkinsReportGenerator;
 
-/** 
+/**
  * Example for running as a Java Ant task in Jenkins to generate JUnit test reports for Jenkins.
  * The build.xml for this example module contains a task "calendar-jenkins" showing how to run this.
- * 
- * @author Teemu Kanstren 
+ *
+ * @author Teemu Kanstren
  */
 public class CalendarJenkins {
   public static void main(String[] args) throws Exception {
@@ -23,7 +23,7 @@ public class CalendarJenkins {
     osmo.setConfig(config);
     osmo.addSuiteEndCondition(new Length(20));
     ModelState state = new ModelState();
-    CalendarScripter scripter = new OfflineScripter("tests.html");
+    CalendarScripter scripter = new OfflineScripter(state, "tests.html");
     osmo.addModelObject(state);
     osmo.addModelObject(new CalendarBaseModel(state, scripter));
     osmo.addModelObject(new CalendarOracleModel(state, scripter));

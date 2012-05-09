@@ -7,8 +7,8 @@ import java.util.logging.Level;
 /**
  * The main class used to create log files describing OSMOTester behaviour.
  * It is intended to encapsulate logging functionality without requiring external configuration files or
- * external 
- * 
+ * external
+ *
  * @author Teemu Kanstren
  */
 public class Logger {
@@ -17,7 +17,7 @@ public class Logger {
   /** When set to true, debug information will be printed to log file/console. */
   public static boolean debug = false;
   /** When set to true, warning information will be printed to log file/console. */
-  public static boolean warn = true;
+  public static boolean warn = false;
   /** Log file handler, shared to keep from creating numerous log files. */
   private static FileHandler file;
   /** Name of the log file to be written. */
@@ -35,7 +35,7 @@ public class Logger {
     String p = clazz.getPackage().getName();
     String[] ps = p.split("\\.");
     for (String s : ps) {
-      name += s.charAt(0)+".";
+      name += s.charAt(0) + ".";
     }
     name += clazz.getSimpleName();
     init(name);
@@ -67,7 +67,7 @@ public class Logger {
       file.setFormatter(new LogFormatter());
       file.setLevel(level);
     } catch (IOException e) {
-      throw new IllegalStateException("Unable to initialize file '"+filename+"' for logging.");
+      throw new IllegalStateException("Unable to initialize file '" + filename + "' for logging.");
     }
   }
 
@@ -95,7 +95,7 @@ public class Logger {
    * Prints error messages, including exception stacktrace.
    *
    * @param msg The error message to print.
-   * @param e The exception to print.
+   * @param e   The exception to print.
    */
   public void error(String msg, Exception e) {
     logger.log(Level.SEVERE, msg, e);

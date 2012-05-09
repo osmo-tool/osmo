@@ -7,21 +7,16 @@ import osmo.tester.OSMOTester;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.examples.calendar.scripter.offline.OfflineScripter;
 import osmo.tester.examples.calendar.scripter.online.OnlineScripter;
-import osmo.tester.examples.calendar.testmodel.CalendarBaseModel;
-import osmo.tester.examples.calendar.testmodel.CalendarErrorHandlingModel;
-import osmo.tester.examples.calendar.testmodel.CalendarFailureModel;
-import osmo.tester.examples.calendar.testmodel.CalendarOracleModel;
-import osmo.tester.examples.calendar.testmodel.CalendarOverlappingModel;
-import osmo.tester.examples.calendar.testmodel.CalendarParticipantModel;
-import osmo.tester.examples.calendar.testmodel.CalendarTaskModel;
-import osmo.tester.examples.calendar.testmodel.ModelState;
+import osmo.tester.examples.calendar.testmodel.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 
-import static junit.framework.Assert.*;
-import static osmo.common.TestUtils.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
+import static osmo.common.TestUtils.getResource;
+import static osmo.common.TestUtils.unifyLineSeparators;
 
 /** @author Teemu Kanstren */
 public class CalendarTests {
@@ -95,7 +90,7 @@ public class CalendarTests {
   @Test
   public void baseModel() {
     ModelState state = new ModelState();
-    OfflineScripter scripter = new OfflineScripter("tests.html");
+    OfflineScripter scripter = new OfflineScripter(state, "tests.html");
     osmo.addModelObject(new CalendarBaseModel(state, scripter));
     generateAndAssertScript(scripter, "expected-base-offline.txt");
   }
@@ -112,7 +107,7 @@ public class CalendarTests {
   @Test
   public void fullModel() {
     ModelState state = new ModelState();
-    OfflineScripter scripter = new OfflineScripter("tests.html");
+    OfflineScripter scripter = new OfflineScripter(state, "tests.html");
     osmo.addModelObject(new CalendarBaseModel(state, scripter));
     osmo.addModelObject(new CalendarOracleModel(state, scripter));
     osmo.addModelObject(new CalendarTaskModel(state, scripter));

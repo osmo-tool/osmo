@@ -3,7 +3,6 @@ package osmo.tester.scripting.slicing;
 import osmo.common.TestUtils;
 import osmo.common.log.Logger;
 import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
-import osmo.tester.model.ScriptedValueProvider;
 import osmo.tester.scripting.AbstractAsciiParser;
 
 import java.io.FileInputStream;
@@ -54,7 +53,7 @@ public class AsciiParser extends AbstractAsciiParser {
   private static Logger log = new Logger(AsciiParser.class);
   /** Configuration for test generation, as parsed from the ASCII input. */
   private SlicingConfiguration config = new SlicingConfiguration();
-  
+
   public SlicingConfiguration loadAndParse(String fileName) throws IOException {
     FileInputStream in = new FileInputStream(fileName);
     String script = TestUtils.getResource(in);
@@ -233,13 +232,11 @@ public class AsciiParser extends AbstractAsciiParser {
     if (variables.length == 0) {
       return;
     }
-    ScriptedValueProvider scripter = new ScriptedValueProvider();
-    config.setScripter(scripter);
 
     for (int i = 0; i < variables.length; i += 2) {
       String name = variables[i].trim();
       String value = variables[i + 1].trim();
-      scripter.addValue(name, value);
+      config.addValue(name, value);
       log.debug("Variable value found:" + name + " = " + value);
     }
   }

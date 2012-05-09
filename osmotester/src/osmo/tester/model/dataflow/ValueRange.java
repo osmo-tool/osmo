@@ -174,6 +174,9 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
       case SCRIPTED:
         value = scriptedNext(scriptNextSerialized());
         break;
+      case SLICED:
+        value = slices.next();
+        break;
       default:
         value = nextRandom(type);
         break;
@@ -188,6 +191,10 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
     if (!evaluateSerialized(serialized)) {
       throw new IllegalArgumentException("Requested invalid scripted value for variable '" + getName() + "': " + serialized);
     }
+    return deserizalize(serialized);
+  }
+
+  private T deserizalize(String serialized) {
     Number value = null;
     switch (type) {
       case INT:
@@ -205,6 +212,13 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
     return (T) value;
   }
 
+  @Override
+  public void addSlice(String serialized) {
+    if (slices == null) {
+      slices = new ValueSet<>();
+    }
+    slices.add(deserizalize(serialized));
+  }
 
   /**
    * Create next value for the ordered loop algorithm.

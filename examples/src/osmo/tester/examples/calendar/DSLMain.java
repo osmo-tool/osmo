@@ -1,6 +1,5 @@
 package osmo.tester.examples.calendar;
 
-import osmo.common.log.Logger;
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.examples.calendar.scripter.offline.OfflineScripter;
@@ -24,7 +23,7 @@ public class DSLMain {
 //    osmo.addSuiteEndCondition(new Length(2));
     ModelState state = new ModelState();
 //    CalendarScripter scripter = new OnlineScripter();
-    CalendarScripter scripter = new OfflineScripter("tests.html");
+    CalendarScripter scripter = new OfflineScripter(state, "tests.html");
     osmo.addModelObject(state);
     osmo.addModelObject(new CalendarBaseModel(state, scripter));
     osmo.addModelObject(new CalendarOracleModel(state, scripter));
