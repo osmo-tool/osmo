@@ -249,8 +249,9 @@ public class ParserTests {
   @Test
   public void searchableInputParsing() {
     VariableModel2 model = new VariableModel2();
-    FSM fsm = parser.parse(conf(model));
-    fsm.initSearchableInputs(null);
+    OSMOConfiguration config = conf(model);
+    FSM fsm = parser.parse(config);
+    fsm.initSearchableInputs(config);
     Collection<SearchableInput> inputs = fsm.getSearchableInputs();
     assertEquals("Number of inputs", 2, inputs.size());
     assertSearchableInputPresent(inputs, "range");

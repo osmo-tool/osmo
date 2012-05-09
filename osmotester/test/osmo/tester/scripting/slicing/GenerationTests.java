@@ -72,20 +72,15 @@ public class GenerationTests {
   }
 
   @Test
-  public void scriptedWithInvalidValues() throws Exception {
+  public void scriptedWithUndefinedValues() throws Exception {
     SlicingConfiguration config = new SlicingConfiguration();
     config.addValue("set", "1");
     config.addValue("set", "2");
     config.setAlgorithm("random");
     config.setModelFactory("osmo.tester.scripting.slicing.TestModelFactory2");
     config.setSeed(233);
-    try {
-      SlicerMain.execute(config);
-      fail("Scripted generation with invalid values should fail.");
-    } catch (Exception e1) {
-      Throwable t = e1.getCause().getCause();
-      assertEquals("Error message for invalid scripted values", "Requested scripted value for variable 'set' not found: 1", t.getMessage());
-    }
+    SlicerMain.execute(config);
+    assertResult("expected-generate5.txt");
   }
 
   @Test

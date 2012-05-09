@@ -124,7 +124,7 @@ public class Words extends SearchableInput<String> {
         this.strategy = algorithm;
         return this;
       default:
-        throw new UnsupportedOperationException(CharSet.class.getSimpleName() + " supports only Scripted, Random and Invalid data generation strategy.");
+        throw new UnsupportedOperationException(Words.class.getSimpleName() + " supports only Scripted, Random and Invalid data generation strategy, given: "+algorithm.name()+".");
     }
   }
 

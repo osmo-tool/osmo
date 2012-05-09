@@ -314,8 +314,10 @@ public class AsciiParserTests {
   private void assertDataNameAndValues(Map<String, ValueSet<String>> scripts, String name, Object... values) {
     ValueSet<String> script = scripts.get(name);
     assertNotNull("Variable should be scripted:" + name, script);
-    for (Object value : values) {
-      assertEquals("Variable " + name + " does not have required value in order:" + value + " total:" + script.getOptions(), "" + value, script.next());
+    List<String> options = script.getOptions();
+    for (int i = 0 ; i < 100 ; i++) {
+      String next = script.next();
+      assertTrue("Value should be in sliced set", options.contains(next));
     }
   }
 
