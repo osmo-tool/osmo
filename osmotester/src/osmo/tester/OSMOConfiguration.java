@@ -12,10 +12,13 @@ import osmo.tester.generator.endcondition.Probability;
 import osmo.tester.generator.filter.TransitionFilter;
 import osmo.tester.model.FSM;
 import osmo.tester.model.ScriptedValueProvider;
+import osmo.tester.model.dataflow.ValueSet;
 import osmo.tester.parser.ModelObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Defines configuration for test generation.
@@ -47,6 +50,8 @@ public class OSMOConfiguration {
   private boolean unwrapExceptions = false;
   /** Seed to be used for test generation. */
   private Long seed = TestUtils.getRandom().getSeed();
+  /** Serialized value options for defined variables. */
+  private Map<String, ValueSet<String>> valueOptions = new HashMap<>();
 
   /**
    * Adds a new model object, to be composed by OSMO to a single internal model along with other model objects.
@@ -193,7 +198,7 @@ public class OSMOConfiguration {
     if (algorithm == null) {
       algorithm = new RandomAlgorithm();
     }
-    fsm.initSearchableInputs(scripter);
+    fsm.initSearchableInputs(this);
     algorithm.init(fsm);
     for (EndCondition ec : suiteEndConditions) {
       ec.init(fsm);
@@ -244,5 +249,15 @@ public class OSMOConfiguration {
     //invoking OSMOTester.generate(). For example, to initialize model state (as in Calendar example).
     this.seed = seed;
     TestUtils.setSeed(seed);
+  }
+
+  public void setValueOptions(Map<String, ValueSet<String>> values) {
+    this.valueOptions = values;
+  }
+
+  public Map<String, ValueSet<String>> getValueOptions() {
+    Map<String, ValueSet<String>> result = new HashMap<>();
+    result.putAll(valueOptions);
+    return result;
   }
 }

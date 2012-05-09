@@ -24,6 +24,7 @@ import java.util.List;
  */
 public class SlicerMain {
   private static Logger log = new Logger(SlicerMain.class);
+
   /**
    * Start here.
    *
@@ -55,23 +56,23 @@ public class SlicerMain {
     log.debug("Starting slicer execution");
     GenerationListener listener = slicingConfig.getListener();
     if (listener != null) {
-      log.debug("Adding listener:"+listener);
+      log.debug("Adding listener:" + listener);
       osmoConfig.addListener(listener);
     }
     if (slicingConfig.getAlgorithm() != null) {
       Class<?> aClass = Class.forName(slicingConfig.getAlgorithm());
       FSMTraversalAlgorithm algorithm = (FSMTraversalAlgorithm) aClass.newInstance();
-      log.debug("Setting algorithm:"+algorithm);
+      log.debug("Setting algorithm:" + algorithm);
       osmoConfig.setAlgorithm(algorithm);
     }
-    log.debug("Created OSMO Configuration:"+osmoConfig);
+    log.debug("Created OSMO Configuration:" + osmoConfig);
     if (slicingConfig.getSeed() != null) {
       osmoConfig.setSeed(slicingConfig.getSeed());
     }
     List<DataCoverageRequirement> dataRequirements = slicingConfig.getDataRequirements();
     DataCoverage dc = new DataCoverage();
     for (DataCoverageRequirement req : dataRequirements) {
-      log.debug("Adding data coverage requirement:"+req);
+      log.debug("Adding data coverage requirement:" + req);
       dc.addRequirement(req);
     }
     osmoConfig.addTestEndCondition(dc);
@@ -79,7 +80,7 @@ public class SlicerMain {
     StepCoverage sc = new StepCoverage();
     Collection<StepRequirement> stepRequirements = slicingConfig.getStepRequirements();
     for (StepRequirement req : stepRequirements) {
-      log.debug("Adding step coverage requirement:"+req);
+      log.debug("Adding step coverage requirement:" + req);
       String step = req.getStep();
       Integer min = req.getMin();
       if (min != null) {
@@ -95,7 +96,7 @@ public class SlicerMain {
     osmoConfig.addTestEndCondition(sc);
     osmoConfig.addFilter(filter);
     osmoConfig.setSeed(osmoConfig.getSeed());
-    osmoConfig.setScripter(slicingConfig.getScriptedValueProvider());
+    osmoConfig.setValueOptions(slicingConfig.getValues());
     log.debug("Starting generator");
     OSMOTester osmo = new OSMOTester();
     osmo.setConfig(osmoConfig);

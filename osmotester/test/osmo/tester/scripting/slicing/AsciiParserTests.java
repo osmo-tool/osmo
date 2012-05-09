@@ -3,7 +3,6 @@ package osmo.tester.scripting.slicing;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
-import osmo.tester.model.ScriptedValueProvider;
 import osmo.tester.model.dataflow.ValueSet;
 
 import java.util.Collection;
@@ -252,12 +251,11 @@ public class AsciiParserTests {
             "v1, 2\n" +
             "v2, 3\n" +
             "v1, 4\n";
-    SlicingConfiguration reqs = parser.parse(input);
-    ScriptedValueProvider scripter = reqs.getScriptedValueProvider();
-    Map<String, ValueSet<String>> scripts = scripter.getScripts();
-    assertEquals("Number of data requirements", 2, scripts.size());
-    assertDataNameAndValues(scripts, "v1", 1, 2, 4);
-    assertDataNameAndValues(scripts, "v2", 3);
+    SlicingConfiguration config = parser.parse(input);
+    Map<String, ValueSet<String>> values = config.getValues();
+    assertEquals("Number of data requirements", 2, values.size());
+    assertDataNameAndValues(values, "v1", 1, 2, 4);
+    assertDataNameAndValues(values, "v2", 3);
   }
 
   @Test

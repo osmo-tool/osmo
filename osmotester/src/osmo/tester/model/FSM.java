@@ -1,8 +1,10 @@
 package osmo.tester.model;
 
 import osmo.common.log.Logger;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.SearchableInputObserver;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.dataflow.DataGenerationStrategy;
 import osmo.tester.model.dataflow.SearchableInput;
 import osmo.tester.model.dataflow.SearchableInputField;
 import osmo.tester.model.dataflow.ValueSet;
@@ -331,12 +333,13 @@ public class FSM {
 
   /**
    * Initialize the test suite, adding observers to capture data from all registered {@link SearchableInput} variables.
+   * Also defines the value options for data if defined.
    *
-   * @param scripter Optional scripter for input data scripting.
+   * @param config This is where the scripter and value options are taken.
    * @return the initialized test suite.
    */
-  public TestSuite initSearchableInputs(ScriptedValueProvider scripter) {
-    this.scripter = scripter;
+  public TestSuite initSearchableInputs(OSMOConfiguration config) {
+    this.scripter = config.getScripter();
     //initial capture to allow FSM to have names, etc. for algorithm initialization
     captureSearchableInputs();
 
@@ -345,11 +348,23 @@ public class FSM {
       scriptedVariables = initScripts(scripter);
     }
 
+    Map<String, ValueSet<String>> options = config.getValueOptions();
+
     for (SearchableInput input : searchableInputs) {
       SearchableInputObserver observer = new SearchableInputObserver(suite);
       input.setObserver(observer);
       if (scriptedVariables != null && scriptedVariables.contains(input.getName())) {
         input.setScripter(scripter);
+        input.setStrategy(DataGenerationStrategy.SCRIPTED);
+      }
+
+      ValueSet<String> variableOptions = options.get(input.getName());
+      if (variableOptions != null) {
+        for (String option : variableOptions.getOptions()) {
+          input.addSlice(option);
+        }
+        //this practically causes SLICED to override SCRIPTED if both scripter and slices are defined
+        input.setStrategy(DataGenerationStrategy.SLICED);
       }
     }
     return suite;

@@ -88,7 +88,7 @@ public class MainGenerator {
     testCount++;
     log.debug("Starting new test generation");
     beforeTest();
-    fsm.initSearchableInputs(config.getScripter());
+    fsm.initSearchableInputs(config);
     TestCase test = suite.getCurrentTest();
     try {
       while (!checkTestCaseEndConditions()) {

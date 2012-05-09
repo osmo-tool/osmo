@@ -3,13 +3,7 @@ package osmo.tester.examples.calendar;
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.examples.calendar.scripter.offline.OfflineScripter;
-import osmo.tester.examples.calendar.testmodel.CalendarBaseModel;
-import osmo.tester.examples.calendar.testmodel.CalendarErrorHandlingModel;
-import osmo.tester.examples.calendar.testmodel.CalendarOracleModel;
-import osmo.tester.examples.calendar.testmodel.CalendarOverlappingModel;
-import osmo.tester.examples.calendar.testmodel.CalendarParticipantModel;
-import osmo.tester.examples.calendar.testmodel.CalendarTaskModel;
-import osmo.tester.examples.calendar.testmodel.ModelState;
+import osmo.tester.examples.calendar.testmodel.*;
 import osmo.tester.generator.endcondition.Endless;
 import osmo.tester.gui.manualdrive.ManualAlgorithm;
 import osmo.tester.scripting.manual.AsciiParser;
@@ -37,7 +31,7 @@ public class ManualDriveMain {
 //    osmo.addSuiteEndCondition(new Length(2));
     ModelState state = new ModelState();
 //    CalendarScripter scripter = new OnlineScripter();
-    CalendarScripter scripter = new OfflineScripter("tests.html");
+    CalendarScripter scripter = new OfflineScripter(state, "tests.html");
     osmo.addModelObject(new CalendarBaseModel(state, scripter));
     osmo.addModelObject(new CalendarOracleModel(state, scripter));
     osmo.addModelObject(new CalendarTaskModel(state, scripter));
@@ -58,7 +52,7 @@ public class ManualDriveMain {
   public static void main2(String[] args) throws Exception {
     Collection<Object> modelObjects = new ArrayList<>();
     ModelState state = new ModelState();
-    CalendarScripter scripter = new OfflineScripter("tests.html");
+    CalendarScripter scripter = new OfflineScripter(state, "tests.html");
     modelObjects.add(new CalendarBaseModel(state, scripter));
     modelObjects.add(new CalendarOracleModel(state, scripter));
     modelObjects.add(new CalendarTaskModel(state, scripter));

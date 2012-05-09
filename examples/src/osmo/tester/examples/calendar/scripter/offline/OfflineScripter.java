@@ -2,6 +2,7 @@ package osmo.tester.examples.calendar.scripter.offline;
 
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.examples.calendar.testmodel.ModelEvent;
+import osmo.tester.examples.calendar.testmodel.ModelState;
 import osmo.tester.examples.calendar.testmodel.ModelTask;
 import osmo.tester.model.dataflow.Words;
 import osmo.tester.scripter.robotframework.RFParameter;
@@ -16,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
+
+import static org.apache.commons.lang.StringUtils.capitalize;
 
 /**
  * Offline scripter for the calendar example. Creates a test script to be executed with the
@@ -38,23 +41,12 @@ public class OfflineScripter implements CalendarScripter {
   private final String fileName;
   /** The script once created. */
   private String script = null;
+  private ModelState state;
 
-  public OfflineScripter(String fileName) {
+  public OfflineScripter(ModelState state, String fileName) {
+    this.state = state;
     this.fileName = fileName;
     scripter.setTestLibrary(CalculatorLibrary.class.getName());
-    //create users with random family name length 3-5 characters
-    Words words = new Words(3, 5);
-    words.asciiLettersAndNumbersOnly();
-    scripter.addVariable("user1", "OSMO " + words.next());
-    scripter.addVariable("user2", "OSMO " + words.next());
-    scripter.addVariable("user3", "OSMO " + words.next());
-    scripter.addVariable("user4", "OSMO " + words.next());
-    scripter.addVariable("user5", "OSMO " + words.next());
-    scripter.addVariable("user6", "OSMO " + words.next());
-    scripter.addVariable("user7", "OSMO " + words.next());
-    scripter.addVariable("user8", "OSMO " + words.next());
-    scripter.addVariable("user9", "OSMO " + words.next());
-    scripter.addVariable("user10", "OSMO " + words.next());
   }
 
   /**
@@ -76,6 +68,12 @@ public class OfflineScripter implements CalendarScripter {
    * @return The complete test script.
    */
   public String createScript() {
+    //create users with random family name length 3-5 characters
+    Words words = new Words(3, 5);
+    words.asciiLettersAndNumbersOnly();
+    for (String user : state.getUsers()) {
+      scripter.addVariable(user, capitalize(user) + " " + words.next());
+    }
     script = scripter.createScript();
     return script;
   }

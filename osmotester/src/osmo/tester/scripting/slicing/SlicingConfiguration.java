@@ -5,13 +5,9 @@ import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.algorithm.WeightedBalancingAlgorithm;
 import osmo.tester.generator.algorithm.WeightedRandomAlgorithm;
 import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
-import osmo.tester.model.ScriptedValueProvider;
+import osmo.tester.model.dataflow.ValueSet;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Configuration for a model slicing configured test generation session.
@@ -29,8 +25,8 @@ public class SlicingConfiguration {
   private String algorithm = null;
   /** The random seed for OSMOTester. If not set (null), defaults from OSMOConfiguration are used. */
   private Long seed = null;
-  /** Allows the DSM to define the exact values for a variable to be used. */
-  private ScriptedValueProvider scripter = null;
+  /** Allows the slicer to define the value options for a variable to be used. */
+  private Map<String, ValueSet<String>> values = new HashMap<>();
   /** If the user wants to add a listener, this is the place to do it. */
   private GenerationListener listener = null;
 
@@ -136,24 +132,24 @@ public class SlicingConfiguration {
     return algorithm;
   }
 
-  public ScriptedValueProvider getScriptedValueProvider() {
-    return scripter;
+  public Map<String, ValueSet<String>> getValues() {
+    return values;
   }
 
-  /**
-   * Allows setting required specific values to be used.
-   *
-   * @param scripter The scripter.
-   */
-  public void setScripter(ScriptedValueProvider scripter) {
-    this.scripter = scripter;
+  public void addValue(String name, String serialized) {
+    ValueSet<String> set = values.get(name);
+    if (set == null) {
+      set = new ValueSet<>();
+      values.put(name, set);
+    }
+    set.add(serialized);
   }
 
   /** Validate the overall parsed configuration. */
   public void validate() {
     String errors = "";
-    String warnings  = "";
-    if (!hasRequiments() && scripter == null) {
+    String warnings = "";
+    if (!hasRequiments() && values.size() == 0) {
       warnings += "Warning:Input does not define any valid coverage requirements (steps or variables) or script.";
     }
     if (modelFactory == null) {

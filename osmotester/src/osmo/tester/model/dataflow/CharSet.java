@@ -22,10 +22,10 @@ public class CharSet extends SearchableInput<Character> {
   private int loopIndex = 0;
 
   public CharSet() {
-    for (int i = 0 ; i <= 32 ; i++) {
+    for (int i = 0; i <= 32; i++) {
       invalidChars += (char) i;
     }
-    for (int i = 127 ; i <= 258 ; i++) {
+    for (int i = 127; i <= 258; i++) {
       invalidChars += (char) i;
     }
   }
@@ -42,9 +42,16 @@ public class CharSet extends SearchableInput<Character> {
         return this;
       default:
         String name = CharSet.class.getSimpleName();
-        String msg = name + " only supports Random, Looping, and Invalid generation strategies. Given:"+strategy;
+        String msg = name + " only supports Random, Looping, and Invalid generation strategies. Given:" + strategy;
         throw new UnsupportedOperationException(msg);
     }
+  }
+
+  @Override
+  public void addSlice(String serialized) {
+    String name = CharSet.class.getSimpleName();
+    String msg = name + " does not support slicing.";
+    throw new UnsupportedOperationException(msg);
   }
 
   /**
@@ -89,17 +96,17 @@ public class CharSet extends SearchableInput<Character> {
         return nextInvalidLoop();
       default:
         String name = CharSet.class.getSimpleName();
-        throw new IllegalArgumentException("DataGenerationStrategy "+strategy+" not supported by "+name+".");
+        throw new IllegalArgumentException("DataGenerationStrategy " + strategy + " not supported by " + name + ".");
     }
   }
-  
+
   private Character nextRandom() {
     int min = 0;
     int max = validChars.length() - 1;
     int index = cInt(min, max);
     return validChars.charAt(index);
   }
-  
+
   private Character nextLoop() {
     char c = validChars.charAt(loopIndex);
     loopIndex++;

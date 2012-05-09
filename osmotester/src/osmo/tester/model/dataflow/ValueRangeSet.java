@@ -194,6 +194,9 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
     if (strategy == DataGenerationStrategy.SCRIPTED) {
       return scriptedNext(scriptNextSerialized());
     }
+    if (strategy == DataGenerationStrategy.SLICED) {
+      return slices.next();
+    }
     ValueRange vr = nextPartition();
 //    history.add(value);
     if (vr.getType() == DataType.INT) {
@@ -211,8 +214,12 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
     if (!evaluateSerialized(serialized)) {
       throw new IllegalArgumentException("Requested invalid scripted value for variable '" + getName() + "': " + serialized);
     }
-    DataType type = partitions.getOptions().iterator().next().getType();
+    return deserizalize(serialized);
+  }
+
+  private T deserizalize(String serialized) {
     Number value = null;
+    DataType type = partitions.getOptions().iterator().next().getType();
     switch (type) {
       case INT:
         value = Integer.parseInt(serialized);
@@ -227,6 +234,14 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
         throw new IllegalArgumentException("Enum type:" + type + " unsupported.");
     }
     return (T) value;
+  }
+
+  @Override
+  public void addSlice(String serialized) {
+    if (slices == null) {
+      slices = new ValueSet<>();
+    }
+    slices.add(deserizalize(serialized));
   }
 
   /**

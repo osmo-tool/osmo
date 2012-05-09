@@ -24,6 +24,7 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T> {
   private ScriptedValueProvider scripter = null;
   /** For providing values manually through a GUI. Enabled if non-null. */
   protected ValueGUI gui = null;
+  protected ValueSet<T> slices = null;
   /** The latest value that was generated. */
   private T latestValue = null;
 
@@ -47,7 +48,7 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T> {
   }
 
   public void setObserver(InputObserver<T> observer) {
-    log.debug("Setting observer:"+observer);
+    log.debug("Setting observer:" + observer);
     this.observer = observer;
   }
 
@@ -61,7 +62,6 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T> {
 
   public void setScripter(ScriptedValueProvider scripter) {
     this.scripter = scripter;
-    setStrategy(DataGenerationStrategy.SCRIPTED);
   }
 
   public String scriptNextSerialized() {
@@ -77,9 +77,11 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T> {
   public void disableGUI() {
     gui = null;
   }
-  
+
   public ToStringWrapper wrapper() {
     return new ToStringWrapper(this);
   }
+
+  public abstract void addSlice(String serialized);
 
 }
