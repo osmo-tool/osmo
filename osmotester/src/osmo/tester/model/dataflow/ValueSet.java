@@ -184,6 +184,9 @@ public class ValueSet<T> extends SearchableInput<T> {
         return option;
       }
     }
+    if (deserializer == null) {
+      throw new IllegalArgumentException("Requested scripted value for variable '"+getName()+"' not found: "+serialized);
+    }
     return deserializer.deserialize(serialized);
   }
 

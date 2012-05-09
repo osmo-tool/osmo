@@ -1,8 +1,9 @@
-package osmo.tester.scripting.slicing;
+package osmo.tester.scripting.manual;
 
 import org.junit.Before;
 import org.junit.Test;
 import osmo.common.TestUtils;
+import osmo.tester.model.dataflow.DataGenerationStrategy;
 import osmo.tester.model.dataflow.InputObserver;
 import osmo.tester.model.dataflow.Words;
 import osmo.tester.model.ScriptedValueProvider;
@@ -58,6 +59,7 @@ public class ScriptedVariableTests {
     scripter.addValue("bob", "4");
     scripter.addValue("bob", "9");
     set.setScripter(scripter);
+    set.setStrategy(DataGenerationStrategy.SCRIPTED);
     String expected = "4,9,4,9,4,9,4,9,4,9,4,9,4,9,4,9,4,9,4,9,";
     String actual = "";
     for (int i = 0; i < 20; i++) {
@@ -71,6 +73,7 @@ public class ScriptedVariableTests {
     scripter.addValue("bob", "4");
     scripter.addValue("bob", "0");
     set.setScripter(scripter);
+    set.setStrategy(DataGenerationStrategy.SCRIPTED);
     set.next();
     try {
       set.next();
@@ -95,6 +98,7 @@ public class ScriptedVariableTests {
     scripter.addValue("alice", "2");
     scripter.addValue("alice", "4");
     range.setScripter(scripter);
+    range.setStrategy(DataGenerationStrategy.SCRIPTED);
     String expected = "2,4,2,4,2,4,2,4,2,4,2,4,2,4,2,4,2,4,2,4,";
     String actual = "";
     for (int i = 0; i < 20; i++) {
@@ -108,6 +112,7 @@ public class ScriptedVariableTests {
     scripter.addValue("alice", "2");
     scripter.addValue("alice", "0");
     range.setScripter(scripter);
+    range.setStrategy(DataGenerationStrategy.SCRIPTED);
     range.next();
     try {
       range.next();
@@ -133,6 +138,7 @@ public class ScriptedVariableTests {
     scripter.addValue("john", "69");
     scripter.addValue("john", "7");
     rangeSet.setScripter(scripter);
+    rangeSet.setStrategy(DataGenerationStrategy.SCRIPTED);
     String expected = "2,69,7,2,69,7,2,69,7,2,69,7,2,69,7,2,69,7,2,69,";
     String actual = "";
     for (int i = 0; i < 20; i++) {
@@ -147,6 +153,7 @@ public class ScriptedVariableTests {
     scripter.addValue("john", "69");
     scripter.addValue("john", "11");
     rangeSet.setScripter(scripter);
+    rangeSet.setStrategy(DataGenerationStrategy.SCRIPTED);
     rangeSet.next();
     rangeSet.next();
     try {
@@ -174,6 +181,7 @@ public class ScriptedVariableTests {
     scripter.addValue("zerowing", "base are");
     scripter.addValue("zerowing", "belong to us!");
     words.setScripter(scripter);
+    words.setStrategy(DataGenerationStrategy.SCRIPTED);
     String expected = "all your,base are,belong to us!,all your,base are,belong to us!,all your,base are,belong to us!,all your,base are,belong to us!,all your,base are,belong to us!,all your,base are,belong to us!,all your,base are,";
     String actual = "";
     for (int i = 0; i < 20; i++) {
@@ -188,6 +196,7 @@ public class ScriptedVariableTests {
     scripter.addValue("zerowing", "base");
     scripter.addValue("zerowing", "belong to us!");
     words.setScripter(scripter);
+    words.setStrategy(DataGenerationStrategy.SCRIPTED);
     String word = words.next();
     assertEquals("Generated word", "all your", word);    
     word = words.next();
