@@ -1,5 +1,6 @@
 package osmo.tester.examples.calendar;
 
+import osmo.common.log.Logger;
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.examples.calendar.scripter.offline.OfflineScripter;
@@ -8,7 +9,6 @@ import osmo.tester.generator.MainGenerator;
 import osmo.tester.gui.slicing.SlicingGUI;
 import osmo.tester.model.FSM;
 import osmo.tester.scripting.slicing.AsciiParser;
-import osmo.tester.scripting.slicing.SlicerMain;
 import osmo.tester.scripting.slicing.SlicingConfiguration;
 import osmo.visualizer.model.FSMBuildVisualizer;
 
@@ -17,7 +17,7 @@ import osmo.visualizer.model.FSMBuildVisualizer;
  *
  * @author Teemu Kanstren
  */
-public class DSLMain {
+public class SlicerMain {
   public static void main1(String[] args) {
     OSMOTester osmo = new OSMOTester();
 //    osmo.addSuiteEndCondition(new Length(2));
@@ -45,8 +45,8 @@ public class DSLMain {
 //    Logger.debug = true;
     AsciiParser parser = new AsciiParser();
     SlicingConfiguration conf = parser.loadAndParse("osmo-dsl.txt");
-    conf.setListener(new FSMBuildVisualizer());
-    SlicerMain.execute(conf);
+//    conf.setListener(new FSMBuildVisualizer());
+    osmo.tester.scripting.slicing.SlicerMain.execute(conf);
   }
 
   //time limit = 10 years

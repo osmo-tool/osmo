@@ -1,5 +1,6 @@
 package osmo.tester.examples.calendar.testmodel;
 
+import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Transition;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 
@@ -32,13 +33,13 @@ public class CalendarErrorHandlingModel {
     this.out = out;
   }
 
-  @Transition("RemoveTaskThatDoesNotExist")
+  @TestStep("Remove Task That Does Not Exist")
   public void removeTaskThatDoesNotExist() {
     out.println("--REMOVETASKTHATDOESNOTEXIST:");
     scripter.removeTaskThatDoesNotExist(state.randomUID());
   }
 
-  @Transition("RemoveEventThatDoesNotExist")
+  @TestStep("Remove Event That Does Not Exist")
   public void removeEventThatDoesNotExist() {
     out.println("--REMOVETASKTHATDOESNOTEXIST:");
     scripter.removeEventThatDoesNotExist(state.randomUID());

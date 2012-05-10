@@ -106,10 +106,10 @@ public class OfflineScripter implements CalendarScripter {
   }
 
   @Override
-  public void removeTask(ModelTask task) {
-    RFParameter uid = new RFParameter(task.getUid(), true);
-    RFParameter taskId = new RFParameter(task.getTaskId(), true);
-    scripter.addStep("Remove Task", uid, taskId);
+  public void removeTask(String userId, String taskId) {
+    RFParameter uid = new RFParameter(userId, true);
+    RFParameter rfTaskId = new RFParameter(taskId, true);
+    scripter.addStep("Remove Task", uid, rfTaskId);
   }
 
   @Override
@@ -126,10 +126,10 @@ public class OfflineScripter implements CalendarScripter {
   }
 
   @Override
-  public void removeEvent(String uid, ModelEvent event) {
+  public void removeEvent(String uid, String eventId) {
     RFParameter uidRef = new RFParameter(uid, true);
-    RFParameter eventId = new RFParameter(event.getEventId(), true);
-    scripter.addStep("Remove Event", uidRef, eventId);
+    RFParameter rfEventId = new RFParameter(eventId, true);
+    scripter.addStep("Remove Event", uidRef, rfEventId);
   }
 
   @Override

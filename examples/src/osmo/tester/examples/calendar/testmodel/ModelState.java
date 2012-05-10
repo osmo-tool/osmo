@@ -18,16 +18,16 @@ public class ModelState {
   private ValueRange<Integer> userCount = new ValueRange<>(1, 10);
   /** Users with calendars. */
   private ValueSet<String> users = new ValueSet<>();
-  /** Tasks for each user. */
+  /** Tasks for all users. */
   private ValueSet<ModelTask> tasks = new ValueSet<>();
-  /** Events for each user. */
+  /** Events for all users. */
   private ValueSet<ModelEvent> events = new ValueSet<>();
-  /** Used to generate unique identifiers for tasks. */
-  private ValueRange<Integer> taskId = new ValueRange<>(0, Integer.MAX_VALUE);
-  /** Used to generate unique identifiers for events. */
-  private ValueRange<Integer> eventId = new ValueRange<>(0, Integer.MAX_VALUE);
+  /** For creating random duration between 1 seconds to 4 hours. */
+  private ValueRange<Integer> duration = new ValueRange<>(1000, 1000*60*60*4);
   /** Used to generate start times between January 2000 and December 2010. */
   private ValueRange<Long> startTime = new ValueRange<>(0, 0);
+  private int eventCount = 1;
+  private int taskCount = 1;
 
   public ModelState() {
     Calendar start = Calendar.getInstance();
@@ -48,10 +48,6 @@ public class ModelState {
 
   /** Used to reset the state between test generation. */
   public void reset() {
-    taskId = new ValueRange<>(0, Integer.MAX_VALUE);
-    eventId = new ValueRange<>(0, Integer.MAX_VALUE);
-    taskId.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
-    eventId.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     tasks = new ValueSet<>();
     events = new ValueSet<>();
   }
@@ -71,16 +67,15 @@ public class ModelState {
   }
 
   public ModelEvent createEvent(String uid, Date start, Date end) {
-    int count = eventId.next();
-    String description = "event" + count;
-    String location = "location" + count;
+    String description = "event" + eventCount;
+    String location = "location" + eventCount++;
     ModelEvent event = new ModelEvent(uid, start, end, description, location);
     events.add(event);
     return event;
   }
 
   public ModelTask createTask(String uid, Date time) {
-    String description = "task" + taskId.next();
+    String description = "task" + taskCount++;
     ModelTask task = new ModelTask(uid, time, description);
     tasks.add(task);
     return task;
@@ -106,16 +101,7 @@ public class ModelState {
 
   public ModelEvent getAndRemoveOwnerEvent() {
     ModelEvent ownerEvent = events.next();
-    List<ModelEvent> options = events.getOptions();
-    Collection<ModelEvent> toRemove = new ArrayList<>();
-    for (ModelEvent event : options) {
-      if (event.getEventId().equals(ownerEvent.getEventId())) {
-        toRemove.add(event);
-      }
-    }
-    for (ModelEvent event : toRemove) {
-      events.remove(event);
-    }
+    events.remove(ownerEvent);
     return ownerEvent;
   }
 
@@ -153,6 +139,10 @@ public class ModelState {
 
   public Date randomStartTime() {
     return new Date(startTime.next());
+  }
+
+  public Date randomEndTime(Date start) {
+    return new Date(start.getTime()+duration.next());
   }
 
   @Override

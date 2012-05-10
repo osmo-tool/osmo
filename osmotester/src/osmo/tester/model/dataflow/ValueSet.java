@@ -292,4 +292,15 @@ public class ValueSet<T> extends SearchableInput<T> {
             "options=" + options +
             '}';
   }
+
+  /**
+   * Sets the set of options to pick from, clearing all history.
+   * 
+   * @param newOptions The new set of options to use.
+   */
+  public void setOptions(Collection<T> newOptions) {
+    history.clear();
+    options.clear();
+    options.addAll(newOptions);
+  }
 }

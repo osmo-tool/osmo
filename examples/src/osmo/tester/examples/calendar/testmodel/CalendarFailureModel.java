@@ -1,6 +1,7 @@
 package osmo.tester.examples.calendar.testmodel;
 
 import osmo.tester.annotation.Guard;
+import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Transition;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 
@@ -34,7 +35,7 @@ public class CalendarFailureModel {
     return true;
   }
 
-  @Transition("Failing Assertion")
+  @TestStep("Failing Assertion")
   public void giefFailure() {
     Collection<ModelEvent> events = new ArrayList<>();
     events.add(new ModelEvent("persikka", new Date(0), new Date(0), null, null));

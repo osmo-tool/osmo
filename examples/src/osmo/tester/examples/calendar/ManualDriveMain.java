@@ -26,7 +26,7 @@ public class ManualDriveMain {
    *
    * @param args command line arguments, ignored.
    */
-  public static void main(String[] args) {
+  public static void main1(String[] args) {
     OSMOTester osmo = new OSMOTester();
 //    osmo.addSuiteEndCondition(new Length(2));
     ModelState state = new ModelState();
@@ -49,10 +49,11 @@ public class ManualDriveMain {
     osmo.generate();
   }
 
-  public static void main2(String[] args) throws Exception {
+  public static void main(String[] args) throws Exception {
     Collection<Object> modelObjects = new ArrayList<>();
     ModelState state = new ModelState();
     CalendarScripter scripter = new OfflineScripter(state, "tests.html");
+    modelObjects.add(state);
     modelObjects.add(new CalendarBaseModel(state, scripter));
     modelObjects.add(new CalendarOracleModel(state, scripter));
     modelObjects.add(new CalendarTaskModel(state, scripter));

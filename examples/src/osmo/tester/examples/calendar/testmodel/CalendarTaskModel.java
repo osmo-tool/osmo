@@ -1,6 +1,7 @@
 package osmo.tester.examples.calendar.testmodel;
 
 import osmo.tester.annotation.Guard;
+import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Transition;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 
@@ -33,7 +34,7 @@ public class CalendarTaskModel {
     this.out = out;
   }
 
-  @Transition("AddTask")
+  @TestStep("Add Task")
   public void addTask() {
     String uid = state.randomUID();
     Date time = state.randomStartTime();
@@ -42,16 +43,16 @@ public class CalendarTaskModel {
     scripter.addTask(task);
   }
 
-  @Guard("RemoveTask")
+  @Guard("Remove Task")
   public boolean guardRemoveTask() {
     return state.hasTasks();
   }
 
-  @Transition("RemoveTask")
+  @TestStep("Remove Task")
   public void removeTask() {
     ModelTask task = state.getAndRemoveRandomTask();
     out.println("--REMOVETASK:" + task);
-    scripter.removeTask(task);
+    scripter.removeTask(task.getUid(), task.getTaskId());
   }
 }
 

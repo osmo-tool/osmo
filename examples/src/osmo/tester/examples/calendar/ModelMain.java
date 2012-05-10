@@ -71,9 +71,9 @@ public class ModelMain {
     osmo.setConfig(config);
     osmo.addSuiteEndCondition(new Length(20));
     ModelState state = new ModelState();
-//    CalendarScripter scripter = new OnlineScripter();
+    CalendarScripter scripter = new OnlineScripter();
 //    CalendarScripter scripter = new MockScripter();
-    CalendarScripter scripter = new OfflineScripter(state, "tests.html");
+//    CalendarScripter scripter = new OfflineScripter(state, "tests.html");
     osmo.addModelObject(state);
     osmo.addModelObject(new CalendarBaseModel(state, scripter));
     osmo.addModelObject(new CalendarOracleModel(state, scripter));

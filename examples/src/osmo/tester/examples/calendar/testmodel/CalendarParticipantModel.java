@@ -1,8 +1,10 @@
 package osmo.tester.examples.calendar.testmodel;
 
 import osmo.tester.annotation.Guard;
+import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Transition;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
+import osmo.tester.model.dataflow.ValueSet;
 
 import java.io.PrintStream;
 import java.util.Collection;
@@ -23,6 +25,8 @@ public class CalendarParticipantModel {
   /** The scripter for creating/executing the test cases. */
   private final CalendarScripter scripter;
   private final PrintStream out;
+  /** Used here to allow scripting to capture and control the data. */
+  private ValueSet<String> userId = new ValueSet<>();
 
   public CalendarParticipantModel(ModelState state, CalendarScripter scripter) {
     this.state = state;
@@ -36,33 +40,34 @@ public class CalendarParticipantModel {
     this.out = out;
   }
 
-  @Guard("LinkEventToUser")
+  @Guard("Add Participant")
   public boolean guardLinkEventToUser() {
     return state.getEventsWithSpace().size() > 0;
   }
 
-  @Transition("LinkEventToUser")
+  @TestStep("Add Participant")
   public void linkEventToUser() {
     Collection<String> users = state.getUsers();
     ModelEvent event = state.getEventWithSpace();
     Collection<String> participants = event.getParticipants();
     users.removeAll(participants);
     users.remove(event.getUid());
-    String user = oneOf(users);
-    out.println("--LINKEVENTTOUSER:" + user + " - " + event);
+    userId.setOptions(users);
+    String user = userId.next();
+    out.println("--ADDPARTICIPANT:" + user + " - " + event);
     event.addParticipant(user);
     scripter.linkEventToUser(event, user);
   }
 
-  @Guard("RemoveParticipantEvent")
+  @Guard("Remove Participant")
   public boolean guardRemoveParticipantEvent() {
     return state.hasParticipants();
   }
 
-  @Transition("RemoveParticipantEvent")
+  @TestStep("Remove Participant")
   public void removeParticipantEvent() {
     ParticipantEvent event = state.getAndRemoveParticipantEvent();
-    out.println("--REMOVEPARTICIPANTEVENT:" + event);
-    scripter.removeEvent(event.getParticipant(), event.getEvent());
+    out.println("--REMOVEPARTICIPANT:" + event);
+    scripter.removeEvent(event.getParticipant(), event.getEvent().getEventId());
   }
 }
