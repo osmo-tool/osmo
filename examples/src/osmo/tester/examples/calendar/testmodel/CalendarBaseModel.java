@@ -3,13 +3,12 @@ package osmo.tester.examples.calendar.testmodel;
 import osmo.tester.annotation.AfterSuite;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
+import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Transition;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 
 import java.io.PrintStream;
 import java.util.Date;
-
-import static osmo.tester.examples.calendar.testmodel.ModelHelper.calculateEndTime;
 
 /**
  * The base test model for the calendar. Includes
@@ -49,25 +48,25 @@ public class CalendarBaseModel {
     scripter.write();
   }
 
-  @Transition("AddEvent")
+  @Transition("Add Meeting")
   public void addEvent() {
     String uid = state.randomUID();
     Date start = state.randomStartTime();
-    Date end = calculateEndTime(start);
+    Date end = state.randomEndTime(start);
     ModelEvent event = state.createEvent(uid, start, end);
-    out.println("--ADDEVENT:" + event);
+    out.println("--ADDMEETING:" + event);
     scripter.addEvent(event);
   }
 
-  @Guard("RemoveOrganizerEvent")
+  @Guard("Remove Meeting")
   public boolean guardRemoveOrganizerEvent() {
     return state.hasEvents();
   }
 
-  @Transition("RemoveOrganizerEvent")
+  @TestStep("Remove Meeting")
   public void removeOrganizerEvent() {
     ModelEvent event = state.getAndRemoveOwnerEvent();
-    out.println("--REMOVEORGANIZEREVENT:" + event);
-    scripter.removeEvent(event.getUid(), event);
+    out.println("--REMOVEMEETING:" + event);
+    scripter.removeEvent(event.getUid(), event.getEventId());
   }
 }

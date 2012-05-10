@@ -16,7 +16,7 @@ public class MockScripter implements CalendarScripter {
   }
 
   @Override
-  public void removeTask(ModelTask task) {
+  public void removeTask(String userId, String taskId) {
   }
 
   @Override
@@ -24,7 +24,7 @@ public class MockScripter implements CalendarScripter {
   }
 
   @Override
-  public void removeEvent(String uid, ModelEvent event) {
+  public void removeEvent(String uid, String eventId) {
   }
 
   @Override

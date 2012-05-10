@@ -25,9 +25,9 @@ public interface CalendarScripter {
   /**
    * The scripter should remove the given calendar task.
    *
-   * @param task The task to be removed.
+   * @param taskId The task to be removed.
    */
-  void removeTask(ModelTask task);
+  void removeTask(String userId, String taskId);
 
   /**
    * The scripter should create the given calendar event.
@@ -40,9 +40,9 @@ public interface CalendarScripter {
    * The scripter should remove the given calendar event.
    *
    * @param uid   Identifier for the user from whom the event should be removed.
-   * @param event The event to be removed.
+   * @param eventId The event to be removed.
    */
-  void removeEvent(String uid, ModelEvent event);
+  void removeEvent(String uid, String eventId);
 
   /**
    * The scripter should assert that the users tasks in their calendar match those given.

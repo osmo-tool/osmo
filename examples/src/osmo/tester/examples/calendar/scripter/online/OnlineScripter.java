@@ -56,9 +56,9 @@ public class OnlineScripter implements CalendarScripter {
   }
 
   @Override
-  public void removeTask(ModelTask task) {
-    CalendarApplication calendar = getCalendarFor(task.getUid());
-    calendar.removeTask(task.getTaskId());
+  public void removeTask(String userId, String taskId) {
+    CalendarApplication calendar = getCalendarFor(userId);
+    calendar.removeTask(taskId);
   }
 
   @Override
@@ -69,9 +69,9 @@ public class OnlineScripter implements CalendarScripter {
   }
 
   @Override
-  public void removeEvent(String uid, ModelEvent event) {
+  public void removeEvent(String uid, String eventId) {
     CalendarApplication calendar = getCalendarFor(uid);
-    calendar.removeEvent(event.getEventId(), false);
+    calendar.removeEvent(eventId, false);
   }
 
   @Override

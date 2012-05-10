@@ -8,7 +8,6 @@ import java.io.PrintStream;
 import java.util.Date;
 
 import static osmo.common.TestUtils.*;
-import static osmo.tester.examples.calendar.testmodel.ModelHelper.*;
 
 /**
  * Adds overlapping events and tasks to the test model.
@@ -38,28 +37,28 @@ public class CalendarOverlappingModel {
     this.out = out;
   }
 
-  @Guard("AddOverlappingEvent")
+  @Guard("Add Overlapping Meeting")
   public boolean guardAddOverLappingEvent() {
     return state.hasEvents();
   }
 
-  @Transition("AddOverlappingEvent")
+  @Transition("Add Overlapping Meeting")
   public void addOverlappingEvent() {
     ModelEvent event = state.getRandomExistingEvent();
     long diff = event.getEnd().getTime() - event.getStart().getTime();
     Date start = new Date(event.getStart().getTime() + cLong(500, diff));
-    Date end = calculateEndTime(start);
+    Date end = state.randomEndTime(start);
     ModelEvent overLapping = state.createEvent(event.getUid(), start, end);
     out.println("--ADDOVERLAPPINGEVENT:" + event);
     scripter.addEvent(overLapping);
   }
 
-  @Guard("AddOverlappingTask")
+  @Guard("Add Overlapping Task")
   public boolean guardAddOverLappingTask() {
     return state.hasTasks();
   }
 
-  @Transition("AddOverlappingTask")
+  @Transition("Add Overlapping Task")
   public void addOverlappingTask() {
     ModelTask task = state.getRandomExistingTask();
     ModelTask overLapping = state.createTask(task.getUid(), task.getTime());
