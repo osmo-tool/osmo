@@ -3,6 +3,7 @@ package osmo.tester.scripting.slicing;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.generation.TestSequenceListener;
 import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
 
@@ -21,6 +22,7 @@ public class GenerationTests {
 
   @Before
   public void setup() {
+    OSMOConfiguration.reset();
     old = System.out;
     bos = new ByteArrayOutputStream();
     PrintStream out = new PrintStream(bos);

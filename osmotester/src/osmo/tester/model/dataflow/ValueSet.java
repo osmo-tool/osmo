@@ -2,11 +2,12 @@ package osmo.tester.model.dataflow;
 
 import osmo.common.log.Logger;
 import osmo.tester.gui.manualdrive.ValueSetGUI;
+import osmo.tester.model.dataflow.serialization.Deserializer;
+import osmo.tester.model.dataflow.serialization.StringDeserializer;
 
 import java.util.*;
 
-import static osmo.common.TestUtils.minOf;
-import static osmo.common.TestUtils.oneOf;
+import static osmo.common.TestUtils.*;
 
 /**
  * Represents a set of values (objects) of the given type.
@@ -26,7 +27,6 @@ public class ValueSet<T> extends SearchableInput<T> {
   private int next = 0;
   /** The history of chosen input value objects for this invariant. */
   private Collection<T> history = new ArrayList<>();
-  private OptionDeserializer<T> deserializer = null;
 
   /** Constructor for when no initial options are provided. Options need to be added later with addOption(). */
   public ValueSet() {
@@ -57,6 +57,7 @@ public class ValueSet<T> extends SearchableInput<T> {
   }
 
   private void init() {
+    deserializer = (Deserializer<T>) new StringDeserializer();
     allSupported = true;
   }
 
@@ -146,6 +147,7 @@ public class ValueSet<T> extends SearchableInput<T> {
    */
   @Override
   public T next() {
+    checkSlicing();
     if (strategy != DataGenerationStrategy.SLICED && options.size() == 0) {
       throw new IllegalStateException("No value to provide (add some options).");
     }
@@ -167,7 +169,7 @@ public class ValueSet<T> extends SearchableInput<T> {
         next = scriptedNext(scriptNextSerialized());
         break;
       case SLICED:
-        next = slices.next();
+        next = getSlices().next();
         break;
       default:
         throw new IllegalArgumentException("Unsupported strategy (" + strategy.name() + ") for " + ValueSet.class.getSimpleName());
@@ -184,30 +186,7 @@ public class ValueSet<T> extends SearchableInput<T> {
         return option;
       }
     }
-    if (deserializer == null) {
-      throw new IllegalArgumentException("Requested scripted value for variable '"+getName()+"' not found: "+serialized);
-    }
-    return deserializer.deserialize(serialized);
-  }
-
-  @Override
-  public void addSlice(String serialized) {
-    if (slices == null) {
-      slices = new ValueSet<>();
-    }
-    if (deserializer == null) {
-      if (options.size() > 0 && options.get(0).getClass().equals(String.class)) {
-        //magic trick to handle strings automatically
-        deserializer = (OptionDeserializer<T>) new StringDeserializer();
-      } else {
-        throw new IllegalStateException("Unable to add serialized option for variable '" + getName() + "' with no deserializer configured.");
-      }
-    }
-    slices.add(deserializer.deserialize(serialized));
-  }
-
-  public void setDeserializer(OptionDeserializer<T> deserializer) {
-    this.deserializer = deserializer;
+    throw new IllegalArgumentException(getClass().getSimpleName()+" does not support scripting undefined values: Requested scripted value for variable '"+getName()+"' not found: "+serialized);
   }
 
   /**
@@ -277,7 +256,7 @@ public class ValueSet<T> extends SearchableInput<T> {
     if (strategy != DataGenerationStrategy.SLICED) {
       return options;
     } else {
-      return slices.getOptions();
+      return getSlices().getOptions();
     }
   }
 

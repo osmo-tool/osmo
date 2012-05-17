@@ -128,13 +128,6 @@ public class Words extends SearchableInput<String> {
     }
   }
 
-  @Override
-  public void addSlice(String serialized) {
-    String name = CharSet.class.getSimpleName();
-    String msg = name + " does not support slicing.";
-    throw new UnsupportedOperationException(msg);
-  }
-
   /**
    * Generates a sequence of readable characters, in length between the configured min and max values.
    *

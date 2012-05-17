@@ -3,8 +3,9 @@ package osmo.tester.scripting.manual;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.common.TestUtils;
+import osmo.tester.OSMOConfiguration;
+import osmo.tester.generator.Observer;
 import osmo.tester.model.dataflow.DataGenerationStrategy;
-import osmo.tester.model.dataflow.InputObserver;
 import osmo.tester.model.dataflow.Words;
 import osmo.tester.model.ScriptedValueProvider;
 import osmo.tester.model.dataflow.ValueRange;
@@ -24,6 +25,7 @@ public class ScriptedVariableTests {
 
   @Before
   public void start() {
+    Observer.setSuite(null);
     set = new ValueSet<>(1, 4, 9);
     range = new ValueRange<>(1, 5);
     rangeSet = new ValueRangeSet<>();
@@ -32,16 +34,12 @@ public class ScriptedVariableTests {
     TestUtils.setSeed(111);
     scripter = new ScriptedValueProvider();
     set.setName("bob");
-    set.setObserver(new MockObserver());
     range.setName("alice");
-    range.setObserver(new MockObserver());
     rangeSet.addPartition(1, 3);
     rangeSet.addPartition(7, 9);
     rangeSet.addPartition(55, 111);
     rangeSet.setName("john");
-    rangeSet.setObserver(new MockObserver());
     words.setName("zerowing");
-    words.setObserver(new MockObserver());
   }
 
   @Test
@@ -58,7 +56,7 @@ public class ScriptedVariableTests {
   public void valueSetValid() {
     scripter.addValue("bob", "4");
     scripter.addValue("bob", "9");
-    set.setScripter(scripter);
+    OSMOConfiguration.setScripter(scripter);
     set.setStrategy(DataGenerationStrategy.SCRIPTED);
     String expected = "4,9,4,9,4,9,4,9,4,9,4,9,4,9,4,9,4,9,4,9,";
     String actual = "";
@@ -72,14 +70,14 @@ public class ScriptedVariableTests {
   public void valueSetInvalid() {
     scripter.addValue("bob", "4");
     scripter.addValue("bob", "0");
-    set.setScripter(scripter);
+    OSMOConfiguration.setScripter(scripter);
     set.setStrategy(DataGenerationStrategy.SCRIPTED);
-    set.next();
+    assertEquals("Scripted defined value", 4, (int)set.next());
     try {
       set.next();
       fail("Scripting values not in set should fail.");
     } catch (IllegalArgumentException e) {
-      assertEquals("Error message", "Requested scripted value for variable 'bob' not found: 0", e.getMessage());
+      assertEquals("Error message", "ValueSet does not support scripting undefined values: Requested scripted value for variable 'bob' not found: 0", e.getMessage());
     }
   }
 
@@ -97,7 +95,7 @@ public class ScriptedVariableTests {
   public void valueRangeValid() {
     scripter.addValue("alice", "2");
     scripter.addValue("alice", "4");
-    range.setScripter(scripter);
+    OSMOConfiguration.setScripter(scripter);
     range.setStrategy(DataGenerationStrategy.SCRIPTED);
     String expected = "2,4,2,4,2,4,2,4,2,4,2,4,2,4,2,4,2,4,2,4,";
     String actual = "";
@@ -111,7 +109,7 @@ public class ScriptedVariableTests {
   public void valueRangeInvalid() {
     scripter.addValue("alice", "2");
     scripter.addValue("alice", "0");
-    range.setScripter(scripter);
+    OSMOConfiguration.setScripter(scripter);
     range.setStrategy(DataGenerationStrategy.SCRIPTED);
     range.next();
     try {
@@ -137,7 +135,7 @@ public class ScriptedVariableTests {
     scripter.addValue("john", "2");
     scripter.addValue("john", "69");
     scripter.addValue("john", "7");
-    rangeSet.setScripter(scripter);
+    OSMOConfiguration.setScripter(scripter);
     rangeSet.setStrategy(DataGenerationStrategy.SCRIPTED);
     String expected = "2,69,7,2,69,7,2,69,7,2,69,7,2,69,7,2,69,7,2,69,";
     String actual = "";
@@ -152,7 +150,7 @@ public class ScriptedVariableTests {
     scripter.addValue("john", "2");
     scripter.addValue("john", "69");
     scripter.addValue("john", "11");
-    rangeSet.setScripter(scripter);
+    OSMOConfiguration.setScripter(scripter);
     rangeSet.setStrategy(DataGenerationStrategy.SCRIPTED);
     rangeSet.next();
     rangeSet.next();
@@ -180,7 +178,7 @@ public class ScriptedVariableTests {
     scripter.addValue("zerowing", "all your");
     scripter.addValue("zerowing", "base are");
     scripter.addValue("zerowing", "belong to us!");
-    words.setScripter(scripter);
+    OSMOConfiguration.setScripter(scripter);
     words.setStrategy(DataGenerationStrategy.SCRIPTED);
     String expected = "all your,base are,belong to us!,all your,base are,belong to us!,all your,base are,belong to us!,all your,base are,belong to us!,all your,base are,belong to us!,all your,base are,belong to us!,all your,base are,";
     String actual = "";
@@ -195,18 +193,12 @@ public class ScriptedVariableTests {
     scripter.addValue("zerowing", "all your");
     scripter.addValue("zerowing", "base");
     scripter.addValue("zerowing", "belong to us!");
-    words.setScripter(scripter);
+    OSMOConfiguration.setScripter(scripter);
     words.setStrategy(DataGenerationStrategy.SCRIPTED);
     String word = words.next();
     assertEquals("Generated word", "all your", word);    
     word = words.next();
     //this is less than minimum size
     assertEquals("Generated word", "base", word);
-  }
-
-  private static class MockObserver implements InputObserver {
-    @Override
-    public void value(String variable, Object value) {
-    }
   }
 }

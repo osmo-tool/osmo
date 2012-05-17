@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import osmo.common.TestUtils;
 import osmo.common.log.Logger;
+import osmo.tester.OSMOConfiguration;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -20,6 +21,7 @@ public class GenerateFromFileTests {
 
   @Before
   public void setup() {
+    OSMOConfiguration.reset();
 //    Logger.debug = true;
     parser = new AsciiParser();
     old = System.out;

@@ -1,6 +1,9 @@
 package osmo.tester.scripting.slicing;
 
+import org.junit.Before;
 import org.junit.Test;
+import osmo.tester.OSMOConfiguration;
+import osmo.tester.generator.Observer;
 import osmo.tester.model.dataflow.Boundary;
 import osmo.tester.model.dataflow.CharSet;
 import osmo.tester.model.dataflow.DataGenerationStrategy;
@@ -14,6 +17,10 @@ import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class DataObjectSliceTests {
+  @Before
+  public void setup() {
+    OSMOConfiguration.reset();
+  }
 
   @Test
   public void charSetSlice() {
@@ -28,8 +35,9 @@ public class DataObjectSliceTests {
   @Test
   public void valueRangeSlice() {
     ValueRange<Integer> range = new ValueRange<>(0, 10);
-    range.addSlice("1");
-    range.addSlice("5");
+    range.setName("range");
+    OSMOConfiguration.addSlice("range", "1");
+    OSMOConfiguration.addSlice("range", "5");
     range.setStrategy(DataGenerationStrategy.SLICED);
     int ones = 0;
     int fives = 0;
@@ -54,8 +62,10 @@ public class DataObjectSliceTests {
   @Test
   public void invalidValueRangeSlice() {
     ValueRange<Integer> range = new ValueRange<>(0, 10);
+    range.setName("range");
     try {
-      range.addSlice("sdfs");
+      OSMOConfiguration.addSlice("range", "sdfs");
+      range.getSlices();
       fail("Invalid serialized value for value range should throw NumberFormatException.");
     } catch (NumberFormatException e) {
       //
@@ -65,10 +75,11 @@ public class DataObjectSliceTests {
   @Test
   public void valueRangeSetSlice() {
     ValueRangeSet<Integer> range = new ValueRangeSet<>();
+    range.setName("range");
     range.addPartition(0, 10);
     range.addPartition(100, 200);
-    range.addSlice("55");
-    range.addSlice("555");
+    OSMOConfiguration.addSlice("range", "55");
+    OSMOConfiguration.addSlice("range", "555");
     range.setStrategy(DataGenerationStrategy.SLICED);
     int count55 = 0;
     int count555 = 0;
@@ -93,13 +104,14 @@ public class DataObjectSliceTests {
   @Test
   public void valueSetSlice() {
     ValueSet<String> set = new ValueSet<>();
+    set.setName("set");
     set.add("bob");
     set.add("job");
     set.add("hop");
     set.add("lop");
     set.setStrategy(DataGenerationStrategy.SLICED);
-    set.addSlice("whut");
-    set.addSlice("dhut");
+    OSMOConfiguration.addSlice("set", "whut");
+    OSMOConfiguration.addSlice("set", "dhut");
     int whuts = 0;
     int dhuts = 0;
     for (int i = 0 ; i < 100 ; i++) {

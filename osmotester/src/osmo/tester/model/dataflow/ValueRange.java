@@ -1,7 +1,12 @@
 package osmo.tester.model.dataflow;
 
 import osmo.common.log.Logger;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.gui.manualdrive.ValueRangeGUI;
+import osmo.tester.model.dataflow.serialization.Deserializer;
+import osmo.tester.model.dataflow.serialization.DoubleDeserializer;
+import osmo.tester.model.dataflow.serialization.IntegerDeserializer;
+import osmo.tester.model.dataflow.serialization.LongDeserializer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,9 +57,9 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
   /** The strategy for data generation. */
   private DataGenerationStrategy algorithm = DataGenerationStrategy.RANDOM;
   /** The actual type of data to be generated. */
-  private final DataType type;
+  private DataType type;
   /** Handles boundary scan data generation strategy. */
-  private final Boundary boundary;
+  private Boundary boundary;
 
   /**
    * Constructor that takes an explicit type argument for generation.
@@ -68,14 +73,12 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
     this.max = max;
 
     if (type.equals(Integer.class)) {
-      this.type = DataType.INT;
+      setType(DataType.INT);
     } else if (type.equals(Long.class)) {
-      this.type = DataType.LONG;
+      setType(DataType.LONG);
     } else {
-      this.type = DataType.DOUBLE;
+      setType(DataType.DOUBLE);
     }
-    boundary = new Boundary(this.type, min, max);
-    allSupported = true;
   }
 
   /**
@@ -89,14 +92,33 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
     this.max = max;
 
     if (min instanceof Integer) {
-      this.type = DataType.INT;
+      setType(DataType.INT);
     } else if (min instanceof Long) {
-      this.type = DataType.LONG;
+      setType(DataType.LONG);
     } else {
-      this.type = DataType.DOUBLE;
+      setType(DataType.DOUBLE);
     }
     boundary = new Boundary(this.type, min, max);
     allSupported = true;
+  }
+  
+  private void setType(DataType type) {
+    this.type = type;
+    boundary = new Boundary(this.type, min, max);
+    allSupported = true;
+    switch (type) {
+      case INT:
+        deserializer = (Deserializer<T>) new IntegerDeserializer();
+        break;
+      case LONG:
+        deserializer = (Deserializer<T>) new LongDeserializer();
+        break;
+      case DOUBLE:
+        deserializer = (Deserializer<T>) new DoubleDeserializer();
+        break;
+      default:
+        throw new IllegalArgumentException("Enum type:" + type + " unsupported.");
+    }
   }
 
   public DataType getType() {
@@ -159,6 +181,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
    * @return Generated input value.
    */
   public Number next(DataType type) {
+    checkSlicing();
     Number value = 0;
     switch (algorithm) {
       case ORDERED_LOOP:
@@ -175,7 +198,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
         value = scriptedNext(scriptNextSerialized());
         break;
       case SLICED:
-        value = slices.next();
+        value = getSlices().next();
         break;
       default:
         value = nextRandom(type);
@@ -191,33 +214,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
     if (!evaluateSerialized(serialized)) {
       throw new IllegalArgumentException("Requested invalid scripted value for variable '" + getName() + "': " + serialized);
     }
-    return deserizalize(serialized);
-  }
-
-  private T deserizalize(String serialized) {
-    Number value = null;
-    switch (type) {
-      case INT:
-        value = Integer.parseInt(serialized);
-        break;
-      case LONG:
-        value = Long.parseLong(serialized);
-        break;
-      case DOUBLE:
-        value = Double.parseDouble(serialized);
-        break;
-      default:
-        throw new IllegalArgumentException("Enum type:" + type + " unsupported.");
-    }
-    return (T) value;
-  }
-
-  @Override
-  public void addSlice(String serialized) {
-    if (slices == null) {
-      slices = new ValueSet<>();
-    }
-    slices.add(deserizalize(serialized));
+    return deserializer.deserialize(serialized);
   }
 
   /**

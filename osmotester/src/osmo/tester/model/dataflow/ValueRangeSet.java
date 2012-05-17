@@ -2,6 +2,10 @@ package osmo.tester.model.dataflow;
 
 import osmo.common.log.Logger;
 import osmo.tester.gui.manualdrive.ValueRangeSetGUI;
+import osmo.tester.model.dataflow.serialization.Deserializer;
+import osmo.tester.model.dataflow.serialization.DoubleDeserializer;
+import osmo.tester.model.dataflow.serialization.IntegerDeserializer;
+import osmo.tester.model.dataflow.serialization.LongDeserializer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -83,10 +87,13 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
     ValueRange range = null;
     if (min instanceof Integer) {
       range = new ValueRange<>(Integer.class, min, max);
+      deserializer = (Deserializer<T>) new IntegerDeserializer();
     } else if (min instanceof Long) {
       range = new ValueRange<>(Long.class, min, max);
+      deserializer = (Deserializer<T>) new LongDeserializer();
     } else {
       range = new ValueRange<>(Double.class, min, max);
+      deserializer = (Deserializer<T>) new DoubleDeserializer();
     }
     range.setStrategy(partitionStrategy);
     range.setIncrement(increment);
@@ -186,6 +193,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
 
   @Override
   public T next() {
+    checkSlicing();
     validate();
     if (gui != null) {
       return (T) gui.next();
@@ -195,7 +203,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
       return scriptedNext(scriptNextSerialized());
     }
     if (strategy == DataGenerationStrategy.SLICED) {
-      return slices.next();
+      return getSlices().next();
     }
     ValueRange vr = nextPartition();
 //    history.add(value);
@@ -214,34 +222,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
     if (!evaluateSerialized(serialized)) {
       throw new IllegalArgumentException("Requested invalid scripted value for variable '" + getName() + "': " + serialized);
     }
-    return deserizalize(serialized);
-  }
-
-  private T deserizalize(String serialized) {
-    Number value = null;
-    DataType type = partitions.getOptions().iterator().next().getType();
-    switch (type) {
-      case INT:
-        value = Integer.parseInt(serialized);
-        break;
-      case LONG:
-        value = Long.parseLong(serialized);
-        break;
-      case DOUBLE:
-        value = Double.parseDouble(serialized);
-        break;
-      default:
-        throw new IllegalArgumentException("Enum type:" + type + " unsupported.");
-    }
-    return (T) value;
-  }
-
-  @Override
-  public void addSlice(String serialized) {
-    if (slices == null) {
-      slices = new ValueSet<>();
-    }
-    slices.add(deserizalize(serialized));
+    return deserializer.deserialize(serialized);
   }
 
   /**
