@@ -1,11 +1,15 @@
 package osmo.tester.model.dataflow;
 
 import osmo.common.log.Logger;
+import osmo.tester.OSMOConfiguration;
+import osmo.tester.generator.Observer;
 import osmo.tester.gui.manualdrive.ValueGUI;
 import osmo.tester.model.ScriptedValueProvider;
+import osmo.tester.model.dataflow.serialization.Deserializer;
 import osmo.tester.model.dataflow.wrappers.ToStringWrapper;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * A superclass for data variable classes that can be observed.
@@ -16,19 +20,33 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T> {
   private static Logger log = new Logger(SearchableInput.class);
   /** Variable name. */
   private String name;
-  /** The observer to be notified when variable data is generated. */
-  private InputObserver<T> observer = null;
   /** Does the variable support "all" values need to be covered mode. */
   protected boolean allSupported = false;
   /** Provides values for this variable in playback mode. */
   private ScriptedValueProvider scripter = null;
   /** For providing values manually through a GUI. Enabled if non-null. */
   protected ValueGUI gui = null;
-  protected ValueSet<T> slices = null;
+  private ValueSet<T> slices = null;
+  protected Deserializer<T> deserializer;
   /** The latest value that was generated. */
   private T latestValue = null;
 
   protected SearchableInput() {
+  }
+
+  public ValueSet<T> getSlices() {
+    if (slices == null) {
+      slices = OSMOConfiguration.getSlicesFor(getName(), deserializer);
+    }
+    return slices;
+  }
+
+  protected ValueSet<T> checkSlicing() {
+    ValueSet<T> slices = getSlices();
+    if (slices != null) {
+      setStrategy(DataGenerationStrategy.SLICED);
+    }
+    return slices;
   }
 
   public T getLatestValue() {
@@ -47,24 +65,22 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T> {
     return name;
   }
 
-  public void setObserver(InputObserver<T> observer) {
-    log.debug("Setting observer:" + observer);
-    this.observer = observer;
-  }
-
   public void observe(T value) {
     latestValue = value;
     if (name == null) {
       return;
     }
-    observer.value(name, value);
+    Observer.observe(name, value);
   }
 
-  public void setScripter(ScriptedValueProvider scripter) {
-    this.scripter = scripter;
-  }
+//  public void setScripter(ScriptedValueProvider scripter) {
+//    this.scripter = scripter;
+//  }
 
   public String scriptNextSerialized() {
+    if (scripter == null) {
+      scripter = OSMOConfiguration.getScripter();
+    }
     return scripter.next(name);
   }
 
@@ -82,6 +98,6 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T> {
     return new ToStringWrapper(this);
   }
 
-  public abstract void addSlice(String serialized);
+//  public abstract void addSlice(String serialized);
 
 }

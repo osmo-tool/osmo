@@ -3,6 +3,7 @@ package osmo.tester;
 import osmo.common.TestUtils;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.GenerationListenerList;
+import osmo.tester.generator.Observer;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.endcondition.And;
@@ -13,11 +14,13 @@ import osmo.tester.generator.filter.TransitionFilter;
 import osmo.tester.model.FSM;
 import osmo.tester.model.ScriptedValueProvider;
 import osmo.tester.model.dataflow.ValueSet;
+import osmo.tester.model.dataflow.serialization.Deserializer;
 import osmo.tester.parser.ModelObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,7 +46,7 @@ public class OSMOConfiguration {
   /** Listeners to be notified about test generation events. */
   private GenerationListenerList listeners = new GenerationListenerList();
   /** Provides scripted values for variables. */
-  private ScriptedValueProvider scripter;
+  private static ScriptedValueProvider scripter;
   /** Number of tests to generate when using over JUnit. */
   private int junitLength = -1;
   /** Should we try to throw original exception if model throws (remove OSMO Tester trace from the top)? */
@@ -51,7 +54,7 @@ public class OSMOConfiguration {
   /** Seed to be used for test generation. */
   private Long seed = TestUtils.getRandom().getSeed();
   /** Serialized value options for defined variables. */
-  private Map<String, ValueSet<String>> valueOptions = new HashMap<>();
+  private static Map<String, ValueSet<String>> slices = new HashMap<>();
 
   /**
    * Adds a new model object, to be composed by OSMO to a single internal model along with other model objects.
@@ -144,11 +147,11 @@ public class OSMOConfiguration {
    *
    * @param scripter The new scripter.
    */
-  public void setScripter(ScriptedValueProvider scripter) {
-    this.scripter = scripter;
+  public static void setScripter(ScriptedValueProvider scripter) {
+    OSMOConfiguration.scripter = scripter;
   }
 
-  public ScriptedValueProvider getScripter() {
+  public static ScriptedValueProvider getScripter() {
     return scripter;
   }
 
@@ -251,13 +254,35 @@ public class OSMOConfiguration {
     TestUtils.setSeed(seed);
   }
 
-  public void setValueOptions(Map<String, ValueSet<String>> values) {
-    this.valueOptions = values;
+  public static void setSlices(Map<String, ValueSet<String>> values) {
+    slices = values;
   }
 
-  public Map<String, ValueSet<String>> getValueOptions() {
-    Map<String, ValueSet<String>> result = new HashMap<>();
-    result.putAll(valueOptions);
+  public static <T> ValueSet<T> getSlicesFor(String name, Deserializer<T> deserializer) {
+    ValueSet<String> set = slices.get(name);
+    if (set == null) {
+      return null;
+    }
+    List<String> options = set.getOptions();
+    ValueSet<T> result = new ValueSet<>();
+    for (String option : options) {
+      result.add(deserializer.deserialize(option));
+    }
     return result;
+  }
+
+  public static void addSlice(String name, String value) {
+    ValueSet<String> varSlices = slices.get(name);
+    if (varSlices == null) {
+      varSlices = new ValueSet<>();
+      slices.put(name, varSlices);
+    }
+    varSlices.add(value);
+  }
+
+  public static void reset() {
+    Observer.reset();
+    slices = new HashMap<>();
+    scripter = null;
   }
 }

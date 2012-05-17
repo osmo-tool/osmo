@@ -96,7 +96,7 @@ public class SlicerMain {
     osmoConfig.addTestEndCondition(sc);
     osmoConfig.addFilter(filter);
     osmoConfig.setSeed(osmoConfig.getSeed());
-    osmoConfig.setValueOptions(slicingConfig.getValues());
+    osmoConfig.setSlices(slicingConfig.getValues());
     log.debug("Starting generator");
     OSMOTester osmo = new OSMOTester();
     osmo.setConfig(osmoConfig);

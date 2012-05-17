@@ -47,13 +47,6 @@ public class CharSet extends SearchableInput<Character> {
     }
   }
 
-  @Override
-  public void addSlice(String serialized) {
-    String name = CharSet.class.getSimpleName();
-    String msg = name + " does not support slicing.";
-    throw new UnsupportedOperationException(msg);
-  }
-
   /**
    * Removes the characters in the given string from the potential valid characters to generate, and adds them
    * to the invalid set.

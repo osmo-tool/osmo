@@ -2,7 +2,7 @@ package osmo.tester.model;
 
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
-import osmo.tester.generator.SearchableInputObserver;
+import osmo.tester.generator.Observer;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.dataflow.DataGenerationStrategy;
 import osmo.tester.model.dataflow.SearchableInput;
@@ -347,8 +347,9 @@ public class FSM {
     if (scripter != null) {
       scriptedVariables = initScripts(scripter);
     }
-
-    Map<String, ValueSet<String>> options = config.getValueOptions();
+    Observer.setSuite(suite);
+/*
+    Map<String, ValueSet<String>> options = config.getSlices();
 
     for (SearchableInput input : searchableInputs) {
       SearchableInputObserver observer = new SearchableInputObserver(suite);
@@ -366,7 +367,7 @@ public class FSM {
         //this practically causes SLICED to override SCRIPTED if both scripter and slices are defined
         input.setStrategy(DataGenerationStrategy.SLICED);
       }
-    }
+    }*/
     return suite;
   }
 
