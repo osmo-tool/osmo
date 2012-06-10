@@ -18,7 +18,7 @@ public class CalendarJenkins {
   public static void main(String[] args) throws Exception {
     OSMOTester osmo = new OSMOTester();
     OSMOConfiguration config = new OSMOConfiguration();
-    JenkinsReportGenerator reporter = new JenkinsReportGenerator();
+    JenkinsReportGenerator reporter = new JenkinsReportGenerator("calendar-steps.xml", true);
     config.addListener(reporter);
     osmo.setConfig(config);
     osmo.addSuiteEndCondition(new Length(20));
@@ -33,7 +33,5 @@ public class CalendarJenkins {
     osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter));
     osmo.addModelObject(new CalendarFailureModel(state, scripter));
     osmo.generate();
-    reporter.writeStepReport("calendar-steps.xml");
-    reporter.writeTestReport("calendar-tests.xml");
   }
 }
