@@ -2,6 +2,7 @@ package osmo.tester.reporting.jenkins;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.endcondition.EndCondition;
@@ -30,6 +31,7 @@ import java.util.Collection;
  * @author Teemu Kanstren 
  */
 public class JenkinsReportGenerator implements GenerationListener {
+  private static Logger log = new Logger(JenkinsReportGenerator.class);
   /** For template->report generation. */
   private VelocityEngine velocity = new VelocityEngine();
   /** For storing template variables. */
@@ -38,8 +40,18 @@ public class JenkinsReportGenerator implements GenerationListener {
   private OSMOConfiguration config = null;
   /** The Jenkins (Ant) report format requires a name for the test suite. */
   private final JenkinsSuite suite = new JenkinsSuite("OSMO Test Suite");
+  /** Prefix for the name of the file where the report should be written. */
+  private final String filename;
+  /** If true, steps are described in the report, if false, test cases are described. */
+  private final boolean steps;
 
-  public JenkinsReportGenerator() {
+  /**
+   * @param filename The name of the report file.
+   * @param steps If true, the report describes generated test steps as test cases, else generated tests as test cases.
+   */
+  public JenkinsReportGenerator(String filename, boolean steps) {
+    this.filename = filename;
+    this.steps = steps;
   }
 
   @Override
@@ -85,6 +97,15 @@ public class JenkinsReportGenerator implements GenerationListener {
   @Override
   public void suiteEnded(TestSuite suite) {
     this.suite.end();
+    if (filename == null) {
+      log.debug("No filename defined, not writing jenkins report to file");
+      return;
+    }
+    if (steps) {
+      writeStepReport();
+    } else {
+      writeTestReport();
+    }
   }
 
   /**
@@ -92,10 +113,8 @@ public class JenkinsReportGenerator implements GenerationListener {
    * This makes Jenkins show reports, where each model object class is reported as its own test class and
    * each time a step is taken, this is also shown.
    * In the end, it is possible to identify failed test steps from this..
-   * 
-   * @param filename The name where to save the file. Remember to add ".xml" to the end.
    */
-  public void writeStepReport(String filename) {
+  public void writeStepReport() {
     String report = generateReport("steps");
     try {
       Writer out = new OutputStreamWriter(new FileOutputStream(filename));
@@ -106,7 +125,7 @@ public class JenkinsReportGenerator implements GenerationListener {
     }
   }
 
-  public void writeTestReport(String filename) {
+  public void writeTestReport() {
     String report = generateReport("tests");
     try {
       Writer out = new OutputStreamWriter(new FileOutputStream(filename));

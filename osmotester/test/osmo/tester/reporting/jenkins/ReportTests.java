@@ -6,12 +6,17 @@ import osmo.tester.OSMOTester;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
 import osmo.tester.testmodels.CalculatorModel;
+import osmo.tester.testmodels.ErrorModel1;
+import osmo.tester.testmodels.ErrorModel2;
+import osmo.tester.testmodels.ErrorModel5;
 import osmo.tester.testmodels.PartialModel1;
 import osmo.tester.testmodels.PartialModel2;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 import static junit.framework.Assert.assertEquals;
@@ -22,9 +27,14 @@ import static osmo.common.TestUtils.unifyLineSeparators;
 /** @author Teemu Kanstren */
 public class ReportTests {
   private OSMOTester tester;
+  private static final String filename = "jenkins-test.xml";
 
   @Before
   public void setup() {
+    File file = new File(filename);
+    if (file.exists()) {
+      file.delete();
+    }
     tester = new OSMOTester();
     tester.setSeed(333);
     JenkinsSuite.format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
@@ -34,7 +44,7 @@ public class ReportTests {
   public void calculatorSteps() {
     CalculatorModel calculator = new CalculatorModel();
     tester.addModelObject(calculator);
-    JenkinsReportGenerator listener = new JenkinsReportGenerator();
+    JenkinsReportGenerator listener = new JenkinsReportGenerator(null, true);
     tester.addListener(listener);
     tester.generate();
     listener.getSuite().setStartTime(0);
@@ -50,7 +60,7 @@ public class ReportTests {
   public void calculatorTests() {
     CalculatorModel calculator = new CalculatorModel();
     tester.addModelObject(calculator);
-    JenkinsReportGenerator listener = new JenkinsReportGenerator();
+    JenkinsReportGenerator listener = new JenkinsReportGenerator(null, true);
     tester.addListener(listener);
     tester.generate();
     listener.getSuite().setStartTime(1234);
@@ -70,7 +80,7 @@ public class ReportTests {
     PartialModel2 p2 = new PartialModel2(req, suite);
     tester.addModelObject(p1);
     tester.addModelObject(p2);
-    JenkinsReportGenerator listener = new JenkinsReportGenerator();
+    JenkinsReportGenerator listener = new JenkinsReportGenerator(null, false);
     tester.addListener(listener);
     tester.generate();
     listener.getSuite().setStartTime(1234);
@@ -90,7 +100,7 @@ public class ReportTests {
     PartialModel2 p2 = new PartialModel2(req, suite);
     tester.addModelObject(p1);
     tester.addModelObject(p2);
-    JenkinsReportGenerator listener = new JenkinsReportGenerator();
+    JenkinsReportGenerator listener = new JenkinsReportGenerator(null, false);
     tester.addListener(listener);
     tester.generate();
     listener.getSuite().setStartTime(1234);
@@ -106,14 +116,13 @@ public class ReportTests {
   public void writeSteps() throws Exception {
     CalculatorModel calculator = new CalculatorModel();
     tester.addModelObject(calculator);
-    JenkinsReportGenerator listener = new JenkinsReportGenerator();
-    tester.addListener(listener);
-    tester.generate();
+    JenkinsReportGenerator listener = new JenkinsReportGenerator(filename, true);
     listener.getSuite().setStartTime(0);
     listener.getSuite().setEndTime(3234);
-    listener.writeStepReport("jenkins-test.xml");
+    tester.addListener(listener);
+    tester.generate();
     String expected = getResource(ReportTests.class, "expected-step-report.txt");
-    String actual = readFile("jenkins-test.xml");
+    String actual = readFile(filename);
     expected = unifyLineSeparators(expected, "\n");
     assertEquals("Jenkins report for steps", expected, actual);
   }
@@ -133,15 +142,64 @@ public class ReportTests {
   public void writeTests() throws Exception {
     CalculatorModel calculator = new CalculatorModel();
     tester.addModelObject(calculator);
-    JenkinsReportGenerator listener = new JenkinsReportGenerator();
+    JenkinsReportGenerator listener = new JenkinsReportGenerator(filename, false);
+    tester.addListener(listener);
+    listener.getSuite().setStartTime(1234);
+    listener.getSuite().setEndTime(3234);
+    tester.generate();
+    String expected = getResource(ReportTests.class, "expected-test-report.txt");
+    expected = unifyLineSeparators(expected, "\n");
+    String actual = readFile(filename);
+    assertEquals("Jenkins report for tests", expected, actual);
+  }
+
+  @Test
+  public void error1Tests() throws Exception {
+    ErrorModel1 error = new ErrorModel1();
+    tester.addModelObject(error);
+    JenkinsReportGenerator listener = new JenkinsReportGenerator(filename, false);
+    tester.addListener(listener);
+    try {
+      tester.generate();
+    } catch (Exception e) {
+      //this should happen..
+    }
+    String expected = getResource(ReportTests.class, "expected-test-report.txt");
+    expected = unifyLineSeparators(expected, "\n");
+    String actual = readFile(filename);
+    assertEquals("Jenkins report for tests", expected, actual);
+  }
+
+  @Test
+  public void error5Tests() throws Exception {
+    ErrorModel5 error = new ErrorModel5();
+    tester.addModelObject(error);
+    JenkinsReportGenerator listener = new JenkinsReportGenerator(filename, false);
+    tester.addListener(listener);
+    try {
+      tester.generate();
+    } catch (Exception e) {
+      //this should happen..
+    }
+    String expected = getResource(ReportTests.class, "expected-test-report.txt");
+    expected = unifyLineSeparators(expected, "\n");
+    String actual = readFile(filename);
+    assertEquals("Jenkins report for tests", expected, actual);
+  }
+
+  @Test
+  public void errorTests() throws Exception {
+    CalculatorModel calculator = new CalculatorModel();
+    tester.addModelObject(calculator);
+    JenkinsReportGenerator listener = new JenkinsReportGenerator(filename, false);
     tester.addListener(listener);
     tester.generate();
     listener.getSuite().setStartTime(1234);
     listener.getSuite().setEndTime(3234);
-    listener.writeTestReport("jenkins-test.xml");
+    listener.writeTestReport();
     String expected = getResource(ReportTests.class, "expected-test-report.txt");
     expected = unifyLineSeparators(expected, "\n");
-    String actual = readFile("jenkins-test.xml");
+    String actual = readFile(filename);
     assertEquals("Jenkins report for tests", expected, actual);
   }
 }

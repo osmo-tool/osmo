@@ -14,6 +14,7 @@ import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
 
 import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -104,6 +105,8 @@ public class MainGenerator {
           e = unwrap(e);
         }
         listeners.testError(test, e);
+        afterTest();
+        afterSuite();
         throw e;
       } else {
         listeners.testError(test, unwrap(e));
