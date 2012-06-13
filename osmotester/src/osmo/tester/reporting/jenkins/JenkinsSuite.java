@@ -122,7 +122,10 @@ public class JenkinsSuite {
       //the name of the test step that was executed
       String stepName = step.getTransition().getName();
       //add the step to the jenkins test
-      newTest.add(new JenkinsStep(className, newTest, stepName));
+      JenkinsStep jenkinsStep = new JenkinsStep(className, newTest, stepName);
+      jenkinsStep.setStartTime(step.getStartTime());
+      jenkinsStep.setEndTime(step.getEndTime());
+      newTest.add(jenkinsStep);
     }
     tests.add(newTest);
   }

@@ -125,6 +125,9 @@ public class JenkinsReportGenerator implements GenerationListener {
     }
   }
 
+  /**
+   * Writes a test report where generated tests are reported as the actual test cases by Jenkins.
+   */
   public void writeTestReport() {
     String report = generateReport("tests");
     try {
@@ -136,14 +139,34 @@ public class JenkinsReportGenerator implements GenerationListener {
     }
   }
 
+  /**
+   * Generates a report for test steps.
+   * 
+   * @return The generated report.
+   */
   public String generateStepReport() {
     return generateReport("steps");
   }
 
+  /**
+   * Generates a report for test cases.
+   * 
+   * @return The generated report.
+   */
   public String generateTestReport() {
     return generateReport("tests");
   }
 
+  /**
+   * Generates a report for generated tests using the given template.
+   * The templates are loaded from classpath in the same package as this class.
+   * Apache Velocity is used to merge the template with generated tests.
+   * Property "suite" contains the test suite generated.
+   * Property "properties" contain miscellamous properties about test generation configuration.
+   * 
+   * @param templateName The velocity template name to use for the report.
+   * @return The generated report.
+   */
   public String generateReport(String templateName) {
     vc.put("suite", suite);
     vc.put("properties", fillProperties());
@@ -156,14 +179,27 @@ public class JenkinsReportGenerator implements GenerationListener {
 
   private static final String NULL = "Null";
   private static final String SCRIPTER = "Scripter";
+  private static final String ALGORITHM = "Algorithm";
+  private static final String FILTER = "Filter";
+  private static final String LISTENER = "Listener";
+  private static final String MODEL_OBJECT = "Model Object";
+  private static final String SEED = "Seed";
+  private static final String SUITE_END_CONDITION = "Suite End Condition";
+  private static final String TEST_CASE_END_CONDITION = "Test Case End Condition";
 
+
+  /**
+   * Fills in the generation configuration properties for reports.
+   * 
+   * @return The properties of generator configuration.
+   */
   private Collection<Property> fillProperties() {
     Collection<Property> properties = new ArrayList<>();
     String algorithm = config.getAlgorithm().getClass().getName();
-    properties.add(new Property("Algorithm", algorithm));
+    properties.add(new Property(ALGORITHM, algorithm));
     Collection<TransitionFilter> filters = config.getFilters();
     for (TransitionFilter filter : filters) {
-      properties.add(new Property("Filter", filter.getClass().getName()));
+      properties.add(new Property(FILTER, filter.getClass().getName()));
     }
     ScriptedValueProvider scripter = config.getScripter();
     if (scripter == null) {
@@ -173,26 +209,26 @@ public class JenkinsReportGenerator implements GenerationListener {
     }
     Collection<GenerationListener> listeners = config.getListeners().getListeners();
     for (GenerationListener listener : listeners) {
-      properties.add(new Property("Listener", listener.getClass().getName()));
+      properties.add(new Property(LISTENER, listener.getClass().getName()));
     }
     Collection<ModelObject> modelObjects = config.getModelObjects();
     for (ModelObject mo : modelObjects) {
       String prefix = mo.getPrefix();
       String name = mo.getObject().getClass().getName();
       if (prefix.length() > 0) {
-        properties.add(new Property("Model Object", prefix + "::" + name));
+        properties.add(new Property(MODEL_OBJECT, prefix + "::" + name));
       } else {
-        properties.add(new Property("Model Object", name));
+        properties.add(new Property(MODEL_OBJECT, name));
       }
     }
-    properties.add(new Property("Seed", "" + config.getSeed()));
+    properties.add(new Property(SEED, "" + config.getSeed()));
     Collection<EndCondition> suiteEndConditions = config.getSuiteEndConditions();
     for (EndCondition ec : suiteEndConditions) {
-      properties.add(new Property("Suite End Condition", ec.toString()));
+      properties.add(new Property(SUITE_END_CONDITION, ec.toString()));
     }
     Collection<EndCondition> testEndConditions = config.getTestCaseEndConditions();
     for (EndCondition ec : testEndConditions) {
-      properties.add(new Property("Test Case End Condition", ec.toString()));
+      properties.add(new Property(TEST_CASE_END_CONDITION, ec.toString()));
     }
     return properties;
   }

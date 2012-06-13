@@ -55,3 +55,21 @@ v 2.0.0 24/11/2011
 -added first draft of text based domain specific language
 -added coverage matrices
 -refactored (warning: api change), fixed bugs, the usual stuff..
+v 2.2.0 29/01/2012
+-JUnit integration
+-Separate OSMOConfiguration object
+-TestStep to replace Transition (which will still remain)
+-Tutorials for various features
+v 2.2.1 08/02/2012
+-Fix for "n must be positive" error in Balancing algorithm.
+v 2.3.0 13/06/2012
+-Using Clover for test coverage in development
+-Upgraded build to JDK 7
+-Performance tuning for algorithms
+-Bug fixes
+-Added getOptions to some data model objects
+-Refactored some API methods for clarity
+-Added Time end condition
+-Added ability to define slice configurations for inline variables
+-GUI metric changes
+-Added basic support for integrated Jenkins reporting

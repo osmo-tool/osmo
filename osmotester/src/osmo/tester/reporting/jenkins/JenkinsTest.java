@@ -3,12 +3,21 @@ package osmo.tester.reporting.jenkins;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/** @author Teemu Kanstren */
+/** 
+ * Represents a separate test case for Jenkins reports.
+ * 
+ * @author Teemu Kanstren */
 public class JenkinsTest {
+  /** The set of steps in this test case. */
   private List<JenkinsStep> steps = new ArrayList<>();
+  /** Provides unique id values. */
   private static AtomicInteger nextId = new AtomicInteger(0);
+  /** ID for this test case. */
   private final int id;
 
+  /**
+   * Reset test ID's for testing.
+   */
   public static void resetId() {
     nextId.set(0);
   }
@@ -17,14 +26,29 @@ public class JenkinsTest {
     id = nextId.incrementAndGet();
   }
 
+  /**
+   * Add a step to this test case, in order.
+   * 
+   * @param step The step to add.
+   */
   public void add(JenkinsStep step) {
     steps.add(step);
   }
 
+  /**
+   * The name of a test case is "TestN" where N is the test id.
+   * 
+   * @return The name.
+   */
   public String getName() {
     return "Test" + id;
   }
 
+  /**
+   * Provides a list of class names for model objects from which the different test steps have been executed.
+   * 
+   * @return The string list.
+   */
   public String getClassName() {
     Collection<JenkinsStep> mySteps = new LinkedHashSet<>();
     mySteps.addAll(steps);
@@ -35,6 +59,11 @@ public class JenkinsTest {
     return name.toString();
   }
 
+  /**
+   * The duration of the test case, equal to sum of duration for all steps.
+   * 
+   * @return Test duration in seconds as string with 2 decimals.
+   */
   public String getDuration() {
     if (steps.size() == 0) {
       return "!test has no steps!";

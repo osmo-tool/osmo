@@ -50,7 +50,7 @@ public class OSMOConfiguration {
   /** Number of tests to generate when using over JUnit. */
   private int junitLength = -1;
   /** Should we try to throw original exception if model throws (remove OSMO Tester trace from the top)? */
-  private boolean unwrapExceptions = false;
+  private boolean unwrapExceptions = true;
   /** Seed to be used for test generation. */
   private Long seed = TestUtils.getRandom().getSeed();
   /** Serialized value options for defined variables. */

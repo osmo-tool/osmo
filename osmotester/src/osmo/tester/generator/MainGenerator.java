@@ -100,11 +100,15 @@ public class MainGenerator {
       }
     } catch (RuntimeException e) {
       log.error("Error in test generation", e);
+      if (config.shouldUnwrapExceptions()) {
+        e = unwrap(e);
+      }
       if (config.shouldFailWhenError()) {
-        if (config.shouldUnwrapExceptions()) {
-          e = unwrap(e);
-        }
         listeners.testError(test, e);
+        TestStep step = suite.getCurrentTest().getCurrentStep();
+        if (step != null) {
+          step.storeStateAfter(fsm);
+        }
         afterTest();
         afterSuite();
         throw e;
@@ -352,7 +356,7 @@ public class MainGenerator {
     transition.storeState(fsm);
     invokeAll(transition.getPostMethods(), transition.getPrePostParameter(), "post", transition);
   }
-
+  
   /** Resets the suite, removing references to any generated tests. */
   public void resetSuite() {
     suite.reset();

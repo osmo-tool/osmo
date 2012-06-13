@@ -5,13 +5,23 @@ import java.io.PrintStream;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/** @author Teemu Kanstren */
+/** 
+ * Represents a test step in a Jenkins report.
+ * 
+ * @author Teemu Kanstren 
+ */
 public class JenkinsStep {
+  /** Name of the class for the model object from which this step was executed. */
   private final String className;
+  /** Name of the test step. */
   private final String name;
+  /** When the step was started. */
   private long startTime;
+  /** When the step ended. */
   private long endTime;
+  /** Was there an error executing this step? */
   private Exception error = null;
+  /** Next ID for this step. */
   private static final AtomicInteger nextId = new AtomicInteger(0);
 
   public JenkinsStep(String className, JenkinsTest parent, String name) {
@@ -24,18 +34,15 @@ public class JenkinsStep {
     nextId.set(0);
   }
 
+  /**
+   * Duration for step execution in seconds with two decimal precision.
+   * 
+   * @return Step duration.
+   */
   public String getDuration() {
     long duration = endTime - startTime;
     double seconds = duration / 1000d;
     return String.format(Locale.US, "%.2f", seconds);
-  }
-
-  public void start() {
-    startTime = System.currentTimeMillis();
-  }
-
-  public void end() {
-    endTime = System.currentTimeMillis();
   }
 
   public String getClassName() {
@@ -46,6 +53,11 @@ public class JenkinsStep {
     return name;
   }
 
+  /**
+   * If there was an error in executing this step, return a stacktrace for the error.
+   *
+   * @return Stacktrace or null.
+   */
   public String getError() {
     if (error == null) {
       return null;
@@ -57,8 +69,6 @@ public class JenkinsStep {
   }
 
   /**
-   * For testing only.
-   *
    * @param startTime Time (in milliseconds) when step execution was started.
    */
   public void setStartTime(long startTime) {
@@ -66,8 +76,6 @@ public class JenkinsStep {
   }
 
   /**
-   * For testing only.
-   *
    * @param endTime Time (in milliseconds) when step execution ended.
    */
   public void setEndTime(long endTime) {

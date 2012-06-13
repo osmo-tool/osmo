@@ -8,11 +8,12 @@ import osmo.tester.generator.endcondition.Length;
 public class OnlineMain {
   public static void main(String[] args) {
     OSMOTester tester = new OSMOTester(new OnlineHelloModel());
-    tester.setSeed(345);
     OSMOConfiguration config = tester.getConfig();
-    config.setFailWhenError(false);
-    tester.addTestEndCondition(new Length(5));
-    tester.addSuiteEndCondition(new Length(3));
+    config.setSeed(345);
+    config.setFailWhenError(true);
+    config.addTestEndCondition(new Length(5));
+    config.addSuiteEndCondition(new Length(3));
+    config.setUnwrapExceptions(true);
     tester.generate();
   }
 }

@@ -172,7 +172,7 @@ public class ErrorHandlingTests {
       osmo.generate();
       fail("Throwing an exception without trap should propagate.");
     } catch (RuntimeException e) {
-      assertEquals("@Guard fail", e.getCause().getCause().getMessage());
+      assertEquals("@Guard fail", e.getMessage());
     }
   }
 
@@ -200,7 +200,7 @@ public class ErrorHandlingTests {
       osmo.generate();
       fail("Throwing an exception without trap should propagate.");
     } catch (RuntimeException e) {
-      assertEquals("@Transition fail", e.getCause().getCause().getMessage());
+      assertEquals("@Transition fail", e.getMessage());
     }
   }
 
@@ -228,7 +228,7 @@ public class ErrorHandlingTests {
       osmo.generate();
       fail("Throwing an exception without trap should propagate.");
     } catch (RuntimeException e) {
-      assertEquals("@Pre fail", e.getCause().getCause().getMessage());
+      assertEquals("@Pre fail", e.getMessage());
     }
   }
 
@@ -256,7 +256,7 @@ public class ErrorHandlingTests {
       osmo.generate();
       fail("Throwing an exception without trap should propagate.");
     } catch (RuntimeException e) {
-      assertEquals("@Post fail", e.getCause().getCause().getMessage());
+      assertEquals("@Post fail", e.getMessage());
     }
   }
 
@@ -284,7 +284,7 @@ public class ErrorHandlingTests {
       osmo.generate();
       fail("Throwing an exception without trap should propagate.");
     } catch (RuntimeException e) {
-      assertEquals("@EndCondition fail", e.getCause().getCause().getMessage());
+      assertEquals("@EndCondition fail", e.getMessage());
     }
   }
 

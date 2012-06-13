@@ -37,6 +37,8 @@ public class TestStep {
   private final int id;
   /** The parent test case to which this step belongs. */
   private final TestCase parent;
+  private long startTime = 0;
+  private long endTime = 0;
 
   /**
    * Constructor.
@@ -114,6 +116,7 @@ public class TestStep {
       stateValuesBefore.put(name, value);
       parent.addVariableValue(name, value, true);
     }
+    startTime = System.currentTimeMillis();
   }
 
   /**
@@ -129,6 +132,15 @@ public class TestStep {
       stateValuesAfter.put(name, value);
       parent.addVariableValue(name, value, true);
     }
+    endTime = System.currentTimeMillis();
+  }
+
+  public long getStartTime() {
+    return startTime;
+  }
+
+  public long getEndTime() {
+    return endTime;
   }
 
   /**

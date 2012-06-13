@@ -28,7 +28,7 @@ public class ListenerTests {
 
   @Test
   public void noEnabledTransition() {
-    listener.addExpected("suite-start", "start", "g:epixx", "g:world");
+    listener.addExpected("suite-start", "start", "g:epixx", "g:world", "end", "suite-end");
     osmo.addModelObject(new ValidTestModel1());
     Length length3 = new Length(3);
     Length length1 = new Length(1);

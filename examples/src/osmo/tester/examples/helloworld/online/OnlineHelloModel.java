@@ -19,7 +19,7 @@ public class OnlineHelloModel {
   private ValueSet<String> worlds = new ValueSet<>("mars", "venus");
   private ValueSet<Integer> sizes = new ValueSet<>(1, 2, 6);
   private ValueRange<Double> ranges = new ValueRange<>(0.1d, 5.2d);
-  private HelloProgram sut = null;
+  private HelloProgram sut = new HelloProgram();
 
   @BeforeSuite
   public void init() {
@@ -28,7 +28,8 @@ public class OnlineHelloModel {
 
   @BeforeTest
   public void startTest() {
-    sut = new HelloProgram();
+    //this is where you would actually set up your test objects to get independent tests
+//    sut = new HelloProgram();
     helloCount = 0;
     worldCount = 0;
     System.out.println("TEST START");
