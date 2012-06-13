@@ -76,7 +76,7 @@ public class TimedTests {
     tester.generate();
     long diff = System.currentTimeMillis() - start;
     //the suite can only end after a test has ended, so we still should get 1000 millis
-    assertTrue("Time taken with 1+2 second end condition should be close to 2000, was "+diff, 1900 <= diff && diff <= 2100);
+    assertTrue("Time taken with 1+2 second end condition should be close to 2000, was "+diff, 1900 <= diff && diff <= 2200);
     TestSuite suite = calculator.getHistory();
     List<TestCase> history = suite.getFinishedTestCases();
     assertEquals("Number of tests generated", 2, history.size());

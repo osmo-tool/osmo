@@ -176,12 +176,14 @@ public class ReportTests {
     tester.addModelObject(error);
     JenkinsReportGenerator listener = new JenkinsReportGenerator(filename, false);
     tester.addListener(listener);
+    listener.getSuite().setStartTime(1234);
+    listener.getSuite().setEndTime(3234);
     try {
       tester.generate();
     } catch (Exception e) {
       //this should happen..
     }
-    String expected = getResource(ReportTests.class, "expected-test-report.txt");
+    String expected = getResource(ReportTests.class, "expected-error5-steps.txt");
     expected = unifyLineSeparators(expected, "\n");
     String actual = readFile(filename);
     assertEquals("Jenkins report for tests", expected, actual);
