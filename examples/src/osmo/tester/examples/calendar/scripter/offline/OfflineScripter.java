@@ -1,5 +1,6 @@
 package osmo.tester.examples.calendar.scripter.offline;
 
+import org.apache.velocity.util.StringUtils;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.examples.calendar.testmodel.ModelEvent;
 import osmo.tester.examples.calendar.testmodel.ModelState;
@@ -8,17 +9,13 @@ import osmo.tester.model.dataflow.Words;
 import osmo.tester.scripter.robotframework.RFParameter;
 import osmo.tester.scripter.robotframework.Scripter;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 
-import static org.apache.commons.lang.StringUtils.capitalize;
 
 /**
  * Offline scripter for the calendar example. Creates a test script to be executed with the
@@ -46,7 +43,7 @@ public class OfflineScripter implements CalendarScripter {
   public OfflineScripter(ModelState state, String fileName) {
     this.state = state;
     this.fileName = fileName;
-    scripter.setTestLibrary(CalculatorLibrary.class.getName());
+    scripter.setTestLibrary(CalendarLibrary.class.getName());
   }
 
   /**
@@ -72,7 +69,7 @@ public class OfflineScripter implements CalendarScripter {
     Words words = new Words(3, 5);
     words.asciiLettersAndNumbersOnly();
     for (String user : state.getUsers()) {
-      scripter.addVariable(user, capitalize(user) + " " + words.next());
+      scripter.addVariable(user, StringUtils.capitalizeFirstLetter(user) + " " + words.next());
     }
     script = scripter.createScript();
     return script;
@@ -191,6 +188,7 @@ public class OfflineScripter implements CalendarScripter {
       Writer output = new BufferedWriter(new FileWriter(fileName));
       output.write(getScript());
       output.close();
+      System.out.println("Wrote script to:" + new File(fileName).getAbsolutePath());
     } catch (IOException e) {
       throw new RuntimeException("Failed to write test script to file:" + fileName, e);
     }

@@ -25,7 +25,7 @@ public class CalendarJenkins {
     ModelState state = new ModelState();
     CalendarScripter scripter = new OfflineScripter(state, "tests.html");
     osmo.addModelObject(state);
-    osmo.addModelObject(new CalendarBaseModel(state, scripter));
+    osmo.addModelObject(new CalendarMeetingModel(state, scripter));
     osmo.addModelObject(new CalendarOracleModel(state, scripter));
     osmo.addModelObject(new CalendarTaskModel(state, scripter));
     osmo.addModelObject(new CalendarOverlappingModel(state, scripter));

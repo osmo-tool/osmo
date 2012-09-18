@@ -2,13 +2,7 @@ package osmo.visualizer.examples;
 
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.calendar.scripter.MockScripter;
-import osmo.tester.examples.calendar.testmodel.CalendarBaseModel;
-import osmo.tester.examples.calendar.testmodel.CalendarErrorHandlingModel;
-import osmo.tester.examples.calendar.testmodel.CalendarOracleModel;
-import osmo.tester.examples.calendar.testmodel.CalendarOverlappingModel;
-import osmo.tester.examples.calendar.testmodel.CalendarParticipantModel;
-import osmo.tester.examples.calendar.testmodel.CalendarTaskModel;
-import osmo.tester.examples.calendar.testmodel.ModelState;
+import osmo.tester.examples.calendar.testmodel.*;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.gui.manualdrive.ManualAlgorithm;
 import osmo.visualizer.generator.TransitionBarChart;
@@ -31,7 +25,7 @@ public class TransitionBarChartExample {
     PrintStream out = System.out;
 //    PrintStream out = NullPrintStream.stream;
     tester.addModelObject(state);
-    tester.addModelObject(new CalendarBaseModel(state, scripter, out));
+    tester.addModelObject(new CalendarMeetingModel(state, scripter, out));
     tester.addModelObject(new CalendarOracleModel(state, scripter, out));
     tester.addModelObject(new CalendarTaskModel(state, scripter, out));
     tester.addModelObject(new CalendarOverlappingModel(state, scripter, out));
