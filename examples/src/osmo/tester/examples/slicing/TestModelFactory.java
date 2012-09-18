@@ -23,7 +23,7 @@ public class TestModelFactory implements OSMOConfigurationFactory {
     ModelState state = new ModelState();
     CalendarScripter scripter = new OfflineScripter(state, "tests.html");
     config.addModelObject(state);
-    config.addModelObject(new CalendarBaseModel(state, scripter));
+    config.addModelObject(new CalendarMeetingModel(state, scripter));
     config.addModelObject(new CalendarTaskModel(state, scripter));
     config.addModelObject(new CalendarParticipantModel(state, scripter));
     config.addModelObject(new CalendarErrorHandlingModel(state, scripter));

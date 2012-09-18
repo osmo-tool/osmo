@@ -1,6 +1,5 @@
 package osmo.tester.examples.calendar;
 
-import osmo.common.log.Logger;
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.examples.calendar.scripter.offline.OfflineScripter;
@@ -10,7 +9,6 @@ import osmo.tester.gui.slicing.SlicingGUI;
 import osmo.tester.model.FSM;
 import osmo.tester.scripting.slicing.AsciiParser;
 import osmo.tester.scripting.slicing.SlicingConfiguration;
-import osmo.visualizer.model.FSMBuildVisualizer;
 
 /**
  * The class used to generate tests from the calendar example.
@@ -25,7 +23,7 @@ public class SlicerMain {
 //    CalendarScripter scripter = new OnlineScripter();
     CalendarScripter scripter = new OfflineScripter(state, "tests.html");
     osmo.addModelObject(state);
-    osmo.addModelObject(new CalendarBaseModel(state, scripter));
+    osmo.addModelObject(new CalendarMeetingModel(state, scripter));
     osmo.addModelObject(new CalendarOracleModel(state, scripter));
     osmo.addModelObject(new CalendarTaskModel(state, scripter));
     osmo.addModelObject(new CalendarOverlappingModel(state, scripter));

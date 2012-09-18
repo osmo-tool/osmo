@@ -7,11 +7,7 @@ import osmo.tester.examples.calendar.testapp.CalendarUser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 import static junit.framework.Assert.*;
 
@@ -20,7 +16,7 @@ import static junit.framework.Assert.*;
  *
  * @author Teemu Kanstren
  */
-public class CalculatorLibrary {
+public class CalendarLibrary {
   /** Library scope from robot framework. Specific RF configuration. */
   public static final String ROBOT_LIBRARY_SCOPE = "TEST";
   /** Library version for robot framework. Specific RF configuration. */
@@ -31,7 +27,7 @@ public class CalculatorLibrary {
   private SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy 'at' HH:mm:ss z", Locale.ENGLISH);
 
   /** This library takes no arguments. */
-  public CalculatorLibrary() {
+  public CalendarLibrary() {
   }
 
   private CalendarApplication getCalendarFor(String uid) {

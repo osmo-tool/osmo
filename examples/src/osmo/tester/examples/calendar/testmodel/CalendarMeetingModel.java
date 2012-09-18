@@ -1,36 +1,34 @@
 package osmo.tester.examples.calendar.testmodel;
 
-import osmo.tester.annotation.AfterSuite;
-import osmo.tester.annotation.BeforeTest;
-import osmo.tester.annotation.Guard;
-import osmo.tester.annotation.TestStep;
-import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.*;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
+import osmo.tester.model.Requirements;
 
 import java.io.PrintStream;
 import java.util.Date;
 
 /**
  * The base test model for the calendar. Includes
- * -add organizer event, meaning an event that has no participants
- * -removing event from the organizer (possibly impacting remove from all participants if such exist)
+ * -add  meeting (no participants)
+ * -removing meeting from the organizer (possible impact: remove meeting from all participants if any exist)
  *
  * @author Teemu Kanstren
  */
-public class CalendarBaseModel {
+public class CalendarMeetingModel {
   /** The global model state, shared across test models. */
   private final ModelState state;
   /** The scripter for creating/executing the test cases. */
   private final CalendarScripter scripter;
   private final PrintStream out;
+  private final Requirements reqs = new Requirements();
 
-  public CalendarBaseModel(ModelState state, CalendarScripter scripter) {
+  public CalendarMeetingModel(ModelState state, CalendarScripter scripter) {
     this.state = state;
     this.scripter = scripter;
     this.out = System.out;
   }
 
-  public CalendarBaseModel(ModelState state, CalendarScripter scripter, PrintStream out) {
+  public CalendarMeetingModel(ModelState state, CalendarScripter scripter, PrintStream out) {
     this.state = state;
     this.scripter = scripter;
     this.out = out;

@@ -36,7 +36,7 @@ public class CalendarTests {
   public void baseModelOnline() {
     ModelState state = new ModelState();
     CalendarScripter scripter = new OnlineScripter();
-    osmo.addModelObject(new CalendarBaseModel(state, scripter, out));
+    osmo.addModelObject(new CalendarMeetingModel(state, scripter, out));
     generateAndAssertOutput("expected-base-online.txt");
     scripter.write();
   }
@@ -45,7 +45,7 @@ public class CalendarTests {
   public void fullModelOnline() {
     ModelState state = new ModelState();
     CalendarScripter scripter = new OnlineScripter();
-    osmo.addModelObject(new CalendarBaseModel(state, scripter, out));
+    osmo.addModelObject(new CalendarMeetingModel(state, scripter, out));
     osmo.addModelObject(new CalendarOracleModel(state, scripter, out));
     osmo.addModelObject(new CalendarTaskModel(state, scripter, out));
     osmo.addModelObject(new CalendarOverlappingModel(state, scripter, out));
@@ -68,7 +68,7 @@ public class CalendarTests {
   public void failureModelOnline() {
     ModelState state = new ModelState();
     CalendarScripter scripter = new OnlineScripter();
-    osmo.addModelObject(new CalendarBaseModel(state, scripter));
+    osmo.addModelObject(new CalendarMeetingModel(state, scripter));
     osmo.addModelObject(new CalendarOracleModel(state, scripter));
     osmo.addModelObject(new CalendarTaskModel(state, scripter));
     osmo.addModelObject(new CalendarOverlappingModel(state, scripter));
@@ -91,7 +91,7 @@ public class CalendarTests {
   public void baseModel() {
     ModelState state = new ModelState();
     OfflineScripter scripter = new OfflineScripter(state, "tests.html");
-    osmo.addModelObject(new CalendarBaseModel(state, scripter));
+    osmo.addModelObject(new CalendarMeetingModel(state, scripter));
     generateAndAssertScript(scripter, "expected-base-offline.txt");
   }
 
@@ -108,7 +108,7 @@ public class CalendarTests {
   public void fullModel() {
     ModelState state = new ModelState();
     OfflineScripter scripter = new OfflineScripter(state, "tests.html");
-    osmo.addModelObject(new CalendarBaseModel(state, scripter));
+    osmo.addModelObject(new CalendarMeetingModel(state, scripter));
     osmo.addModelObject(new CalendarOracleModel(state, scripter));
     osmo.addModelObject(new CalendarTaskModel(state, scripter));
     osmo.addModelObject(new CalendarOverlappingModel(state, scripter));
