@@ -91,7 +91,7 @@ public class OSMORunner extends BlockJUnit4ClassRunner {
     MainGenerator generator = osmo.initGenerator();
     //handle initial setups
     generator.initSuite();
-    //add the listener to take case of teardown after all tests have been generated
+    //add the listener to take care of teardown after all tests have been generated
     config.addListener(new JUnitGenerationListener(config.getJUnitLength(), generator));
 
     List<FrameworkMethod> tests = new ArrayList<>();
