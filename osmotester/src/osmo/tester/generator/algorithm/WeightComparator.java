@@ -4,7 +4,12 @@ import osmo.tester.model.FSMTransition;
 
 import java.util.Comparator;
 
-/** @author Teemu Kanstren */
+/**
+ * Used to order test steps (transitions) based on their weights.
+ * For example, Collections.sort(list of transitions/steps).
+ *
+ * @author Teemu Kanstren
+ */
 public class WeightComparator implements Comparator<FSMTransition> {
   @Override
   public int compare(FSMTransition o1, FSMTransition o2) {
