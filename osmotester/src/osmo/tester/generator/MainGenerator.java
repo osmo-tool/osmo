@@ -3,6 +3,7 @@ package osmo.tester.generator;
 import osmo.common.OSMOException;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
+import osmo.tester.annotation.AfterTest;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.filter.TransitionFilter;
@@ -93,10 +94,14 @@ public class MainGenerator {
     TestCase test = suite.getCurrentTest();
     try {
       while (!checkTestCaseEndConditions()) {
-        boolean stepOk = nextStep();
-        if (!stepOk) {
+        boolean shouldContinue = nextStep();
+        if (!shouldContinue) {
           break;
         }
+      }
+      Collection<InvocationTarget> lastSteps = fsm.getLastSteps();
+      for (InvocationTarget lst : lastSteps) {
+        lst.invoke();
       }
     } catch (RuntimeException e) {
       log.error("Error in test generation", e);
@@ -264,7 +269,12 @@ public class MainGenerator {
 
   private void afterTest() {
     Collection<InvocationTarget> afters = fsm.getAfters();
-    invokeAll(afters);
+    try {
+      invokeAll(afters);
+    } catch (Exception e) {
+      log.error("Error while executing @"+AfterTest.class.getSimpleName()+" methods", e);
+      e.printStackTrace();
+    }
     TestCase current = suite.getCurrentTest();
     //update history
     suite.endTest();

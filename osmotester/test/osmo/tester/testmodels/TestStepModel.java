@@ -5,6 +5,7 @@ import osmo.tester.annotation.AfterTest;
 import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
+import osmo.tester.annotation.LastStep;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.RequirementsField;
@@ -95,5 +96,15 @@ public class TestStepModel {
   @Post
   public void stateCheck() {
     out.print(":gen_oracle");
+  }
+  
+  @LastStep
+  public void finish() {
+    out.print(":last_step1");
+  }
+
+  @LastStep
+  public void powerball() {
+    out.print(":last_step2");
   }
 }

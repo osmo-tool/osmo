@@ -146,8 +146,8 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
    */
   private void addUncoveredTP(FSMTransition previous, Collection<FSMTransition> options, Collection<FSMTransition> choices) {
     Collection<FSMTransition> uncoveredTP = new ArrayList<>();
-    uncoveredTP.addAll(choices);
     if (previous != null) {
+      uncoveredTP.addAll(choices);
       Map<FSMTransition, Integer> map = tpCoverage.get(previous);
       if (map == null) {
         map = new HashMap<>();

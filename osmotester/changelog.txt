@@ -73,3 +73,6 @@ v 2.3.0 13/06/2012
 -Added ability to define slice configurations for inline variables
 -GUI metric changes
 -Added basic support for integrated Jenkins reporting
+-Exception unwrapping is on by default
+-Out of bounds data generation options
+

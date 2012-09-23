@@ -11,7 +11,7 @@
   <property name="javadoc-dir" value="${main-output}/docs/api"/>
   <property name="clover.home" value="${env.CLOVER_HOME}"/>
   <property name="cobertura.home" value="${env.COBERTURA_HOME}"/>
-  <property name="build.version" value="2.3.0"/>
+  <property name="build.version" value="2.3.1"/>
   <property name="osmo-common-output" value="../common/ant-out/production"/>
   <property name="jar.file" value="osmo-tester-v${build.version}.jar"/>
   <property name="zip.file" value="osmo-tester-v${build.version}.zip"/>
@@ -65,7 +65,7 @@
     <javac source="7" target="7" classpathref="class.path" srcdir="${test-src}" destdir="${test-dest}"/>
   </target>
 
-  <target name="jar" depends="compile,copyresources" description="Create jar file">
+  <target name="jar" depends="clean,compile,copyresources" description="Create jar file">
     <jar destfile="${jar.file}">
       <fileset dir="${prod-dest}"/>
       <fileset dir="${osmo-common-output}"/>
