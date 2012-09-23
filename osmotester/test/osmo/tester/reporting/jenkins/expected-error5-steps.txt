@@ -1,4 +1,4 @@
-<testsuite name="OSMO Test Suite" timestamp="01.01.1970 02:00:01" hostname="OSMO rules" tests="1" failures="0" errors="0" time="2.00">
+<testsuite name="OSMO Test Suite" timestamp="01.01.1970 00:00:01" hostname="OSMO rules" tests="1" failures="0" errors="0" time="2.00">
   <properties>
     <property name="Algorithm" value="osmo.tester.generator.algorithm.RandomAlgorithm"/>
     <property name="Scripter" value="Null"/>

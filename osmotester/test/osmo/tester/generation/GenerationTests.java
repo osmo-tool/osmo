@@ -12,6 +12,7 @@ import osmo.tester.testmodels.BaseModelExtension;
 import osmo.tester.testmodels.EndStateModel;
 import osmo.tester.testmodels.PartialModel1;
 import osmo.tester.testmodels.PartialModel2;
+import osmo.tester.testmodels.TestStepModel;
 import osmo.tester.testmodels.ValidTestModel1;
 import osmo.tester.testmodels.ValidTestModel2;
 import osmo.tester.testmodels.ValidTestModel3;
@@ -247,4 +248,21 @@ public class GenerationTests {
     String actual = out.toString();
     assertEquals(":beforesuite::beforesuite::beforesuite::beforetest::beforetest::beforetest::hello:world:epixx_pre:epixx:epixx_oracle:aftertest::aftertest::aftertest::beforetest::beforetest::beforetest::epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:aftertest::aftertest::aftertest::beforetest::beforetest::beforetest::epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:aftertest::aftertest::aftertest::aftersuite::aftersuite::aftersuite:", actual);
   }
+
+  @Test
+  public void lastSteps() {
+    ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
+    PrintStream ps = new PrintStream(out);
+    TestStepModel mo = new TestStepModel(ps);
+    osmo.addModelObject("p1", mo);
+    osmo.addModelObject("p2", mo);
+    osmo.addModelObject(mo);
+    osmo.addTestEndCondition(new Length(3));
+    osmo.addSuiteEndCondition(new Length(3));
+    osmo.generate();
+    String actual = out.toString();
+    String expected = ":hello:gen_oracle:gen_oracle:gen_oracle:world:gen_oracle:gen_oracle:gen_oracle:epixx_pre:epixx:epixx_oracle:gen_oracle:gen_oracle:gen_oracle:last_step1:last_step2:last_step1:last_step2:last_step1:last_step2:hello:gen_oracle:gen_oracle:gen_oracle:world:gen_oracle:gen_oracle:gen_oracle:epixx_pre:epixx:epixx_oracle:gen_oracle:gen_oracle:gen_oracle:last_step1:last_step2:last_step1:last_step2:last_step1:last_step2:hello:gen_oracle:gen_oracle:gen_oracle:world:gen_oracle:gen_oracle:gen_oracle:epixx_pre:epixx:epixx_oracle:gen_oracle:gen_oracle:gen_oracle:last_step1:last_step2:last_step1:last_step2:last_step1:last_step2";
+    assertEquals(expected, actual);
+  }
 }
+

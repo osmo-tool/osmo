@@ -15,9 +15,12 @@ import osmo.tester.testmodels.PartialModel2;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Scanner;
+import java.util.TimeZone;
 
 import static junit.framework.Assert.assertEquals;
 import static osmo.common.TestUtils.getResource;
@@ -37,7 +40,10 @@ public class ReportTests {
     }
     tester = new OSMOTester();
     tester.setSeed(333);
-    JenkinsSuite.format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+    SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+    //TODO:.. WTF report
+    format.setTimeZone(TimeZone.getTimeZone("UTC"));
+    JenkinsSuite.format = format;
   }
 
   @Test

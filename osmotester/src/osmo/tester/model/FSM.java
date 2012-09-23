@@ -25,6 +25,8 @@ public class FSM {
   private static final Logger log = new Logger(FSM.class);
   /** Key = transition name (from @Transition("name")), Value = transition object */
   private Map<String, FSMTransition> transitions = new HashMap<>();
+  /** List of steps to execute after test is otherwise done. */
+  private Collection<InvocationTarget> lastSteps = new ArrayList<>();
   /** List of generic guards that apply to all transitions. */
   private Collection<InvocationTarget> genericGuards = new ArrayList<>();
   /** List of generic pre-methods that apply to all transitions. */
@@ -128,11 +130,6 @@ public class FSM {
       if (target == null) {
         errors += "Guard/Pre/Post without transition:" + name + "\n";
         log.debug("Error: Found guard/pre/post without a matching transition - " + name);
-      } else if (target.getMethod().getParameterTypes().length > 0) {
-        Method method = target.getMethod();
-        int p = method.getParameterTypes().length;
-        errors += "Transition methods are not allowed to have parameters: \"" + method.getName() + "()\" has " + p + " parameters.\n";
-        log.debug("Error: Found transition with invalid parameters - " + name);
       }
       errors = addGenericGuardsAndOracles(transition, errors);
     }
@@ -187,6 +184,10 @@ public class FSM {
     beforeSuites.add(target);
   }
 
+  public void addLastStep(InvocationTarget lastStep) {
+    lastSteps.add(lastStep);
+  }
+
   public Collection<InvocationTarget> getBefores() {
     return befores;
   }
@@ -201,6 +202,10 @@ public class FSM {
 
   public Collection<InvocationTarget> getAfterSuites() {
     return afterSuites;
+  }
+
+  public Collection<InvocationTarget> getLastSteps() {
+    return lastSteps;
   }
 
   public Requirements getRequirements() {

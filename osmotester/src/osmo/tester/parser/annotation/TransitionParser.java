@@ -1,6 +1,7 @@
 package osmo.tester.parser.annotation;
 
 import osmo.common.log.Logger;
+import osmo.tester.annotation.LastStep;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Transition;
 import osmo.tester.model.FSMTransition;
@@ -8,8 +9,10 @@ import osmo.tester.model.InvocationTarget;
 import osmo.tester.parser.AnnotationParser;
 import osmo.tester.parser.ParserParameters;
 
+import java.lang.reflect.Method;
+
 /**
- * Parses {@link Transition} annotations from the given model object.
+ * Parses {@link Transition} and {@link TestStep} annotations from the given model object.
  *
  * @author Teemu Kanstren
  */
@@ -20,6 +23,7 @@ public class TransitionParser implements AnnotationParser {
   @Override
   public String parse(ParserParameters parameters) {
     errors = "";
+    String type = "";
     Object annotation = parameters.getAnnotation();
     String name = null;
     int weight = 0;
@@ -34,6 +38,7 @@ public class TransitionParser implements AnnotationParser {
         name = t.value();
       }
       weight = t.weight();
+      type = Transition.class.getSimpleName();
     } else {
       TestStep ts = (TestStep) annotation;
       name = ts.name();
@@ -42,22 +47,30 @@ public class TransitionParser implements AnnotationParser {
         name = ts.value();
       }
       weight = ts.weight();
+      type = TestStep.class.getSimpleName();
     }
     name = checkName(name, parameters);
     if (name == null) {
       return errors;
     }
     createTransition(parameters, name, weight);
-    return "";
+
+    Method method = parameters.getMethod();
+    Class<?>[] parameterTypes = method.getParameterTypes();
+    if (parameterTypes.length > 0) {
+      errors += "@" + type + " methods are not allowed to have parameters: \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n";
+    }
+
+    return errors;
   }
 
   private String checkName(String name, ParserParameters parameters) {
     if (name.length() == 0) {
-      errors = "Transition must have a name. Define the \"name\" or \"value\" property.";
+      errors += "Transition must have a name. Define the \"name\" or \"value\" property.\n";
       return null;
     }
     if (name.equals("all")) {
-      errors = "Transition name \"all\" is reserved. Choose another.\n";
+      errors += "Transition name \"all\" is reserved. Choose another.\n";
       return null;
     }
     String prefix = parameters.getPrefix();

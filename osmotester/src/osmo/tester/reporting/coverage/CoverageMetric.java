@@ -215,9 +215,13 @@ public abstract class CoverageMetric {
   public String getTraceabilityMatrix(String templateName) {
     List<SingleTestCoverage> tc = getTestCoverage();
     List<String> transitions = getTransitions();
+    Collections.sort(transitions);
     List<String> pairs = getTransitionPairs();
+    Collections.sort(pairs);
     List<String> requirements = getRequirements();
+    Collections.sort(requirements);
     List<String> variables = getVariables();
+    Collections.sort(variables);
 
     vc.put("alt", new CSSHelper());
     vc.put("tests", tc);
