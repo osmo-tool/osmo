@@ -55,6 +55,10 @@ public class TestStep {
   public int getId() {
     return id;
   }
+  
+  public String getName() {
+    return transition.getName();
+  }
 
   /**
    * Mark the given requirement as covered by this test step.
@@ -144,7 +148,7 @@ public class TestStep {
   }
 
   /**
-   * Aadds a value for model variable. Means a value that was generated.
+   * Adds a value for model variable. Means a value that was generated.
    *
    * @param name  Name of the variable.
    * @param value The value of the variable.
@@ -152,14 +156,31 @@ public class TestStep {
   public void addVariableValue(String name, Object value) {
     ModelVariable mv = new ModelVariable(name);
     log.debug("Variable:" + name + " add value:" + value);
-//    if (!merge || !variable.contains(value)) {
-//      log.debug("m:"+merge+" c:"+variable.contains(value));
     mv.addValue(value);
     values.add(mv);
-//    }
   }
 
-  public List<ModelVariable> getVariableValues() {
+  public List<ModelVariable> getParameters() {
     return values;
+  }
+
+  public List<ModelVariable> getHtmlParameters() {
+    List<ModelVariable> result = new ArrayList<>();
+    int count = 0;
+    for (ModelVariable value : values) {
+      for (Object o : value.getValues()) {
+        ModelVariable var = new ModelVariable(value.getName());
+        var.addValue(o);
+        result.add(var);
+        count++;
+      }
+    }
+    int diff = parent.getParameterCount()-count;
+    for (int i = 0 ; i < diff ; i++) {
+      ModelVariable var = new ModelVariable("");
+      var.addValue("");
+      result.add(var);
+    }
+    return result;
   }
 }

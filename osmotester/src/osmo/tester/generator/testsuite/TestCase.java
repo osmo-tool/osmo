@@ -45,6 +45,15 @@ public class TestCase {
     nextId = new AtomicInteger(1);
   }
 
+  /**
+   * Creates a name for use in reporting.
+   * 
+   * @return "Test"+id;
+   */
+  public String getName() {
+    return "Test"+id;
+  }
+
   /** @return Unique id for this test case. */
   public int getId() {
     return id;
@@ -54,6 +63,15 @@ public class TestCase {
     return currentStep;
   }
 
+  public int getParameterCount() {
+    int count = 0;
+    for (TestStep step : steps) {
+      int ps = step.getParameters().size();
+      if (ps > count) count = ps;
+    }
+    return count;
+  }
+  
   public long getStartTime() {
     return startTime;
   }
@@ -131,7 +149,7 @@ public class TestCase {
   }
 
   /**
-   * Aadds a value for model variable. Means a value that was generated.
+   * Adds a value for model variable. Means a value that was generated.
    *
    * @param name  Name of the variable.
    * @param value The value of the variable.

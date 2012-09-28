@@ -34,7 +34,7 @@ public class ManualScriptWriter {
           fw.write(step.getTransition().getName());
           fw.write(",");
           fw.newLine();
-          List<ModelVariable> variables = step.getVariableValues();
+          List<ModelVariable> variables = step.getParameters();
           for (ModelVariable variable : variables) {
             fw.write("variable,");
             fw.write(variable.getName());

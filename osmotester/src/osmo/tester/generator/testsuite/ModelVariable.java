@@ -33,6 +33,10 @@ public class ModelVariable {
   public Collection<Object> getValues() {
     return values;
   }
+  
+  public Object getValue() {
+    return values.iterator().next();
+  }
 
   /**
    * Adds all values from the given variable

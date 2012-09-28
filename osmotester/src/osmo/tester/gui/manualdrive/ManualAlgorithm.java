@@ -304,7 +304,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
       for (TestStep ts : tc.getSteps()) {
         int tsId = ts.getId();
         String added = tsId + ". " + ts.getTransition().getName() + "\n";
-        List<ModelVariable> values = ts.getVariableValues();
+        List<ModelVariable> values = ts.getParameters();
         int i = 1;
         for (ModelVariable value : values) {
           added += tsId + "." + i + ". " + value.getName() + " = " + value.getValues() + "\n";
