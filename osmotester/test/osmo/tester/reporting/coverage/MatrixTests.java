@@ -73,10 +73,11 @@ public class MatrixTests {
   }
 
   @Test
-  public void htmlMatrix() {
+  public void htmlMatrix() throws Exception {
     String expected = getResource(MatrixTests.class, "expected-matrix.txt");
     HTMLCoverageReporter html = new HTMLCoverageReporter(suite, fsm);
     String actual = html.getTraceabilityMatrix();
+    html.write(actual, "test-matrix.html");
     expected = unifyLineSeparators(expected, "\n");
     actual = unifyLineSeparators(actual, "\n");
     assertEquals("Generated HTML coverage matrix", expected, actual);
