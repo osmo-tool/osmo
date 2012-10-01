@@ -153,9 +153,9 @@ public class ParserTests {
     } catch (Exception e) {
       String msg = e.getMessage();
       String expected = "Invalid FSM:\n" +
-              "Invalid return type for @EndCondition (\"hello()\"):class java.lang.String. Should be boolean.\n" +
-              "@EndCondition methods are not allowed to have parameters: \"hello()\" has 1 parameters.\n" +
-              "@Transition methods are not allowed to have parameters: \"epixx()\" has 1 parameters.\n";
+              "@Transition methods are not allowed to have parameters: \"epixx()\" has 1 parameters.\n"+
+      "Invalid return type for @EndCondition (\"hello()\"):class java.lang.String. Should be boolean.\n" +
+              "@EndCondition methods are not allowed to have parameters: \"hello()\" has 1 parameters.\n";
       assertEquals(expected, msg);
     }
   }
@@ -168,8 +168,8 @@ public class ParserTests {
     } catch (Exception e) {
       String msg = e.getMessage();
       String expected = "Invalid FSM:\n" +
-              "@Transition methods are not allowed to have parameters: \"transition1()\" has 1 parameters.\n" +
               "@Transition methods are not allowed to have parameters: \"epix()\" has 1 parameters.\n" +
+              "@Transition methods are not allowed to have parameters: \"transition1()\" has 1 parameters.\n" +
               "Invalid return type for guard (\"listCheck()\"):class java.lang.String.\n" +
               "Guard/Pre/Post without transition:world\n";
       assertEquals(expected, msg);

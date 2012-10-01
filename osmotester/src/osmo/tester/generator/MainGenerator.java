@@ -270,12 +270,7 @@ public class MainGenerator {
 
   private void afterTest() {
     Collection<InvocationTarget> afters = fsm.getAfters();
-    try {
-      invokeAll(afters);
-    } catch (Exception e) {
-      log.error("Error while executing @"+AfterTest.class.getSimpleName()+" methods", e);
-      e.printStackTrace();
-    }
+    invokeAll(afters);
     TestCase current = suite.getCurrentTest();
     //update history
     suite.endTest();

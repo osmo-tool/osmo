@@ -150,81 +150,168 @@
     <thead>
       <tr>
         <th class='corner'>Step</th>
-        <th colspan='5' class='colhead'>Parameters</th>
+        <th colspan='2' class='colhead'>Parameters</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <th class='testhead' rowspan='2'>1.1:Login</th>
-        <th class='testhead'>Username</th>
-        <th class='testhead'>Password</th>
-        <th class='testhead'>Fancy Pants</th>
-        <th class='testhead'>Funny</th>
-        <th class='testhead'>Address</th>
-      </tr>
-      <tr>
-        <td>bob</td>
-        <td>1nt3rn4l</td>
-        <td>true</td>
-        <td>not so</td>
-        <td>Rock of Gelato, 3rd rock from the Sun</td>
-      </tr>
-      <tr>
-        <th class='testhead' rowspan='2'>1.2:Buy Stuff</th>
-        <th class='testhead'>Stuff</th>
-        <th class='testhead'>Quantity</th>
-        <th class='testhead'>Price</th>
+        <th class='testhead' rowspan='2'>1.1:first</th>
         <th class='testhead'></th>
         <th class='testhead'></th>
       </tr>
       <tr>
-        <td>Lawnmover</td>
-        <td>3</td>
-        <td>$5</td>
         <td></td>
         <td></td>
+      </tr>
+      <tr>
+        <th class='testhead' rowspan='2'>1.2:second</th>
+        <th class='testhead'></th>
+        <th class='testhead'></th>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <th class='testhead' rowspan='2'>1.3:third</th>
+        <th class='testhead'>range</th>
+        <th class='testhead'>set</th>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>v1</td>
+      </tr>
+      <tr>
+        <th class='testhead' rowspan='2'>1.4:third</th>
+        <th class='testhead'>range</th>
+        <th class='testhead'>set</th>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>v3</td>
+      </tr>
+      <tr>
+        <th class='testhead' rowspan='2'>1.5:third</th>
+        <th class='testhead'>range</th>
+        <th class='testhead'>set</th>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>v3</td>
+      </tr>
+    </tbody>
+  </table>
+  <p/>
+  <table class="fail-table" border="1" name="trace-table $test.number">
+    <caption>Test Generation Trace for Test2</caption>
+    <thead>
+      <tr>
+        <th class='corner'>Step</th>
+        <th colspan='2' class='colhead'>Parameters</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th class='testhead' rowspan='2'>2.1:first</th>
+        <th class='testhead'></th>
+        <th class='testhead'></th>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <th class='testhead' rowspan='2'>2.2:second</th>
+        <th class='testhead'></th>
+        <th class='testhead'></th>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <th class='testhead' rowspan='2'>2.3:third</th>
+        <th class='testhead'>range</th>
+        <th class='testhead'>set</th>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>v2</td>
+      </tr>
+      <tr>
+        <th class='testhead' rowspan='2'>2.4:third</th>
+        <th class='testhead'>range</th>
+        <th class='testhead'>set</th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>v3</td>
+      </tr>
+      <tr>
+        <th class='testhead' rowspan='2'>2.5:third</th>
+        <th class='testhead'>range</th>
+        <th class='testhead'>set</th>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>v3</td>
       </tr>
     </tbody>
   </table>
   <p/>
   <table class="test-table" border="1" name="trace-table $test.number">
-    <caption>Test Generation Trace for Test2</caption>
+    <caption>Test Generation Trace for Test3</caption>
     <thead>
       <tr>
         <th class='corner'>Step</th>
-        <th colspan='5' class='colhead'>Parameters</th>
+        <th colspan='2' class='colhead'>Parameters</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <th class='testhead' rowspan='2'>2.1:Login</th>
-        <th class='testhead'>Username</th>
-        <th class='testhead'>Password</th>
-        <th class='testhead'>Fancy Pants</th>
-        <th class='testhead'>Funny</th>
-        <th class='testhead'>Address</th>
-      </tr>
-      <tr>
-        <td>bob</td>
-        <td>1nt3rn4l</td>
-        <td>true</td>
-        <td>not so</td>
-        <td>Rock of Gelato, 3rd rock from the Sun</td>
-      </tr>
-      <tr>
-        <th class='testhead' rowspan='2'>2.2:Buy Stuff</th>
-        <th class='testhead'>Stuff</th>
-        <th class='testhead'>Quantity</th>
-        <th class='testhead'>Price</th>
+        <th class='testhead' rowspan='2'>3.1:first</th>
         <th class='testhead'></th>
         <th class='testhead'></th>
       </tr>
       <tr>
-        <td>Lawnmover</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <th class='testhead' rowspan='2'>3.2:second</th>
+        <th class='testhead'></th>
+        <th class='testhead'></th>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <th class='testhead' rowspan='2'>3.3:third</th>
+        <th class='testhead'>range</th>
+        <th class='testhead'>set</th>
+      </tr>
+      <tr>
         <td>3</td>
-        <td>$5</td>
-        <td></td>
-        <td></td>
+        <td>v3</td>
+      </tr>
+      <tr>
+        <th class='testhead' rowspan='2'>3.4:third</th>
+        <th class='testhead'>range</th>
+        <th class='testhead'>set</th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>v3</td>
+      </tr>
+      <tr>
+        <th class='testhead' rowspan='2'>3.5:third</th>
+        <th class='testhead'>range</th>
+        <th class='testhead'>set</th>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>v2</td>
       </tr>
     </tbody>
   </table>
