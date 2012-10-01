@@ -55,6 +55,7 @@ public class TraceReportWriter {
     buyStep2.addVariableValue("Stuff", "Lawnmover");
     buyStep2.addVariableValue("Quantity", "3");
     buyStep2.addVariableValue("Price", "$5");
+    suite.getCurrentTest().setFailed(true);
     new TraceReportWriter().write(suite, "teemu-testaa.html");
   }
 
