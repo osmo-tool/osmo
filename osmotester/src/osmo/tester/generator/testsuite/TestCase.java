@@ -36,6 +36,8 @@ public class TestCase {
   private long startTime = 0;
   /** The time when the test case generation was ended. Milliseconds as in System.currentTimInMillis(). */
   private long endTime = 0;
+  /** Set to true if during test generation there is an exception thrown. */
+  private boolean failed = false;
 
   public TestCase() {
     this.id = nextId.getAndIncrement();
@@ -198,5 +200,13 @@ public class TestCase {
       names.add(teststep.getTransition().getName());
     }
     return names;
+  }
+
+  public void setFailed(boolean failed) {
+    this.failed = failed;
+  }
+
+  public boolean isFailed() {
+    return failed;
   }
 }

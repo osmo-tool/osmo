@@ -104,6 +104,7 @@ public class MainGenerator {
         lst.invoke();
       }
     } catch (RuntimeException e) {
+      test.setFailed(true);
       log.error("Error in test generation", e);
       if (config.shouldUnwrapExceptions()) {
         e = unwrap(e);
