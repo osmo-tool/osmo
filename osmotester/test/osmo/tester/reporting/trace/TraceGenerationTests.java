@@ -1,8 +1,10 @@
 package osmo.tester.reporting.trace;
 
+import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.Length;
+import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
@@ -14,6 +16,11 @@ import static osmo.common.TestUtils.*;
 
 /** @author Teemu Kanstren */
 public class TraceGenerationTests {
+  @Before
+  public void reset() {
+    TestCase.reset();
+  }
+
   @Test
   public void testNoSteps() throws Exception {
     TestSuite suite = new TestSuite();
@@ -115,7 +122,7 @@ public class TraceGenerationTests {
 
     assertTrace(suite, "expected-two-tests-with-params.txt");
   }
-  
+
   @Test
   public void traceFromGenerator() {
     OSMOTester tester = new OSMOTester();
@@ -126,5 +133,18 @@ public class TraceGenerationTests {
     tester.generate();
     TestSuite suite = tester.getSuite();
     assertTrace(suite, "expected-generator-trace.txt");
+  }
+
+  @Test
+  public void failTraceFromGenerator() {
+    OSMOTester tester = new OSMOTester();
+    tester.addModelObject(new VariableModel2());
+    tester.setSeed(5);
+    tester.addTestEndCondition(new Length(5));
+    tester.addSuiteEndCondition(new Length(3));
+    tester.generate();
+    TestSuite suite = tester.getSuite();
+    suite.getAllTestCases().get(1).setFailed(true);
+    assertTrace(suite, "expected-generator-fail-trace.txt");
   }
 }
