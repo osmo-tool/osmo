@@ -261,8 +261,12 @@ public class GenerationTests {
     osmo.addSuiteEndCondition(new Length(3));
     osmo.generate();
     String actual = out.toString();
-    String expected = ":hello:gen_oracle:gen_oracle:gen_oracle:world:gen_oracle:gen_oracle:gen_oracle:epixx_pre:epixx:epixx_oracle:gen_oracle:gen_oracle:gen_oracle:last_step1:last_step2:last_step1:last_step2:last_step1:last_step2:hello:gen_oracle:gen_oracle:gen_oracle:world:gen_oracle:gen_oracle:gen_oracle:epixx_pre:epixx:epixx_oracle:gen_oracle:gen_oracle:gen_oracle:last_step1:last_step2:last_step1:last_step2:last_step1:last_step2:hello:gen_oracle:gen_oracle:gen_oracle:world:gen_oracle:gen_oracle:gen_oracle:epixx_pre:epixx:epixx_oracle:gen_oracle:gen_oracle:gen_oracle:last_step1:last_step2:last_step1:last_step2:last_step1:last_step2";
+    String expected = ":hello:gen_oracle:gen_oracle:gen_oracle:world:gen_oracle:gen_oracle:gen_oracle:epixx_pre:epixx:epixx_oracle:gen_oracle:gen_oracle:gen_oracle:last_step:last_step:last_step:last_step:last_step:last_step:hello:gen_oracle:gen_oracle:gen_oracle:world:gen_oracle:gen_oracle:gen_oracle:epixx_pre:epixx:epixx_oracle:gen_oracle:gen_oracle:gen_oracle:last_step:last_step:last_step:last_step:last_step:last_step:hello:gen_oracle:gen_oracle:gen_oracle:world:gen_oracle:gen_oracle:gen_oracle:epixx_pre:epixx:epixx_oracle:gen_oracle:gen_oracle:gen_oracle:last_step:last_step:last_step:last_step:last_step:last_step";
     assertEquals(expected, actual);
+    assertEquals("Last step 1 in a test case", 3, mo.getLastStep1TestCount());
+    assertEquals("Last step 2 in a test case", 3, mo.getLastStep2TestCount());
+    assertEquals("Last step 1 in a test suite", 9, mo.getLastStep1SuiteCount());
+    assertEquals("Last step 2 in a test suite", 9, mo.getLastStep2SuiteCount());
   }
 }
 

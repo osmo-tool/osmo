@@ -29,6 +29,10 @@ public class TestStepModel {
   public static final String REQ_WORLD = "world";
   public static final String REQ_EPIX = "epix";
   private final PrintStream out;
+  private int lastStep1TestCount = 0;
+  private int lastStep2TestCount = 0;
+  private int lastStep1SuiteCount = 0;
+  private int lastStep2SuiteCount = 0;
 
   public TestStepModel(PrintStream out) {
     this.out = out;
@@ -37,6 +41,8 @@ public class TestStepModel {
   @BeforeTest
   public void reset() {
     req.clearCoverage();
+    lastStep1TestCount = 0;
+    lastStep2TestCount = 0;
   }
 
   @AfterTest
@@ -100,11 +106,31 @@ public class TestStepModel {
   
   @LastStep
   public void finish() {
-    out.print(":last_step1");
+    out.print(":last_step");
+    lastStep1TestCount++;
+    lastStep1SuiteCount++;
   }
 
   @LastStep
   public void powerball() {
-    out.print(":last_step2");
+    out.print(":last_step");
+    lastStep2TestCount++;
+    lastStep2SuiteCount++;
+  }
+
+  public int getLastStep1TestCount() {
+    return lastStep1TestCount;
+  }
+
+  public int getLastStep2TestCount() {
+    return lastStep2TestCount;
+  }
+
+  public int getLastStep1SuiteCount() {
+    return lastStep1SuiteCount;
+  }
+
+  public int getLastStep2SuiteCount() {
+    return lastStep2SuiteCount;
   }
 }

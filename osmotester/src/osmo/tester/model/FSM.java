@@ -102,7 +102,7 @@ public class FSM {
   /**
    * Checks the FSM for validity according to generic elements. This includes the following constraints:
    * -Is a requirements object defined in the model? if so use it, otherwise create empty one.
-   * -Check that each @Guard and @Oracle has a matching transition.
+   * -Check that each @Guard, @Pre and @Post  has a matching transition.
    * Note that most checks for specific annotations are done already in the associated
    * {@link osmo.tester.parser.AnnotationParser} object.
    *
