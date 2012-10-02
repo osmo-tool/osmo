@@ -45,7 +45,7 @@ public class ScriptAlgorithm implements FSMTraversalAlgorithm {
     Collection<String> variables = new ArrayList<>();
     Collection<FSMTransition> fsmTransitions = fsm.getTransitions();
     for (FSMTransition fsmTransition : fsmTransitions) {
-      transitions.add(fsmTransition.getName());
+      transitions.add(fsmTransition.getStringName());
     }
     Collection<SearchableInput> inputs = fsm.getSearchableInputs();
     for (SearchableInput input : inputs) {

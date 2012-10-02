@@ -57,7 +57,7 @@ public class TestStep {
   }
   
   public String getName() {
-    return transition.getName();
+    return transition.getStringName();
   }
 
   /**

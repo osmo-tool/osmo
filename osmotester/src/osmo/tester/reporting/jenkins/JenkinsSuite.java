@@ -120,7 +120,7 @@ public class JenkinsSuite {
       //the name of the model object from which the test step was executed
       String className = step.getTransition().getTransition().getModelObject().getClass().getName();
       //the name of the test step that was executed
-      String stepName = step.getTransition().getName();
+      String stepName = step.getTransition().getStringName();
       //add the step to the jenkins test
       JenkinsStep jenkinsStep = new JenkinsStep(className, newTest, stepName);
       jenkinsStep.setStartTime(step.getStartTime());

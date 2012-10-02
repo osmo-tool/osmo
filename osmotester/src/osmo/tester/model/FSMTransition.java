@@ -3,6 +3,7 @@ package osmo.tester.model;
 import osmo.common.log.Logger;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +21,7 @@ import java.util.Map;
 public class FSMTransition {
   private static Logger log = new Logger(FSMTransition.class);
   /** Name of the transition, from @Transition("name") or (name="name") or (value="name"). Fails if undefined or empty (""). */
-  private final String name;
+  private final TransitionName name;
   /** Weight of the transitions, from @Transition(weight=x), defaults to 10 (see {@link osmo.tester.annotation.Transition}. */
   private int weight = 10; //NOTE: this value here is pointless in practice, the true default is in the annotation class
   /** The set of guards defining when this transition can be taken. */
@@ -35,6 +36,10 @@ public class FSMTransition {
   private Map<String, Object> prePostParameter = new HashMap<>();
 
   public FSMTransition(String name) {
+    this.name = new TransitionName("", name);
+  }
+
+  public FSMTransition(TransitionName name) {
     this.name = name;
   }
 
@@ -54,7 +59,7 @@ public class FSMTransition {
     posts.add(target);
   }
 
-  public String getName() {
+  public TransitionName getName() {
     return name;
   }
 
@@ -136,5 +141,9 @@ public class FSMTransition {
     for (VariableField var : variables) {
       prePostParameter.put(var.getName(), var.getValue());
     }
+  }
+
+  public String getStringName() {
+    return name.toString();
   }
 }

@@ -9,6 +9,7 @@ import osmo.tester.generator.endcondition.StepCoverage;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
+import osmo.tester.model.TransitionName;
 import osmo.tester.testmodels.VariableModel2;
 
 import static junit.framework.Assert.assertEquals;
@@ -33,19 +34,23 @@ public class StepsCoverageTests {
   @Before
   public void setup() {
     fsm = new FSM();
-    t1 = fsm.createTransition("t1", 1);
-    t2 = fsm.createTransition("t2", 1);
-    t3 = fsm.createTransition("t3", 1);
-    t4 = fsm.createTransition("t4", 1);
-    t5 = fsm.createTransition("t5", 1);
-    t6 = fsm.createTransition("t6", 1);
-    t7 = fsm.createTransition("t7", 1);
-    t8 = fsm.createTransition("t8", 1);
-    t9 = fsm.createTransition("t9", 1);
-    t10 = fsm.createTransition("t10", 1);
+    t1 = createTransition("t1", 1);
+    t2 = createTransition("t2", 1);
+    t3 = createTransition("t3", 1);
+    t4 = createTransition("t4", 1);
+    t5 = createTransition("t5", 1);
+    t6 = createTransition("t6", 1);
+    t7 = createTransition("t7", 1);
+    t8 = createTransition("t8", 1);
+    t9 = createTransition("t9", 1);
+    t10 = createTransition("t10", 1);
     suite = new TestSuite();
     suite.startTest();
     stepCoverage = new StepCoverage();
+  }
+  
+  private FSMTransition createTransition(String name, int weight) {
+    return fsm.createTransition(new TransitionName("", name), weight);
   }
 
   @Test

@@ -62,7 +62,7 @@ public class BaseModelExtension extends BaseModel {
   public void second() {
     FSMTransition transition = previous.getTransition();
     assertNotNull("Previous transition", transition);
-    assertEquals("Previous transition", "first", transition.getName());
+    assertEquals("Previous transition", "first", transition.getStringName());
     second = true;
   }
 

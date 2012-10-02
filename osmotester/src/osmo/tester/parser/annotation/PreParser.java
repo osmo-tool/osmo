@@ -5,6 +5,7 @@ import osmo.tester.annotation.Pre;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
+import osmo.tester.model.TransitionName;
 import osmo.tester.parser.AnnotationParser;
 import osmo.tester.parser.ParserParameters;
 
@@ -50,8 +51,8 @@ public class PreParser implements AnnotationParser {
         //without a transition
         continue;
       }
-      name = prefix + name;
-      FSMTransition transition = fsm.createTransition(name, -1);
+      TransitionName tName = new TransitionName(prefix, name);
+      FSMTransition transition = fsm.createTransition(tName, -1);
       transition.addPre(target);
     }
     return errors;

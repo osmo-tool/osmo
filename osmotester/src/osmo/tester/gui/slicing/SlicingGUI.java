@@ -67,7 +67,7 @@ public class SlicingGUI extends JFrame {
 
     List<String> transitions = new ArrayList<>();
     for (FSMTransition transition : fsmTransitions) {
-      transitions.add(transition.getName());
+      transitions.add(transition.getStringName());
     }
     List<String> variables = new ArrayList<>();
     for (VariableField stateVariable : stateVariables) {

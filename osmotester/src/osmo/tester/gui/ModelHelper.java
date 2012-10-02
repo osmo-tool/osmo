@@ -22,7 +22,7 @@ public class ModelHelper extends AbstractListModel {
   public ModelHelper(List<FSMTransition> transitions) {
     values = new ArrayList<>();
     for (FSMTransition t : transitions) {
-      values.add(t.getName());
+      values.add(t.getStringName());
     }
   }
 

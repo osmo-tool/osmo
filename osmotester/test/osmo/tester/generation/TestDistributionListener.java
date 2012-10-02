@@ -31,7 +31,7 @@ public class TestDistributionListener implements GenerationListener {
 
   @Override
   public void transition(FSMTransition transition) {
-    String name = transition.getName();
+    String name = transition.getStringName();
     Integer count = steps.get(name);
     if (count == null) {
       count = 0;

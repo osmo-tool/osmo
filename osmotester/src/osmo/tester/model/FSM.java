@@ -4,12 +4,10 @@ import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.Observer;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.model.dataflow.DataGenerationStrategy;
 import osmo.tester.model.dataflow.SearchableInput;
 import osmo.tester.model.dataflow.SearchableInputField;
 import osmo.tester.model.dataflow.ValueSet;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -24,11 +22,13 @@ import java.util.Map;
 public class FSM {
   private static final Logger log = new Logger(FSM.class);
   /** Key = transition name (from @Transition("name")), Value = transition object */
-  private Map<String, FSMTransition> transitions = new HashMap<>();
+  private Map<TransitionName, FSMTransition> transitions = new HashMap<>();
   /** List of steps to execute after test is otherwise done. */
   private Collection<InvocationTarget> lastSteps = new ArrayList<>();
   /** List of generic guards that apply to all transitions. */
   private Collection<InvocationTarget> genericGuards = new ArrayList<>();
+  /** List of guards that should be associated to all but the given name. */
+  private Collection<NegatedGuard> negatedGuards = new ArrayList<>();
   /** List of generic pre-methods that apply to all transitions. */
   private Collection<InvocationTarget> genericPre = new ArrayList<>();
   /** List of generic post-methods that apply to all transitions. */
@@ -74,15 +74,15 @@ public class FSM {
     return suite;
   }
 
-  /**
-   * Returns an existing object for the requested transition name or creates a new one if one was not previously
-   * found existing.
-   *
-   * @param name   The name of the transition. Taken from @Transition("name").
-   * @param weight The weight of the transition. Taken from @Transition(weight=x).
-   * @return A transition object for the requested name.
-   */
-  public FSMTransition createTransition(String name, int weight) {
+    /**
+    * Returns an existing object for the requested transition name or creates a new one if one was not previously
+    * found existing.
+    *
+    * @param name   The name of the transition. Taken from @Transition("name").
+    * @param weight The weight of the transition. Taken from @Transition(weight=x).
+    * @return A transition object for the requested name.
+    */
+  public FSMTransition createTransition(TransitionName name, int weight) {
     log.debug("Creating transition: " + name + " weight:" + weight);
     FSMTransition transition = transitions.get(name);
     if (transition != null) {
@@ -125,14 +125,15 @@ public class FSM {
     }
     for (FSMTransition transition : transitions.values()) {
       InvocationTarget target = transition.getTransition();
-      String name = transition.getName();
+      TransitionName name = transition.getName();
       log.debug("Checking transition:" + name);
       if (target == null) {
         errors += "Guard/Pre/Post without transition:" + name + "\n";
         log.debug("Error: Found guard/pre/post without a matching transition - " + name);
       }
-      errors = addGenericGuardsAndOracles(transition, errors);
+      errors = addGenericElements(transition, errors);
     }
+    errors = addNegatedElements(errors);
     if (errors.length() > 0) {
       throw new IllegalStateException("Invalid FSM:\n" + errors);
     }
@@ -146,7 +147,7 @@ public class FSM {
    * @param errors     The current error message string.
    * @return The error msg string given with possible new errors appended.
    */
-  private String addGenericGuardsAndOracles(FSMTransition transition, String errors) {
+  private String addGenericElements(FSMTransition transition, String errors) {
     //we add all generic guards to the set of guards for this transition. doing it here includes them in the checks
     for (InvocationTarget guard : genericGuards) {
       transition.addGuard(guard);
@@ -159,9 +160,36 @@ public class FSM {
     }
     return errors;
   }
+  
+  private String addNegatedElements(String errors) {
+    for (NegatedGuard ng : negatedGuards) {
+      int count = 0;
+      for (TransitionName negationName : transitions.keySet()) {
+        for (TransitionName transitionName : transitions.keySet()) {
+          if (transitionName.shouldNegationApply(negationName)) {
+            transitions.get(transitionName).addGuard(ng.getTarget());
+            count++;
+          }
+        }
+      }
+      if (count == 0) {
+        errors += "Negation without matching transition to negate for:"+ng.getName();
+      }
+    }
+    return errors;
+  }
+
+  public FSMTransition getTransition(TransitionName name) {
+    return transitions.get(name);
+  }
 
   public FSMTransition getTransition(String name) {
-    return transitions.get(name);
+    for (TransitionName tName : transitions.keySet()) {
+      if (tName.toString().equals(name)) {
+        return transitions.get(tName);
+      }
+    }
+    return null;
   }
 
   public Collection<FSMTransition> getTransitions() {
@@ -348,31 +376,10 @@ public class FSM {
     //initial capture to allow FSM to have names, etc. for algorithm initialization
     captureSearchableInputs();
 
-    Collection<String> scriptedVariables = null;
     if (scripter != null) {
-      scriptedVariables = initScripts(scripter);
+      initScripts(scripter);
     }
     Observer.setSuite(suite);
-/*
-    Map<String, ValueSet<String>> options = config.getSlices();
-
-    for (SearchableInput input : searchableInputs) {
-      SearchableInputObserver observer = new SearchableInputObserver(suite);
-      input.setObserver(observer);
-      if (scriptedVariables != null && scriptedVariables.contains(input.getName())) {
-        input.setScripter(scripter);
-        input.setStrategy(DataGenerationStrategy.SCRIPTED);
-      }
-
-      ValueSet<String> variableOptions = options.get(input.getName());
-      if (variableOptions != null) {
-        for (String option : variableOptions.getOptions()) {
-          input.addSlice(option);
-        }
-        //this practically causes SLICED to override SCRIPTED if both scripter and slices are defined
-        input.setStrategy(DataGenerationStrategy.SLICED);
-      }
-    }*/
     return suite;
   }
 
@@ -404,5 +411,10 @@ public class FSM {
       throw new IllegalArgumentException("Scripted variable(s) not searchable in the model:" + errors);
     }
     return scripts.keySet();
+  }
+
+  public void addNegatedGuard(TransitionName name, InvocationTarget target) {
+    NegatedGuard ng = new NegatedGuard(name, target);
+    negatedGuards.add(ng);
   }
 }
