@@ -10,6 +10,7 @@ import osmo.tester.model.FSMTransition;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -17,14 +18,16 @@ import static junit.framework.Assert.assertEquals;
 public class TestSequenceListener implements GenerationListener {
   private Collection<String> steps = new ArrayList<>();
   private Collection<String> expected = new ArrayList<>();
-  private final boolean guards;
+  private List<String> temp = new ArrayList<>();
+  private boolean previousWasGuard = false;
+  private final boolean traceGuards;
 
   public TestSequenceListener() {
-    this.guards = true;
+    this.traceGuards = true;
   }
 
-  public TestSequenceListener(boolean guards) {
-    this.guards = guards;
+  public TestSequenceListener(boolean traceGuards) {
+    this.traceGuards = traceGuards;
   }
 
   public void addExpected(String... items) {
@@ -37,43 +40,63 @@ public class TestSequenceListener implements GenerationListener {
 
   @Override
   public void guard(FSMTransition transition) {
-    if (guards) {
-      steps.add("g:" + transition.getName());
+    previousWasGuard = true;
+    if (traceGuards) {
+      temp.add("g:" + transition.getName());
     }
+  }
+
+  /**
+   * This is used to sort the order of guards since reflection gives them to OSMO in different order depending
+   * on the time of day, the sun spot locations, and other such attributes. We need deterministic order to get
+   * a reliable test result.
+   */
+  private void storeGuards() {
+    previousWasGuard = false;
+    Collections.sort(temp);
+    steps.addAll(temp);
+    temp.clear();
   }
 
   @Override
   public void transition(FSMTransition transition) {
+    storeGuards();
     steps.add("t:" + transition.getName());
   }
 
   @Override
   public void pre(FSMTransition transition) {
+    storeGuards();
     steps.add("pre:" + transition.getName());
   }
 
   @Override
   public void post(FSMTransition transition) {
+    storeGuards();
     steps.add("post:" + transition.getName());
   }
 
   @Override
   public void testStarted(TestCase test) {
+    storeGuards();
     steps.add("start");
   }
 
   @Override
   public void testEnded(TestCase test) {
+    storeGuards();
     steps.add("end");
   }
 
   @Override
   public void suiteStarted(TestSuite suite) {
+    storeGuards();
     steps.add("suite-start");
   }
 
   @Override
   public void suiteEnded(TestSuite suite) {
+    storeGuards();
     steps.add("suite-end");
   }
 

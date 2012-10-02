@@ -46,9 +46,9 @@ public class ListenerTests {
   @Test
   public void generateTestModel2() {
     listener.addExpected("suite-start");
-    listener.addExpected("start", "g:hello", "g:epixx", "g:world", "t:hello");
-    listener.addExpected("g:hello", "g:epixx", "g:world", "t:world");
-    listener.addExpected("g:hello", "g:epixx", "g:world", "pre:epixx", "t:epixx", "post:epixx", "end");
+    listener.addExpected("start", "g:epixx", "g:hello", "g:world", "t:hello");
+    listener.addExpected("g:epixx", "g:hello", "g:world", "t:world");
+    listener.addExpected("g:epixx", "g:hello", "g:world", "pre:epixx", "t:epixx", "post:epixx", "end");
     listener.addExpected("suite-end");
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
