@@ -7,6 +7,7 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
+import osmo.tester.model.TransitionName;
 
 import static junit.framework.Assert.assertEquals;
 import static osmo.common.TestUtils.getResource;
@@ -55,17 +56,21 @@ public class MatrixTests {
     suite.endTest();
 
     fsm = new FSM();
-    fsm.createTransition("one", 0);
-    fsm.createTransition("two", 0);
-    fsm.createTransition("three", 0);
-    fsm.createTransition("four", 0);
-    fsm.createTransition("five", 0);
-    fsm.createTransition("six", 0);
-    fsm.createTransition("seven", 0);
-    fsm.createTransition("eight", 0);
-    fsm.createTransition("ten", 0);
+    createTransition("one", 0);
+    createTransition("two", 0);
+    createTransition("three", 0);
+    createTransition("four", 0);
+    createTransition("five", 0);
+    createTransition("six", 0);
+    createTransition("seven", 0);
+    createTransition("eight", 0);
+    createTransition("ten", 0);
 
     fsm.setRequirements(reqs);
+  }
+
+  private FSMTransition createTransition(String name, int weight) {
+    return fsm.createTransition(new TransitionName("", name), weight);
   }
 
   private void addStep(String name) {

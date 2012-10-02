@@ -71,7 +71,7 @@ public class StepCoverage extends AbstractEndCondition {
     Collection<TestStep> testSteps = test.getSteps();
     Collection<String> steps = new ArrayList<>();
     for (TestStep step : testSteps) {
-      steps.add(step.getTransition().getName());
+      steps.add(step.getTransition().getStringName());
     }
     return steps;
   }
@@ -99,7 +99,7 @@ public class StepCoverage extends AbstractEndCondition {
     Collection<String> toClear = new HashSet<>();
     toClear.addAll(required);
     for (FSMTransition transition : transitions) {
-      String name = transition.getName();
+      String name = transition.getStringName();
       boolean ok = toClear.remove(name);
     }
     if (!toClear.isEmpty()) {

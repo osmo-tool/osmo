@@ -29,7 +29,7 @@ public class TransitionCount implements Comparable<TransitionCount> {
 
   /** @return Name of the transition. */
   public String getName() {
-    return transition.getName();
+    return transition.getStringName();
   }
 
   @Override

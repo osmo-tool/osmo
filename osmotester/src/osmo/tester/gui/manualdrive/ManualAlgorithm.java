@@ -340,7 +340,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     Map<FSMTransition, Integer> a = history.getTransitionCoverage();
     String ret = "";
     for (FSMTransition t : a.keySet()) {
-      ret += t.getName() + getSpaces(30 - t.getName().length()) + "\t" + a.get(t) + "\n";
+      ret += t.getName() + getSpaces(30 - t.getStringName().length()) + "\t" + a.get(t) + "\n";
     }
     return ret;
   }

@@ -5,10 +5,12 @@ import osmo.tester.annotation.Guard;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
+import osmo.tester.model.TransitionName;
 import osmo.tester.parser.AnnotationParser;
 import osmo.tester.parser.ParserParameters;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 /**
  * Parses {@link Guard} annotations from the given model object.
@@ -35,16 +37,31 @@ public class GuardParser implements AnnotationParser {
 
     String[] transitionNames = g.value();
     String prefix = parameters.getPrefix();
-    for (String name : transitionNames) {
+    for (String givenName : transitionNames) {
       FSM fsm = parameters.getFsm();
       InvocationTarget target = new InvocationTarget(parameters, Guard.class);
-      if (name.equals("all")) {
-        fsm.addGenericGuard(target);
+      if (givenName.equals("all")) {
         //generic guards should not have their own transition or it will fail the FSM check since it is a guard
         //without a transition
+        fsm.addGenericGuard(target);
+        //it should also have no other associations defined, as they should be already part of it all
+        if (transitionNames.length > 1) {
+          errors += "A guard that is associated with 'all' transitions should not have any other associations defined. ";
+          errors += "One had "+ Arrays.asList(transitionNames)+" as a list of associations.";
+        }
         return errors;
       }
-      name = prefix + name;
+      if (givenName.startsWith("!")) {
+        givenName = givenName.substring(1);
+        if (givenName.length() == 0) {
+          errors += "Negation cannot exist without a name. You have a guard with only '!' as the name.";
+          return errors;
+        }
+        TransitionName name = new TransitionName(prefix, givenName);
+        fsm.addNegatedGuard(name, target);
+        continue;
+      }
+      TransitionName name = new TransitionName(prefix, givenName);
       FSMTransition transition = fsm.createTransition(name, -1);
       transition.addGuard(target);
     }

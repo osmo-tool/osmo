@@ -197,7 +197,7 @@ public class TestCase {
   public Collection<String> getAllTransitionNames() {
     Collection<String> names = new ArrayList<>();
     for (TestStep teststep : steps) {
-      names.add(teststep.getTransition().getName());
+      names.add(teststep.getTransition().getStringName());
     }
     return names;
   }

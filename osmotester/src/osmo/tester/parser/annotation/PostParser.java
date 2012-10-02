@@ -5,6 +5,7 @@ import osmo.tester.annotation.Post;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
+import osmo.tester.model.TransitionName;
 import osmo.tester.parser.AnnotationParser;
 import osmo.tester.parser.ParserParameters;
 
@@ -46,9 +47,9 @@ public class PostParser implements AnnotationParser {
         log.debug("added generic post:" + name);
         continue;
       }
-      name = prefix + name;
+      TransitionName tName = new TransitionName(prefix, name);
       log.debug("created specific post:" + name);
-      FSMTransition transition = fsm.createTransition(name, -1);
+      FSMTransition transition = fsm.createTransition(tName, -1);
       transition.addPost(target);
     }
     return errors;

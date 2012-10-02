@@ -253,7 +253,7 @@ public abstract class CoverageMetric {
     List<String> result = new ArrayList<>();
     Collection<FSMTransition> transitions = fsm.getTransitions();
     for (FSMTransition transition : transitions) {
-      result.add(transition.getName());
+      result.add(transition.getStringName());
     }
     return result;
   }
@@ -267,8 +267,8 @@ public abstract class CoverageMetric {
     List<TransitionPairCount> pairCounts = countTransitionPairs();
     List<String> pairs = new ArrayList<>();
     for (TransitionPairCount count : pairCounts) {
-      String from = count.getFrom().getName();
-      String to = count.getTo().getName();
+      String from = count.getFrom().getStringName();
+      String to = count.getTo().getStringName();
       pairs.add(from + "->" + to);
     }
     return pairs;
