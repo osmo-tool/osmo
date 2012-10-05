@@ -49,7 +49,7 @@ public class TransitionsPieChart implements GenerationListener {
   public void init(FSM fsm, OSMOConfiguration config) {
     Collection<FSMTransition> transitions = fsm.getTransitions();
     for (FSMTransition t : transitions) {
-      values.put(t.getName(), 0);
+      values.put(t.getStringName(), 0);
     }
     updateData();
     show();
@@ -67,7 +67,7 @@ public class TransitionsPieChart implements GenerationListener {
 
   @Override
   public void transition(FSMTransition transition) {
-    String name = transition.getName();
+    String name = transition.getStringName();
     int count = values.get(name);
     values.put(name, ++count);
     updateData();

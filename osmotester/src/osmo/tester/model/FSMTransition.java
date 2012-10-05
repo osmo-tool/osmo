@@ -18,7 +18,7 @@ import java.util.Map;
  *
  * @author Teemu Kanstren
  */
-public class FSMTransition {
+public class FSMTransition implements Comparable<FSMTransition> {
   private static Logger log = new Logger(FSMTransition.class);
   /** Name of the transition, from @Transition("name") or (name="name") or (value="name"). Fails if undefined or empty (""). */
   private final TransitionName name;
@@ -145,5 +145,10 @@ public class FSMTransition {
 
   public String getStringName() {
     return name.toString();
+  }
+
+  @Override
+  public int compareTo(FSMTransition o) {
+    return name.toString().compareTo(o.name.toString());
   }
 }
