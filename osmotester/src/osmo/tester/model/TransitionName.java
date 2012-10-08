@@ -44,14 +44,10 @@ public class TransitionName {
   }
 
   public boolean shouldNegationApply(TransitionName negationName) {
-    //generic negation always applies
-    if (negationName.prefix != null || negationName.prefix.length() > 0) {
-      return true;
-    }
     if (!prefix.equals(negationName.prefix)) {
       //wrong prefix
       return false;
     }
-    return negationName.name.equals(name);
+    return !negationName.name.equals(name);
   }
 }

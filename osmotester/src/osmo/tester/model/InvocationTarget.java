@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
  *
  * @author Teemu Kanstren
  */
-public class InvocationTarget {
+public class InvocationTarget implements Comparable<InvocationTarget> {
   private static Logger log = new Logger(InvocationTarget.class);
   /** The model object itself, implementing the actual transition methods etc. */
   private final Object modelObject;
@@ -75,5 +75,10 @@ public class InvocationTarget {
     result = 31 * result + (method != null ? method.hashCode() : 0);
     result = 31 * result + (type != null ? type.hashCode() : 0);
     return result;
+  }
+
+  @Override
+  public int compareTo(InvocationTarget o) {
+    return method.getName().compareTo(o.method.getName());
   }
 }

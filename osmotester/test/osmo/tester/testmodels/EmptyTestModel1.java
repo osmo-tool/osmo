@@ -51,6 +51,11 @@ public class EmptyTestModel1 {
   public void endAll() {
 
   }
+  
+  @Guard("!world")
+  public boolean negato() {
+    return true;
+  }
 
   @Transition("hello")
   public void transition1() {
