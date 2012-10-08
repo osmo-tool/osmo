@@ -106,14 +106,14 @@ public class TestStepModel {
   
   @LastStep
   public void finish() {
-    out.print(":last_step");
+    out.print(":last_step1");
     lastStep1TestCount++;
     lastStep1SuiteCount++;
   }
 
   @LastStep
   public void powerball() {
-    out.print(":last_step");
+    out.print(":last_step2");
     lastStep2TestCount++;
     lastStep2SuiteCount++;
   }

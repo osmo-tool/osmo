@@ -10,7 +10,9 @@ import osmo.tester.model.dataflow.ValueSet;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,7 +26,7 @@ public class FSM {
   /** Key = transition name (from @Transition("name")), Value = transition object */
   private Map<TransitionName, FSMTransition> transitions = new HashMap<>();
   /** List of steps to execute after test is otherwise done. */
-  private Collection<InvocationTarget> lastSteps = new ArrayList<>();
+  private List<InvocationTarget> lastSteps = new ArrayList<>();
   /** List of generic guards that apply to all transitions. */
   private Collection<InvocationTarget> genericGuards = new ArrayList<>();
   /** List of guards that should be associated to all but the given name. */
@@ -137,6 +139,7 @@ public class FSM {
     if (errors.length() > 0) {
       throw new IllegalStateException("Invalid FSM:\n" + errors);
     }
+    Collections.sort(lastSteps);
     log.debug("FSM checked");
   }
 
@@ -164,12 +167,11 @@ public class FSM {
   private String addNegatedElements(String errors) {
     for (NegatedGuard ng : negatedGuards) {
       int count = 0;
-      for (TransitionName negationName : transitions.keySet()) {
-        for (TransitionName transitionName : transitions.keySet()) {
-          if (transitionName.shouldNegationApply(negationName)) {
-            transitions.get(transitionName).addGuard(ng.getTarget());
-            count++;
-          }
+      for (TransitionName transitionName : transitions.keySet()) {
+        if (transitionName.shouldNegationApply(ng.getName())) {
+          log.debug("Negation '"+ng.getName()+"' applies to :"+transitionName);
+          transitions.get(transitionName).addGuard(ng.getTarget());
+          count++;
         }
       }
       if (count == 0) {

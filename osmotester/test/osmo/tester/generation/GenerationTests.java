@@ -10,6 +10,7 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
 import osmo.tester.testmodels.BaseModelExtension;
 import osmo.tester.testmodels.EndStateModel;
+import osmo.tester.testmodels.GuardianModel;
 import osmo.tester.testmodels.PartialModel1;
 import osmo.tester.testmodels.PartialModel2;
 import osmo.tester.testmodels.TestStepModel;
@@ -261,12 +262,27 @@ public class GenerationTests {
     osmo.addSuiteEndCondition(new Length(3));
     osmo.generate();
     String actual = out.toString();
-    String expected = ":hello:gen_oracle:gen_oracle:gen_oracle:world:gen_oracle:gen_oracle:gen_oracle:epixx_pre:epixx:epixx_oracle:gen_oracle:gen_oracle:gen_oracle:last_step:last_step:last_step:last_step:last_step:last_step:hello:gen_oracle:gen_oracle:gen_oracle:world:gen_oracle:gen_oracle:gen_oracle:epixx_pre:epixx:epixx_oracle:gen_oracle:gen_oracle:gen_oracle:last_step:last_step:last_step:last_step:last_step:last_step:hello:gen_oracle:gen_oracle:gen_oracle:world:gen_oracle:gen_oracle:gen_oracle:epixx_pre:epixx:epixx_oracle:gen_oracle:gen_oracle:gen_oracle:last_step:last_step:last_step:last_step:last_step:last_step";
+    String expected = ":hello:gen_oracle:gen_oracle:gen_oracle:world:gen_oracle:gen_oracle:gen_oracle:epixx_pre:epixx:epixx_oracle:gen_oracle:gen_oracle:gen_oracle:last_step1:last_step1:last_step1:last_step2:last_step2:last_step2:hello:gen_oracle:gen_oracle:gen_oracle:world:gen_oracle:gen_oracle:gen_oracle:epixx_pre:epixx:epixx_oracle:gen_oracle:gen_oracle:gen_oracle:last_step1:last_step1:last_step1:last_step2:last_step2:last_step2:hello:gen_oracle:gen_oracle:gen_oracle:world:gen_oracle:gen_oracle:gen_oracle:epixx_pre:epixx:epixx_oracle:gen_oracle:gen_oracle:gen_oracle:last_step1:last_step1:last_step1:last_step2:last_step2:last_step2";
     assertEquals(expected, actual);
     assertEquals("Last step 1 in a test case", 3, mo.getLastStep1TestCount());
     assertEquals("Last step 2 in a test case", 3, mo.getLastStep2TestCount());
     assertEquals("Last step 1 in a test suite", 9, mo.getLastStep1SuiteCount());
     assertEquals("Last step 2 in a test suite", 9, mo.getLastStep2SuiteCount());
+  }
+  
+  @Test
+  public void negatedGuard() {
+    ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
+    PrintStream ps = new PrintStream(out);
+    GuardianModel mo = new GuardianModel(ps);
+    osmo.addModelObject(mo);
+    osmo.addTestEndCondition(new Length(3));
+    osmo.addSuiteEndCondition(new Length(3));
+    osmo.setSeed(65);
+    osmo.generate();
+    String actual = out.toString();
+    String expected = ":g-hello:g-!epix:g-epix:g-world:g-!epix:epixx_pre:epixx:epixx_oracle:gen_oracle:g-hello:g-!epix:g-epix:g-world:g-!epix:hello:gen_oracle:g-hello:g-!epix:g-epix:g-world:g-!epix:hello:gen_oracle:g-hello:g-!epix:g-epix:g-world:g-!epix:world:gen_oracle:g-hello:g-!epix:g-epix:g-world:g-!epix:world:gen_oracle:g-hello:g-!epix:g-epix:g-world:g-!epix:world:gen_oracle:g-hello:g-!epix:g-epix:g-world:g-!epix:hello:gen_oracle:g-hello:g-!epix:g-epix:g-world:g-!epix:hello:gen_oracle:g-hello:g-!epix:g-epix:g-world:g-!epix:world:gen_oracle";
+    assertEquals(expected, actual);
   }
 }
 

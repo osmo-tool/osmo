@@ -60,9 +60,9 @@ public class ParserTests {
     assertEquals("Number of @After methods", 1, fsm.getAfters().size());
     assertEquals("Number of @AfterSuite methods", 1, fsm.getAfterSuites().size());
     //these also test for the correct number of guards
-    assertTransitionPresent(fsm, "hello", 0, 2);
+    assertTransitionPresent(fsm, "hello", 1, 2);
     assertTransitionPresent(fsm, "world", 3, 1);
-    assertTransitionPresent(fsm, "epixx", 2, 3);
+    assertTransitionPresent(fsm, "epixx", 3, 3);
     assertEquals("Number of end conditions", 2, fsm.getEndConditions().size());
     assertNotNull("Should have TestLog set", model.getHistory());
     assertNotNull("Should have Requirements set", fsm.getRequirements());
