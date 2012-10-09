@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static osmo.common.TestUtils.cInt;
+import static osmo.common.TestUtils.*;
 
 /**
  * Input/Output in form of characters.

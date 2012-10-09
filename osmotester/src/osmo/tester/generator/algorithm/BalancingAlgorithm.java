@@ -13,8 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import static osmo.common.TestUtils.minOf;
-import static osmo.common.TestUtils.oneOf;
+import static osmo.common.TestUtils.*;
 
 /**
  * A test generation algorithm that is similar to the {@link RandomAlgorithm} but not preferring to take

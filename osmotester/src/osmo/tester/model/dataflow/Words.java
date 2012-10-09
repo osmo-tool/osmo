@@ -6,8 +6,7 @@ import osmo.tester.gui.manualdrive.WordGUI;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static osmo.common.TestUtils.cFloat;
-import static osmo.common.TestUtils.cInt;
+import static osmo.common.TestUtils.*;
 
 /**
  * For generating words, meaning strings of characters matching the given specification.

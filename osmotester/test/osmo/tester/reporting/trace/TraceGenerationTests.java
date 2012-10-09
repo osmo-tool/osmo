@@ -8,10 +8,9 @@ import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
-import osmo.tester.testmodels.CalculatorModel;
 import osmo.tester.testmodels.VariableModel2;
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.*;
 import static osmo.common.TestUtils.*;
 
 /** @author Teemu Kanstren */

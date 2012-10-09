@@ -1,7 +1,6 @@
 package osmo.tester.model.dataflow;
 
 import osmo.common.log.Logger;
-import osmo.tester.OSMOConfiguration;
 import osmo.tester.gui.manualdrive.ValueRangeGUI;
 import osmo.tester.model.dataflow.serialization.Deserializer;
 import osmo.tester.model.dataflow.serialization.DoubleDeserializer;

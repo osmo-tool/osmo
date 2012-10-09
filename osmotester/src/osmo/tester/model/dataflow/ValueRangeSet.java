@@ -10,7 +10,7 @@ import osmo.tester.model.dataflow.serialization.LongDeserializer;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static osmo.common.TestUtils.oneOf;
+import static osmo.common.TestUtils.*;
 
 /**
  * Represents a set of numeric input domains.

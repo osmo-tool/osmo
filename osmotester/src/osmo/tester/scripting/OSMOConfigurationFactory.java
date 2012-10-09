@@ -1,9 +1,6 @@
 package osmo.tester.scripting;
 
 import osmo.tester.OSMOConfiguration;
-import osmo.tester.generator.endcondition.EndCondition;
-
-import java.util.Collection;
 
 /**
  * A factory providing elements for the DSM generator.

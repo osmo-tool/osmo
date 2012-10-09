@@ -12,8 +12,7 @@ import osmo.tester.model.FSMTransition;
 import osmo.tester.model.TransitionName;
 import osmo.tester.testmodels.VariableModel2;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
+import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class StepsCoverageTests {

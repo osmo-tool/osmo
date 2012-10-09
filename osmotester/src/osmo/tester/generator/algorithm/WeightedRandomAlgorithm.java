@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static osmo.common.TestUtils.rawWeightedRandomFrom;
+import static osmo.common.TestUtils.*;
 
 /**
  * Implements a simple weighted random algorithm.

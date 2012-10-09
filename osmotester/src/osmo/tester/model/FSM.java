@@ -133,6 +133,7 @@ public class FSM {
         errors += "Guard/Pre/Post without transition:" + name + "\n";
         log.debug("Error: Found guard/pre/post without a matching transition - " + name);
       }
+      transition.sort();
       errors = addGenericElements(transition, errors);
     }
     errors = addNegatedElements(errors);

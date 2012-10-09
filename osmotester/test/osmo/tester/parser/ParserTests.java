@@ -2,7 +2,6 @@ package osmo.tester.parser;
 
 import org.junit.Before;
 import org.junit.Test;
-import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestSuite;

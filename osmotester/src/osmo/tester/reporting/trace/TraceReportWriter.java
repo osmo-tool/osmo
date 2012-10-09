@@ -2,15 +2,12 @@ package osmo.tester.reporting.trace;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
-import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
 
 import java.io.FileOutputStream;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /** @author Teemu Kanstren */
 public class TraceReportWriter {

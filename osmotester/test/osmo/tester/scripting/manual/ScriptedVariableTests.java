@@ -5,15 +5,14 @@ import org.junit.Test;
 import osmo.common.TestUtils;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.Observer;
-import osmo.tester.model.dataflow.DataGenerationStrategy;
-import osmo.tester.model.dataflow.Words;
 import osmo.tester.model.ScriptedValueProvider;
+import osmo.tester.model.dataflow.DataGenerationStrategy;
 import osmo.tester.model.dataflow.ValueRange;
 import osmo.tester.model.dataflow.ValueRangeSet;
 import osmo.tester.model.dataflow.ValueSet;
+import osmo.tester.model.dataflow.Words;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
+import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class ScriptedVariableTests {

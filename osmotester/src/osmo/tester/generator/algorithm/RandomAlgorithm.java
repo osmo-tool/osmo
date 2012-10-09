@@ -6,7 +6,7 @@ import osmo.tester.model.FSMTransition;
 
 import java.util.List;
 
-import static osmo.common.TestUtils.oneOf;
+import static osmo.common.TestUtils.*;
 
 /**
  * A simple algorithm that randomly picks a transition from the given set.

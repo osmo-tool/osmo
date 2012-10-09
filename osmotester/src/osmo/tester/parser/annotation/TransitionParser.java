@@ -1,7 +1,6 @@
 package osmo.tester.parser.annotation;
 
 import osmo.common.log.Logger;
-import osmo.tester.annotation.LastStep;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Transition;
 import osmo.tester.model.FSMTransition;

@@ -4,14 +4,11 @@ import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.Observer;
-import osmo.tester.model.dataflow.DataGenerationStrategy;
-import osmo.tester.model.dataflow.ValueRange;
-import osmo.tester.model.dataflow.ValueSet;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class SearchableInputTests {

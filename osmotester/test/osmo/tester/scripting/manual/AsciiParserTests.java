@@ -2,11 +2,10 @@ package osmo.tester.scripting.manual;
 
 import org.junit.Before;
 import org.junit.Test;
-import osmo.common.log.Logger;
 
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class AsciiParserTests {
