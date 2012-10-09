@@ -10,7 +10,7 @@ import osmo.tester.model.Requirements;
 import java.io.PrintStream;
 import java.util.Map;
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.*;
 
 /**
  * A test model with requirements that can all be covered.

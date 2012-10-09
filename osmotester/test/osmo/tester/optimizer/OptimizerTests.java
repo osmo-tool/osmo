@@ -5,13 +5,12 @@ import org.junit.Test;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
-import osmo.tester.optimizer.SearchConfiguration;
 import osmo.tester.optimizer.offline.GreedyOptimizer;
 
 import java.util.Collection;
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class OptimizerTests {

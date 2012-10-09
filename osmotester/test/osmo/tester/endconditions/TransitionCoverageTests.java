@@ -8,7 +8,7 @@ import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.TransitionName;
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class TransitionCoverageTests {

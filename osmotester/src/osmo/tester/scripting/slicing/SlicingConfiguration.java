@@ -7,7 +7,11 @@ import osmo.tester.generator.algorithm.WeightedRandomAlgorithm;
 import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
 import osmo.tester.model.dataflow.ValueSet;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Configuration for a model slicing configured test generation session.

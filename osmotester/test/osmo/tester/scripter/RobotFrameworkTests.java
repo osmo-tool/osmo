@@ -5,8 +5,8 @@ import osmo.common.TestUtils;
 import osmo.tester.scripter.robotframework.RFParameter;
 import osmo.tester.scripter.robotframework.Scripter;
 
-import static junit.framework.Assert.assertEquals;
-import static osmo.common.TestUtils.unifyLineSeparators;
+import static junit.framework.Assert.*;
+import static osmo.common.TestUtils.*;
 
 /** @author Teemu Kanstren */
 public class RobotFrameworkTests {

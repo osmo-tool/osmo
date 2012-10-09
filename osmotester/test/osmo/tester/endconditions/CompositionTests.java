@@ -11,7 +11,7 @@ import osmo.tester.testmodels.CalculatorModel;
 
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class CompositionTests {

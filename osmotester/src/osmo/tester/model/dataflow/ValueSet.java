@@ -5,7 +5,12 @@ import osmo.tester.gui.manualdrive.ValueSetGUI;
 import osmo.tester.model.dataflow.serialization.Deserializer;
 import osmo.tester.model.dataflow.serialization.StringDeserializer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 import static osmo.common.TestUtils.*;
 

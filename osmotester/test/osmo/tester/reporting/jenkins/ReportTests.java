@@ -7,7 +7,6 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
 import osmo.tester.testmodels.CalculatorModel;
 import osmo.tester.testmodels.ErrorModel1;
-import osmo.tester.testmodels.ErrorModel2;
 import osmo.tester.testmodels.ErrorModel5;
 import osmo.tester.testmodels.PartialModel1;
 import osmo.tester.testmodels.PartialModel2;
@@ -15,16 +14,12 @@ import osmo.tester.testmodels.PartialModel2;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Scanner;
 import java.util.TimeZone;
 
-import static junit.framework.Assert.assertEquals;
-import static osmo.common.TestUtils.getResource;
-import static osmo.common.TestUtils.unifyLineSeparators;
+import static junit.framework.Assert.*;
+import static osmo.common.TestUtils.*;
 
 
 /** @author Teemu Kanstren */

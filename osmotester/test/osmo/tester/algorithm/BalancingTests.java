@@ -12,7 +12,7 @@ import osmo.tester.testmodels.ValidTestModel7;
 
 import java.util.Collection;
 
-import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class BalancingTests {

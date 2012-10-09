@@ -3,7 +3,6 @@ package osmo.tester.model.dataflow;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.common.TestUtils;
-import osmo.tester.OSMOTester;
 
 import static junit.framework.Assert.*;
 

@@ -3,7 +3,7 @@ package osmo.tester.endconditions;
 import org.junit.Test;
 import osmo.tester.generator.endcondition.Probability;
 
-import static junit.framework.Assert.fail;
+import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class ProbabilityTests {

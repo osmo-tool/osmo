@@ -3,14 +3,13 @@ package osmo.tester.scripting.slicing;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.common.TestUtils;
-import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 import static osmo.common.TestUtils.*;
 
 /** @author Teemu Kanstren */

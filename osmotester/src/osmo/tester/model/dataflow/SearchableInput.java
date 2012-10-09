@@ -9,7 +9,6 @@ import osmo.tester.model.dataflow.serialization.Deserializer;
 import osmo.tester.model.dataflow.wrappers.ToStringWrapper;
 
 import java.util.Collection;
-import java.util.Map;
 
 /**
  * A superclass for data variable classes that can be observed.

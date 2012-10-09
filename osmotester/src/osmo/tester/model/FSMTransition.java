@@ -3,9 +3,10 @@ package osmo.tester.model;
 import osmo.common.log.Logger;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,13 +26,13 @@ public class FSMTransition implements Comparable<FSMTransition> {
   /** Weight of the transitions, from @Transition(weight=x), defaults to 10 (see {@link osmo.tester.annotation.Transition}. */
   private int weight = 10; //NOTE: this value here is pointless in practice, the true default is in the annotation class
   /** The set of guards defining when this transition can be taken. */
-  private final Collection<InvocationTarget> guards = new ArrayList<>();
+  private final List<InvocationTarget> guards = new ArrayList<>();
   /** The method that needs to be invoked when the transition should be actually taken. */
   private InvocationTarget transition = null;
   /** The set of pre-methods to be evaluated before this transition has been taken. */
-  private final Collection<InvocationTarget> pres = new ArrayList<>();
+  private final List<InvocationTarget> pres = new ArrayList<>();
   /** The set of post-methods to be evaluated after this transition has been taken. */
-  private final Collection<InvocationTarget> posts = new ArrayList<>();
+  private final List<InvocationTarget> posts = new ArrayList<>();
   /** This is to allow @Pre and @Post to store and share properties over this transition. */
   private Map<String, Object> prePostParameter = new HashMap<>();
 
@@ -41,6 +42,15 @@ public class FSMTransition implements Comparable<FSMTransition> {
 
   public FSMTransition(TransitionName name) {
     this.name = name;
+  }
+
+  /**
+   * Sort all the elements to get more deterministic test generation.
+   */
+  public void sort() {
+    Collections.sort(pres);
+    Collections.sort(posts);
+    Collections.sort(guards);
   }
 
   public Map<String, Object> getPrePostParameter() {

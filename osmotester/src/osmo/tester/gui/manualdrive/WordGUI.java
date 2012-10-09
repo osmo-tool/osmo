@@ -1,7 +1,7 @@
 package osmo.tester.gui.manualdrive;
 
-import osmo.tester.model.dataflow.Words;
 import osmo.tester.model.dataflow.SearchableInput;
+import osmo.tester.model.dataflow.Words;
 
 import javax.swing.JComponent;
 import javax.swing.JTextArea;

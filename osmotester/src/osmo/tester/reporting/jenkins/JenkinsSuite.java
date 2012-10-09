@@ -6,7 +6,11 @@ import osmo.tester.generator.testsuite.TestStep;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.text.DateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Represents a test suite for generating Jenkins compatible test reports (in JUnit report format). 

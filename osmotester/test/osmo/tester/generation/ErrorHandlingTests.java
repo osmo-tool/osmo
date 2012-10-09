@@ -15,8 +15,7 @@ import osmo.tester.testmodels.ErrorModel7;
 import osmo.tester.testmodels.ErrorModel8;
 import osmo.tester.testmodels.ErrorModel9;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
+import static junit.framework.Assert.*;
 
 /**
  * TRAP refers to catching an exception in the generator (not in the test cases here) and so on.

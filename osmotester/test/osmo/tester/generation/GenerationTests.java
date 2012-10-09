@@ -25,6 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static junit.framework.Assert.*;
+import static osmo.common.TestUtils.*;
 
 /**
  * Test cases that exercise the model generator, checking the output for the given test models.
@@ -280,9 +281,34 @@ public class GenerationTests {
     osmo.addSuiteEndCondition(new Length(3));
     osmo.setSeed(65);
     osmo.generate();
+
+    String expected = getResource(getClass(), "expected-negated-guard.txt");
+    expected = unifyLineSeparators(expected, "\n");
     String actual = out.toString();
-    String expected = ":g-hello:g-!epix:g-epix:g-world:g-!epix:epixx_pre:epixx:epixx_oracle:gen_oracle:g-hello:g-!epix:g-epix:g-world:g-!epix:hello:gen_oracle:g-hello:g-!epix:g-epix:g-world:g-!epix:hello:gen_oracle:g-hello:g-!epix:g-epix:g-world:g-!epix:world:gen_oracle:g-hello:g-!epix:g-epix:g-world:g-!epix:world:gen_oracle:g-hello:g-!epix:g-epix:g-world:g-!epix:world:gen_oracle:g-hello:g-!epix:g-epix:g-world:g-!epix:hello:gen_oracle:g-hello:g-!epix:g-epix:g-world:g-!epix:hello:gen_oracle:g-hello:g-!epix:g-epix:g-world:g-!epix:world:gen_oracle";
-    assertEquals(expected, actual);
+    actual = unifyLineSeparators(actual, "\n");
+    assertEquals("Print from model", expected, actual);
+  }
+
+  @Test
+  public void negatedGuardWithPrefix() {
+    ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
+    PrintStream ps = new PrintStream(out);
+    GuardianModel mo1 = new GuardianModel(ps, "m1");
+    GuardianModel mo2 = new GuardianModel(ps, "m2");
+    GuardianModel mo3 = new GuardianModel(ps, "m3");
+    osmo.addModelObject(mo1);
+    osmo.addModelObject("p2", mo2);
+    osmo.addModelObject("p3", mo3);
+    osmo.addTestEndCondition(new Length(3));
+    osmo.addSuiteEndCondition(new Length(3));
+    osmo.setSeed(650);
+    osmo.generate();
+
+    String expected = getResource(getClass(), "expected-negated-guard-prefix.txt");
+    expected = unifyLineSeparators(expected, "\n");
+    String actual = out.toString();
+    actual = unifyLineSeparators(actual, "\n");
+    assertEquals("Print from model", expected, actual);
   }
 }
 

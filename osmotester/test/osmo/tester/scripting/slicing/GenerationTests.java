@@ -10,10 +10,8 @@ import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static osmo.common.TestUtils.getResource;
-import static osmo.common.TestUtils.unifyLineSeparators;
+import static junit.framework.Assert.*;
+import static osmo.common.TestUtils.*;
 
 /** @author Teemu Kanstren */
 public class GenerationTests {

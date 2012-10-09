@@ -3,7 +3,6 @@ package osmo.tester.generator;
 import osmo.common.OSMOException;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
-import osmo.tester.annotation.AfterTest;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.filter.TransitionFilter;
@@ -15,10 +14,10 @@ import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
 
 import java.lang.reflect.InvocationTargetException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -319,24 +318,26 @@ public class MainGenerator {
    * @return The list of enabled {@link osmo.tester.annotation.Transition} methods.
    */
   private List<FSMTransition> getEnabled() {
-    Collection<FSMTransition> allTransitions = fsm.getTransitions();
     List<FSMTransition> enabled = new ArrayList<>();
-    enabled.addAll(allTransitions);
+    enabled.addAll(fsm.getTransitions());
     //filter out all non-wanted transitions
     for (TransitionFilter filter : config.getFilters()) {
       filter.filter(enabled);
     }
+    //sort the remaining ones to get deterministic test generation
+    Collections.sort(enabled);
     //then check which of the remaining are allowed by their guard statements
-    for (FSMTransition transition : allTransitions) {
+    for (Iterator<FSMTransition> i = enabled.iterator() ; i.hasNext() ; ) {
+      FSMTransition transition = i.next();
       for (InvocationTarget guard : transition.getGuards()) {
         listeners.guard(transition);
         Boolean result = (Boolean) guard.invoke();
         if (!result) {
-          enabled.remove(transition);
+          i.remove();
+          break;
         }
       }
     }
-    Collections.sort(enabled);
     return enabled;
   }
 

@@ -3,8 +3,7 @@ package osmo.tester.reporting.jenkins;
 import org.junit.Before;
 import org.junit.Test;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class StepTests {

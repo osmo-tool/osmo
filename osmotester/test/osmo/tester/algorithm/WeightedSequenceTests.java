@@ -3,18 +3,15 @@ package osmo.tester.algorithm;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOTester;
-import osmo.tester.generation.TestDistributionListener;
 import osmo.tester.generation.TestSequenceListener;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
-import osmo.tester.generator.algorithm.WeightedBalancingAlgorithm;
 import osmo.tester.generator.algorithm.WeightedRandomAlgorithm;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.testmodels.WeightedModel1;
 
 import java.util.Collection;
-import java.util.Map;
 
-import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class WeightedSequenceTests {
