@@ -360,6 +360,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
 
   /** Just waiting that user make the selection to the next transition */
   private void waitForSelection() {
+    choiceFromList = null;
     if (autoplay) {
       int temp = 0;
       try {
@@ -370,7 +371,9 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
       sleep(temp);
     } else {
       do {
-        if (choiceFromList != null || autoplay) break;
+        if (choiceFromList != null || autoplay) {
+          break;
+        }
         if (suite.shouldEndSuite() || suite.shouldEndTest()) {
           break;
         }

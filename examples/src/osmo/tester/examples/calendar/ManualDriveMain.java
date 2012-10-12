@@ -26,7 +26,7 @@ public class ManualDriveMain {
    *
    * @param args command line arguments, ignored.
    */
-  public static void main1(String[] args) {
+  public static void main(String[] args) {
     OSMOTester osmo = new OSMOTester();
 //    osmo.addSuiteEndCondition(new Length(2));
     ModelState state = new ModelState();
@@ -34,9 +34,9 @@ public class ManualDriveMain {
     CalendarScripter scripter = new OfflineScripter(state, "tests.html");
     osmo.addModelObject(new CalendarMeetingModel(state, scripter));
 //    osmo.addModelObject(new CalendarOracleModel(state, scripter));
-//    osmo.addModelObject(new CalendarTaskModel(state, scripter));
+    osmo.addModelObject(new CalendarTaskModel(state, scripter));
 //    osmo.addModelObject(new CalendarOverlappingModel(state, scripter));
-//    osmo.addModelObject(new CalendarParticipantModel(state, scripter));
+    osmo.addModelObject(new CalendarParticipantModel(state, scripter));
 //    osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter));
     osmo.addModelObject(state);
     osmo.addTestEndCondition(new Endless());
@@ -49,7 +49,7 @@ public class ManualDriveMain {
     osmo.generate();
   }
 
-  public static void main(String[] args) throws Exception {
+  public static void main2(String[] args) throws Exception {
     Collection<Object> modelObjects = new ArrayList<>();
     ModelState state = new ModelState();
     CalendarScripter scripter = new OfflineScripter(state, "tests.html");
