@@ -75,4 +75,11 @@ v 2.3.0 13/06/2012
 -Added basic support for integrated Jenkins reporting
 -Exception unwrapping is on by default
 -Out of bounds data generation options
+v 2.3.1 28/06/2012
+-Fixed build error (instrumented classes)
+v2.4.0 12/10/2012
+-Test report showing traces for generated tests
+-Added annotation for @LastStep
+-Guard association negation support
+-Sorting of steps, guards, and pre-post elements (determinism++)
 
