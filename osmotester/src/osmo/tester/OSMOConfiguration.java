@@ -13,6 +13,8 @@ import osmo.tester.generator.endcondition.Probability;
 import osmo.tester.generator.filter.TransitionFilter;
 import osmo.tester.model.FSM;
 import osmo.tester.model.ScriptedValueProvider;
+import osmo.tester.model.dataflow.SearchableInput;
+import osmo.tester.model.dataflow.Text;
 import osmo.tester.model.dataflow.ValueSet;
 import osmo.tester.model.dataflow.serialization.Deserializer;
 import osmo.tester.parser.ModelObject;
@@ -55,6 +57,7 @@ public class OSMOConfiguration {
   private Long seed = TestUtils.getRandom().getSeed();
   /** Serialized value options for defined variables. */
   private static Map<String, ValueSet<String>> slices = new HashMap<>();
+  private static boolean manual = false;
 
   /**
    * Adds a new model object, to be composed by OSMO to a single internal model along with other model objects.
@@ -284,5 +287,17 @@ public class OSMOConfiguration {
     Observer.reset();
     slices = new HashMap<>();
     scripter = null;
+  }
+
+  public static boolean checkGUI(SearchableInput si) {
+    if (manual == true) {
+      si.enableGUI();
+      return true;
+    }
+    return false;
+  }
+
+  public static void setManual(boolean manual) {
+    OSMOConfiguration.manual = manual;
   }
 }
