@@ -1,5 +1,6 @@
 package osmo.tester.gui.manualdrive;
 
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.algorithm.BalancingAlgorithm;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
@@ -79,6 +80,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
 
   /** Create the frame. */
   public ManualAlgorithm() {
+    OSMOConfiguration.setManual(true);
     setNimbus();
     setTitle("OSMOTester Manual Script Generation");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -92,7 +94,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     JScrollPane testMetricsPaneScroll = new JScrollPane(statePane);
     JLabel lblTestLog = new JLabel("Test log");
     JLabel lblNextStep = new JLabel("Next Step");
-    JLabel lblTraceability = new JLabel("Metrics");
+    JLabel lblTraceability = new JLabel("Value History");
 
     autoPlayButton.addMouseListener(new MouseAdapter() {
       @Override

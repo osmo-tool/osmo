@@ -115,6 +115,8 @@ public abstract class ValueGUI extends JFrame {
    * @return The next defined input value.
    */
   public Object next() {
+    System.out.println("seuraava.."+input.getName());
+    System.out.println("ja:"+System.identityHashCode(this));
     observed = false;
     setVisible(true);
     synchronized (this) {

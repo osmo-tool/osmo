@@ -5,12 +5,12 @@ import osmo.tester.model.dataflow.SearchableInput;
 import osmo.tester.model.dataflow.ValueRange;
 import osmo.tester.model.dataflow.ValueRangeSet;
 import osmo.tester.model.dataflow.ValueSet;
-import osmo.tester.model.dataflow.Words;
+import osmo.tester.model.dataflow.Text;
 
 /** @author Teemu Kanstren */
 public class JSONWrapper extends ValueSet<String> {
   public JSONWrapper(SearchableInput input) {
-    if (input instanceof Words) {
+    if (input instanceof Text) {
       initString(input);
     } else if (input instanceof ValueRange || input instanceof ValueRangeSet) {
       initDouble(input);

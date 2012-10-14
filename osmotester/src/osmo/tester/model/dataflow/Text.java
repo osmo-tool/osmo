@@ -1,7 +1,8 @@
 package osmo.tester.model.dataflow;
 
 import osmo.common.log.Logger;
-import osmo.tester.gui.manualdrive.WordGUI;
+import osmo.tester.OSMOConfiguration;
+import osmo.tester.gui.manualdrive.TextGUI;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,8 +14,8 @@ import static osmo.common.TestUtils.*;
  *
  * @author Teemu Kanstren
  */
-public class Words extends SearchableInput<String> {
-  private static final Logger log = new Logger(Words.class);
+public class Text extends SearchableInput<String> {
+  private static final Logger log = new Logger(Text.class);
   /** Minimum length of generated word. */
   private int min = 5;
   /** Maximum length of generated word. */
@@ -43,9 +44,10 @@ public class Words extends SearchableInput<String> {
   private int invalidIndex = 0;
   /** Number of chars we create at index while in invalid loop mode. */
   private int invalidSize = 1;
+  private boolean guiEnabled = false;
 
   /** Constructor for default values (min=5, max=10). */
-  public Words() {
+  public Text() {
   }
 
   /**
@@ -54,7 +56,7 @@ public class Words extends SearchableInput<String> {
    * @param min The minimum length.
    * @param max The maximum length.
    */
-  public Words(int min, int max) {
+  public Text(int min, int max) {
     this.min = min;
     this.max = max;
     evaluateMinMax(min, max);
@@ -114,7 +116,7 @@ public class Words extends SearchableInput<String> {
    * @param algorithm The new algorithm.
    */
   @Override
-  public Words setStrategy(DataGenerationStrategy algorithm) {
+  public Text setStrategy(DataGenerationStrategy algorithm) {
     switch (algorithm) {
       case RANDOM:
       case SCRIPTED:
@@ -123,7 +125,7 @@ public class Words extends SearchableInput<String> {
         this.strategy = algorithm;
         return this;
       default:
-        throw new UnsupportedOperationException(Words.class.getSimpleName() + " supports only Scripted, Random and Invalid data generation strategy, given: "+algorithm.name()+".");
+        throw new UnsupportedOperationException(Text.class.getSimpleName() + " supports only Scripted, Random and Invalid data generation strategy, given: "+algorithm.name()+".");
     }
   }
 
@@ -134,6 +136,7 @@ public class Words extends SearchableInput<String> {
    */
   @Override
   public String next() {
+    OSMOConfiguration.checkGUI(this);
     if (gui != null) {
       return (String) gui.next();
     }
@@ -147,7 +150,7 @@ public class Words extends SearchableInput<String> {
       case ORDERED_LOOP_INVALID:
         return invalidLoopNext();
       default:
-        throw new IllegalStateException("Unsupported data generation strategy for " + Words.class.getName() + " (random and scripted only supported): " + strategy.getClass().getName());
+        throw new IllegalStateException("Unsupported data generation strategy for " + Text.class.getName() + " (random and scripted only supported): " + strategy.getClass().getName());
     }
   }
 
@@ -301,7 +304,9 @@ public class Words extends SearchableInput<String> {
 
   @Override
   public void enableGUI() {
-    gui = new WordGUI(this);
+    if (guiEnabled) return;
+    guiEnabled = true;
+    gui = new TextGUI(this);
   }
 
   public void enableInvalidLength(boolean invalid) {

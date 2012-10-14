@@ -10,7 +10,7 @@ import osmo.tester.model.dataflow.DataGenerationStrategy;
 import osmo.tester.model.dataflow.ValueRange;
 import osmo.tester.model.dataflow.ValueRangeSet;
 import osmo.tester.model.dataflow.ValueSet;
-import osmo.tester.model.dataflow.Words;
+import osmo.tester.model.dataflow.Text;
 
 import static junit.framework.Assert.*;
 
@@ -19,7 +19,7 @@ public class ScriptedVariableTests {
   private ValueSet<Integer> set;
   private ValueRange<Integer> range;
   private ValueRangeSet<Double> rangeSet;
-  private Words words;
+  private Text text;
   private ScriptedValueProvider scripter;
 
   @Before
@@ -28,7 +28,7 @@ public class ScriptedVariableTests {
     set = new ValueSet<>(1, 4, 9);
     range = new ValueRange<>(1, 5);
     rangeSet = new ValueRangeSet<>();
-    words = new Words(8, 13);
+    text = new Text(8, 13);
 
     TestUtils.setSeed(111);
     scripter = new ScriptedValueProvider();
@@ -38,7 +38,7 @@ public class ScriptedVariableTests {
     rangeSet.addPartition(7, 9);
     rangeSet.addPartition(55, 111);
     rangeSet.setName("john");
-    words.setName("zerowing");
+    text.setName("zerowing");
   }
 
   @Test
@@ -166,9 +166,9 @@ public class ScriptedVariableTests {
     String expected = "ZB4åS}j(_,%O)+e5+JÅ],NL\"lGHa9Ö~\"ö=,xZ<:Ä2=~,+_&r{8 4^0w2,h<#V]C*?TOÅW,RvPwvh[.+0,;C,G3uDHä\"DL+.^,9*RWÄ9(Ef,_[_h%..s´HV\"g,2zh?2öwdTA,ÖhJr)tSz,w_6\\X4#,pÅ+,='Y=-Lk+,] l]'=mä8¨´[,=b&vI;}]0ÖI9,JQTxä^b\"id,QX1MehOg,=ö(T|7Szi,c~=,u-~,3,";
     String actual = "";
     for (int i = 0; i < 20; i++) {
-      actual += words.next() + ",";
+      actual += text.next() + ",";
     }
-    assertEquals("Value from scripted Words", expected, actual);
+    assertEquals("Value from scripted Text", expected, actual);
 
   }
 
@@ -178,13 +178,13 @@ public class ScriptedVariableTests {
     scripter.addValue("zerowing", "base are");
     scripter.addValue("zerowing", "belong to us!");
     OSMOConfiguration.setScripter(scripter);
-    words.setStrategy(DataGenerationStrategy.SCRIPTED);
+    text.setStrategy(DataGenerationStrategy.SCRIPTED);
     String expected = "all your,base are,belong to us!,all your,base are,belong to us!,all your,base are,belong to us!,all your,base are,belong to us!,all your,base are,belong to us!,all your,base are,belong to us!,all your,base are,";
     String actual = "";
     for (int i = 0; i < 20; i++) {
-      actual += words.next() + ",";
+      actual += text.next() + ",";
     }
-    assertEquals("Value from scripted Words", expected, actual);
+    assertEquals("Value from scripted Text", expected, actual);
   }
 
   @Test
@@ -193,10 +193,10 @@ public class ScriptedVariableTests {
     scripter.addValue("zerowing", "base");
     scripter.addValue("zerowing", "belong to us!");
     OSMOConfiguration.setScripter(scripter);
-    words.setStrategy(DataGenerationStrategy.SCRIPTED);
-    String word = words.next();
+    text.setStrategy(DataGenerationStrategy.SCRIPTED);
+    String word = text.next();
     assertEquals("Generated word", "all your", word);    
-    word = words.next();
+    word = text.next();
     //this is less than minimum size
     assertEquals("Generated word", "base", word);
   }

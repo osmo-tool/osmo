@@ -8,7 +8,7 @@ import osmo.tester.model.dataflow.DataGenerationStrategy;
 import osmo.tester.model.dataflow.ValueRange;
 import osmo.tester.model.dataflow.ValueRangeSet;
 import osmo.tester.model.dataflow.ValueSet;
-import osmo.tester.model.dataflow.Words;
+import osmo.tester.model.dataflow.Text;
 
 import static junit.framework.Assert.*;
 
@@ -131,11 +131,11 @@ public class DataObjectSliceTests {
 
   @Test
   public void wordsSlice() {
-    Words words = new Words();
+    Text text = new Text();
     try {
-      words.setStrategy(DataGenerationStrategy.SLICED);
+      text.setStrategy(DataGenerationStrategy.SLICED);
     } catch (UnsupportedOperationException e) {
-      assertEquals("Error message for unsupported slicing for "+Words.class.getSimpleName(), "Words supports only Scripted, Random and Invalid data generation strategy, given: SLICED.", e.getMessage());
+      assertEquals("Error message for unsupported slicing for "+Text.class.getSimpleName(), "Text supports only Scripted, Random and Invalid data generation strategy, given: SLICED.", e.getMessage());
     }
   }
 }

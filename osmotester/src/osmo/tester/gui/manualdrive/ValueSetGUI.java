@@ -2,7 +2,7 @@ package osmo.tester.gui.manualdrive;
 
 import osmo.tester.model.dataflow.SearchableInput;
 import osmo.tester.model.dataflow.ValueSet;
-import osmo.tester.model.dataflow.Words;
+import osmo.tester.model.dataflow.Text;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -45,12 +45,12 @@ public class ValueSetGUI extends ValueGUI {
 
   public static void main(String[] args) {
     setNimbus();
-    Words words = new Words(5, 7);
-    words.asciiLettersAndNumbersOnly();
+    Text text = new Text(5, 7);
+    text.asciiLettersAndNumbersOnly();
     ValueSet<String> set = new ValueSet<>();
-    set.add(words.next());
-    set.add(words.next());
-    set.add(words.next());
+    set.add(text.next());
+    set.add(text.next());
+    set.add(text.next());
     set.setName("user");
     ValueSetGUI gui = new ValueSetGUI(set);
     gui.setVisible(true);

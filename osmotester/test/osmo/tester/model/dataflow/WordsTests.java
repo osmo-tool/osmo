@@ -12,7 +12,7 @@ public class WordsTests {
   @Test
   public void generateNegativeSequence() {
     try {
-      Words words = new Words(-1, -2);
+      Text text = new Text(-1, -2);
       fail("Negative length should throw Exception.");
     } catch (IllegalArgumentException e) {
       assertEquals("Exception message", "Minimum and maximum length are not allowed to be negative (was -1, -2)", e.getMessage());
@@ -22,7 +22,7 @@ public class WordsTests {
   @Test
   public void minLengthGreaterThanMax() {
     try {
-      Words words = new Words(2, 1);
+      Text text = new Text(2, 1);
       fail("Min greater than max length should throw Exception.");
     } catch (IllegalArgumentException e) {
       assertEquals("Exception message", "Maximum length is not allowed to be less than minimum length.", e.getMessage());
@@ -32,7 +32,7 @@ public class WordsTests {
   @Test
   public void generateSequenceOf0() {
     try {
-      Words words = new Words(0, 0);
+      Text text = new Text(0, 0);
       fail("Zero length should throw Exception.");
     } catch (IllegalArgumentException e) {
       assertEquals("Exception message", "Min and max are zero - generating/evaluating empty strings makes no sense.", e.getMessage());
@@ -41,26 +41,26 @@ public class WordsTests {
 
   @Test
   public void generateSequenceOf1() {
-    Words words = new Words(1, 1);
-    String word = words.next();
+    Text text = new Text(1, 1);
+    String word = text.next();
     assertEquals("Generated sequence length should match requested", 1, word.length());
   }
 
   @Test
   public void generateSequenceOf2() {
-    Words words = new Words(2, 2);
-    String word = words.next();
+    Text text = new Text(2, 2);
+    String word = text.next();
     assertEquals("Generated sequence length should match requested", 2, word.length());
   }
 
   @Test
   public void generateSequenceOf3To5() {
-    Words words = new Words(3, 5);
+    Text text = new Text(3, 5);
     boolean three = false;
     boolean four = false;
     boolean five = false;
     for (int i = 0 ; i < 1000 ; i++) {
-      String word = words.next();
+      String word = text.next();
       int length = word.length();
       assertTrue("Generated sequence length should be between 3-5, was " + length, length >= 3 && length <= 5);
       three = three || length == 3;
@@ -74,38 +74,38 @@ public class WordsTests {
 
   @Test
   public void evaluateEmptySequence() {
-    Words words = new Words(0, 5);
-    assertTrue("Evaluating empty string should work.", words.evaluate(""));
+    Text text = new Text(0, 5);
+    assertTrue("Evaluating empty string should work.", text.evaluate(""));
   }
 
   @Test
   public void evaluateSequenceOf20NotMax() {
-    Words words = new Words(10, 30);
-    assertTrue("Evaluating 20 length string should work for 10-30.", words.evaluate("12345678901234567890"));
+    Text text = new Text(10, 30);
+    assertTrue("Evaluating 20 length string should work for 10-30.", text.evaluate("12345678901234567890"));
   }
 
   @Test
   public void evaluateBelowMinLength() {
-    Words words = new Words(10, 20);
-    assertFalse("Evaluating below minimum length should fail.", words.evaluate("123456789"));
+    Text text = new Text(10, 20);
+    assertFalse("Evaluating below minimum length should fail.", text.evaluate("123456789"));
   }
 
   @Test
   public void evaluateAboveMaxLength() {
-    Words words = new Words(10, 20);
-    assertFalse("Evaluating above maximum length should fail.", words.evaluate("123456789012345678901"));
+    Text text = new Text(10, 20);
+    assertFalse("Evaluating above maximum length should fail.", text.evaluate("123456789012345678901"));
   }
 
   @Test
   public void evaluateMaxLength() {
-    Words words = new Words(10, 20);
-    assertTrue("Evaluating at maximum length should work.", words.evaluate("12345678901234567890"));
+    Text text = new Text(10, 20);
+    assertTrue("Evaluating at maximum length should work.", text.evaluate("12345678901234567890"));
   }
 
   @Test
   public void evaluateMinLength() {
-    Words words = new Words(10, 20);
-    assertTrue("Evaluating at minimum length should work.", words.evaluate("1234567890"));
+    Text text = new Text(10, 20);
+    assertTrue("Evaluating at minimum length should work.", text.evaluate("1234567890"));
   }
 
   @Test
@@ -116,17 +116,17 @@ public class WordsTests {
   }
 
   private void testLength(DataGenerationStrategy strategy) {
-    Words words = new Words(10, 20);
-    words.setStrategy(strategy);
-    words.enableInvalidLength(true);
+    Text text = new Text(10, 20);
+    text.setStrategy(strategy);
+    text.enableInvalidLength(true);
     Set<Integer> lengths = new HashSet<>();
     for (int i = 0 ; i < 100 ; i++) {
-      String word = words.next();
+      String word = text.next();
       int length = word.length();
       lengths.add(length);
       assertTrue("Invalid length for 10-20+5 should first be 21-25, was:" + length, length > 20 && length <= 25);
 
-      word = words.next();
+      word = text.next();
       length = word.length();
       lengths.add(length);
       assertTrue("Invalid length for 10-20+5 should second be 5-9, was:" + length, length >= 5 && length < 10);
@@ -136,10 +136,10 @@ public class WordsTests {
 
   @Test
   public void invalidRandom() {
-    Words words = new Words(10, 20);
-    words.setStrategy(DataGenerationStrategy.RANDOM_INVALID);
-    words.asciiLettersAndNumbersOnly();
-    String word = words.next();
+    Text text = new Text(10, 20);
+    text.setStrategy(DataGenerationStrategy.RANDOM_INVALID);
+    text.asciiLettersAndNumbersOnly();
+    String word = text.next();
     int invalid = countInvalidAsciiCharsIn(word);
     int valid = word.length() - invalid;
     assertTrue("Number of valid chars in random invalid should be > 0, was " + valid, valid > 0);
@@ -163,48 +163,48 @@ public class WordsTests {
 
   @Test
   public void invalidZeroLength() {
-    Words words = new Words(10, 20);
-    words.enableZeroSize(true);
-    String word = words.next();
+    Text text = new Text(10, 20);
+    text.enableZeroSize(true);
+    String word = text.next();
     int length = word.length();
     assertTrue("Zero size enabled with invalid length disabled should produce no effect", length >= 10 && length <= 20);
 
-    words = new Words(10, 20);
-    words.enableZeroSize(true);
-    words.enableInvalidLength(true);
-    word = words.next();
+    text = new Text(10, 20);
+    text.enableZeroSize(true);
+    text.enableInvalidLength(true);
+    word = text.next();
     assertEquals("Zero size enabled with invalid length enabled should produce zero size as first item.", 0, word.length());
-    word = words.next();
+    word = text.next();
     length = word.length();
     assertTrue("Zero size enabled with invalid length enabled should produce >max size as second item.", length > 20);
-    word = words.next();
+    word = text.next();
     length = word.length();
     assertTrue("Zero size enabled with invalid length enabled should produce <min size as second item.", length < 10);
   }
 
   @Test
   public void invalidLoop() {
-    Words words = new Words(10, 10);
-    words.setStrategy(DataGenerationStrategy.ORDERED_LOOP_INVALID);
-    words.asciiLettersAndNumbersOnly();
-    assertOneAndTwoInvalidChars(words);
+    Text text = new Text(10, 10);
+    text.setStrategy(DataGenerationStrategy.ORDERED_LOOP_INVALID);
+    text.asciiLettersAndNumbersOnly();
+    assertOneAndTwoInvalidChars(text);
     //roll over until the full string should be invalid
     for (int i = 0 ; i < 8 + 7 + 6 + 5 + 4 + 3 + 2 ; i++) {
-      String word = words.next();
+      String word = text.next();
     }
-    String word = words.next();
+    String word = text.next();
     assertInvalidCharsAt(word, 0, 10);
     //we have now rolled through it all so we expect a restart...
-    assertOneAndTwoInvalidChars(words);
+    assertOneAndTwoInvalidChars(text);
   }
 
-  private void assertOneAndTwoInvalidChars(Words words) {
+  private void assertOneAndTwoInvalidChars(Text text) {
     for (int i = 0 ; i < 10 ; i++) {
-      String word = words.next();
+      String word = text.next();
       assertInvalidCharsAt(word, i, 1);
     }
     for (int i = 0 ; i < 9 ; i++) {
-      String word = words.next();
+      String word = text.next();
       assertInvalidCharsAt(word, i, 2);
     }
   }
@@ -216,27 +216,27 @@ public class WordsTests {
 
   @Test
   public void invalidConfig() {
-    Words words = new Words(10, 20);
+    Text text = new Text(10, 20);
     try {
-      words.setInvalidProbability(-1);
+      text.setInvalidProbability(-1);
       fail("Negative values should not be allowed for invalid probability.");
     } catch (IllegalArgumentException e) {
       assertEquals("Error for negative invalid probability", "Probability must be between 0-1, was -1.0", e.getMessage());
     }
     try {
-      words.setInvalidProbability(1.01f);
+      text.setInvalidProbability(1.01f);
       fail("Values >1 should not be allowed for invalid probability.");
     } catch (IllegalArgumentException e) {
       assertEquals("Error for negative invalid probability", "Probability must be between 0-1, was 1.01", e.getMessage());
     }
 
     try {
-      words.setOffset(-1, 5);
+      text.setOffset(-1, 5);
     } catch (IllegalArgumentException e) {
       assertEquals("Error for negative invalid offset", "Minimum and maximum length are not allowed to be negative (was -1, 5)", e.getMessage());
     }
     try {
-      words.setOffset(9, 5);
+      text.setOffset(9, 5);
     } catch (IllegalArgumentException e) {
       assertEquals("Error for min invalid offset larger than max", "Maximum length is not allowed to be less than minimum length.", e.getMessage());
     }
@@ -244,34 +244,34 @@ public class WordsTests {
 
   @Test
   public void invalidProbabilityZero() {
-    Words words = new Words(10, 10);
-    words.asciiLettersAndNumbersOnly();
-    words.setStrategy(DataGenerationStrategy.RANDOM_INVALID);
-    words.setInvalidProbability(0);
-    String word = words.next();
+    Text text = new Text(10, 10);
+    text.asciiLettersAndNumbersOnly();
+    text.setStrategy(DataGenerationStrategy.RANDOM_INVALID);
+    text.setInvalidProbability(0);
+    String word = text.next();
     int count = countInvalidAsciiCharsIn(word);
     assertEquals("Number of invalid chars with zero invalid probability", 0, count);
   }
 
   @Test
   public void invalidProbabilityFull() {
-    Words words = new Words(10, 10);
-    words.asciiLettersAndNumbersOnly();
-    words.setStrategy(DataGenerationStrategy.RANDOM_INVALID);
-    words.setInvalidProbability(1);
-    String word = words.next();
+    Text text = new Text(10, 10);
+    text.asciiLettersAndNumbersOnly();
+    text.setStrategy(DataGenerationStrategy.RANDOM_INVALID);
+    text.setInvalidProbability(1);
+    String word = text.next();
     int count = countInvalidAsciiCharsIn(word);
     assertEquals("All chars should be invalid with full invalid probability", 10, count);
   }
 
   @Test
   public void invalidLengthToNegative() {
-    Words words = new Words(1, 2);
-    words.asciiLettersAndNumbersOnly();
-    words.setOffset(1, 5);
-    words.enableInvalidLength(true);
+    Text text = new Text(1, 2);
+    text.asciiLettersAndNumbersOnly();
+    text.setOffset(1, 5);
+    text.enableInvalidLength(true);
     for (int i = 0 ; i < 100 ; i++) {
-      String word = words.next();
+      String word = text.next();
 //      System.out.println(word.length()+":"+word);
       assertNotNull("Invalid generation should always produce a word or exception, not null", word);
       assertTrue("Invalid should never go over max size + max offset", word.length() < 8);

@@ -387,7 +387,8 @@ public class FSM {
   }
 
   private void captureSearchableInputs() {
-    Collection<SearchableInputField> inputs = getSearchableInputFields();
+    Collection<SearchableInputField> inputs = new ArrayList<>();
+    inputs.addAll(searchableInputFields);
     clearSearchableInputs();
     for (SearchableInputField input : inputs) {
       addSearchableInput(input.getInput());
