@@ -44,7 +44,6 @@ public class Text extends SearchableInput<String> {
   private int invalidIndex = 0;
   /** Number of chars we create at index while in invalid loop mode. */
   private int invalidSize = 1;
-  private boolean guiEnabled = false;
 
   /** Constructor for default values (min=5, max=10). */
   public Text() {

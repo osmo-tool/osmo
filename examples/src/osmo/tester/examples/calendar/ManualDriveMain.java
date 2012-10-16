@@ -28,6 +28,8 @@ public class ManualDriveMain {
    */
   public static void main(String[] args) {
     OSMOTester osmo = new OSMOTester();
+    osmo.setSeed(111);
+    osmo.setAlgorithm(new ManualAlgorithm());
 //    osmo.addSuiteEndCondition(new Length(2));
     ModelState state = new ModelState();
 //    CalendarScripter scripter = new OnlineScripter();
@@ -43,8 +45,6 @@ public class ManualDriveMain {
     osmo.addSuiteEndCondition(new Endless());
     osmo.addListener(new FSMBuildVisualizer());
 //    osmo.addModelObject(new CalendarFailureModel(state, scripter));
-    osmo.setSeed(111);
-    osmo.setAlgorithm(new ManualAlgorithm());
     //osmo.setValueScripter(new ScriptedValueProvider());
     osmo.generate();
   }

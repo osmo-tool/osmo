@@ -1,6 +1,7 @@
 package osmo.tester.examples.calendar.testmodel;
 
 import osmo.tester.model.dataflow.DataGenerationStrategy;
+import osmo.tester.model.dataflow.Text;
 import osmo.tester.model.dataflow.ValueRange;
 import osmo.tester.model.dataflow.ValueSet;
 
@@ -41,9 +42,14 @@ public class ModelState {
     userCount.setStrategy(DataGenerationStrategy.RANDOM);
     users = new ValueSet<>(DataGenerationStrategy.RANDOM);
     int n = userCount.next();
+    Text names = new Text(4,7);
+    names.setName("name");
     for (int i = 1; i <= n; i++) {
-      this.users.add("user" + i);
+//      this.users.add("user" + i);
+      System.out.println("user:"+i);
+      this.users.add(names.next());
     }
+    System.out.println("loppu");
   }
 
   /** Used to reset the state between test generation. */

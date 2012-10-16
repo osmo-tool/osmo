@@ -18,7 +18,7 @@ public class HelloModel {
   private int worldCount = 0;
   private ValueSet<String> names = new ValueSet<>("teemu", "bob");
   private ValueSet<String> worlds = new ValueSet<>("mars", "venus");
-  //  private Words words = new Words(3, 7);
+  //  private Text words = new Text(3, 7);
   private ValueSet<Integer> sizes = new ValueSet<>(1, 2, 6);
   private ValueRange<Double> ranges = new ValueRange<>(0.1d, 5.2d);
 
