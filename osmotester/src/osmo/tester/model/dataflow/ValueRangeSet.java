@@ -1,6 +1,7 @@
 package osmo.tester.model.dataflow;
 
 import osmo.common.log.Logger;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.gui.manualdrive.ValueRangeSetGUI;
 import osmo.tester.model.dataflow.serialization.Deserializer;
 import osmo.tester.model.dataflow.serialization.DoubleDeserializer;
@@ -193,6 +194,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
 
   @Override
   public T next() {
+    OSMOConfiguration.checkGUI(this);
     checkSlicing();
     validate();
     if (gui != null) {
@@ -294,6 +296,8 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
 
   @Override
   public void enableGUI() {
+    if (guiEnabled) return;
+    guiEnabled = true;
     gui = new ValueRangeSetGUI(this);
   }
 

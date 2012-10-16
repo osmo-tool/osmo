@@ -1,6 +1,7 @@
 package osmo.tester.model.dataflow;
 
 import osmo.common.log.Logger;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.gui.manualdrive.ValueSetGUI;
 import osmo.tester.model.dataflow.serialization.Deserializer;
 import osmo.tester.model.dataflow.serialization.StringDeserializer;
@@ -152,6 +153,7 @@ public class ValueSet<T> extends SearchableInput<T> {
    */
   @Override
   public T next() {
+    OSMOConfiguration.checkGUI(this);
     checkSlicing();
     if (strategy != DataGenerationStrategy.SLICED && options.size() == 0) {
       throw new IllegalStateException("No value to provide (add some options).");
@@ -267,6 +269,8 @@ public class ValueSet<T> extends SearchableInput<T> {
 
   @Override
   public void enableGUI() {
+    if (guiEnabled) return;
+    guiEnabled = true;
     gui = new ValueSetGUI(this);
   }
 

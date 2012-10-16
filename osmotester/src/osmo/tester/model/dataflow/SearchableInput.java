@@ -29,6 +29,7 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T> {
   protected Deserializer<T> deserializer;
   /** The latest value that was generated. */
   private T latestValue = null;
+  protected boolean guiEnabled = false;
 
   protected SearchableInput() {
   }

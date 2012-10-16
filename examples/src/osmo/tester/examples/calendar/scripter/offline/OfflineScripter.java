@@ -5,7 +5,7 @@ import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.examples.calendar.testmodel.ModelEvent;
 import osmo.tester.examples.calendar.testmodel.ModelState;
 import osmo.tester.examples.calendar.testmodel.ModelTask;
-import osmo.tester.model.dataflow.Words;
+import osmo.tester.model.dataflow.Text;
 import osmo.tester.scripter.robotframework.RFParameter;
 import osmo.tester.scripter.robotframework.Scripter;
 
@@ -66,10 +66,10 @@ public class OfflineScripter implements CalendarScripter {
    */
   public String createScript() {
     //create users with random family name length 3-5 characters
-    Words words = new Words(3, 5);
-    words.asciiLettersAndNumbersOnly();
+    Text text = new Text(3, 5);
+    text.asciiLettersAndNumbersOnly();
     for (String user : state.getUsers()) {
-      scripter.addVariable(user, StringUtils.capitalizeFirstLetter(user) + " " + words.next());
+      scripter.addVariable(user, StringUtils.capitalizeFirstLetter(user) + " " + text.next());
     }
     script = scripter.createScript();
     return script;
