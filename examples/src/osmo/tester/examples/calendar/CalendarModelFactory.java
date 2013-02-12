@@ -7,10 +7,7 @@ import osmo.tester.examples.calendar.testmodel.CalendarMeetingModel;
 import osmo.tester.examples.calendar.testmodel.CalendarTaskModel;
 import osmo.tester.examples.calendar.testmodel.ModelState;
 import osmo.tester.generator.endcondition.Length;
-import osmo.tester.generator.endcondition.Probability;
-import osmo.tester.scripting.OSMOConfigurationFactory;
-
-import java.util.Random;
+import osmo.tester.scripting.slicing.OSMOConfigurationFactory;
 
 /** @author Teemu Kanstren */
 public class CalendarModelFactory implements OSMOConfigurationFactory {

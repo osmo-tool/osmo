@@ -7,9 +7,13 @@ import osmo.tester.examples.calendar.testmodel.ModelState;
 import osmo.tester.examples.calendar.testmodel.ModelTask;
 import osmo.tester.model.dataflow.Text;
 import osmo.tester.scripter.robotframework.RFParameter;
-import osmo.tester.scripter.robotframework.Scripter;
+import osmo.tester.scripter.robotframework.RFScripter;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,7 +29,7 @@ import java.util.Locale;
  */
 public class OfflineScripter implements CalendarScripter {
   /** The OSMO robot framework scripter, script table size 6 columns. */
-  private Scripter scripter = new Scripter(6);
+  private RFScripter scripter = new RFScripter(6);
   /** Number of currently generated test. */
   private int nextTestId = 1;
   /** Id for next task to create in the script. */

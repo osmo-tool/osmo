@@ -7,7 +7,6 @@ import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.RequirementsField;
-import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.endcondition.Length;
@@ -26,9 +25,9 @@ import java.io.PrintStream;
  */
 public class CalculatorModel {
   @RequirementsField
-  private Requirements requirement = new Requirements();
-  @TestSuiteField
-  private TestSuite history = new TestSuite();
+  private Requirements req = new Requirements();
+  @RequirementsField
+  private TestSuite history = null;
   @Variable
   private int counter = 0;
   private int testCount = 1;
@@ -41,8 +40,8 @@ public class CalculatorModel {
   }
 
   public CalculatorModel(PrintStream out) {
-    requirement.add(REQ_INCREASE);
-    requirement.add(REQ_DECREASE);
+    req.add(REQ_INCREASE);
+    req.add(REQ_DECREASE);
     this.out = out;
   }
 
@@ -90,7 +89,7 @@ public class CalculatorModel {
 
   @Transition("decrease")
   public void decreaseState() {
-    requirement.covered(REQ_DECREASE);
+    req.covered(REQ_DECREASE);
     counter--;
     out.println("- " + counter);
   }
@@ -102,7 +101,7 @@ public class CalculatorModel {
 
   @Transition("increase")
   public void increaseState() {
-    requirement.covered(REQ_INCREASE);
+    req.covered(REQ_INCREASE);
     counter++;
     out.println("+ " + counter);
   }

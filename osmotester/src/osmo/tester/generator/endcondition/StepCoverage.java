@@ -71,7 +71,7 @@ public class StepCoverage extends AbstractEndCondition {
     Collection<TestStep> testSteps = test.getSteps();
     Collection<String> steps = new ArrayList<>();
     for (TestStep step : testSteps) {
-      steps.add(step.getTransition().getStringName());
+      steps.add(step.getName());
     }
     return steps;
   }

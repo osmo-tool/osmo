@@ -29,8 +29,8 @@ import java.lang.annotation.Target;
  * <p/>
  * Currently there is a special Guard annotation with the name "all". If such a guard annotation is found,
  * it will be executed before all the transition methods to check if they can be executed (along with their
- * specific guard methods).This will likely change when the special name is move to its own annotation
- * along with other similar annotations.
+ * specific guard methods). This is the same as not having any name at all.
+ * A single guard can also be associated to several transitions/test steps by using an array as the identifier.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

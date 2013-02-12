@@ -1,18 +1,13 @@
 package osmo.tester.model.dataflow;
 
+import osmo.common.Randomizer;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.gui.manualdrive.ValueRangeGUI;
-import osmo.tester.model.dataflow.serialization.Deserializer;
-import osmo.tester.model.dataflow.serialization.DoubleDeserializer;
-import osmo.tester.model.dataflow.serialization.IntegerDeserializer;
-import osmo.tester.model.dataflow.serialization.LongDeserializer;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import static osmo.common.TestUtils.*;
 
 /**
  * Defines a value range with a minimum and maximum values. Generates input from this range, including min and max.
@@ -60,6 +55,8 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
   private DataType type;
   /** Handles boundary scan data generation strategy. */
   private Boundary boundary;
+  /** Personal randomizer for deterministic generation and concurrency. */
+  private final Randomizer rand;
 
   /**
    * Constructor that takes an explicit type argument for generation.
@@ -79,6 +76,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
     } else {
       setType(DataType.DOUBLE);
     }
+    this.rand = new Randomizer(OSMOConfiguration.getSeed());
   }
 
   /**
@@ -100,25 +98,17 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
     }
     boundary = new Boundary(this.type, min, max);
     allSupported = true;
+    this.rand = new Randomizer(OSMOConfiguration.getSeed());
   }
-  
+
+  public void setSeed(long seed) {
+    rand.setSeed(seed);
+  }
+
   private void setType(DataType type) {
     this.type = type;
     boundary = new Boundary(this.type, min, max);
     allSupported = true;
-    switch (type) {
-      case INT:
-        deserializer = (Deserializer<T>) new IntegerDeserializer();
-        break;
-      case LONG:
-        deserializer = (Deserializer<T>) new LongDeserializer();
-        break;
-      case DOUBLE:
-        deserializer = (Deserializer<T>) new DoubleDeserializer();
-        break;
-      default:
-        throw new IllegalArgumentException("Enum type:" + type + " unsupported.");
-    }
   }
 
   public DataType getType() {
@@ -181,8 +171,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
    * @return Generated input value.
    */
   public Number next(DataType type) {
-    OSMOConfiguration.checkGUI(this);
-    checkSlicing();
+    OSMOConfiguration.check(this);
     Number value = 0;
     switch (algorithm) {
       case ORDERED_LOOP:
@@ -199,7 +188,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
         value = scriptedNext(scriptNextSerialized());
         break;
       case SLICED:
-        value = getSlices().next();
+        value = convert(getSlices().next());
         break;
       default:
         value = nextRandom(type);
@@ -211,11 +200,24 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
     return value;
   }
 
+  private Number convert(String text) {
+    switch (type) {
+      case INT:
+        return Integer.parseInt(text);
+      case LONG:
+        return Long.parseLong(text);
+      case DOUBLE:
+        return Double.parseDouble(text);
+      default:
+        throw new IllegalArgumentException("Enum type:" + type + " unsupported.");
+    }
+  }
+
   private T scriptedNext(String serialized) {
     if (!evaluateSerialized(serialized)) {
       throw new IllegalArgumentException("Requested invalid scripted value for variable '" + getName() + "': " + serialized);
     }
-    return deserializer.deserialize(serialized);
+    return (T) convert(serialized);
   }
 
   /**
@@ -263,13 +265,13 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
     do {
       switch (type) {
         case INT:
-          value = cInt(min.intValue(), max.intValue());
+          value = rand.nextInt(min.intValue(), max.intValue());
           break;
         case LONG:
-          value = cLong(min.longValue(), max.longValue());
+          value = rand.nextLong(min.longValue(), max.longValue());
           break;
         case DOUBLE:
-          value = cDouble(min.doubleValue(), max.doubleValue());
+          value = rand.nextDouble(min.doubleValue(), max.doubleValue());
           break;
         default:
           throw new IllegalArgumentException("Enum type:" + type + " unsupported.");
@@ -286,13 +288,13 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
     Number value = null;
     switch (type) {
       case INT:
-        value = cInt(min().intValue(), max().intValue());
+        value = rand.nextInt(min().intValue(), max().intValue());
         break;
       case LONG:
-        value = cLong(min().longValue(), max().longValue());
+        value = rand.nextLong(min().longValue(), max().longValue());
         break;
       case DOUBLE:
-        value = cDouble(min().doubleValue(), max().doubleValue());
+        value = rand.nextDouble(min().doubleValue(), max().doubleValue());
         break;
       default:
         throw new IllegalArgumentException("Enum type:" + type + " unsupported.");

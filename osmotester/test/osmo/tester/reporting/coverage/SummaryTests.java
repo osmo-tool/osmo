@@ -2,11 +2,13 @@ package osmo.tester.reporting.coverage;
 
 import org.junit.Before;
 import org.junit.Test;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
 import osmo.tester.model.TransitionName;
+import osmo.tester.suiteoptimizer.coverage.ScoreConfiguration;
 
 import static junit.framework.Assert.*;
 import static osmo.common.TestUtils.*;
@@ -18,9 +20,12 @@ public class SummaryTests {
 
   @Before
   public void setup() {
+    OSMOConfiguration.reset();
     suite = new TestSuite();
+    suite.init(new ScoreConfiguration());
+    suite.initRequirements(null);
 
-    Requirements reqs = new Requirements();
+    Requirements reqs = suite.getRequirements();
     reqs.setTestSuite(suite);
     reqs.add("req-one");
     reqs.add("req-two");
@@ -44,6 +49,7 @@ public class SummaryTests {
     suite.endTest();
 
     fsm = new FSM();
+    fsm.setRequirements(reqs);
     createTransition("one", 0);
     createTransition("two", 0);
     createTransition("three", 0);
@@ -53,8 +59,6 @@ public class SummaryTests {
     createTransition("seven", 0);
     createTransition("eight", 0);
     createTransition("ten", 0);
-
-    fsm.setRequirements(reqs);
   }
 
   private FSMTransition createTransition(String name, int weight) {
@@ -96,18 +100,13 @@ public class SummaryTests {
   }
 
   @Test
-  public void csvRequirements() {
+  public void csvTags() {
     String expected = getResource(getClass(), "expected-requirements.csv");
     expected = unifyLineSeparators(expected, "\n");
     CSVCoverageReporter csv = new CSVCoverageReporter(suite, fsm);
-    String actual = csv.getRequirementCounts();
+    String actual = csv.getTagCounts();
     actual = unifyLineSeparators(actual, "\n");
-/*    System.out.println("----------------");
-    System.out.println("expected:\n"+expected);
-    System.out.println("----------------");
-    System.out.println("actual:\n"+actual);
-    System.out.println("----------------");*/
-    assertEquals("Generated CSV report for requirement coverage", expected, actual);
+    assertEquals("Generated CSV report for tag coverage", expected, actual);
   }
 
   @Test
@@ -145,7 +144,7 @@ public class SummaryTests {
     String expected = getResource(getClass(), "expected-requirements.txt");
     expected = unifyLineSeparators(expected, "\n");
     HTMLCoverageReporter html = new HTMLCoverageReporter(suite, fsm);
-    String actual = html.getRequirementCounts();
+    String actual = html.getTagCounts();
     actual = unifyLineSeparators(actual, "\n");
 /*    System.out.println("----------------");
     System.out.println("expected:\n"+expected);

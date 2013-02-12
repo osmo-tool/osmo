@@ -205,6 +205,7 @@ public class ErrorHandlingTests {
 
   @Test
   public void transitionWithTrap() {
+    listener.setTracePrePost(true);
     listener.addExpected("suite-start", "start", "g:hello", "pre:hello", "t:hello", "end", "suite-end");
     osmo.addModelObject(new ErrorModel5());
     config.setFailWhenError(false);
@@ -233,6 +234,7 @@ public class ErrorHandlingTests {
 
   @Test
   public void preWithTrap() {
+    listener.setTracePrePost(true);
     listener.addExpected("suite-start", "start", "g:hello", "pre:hello", "end", "suite-end");
     osmo.addModelObject(new ErrorModel8());
     config.setFailWhenError(false);
@@ -261,6 +263,7 @@ public class ErrorHandlingTests {
 
   @Test
   public void postWithTrap() {
+    listener.setTracePrePost(true);
     listener.addExpected("suite-start", "start", "g:hello", "pre:hello", "t:hello", "post:hello", "end", "suite-end");
     osmo.addModelObject(new ErrorModel7());
     config.setFailWhenError(false);
@@ -289,6 +292,7 @@ public class ErrorHandlingTests {
 
   @Test
   public void endConditionWithTrap() {
+    listener.setTracePrePost(true);
     listener.addExpected("suite-start", "start", "g:hello", "pre:hello", "t:hello", "post:hello", "end", "suite-end");
     osmo.addModelObject(new ErrorModel9());
     config.setFailWhenError(false);

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Base class for DSM and manual ascii parses.
+ * Base class for slicer and manual ascii parser.
  *
  * @author Teemu Kanstren
  */
@@ -25,7 +25,7 @@ public class AbstractAsciiParser {
    */
   protected String[] parseLines(String input) {
     String[] split = input.split("\n|\r\n|\r");
-    for (int i = 0; i < split.length; i++) {
+    for (int i = 0 ; i < split.length ; i++) {
       String s = split[i];
       split[i] = s.trim();
     }
@@ -42,7 +42,7 @@ public class AbstractAsciiParser {
   public String[] parseTable(String[] lines, String... headers) {
     //table name here is for error reporting
     String tableName = "\"" + headers[0];
-    for (int h = 1; h < headers.length; h++) {
+    for (int h = 1 ; h < headers.length ; h++) {
       tableName += ", " + headers[h];
     }
     tableName += "\"";
@@ -52,7 +52,7 @@ public class AbstractAsciiParser {
     int cols = headers.length;
     boolean found = true;
     //first we proceed until we find the header
-    for (; i < lines.length; i++) {
+    for ( ; i < lines.length ; i++) {
       String line = lines[i];
       log.debug("parsing line:" + line);
       String[] cells = line.split(",");
@@ -61,7 +61,7 @@ public class AbstractAsciiParser {
       }
       //TODO: test with two variable tables, test with more and less of columns than headers
       found = true;
-      for (int s = 0; s < cols; s++) {
+      for (int s = 0 ; s < cols ; s++) {
         cells[s] = cells[s].trim();
         if (!cells[s].equalsIgnoreCase(headers[s])) {
           found = false;
@@ -79,7 +79,7 @@ public class AbstractAsciiParser {
       return new String[0];
     }
     //now we parse all cells
-    for (i += 1; i < lines.length; i++) {
+    for (i += 1; i < lines.length ; i++) {
       log.debug("parsing line:" + lines[i]);
       //the table cells must be separated with a comma
       String[] cells = lines[i].split(",", -1);

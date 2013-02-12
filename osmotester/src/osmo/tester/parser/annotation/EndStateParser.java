@@ -5,11 +5,12 @@ import osmo.tester.annotation.EndState;
 import osmo.tester.model.InvocationTarget;
 import osmo.tester.parser.AnnotationParser;
 import osmo.tester.parser.ParserParameters;
+import osmo.tester.parser.ParserResult;
 
 import java.lang.reflect.Method;
 
 /**
- * Parses {@link EndState} annotations from the given model object.
+ * Parses {@link osmo.tester.annotation.EndState} annotations from the given model object.
  *
  * @author Teemu Kanstren
  */
@@ -17,7 +18,7 @@ public class EndStateParser implements AnnotationParser {
   private static Logger log = new Logger(EndStateParser.class);
 
   @Override
-  public String parse(ParserParameters parameters) {
+  public String parse(ParserResult result, ParserParameters parameters) {
     EndState ec = (EndState) parameters.getAnnotation();
     Method method = parameters.getMethod();
     Class<?> returnType = method.getReturnType();
@@ -29,7 +30,7 @@ public class EndStateParser implements AnnotationParser {
     if (parameterTypes.length > 0) {
       errors += "@" + EndState.class.getSimpleName() + " methods are not allowed to have parameters: \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n";
     }
-    parameters.getFsm().addEndState(new InvocationTarget(parameters, EndState.class));
+    result.getFsm().addEndState(new InvocationTarget(parameters, EndState.class));
     return errors;
   }
 }

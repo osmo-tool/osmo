@@ -25,9 +25,10 @@ public class Example {
     ps.println("hi there");
   }
 
-  @OSMOConfigurationFactory
+  @OSMOConfigurationProvider
   public static OSMOConfiguration giefConf() {
     OSMOConfiguration config = new OSMOConfiguration();
+    config.setSeed(333);
     config.addModelObject(new CalculatorModel(ps));
     config.setJUnitLength(5);
     return config;

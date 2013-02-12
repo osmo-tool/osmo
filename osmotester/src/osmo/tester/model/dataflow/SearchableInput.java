@@ -2,10 +2,10 @@ package osmo.tester.model.dataflow;
 
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
-import osmo.tester.generator.Observer;
+import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.gui.manualdrive.ValueGUI;
 import osmo.tester.model.ScriptedValueProvider;
-import osmo.tester.model.dataflow.serialization.Deserializer;
+import osmo.tester.model.VariableValue;
 import osmo.tester.model.dataflow.wrappers.ToStringWrapper;
 
 import java.util.Collection;
@@ -15,7 +15,7 @@ import java.util.Collection;
  *
  * @author Teemu Kanstren
  */
-public abstract class SearchableInput<T> implements Input<T>, Output<T> {
+public abstract class SearchableInput<T> implements Input<T>, Output<T>, VariableValue {
   private static Logger log = new Logger(SearchableInput.class);
   /** Variable name. */
   private String name;
@@ -25,28 +25,29 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T> {
   private ScriptedValueProvider scripter = null;
   /** For providing values manually through a GUI. Enabled if non-null. */
   protected ValueGUI gui = null;
-  private ValueSet<T> slices = null;
-  protected Deserializer<T> deserializer;
+  private ValueSet<String> slices = null;
   /** The latest value that was generated. */
   private T latestValue = null;
   protected boolean guiEnabled = false;
+  private TestSuite suite = null;
 
   protected SearchableInput() {
   }
 
-  public ValueSet<T> getSlices() {
+  public ValueSet<String> getSlices() {
     if (slices == null) {
-      slices = OSMOConfiguration.getSlicesFor(getName(), deserializer);
+      slices = OSMOConfiguration.getSlicesFor(getName());
     }
     return slices;
   }
 
-  protected ValueSet<T> checkSlicing() {
-    ValueSet<T> slices = getSlices();
-    if (slices != null) {
-      setStrategy(DataGenerationStrategy.SLICED);
-    }
-    return slices;
+  public void setSuite(TestSuite suite) {
+    this.suite = suite;
+  }
+
+  @Override
+  public Object value() {
+    return getLatestValue();
   }
 
   public T getLatestValue() {
@@ -70,12 +71,8 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T> {
     if (name == null) {
       return;
     }
-    Observer.observe(name, value);
+    suite.getCurrentTest().addVariableValue(name, value, false);
   }
-
-//  public void setScripter(ScriptedValueProvider scripter) {
-//    this.scripter = scripter;
-//  }
 
   public String scriptNextSerialized() {
     if (scripter == null) {
@@ -97,7 +94,4 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T> {
   public ToStringWrapper wrapper() {
     return new ToStringWrapper(this);
   }
-
-//  public abstract void addSlice(String serialized);
-
 }

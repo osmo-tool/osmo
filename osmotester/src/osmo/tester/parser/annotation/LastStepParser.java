@@ -5,11 +5,12 @@ import osmo.tester.annotation.LastStep;
 import osmo.tester.model.InvocationTarget;
 import osmo.tester.parser.AnnotationParser;
 import osmo.tester.parser.ParserParameters;
+import osmo.tester.parser.ParserResult;
 
 import java.lang.reflect.Method;
 
 /**
- * Parses {@link LastStep} annotations from the given model object.
+ * Parses {@link osmo.tester.annotation.LastStep} annotations from the given model object.
  *
  * @author Teemu Kanstren
  */
@@ -17,7 +18,7 @@ public class LastStepParser implements AnnotationParser {
   private static Logger log = new Logger(LastStepParser.class);
 
   @Override
-  public String parse(ParserParameters parameters) {
+  public String parse(ParserResult result, ParserParameters parameters) {
     LastStep ls = (LastStep) parameters.getAnnotation();
     Method method = parameters.getMethod();
     String errors = "";
@@ -25,7 +26,7 @@ public class LastStepParser implements AnnotationParser {
     if (parameterTypes.length > 0) {
       errors += "@" + LastStep.class.getSimpleName() + " methods are not allowed to have parameters: \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n";
     }
-    parameters.getFsm().addLastStep(new InvocationTarget(parameters, LastStep.class));
+    result.getFsm().addLastStep(new InvocationTarget(parameters, LastStep.class));
     return errors;
   }
 }

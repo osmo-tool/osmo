@@ -17,16 +17,16 @@ import java.util.Map;
 import static junit.framework.Assert.*;
 
 /**
- * A test model with requirements that can all be covered.
+ * A test model with tags that can all be covered.
  *
  * @author Teemu Kanstren
  */
 public class ValidTestModel3 {
   @RequirementsField
   private final Requirements req = new Requirements();
-  public static final String REQ_HELLO = "hello";
-  public static final String REQ_WORLD = "world";
-  public static final String REQ_EPIX = "epix";
+  public static final String TAG_HELLO = "hello";
+  public static final String TAG_WORLD = "world";
+  public static final String TAG_EPIX = "epix";
   private final PrintStream out;
 
   public ValidTestModel3(PrintStream out) {
@@ -42,34 +42,33 @@ public class ValidTestModel3 {
   @BeforeSuite
   @AfterSuite
   public void empty() {
-
   }
 
   @Guard("hello")
   public boolean helloCheck() {
-    return !req.isCovered(REQ_HELLO) && !req.isCovered(REQ_WORLD) && !req.isCovered(REQ_EPIX);
+    return !req.isCovered(TAG_HELLO) && !req.isCovered(TAG_WORLD) && !req.isCovered(TAG_EPIX);
   }
 
   @Transition("hello")
   public void transition1() {
-    req.covered(REQ_HELLO);
+    req.covered(TAG_HELLO);
     out.print(":hello");
   }
 
   @Guard("world")
   public boolean worldCheck() {
-    return req.isCovered(REQ_HELLO) && !req.isCovered(REQ_WORLD) && !req.isCovered(REQ_EPIX);
+    return req.isCovered(TAG_HELLO) && !req.isCovered(TAG_WORLD) && !req.isCovered(TAG_EPIX);
   }
 
   @Transition("world")
   public void epix() {
-    req.covered(REQ_WORLD);
+    req.covered(TAG_WORLD);
     out.print(":world");
   }
 
   @Guard("epixx")
   public boolean kitted() {
-    return req.isCovered(REQ_WORLD);
+    return req.isCovered(TAG_WORLD);
   }
 
   @Pre("epixx")
@@ -81,7 +80,7 @@ public class ValidTestModel3 {
 
   @Transition("epixx")
   public void epixx() {
-    req.covered(REQ_EPIX);
+    req.covered(TAG_EPIX);
     out.print(":epixx");
   }
 

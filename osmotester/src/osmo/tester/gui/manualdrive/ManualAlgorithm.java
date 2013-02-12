@@ -14,6 +14,7 @@ import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.VariableField;
 import osmo.tester.model.dataflow.SearchableInput;
+import osmo.tester.parser.ParserResult;
 
 import javax.swing.AbstractListModel;
 import javax.swing.DefaultComboBoxModel;
@@ -305,8 +306,8 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
       tcId++;
       for (TestStep ts : tc.getSteps()) {
         int tsId = ts.getId();
-        String added = tsId + ". " + ts.getTransition().getName() + "\n";
-        List<ModelVariable> values = ts.getParameters();
+        String added = tsId + ". " + ts.getName() + "\n";
+        Collection<ModelVariable> values = ts.getValues();
         int i = 1;
         for (ModelVariable value : values) {
           added += tsId + "." + i + ". " + value.getName() + " = " + value.getValues() + "\n";
@@ -326,7 +327,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
    */
   private String getSpaces(int a) {
     String ret = "";
-    for (int i = 0; i < a; i++) {
+    for (int i = 0 ; i < a ; i++) {
       ret += " ";
     }
     return ret;
@@ -339,23 +340,23 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
    * @return The text for metrics pane.
    */
   private String coverageText(TestSuite history) {
-    Map<FSMTransition, Integer> a = history.getTransitionCoverage();
+    Map<String, Integer> a = history.getTransitionCoverage();
     String ret = "";
-    for (FSMTransition t : a.keySet()) {
-      ret += t.getName() + getSpaces(30 - t.getStringName().length()) + "\t" + a.get(t) + "\n";
+    for (String t : a.keySet()) {
+      ret += t + getSpaces(30 - t.length()) + "\t" + a.get(t) + "\n";
     }
     return ret;
   }
-  
+
   private String stateText() {
     String text = "";
     Collection<SearchableInput> inputs = fsm.getSearchableInputs();
     for (SearchableInput input : inputs) {
-      text += input.getName()+": "+input.getLatestValue()+"\n";
+      text += input.getName() + ": " + input.getLatestValue() + "\n";
     }
     Collection<VariableField> variables = fsm.getStateVariables();
     for (VariableField variable : variables) {
-      text += variable.getName()+": "+variable.getValue()+"\n";
+      text += variable.getName() + ": " + variable.getValue() + "\n";
     }
     return text;
   }
@@ -398,8 +399,8 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
   }
 
   @Override
-  public void init(FSM fsm) {
-    this.fsm = fsm;
+  public void init(ParserResult parserResult) {
+    this.fsm = parserResult.getFsm();
     Collection<SearchableInput> inputs = fsm.getSearchableInputs();
     for (SearchableInput input : inputs) {
       input.enableGUI();
@@ -407,7 +408,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
   }
 
   @Override
-  public FSMTransition choose(TestSuite history, List<FSMTransition> transitions) {
+  public FSMTransition choose(TestSuite history, List<FSMTransition> choices) {
     run(history);
 
     //Make some updates
@@ -417,7 +418,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
 //    statePane.setText(coverageText(history));
 
     //Set available transitions to the UI
-    availableTransitionsList.setModel(new ModelHelper(transitions));
+    availableTransitionsList.setModel(new ModelHelper(choices));
 
     //Waiting for selection
     waitForSelection();
@@ -426,7 +427,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     }
 
     //Make selection
-    for (FSMTransition t : transitions) {
+    for (FSMTransition t : choices) {
       if (t.getName().equals(choiceFromList)) {
         choiceFromList = null;
         return t;
@@ -436,11 +437,11 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     //Autorun mode
     switch (algorithmComboBox.getSelectedIndex()) {
       case 0:
-        return new RandomAlgorithm().choose(history, transitions);
+        return new RandomAlgorithm().choose(history, choices);
       case 1:
-        return new BalancingAlgorithm().choose(history, transitions);
+        return new BalancingAlgorithm().choose(history, choices);
       case 2:
-        return new WeightedRandomAlgorithm().choose(history, transitions);
+        return new WeightedRandomAlgorithm().choose(history, choices);
       default:
         throw new RuntimeException("Error in algrithm handler. The index was: " + algorithmComboBox.getSelectedIndex());
     }

@@ -45,7 +45,7 @@ public class MaxTransitionFilter implements TransitionFilter {
    */
   @Override
   public void filter(Collection<FSMTransition> transitions) {
-    for (Iterator<FSMTransition> i = transitions.iterator(); i.hasNext(); ) {
+    for (Iterator<FSMTransition> i = transitions.iterator() ; i.hasNext() ; ) {
       FSMTransition transition = i.next();
       String name = transition.getStringName();
       Integer count = taken.get(name);

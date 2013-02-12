@@ -1,7 +1,5 @@
 package osmo.tester.reporting.coverage;
 
-import osmo.tester.model.FSMTransition;
-
 /**
  * Information for how many times a transition has been taken in test generation.
  *
@@ -9,17 +7,13 @@ import osmo.tester.model.FSMTransition;
  */
 public class TransitionCount implements Comparable<TransitionCount> {
   /** The transition taken. */
-  private final FSMTransition transition;
+  private final String transition;
   /** The number of times it was taken. */
   private final int count;
 
-  public TransitionCount(FSMTransition transition, int count) {
+  public TransitionCount(String transition, int count) {
     this.transition = transition;
     this.count = count;
-  }
-
-  public FSMTransition getTransition() {
-    return transition;
   }
 
   /** @return The number of times the transition has been taken. */
@@ -29,7 +23,7 @@ public class TransitionCount implements Comparable<TransitionCount> {
 
   /** @return Name of the transition. */
   public String getName() {
-    return transition.getStringName();
+    return transition;
   }
 
   @Override

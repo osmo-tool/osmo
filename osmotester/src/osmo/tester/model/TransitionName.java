@@ -2,10 +2,12 @@ package osmo.tester.model;
 
 /** @author Teemu Kanstren */
 public class TransitionName {
-  /** Extra identifier to potentially group the transitions. For example, create a model of a smartphone and
+  /**
+   * Extra identifier to potentially group the transitions. For example, create a model of a smartphone and
    * use the same model for several phones in test generation. Give them prefixes such as "HTC", "Google", etc.
    * This will cause them to be considered as separate transitions in test generation. This is actually already part
-   * of the transition/guard names since parsing but used here to help address "negation" in associations. */
+   * of the transition/guard names since parsing but used here to help address "negation" in associations.
+   */
   private final String prefix;
   private final String name;
 
@@ -13,14 +15,14 @@ public class TransitionName {
     this.prefix = prefix;
     this.name = name;
   }
-  
+
   public int length() {
     return toString().length();
   }
 
   @Override
   public String toString() {
-    return prefix+name;
+    return prefix + name;
   }
 
   @Override

@@ -5,8 +5,7 @@ import osmo.tester.annotation.BeforeTest;
 import osmo.tester.model.InvocationTarget;
 import osmo.tester.parser.AnnotationParser;
 import osmo.tester.parser.ParserParameters;
-
-import java.lang.reflect.Method;
+import osmo.tester.parser.ParserResult;
 
 /**
  * Parses {@link osmo.tester.annotation.BeforeTest} annotations from the given model object.
@@ -17,10 +16,9 @@ public class BeforeTestParser implements AnnotationParser {
   private static Logger log = new Logger(BeforeTestParser.class);
 
   @Override
-  public String parse(ParserParameters parameters) {
+  public String parse(ParserResult result, ParserParameters parameters) {
     BeforeTest before = (BeforeTest) parameters.getAnnotation();
-    Method method = parameters.getMethod();
-    parameters.getFsm().addBefore(new InvocationTarget(parameters, BeforeTest.class));
+    result.getFsm().addBefore(new InvocationTarget(parameters, BeforeTest.class));
     return "";
   }
 }

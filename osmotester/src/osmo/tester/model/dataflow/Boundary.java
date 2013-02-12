@@ -43,7 +43,7 @@ public class Boundary {
 
   public void setCount(int count) {
     if (count < 0) {
-      throw new IllegalArgumentException("Boundary count must be >= 1, was given "+count);
+      throw new IllegalArgumentException("Boundary count must be >= 1, was given " + count);
     }
     this.count = count;
   }
@@ -66,12 +66,11 @@ public class Boundary {
     validValues.add(min);
     //and the upper bound
     validValues.add(max);
-    for (int i = 0; i < count; i++) {
+    for (int i = 0 ; i < count ; i++) {
       switch (type) {
         case INT:
           //then we add minimum +1 and miminum -1 (or whatever the increment value)
           //and in subsequent loops we increase this to +2, -2, +3, -3, and so on
-          //TODO: test with valid values going out of bounds with small range
           validValues.add(min.intValue() + addReduce.intValue());
           validValues.add(max.intValue() - addReduce.intValue());
           //and do the same for invalid values

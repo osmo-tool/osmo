@@ -2,7 +2,8 @@ package osmo.tester.model.dataflow;
 
 import org.junit.Before;
 import org.junit.Test;
-import osmo.common.TestUtils;
+
+import java.util.Random;
 
 import static junit.framework.Assert.*;
 
@@ -43,7 +44,7 @@ public class ValuetSetTests {
     assertTrue(v2.equals("one") || v2.equals("two") || v2.equals("three"));
     assertTrue(v3.equals("one") || v3.equals("two") || v3.equals("three"));
     boolean fail = true;
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0 ; i < 10 ; i++) {
       String v1_2 = set.next();
       String v2_2 = set.next();
       String v3_2 = set.next();
@@ -59,8 +60,10 @@ public class ValuetSetTests {
   public void optimizedRandomTestOneLoop() {
     String v6 = null;
     boolean diff = false;
-    for (int i = 0; i < 10; i++) {
+    Random seed = new Random();
+    for (int i = 0 ; i < 10 ; i++) {
       set = new ValueSet<>();
+      set.setSeed(seed.nextLong());
       set.setStrategy(DataGenerationStrategy.BALANCING);
       set.add("one");
       set.add("two");
@@ -89,7 +92,7 @@ public class ValuetSetTests {
     set.add("three");
     set.add("four");
     set.add("five");
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0 ; i < 10 ; i++) {
       String reference = generateAndCheck();
       //make sure the generated values are in different order at least in once case
       if (v6 == null) {
@@ -136,10 +139,10 @@ public class ValuetSetTests {
     assertEquals("five", set.next());
     assertEquals("two", set.next());
   }
-  
+
   @Test
   public void weightedAddWithRandom() {
-    TestUtils.setSeed(333);
+    set.setSeed(333);
     set.setStrategy(DataGenerationStrategy.RANDOM);
     int ones = 0;
     int twos = 0;
@@ -162,7 +165,7 @@ public class ValuetSetTests {
           fours++;
           break;
         default:
-          throw new IllegalArgumentException("Invalid value received from valueset (allowed 'one', 'two', 'three', 'four'):"+next);
+          throw new IllegalArgumentException("Invalid value received from valueset (allowed 'one', 'two', 'three', 'four'):" + next);
       }
     }
     assertEquals("Number of 'ones' generated", 98, ones);

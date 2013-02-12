@@ -3,7 +3,7 @@ package osmo.visualizer.model;
 import edu.uci.ics.jung.visualization.renderers.DefaultVertexLabelRenderer;
 import osmo.tester.model.FSMTransition;
 
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * @author Teemu Kanstren

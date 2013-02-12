@@ -1,11 +1,13 @@
 package osmo.tester.examples.vendingmachine;
 
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.annotation.AfterSuite;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
+import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -34,7 +36,7 @@ public class VendingExample {
   private final int PRICE = 100;
   private final Input<Integer> coins = new ValueSet<>(10, 20, 50);
   @TestSuiteField
-  private TestSuite testSuite = new TestSuite();
+  private TestSuite testSuite = null;
 
   public VendingExample() {
     scripter = new Scripter(System.out);
@@ -84,15 +86,24 @@ public class VendingExample {
     return bottles <= 0;
   }
 
+  @Pre
+  public void hello() {
+    String name = testSuite.getCurrentTest().getCurrentStep().getName();
+    System.out.println("NAME-PRE:"+name);
+  }
+
   @Post
   public void checkState() {
     scripter.step("CHECK(bottles == " + bottles + ")");
     scripter.step("CHECK(coins == " + cents + ")");
     assertTrue(cents >= 0);
     assertTrue(bottles >= 0);
+    String name = testSuite.getCurrentTest().getCurrentStep().getName();
+    System.out.println("NAME-POST:"+name);
   }
 
   public static void main(String[] args) {
+    OSMOConfiguration.setSeed(100);
     OSMOTester tester = new OSMOTester(new VendingExample());
 //    tester.setDebug(true);
     tester.generate();

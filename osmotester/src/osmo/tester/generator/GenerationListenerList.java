@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Maintains a list of {@link GenerationListener} implementations to be called.
+ * Maintains a list of {@link GenerationListener} implementations to be called, and calls each one when requested.
  *
  * @author Teemu Kanstren
  */

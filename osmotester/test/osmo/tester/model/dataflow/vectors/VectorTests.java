@@ -9,9 +9,8 @@ import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class VectorTests {
-  /**
-   * Loads the test vector and checks various types of input lines.
-   */
+
+  /** Loads the test vector and checks various types of input lines. */
   @Test
   public void testVector() {
     VectorSet set = new VectorSet("test_vector");

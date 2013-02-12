@@ -5,6 +5,8 @@ import osmo.tester.annotation.AfterTest;
 import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.EndCondition;
+import osmo.tester.annotation.ExplorationEnabler;
+import osmo.tester.annotation.GenerationEnabler;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
@@ -19,9 +21,9 @@ import java.util.Map;
 /** @author Teemu Kanstren */
 public class EmptyTestModel1 {
   @RequirementsField
-  private Requirements requirements = new Requirements();
+  private Requirements req = new Requirements();
   @TestSuiteField
-  private TestSuite history = new TestSuite();
+  private TestSuite history = null;
 
   public TestSuite getHistory() {
     return history;
@@ -51,7 +53,7 @@ public class EmptyTestModel1 {
   public void endAll() {
 
   }
-  
+
   @Guard("!world")
   public boolean negato() {
     return true;
@@ -120,5 +122,13 @@ public class EmptyTestModel1 {
   @EndCondition
   public boolean end2() {
     return false;
+  }
+
+  @ExplorationEnabler
+  public void enableExploration() {
+  }
+
+  @GenerationEnabler
+  public void enableGeneration() {
   }
 }

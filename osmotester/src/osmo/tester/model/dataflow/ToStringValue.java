@@ -8,13 +8,13 @@ import osmo.tester.model.VariableValue;
  * <p/>
  * Example:
  * private AtomicInteger hello = new AtomicInteger(0);
- *
+ * <p/>
  * &#064;Variable private ToStringValue helloValue = new ToStringValue(hello);
  * <p/>
  * <p/>
  * This will result in one  variable being stored named "helloValue". At each point the string representation of "hello"
  * is modified, it will be stored as value between steps (transitions).
- * 
+ *
  * @author Teemu Kanstren
  */
 public class ToStringValue implements VariableValue {

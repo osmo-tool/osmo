@@ -82,4 +82,7 @@ v2.4.0 12/10/2012
 -Added annotation for @LastStep
 -Guard association negation support
 -Sorting of steps, guards, and pre-post elements (determinism++)
+v3.0.0 11/02/2012
+-StateName added
+-Cleaned up old stuff
 

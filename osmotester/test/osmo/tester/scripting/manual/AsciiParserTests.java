@@ -94,7 +94,7 @@ public class AsciiParserTests {
     assertEquals("Step name", stepName, step.getTransition());
     List<ScriptValue> values = step.getValues();
     assertEquals("Number of variables in step", variables.length / 2, values.size());
-    for (int i = 0; i < variables.length; i += 2) {
+    for (int i = 0 ; i < variables.length ; i += 2) {
       assertVariable(variables[i], variables[i + 1], values.get(i / 2));
     }
   }

@@ -2,6 +2,7 @@ package osmo.tester.scripting.slicing;
 
 import osmo.common.TestUtils;
 import osmo.common.log.Logger;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
 import osmo.tester.scripting.AbstractAsciiParser;
 
@@ -32,7 +33,7 @@ import java.util.Map;
  * one or both of the steps and variables tables.
  * <p/>
  * The settings table has the following elements:
- * model factory = The fully qualified name of a class implementing {@link osmo.tester.scripting.OSMOConfigurationFactory}.
+ * model factory = The fully qualified name of a class implementing {@link OSMOConfigurationFactory}.
  * algorithm = Fully qualified name of used test generation algorithm, or "random"/"weighted random"/"balancing"
  * seed = Random seed to be used by OSMOTester
  * <p/>
@@ -94,7 +95,7 @@ public class AsciiParser extends AbstractAsciiParser {
     String[] settings = parseTable(lines, "setting", "value");
     String algorithm = null;
     String factory = null;
-    for (int i = 0; i < settings.length; i += 2) {
+    for (int i = 0 ; i < settings.length ; i += 2) {
       String name = settings[i];
       String value = settings[i + 1];
       log.debug("Setting found:" + name + " = " + value);
@@ -115,7 +116,7 @@ public class AsciiParser extends AbstractAsciiParser {
       if (name.equalsIgnoreCase("seed")) {
         try {
           long seed = Long.parseLong(value);
-          config.setSeed(seed);
+          OSMOConfiguration.setSeed(seed);
         } catch (NumberFormatException e) {
           throw new NumberFormatException("Seed value should be parseable to long integer, was:" + value + ".");
         }
@@ -132,7 +133,7 @@ public class AsciiParser extends AbstractAsciiParser {
     log.debug("parsing steps");
     String[] steps = parseTable(lines, "step", "times");
     log.debug("steps:" + steps.length);
-    for (int i = 0; i < steps.length; i += 2) {
+    for (int i = 0 ; i < steps.length ; i += 2) {
       String name = steps[i];
       String times = steps[i + 1];
       if (times.length() < 3) {
@@ -207,7 +208,7 @@ public class AsciiParser extends AbstractAsciiParser {
     log.debug("parsing variable coverage");
     String[] variables = parseTable(lines, "variable", "coverage");
     Map<String, DataCoverageRequirement> map = new HashMap<>();
-    for (int i = 0; i < variables.length; i += 2) {
+    for (int i = 0 ; i < variables.length ; i += 2) {
       String name = variables[i].trim();
       String value = variables[i + 1].trim();
       DataCoverageRequirement req = map.get(name);
@@ -233,7 +234,7 @@ public class AsciiParser extends AbstractAsciiParser {
       return;
     }
 
-    for (int i = 0; i < variables.length; i += 2) {
+    for (int i = 0 ; i < variables.length ; i += 2) {
       String name = variables[i].trim();
       String value = variables[i + 1].trim();
       config.addValue(name, value);

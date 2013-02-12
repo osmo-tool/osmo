@@ -28,35 +28,35 @@ public class GuardianModel {
 
   @Guard("hello")
   public boolean helloCheck() {
-    out.print(pre+":g-hello\n");
+    out.print(pre + ":g-hello\n");
     return true;
   }
 
   @Transition("hello")
   public void transition1() {
-    out.print(pre+":hello\n");
+    out.print(pre + ":hello\n");
   }
 
   @Guard("world")
   public boolean worldCheck() {
-    out.print(pre+":g-world\n");
+    out.print(pre + ":g-world\n");
     return true;
   }
 
   @Transition("world")
   public void epix() {
-    out.print(pre+":world\n");
+    out.print(pre + ":world\n");
   }
 
   @Guard("epixx")
   public boolean kitty() {
-    out.print(pre+":g-epix\n");
+    out.print(pre + ":g-epix\n");
     return !epix;
   }
 
   @Guard("!epixx")
   public boolean kitted() {
-    out.print(pre+":g-!epix\n");
+    out.print(pre + ":g-!epix\n");
     return epix;
   }
 
@@ -67,7 +67,7 @@ public class GuardianModel {
 
   @Transition("epixx")
   public void epixx() {
-    out.print(pre+":epixx\n");
+    out.print(pre + ":epixx\n");
     epix = true;
   }
 
@@ -78,6 +78,6 @@ public class GuardianModel {
 
   @Post
   public void stateCheck() {
-    out.print(pre+":gen_oracle\n");
+    out.print(pre + ":gen_oracle\n");
   }
 }

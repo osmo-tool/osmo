@@ -150,54 +150,84 @@
     <thead>
       <tr>
         <th class='corner'>Step</th>
-        <th colspan='2' class='colhead'>Parameters</th>
+        <th colspan='5' class='colhead'>Parameters</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <th class='testhead' rowspan='2'>1.1:first</th>
+        <th class='testhead'>first</th>
+        <th class='testhead'>second</th>
+        <th class='testhead'>valueCount</th>
         <th class='testhead'></th>
         <th class='testhead'></th>
       </tr>
       <tr>
+        <td>true</td>
+        <td>false</td>
+        <td>0</td>
         <td></td>
         <td></td>
       </tr>
       <tr>
         <th class='testhead' rowspan='2'>1.2:second</th>
+        <th class='testhead'>first</th>
+        <th class='testhead'>second</th>
+        <th class='testhead'>valueCount</th>
         <th class='testhead'></th>
         <th class='testhead'></th>
       </tr>
       <tr>
+        <td>true</td>
+        <td>true</td>
+        <td>0</td>
         <td></td>
         <td></td>
       </tr>
       <tr>
         <th class='testhead' rowspan='2'>1.3:third</th>
         <th class='testhead'>range</th>
-        <th class='testhead'>set</th>
+        <th class='testhead'>named-set</th>
+        <th class='testhead'>first</th>
+        <th class='testhead'>second</th>
+        <th class='testhead'>valueCount</th>
       </tr>
       <tr>
-        <td>5</td>
-        <td>v1</td>
+        <td>3</td>
+        <td>v3</td>
+        <td>true</td>
+        <td>true</td>
+        <td>1</td>
       </tr>
       <tr>
         <th class='testhead' rowspan='2'>1.4:third</th>
         <th class='testhead'>range</th>
-        <th class='testhead'>set</th>
+        <th class='testhead'>named-set</th>
+        <th class='testhead'>first</th>
+        <th class='testhead'>second</th>
+        <th class='testhead'>valueCount</th>
       </tr>
       <tr>
-        <td>5</td>
-        <td>v3</td>
+        <td>3</td>
+        <td>v2</td>
+        <td>true</td>
+        <td>true</td>
+        <td>2</td>
       </tr>
       <tr>
         <th class='testhead' rowspan='2'>1.5:third</th>
         <th class='testhead'>range</th>
-        <th class='testhead'>set</th>
+        <th class='testhead'>named-set</th>
+        <th class='testhead'>first</th>
+        <th class='testhead'>second</th>
+        <th class='testhead'>valueCount</th>
       </tr>
       <tr>
-        <td>2</td>
+        <td>5</td>
         <td>v3</td>
+        <td>true</td>
+        <td>true</td>
+        <td>3</td>
       </tr>
     </tbody>
   </table>
@@ -207,54 +237,84 @@
     <thead>
       <tr>
         <th class='corner'>Step</th>
-        <th colspan='2' class='colhead'>Parameters</th>
+        <th colspan='5' class='colhead'>Parameters</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <th class='testhead' rowspan='2'>2.1:first</th>
+        <th class='testhead'>first</th>
+        <th class='testhead'>second</th>
+        <th class='testhead'>valueCount</th>
         <th class='testhead'></th>
         <th class='testhead'></th>
       </tr>
       <tr>
+        <td>true</td>
+        <td>false</td>
+        <td>0</td>
         <td></td>
         <td></td>
       </tr>
       <tr>
         <th class='testhead' rowspan='2'>2.2:second</th>
+        <th class='testhead'>first</th>
+        <th class='testhead'>second</th>
+        <th class='testhead'>valueCount</th>
         <th class='testhead'></th>
         <th class='testhead'></th>
       </tr>
       <tr>
+        <td>true</td>
+        <td>true</td>
+        <td>0</td>
         <td></td>
         <td></td>
       </tr>
       <tr>
         <th class='testhead' rowspan='2'>2.3:third</th>
         <th class='testhead'>range</th>
-        <th class='testhead'>set</th>
+        <th class='testhead'>named-set</th>
+        <th class='testhead'>first</th>
+        <th class='testhead'>second</th>
+        <th class='testhead'>valueCount</th>
       </tr>
       <tr>
-        <td>4</td>
-        <td>v2</td>
+        <td>5</td>
+        <td>v3</td>
+        <td>true</td>
+        <td>true</td>
+        <td>1</td>
       </tr>
       <tr>
         <th class='testhead' rowspan='2'>2.4:third</th>
         <th class='testhead'>range</th>
-        <th class='testhead'>set</th>
+        <th class='testhead'>named-set</th>
+        <th class='testhead'>first</th>
+        <th class='testhead'>second</th>
+        <th class='testhead'>valueCount</th>
       </tr>
       <tr>
-        <td>1</td>
-        <td>v3</td>
+        <td>2</td>
+        <td>v1</td>
+        <td>true</td>
+        <td>true</td>
+        <td>2</td>
       </tr>
       <tr>
         <th class='testhead' rowspan='2'>2.5:third</th>
         <th class='testhead'>range</th>
-        <th class='testhead'>set</th>
+        <th class='testhead'>named-set</th>
+        <th class='testhead'>first</th>
+        <th class='testhead'>second</th>
+        <th class='testhead'>valueCount</th>
       </tr>
       <tr>
-        <td>4</td>
+        <td>1</td>
         <td>v3</td>
+        <td>true</td>
+        <td>true</td>
+        <td>3</td>
       </tr>
     </tbody>
   </table>
@@ -264,54 +324,84 @@
     <thead>
       <tr>
         <th class='corner'>Step</th>
-        <th colspan='2' class='colhead'>Parameters</th>
+        <th colspan='5' class='colhead'>Parameters</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <th class='testhead' rowspan='2'>3.1:first</th>
+        <th class='testhead'>first</th>
+        <th class='testhead'>second</th>
+        <th class='testhead'>valueCount</th>
         <th class='testhead'></th>
         <th class='testhead'></th>
       </tr>
       <tr>
+        <td>true</td>
+        <td>false</td>
+        <td>0</td>
         <td></td>
         <td></td>
       </tr>
       <tr>
         <th class='testhead' rowspan='2'>3.2:second</th>
+        <th class='testhead'>first</th>
+        <th class='testhead'>second</th>
+        <th class='testhead'>valueCount</th>
         <th class='testhead'></th>
         <th class='testhead'></th>
       </tr>
       <tr>
+        <td>true</td>
+        <td>true</td>
+        <td>0</td>
         <td></td>
         <td></td>
       </tr>
       <tr>
         <th class='testhead' rowspan='2'>3.3:third</th>
         <th class='testhead'>range</th>
-        <th class='testhead'>set</th>
+        <th class='testhead'>named-set</th>
+        <th class='testhead'>first</th>
+        <th class='testhead'>second</th>
+        <th class='testhead'>valueCount</th>
       </tr>
       <tr>
-        <td>3</td>
-        <td>v3</td>
+        <td>5</td>
+        <td>v2</td>
+        <td>true</td>
+        <td>true</td>
+        <td>1</td>
       </tr>
       <tr>
         <th class='testhead' rowspan='2'>3.4:third</th>
         <th class='testhead'>range</th>
-        <th class='testhead'>set</th>
+        <th class='testhead'>named-set</th>
+        <th class='testhead'>first</th>
+        <th class='testhead'>second</th>
+        <th class='testhead'>valueCount</th>
       </tr>
       <tr>
-        <td>1</td>
+        <td>2</td>
         <td>v3</td>
+        <td>true</td>
+        <td>true</td>
+        <td>2</td>
       </tr>
       <tr>
         <th class='testhead' rowspan='2'>3.5:third</th>
         <th class='testhead'>range</th>
-        <th class='testhead'>set</th>
+        <th class='testhead'>named-set</th>
+        <th class='testhead'>first</th>
+        <th class='testhead'>second</th>
+        <th class='testhead'>valueCount</th>
       </tr>
       <tr>
         <td>3</td>
-        <td>v2</td>
+        <td>v3</td>
+        <td>true</td>
+        <td>true</td>
+        <td>3</td>
       </tr>
     </tbody>
   </table>

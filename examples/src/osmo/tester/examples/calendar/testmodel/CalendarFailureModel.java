@@ -2,7 +2,6 @@ package osmo.tester.examples.calendar.testmodel;
 
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
-import osmo.tester.annotation.Transition;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 
 import java.io.PrintStream;

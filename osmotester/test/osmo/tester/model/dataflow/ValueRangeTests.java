@@ -8,6 +8,8 @@ import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class ValueRangeTests {
+  private long seed = 1;
+
   @Test
   public void optimizedRandomValueRange() {
     ValueRange vr = new ValueRange(5, 7);
@@ -15,8 +17,8 @@ public class ValueRangeTests {
     boolean b5 = false;
     boolean b6 = false;
     boolean b7 = false;
-    for (int a = 0; a < 10; a++) {
-      for (int i = 0; i < 3; i++) {
+    for (int a = 0 ; a < 10 ; a++) {
+      for (int i = 0 ; i < 3 ; i++) {
         int n = vr.nextInt();
         if (n == 5) {
           b5 = true;

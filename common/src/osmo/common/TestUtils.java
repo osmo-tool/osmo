@@ -31,11 +31,8 @@ import java.io.StringWriter;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -84,7 +81,7 @@ public class TestUtils {
    * @return A random value.
    */
   public static int cInt() {
-    return random.cInt();
+    return random.nextInt();
   }
 
   /**
@@ -93,14 +90,14 @@ public class TestUtils {
    * @return Random integer between the given bounds, bounds included.
    */
   public static int cInt(int min, int max) {
-    return random.cInt(min, max);
+    return random.nextInt(min, max);
   }
 
   /**
    * @return A random value.
    */
   public static float cFloat() {
-    return random.cFloat();
+    return random.nextFloat();
   }
 
   /**
@@ -109,14 +106,14 @@ public class TestUtils {
    * @return Random value between the given bounds, bounds included.
    */
   public static float cFloat(float min, float max) {
-    return random.cFloat(min, max);
+    return random.nextFloat(min, max);
   }
 
   /**
    * @return A random value.
    */
   public static long cLong() {
-    return random.cLong();
+    return random.nextLong();
   }
 
   /**
@@ -125,14 +122,14 @@ public class TestUtils {
    * @return Random value between the given bounds, bounds included.
    */
   public static long cLong(long min, long max) {
-    return random.cLong(min, max);
+    return random.nextLong(min, max);
   }
 
   /**
    * @return A random value.
    */
   public static byte cByte() {
-    return random.cByte();
+    return random.nextByte();
   }
 
   /**
@@ -141,14 +138,14 @@ public class TestUtils {
    * @return Random value between the given bounds, bounds included.
    */
   public static byte cByte(byte min, byte max) {
-    return random.cByte(min, max);
+    return random.nextByte(min, max);
   }
 
   /**
    * @return A random value.
    */
   public static char cChar() {
-    return random.cChar();
+    return random.nextChar();
   }
 
   /**
@@ -157,14 +154,14 @@ public class TestUtils {
    * @return Random value between the given bounds, bounds included.
    */
   public static char cChar(char min, char max) {
-    return random.cChar(min, max);
+    return random.nextChar(min, max);
   }
 
   /**
    * @return A random value.
    */
   public static double cDouble() {
-    return random.cDouble();
+    return random.nextDouble();
   }
 
   /**
@@ -173,7 +170,7 @@ public class TestUtils {
    * @return Random value between the given bounds, bounds included.
    */
   public static double cDouble(double min, double max) {
-    return random.cDouble(min, max);
+    return random.nextDouble(min, max);
   }
 
   /**

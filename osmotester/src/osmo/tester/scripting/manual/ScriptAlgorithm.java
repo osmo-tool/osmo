@@ -6,6 +6,7 @@ import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.VariableField;
 import osmo.tester.model.dataflow.SearchableInput;
+import osmo.tester.parser.ParserResult;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,8 +33,8 @@ public class ScriptAlgorithm implements FSMTraversalAlgorithm {
   }
 
   @Override
-  public void init(FSM fsm) {
-    this.fsm = fsm;
+  public void init(ParserResult parserResult) {
+    this.fsm = parserResult.getFsm();
     validate();
     testIterator = scripts.iterator();
     stepIterator = testIterator.next().iterator();
@@ -86,7 +87,7 @@ public class ScriptAlgorithm implements FSMTraversalAlgorithm {
   }
 
   @Override
-  public FSMTransition choose(TestSuite history, List<FSMTransition> transitions) {
+  public FSMTransition choose(TestSuite history, List<FSMTransition> choices) {
     ScriptStep step = stepIterator.next();
     String transition = step.getTransition();
     return fsm.getTransition(transition);

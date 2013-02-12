@@ -42,7 +42,7 @@ public class AsciiParser extends AbstractAsciiParser {
   private List<TestScript> parseTests(String[] script) {
     List<TestScript> tests = new ArrayList<>();
     TestScript test = null;
-    for (int i = 0; i < script.length; i += 3) {
+    for (int i = 0 ; i < script.length ; i += 3) {
       String action = script[i];
       String name = script[i + 1];
       String parameter = script[i + 2];

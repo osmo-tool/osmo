@@ -1,4 +1,4 @@
 From,To,Count
 #foreach ($tp in $pairs)
-$tp.from.name,$tp.to.name,$tp.count
+$tp.from,$tp.to,$tp.count
 #end

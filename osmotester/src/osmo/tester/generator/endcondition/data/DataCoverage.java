@@ -40,7 +40,7 @@ public class DataCoverage extends AbstractEndCondition {
 
   @Override
   public boolean endSuite(TestSuite suite, FSM fsm) {
-    Map<String, ModelVariable> variables = suite.getVariables();
+    Map<String, ModelVariable> variables = suite.getStepVariables();
     return checkRequirements(variables);
   }
 
@@ -83,7 +83,7 @@ public class DataCoverage extends AbstractEndCondition {
   @Override
   public boolean endTest(TestSuite suite, FSM fsm) {
     TestCase test = suite.getCurrentTest();
-    Map<String, ModelVariable> variables = test.getVariables();
+    Map<String, ModelVariable> variables = test.getStepVariables();
     return checkRequirements(variables);
   }
 

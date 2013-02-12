@@ -79,8 +79,8 @@ public class VariableTests {
     TestSuite suite = model.getSuite();
     List<TestCase> tests = suite.getFinishedTestCases();
     TestCase test = tests.get(0);
-    String expectedSet = "[v1, v2, v3, v3, v3, v1, v1, v3]";
-    String expectedRange = "[5, 5, 4, 3, 5, 5, 3, 4]";
+    String expectedSet = "[v3, v3, v3, v3, v1, v3, v1, v2]";
+    String expectedRange = "[3, 1, 2, 5, 1, 3, 5, 3]";
     assertModel2Values(test, expectedSet, expectedRange);
   }
 
@@ -96,18 +96,18 @@ public class VariableTests {
     TestSuite suite = model.getSuite();
     List<TestCase> tests = suite.getFinishedTestCases();
     TestCase test = tests.get(0);
-    String expectedSet = "[v1, v2, v3, v3, v3, v1, v1]";
-    String expectedRange = "[5, 5, 4, 3, 5, 5, 3]";
+    String expectedSet = "[v3, v3, v3, v3, v1, v3, v1]";
+    String expectedRange = "[3, 1, 2, 5, 1, 3, 5]";
     assertModel2Values(test, expectedSet, expectedRange);
     test = tests.get(1);
-    expectedSet = "[v2, v2, v1, v2, v2, v1, v2]";
-    expectedRange = "[4, 5, 1, 1, 1, 3, 5]";
+    expectedSet = "[v2, v3, v2, v3, v1, v3, v3]";
+    expectedRange = "[3, 1, 4, 5, 2, 3, 1]";
     assertModel2Values(test, expectedSet, expectedRange);
   }
 
   private void assertModel2Values(TestCase test, String expectedSet, String expectedRange) {
-    Map<String, ModelVariable> variables = test.getVariables();
-    ModelVariable set = variables.get("set");
+    Map<String, ModelVariable> variables = test.getStepVariables();
+    ModelVariable set = variables.get("named-set");
     ModelVariable range = variables.get("range");
     assertNotNull("Set variable should be present", set);
     assertNotNull("Range variable should be present", range);
@@ -127,7 +127,7 @@ public class VariableTests {
     TestSuite suite = osmo.getSuite();
     List<TestCase> tests = suite.getFinishedTestCases();
     TestCase test = tests.get(0);
-    Map<String, ModelVariable> variables = test.getVariables();
+    Map<String, ModelVariable> variables = test.getTestVariables();
     ModelVariable valueCount = variables.get("valueCount");
     ModelVariable first = variables.get("first");
     ModelVariable second = variables.get("second");
@@ -135,8 +135,8 @@ public class VariableTests {
     assertNotNull("First variable should be present", first);
     assertNotNull("Second variable should be present", second);
     assertEquals("Generated values for ValueCount", "[0, 1, 2, 3, 4, 5, 6, 7]", valueCount.getValues().toString());
-    assertEquals("Generated values for first", "[false, true]", first.getValues().toString());
-    assertEquals("Generated values for second", "[false, true]", first.getValues().toString());
+    assertEquals("Generated values for first", "[true]", first.getValues().toString());
+    assertEquals("Generated values for second", "[false, true]", second.getValues().toString());
 
   }
 }

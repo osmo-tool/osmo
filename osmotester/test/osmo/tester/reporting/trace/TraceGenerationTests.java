@@ -8,6 +8,7 @@ import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
+import osmo.tester.suiteoptimizer.coverage.ScoreConfiguration;
 import osmo.tester.testmodels.VariableModel2;
 
 import static junit.framework.Assert.*;
@@ -23,10 +24,11 @@ public class TraceGenerationTests {
   @Test
   public void testNoSteps() throws Exception {
     TestSuite suite = new TestSuite();
+    suite.init(new ScoreConfiguration());
     suite.startTest();
     assertTrace(suite, "expected-no-steps.txt");
   }
-  
+
   private void assertTrace(TestSuite suite, String filename) {
     TraceReportWriter writer = new TraceReportWriter();
     String actual = writer.createReport(suite);
@@ -35,10 +37,11 @@ public class TraceGenerationTests {
     actual = unifyLineSeparators(actual, "\n");
     assertEquals("Generated HTML trace", expected, actual);
   }
-  
+
   @Test
   public void oneTestOneStepNoParams() throws Exception {
     TestSuite suite = new TestSuite();
+    suite.init(new ScoreConfiguration());
     suite.startTest();
     FSMTransition login = new FSMTransition("Login");
     TestStep loginStep = suite.addStep(login);
@@ -49,6 +52,7 @@ public class TraceGenerationTests {
   @Test
   public void oneTestOneStepWithParams() throws Exception {
     TestSuite suite = new TestSuite();
+    suite.init(new ScoreConfiguration());
     suite.startTest();
     FSMTransition login = new FSMTransition("Login");
     TestStep loginStep = suite.addStep(login);
@@ -64,6 +68,7 @@ public class TraceGenerationTests {
   @Test
   public void twoStepWithParams() throws Exception {
     TestSuite suite = new TestSuite();
+    suite.init(new ScoreConfiguration());
     suite.startTest();
 
     FSMTransition login = new FSMTransition("Login");
@@ -83,10 +88,11 @@ public class TraceGenerationTests {
     suite.endTest();
     assertTrace(suite, "expected-two-steps-with-params.txt");
   }
-  
+
   @Test
   public void twoTestsWithParams() throws Exception {
     TestSuite suite = new TestSuite();
+    suite.init(new ScoreConfiguration());
     suite.startTest();
 
     FSMTransition login = new FSMTransition("Login");
@@ -125,8 +131,8 @@ public class TraceGenerationTests {
   @Test
   public void traceFromGenerator() {
     OSMOTester tester = new OSMOTester();
-    tester.addModelObject(new VariableModel2());
     tester.setSeed(5);
+    tester.addModelObject(new VariableModel2());
     tester.addTestEndCondition(new Length(5));
     tester.addSuiteEndCondition(new Length(3));
     tester.generate();
@@ -137,8 +143,8 @@ public class TraceGenerationTests {
   @Test
   public void failTraceFromGenerator() {
     OSMOTester tester = new OSMOTester();
-    tester.addModelObject(new VariableModel2());
     tester.setSeed(5);
+    tester.addModelObject(new VariableModel2());
     tester.addTestEndCondition(new Length(5));
     tester.addSuiteEndCondition(new Length(3));
     tester.generate();

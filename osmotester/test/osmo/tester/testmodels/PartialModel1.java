@@ -4,9 +4,13 @@ import osmo.tester.annotation.AfterTest;
 import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.EndCondition;
+import osmo.tester.annotation.ExplorationEnabler;
+import osmo.tester.annotation.GenerationEnabler;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
+import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.RequirementsField;
+import osmo.tester.annotation.StateName;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -19,20 +23,20 @@ public class PartialModel1 {
   @RequirementsField
   private final Requirements req;
   @TestSuiteField
-  private final TestSuite history;
+  private TestSuite history;
   public static final String REQ_HELLO = "hello";
   public static final String REQ_WORLD = "world";
   public static final String REQ_EPIX = "epix";
   private PrintStream out;
+  private String states = "";
 
-  public PartialModel1(Requirements req, TestSuite suite) {
-    this(req, null, suite);
+  public PartialModel1(Requirements req) {
+    this(req, null);
   }
 
-  public PartialModel1(Requirements req, PrintStream out, TestSuite suite) {
+  public PartialModel1(Requirements req, PrintStream out) {
     this.req = req;
     this.out = out;
-    this.history = suite;
   }
 
   public TestSuite getHistory() {
@@ -94,5 +98,32 @@ public class PartialModel1 {
   @EndCondition
   public boolean ec1() {
     return false;
+  }
+
+  @ExplorationEnabler
+  public void enabler1() {
+  }
+
+  @GenerationEnabler
+  public void enabler2() {
+  }
+  
+  @StateName
+  public String state1() {
+    return "hello1";
+  }
+
+  @Pre
+  public void savePreState() {
+    states += ":"+history.getState()+":";
+  }
+
+  @Post
+  public void savePostState() {
+    states += "-"+history.getState()+"-";
+  }
+
+  public String getStates() {
+    return states;
   }
 }

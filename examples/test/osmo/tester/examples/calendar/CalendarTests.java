@@ -7,16 +7,21 @@ import osmo.tester.OSMOTester;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.examples.calendar.scripter.offline.OfflineScripter;
 import osmo.tester.examples.calendar.scripter.online.OnlineScripter;
-import osmo.tester.examples.calendar.testmodel.*;
+import osmo.tester.examples.calendar.testmodel.CalendarErrorHandlingModel;
+import osmo.tester.examples.calendar.testmodel.CalendarFailureModel;
+import osmo.tester.examples.calendar.testmodel.CalendarMeetingModel;
+import osmo.tester.examples.calendar.testmodel.CalendarOracleModel;
+import osmo.tester.examples.calendar.testmodel.CalendarOverlappingModel;
+import osmo.tester.examples.calendar.testmodel.CalendarParticipantModel;
+import osmo.tester.examples.calendar.testmodel.CalendarTaskModel;
+import osmo.tester.examples.calendar.testmodel.ModelState;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
-import static osmo.common.TestUtils.getResource;
-import static osmo.common.TestUtils.unifyLineSeparators;
+import static junit.framework.Assert.*;
+import static osmo.common.TestUtils.*;
 
 /** @author Teemu Kanstren */
 public class CalendarTests {

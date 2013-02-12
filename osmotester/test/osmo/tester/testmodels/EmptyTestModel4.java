@@ -4,6 +4,7 @@ import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.EndState;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.RequirementsField;
+import osmo.tester.annotation.StateName;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -12,9 +13,9 @@ import osmo.tester.model.Requirements;
 /** @author Teemu Kanstren */
 public class EmptyTestModel4 {
   @RequirementsField
-  private Requirements requirements = null;
+  private Requirements req = null;
   @TestSuiteField
-  private TestSuite suite = new TestSuite();
+  private TestSuite suite = null;
 
   @Guard("foo")
   public boolean hello(String foo) {
@@ -31,7 +32,8 @@ public class EmptyTestModel4 {
   }
 
   @EndState
-  public Boolean endd(String bar) {
-    return false;
+  @StateName
+  public String badArgument(String bar) {
+    return "";
   }
 }

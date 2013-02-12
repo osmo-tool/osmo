@@ -9,6 +9,7 @@ import osmo.tester.generator.testsuite.TestSuite;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -31,10 +32,10 @@ public class ManualScriptWriter {
         List<TestStep> steps = test.getSteps();
         for (TestStep step : steps) {
           fw.write("step,");
-          fw.write(step.getTransition().getName().toString());
+          fw.write(step.getName());
           fw.write(",");
           fw.newLine();
-          List<ModelVariable> variables = step.getParameters();
+          Collection<ModelVariable> variables = step.getValues();
           for (ModelVariable variable : variables) {
             fw.write("variable,");
             fw.write(variable.getName());

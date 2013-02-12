@@ -115,7 +115,7 @@ public class CharSetTests {
     String added = "åäöÅÄÖ,.<>!\"#%&/()=?´`{[]}\\¨^~';:|-_*-+= ";
     char[] chars = added.toCharArray();
     for (char c : chars) {
-      expected.add((int)c);
+      expected.add((int) c);
     }
     for (int i = 0 ; i < 300 ; i++) {
       char c = set.next();
@@ -123,7 +123,7 @@ public class CharSetTests {
     }
     assertEquals("Number of uncovered char codes from invalid random with ascii set", 0, expected.size());
   }
-  
+
   @Test
   public void reduction() {
     CharSet set = new CharSet();
@@ -132,7 +132,7 @@ public class CharSetTests {
     set.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     for (int i = 0 ; i < 100 ; i++) {
       char c = set.next();
-      String msg = "Letters 'abcde' should not be generated after reduction, was: "+c;
+      String msg = "Letters 'abcde' should not be generated after reduction, was: " + c;
       assertTrue(msg, 'a' != c && 'b' != c && 'c' != c && 'd' != c && 'e' != c);
     }
     set.setStrategy(DataGenerationStrategy.ORDERED_LOOP_INVALID);

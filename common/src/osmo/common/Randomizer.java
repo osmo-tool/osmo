@@ -12,9 +12,7 @@ import java.util.Random;
  * @author Teemu Kanstren
  */
 public class Randomizer {
-  /**
-   * Used for random number generation.
-   */
+  /** Used for random number generation. */
   private Random random = new Random();
   /** The seed in use. */
   private long seed = System.currentTimeMillis();
@@ -43,7 +41,7 @@ public class Randomizer {
   /**
    * @return A random value.
    */
-  public int cInt() {
+  public int nextInt() {
     return random.nextInt();
   }
 
@@ -52,7 +50,7 @@ public class Randomizer {
    * @param max Maximum for the generated value.
    * @return Random integer between the given bounds, bounds included.
    */
-  public int cInt(int min, int max) {
+  public int nextInt(int min, int max) {
     int diff = max - min + 1;
     int rnd = random.nextInt(diff);
     rnd += min;
@@ -62,7 +60,7 @@ public class Randomizer {
   /**
    * @return A random value.
    */
-  public float cFloat() {
+  public float nextFloat() {
     return random.nextFloat();
   }
 
@@ -71,7 +69,7 @@ public class Randomizer {
    * @param max Maximum for the generated value.
    * @return Random value between the given bounds, bounds included.
    */
-  public float cFloat(float min, float max) {
+  public float nextFloat(float min, float max) {
     float diff = max - min;
     float rnd = random.nextFloat() * diff;
     rnd += min;
@@ -81,7 +79,7 @@ public class Randomizer {
   /**
    * @return A random value.
    */
-  public long cLong() {
+  public long nextLong() {
     return random.nextLong();
   }
 
@@ -90,7 +88,7 @@ public class Randomizer {
    * @param max Maximum for the generated value.
    * @return Random value between the given bounds, bounds included.
    */
-  public long cLong(long min, long max) {
+  public long nextLong(long min, long max) {
     long diff = max - min + 1;
     return min + (long) (random.nextDouble() * diff);
   }
@@ -98,8 +96,8 @@ public class Randomizer {
   /**
    * @return A random value.
    */
-  public byte cByte() {
-    return (byte) cInt(Byte.MIN_VALUE, Byte.MAX_VALUE);
+  public byte nextByte() {
+    return (byte) nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE);
   }
 
   /**
@@ -107,15 +105,15 @@ public class Randomizer {
    * @param max Maximum for the generated value.
    * @return Random value between the given bounds, bounds included.
    */
-  public byte cByte(byte min, byte max) {
-    return (byte) cInt(min, max);
+  public byte nextByte(byte min, byte max) {
+    return (byte) nextInt(min, max);
   }
 
   /**
    * @return A random value.
    */
-  public char cChar() {
-    return (char) cInt(Character.MIN_VALUE, Character.MAX_VALUE);
+  public char nextChar() {
+    return (char) nextInt(Character.MIN_VALUE, Character.MAX_VALUE);
   }
 
   /**
@@ -123,14 +121,18 @@ public class Randomizer {
    * @param max Maximum for the generated value.
    * @return Random value between the given bounds, bounds included.
    */
-  public char cChar(char min, char max) {
-    return (char) cInt(min, max);
+  public char nextChar(char min, char max) {
+    return (char) nextInt(min, max);
+  }
+  
+  public boolean nextBoolean() {
+    return nextDouble() >= 0.5d;
   }
 
   /**
    * @return A random value.
    */
-  public double cDouble() {
+  public double nextDouble() {
     return random.nextDouble();
   }
 
@@ -139,7 +141,7 @@ public class Randomizer {
    * @param max Maximum for the generated value.
    * @return Random value between the given bounds, bounds included.
    */
-  public double cDouble(double min, double max) {
+  public double nextDouble(double min, double max) {
     double diff = max - min;
     double rnd = random.nextDouble();
     rnd *= diff;
@@ -184,7 +186,7 @@ public class Randomizer {
    */
   public int sumWeightedRandomFrom(List<Integer> summedTotals) {
     int total = summedTotals.get(summedTotals.size()-1);
-    int target = cInt(1, total);
+    int target = nextInt(1, total);
 //    System.out.println("target:"+target);
     int choice = Collections.binarySearch(summedTotals, target);
     if (choice < 0) {
@@ -200,7 +202,7 @@ public class Randomizer {
    * @return A randomly picked item from the given list.
    */
   public int oneOf(int[] array) {
-    return array[cInt(0, array.length - 1)];
+    return array[nextInt(0, array.length - 1)];
   }
 
   /**
@@ -208,7 +210,7 @@ public class Randomizer {
    * @return A randomly picked item from the given list.
    */
   public <T> T oneOf(T[] array) {
-    return array[cInt(0, array.length - 1)];
+    return array[nextInt(0, array.length - 1)];
   }
 
   /**
@@ -217,7 +219,7 @@ public class Randomizer {
    */
   public <T> T oneOf(Collection<T> array) {
     List<T> list = new ArrayList<>(array);
-    return list.get(cInt(0, array.size() - 1));
+    return list.get(nextInt(0, array.size() - 1));
   }
 
   /**
@@ -235,5 +237,4 @@ public class Randomizer {
     }
     return smallest;
   }
-
 }

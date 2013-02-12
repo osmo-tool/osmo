@@ -22,8 +22,9 @@ public class VariableModel2 {
   @Variable
   private boolean second = false;
   @TestSuiteField
-  private TestSuite suite = new TestSuite();
+  private TestSuite suite = null;
   private ValueRange<Integer> range = new ValueRange<>(1, 5);
+  @Variable("named-set")
   private ValueSet<String> set = new ValueSet<>("v1", "v2", "v3");
   private Collection<String> values = new ArrayList<>();
   @Variable
@@ -37,10 +38,9 @@ public class VariableModel2 {
   public VariableModel2(PrintStream out) {
     this.out = out;
   }
-  
-  @BeforeTest 
+
+  @BeforeTest
   public void reset() {
-    //TODO: hint
     first = false;
     second = false;
     values.clear();
@@ -76,7 +76,7 @@ public class VariableModel2 {
 
   @Transition("third")
   public void third() {
-    out.println("range:"+range.next());
+    out.println("range:" + range.next());
     String next = set.next();
     values.add(next);
     out.println(":third=" + next + ":");

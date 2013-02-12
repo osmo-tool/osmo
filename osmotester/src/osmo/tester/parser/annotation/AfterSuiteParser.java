@@ -5,11 +5,10 @@ import osmo.tester.annotation.AfterSuite;
 import osmo.tester.model.InvocationTarget;
 import osmo.tester.parser.AnnotationParser;
 import osmo.tester.parser.ParserParameters;
-
-import java.lang.reflect.Method;
+import osmo.tester.parser.ParserResult;
 
 /**
- * Parses {@link AfterSuite} annotations from the given model object.
+ * Parses {@link osmo.tester.annotation.AfterSuite} annotations from the given model object.
  *
  * @author Teemu Kanstren
  */
@@ -17,10 +16,9 @@ public class AfterSuiteParser implements AnnotationParser {
   private static Logger log = new Logger(AfterSuiteParser.class);
 
   @Override
-  public String parse(ParserParameters parameters) {
+  public String parse(ParserResult result, ParserParameters parameters) {
     AfterSuite after = (AfterSuite) parameters.getAnnotation();
-    Method method = parameters.getMethod();
-    parameters.getFsm().addAfterSuite(new InvocationTarget(parameters, AfterSuite.class));
+    result.getFsm().addAfterSuite(new InvocationTarget(parameters, AfterSuite.class));
     return "";
   }
 }

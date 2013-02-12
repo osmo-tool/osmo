@@ -9,6 +9,7 @@ import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class WordsTests {
+
   @Test
   public void generateNegativeSequence() {
     try {

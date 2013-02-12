@@ -15,11 +15,7 @@ public class Or extends AbstractEndCondition {
   /** The set of end conditions to be checked. */
   private final EndCondition[] conditions;
 
-  /**
-   * Costructor.
-   *
-   * @param conditions The set of end conditions to be checked.
-   */
+  /** @param conditions The set of end conditions to be checked. */
   public Or(EndCondition... conditions) {
     this.conditions = conditions;
   }

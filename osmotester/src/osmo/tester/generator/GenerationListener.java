@@ -58,8 +58,8 @@ public interface GenerationListener {
 
   /**
    * Test generation has produced an exception.
-   * 
-   * @param test The test case being generated.
+   *
+   * @param test  The test case being generated.
    * @param error The exception observed.
    */
   public void testError(TestCase test, Exception error);

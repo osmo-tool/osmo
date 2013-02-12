@@ -1,6 +1,10 @@
 package osmo.tester.examples.calendar.testmodel;
 
-import osmo.tester.annotation.*;
+import osmo.tester.annotation.AfterSuite;
+import osmo.tester.annotation.BeforeTest;
+import osmo.tester.annotation.Guard;
+import osmo.tester.annotation.TestStep;
+import osmo.tester.annotation.Transition;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.model.Requirements;
 

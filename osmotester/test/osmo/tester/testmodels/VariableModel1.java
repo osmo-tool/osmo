@@ -36,7 +36,7 @@ public class VariableModel1 {
   @Variable
   private String stringVariable = "String variable";
   @TestSuiteField
-  private TestSuite suite = new TestSuite();
+  private TestSuite suite = null;
 
   @Pre("first")
   public void pre(Map<String, Object> state) {

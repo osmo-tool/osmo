@@ -1,17 +1,12 @@
 package osmo.tester.model.dataflow;
 
+import osmo.common.Randomizer;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.gui.manualdrive.ValueRangeSetGUI;
-import osmo.tester.model.dataflow.serialization.Deserializer;
-import osmo.tester.model.dataflow.serialization.DoubleDeserializer;
-import osmo.tester.model.dataflow.serialization.IntegerDeserializer;
-import osmo.tester.model.dataflow.serialization.LongDeserializer;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
-import static osmo.common.TestUtils.*;
 
 /**
  * Represents a set of numeric input domains.
@@ -33,6 +28,11 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
   private DataGenerationStrategy partitionStrategy = DataGenerationStrategy.RANDOM;
   /** The value used to increment value range in boundary scan. */
   private Number increment = 1;
+  private final Randomizer rand;
+
+  public ValueRangeSet() {
+    this.rand = new Randomizer(OSMOConfiguration.getSeed());
+  }
 
   /**
    * Sets the input generation strategy.
@@ -42,8 +42,14 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
   @Override
   public ValueRangeSet<T> setStrategy(DataGenerationStrategy strategy) {
     this.strategy = strategy;
-    partitions.setStrategy(strategy);
+    if (strategy != DataGenerationStrategy.SLICED && strategy != DataGenerationStrategy.SCRIPTED) {
+      partitions.setStrategy(strategy);
+    }
     return this;
+  }
+
+  public void setSeed(long seed) {
+    rand.setSeed(seed);
   }
 
   /**
@@ -88,13 +94,10 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
     ValueRange range = null;
     if (min instanceof Integer) {
       range = new ValueRange<>(Integer.class, min, max);
-      deserializer = (Deserializer<T>) new IntegerDeserializer();
     } else if (min instanceof Long) {
       range = new ValueRange<>(Long.class, min, max);
-      deserializer = (Deserializer<T>) new LongDeserializer();
     } else {
       range = new ValueRange<>(Double.class, min, max);
-      deserializer = (Deserializer<T>) new DoubleDeserializer();
     }
     range.setStrategy(partitionStrategy);
     range.setIncrement(increment);
@@ -182,7 +185,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
       }
     }
     //finally we pick one from the set of smallest coverage
-    return oneOf(currentOptions);
+    return rand.oneOf(currentOptions);
   }
 
   /** Validates that this range makes sense (has partitions defined etc.). */
@@ -194,8 +197,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
 
   @Override
   public T next() {
-    OSMOConfiguration.checkGUI(this);
-    checkSlicing();
+    OSMOConfiguration.check(this);
     validate();
     if (gui != null) {
       return (T) gui.next();
@@ -205,10 +207,9 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
       return scriptedNext(scriptNextSerialized());
     }
     if (strategy == DataGenerationStrategy.SLICED) {
-      return getSlices().next();
+      return (T) convert(getSlices().next());
     }
     ValueRange vr = nextPartition();
-//    history.add(value);
     if (vr.getType() == DataType.INT) {
       next = (T) new Integer(vr.nextInt());
     } else if (vr.getType() == DataType.LONG) {
@@ -220,11 +221,25 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
     return next;
   }
 
+  private Number convert(String text) {
+    ValueRange range = partitions.getOptions().get(0);
+    switch (range.getType()) {
+      case INT:
+        return Integer.parseInt(text);
+      case LONG:
+        return Long.parseLong(text);
+      case DOUBLE:
+        return Double.parseDouble(text);
+      default:
+        throw new IllegalArgumentException("Enum type:" + range.getType() + " unsupported.");
+    }
+  }
+
   private T scriptedNext(String serialized) {
     if (!evaluateSerialized(serialized)) {
       throw new IllegalArgumentException("Requested invalid scripted value for variable '" + getName() + "': " + serialized);
     }
-    return deserializer.deserialize(serialized);
+    return (T) convert(serialized);
   }
 
   /**

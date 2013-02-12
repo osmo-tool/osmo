@@ -20,8 +20,8 @@ public class GenerateFromFileTests {
 
   @Before
   public void setup() {
+    OSMOConfiguration.setSeed(324);
     OSMOConfiguration.reset();
-//    Logger.debug = true;
     parser = new AsciiParser();
     old = System.out;
     bos = new ByteArrayOutputStream();
@@ -37,7 +37,7 @@ public class GenerateFromFileTests {
     actual = unifyLineSeparators(actual, "\n");
     assertEquals("Print from model", expected, actual);
   }
-  
+
   private void runTest(String settingsFile, String resultsFile) throws Exception {
     String input = TestUtils.getResource(getClass(), settingsFile);
     SlicerMain.execute(parser.parse(input));
@@ -82,12 +82,12 @@ public class GenerateFromFileTests {
 
   @Test
   public void settingsStepsVariableValues() throws Exception {
+    OSMOConfiguration.setSeed(399);
     runTest("slice-config-settings-steps-varval.txt", "slice-result-settings-steps-varval.txt");
   }
 
   @Test
   public void all() throws Exception {
-    //TODO: hint, step req. overrides others since no step is enabled
     runTest("slice-config-all.txt", "slice-result-all.txt");
   }
 }
