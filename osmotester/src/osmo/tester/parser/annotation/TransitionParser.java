@@ -8,11 +8,12 @@ import osmo.tester.model.InvocationTarget;
 import osmo.tester.model.TransitionName;
 import osmo.tester.parser.AnnotationParser;
 import osmo.tester.parser.ParserParameters;
+import osmo.tester.parser.ParserResult;
 
 import java.lang.reflect.Method;
 
 /**
- * Parses {@link Transition} and {@link TestStep} annotations from the given model object.
+ * Parses {@link osmo.tester.annotation.Transition} and {@link osmo.tester.annotation.TestStep} annotations from the given model object.
  *
  * @author Teemu Kanstren
  */
@@ -21,7 +22,7 @@ public class TransitionParser implements AnnotationParser {
   private String errors = "";
 
   @Override
-  public String parse(ParserParameters parameters) {
+  public String parse(ParserResult result, ParserParameters parameters) {
     errors = "";
     String type = "";
     Object annotation = parameters.getAnnotation();
@@ -53,7 +54,7 @@ public class TransitionParser implements AnnotationParser {
     if (tName == null) {
       return errors;
     }
-    createTransition(parameters, tName, weight);
+    createTransition(result, parameters, tName, weight);
 
     Method method = parameters.getMethod();
     Class<?>[] parameterTypes = method.getParameterTypes();
@@ -77,9 +78,9 @@ public class TransitionParser implements AnnotationParser {
     return new TransitionName(prefix, name);
   }
 
-  private void createTransition(ParserParameters parameters, TransitionName name, int weight) {
+  private void createTransition(ParserResult result, ParserParameters parameters, TransitionName name, int weight) {
     log.debug("creating transition:" + name);
-    FSMTransition transition = parameters.getFsm().createTransition(name, weight);
+    FSMTransition transition = result.getFsm().createTransition(name, weight);
     transition.setTransition(new InvocationTarget(parameters, Transition.class));
   }
 }

@@ -6,13 +6,18 @@ S:0
 + 2
 + 3
 + 4
++ 5
++ 6
++ 7
++ 8
++ 9
 Test case ended
 Starting new test case 2
 S:0
 + 2
-- 1
-+ 2
 + 3
++ 4
+- 3
 + 4
 + 5
 + 6
@@ -24,12 +29,14 @@ S:0
 + 12
 + 13
 + 14
++ 15
++ 16
 Test case ended
 Starting new test case 3
 S:0
 + 2
-+ 3
-- 2
+- 1
++ 2
 + 3
 + 4
 + 5
@@ -70,6 +77,26 @@ S:0
 + 40
 + 41
 + 42
++ 43
++ 44
++ 45
++ 46
++ 47
++ 48
++ 49
++ 50
++ 51
++ 52
++ 53
++ 54
++ 55
++ 56
++ 57
++ 58
++ 59
++ 60
++ 61
++ 62
 Test case ended
 last
 generated 3 tests.

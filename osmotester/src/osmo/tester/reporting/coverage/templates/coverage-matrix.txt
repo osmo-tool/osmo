@@ -103,10 +103,10 @@
     <thead>
       <tr>
         <th class='corner' scope='col' rowspan='2'>Test ID</th>
-        <th scope='col' colspan='$requirement_names.size()'>Requirement coverage</th>
+        <th scope='col' colspan='$req_names.size()'>Requirement coverage</th>
       </tr>
       <tr>
-#foreach ($rn in $requirement_names)
+#foreach ($rn in $req_names)
         <th class='colhead' scope='col'>$rn</th>
 #end
       </tr>
@@ -115,8 +115,8 @@
 #foreach ($t in $tests)
       <tr$alt>
         <th class='testhead' scope='row'>$t.name</th>
-#foreach ($rn in $requirement_names)
-        <td>$t.requirementCount($rn)</td>
+#foreach ($rn in $req_names)
+        <td>$t.reqCount($rn)</td>
 #end
       </tr>
 #end
@@ -168,6 +168,24 @@
 #foreach ($vn in $variable_names)
         <td>$t.variableCoverage($vn)</td>
 #end
+      </tr>
+#end
+    </tbody>
+  </table>
+
+  <table class="osmo-table" border="1">
+    <caption>Overall coverage for all tests:</caption>
+    <thead>
+      <tr>
+        <th class='corner' scope='col' rowspan='2'>Variable</th>
+        <th scope='col' colspan='1'>Values observed</th>
+      </tr>
+    </thead>
+    <tbody>
+#foreach ($vc in $overall_coverage)
+      <tr$alt>
+        <th class='testhead' scope='row'>$vc.name</th>
+        <td>$vc.values</td>
       </tr>
 #end
     </tbody>

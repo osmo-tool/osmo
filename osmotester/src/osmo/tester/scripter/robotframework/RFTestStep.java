@@ -48,7 +48,7 @@ public class RFTestStep {
       parameters.add(param.toString());
     }
     int i = parameters.size();
-    for (; i < cellCount; i++) {
+    for ( ; i < cellCount ; i++) {
       parameters.add("");
     }
     return parameters;

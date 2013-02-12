@@ -2,11 +2,9 @@ package osmo.tester.model;
 
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
-import osmo.tester.generator.Observer;
-import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.dataflow.SearchableInput;
-import osmo.tester.model.dataflow.SearchableInputField;
 import osmo.tester.model.dataflow.ValueSet;
+import osmo.tester.parser.field.SearchableInputField;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,43 +45,31 @@ public class FSM {
   private Collection<InvocationTarget> endConditions = new ArrayList<>();
   /** List of conditions when the models allows to stop test generation. */
   private Collection<InvocationTarget> endStates = new ArrayList<>();
+  private Collection<InvocationTarget> explorationEnablers = new ArrayList<>();
+  private Collection<InvocationTarget> generationEnablers = new ArrayList<>();
   /** List of state variables to store for each test step. */
   private Collection<VariableField> stateVariables = new ArrayList<>();
-  /** The list of {@link SearchableInput} elements parsed from model objects. */
+  /** List of variables that can be used for coverage calculations. */
+  private Collection<VariableField> coverageVariables = new ArrayList<>();
+  /** The list of {@link osmo.tester.model.dataflow.SearchableInput} elements parsed from model objects. */
   private Collection<SearchableInput> searchableInputs = new ArrayList<>();
-  /** We read the {@link SearchableInput} values from these when tests start. */
+  /** We read the {@link osmo.tester.model.dataflow.SearchableInput} values from these when tests start. */
   private Collection<SearchableInputField> searchableInputFields = new ArrayList<>();
-  /** Scripter used for {@link SearchableInput}. */
-  private ScriptedValueProvider scripter;
-  /** The generated test suite (or one being generated). */
-  private TestSuite suite;
-  /** The list of requirements that needs to be covered. */
-  private Requirements requirements;
+  private Requirements requirements = null;
+  private InvocationTarget stateDescription = null;
 
   /** Constructor. */
   public FSM() {
   }
 
-  public void setSuite(TestSuite suite) {
-    this.suite = suite;
-    if (requirements != null) {
-      log.debug("Setting suite to requirements");
-      requirements.setTestSuite(suite);
-    }
-  }
-
-  public TestSuite getSuite() {
-    return suite;
-  }
-
-    /**
-    * Returns an existing object for the requested transition name or creates a new one if one was not previously
-    * found existing.
-    *
-    * @param name   The name of the transition. Taken from @Transition("name").
-    * @param weight The weight of the transition. Taken from @Transition(weight=x).
-    * @return A transition object for the requested name.
-    */
+  /**
+   * Returns an existing object for the requested transition name or creates a new one if one was not previously
+   * found existing.
+   *
+   * @param name   The name of the transition. Taken from @Transition("name").
+   * @param weight The weight of the transition. Taken from @Transition(weight=x).
+   * @return A transition object for the requested name.
+   */
   public FSMTransition createTransition(TransitionName name, int weight) {
     log.debug("Creating transition: " + name + " weight:" + weight);
     FSMTransition transition = transitions.get(name);
@@ -110,18 +96,8 @@ public class FSM {
    *
    * @param errors Previously defined errors to be reported in addition to new ones found.
    */
-  public void checkAndUpdateGenericItems(String errors) {
+  public void checkFSM(String errors) {
     log.debug("Checking FSM validity");
-    if (requirements == null) {
-      log.debug("No requirements object defined. Creating new.");
-      //user the setRequirements method to also initialize the requirements object missing state
-      setRequirements(new Requirements());
-    }
-    if (suite == null) {
-      log.debug("No suite object defined. Creating new.");
-      //user the setSuite method to also initialize the suite object missing state
-      setSuite(new TestSuite());
-    }
     if (transitions.size() == 0) {
       errors += "No transitions found in given model object. Model cannot be processed.\n";
     }
@@ -164,19 +140,19 @@ public class FSM {
     }
     return errors;
   }
-  
+
   private String addNegatedElements(String errors) {
     for (NegatedGuard ng : negatedGuards) {
       int count = 0;
       for (TransitionName transitionName : transitions.keySet()) {
         if (transitionName.shouldNegationApply(ng.getName())) {
-          log.debug("Negation '"+ng.getName()+"' applies to :"+transitionName);
+          log.debug("Negation '" + ng.getName() + "' applies to :" + transitionName);
           transitions.get(transitionName).addGuard(ng.getTarget());
           count++;
         }
       }
       if (count == 0) {
-        errors += "Negation without matching transition to negate for:"+ng.getName();
+        errors += "Negation without matching transition to negate for:" + ng.getName();
       }
     }
     return errors;
@@ -239,28 +215,12 @@ public class FSM {
     return lastSteps;
   }
 
-  public Requirements getRequirements() {
-    return requirements;
-  }
-
   public Collection<InvocationTarget> getEndConditions() {
     return endConditions;
   }
 
   public Collection<InvocationTarget> getEndStates() {
     return endStates;
-  }
-
-  /**
-   * Sets the Requirements object, either from the parser if it found one in the model object or from this class
-   * if not. Also initialized the requirements object to contain the {@link TestSuite} object for storing and
-   * comparing covered requirements.
-   *
-   * @param requirements The requirements object for defining requirements that should be covered.
-   */
-  public void setRequirements(Requirements requirements) {
-    this.requirements = requirements;
-    requirements.setTestSuite(suite);
   }
 
   /**
@@ -313,12 +273,16 @@ public class FSM {
    *
    * @param var The variable field itself.
    */
-  public void addVariable(VariableField var) {
+  public void addStateVariable(VariableField var) {
     stateVariables.add(var);
   }
 
+  public void addCoverageVariable(VariableField var) {
+    coverageVariables.add(var);
+  }
+
   /**
-   * State variables as tagged by @Variable annotations. Does not include {@link SearchableInput} classes.
+   * State variables as tagged by @Variable annotations. Does not include {@link osmo.tester.model.dataflow.SearchableInput} classes.
    *
    * @return variables tagged @Variable.
    */
@@ -326,8 +290,12 @@ public class FSM {
     return stateVariables;
   }
 
+  public Collection<VariableField> getCoverageVariables() {
+    return coverageVariables;
+  }
+
   /**
-   * These provide access to the {@link SearchableInput} elements, to enable capturing changes between tests.
+   * These provide access to the {@link osmo.tester.model.dataflow.SearchableInput} elements, to enable capturing changes between tests.
    *
    * @return The access codes for the searchable inputs.
    */
@@ -336,21 +304,21 @@ public class FSM {
   }
 
   /**
-   * Model variables extending the {@link SearchableInput} class. Does not include @Variable annotated classes.
+   * Model variables extending the {@link osmo.tester.model.dataflow.SearchableInput} class. Does not include @Variable annotated classes.
    *
-   * @return Variables extending {@link SearchableInput} classes.
+   * @return Variables extending {@link osmo.tester.model.dataflow.SearchableInput} classes.
    */
   public Collection<SearchableInput> getSearchableInputs() {
     return searchableInputs;
   }
 
-  /** Resets the stores fields for new test. */
+  /** Resets the stored fields for new test. */
   public void clearSearchableInputs() {
     searchableInputs.clear();
   }
 
   /**
-   * Add a new access method for a {@link SearchableInput} to the model.
+   * Add a new access method for a {@link osmo.tester.model.dataflow.SearchableInput} to the model.
    *
    * @param field to add.
    */
@@ -359,7 +327,7 @@ public class FSM {
   }
 
   /**
-   * Add a new variable of type {@link SearchableInput} to the model.
+   * Add a new variable of type {@link osmo.tester.model.dataflow.SearchableInput} to the model.
    *
    * @param input to add.
    */
@@ -367,23 +335,29 @@ public class FSM {
     searchableInputs.add(input);
   }
 
+  public Requirements getRequirements() {
+    return requirements;
+  }
+
+  public void setRequirements(Requirements requirements) {
+    this.requirements = requirements;
+  }
+
   /**
-   * Initialize the test suite, adding observers to capture data from all registered {@link SearchableInput} variables.
-   * Also defines the value options for data if defined.
+   * Initialize the test suite, adding observers to capture data from all registered {@link osmo.tester.model.dataflow.SearchableInput} variables.
+   * Also sets the scripted value options for data if defined.
    *
    * @param config This is where the scripter and value options are taken.
-   * @return the initialized test suite.
    */
-  public TestSuite initSearchableInputs(OSMOConfiguration config) {
-    this.scripter = config.getScripter();
+  public void initSearchableInputs(OSMOConfiguration config) {
+    /* Scripter used for {@link SearchableInput}. */
+    ScriptedValueProvider scripter = config.getScripter();
     //initial capture to allow FSM to have names, etc. for algorithm initialization
     captureSearchableInputs();
 
     if (scripter != null) {
       initScripts(scripter);
     }
-    Observer.setSuite(suite);
-    return suite;
   }
 
   private void captureSearchableInputs() {
@@ -420,5 +394,29 @@ public class FSM {
   public void addNegatedGuard(TransitionName name, InvocationTarget target) {
     NegatedGuard ng = new NegatedGuard(name, target);
     negatedGuards.add(ng);
+  }
+
+  public void addExplorationEnabler(InvocationTarget target) {
+    explorationEnablers.add(target);
+  }
+
+  public void addGenerationEnabler(InvocationTarget target) {
+    generationEnablers.add(target);
+  }
+
+  public Collection<InvocationTarget> getExplorationEnablers() {
+    return explorationEnablers;
+  }
+
+  public Collection<InvocationTarget> getGenerationEnablers() {
+    return generationEnablers;
+  }
+
+  public InvocationTarget getStateDescription() {
+    return stateDescription;
+  }
+
+  public void setStateDescription(InvocationTarget stateDescription) {
+    this.stateDescription = stateDescription;
   }
 }

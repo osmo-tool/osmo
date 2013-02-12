@@ -15,11 +15,7 @@ public class And extends AbstractEndCondition {
   /** The set of end conditions to be checked. */
   private final EndCondition[] conditions;
 
-  /**
-   * Costructor.
-   *
-   * @param conditions The set of end conditions to be checked.
-   */
+  /** @param conditions The set of end conditions to be checked. */
   public And(EndCondition... conditions) {
     this.conditions = conditions;
   }

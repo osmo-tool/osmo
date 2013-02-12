@@ -16,7 +16,7 @@ import java.util.Map;
 import static junit.framework.Assert.*;
 
 /**
- * "Scripter" for online testing, directly invoking the test calendar.
+ * "RFScripter" for online testing, directly invoking the test calendar.
  *
  * @author Teemu Kanstren
  */

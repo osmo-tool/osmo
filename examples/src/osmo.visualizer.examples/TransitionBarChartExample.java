@@ -2,7 +2,13 @@ package osmo.visualizer.examples;
 
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.calendar.scripter.MockScripter;
-import osmo.tester.examples.calendar.testmodel.*;
+import osmo.tester.examples.calendar.testmodel.CalendarErrorHandlingModel;
+import osmo.tester.examples.calendar.testmodel.CalendarMeetingModel;
+import osmo.tester.examples.calendar.testmodel.CalendarOracleModel;
+import osmo.tester.examples.calendar.testmodel.CalendarOverlappingModel;
+import osmo.tester.examples.calendar.testmodel.CalendarParticipantModel;
+import osmo.tester.examples.calendar.testmodel.CalendarTaskModel;
+import osmo.tester.examples.calendar.testmodel.ModelState;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.gui.manualdrive.ManualAlgorithm;
 import osmo.visualizer.generator.TransitionBarChart;

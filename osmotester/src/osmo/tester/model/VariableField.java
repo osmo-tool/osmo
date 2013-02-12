@@ -20,10 +20,13 @@ public class VariableField {
   /** If the variable object implements the VariableValue interface, we store it here for faster access. */
   private VariableValue variable = null;
 
-  public VariableField(Object modelObject, Field field) {
+  public VariableField(Object modelObject, Field field, String name) {
     this.modelObject = modelObject;
     this.field = field;
-    name = field.getName();
+    if (name.equals("")) {
+      name = field.getName();
+    }
+    this.name = name;
     ///check only once here to avoid overhead of repeating it on every access
     checkIfVariableValue();
   }
@@ -35,10 +38,13 @@ public class VariableField {
    */
   private void checkIfVariableValue() {
     Class<?> type = field.getType();
-    checkVariableType(type);
-    Class<?>[] interfaces = type.getInterfaces();
-    for (Class<?> i : interfaces) {
-      checkVariableType(i);
+    while (type != null) {
+      checkVariableType(type);
+      Class<?>[] interfaces = type.getInterfaces();
+      for (Class<?> i : interfaces) {
+        checkVariableType(i);
+      }
+      type = type.getSuperclass();
     }
   }
 

@@ -1,4 +1,4 @@
-<testsuite name="OSMO Test Suite" timestamp="01.01.1970 00:00:01" hostname="OSMO rules" tests="15" failures="0" errors="0" time="2.00">
+<testsuite name="OSMO Test Suite" timestamp="01.01.1970 00:00:01" hostname="OSMO rules" tests="8" failures="0" errors="0" time="2.00">
   <properties>
     <property name="Algorithm" value="osmo.tester.generator.algorithm.RandomAlgorithm"/>
     <property name="Scripter" value="Null"/>
@@ -24,20 +24,6 @@
   </testcase>
   <testcase name="Test8" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
   </testcase>
-  <testcase name="Test9" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
-  </testcase>
-  <testcase name="Test10" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
-  </testcase>
-  <testcase name="Test11" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
-  </testcase>
-  <testcase name="Test12" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
-  </testcase>
-  <testcase name="Test13" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
-  </testcase>
-  <testcase name="Test14" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
-  </testcase>
-  <testcase name="Test15" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
-  </testcase>
   <system-out>first
 Starting new test case 1
 S:0
@@ -45,6 +31,24 @@ S:0
 + 3
 - 2
 + 3
+- 2
++ 3
+- 2
+Test case ended
+Starting new test case 2
+S:0
++ 2
++ 3
+- 2
++ 3
++ 4
+- 3
++ 4
++ 5
+- 4
++ 5
+- 4
+- 3
 + 4
 + 5
 + 6
@@ -52,52 +56,34 @@ S:0
 + 8
 + 9
 + 10
-- 9
-- 8
-+ 9
-- 8
-+ 9
-+ 10
-- 9
-- 8
-+ 9
-+ 10
 + 11
 - 10
-Test case ended
-Starting new test case 2
-S:0
-+ 2
-+ 3
-+ 4
-- 3
-- 2
-- 1
-+ 2
-- 1
-+ 2
++ 11
++ 12
++ 13
++ 14
+- 13
+- 12
 Test case ended
 Starting new test case 3
 S:0
 + 2
 + 3
-+ 4
+- 2
++ 3
+- 2
 Test case ended
 Starting new test case 4
 S:0
 + 2
+- 1
++ 2
+- 1
++ 2
 + 3
 - 2
-- 1
-+ 2
-- 1
-+ 2
-- 1
-+ 2
 + 3
 + 4
-- 3
-- 2
 Test case ended
 Starting new test case 5
 S:0
@@ -105,118 +91,35 @@ S:0
 - 1
 + 2
 + 3
-+ 4
-+ 5
-+ 6
-+ 7
-- 6
-+ 7
-- 6
-- 5
-- 4
-- 3
+- 2
 Test case ended
 Starting new test case 6
 S:0
-+ 2
-+ 3
-+ 4
-- 3
 Test case ended
 Starting new test case 7
 S:0
 + 2
 - 1
 + 2
-- 1
-+ 2
-- 1
-+ 2
 + 3
 + 4
 - 3
 + 4
 + 5
 - 4
+- 3
+- 2
+- 1
++ 2
++ 3
++ 4
 + 5
+- 4
++ 5
++ 6
 Test case ended
 Starting new test case 8
 S:0
-Test case ended
-Starting new test case 9
-S:0
-+ 2
-+ 3
-+ 4
-- 3
-- 2
-+ 3
-+ 4
-+ 5
-- 4
-+ 5
-Test case ended
-Starting new test case 10
-S:0
-+ 2
-- 1
-+ 2
-- 1
-+ 2
-Test case ended
-Starting new test case 11
-S:0
-+ 2
-+ 3
-Test case ended
-Starting new test case 12
-S:0
-+ 2
-- 1
-+ 2
-- 1
-+ 2
-- 1
-+ 2
-+ 3
-- 2
-+ 3
-- 2
-+ 3
-+ 4
-- 3
-Test case ended
-Starting new test case 13
-S:0
-+ 2
-+ 3
-+ 4
-- 3
-+ 4
-- 3
-- 2
-+ 3
-+ 4
-Test case ended
-Starting new test case 14
-S:0
-+ 2
-+ 3
-- 2
-+ 3
-- 2
-- 1
-+ 2
-- 1
-+ 2
-+ 3
-- 2
-+ 3
-Test case ended
-Starting new test case 15
-S:0
-+ 2
-- 1
 + 2
 Test case ended
 last

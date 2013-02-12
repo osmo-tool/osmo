@@ -12,7 +12,7 @@ import osmo.tester.generator.testsuite.TestSuite;
  */
 public class ValidTestModel1 {
   @TestSuiteField
-  private TestSuite history = new TestSuite();
+  private TestSuite history = null;
 
   public TestSuite getHistory() {
     return history;

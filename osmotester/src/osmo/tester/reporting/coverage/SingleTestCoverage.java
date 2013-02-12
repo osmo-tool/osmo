@@ -3,13 +3,13 @@ package osmo.tester.reporting.coverage;
 import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 /**
- * Coverage values for a single test case (as opposed to suite in {@link osmo.tester.optimizer.TestCoverage}.
+ * Coverage values for a single test case (as opposed to suite in {@link osmo.tester.suiteoptimizer.coverage.TestCoverage}.
  * Used in reporting for coverage matrix. Number of times different elements were covered or the values for
  * variables.
  *
@@ -19,7 +19,7 @@ public class SingleTestCoverage {
   /** Test name. */
   private final String name;
   /** Key=requirement name, value=times covered in this test. */
-  private final Map<String, Integer> requirementCount = new HashMap<>();
+  private final Map<String, Integer> reqCount = new HashMap<>();
   /** Key=transition name, value=times covered in this test. */
   private final Map<String, Integer> transitionCount = new HashMap<>();
   /** Key=transition pair name ("T1->T2"), value=times covered in this test. */
@@ -41,25 +41,25 @@ public class SingleTestCoverage {
 
   /**
    * Count the number of times different requirements have been covered.
-   * 
+   *
    * @param tc The test case to count the requirements from..
    */
   private void countRequirements(TestCase tc) {
-    Collection<String> covered = tc.getFullRequirementsCoverage();
+    Collection<String> covered = tc.getFullRequirementCoverage();
     for (String req : covered) {
-      incrementCountFor(requirementCount, req);
+      incrementCountFor(reqCount, req);
     }
   }
 
   /**
    * Count the number of times each transition and transition pair has been covered in a given test case.
    * If coverage is 0, nothing is given for that transition/pair.
-   * 
+   *
    * @param tc The test case for which to get the coverage.
    */
   private void countTransitions(TestCase tc) {
     Collection<String> names = tc.getAllTransitionNames();
-    String previous = "init";
+    String previous = "Start";
     for (String name : names) {
       incrementCountFor(transitionCount, name);
       String pair = previous + "->" + name;
@@ -70,8 +70,8 @@ public class SingleTestCoverage {
 
   /**
    * Increment the count for the given key in the given map.
-   * 
-   * @param map Where to find the value.
+   *
+   * @param map  Where to find the value.
    * @param name The name of the key for the value.
    */
   private void incrementCountFor(Map<String, Integer> map, String name) {
@@ -85,16 +85,16 @@ public class SingleTestCoverage {
 
   /**
    * Captures all values that different model variables have received in a given test case.
-   * 
+   *
    * @param tc To get the values from.
    */
   private void collectVariableValues(TestCase tc) {
-    Map<String, ModelVariable> variables = tc.getVariables();
+    Map<String, ModelVariable> variables = tc.getStepVariables();
     for (String var : variables.keySet()) {
       ModelVariable modelVariable = variables.get(var);
       Collection<Object> values = variableValues.get(var);
       if (values == null) {
-        values = new ArrayList<>();
+        values = new HashSet<>();
         variableValues.put(var, values);
       }
       values.addAll(modelVariable.getValues());
@@ -107,8 +107,8 @@ public class SingleTestCoverage {
 
   /**
    * Gives the coverage count for the given key.
-   * 
-   * @param map Where to get the coverage count from.
+   *
+   * @param map  Where to get the coverage count from.
    * @param name The key name to get the count for.
    * @return The coverage count for the given key.
    */
@@ -122,13 +122,13 @@ public class SingleTestCoverage {
 
   /**
    * Used in reporting via Velocity templates.
-   * Gives the number of times the given requirement was covered in this test case.
+   * Gives the number of times the given tag was covered in this test case.
    *
    * @param requirement The name of the requirement to get the count for.
    * @return The times covered in this test case.
    */
-  public int requirementCount(String requirement) {
-    return countFor(requirementCount, requirement);
+  public int reqCount(String requirement) {
+    return countFor(reqCount, requirement);
   }
 
   /**
@@ -164,5 +164,7 @@ public class SingleTestCoverage {
     return variableValues.get(variable);
   }
 
-
+  public Collection<String> variableNames() {
+    return variableValues.keySet();
+  }
 }

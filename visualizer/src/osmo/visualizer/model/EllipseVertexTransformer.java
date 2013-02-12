@@ -4,7 +4,7 @@ import edu.uci.ics.jung.visualization.decorators.AbstractVertexShapeTransformer;
 import org.apache.commons.collections15.Transformer;
 import osmo.tester.model.FSMTransition;
 
-import java.awt.*;
+import java.awt.Shape;
 
 /**
  * @author Teemu Kanstren

@@ -18,16 +18,16 @@ import java.util.Map;
 import static junit.framework.Assert.*;
 
 /**
- * A test model with requirements that can all be covered.
+ * A test model with tags that can all be covered.
  *
  * @author Teemu Kanstren
  */
 public class TestStepModel {
   @RequirementsField
-  private final Requirements req = new Requirements();
-  public static final String REQ_HELLO = "hello";
-  public static final String REQ_WORLD = "world";
-  public static final String REQ_EPIX = "epix";
+  private final Requirements tags = new Requirements();
+  public static final String TAG_HELLO = "hello";
+  public static final String TAG_WORLD = "world";
+  public static final String TAG_EPIX = "epix";
   private final PrintStream out;
   private int lastStep1TestCount = 0;
   private int lastStep2TestCount = 0;
@@ -40,7 +40,7 @@ public class TestStepModel {
 
   @BeforeTest
   public void reset() {
-    req.clearCoverage();
+    tags.clearCoverage();
     lastStep1TestCount = 0;
     lastStep2TestCount = 0;
   }
@@ -54,29 +54,29 @@ public class TestStepModel {
 
   @Guard("hello")
   public boolean helloCheck() {
-    return !req.isCovered(REQ_HELLO) && !req.isCovered(REQ_WORLD) && !req.isCovered(REQ_EPIX);
+    return !tags.isCovered(TAG_HELLO) && !tags.isCovered(TAG_WORLD) && !tags.isCovered(TAG_EPIX);
   }
 
   @TestStep("hello")
   public void transition1() {
-    req.covered(REQ_HELLO);
+    tags.covered(TAG_HELLO);
     out.print(":hello");
   }
 
   @Guard("world")
   public boolean worldCheck() {
-    return req.isCovered(REQ_HELLO) && !req.isCovered(REQ_WORLD) && !req.isCovered(REQ_EPIX);
+    return tags.isCovered(TAG_HELLO) && !tags.isCovered(TAG_WORLD) && !tags.isCovered(TAG_EPIX);
   }
 
   @TestStep("world")
   public void epix() {
-    req.covered(REQ_WORLD);
+    tags.covered(TAG_WORLD);
     out.print(":world");
   }
 
   @Guard("epixx")
   public boolean kitted() {
-    return req.isCovered(REQ_WORLD);
+    return tags.isCovered(TAG_WORLD);
   }
 
   @Pre("epixx")
@@ -88,7 +88,7 @@ public class TestStepModel {
 
   @TestStep("epixx")
   public void epixx() {
-    req.covered(REQ_EPIX);
+    tags.covered(TAG_EPIX);
     out.print(":epixx");
   }
 
@@ -103,7 +103,7 @@ public class TestStepModel {
   public void stateCheck() {
     out.print(":gen_oracle");
   }
-  
+
   @LastStep
   public void finish() {
     out.print(":last_step1");

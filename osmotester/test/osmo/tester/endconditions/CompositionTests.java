@@ -1,6 +1,8 @@
 package osmo.tester.endconditions;
 
+import org.junit.Before;
 import org.junit.Test;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.And;
 import osmo.tester.generator.endcondition.Length;
@@ -15,6 +17,11 @@ import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class CompositionTests {
+  @Before
+  public void setSeed() {
+    OSMOConfiguration.setSeed(333);
+  }
+  
   @Test
   public void length2AndLength4() {
     Length length2 = new Length(2);

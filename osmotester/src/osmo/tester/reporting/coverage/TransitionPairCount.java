@@ -1,7 +1,5 @@
 package osmo.tester.reporting.coverage;
 
-import osmo.tester.model.FSMTransition;
-
 /**
  * Information for how many times a transition pair has been taken in test generation.
  * A transition pair consists of two transition taken in a sequence in a single test case.
@@ -20,12 +18,12 @@ public class TransitionPairCount implements Comparable<TransitionPairCount> {
   }
 
   /** @return The first transition of the pair. */
-  public FSMTransition getFrom() {
+  public String getFrom() {
     return pair.getFrom();
   }
 
   /** @return The second (latter) transition of the pair. */
-  public FSMTransition getTo() {
+  public String getTo() {
     return pair.getTo();
   }
 
@@ -37,12 +35,12 @@ public class TransitionPairCount implements Comparable<TransitionPairCount> {
   public int compareTo(TransitionPairCount o) {
     int countDiff = o.count - count;
     if (countDiff == 0) {
-      String name1 = pair.getFrom().getStringName();
-      String name2 = o.getFrom().getStringName();
+      String name1 = pair.getFrom();
+      String name2 = o.getFrom();
       countDiff = name1.compareTo(name2);
       if (countDiff == 0) {
-        name1 = pair.getTo().getStringName();
-        name2 = o.getTo().getStringName();
+        name1 = pair.getTo();
+        name2 = o.getTo();
         countDiff = name1.compareTo(name2);
       }
     }

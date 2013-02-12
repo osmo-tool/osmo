@@ -7,7 +7,6 @@ import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.Transition;
 import osmo.tester.model.BaseModel;
-import osmo.tester.model.FSMTransition;
 
 import java.util.Map;
 
@@ -23,10 +22,10 @@ public class BaseModelExtension extends BaseModel {
   public boolean secondChecked = false;
 
   @BeforeTest
-  public void initSuite() {
+  public void initialization() {
     //init this here just once to allow adoption to previously generated tests
     if (count < 0) {
-      count = test.getId();
+      count = suite.getCurrentTest().getId();
     } else {
       count++;
     }
@@ -60,15 +59,14 @@ public class BaseModelExtension extends BaseModel {
 
   @Transition("second")
   public void second() {
-    FSMTransition transition = previous.getTransition();
+    String transition = previous.getName();
     assertNotNull("Previous transition", transition);
-    assertEquals("Previous transition", "first", transition.getStringName());
+    assertEquals("Previous transition", "first", transition);
     second = true;
   }
 
   @Post
   public void checkMe(Map<String, Object> p) {
-    assertEquals("Test id", count, id);
     checkCount++;
     if (p.size() == 0) {
       firstChecked = true;

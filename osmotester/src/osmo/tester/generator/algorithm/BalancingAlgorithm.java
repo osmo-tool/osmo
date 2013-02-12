@@ -1,22 +1,23 @@
 package osmo.tester.generator.algorithm;
 
+import osmo.common.Randomizer;
 import osmo.common.log.Logger;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
+import osmo.tester.parser.ParserResult;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
-import static osmo.common.TestUtils.*;
-
 /**
- * A test generation algorithm that is similar to the {@link RandomAlgorithm} but not preferring to take
+ * A test generation algorithm that is similar to the {@link RandomAlgorithm} but prefers to take
  * a the least covered of all available transitions (randomly). The difference is that a single
  * transition is not taken many times until other available ones have been taken equally many times.
  * The same also applies to transition-pairs such that the next transition chosen is based on either the set
@@ -30,38 +31,53 @@ import static osmo.common.TestUtils.*;
 public class BalancingAlgorithm implements FSMTraversalAlgorithm {
   private static Logger log = new Logger(BalancingAlgorithm.class);
   /** The coverage for transitions pairs, key = source transition, value = {destination transition, coverage} */
-  private Map<FSMTransition, Map<FSMTransition, Integer>> tpCoverage = new HashMap<>();
+  private Map<String, Map<FSMTransition, Integer>> tpCoverage = new HashMap<>();
+  /** For randomization. Separate instances are used to allow multiple instances running concurrently. */
+  private final Randomizer rand;
+
+  public BalancingAlgorithm() {
+    this.rand = new Randomizer(OSMOConfiguration.getSeed());
+  }
 
   @Override
-  public void init(FSM fsm) {
+  public void init(ParserResult parserResult) {
   }
 
   @Override
   public FSMTransition choose(TestSuite history, List<FSMTransition> choices) {
-    Map<FSMTransition, Integer> tCoverage = history.getTransitionCoverage();
+    //how many times each transition has been taken so far
+    Map<String, Integer> tCoverage = history.getTransitionCoverage();
     TestStep ts = history.getCurrentTest().getCurrentStep();
-    FSMTransition previous = null;
+    String previous = null;
     if (ts != null) {
-      previous = ts.getTransition();
+      previous = ts.getName();
     }
 
     //we use a hashset to avoid duplicates from different calculations
-    Collection<FSMTransition> options = new HashSet<>();
+    Collection<FSMTransition> options = new LinkedHashSet<>();
     options.addAll(choices);
-    options.removeAll(tCoverage.keySet());
+    for (Iterator<FSMTransition> i = options.iterator() ; i.hasNext() ; ) {
+      FSMTransition next = i.next();
+      if (tCoverage.containsKey(next.getStringName())) {
+        i.remove();
+      }
+    }
+//    options.removeAll(tCoverage.keySet());
     log.debug("uncovered options:" + options);
     //options now contains all previously uncovered transitions
 
     //we add also all previously uncovered transition pairs to options
     addUncoveredTP(previous, options, choices);
 
+    //calculate the transition pair coverage. needs to be done always to initialize the data structure for updating anyway
     Map<FSMTransition, Integer> currentTPCoverage = getTPCoverageFor(previous, choices);
     //if we have nothing left uncovered, we pick one based on least coverage
     if (options.size() == 0) {
       options.addAll(coverageBasedOptions(history, choices, currentTPCoverage));
     }
 
-    FSMTransition choice = oneOf(options);
+    //randomly pick one of the options
+    FSMTransition choice = rand.oneOf(options);
     updateTPCoverage(previous, choice);
     return choice;
   }
@@ -80,11 +96,11 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
    * @return An option based on coverage analysis of available options.
    */
   private Collection<FSMTransition> coverageBasedOptions(TestSuite history, List<FSMTransition> choices, Map<FSMTransition, Integer> currentTPCoverage) {
-    Map<FSMTransition, Integer> tCoverage = history.getTransitionCoverage();
+    Map<String, Integer> tCoverage = history.getTransitionCoverage();
 
     Map<FSMTransition, Integer> choiceTC = new HashMap<>();
     for (FSMTransition choice : choices) {
-      choiceTC.put(choice, tCoverage.get(choice));
+      choiceTC.put(choice, tCoverage.get(choice.getStringName()));
     }
 
     Map<FSMTransition, Integer> choiceTPC = new HashMap<>();
@@ -92,17 +108,17 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
       choiceTPC.put(choice, currentTPCoverage.get(choice));
     }
 
-    Collection<FSMTransition> options = new HashSet<>();
+    Collection<FSMTransition> options = new LinkedHashSet<>();
 
     //we have covered everything at least once so lets count the coverage instead
-    int smallest = minOf(choiceTC.values());
+    int smallest = rand.minOf(choiceTC.values());
 //    Map<FSMTransition, Integer> currentTPCoverage = checkTPCoverageFor(current, choices);
-    int smallestTP = minOf(choiceTPC.values());
+    int smallestTP = rand.minOf(choiceTPC.values());
     log.debug("smallest:" + smallest + " stp:" + smallestTP);
     log.debug("choices:" + choices);
 
     for (FSMTransition t : choices) {
-      if (tCoverage.get(t) == smallest) {
+      if (tCoverage.get(t.getStringName()) == smallest) {
         options.add(t);
       }
       if (currentTPCoverage.get(t) == smallestTP) {
@@ -122,7 +138,8 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
    * @param choices  The choices for the next transition (pair destination).
    * @return Calculated coverage for the available source-destination pairs.
    */
-  private Map<FSMTransition, Integer> getTPCoverageFor(FSMTransition previous, List<FSMTransition> choices) {
+  private Map<FSMTransition, Integer> getTPCoverageFor(String previous, List<FSMTransition> choices) {
+    //this could be initialized once in init() but works so..
     Map<FSMTransition, Integer> currentTPCoverage = tpCoverage.get(previous);
     if (currentTPCoverage == null) {
       currentTPCoverage = new HashMap<>();
@@ -143,7 +160,7 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
    * @param options  Current choices, for example, already added from completely uncovered transitions (with "null" source).
    * @param choices  The possible choices for the next transition to be taken (pair destination).
    */
-  private void addUncoveredTP(FSMTransition previous, Collection<FSMTransition> options, Collection<FSMTransition> choices) {
+  private void addUncoveredTP(String previous, Collection<FSMTransition> options, Collection<FSMTransition> choices) {
     Collection<FSMTransition> uncoveredTP = new ArrayList<>();
     if (previous != null) {
       uncoveredTP.addAll(choices);
@@ -170,7 +187,7 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
    * @param previous The previously taken transition.
    * @param choice   The choice of transition that will be taken next.
    */
-  private void updateTPCoverage(FSMTransition previous, FSMTransition choice) {
+  private void updateTPCoverage(String previous, FSMTransition choice) {
     if (previous == null) {
       return;
     }

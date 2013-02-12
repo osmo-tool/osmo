@@ -6,9 +6,8 @@ import osmo.tester.examples.calendar.testapp.CalendarTask;
 import osmo.tester.examples.calendar.testapp.CalendarUser;
 
 import java.util.Calendar;
-import java.util.Date;
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class SmokeTests {

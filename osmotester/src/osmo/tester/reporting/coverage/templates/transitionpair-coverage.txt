@@ -9,8 +9,8 @@
     </tr>
 #foreach ($tp in $pairs)
     <tr>
-      <td>$tp.from.name</td>
-      <td>$tp.to.name</td>
+      <td>$tp.from</td>
+      <td>$tp.to</td>
       <td>$tp.count</td>
     </tr>
 #end

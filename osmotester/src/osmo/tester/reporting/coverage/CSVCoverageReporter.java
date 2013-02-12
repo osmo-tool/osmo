@@ -1,7 +1,11 @@
 package osmo.tester.reporting.coverage;
 
+import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
+import osmo.tester.suiteoptimizer.coverage.TestCoverage;
+
+import java.util.Collection;
 
 /**
  * Returns coverage tables in comma separate value (CSV) format
@@ -9,8 +13,12 @@ import osmo.tester.model.FSM;
  * @author Olli-Pekka Puolitaival, Teemu Kanstrén
  */
 public class CSVCoverageReporter extends CoverageMetric {
+  public CSVCoverageReporter(Collection<TestCase> tests, TestCoverage tc, FSM fsm) {
+    super(tests, tc, fsm);
+  }
+
   public CSVCoverageReporter(TestSuite ts, FSM fsm) {
-    super(ts, fsm);
+    this(ts.getFinishedTestCases(), ts.getCoverage(), fsm);
   }
 
   public String getTransitionCounts() {
@@ -22,8 +30,8 @@ public class CSVCoverageReporter extends CoverageMetric {
     return super.getTransitionPairCounts("osmo/tester/reporting/coverage/templates/transitionpair-coverage.csv");
   }
 
-  public String getRequirementCounts() {
-    return super.getRequirementsCounts("osmo/tester/reporting/coverage/templates/requirement-coverage.csv");
+  public String getTagCounts() {
+    return super.getRequirementCounts("osmo/tester/reporting/coverage/templates/req-coverage.csv");
   }
 
   public String getTraceabilityMatrix() {

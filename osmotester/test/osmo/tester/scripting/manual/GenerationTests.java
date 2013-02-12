@@ -1,7 +1,7 @@
 package osmo.tester.scripting.manual;
 
 import org.junit.Test;
-import osmo.common.TestUtils;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.testmodels.CalculatorModel;
 import osmo.tester.testmodels.VariableModel2;
 
@@ -49,7 +49,7 @@ public class GenerationTests {
 
   @Test
   public void variableScript() {
-    TestUtils.setSeed(2421);
+    OSMOConfiguration.setSeed(2421);
     VariableModel2 model = new VariableModel2(System.out);
     Collection<Object> modelObjects = new ArrayList<>();
     modelObjects.add(model);
@@ -59,7 +59,7 @@ public class GenerationTests {
     script.addStep("first");
     script.addStep("second");
     script.addStep("third");
-    script.addValue("set", "v3");
+    script.addValue("named-set", "v3");
     scripts.add(script);
     main.run(modelObjects, scripts);
   }

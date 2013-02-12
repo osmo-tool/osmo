@@ -43,15 +43,22 @@ public class TransitionCoverage extends AbstractEndCondition {
     return checkThreshold(suite, fsm, false);
   }
 
+  /**
+   * Checks if the defined transition coverage has been achieved for test case or test suite.
+   *
+   * @param suite      The generated suite so far, including the current test being generated.
+   * @param fsm        The model.
+   * @param suiteCheck If true, this is a check for test suite, otherwise for a test case.
+   * @return True if requested coverage has been achieved.
+   */
   public boolean checkThreshold(TestSuite suite, FSM fsm, boolean suiteCheck) {
-    double ratio = 0;
-
-    Map<FSMTransition, Integer> coverage = suite.getTransitionCoverage();
+    Map<String, Integer> coverage = suite.getTransitionCoverage();
     if (!suiteCheck) {
+      //it is a test check
       coverage = new HashMap<>();
       List<TestStep> steps = suite.getCurrentTest().getSteps();
       for (TestStep step : steps) {
-        FSMTransition t = step.getTransition();
+        String t = step.getName();
         Integer count = coverage.get(t);
         if (count == null) {
           count = 0;
@@ -59,42 +66,41 @@ public class TransitionCoverage extends AbstractEndCondition {
         coverage.put(t, count + 1);
       }
     }
-    Collection<FSMTransition> temp = new ArrayList<>();
-    Collection<FSMTransition> all = fsm.getTransitions();
+    Collection<String> temp = new ArrayList<>();
+    Collection<String> all = new ArrayList<>();
+    for (FSMTransition transition : fsm.getTransitions()) {
+      all.add(transition.getStringName());
+    }
+//    Collection<FSMTransition> all = fsm.getTransitions();
     int allCount = all.size();
     temp.addAll(coverage.keySet());
+    double ratio = 0;
     if (temp.containsAll(all)) {
+      //we come here if min of 100% coverage is achieved
       int min = Integer.MAX_VALUE;
-      for (FSMTransition transition : temp) {
+      //find the one(s) with the least coverage
+      for (String transition : temp) {
         int count = coverage.get(transition);
         if (count < min) {
           min = count;
         }
       }
+      log.debug("least times a transition was covered = " + min);
       int partials = 0;
-      for (FSMTransition transition : temp) {
+      //find how many are covered more than the minimum coverage
+      for (String transition : temp) {
         int count = coverage.get(transition);
         if (count > min) {
           partials++;
         }
       }
+      //if min coverage is one, it is added to make it 100%, similarly 2=200%, and so on
       ratio += min;
       ratio += ((double) partials) / ((double) allCount);
     } else {
       int coveredCount = temp.size();
       ratio = ((double) coveredCount) / ((double) allCount);
     }
-
-/*    while (true) {
-      if (temp.containsAll(all)) {
-        for (FSMTransition t : all) {
-          temp.remove(t);
-        }
-        ratio += 1;
-      } else {
-        break;
-      }
-    }*/
 
     log.debug("ratio:" + ratio + "threshold:" + threshold);
     return ratio >= threshold;

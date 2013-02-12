@@ -22,11 +22,14 @@ import java.util.TreeSet;
 public class Requirements {
   private static Logger log = new Logger(Requirements.class);
   /** The overall set of requirements that should be covered. */
-  private List<String> requirements = new ArrayList<>();
+  private List<String> reqs = new ArrayList<>();
   /** The set of requirements that have been covered. */
   private Collection<String> covered = new ArrayList<>();
   /** The set of generated tests cases, including the one currently under generation. */
   private TestSuite testSuite = null;
+
+  public Requirements() {
+  }
 
   public void setTestSuite(TestSuite testSuite) {
     log.debug("Setting test suite:" + testSuite);
@@ -40,10 +43,10 @@ public class Requirements {
    */
   public void add(String requirement) {
     //check if already exists
-    if (requirements.contains(requirement)) {
+    if (reqs.contains(requirement)) {
       throw new IllegalArgumentException("Attempted to register '" + requirement + "' twice. Duplicates not allowed.");
     }
-    requirements.add(requirement);
+    reqs.add(requirement);
   }
 
   /**
@@ -62,7 +65,7 @@ public class Requirements {
    * @return List of defined requirements.
    */
   public Collection<String> getRequirements() {
-    return requirements;
+    return reqs;
   }
 
   /**
@@ -94,12 +97,12 @@ public class Requirements {
   public Collection<String> getExcess() {
     Collection<String> excess = new ArrayList<>();
     excess.addAll(covered);
-    excess.removeAll(requirements);
+    excess.removeAll(reqs);
     return excess;
   }
 
   /**
-   * Checks if the given requirment is covered.
+   * Checks if the given requirement is covered.
    *
    * @param requirement The name of the requirement to check.
    * @return True if covered, false if not.
@@ -119,18 +122,18 @@ public class Requirements {
    * @return Message that can be printed to tell the requirements coverage.
    */
   public String printCoverage() {
-    if (requirements.size() == 0 && covered.size() == 0) {
-      return "No requirements defined. Not calculating or showing requirements coverage. \n" +
-              "If you want to see requirements coverage you need to define a @RequirementsField\n" +
+    if (reqs.size() == 0 && covered.size() == 0) {
+      return "No requirements defined. Not calculating or showing requirement coverage. \n" +
+              "If you want to see requirement coverage you need to define a @RequirementsField\n" +
               "and add some requirements and their coverage into the model.";
     }
     StringBuilder out = new StringBuilder();
-    Collections.sort(requirements);
-    out.append("Requirements:" + requirements + "\n");
+    Collections.sort(reqs);
+    out.append("Requirements:" + reqs + "\n");
     Collection<String> uniqueCoverage = getUniqueCoverage();
     out.append("Covered:" + uniqueCoverage + "\n");
     int n = uniqueCoverage.size() - getExcess().size();
-    int total = requirements.size();
+    int total = reqs.size();
     if (total > 0) {
       double p = n / total * 100;
       final MessageFormat format = new MessageFormat("Total = {0}/{1} ({2}%) requirements.");
@@ -143,6 +146,6 @@ public class Requirements {
   }
 
   public boolean isEmpty() {
-    return (requirements.size() == 0 && covered.size() == 0);
+    return (reqs.size() == 0 && covered.size() == 0);
   }
 }

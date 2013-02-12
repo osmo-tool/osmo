@@ -5,6 +5,7 @@ import osmo.tester.annotation.AfterTest;
 import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.EndCondition;
+import osmo.tester.annotation.ExplorationEnabler;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.RequirementsField;
@@ -20,20 +21,19 @@ public class PartialModel2 {
   @RequirementsField
   private final Requirements req;
   @TestSuiteField
-  private final TestSuite history;
-  public static final String REQ_HELLO = "hello";
-  public static final String REQ_WORLD = "world";
-  public static final String REQ_EPIX = "epix";
+  private TestSuite history;
+  public static final String TAG_HELLO = "hello";
+  public static final String TAG_WORLD = "world";
+  public static final String TAG_EPIX = "epix";
   private PrintStream out;
 
-  public PartialModel2(Requirements req, TestSuite suite) {
-    this(req, null, suite);
+  public PartialModel2(Requirements req) {
+    this(req, null);
   }
 
-  public PartialModel2(Requirements req, PrintStream out, TestSuite suite) {
+  public PartialModel2(Requirements req, PrintStream out) {
     this.req = req;
     this.out = out;
-    this.history = suite;
   }
 
   @BeforeSuite
@@ -57,18 +57,18 @@ public class PartialModel2 {
 
   @Guard("world")
   public boolean worldCheck() {
-    return req.isCovered(REQ_HELLO) && !req.isCovered(REQ_WORLD) && !req.isCovered(REQ_EPIX);
+    return req.isCovered(TAG_HELLO) && !req.isCovered(TAG_WORLD) && !req.isCovered(TAG_EPIX);
   }
 
   @Transition("world")
   public void epix() {
-    req.covered(REQ_WORLD);
+    req.covered(TAG_WORLD);
     out.print(":world");
   }
 
   @Transition("epixx")
   public void epixx() {
-    req.covered(REQ_EPIX);
+    req.covered(TAG_EPIX);
     out.print(":epixx");
   }
 
@@ -80,5 +80,9 @@ public class PartialModel2 {
   @EndCondition
   public boolean ec2() {
     return false;
+  }
+
+  @ExplorationEnabler
+  public void enabler1() {
   }
 }

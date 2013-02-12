@@ -5,9 +5,13 @@ import osmo.tester.model.dataflow.Text;
 import osmo.tester.model.dataflow.ValueRange;
 import osmo.tester.model.dataflow.ValueSet;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
-import static osmo.common.TestUtils.oneOf;
+import static osmo.common.TestUtils.*;
 
 /**
  * Holds the overall state of the model.
@@ -16,7 +20,7 @@ import static osmo.common.TestUtils.oneOf;
  */
 public class ModelState {
   /** How many users? */
-  private ValueRange<Integer> userCount = new ValueRange<>(1, 10);
+  private ValueRange<Integer> userCount = new ValueRange<>(1, 10);;
   /** Users with calendars. */
   private ValueSet<String> users = new ValueSet<>();
   /** Tasks for all users. */
@@ -31,6 +35,7 @@ public class ModelState {
   private int taskCount = 1;
 
   public ModelState() {
+    users = new ValueSet<>();
     Calendar start = Calendar.getInstance();
     start.setTime(new Date(0));
     start.set(2000, Calendar.JANUARY, 1, 0, 0, 0);
@@ -46,10 +51,8 @@ public class ModelState {
     names.setName("name");
     for (int i = 1; i <= n; i++) {
 //      this.users.add("user" + i);
-      System.out.println("user:"+i);
       this.users.add(names.next());
     }
-    System.out.println("loppu");
   }
 
   /** Used to reset the state between test generation. */

@@ -10,6 +10,7 @@ import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
 import osmo.tester.model.VariableField;
 import osmo.tester.model.dataflow.SearchableInput;
+import osmo.tester.suiteoptimizer.coverage.ScoreConfiguration;
 import osmo.tester.testmodels.EmptyTestModel1;
 import osmo.tester.testmodels.EmptyTestModel2;
 import osmo.tester.testmodels.EmptyTestModel3;
@@ -44,6 +45,7 @@ public class ParserTests {
 
   private OSMOConfiguration conf(Object... modelObjects) {
     OSMOConfiguration config = new OSMOConfiguration();
+    config.setSeed(1);
     for (Object mo : modelObjects) {
       config.addModelObject(mo);
     }
@@ -53,7 +55,8 @@ public class ParserTests {
   @Test
   public void testModel1() throws Exception {
     EmptyTestModel1 model = new EmptyTestModel1();
-    FSM fsm = parser.parse(conf(model));
+    ParserResult result = parser.parse(conf(model), new TestSuite(), new ScoreConfiguration());
+    FSM fsm = result.getFsm();
     assertEquals("Number of @Before methods", 2, fsm.getBefores().size());
     assertEquals("Number of @BeforeSuite methods", 1, fsm.getBeforeSuites().size());
     assertEquals("Number of @After methods", 1, fsm.getAfters().size());
@@ -63,21 +66,20 @@ public class ParserTests {
     assertTransitionPresent(fsm, "world", 3, 1);
     assertTransitionPresent(fsm, "epixx", 3, 3);
     assertEquals("Number of end conditions", 2, fsm.getEndConditions().size());
+    assertEquals("Number of generation enablers", 1, fsm.getGenerationEnablers().size());
+    assertEquals("Number of exploration enablers", 1, fsm.getExplorationEnablers().size());
     assertNotNull("Should have TestLog set", model.getHistory());
-    assertNotNull("Should have Requirements set", fsm.getRequirements());
   }
-
 
   @Test
   public void testModel2() {
     try {
-      FSM fsm = parser.parse(conf(new EmptyTestModel2()));
+      ParserResult result = parser.parse(conf(new EmptyTestModel2()), new TestSuite(), new ScoreConfiguration());
       fail("Should throw exception");
     } catch (Exception e) {
       String msg = e.getMessage();
       String expected = "Invalid FSM:\n" +
               "Only one @RequirementsField allowed in the model.\n" +
-              "Only one @TestSuiteField object allowed in the model. You can use several @TestSuiteField fields in several model objects, but the variable value must be the same object.\n" +
               "Guard/Pre/Post without transition:foo\n";
       assertEquals(expected, msg);
     }
@@ -86,16 +88,22 @@ public class ParserTests {
   @Test
   public void testModel3() {
     try {
-      FSM fsm = parser.parse(conf(new EmptyTestModel3()));
+      ParserResult result = parser.parse(conf(new EmptyTestModel3()), new TestSuite(), new ScoreConfiguration());
       fail("Should throw exception");
     } catch (Exception e) {
       String msg = e.getMessage();
       msg = sortErrors(msg);
       String expected = "Invalid FSM:\n" +
+              "@ExplorationEnabler methods are not allowed to have parameters: \"enableExploration()\" has 1 parameters.\n" +
+              "@GenerationEnabler methods are not allowed to have parameters: \"enableGeneration()\" has 1 parameters.\n" +
               "@RequirementsField class must be of type osmo.tester.model.Requirements. Was java.lang.String.\n" +
               "@TestSuiteField class must be of type osmo.tester.generator.testsuite.TestSuite. Was java.lang.String.\n" +
               "Invalid return type for @EndCondition (\"end()\"):void. Should be boolean.\n" +
-              "Invalid return type for @EndState (\"toEnd()\"):void. Should be boolean.\n" +
+              "Invalid return type for @EndState (\"toEnd()\"):void. Should be boolean.\n"+
+              "Invalid return type for @ExplorationEnabler (\"enableExploration()\"):class java.lang.String.\n" +
+              "Invalid return type for @ExplorationEnabler (\"enableExploration()\"):int.\n" +
+              "Invalid return type for @GenerationEnabler (\"enableGeneration()\"):int.\n" +
+              "Invalid return type for @StateName in (\"state()\"):void. Should be String.\n"+
               "Invalid return type for guard (\"hello()\"):class java.lang.String.\n" +
               "Post-methods are allowed to have only one parameter of type Map<String, Object>: \"wrong()\" has one of type class java.lang.String.\n" +
               "";
@@ -127,7 +135,7 @@ public class ParserTests {
   @Test
   public void testModel4() {
     try {
-      FSM fsm = parser.parse(conf(new EmptyTestModel4()));
+      ParserResult result = parser.parse(conf(new EmptyTestModel4()), new TestSuite(), new ScoreConfiguration());
       fail("Should throw exception");
     } catch (Exception e) {
       //note that this exception checking will swallow real errors so it can be useful to print them..
@@ -136,9 +144,11 @@ public class ParserTests {
       msg = sortErrors(msg);
       String expected = "Invalid FSM:\n" +
               "@EndCondition methods are not allowed to have parameters: \"ending()\" has 1 parameters.\n" +
-              "@EndState methods are not allowed to have parameters: \"endd()\" has 1 parameters.\n" +
+              "@EndState methods are not allowed to have parameters: \"badArgument()\" has 1 parameters.\n"+
               "@RequirementsField value was null, which is not allowed.\n" +
               "Guard methods are not allowed to have parameters: \"hello()\" has 1 parameters.\n" +
+              "Invalid return type for @EndState (\"badArgument()\"):class java.lang.String. Should be boolean.\n"+
+              "StateName methods are not allowed to have parameters: \"badArgument()\" has 1 parameters.\n"+
               "";
       assertEquals(expected, msg);
     }
@@ -147,13 +157,13 @@ public class ParserTests {
   @Test
   public void testModel5() {
     try {
-      FSM fsm = parser.parse(conf(new EmptyTestModel5()));
+      ParserResult result = parser.parse(conf(new EmptyTestModel5()), new TestSuite(), new ScoreConfiguration());
       fail("Should throw exception");
     } catch (Exception e) {
       String msg = e.getMessage();
       String expected = "Invalid FSM:\n" +
-              "@Transition methods are not allowed to have parameters: \"epixx()\" has 1 parameters.\n"+
-      "Invalid return type for @EndCondition (\"hello()\"):class java.lang.String. Should be boolean.\n" +
+              "@Transition methods are not allowed to have parameters: \"epixx()\" has 1 parameters.\n" +
+              "Invalid return type for @EndCondition (\"hello()\"):class java.lang.String. Should be boolean.\n" +
               "@EndCondition methods are not allowed to have parameters: \"hello()\" has 1 parameters.\n";
       assertEquals(expected, msg);
     }
@@ -162,14 +172,14 @@ public class ParserTests {
   @Test
   public void testModel6() {
     try {
-      FSM fsm = parser.parse(conf(new EmptyTestModel6()));
+      ParserResult result = parser.parse(conf(new EmptyTestModel6()), new TestSuite(), new ScoreConfiguration());
       fail("Should throw exception");
     } catch (Exception e) {
       String msg = e.getMessage();
       String expected = "Invalid FSM:\n" +
               "@Transition methods are not allowed to have parameters: \"epix()\" has 1 parameters.\n" +
-              "@Transition methods are not allowed to have parameters: \"transition1()\" has 1 parameters.\n" +
               "Invalid return type for guard (\"listCheck()\"):class java.lang.String.\n" +
+              "@Transition methods are not allowed to have parameters: \"transition1()\" has 1 parameters.\n" +
               "Guard/Pre/Post without transition:world\n";
       assertEquals(expected, msg);
     }
@@ -178,30 +188,31 @@ public class ParserTests {
   @Test
   public void testPartialModels() {
     Requirements req = new Requirements();
-    TestSuite suite = new TestSuite();
-    PartialModel1 model1 = new PartialModel1(req, null, suite);
-    PartialModel2 model2 = new PartialModel2(req, null, suite);
-    FSM fsm = parser.parse(conf(model1, model2));
+    PartialModel1 model1 = new PartialModel1(req, null);
+    PartialModel2 model2 = new PartialModel2(req, null);
+    ParserResult result = parser.parse(conf(model1, model2), new TestSuite(), new ScoreConfiguration());
+    FSM fsm = result.getFsm();
     assertEquals("Number of @Before methods", 2, fsm.getBefores().size());
     assertEquals("Number of @BeforeSuite methods", 2, fsm.getBeforeSuites().size());
     assertEquals("Number of @After methods", 2, fsm.getAfters().size());
     assertEquals("Number of @AfterSuite methods", 1, fsm.getAfterSuites().size());
+    assertEquals("Number of @ExplorationEnabler methods", 2, fsm.getExplorationEnablers().size());
+    assertEquals("Number of @GenerationEnabler methods", 1, fsm.getGenerationEnablers().size());
+    assertNotNull("@StateDescription method", fsm.getStateDescription());
     //these also test for the correct number of guards
-    assertTransitionPresent(fsm, "hello", 1, 2);
-    assertTransitionPresent(fsm, "world", 3, 2);
-    assertTransitionPresent(fsm, "epixx", 2, 2);
+    assertTransitionPresent(fsm, "hello", 1, 3);
+    assertTransitionPresent(fsm, "world", 3, 3);
+    assertTransitionPresent(fsm, "epixx", 2, 3);
     assertEquals("Number of end conditions", 2, fsm.getEndConditions().size());
     assertNotNull("Should have TestSuite set", model1.getHistory());
-    String s = "";
-    String s1 = "";
-    assertNotNull("Should have Requirements set", fsm.getRequirements());
   }
 
   @Test
   public void noMethods() {
     try {
-      FSM fsm = parser.parse(conf(new Object()));
-      fsm.checkAndUpdateGenericItems("");
+      ParserResult result = parser.parse(conf(new Object()), new TestSuite(), new ScoreConfiguration());
+      FSM fsm = result.getFsm();
+      fsm.checkFSM("");
       fail("Should throw exception when no transition methods are available.");
     } catch (Exception e) {
       String msg = e.getMessage();
@@ -216,13 +227,14 @@ public class ParserTests {
     assertNotNull("Transition '" + name + "' should be generated.", transition);
     assertNotNull("Transition '" + name + "' should have valid transition content.", transition.getTransition());
     assertEquals("Transition '" + name + "' should have " + guardCount + " guards.", guardCount, transition.getGuards().size());
-    assertEquals("Transition '" + name + "' should have " + oracleCount + " oracles.", oracleCount, transition.getPostMethods().size());
+    assertEquals("Transition '" + name + "' should have " + oracleCount + " post methods.", oracleCount, transition.getPostMethods().size());
   }
 
   @Test
   public void variableParsing() {
     VariableModel1 model = new VariableModel1();
-    FSM fsm = parser.parse(conf(model));
+    ParserResult result = parser.parse(conf(model), new TestSuite(), new ScoreConfiguration());
+    FSM fsm = result.getFsm();
     Collection<VariableField> variables = fsm.getStateVariables();
     assertEquals("All @" + Variable.class.getSimpleName() + " items should be parsed.", 10, variables.size());
     assertVariablePresent(variables, "i1");
@@ -250,12 +262,14 @@ public class ParserTests {
   public void searchableInputParsing() {
     VariableModel2 model = new VariableModel2();
     OSMOConfiguration config = conf(model);
-    FSM fsm = parser.parse(config);
+    ParserResult result = parser.parse(config, new TestSuite(), new ScoreConfiguration());
+    FSM fsm = result.getFsm();
     fsm.initSearchableInputs(config);
     Collection<SearchableInput> inputs = fsm.getSearchableInputs();
     assertEquals("Number of inputs", 2, inputs.size());
     assertSearchableInputPresent(inputs, "range");
-    assertSearchableInputPresent(inputs, "set");
+    assertSearchableInputPresent(inputs, "named-set");
+    assertSearchableInputNotPresent(inputs, "set");
   }
 
   private void assertSearchableInputPresent(Collection<SearchableInput> inputs, String name) {
@@ -267,6 +281,14 @@ public class ParserTests {
     fail("SearchableInput " + name + " should be present in the model.");
   }
 
+  private void assertSearchableInputNotPresent(Collection<SearchableInput> inputs, String name) {
+    for (SearchableInput input : inputs) {
+      if (input.getName().equals(name)) {
+        fail("SearchableInput " + name + " should not be present in the model.");
+      }
+    }
+  }
+
   @Test
   public void prefixOnlyParsing() {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
@@ -275,7 +297,8 @@ public class ParserTests {
     OSMOConfiguration config = new OSMOConfiguration();
     config.addModelObject("ap_", model);
     config.addModelObject("ip_", model);
-    FSM fsm = parser.parse(config);
+    ParserResult result = parser.parse(config, new TestSuite(), new ScoreConfiguration());
+    FSM fsm = result.getFsm();
     assertTransitionPresent(fsm, "ap_hello", 1, 2);
     assertTransitionPresent(fsm, "ip_hello", 1, 2);
     assertTransitionPresent(fsm, "ap_world", 1, 2);
@@ -297,7 +320,8 @@ public class ParserTests {
     config.addModelObject("ap_", model);
     config.addModelObject("ip_", model);
     config.addModelObject(model);
-    FSM fsm = parser.parse(config);
+    ParserResult result = parser.parse(config, new TestSuite(), new ScoreConfiguration());
+    FSM fsm = result.getFsm();
     assertTransitionPresent(fsm, "hello", 1, 3);
     assertTransitionPresent(fsm, "ap_hello", 1, 3);
     assertTransitionPresent(fsm, "ip_hello", 1, 3);
@@ -322,7 +346,8 @@ public class ParserTests {
     config.addModelObject("ap_", model);
     config.addModelObject("ip_", model);
     config.addModelObject(model);
-    FSM fsm = parser.parse(config);
+    ParserResult result = parser.parse(config, new TestSuite(), new ScoreConfiguration());
+    FSM fsm = result.getFsm();
     assertTransitionPresent(fsm, "hello", 1, 3);
     assertTransitionPresent(fsm, "ap_hello", 1, 3);
     assertTransitionPresent(fsm, "ip_hello", 1, 3);
@@ -348,7 +373,8 @@ public class ParserTests {
     config.addModelObject("ap_", model);
     config.addModelObject("ip_", model);
     config.addModelObject(model);
-    FSM fsm = parser.parse(config);
+    ParserResult result = parser.parse(config, new TestSuite(), new ScoreConfiguration());
+    FSM fsm = result.getFsm();
     assertTransitionPresent(fsm, "hello", 1, 3);
     assertTransitionPresent(fsm, "ap_hello", 1, 3);
     assertTransitionPresent(fsm, "ip_hello", 1, 3);

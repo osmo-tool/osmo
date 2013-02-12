@@ -17,7 +17,6 @@ public class ValidTestModel7 {
   private int count4 = 0;
   private final PrintStream out;
 
-  //TODO: remove this constructor and add checks
   public ValidTestModel7() {
     out = null;
   }
@@ -26,7 +25,6 @@ public class ValidTestModel7 {
     this.out = out;
   }
 
-  //todo: give means for guard to access information on which step is being guarded
   @Guard("t1")
   public boolean allowOne() {
     if (count1 < 10) {
@@ -74,4 +72,5 @@ public class ValidTestModel7 {
     System.out.println("T4");
     count4++;
   }
+
 }

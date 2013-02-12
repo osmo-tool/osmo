@@ -1,7 +1,5 @@
 package osmo.tester.reporting.coverage;
 
-import osmo.tester.model.FSMTransition;
-
 /**
  * Describes a pair of transitions, where the transitions have occurred in this sequence in a test case.
  *
@@ -9,20 +7,20 @@ import osmo.tester.model.FSMTransition;
  */
 public class TransitionPair {
   /** The transition that happened first. */
-  private final FSMTransition from;
+  private final String from;
   /** The transition that happened after the "from" transition. */
-  private final FSMTransition to;
+  private final String to;
 
-  public TransitionPair(FSMTransition from, FSMTransition to) {
+  public TransitionPair(String from, String to) {
     this.from = from;
     this.to = to;
   }
 
-  public FSMTransition getFrom() {
+  public String getFrom() {
     return from;
   }
 
-  public FSMTransition getTo() {
+  public String getTo() {
     return to;
   }
 

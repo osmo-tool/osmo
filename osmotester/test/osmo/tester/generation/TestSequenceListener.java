@@ -21,6 +21,7 @@ public class TestSequenceListener implements GenerationListener {
   private List<String> temp = new ArrayList<>();
   private boolean previousWasGuard = false;
   private final boolean traceGuards;
+  private boolean tracePostPre = false;
 
   public TestSequenceListener() {
     this.traceGuards = true;
@@ -67,13 +68,17 @@ public class TestSequenceListener implements GenerationListener {
   @Override
   public void pre(FSMTransition transition) {
     storeGuards();
-    steps.add("pre:" + transition.getName());
+    if (tracePostPre) {
+      steps.add("pre:" + transition.getName());
+    }
   }
 
   @Override
   public void post(FSMTransition transition) {
     storeGuards();
-    steps.add("post:" + transition.getName());
+    if (tracePostPre) {
+      steps.add("post:" + transition.getName());
+    }
   }
 
   @Override
@@ -110,5 +115,9 @@ public class TestSequenceListener implements GenerationListener {
 
   @Override
   public void testError(TestCase test, Exception error) {
+  }
+
+  public void setTracePrePost(boolean tracePrePost) {
+    this.tracePostPre = tracePrePost;
   }
 }

@@ -1,13 +1,12 @@
 package osmo.tester.model.dataflow;
 
+import osmo.common.Randomizer;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.gui.manualdrive.TextGUI;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
-import static osmo.common.TestUtils.*;
 
 /**
  * For generating words, meaning strings of characters matching the given specification.
@@ -21,7 +20,7 @@ public class Text extends SearchableInput<String> {
   /** Maximum length of generated word. */
   private int max = 10;
   /** Used to create valid characters for words. */
-  private CharSet chars = new CharSet();
+  private final CharSet chars = new CharSet();
   /** History of generated words. */
   private Collection<String> history = new ArrayList<>();
   /** How are the characters generated? */
@@ -44,9 +43,11 @@ public class Text extends SearchableInput<String> {
   private int invalidIndex = 0;
   /** Number of chars we create at index while in invalid loop mode. */
   private int invalidSize = 1;
+  private final Randomizer rand;
 
   /** Constructor for default values (min=5, max=10). */
   public Text() {
+    this.rand = new Randomizer(OSMOConfiguration.getSeed());
   }
 
   /**
@@ -59,6 +60,12 @@ public class Text extends SearchableInput<String> {
     this.min = min;
     this.max = max;
     evaluateMinMax(min, max);
+    this.rand = new Randomizer(OSMOConfiguration.getSeed());
+  }
+
+  public Text setSeed(long seed) {
+    rand.setSeed(seed);
+    return this;
   }
 
   /**
@@ -67,11 +74,12 @@ public class Text extends SearchableInput<String> {
    *
    * @param invalidProbability Value between 0 (0%) and 1 (100%).
    */
-  public void setInvalidProbability(float invalidProbability) {
+  public Text setInvalidProbability(float invalidProbability) {
     if (invalidProbability < 0 || invalidProbability > 1) {
       throw new IllegalArgumentException("Probability must be between 0-1, was " + invalidProbability);
     }
     this.invalidProbability = invalidProbability;
+    return this;
   }
 
   /**
@@ -79,8 +87,9 @@ public class Text extends SearchableInput<String> {
    *
    * @param zeroSize Enable/disable flag.
    */
-  public void enableZeroSize(boolean zeroSize) {
+  public Text enableZeroSize(boolean zeroSize) {
     this.zeroSize = zeroSize;
+    return this;
   }
 
   private void evaluateMinMax(int min, int max) {
@@ -124,7 +133,7 @@ public class Text extends SearchableInput<String> {
         this.strategy = algorithm;
         return this;
       default:
-        throw new UnsupportedOperationException(Text.class.getSimpleName() + " supports only Scripted, Random and Invalid data generation strategy, given: "+algorithm.name()+".");
+        throw new UnsupportedOperationException(Text.class.getSimpleName() + " supports only Scripted, Random and Invalid data generation strategy, given: " + algorithm.name() + ".");
     }
   }
 
@@ -135,7 +144,7 @@ public class Text extends SearchableInput<String> {
    */
   @Override
   public String next() {
-    OSMOConfiguration.checkGUI(this);
+    OSMOConfiguration.check(this);
     if (gui != null) {
       return (String) gui.next();
     }
@@ -156,7 +165,7 @@ public class Text extends SearchableInput<String> {
   private int length() {
     int length = -1;
     if (!invalid) {
-      length = cInt(min, max);
+      length = rand.nextInt(min, max);
     } else {
       if (zeroSize && !zeroDone) {
         log.debug("Giving zero length");
@@ -164,7 +173,7 @@ public class Text extends SearchableInput<String> {
         previousLength = 0;
         return 0;
       }
-      int offset = cInt(minOffset, maxOffset);
+      int offset = rand.nextInt(minOffset, maxOffset);
       if (previousLength < min) {
         length = max + offset;
       } else {
@@ -181,7 +190,7 @@ public class Text extends SearchableInput<String> {
   private String randomNext() {
     int length = length();
     char[] c = new char[length];
-    for (int i = 0; i < length; i++) {
+    for (int i = 0 ; i < length ; i++) {
       c[i] = chars.next();
     }
     String next = new String(c);
@@ -204,8 +213,8 @@ public class Text extends SearchableInput<String> {
   private String invalidRandomNext() {
     int length = length();
     char[] c = new char[length];
-    for (int i = 0; i < length; i++) {
-      float f = cFloat(0, 1);
+    for (int i = 0 ; i < length ; i++) {
+      float f = rand.nextFloat(0, 1);
       if (f > invalidProbability) {
         c[i] = chars.next();
       } else {
@@ -229,7 +238,7 @@ public class Text extends SearchableInput<String> {
     int length = length();
     log.debug("Invalid loop length:" + length);
     char[] c = new char[length];
-    for (int i = 0; i < length; i++) {
+    for (int i = 0 ; i < length ; i++) {
       if (i >= invalidIndex && i < invalidIndex + invalidSize) {
         c[i] = chars.nextInvalidLoop();
       } else {
@@ -253,13 +262,15 @@ public class Text extends SearchableInput<String> {
   }
 
   /** Set to only generate XML compliant characters. */
-  public void enableXml() {
+  public Text enableXml() {
     chars.enableXml();
+    return this;
   }
 
   /** Only a-z, A-Z, 0-9. */
-  public void asciiLettersAndNumbersOnly() {
+  public Text asciiLettersAndNumbersOnly() {
     chars.asciiLettersAndNumbersOnly();
+    return this;
   }
 
   /**
@@ -267,8 +278,9 @@ public class Text extends SearchableInput<String> {
    *
    * @param charsToRemove The string of chars to be removed.
    */
-  public void reduceBy(String charsToRemove) {
+  public Text reduceBy(String charsToRemove) {
     chars.reduceBy(charsToRemove);
+    return this;
   }
 
   @Override
@@ -308,8 +320,9 @@ public class Text extends SearchableInput<String> {
     gui = new TextGUI(this);
   }
 
-  public void enableInvalidLength(boolean invalid) {
+  public Text enableInvalidLength(boolean invalid) {
     this.invalid = invalid;
+    return this;
   }
 
 }

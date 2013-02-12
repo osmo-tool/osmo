@@ -1,19 +1,16 @@
 package osmo.tester.model.dataflow;
 
+import osmo.common.Randomizer;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.gui.manualdrive.ValueSetGUI;
-import osmo.tester.model.dataflow.serialization.Deserializer;
-import osmo.tester.model.dataflow.serialization.StringDeserializer;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-
-import static osmo.common.TestUtils.*;
 
 /**
  * Represents a set of values (objects) of the given type.
@@ -33,10 +30,17 @@ public class ValueSet<T> extends SearchableInput<T> {
   private int next = 0;
   /** The history of chosen input value objects for this invariant. */
   private Collection<T> history = new ArrayList<>();
+  /** Provides for instance specific randomization. */
+  private final Randomizer rand;
 
   /** Constructor for when no initial options are provided. Options need to be added later with addOption(). */
   public ValueSet() {
     init();
+    this.rand = new Randomizer(OSMOConfiguration.getSeed());
+  }
+
+  public void setSeed(long seed) {
+    rand.setSeed(seed);
   }
 
   /**
@@ -50,6 +54,7 @@ public class ValueSet<T> extends SearchableInput<T> {
       add(item);
     }
     init();
+    this.rand = new Randomizer(OSMOConfiguration.getSeed());
   }
 
   /**
@@ -60,10 +65,10 @@ public class ValueSet<T> extends SearchableInput<T> {
   public ValueSet(DataGenerationStrategy strategy) {
     this.strategy = strategy;
     init();
+    this.rand = new Randomizer(OSMOConfiguration.getSeed());
   }
 
   private void init() {
-    deserializer = (Deserializer<T>) new StringDeserializer();
     allSupported = true;
   }
 
@@ -101,7 +106,7 @@ public class ValueSet<T> extends SearchableInput<T> {
    * @param weight The weight of the option, resulting in this many calls to add().
    */
   public void add(T option, int weight) {
-    for (int i = 0; i < weight; i++) {
+    for (int i = 0 ; i < weight ; i++) {
       options.add(option);
     }
   }
@@ -153,8 +158,7 @@ public class ValueSet<T> extends SearchableInput<T> {
    */
   @Override
   public T next() {
-    OSMOConfiguration.checkGUI(this);
-    checkSlicing();
+    OSMOConfiguration.check(this);
     if (strategy != DataGenerationStrategy.SLICED && options.size() == 0) {
       throw new IllegalStateException("No value to provide (add some options).");
     }
@@ -170,13 +174,14 @@ public class ValueSet<T> extends SearchableInput<T> {
         next = optimizedRandomChoice();
         break;
       case RANDOM:
-        next = oneOf(options);
+        next = rand.oneOf(options);
         break;
       case SCRIPTED:
         next = scriptedNext(scriptNextSerialized());
         break;
       case SLICED:
-        next = getSlices().next();
+        //this only works for strings but what can we say..
+        next = (T) getSlices().next();
         break;
       default:
         throw new IllegalArgumentException("Unsupported strategy (" + strategy.name() + ") for " + ValueSet.class.getSimpleName());
@@ -193,7 +198,7 @@ public class ValueSet<T> extends SearchableInput<T> {
         return option;
       }
     }
-    throw new IllegalArgumentException(getClass().getSimpleName()+" does not support scripting undefined values: Requested scripted value for variable '"+getName()+"' not found: "+serialized);
+    throw new IllegalArgumentException(getClass().getSimpleName() + " does not support scripting undefined values: Requested scripted value for variable '" + getName() + "' not found: " + serialized);
   }
 
   /**
@@ -202,7 +207,7 @@ public class ValueSet<T> extends SearchableInput<T> {
    * @return The next item according to this strategy.
    */
   private T optimizedRandomChoice() {
-    Collection<T> choices = new HashSet<>();
+    Collection<T> choices = new LinkedHashSet<>();
     choices.addAll(options);
     choices.removeAll(history);
     //choices now has all items that have never been covered
@@ -219,14 +224,14 @@ public class ValueSet<T> extends SearchableInput<T> {
         count++;
         coverage.put(t, count);
       }
-      int min = minOf(coverage.values());
+      int min = rand.minOf(coverage.values());
       for (Map.Entry<T, Integer> item : coverage.entrySet()) {
         if (coverage.get(item.getKey()) == min) {
           choices.add(item.getKey());
         }
       }
     }
-    return oneOf(choices);
+    return rand.oneOf(choices);
   }
 
   /**
@@ -263,7 +268,7 @@ public class ValueSet<T> extends SearchableInput<T> {
     if (strategy != DataGenerationStrategy.SLICED) {
       return options;
     } else {
-      return getSlices().getOptions();
+      return (List<T>) getSlices().getOptions();
     }
   }
 
@@ -283,7 +288,7 @@ public class ValueSet<T> extends SearchableInput<T> {
 
   /**
    * Sets the set of options to pick from, clearing all history.
-   * 
+   *
    * @param newOptions The new set of options to use.
    */
   public void setOptions(Collection<T> newOptions) {

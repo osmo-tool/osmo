@@ -3,7 +3,6 @@ package osmo.tester.scripting.slicing;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.Probability;
-import osmo.tester.scripting.OSMOConfigurationFactory;
 import osmo.tester.testmodels.CalculatorModel;
 
 /** @author Teemu Kanstren */

@@ -28,7 +28,8 @@ import java.lang.annotation.Target;
  * is ignored. If both "value" and "name" are defined, "name" dominates. If neither is defined, an error is given.
  * <p/>
  * The weight attribute allows one to give weights to transitions that define how often that transitions should be
- * taken when several are available. Weighted algorithms ({@link osmo.tester.generator.algorithm.WeightedBalancingAlgorithm})
+ * taken when several are available. Weighted algorithms (succh as
+ * {@link osmo.tester.generator.algorithm.WeightedBalancingAlgorithm})
  * take available transitions based on their weight. The more weight the transition has, the more often it is taken.
  * If transitions "A" is given weight 1 and transitions B "2", then B is taken twice as often as A. A transition
  * without a weight defined has a default weight of 10.

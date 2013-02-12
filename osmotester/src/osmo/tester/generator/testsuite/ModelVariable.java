@@ -2,13 +2,13 @@ package osmo.tester.generator.testsuite;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 
 /**
  * Represents information for a data variable in the test model.
  * Defines the name of the variable and a set of values for the variable.
- * Used both to define data coverage values and also to define covered values.
- * The name of the variable typically refers to the name used for the variable in the source code.
+ * Used both to define target coverage values and also keep a list of the covered values.
+ * The name of the variable typically refers to the name used for the variable in the source code
+ * but can also be anything the field representation object reports.
  *
  * @author Teemu Kanstren
  */
@@ -16,13 +16,18 @@ public class ModelVariable {
   /** The name of the variable. */
   private final String name;
   /** The values to cover or covered. Must be list to allow several coverage requirements for single value. */
-  private Collection<Object> values = new ArrayList<>();
+  private final Collection<Object> values;
 
   public ModelVariable(String name) {
     this.name = name;
+//    values = new LinkedHashSet<>();
+    values = new ArrayList<>();
   }
 
-  public void addValue(Object value) {
+  public void addValue(Object value, boolean merge) {
+    if (merge && values.contains(value)) {
+      return;
+    }
     values.add(value);
   }
 
@@ -33,7 +38,7 @@ public class ModelVariable {
   public Collection<Object> getValues() {
     return values;
   }
-  
+
   public Object getValue() {
     return values.iterator().next();
   }
@@ -43,8 +48,10 @@ public class ModelVariable {
    *
    * @param testVar The variable from which to add all values from.
    */
-  public void addAll(ModelVariable testVar) {
-    values.addAll(testVar.values);
+  public void addAll(ModelVariable testVar, boolean merge) {
+    for (Object value : testVar.values) {
+      addValue(value, merge);
+    }
   }
 
   /**
@@ -57,14 +64,19 @@ public class ModelVariable {
     return values.contains(value);
   }
 
-  /** Enables merging, meaning that if a single value is added several times, it will only be present once. */
-  public void enableMerging() {
-    if (values instanceof HashSet) {
-      //we are already merging so skip this
-      return;
-    }
-    Collection<Object> temp = values;
-    values = new HashSet<>();
-    values.addAll(temp);
+  /**
+   * Creates a new instance, copying object attributes to the clone.
+   *
+   * @return The value clone.
+   */
+  public ModelVariable cloneMe() {
+    ModelVariable clone = new ModelVariable(name);
+    clone.values.addAll(values);
+    return clone;
+  }
+
+  @Override
+  public String toString() {
+    return name + "(" + values + ")";
   }
 }

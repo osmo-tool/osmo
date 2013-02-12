@@ -1,5 +1,7 @@
 package osmo.common.log;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.logging.Formatter;
@@ -21,6 +23,8 @@ public class LogFormatter extends Formatter {
   private Object args[] = new Object[1];
   /** We also use a constant date object to reduce runtime overhead. */
   private Date date = new Date();
+  private StringWriter sw = new StringWriter();
+  private PrintWriter pw = new PrintWriter(sw);
 
   public LogFormatter() {
     formatter = new MessageFormat(format);
@@ -37,6 +41,11 @@ public class LogFormatter extends Formatter {
       line.append(" ");
       line.append(record.getLoggerName()).append(" - ");
       line.append(formatMessage(record)).append("\n");
+      Throwable thrown = record.getThrown();
+      if (thrown != null) {
+        thrown.printStackTrace(pw);
+        line.append(sw.toString());
+      }
     } catch (Exception e) {
       e.printStackTrace();
     }

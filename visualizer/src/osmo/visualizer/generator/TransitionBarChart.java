@@ -8,18 +8,17 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.GenerationListener;
-import osmo.tester.generator.endcondition.Length;
-import osmo.tester.gui.manualdrive.ManualAlgorithm;
-import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
-import osmo.tester.optimizer.TestCoverage;
+import osmo.tester.suiteoptimizer.coverage.ScoreConfiguration;
+import osmo.tester.suiteoptimizer.coverage.TestCoverage;
 
-import javax.swing.*;
-import java.awt.*;
-import java.io.PrintStream;
+import javax.swing.JFrame;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.util.Collection;
 import java.util.Map;
 
 /** @author Teemu Kanstren */
@@ -72,17 +71,17 @@ public class TransitionBarChart implements GenerationListener {
 
   @Override
   public void testEnded(TestCase test) {
-    TestCoverage tc = new TestCoverage(test);
+    TestCoverage tc = new TestCoverage(test, new ScoreConfiguration());
     String name = "Test"+nextId++;
     data.setValue(tc.getTransitions().size(), "Transitions", name);
     data.setValue(tc.getPairs().size(), "Pairs", name);
     data.setValue(tc.getRequirements().size(), "Requirements", name);
     data.setValue(tc.getSingles().size(), "Singles", name);
-    Map<String,ModelVariable> variables = tc.getVariables();
+    Map<String,Collection<String>> variables = tc.getVariables();
     data.setValue(variables.size(), "Variables", name);
     int values = 0;
-    for (ModelVariable variable : variables.values()) {
-      values += variable.getValues().size();
+    for (Collection<String> variable : variables.values()) {
+      values += variable.size();
     }
     data.setValue(values, "Values", name);
   }

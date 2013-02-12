@@ -21,6 +21,7 @@ public class GenerationTests {
   @Before
   public void setup() {
     OSMOConfiguration.reset();
+    OSMOConfiguration.setSeed(55);
     old = System.out;
     bos = new ByteArrayOutputStream();
     PrintStream out = new PrintStream(bos);
@@ -51,7 +52,7 @@ public class GenerationTests {
     config.add(counterReq);
     config.setAlgorithm("random");
     config.setModelFactory("osmo.tester.scripting.slicing.TestModelFactory");
-    config.setSeed(233);
+    OSMOConfiguration.setSeed(233);
     SlicerMain.execute(config);
     assertResult("expected-generate1.txt");
   }
@@ -66,7 +67,7 @@ public class GenerationTests {
     config.add(counterReq);
     config.setAlgorithm("random");
     config.setModelFactory("osmo.tester.scripting.slicing.TestModelFactory");
-    config.setSeed(233);
+    OSMOConfiguration.setSeed(233);
     SlicerMain.execute(config);
     assertResult("expected-generate2.txt");
   }
@@ -74,11 +75,11 @@ public class GenerationTests {
   @Test
   public void scriptedWithUndefinedValues() throws Exception {
     SlicingConfiguration config = new SlicingConfiguration();
-    config.addValue("set", "1");
-    config.addValue("set", "2");
+    config.addValue("named-set", "1");
+    config.addValue("named-set", "2");
     config.setAlgorithm("random");
     config.setModelFactory("osmo.tester.scripting.slicing.TestModelFactory2");
-    config.setSeed(233);
+    OSMOConfiguration.setSeed(324);
     SlicerMain.execute(config);
     assertResult("expected-generate5.txt");
   }
@@ -86,11 +87,11 @@ public class GenerationTests {
   @Test
   public void scriptedWithSetValues() throws Exception {
     SlicingConfiguration config = new SlicingConfiguration();
-    config.addValue("set", "v1");
-    config.addValue("set", "v2");
+    config.addValue("named-set", "v1");
+    config.addValue("named-set", "v2");
     config.setAlgorithm("random");
     config.setModelFactory("osmo.tester.scripting.slicing.TestModelFactory2");
-    config.setSeed(233);
+    OSMOConfiguration.setSeed(324);
     SlicerMain.execute(config);
     assertResult("expected-generate3.txt");
   }
@@ -102,9 +103,9 @@ public class GenerationTests {
     config.setListener(listener);
     config.setAlgorithm("random");
     config.setModelFactory("osmo.tester.scripting.slicing.TestModelFactory2");
-    config.setSeed(233);
+    OSMOConfiguration.setSeed(324);
     SlicerMain.execute(config);
-    assertEquals("Listener capture in slicing", "[suite-start, start, g:first, g:second, g:third, t:first, g:first, g:second, g:third, t:second, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, end, start, g:first, g:second, g:third, t:first, g:first, g:second, g:third, t:second, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, end, start, g:first, g:second, g:third, t:first, g:first, g:second, g:third, t:second, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, end, suite-end]", listener.getSteps().toString());
+    assertEquals("Listener capture in slicing", "[suite-start, start, g:first, g:second, g:third, t:first, g:first, g:second, g:third, t:second, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, end, start, g:first, g:second, g:third, t:first, g:first, g:second, g:third, t:second, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, end, start, g:first, g:second, g:third, t:first, g:first, g:second, g:third, t:second, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, g:first, g:second, g:third, t:third, end, suite-end]", listener.getSteps().toString());
     assertResult("expected-generate4.txt");
   }
 }

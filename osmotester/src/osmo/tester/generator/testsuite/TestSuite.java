@@ -1,6 +1,10 @@
 package osmo.tester.generator.testsuite;
 
+import osmo.common.log.Logger;
 import osmo.tester.model.FSMTransition;
+import osmo.tester.model.Requirements;
+import osmo.tester.suiteoptimizer.coverage.ScoreConfiguration;
+import osmo.tester.suiteoptimizer.coverage.TestCoverage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,19 +17,39 @@ import java.util.Map;
  * @author Teemu Kanstren, Olli-Pekka Puolitaival
  */
 public class TestSuite {
+  private static Logger log = new Logger(TestSuite.class);
   /** The current test being generated. */
   private TestCase current = null;
   /** The test cases generated so far, excluding the current test case. */
   private final List<TestCase> testCases = new ArrayList<>();
   /** List of covered transitions and number of how many times it exist in the test suite */
-  private Map<FSMTransition, Integer> transitionCoverage = new HashMap<>();
+  private Map<String, Integer> transitionCoverage = new HashMap<>();
+  /** If true, current test generation should end when possible. */
   private boolean shouldEndTest = false;
+  /** If true, test suite generation should end when possible. */
   private boolean shouldEndSuite = false;
+  /** The list of requirements that needs to be covered. */
+  private Requirements requirements;
+  /** The coverage for this test suite. */
+  private TestCoverage coverage;
+  private String state = null;
+
+  public TestSuite() {
+  }
+
+  public void init(ScoreConfiguration scoreConfig) {
+    coverage = new TestCoverage(scoreConfig);
+  }
+
+  public void setState(String state) {
+    this.state = state;
+  }
 
   /** Start a new test case. */
-  public void startTest() {
-    current = new TestCase();
+  public TestCase startTest() {
+    current = new TestCase(this);
     current.setStartTime(System.currentTimeMillis());
+    return current;
   }
 
   /**
@@ -42,7 +66,30 @@ public class TestSuite {
   public void endTest() {
     current.setEndTime(System.currentTimeMillis());
     testCases.add(current);
+    coverage.addTestCoverage(current);
     current = null;
+  }
+
+  /**
+   * Adds the given tests to the suite, including coverage.
+   *
+   * @param tests The test to add to the suite.
+   */
+  public void addTestCases(List<TestCase> tests) {
+    testCases.addAll(tests);
+    for (TestCase test : tests) {
+      coverage.addTestCoverage(test);
+    }
+  }
+
+  /**
+   * Adds the given test to the suite, including coverage.
+   *
+   * @param test to add.
+   */
+  public void addTestCase(TestCase test) {
+    testCases.add(test);
+    coverage.addTestCoverage(test);
   }
 
   /**
@@ -53,11 +100,11 @@ public class TestSuite {
    */
   public TestStep addStep(FSMTransition transition) {
     TestStep step = current.addStep(transition);
-    Integer count = transitionCoverage.get(transition);
+    Integer count = transitionCoverage.get(transition.getStringName());
     if (count == null) {
       count = 0;
     }
-    transitionCoverage.put(transition, count + 1);
+    transitionCoverage.put(transition.getStringName(), count + 1);
     return step;
   }
 
@@ -67,7 +114,10 @@ public class TestSuite {
    * @param requirement The requirement identifier.
    */
   public void covered(String requirement) {
-    current.covered(requirement);
+    if (current != null) {
+      //this is a special case when an optimizer updates the set in the end
+      current.covered(requirement);
+    }
   }
 
   /**
@@ -126,7 +176,7 @@ public class TestSuite {
    *
    * @return The transitions with coverage number
    */
-  public Map<FSMTransition, Integer> getTransitionCoverage() {
+  public Map<String, Integer> getTransitionCoverage() {
     return transitionCoverage;
   }
 
@@ -171,7 +221,7 @@ public class TestSuite {
   private boolean testContains(TestCase testCase, FSMTransition transition) {
     List<TestStep> steps = testCase.getSteps();
     for (TestStep step : steps) {
-      if (step.getTransition().equals(transition)) {
+      if (step.getName().equals(transition.getStringName())) {
         return true;
       }
     }
@@ -183,10 +233,11 @@ public class TestSuite {
    *
    * @return [variable name, variable coverage] mapping.
    */
-  public Map<String, ModelVariable> getVariables() {
+  public Map<String, ModelVariable> getStateVariables() {
     Map<String, ModelVariable> variables = new HashMap<>();
-    for (TestCase test : testCases) {
-      Map<String, ModelVariable> testVariables = test.getVariables();
+    List<TestCase> tests = getAllTestCases();
+    for (TestCase test : tests) {
+      Map<String, ModelVariable> testVariables = test.getStateVariables();
       for (ModelVariable testVar : testVariables.values()) {
         String name = testVar.getName();
         ModelVariable var = variables.get(name);
@@ -194,7 +245,48 @@ public class TestSuite {
           var = new ModelVariable(name);
           variables.put(name, var);
         }
-        var.addAll(testVar);
+        var.addAll(testVar, false);
+      }
+    }
+    return variables;
+  }
+
+  /**
+   * Coverage of variables and their values for all test cases in this test suite.
+   *
+   * @return [variable name, variable coverage] mapping.
+   */
+  public Map<String, ModelVariable> getTestVariables() {
+    Map<String, ModelVariable> variables = new HashMap<>();
+    List<TestCase> tests = getAllTestCases();
+    for (TestCase test : tests) {
+      Map<String, ModelVariable> testVariables = test.getTestVariables();
+      for (ModelVariable testVar : testVariables.values()) {
+        String name = testVar.getName();
+        ModelVariable var = variables.get(name);
+        if (var == null) {
+          var = new ModelVariable(name);
+          variables.put(name, var);
+        }
+        var.addAll(testVar, true);
+      }
+    }
+    return variables;
+  }
+
+  public Map<String, ModelVariable> getStepVariables() {
+    Map<String, ModelVariable> variables = new HashMap<>();
+    List<TestCase> tests = getAllTestCases();
+    for (TestCase test : tests) {
+      Map<String, ModelVariable> testVariables = test.getStepVariables();
+      for (ModelVariable testVar : testVariables.values()) {
+        String name = testVar.getName();
+        ModelVariable var = variables.get(name);
+        if (var == null) {
+          var = new ModelVariable(name);
+          variables.put(name, var);
+        }
+        var.addAll(testVar, false);
       }
     }
     return variables;
@@ -214,5 +306,36 @@ public class TestSuite {
 
   public void setShouldEndSuite(boolean shouldEndSuite) {
     this.shouldEndSuite = shouldEndSuite;
+  }
+
+  public void initRequirements(Requirements requirements) {
+    if (requirements == null) {
+      log.debug("No requirements object defined. Creating new.");
+      requirements = new Requirements();
+    }
+    this.requirements = requirements;
+    requirements.setTestSuite(this);
+  }
+
+  public Requirements getRequirements() {
+    return requirements;
+  }
+
+  public TestCoverage getCoverage() {
+    return coverage;
+  }
+
+  /**
+   * Add the given value to the variable with the given name for the current step.
+   *
+   * @param inputName The name of the variable.
+   * @param value     The value to add for the variable.
+   */
+  public void addValue(String inputName, Object value) {
+    current.addVariableValue(inputName, value, false);
+  }
+
+  public String getState() {
+    return state;
   }
 }

@@ -12,6 +12,8 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
+import osmo.tester.model.Requirements;
+import osmo.tester.parser.ParserResult;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -30,32 +32,39 @@ import java.util.List;
 public class MainGenerator {
   private static Logger log = new Logger(MainGenerator.class);
   /** The test generation configuration. */
-  private final OSMOConfiguration config;
-  /** Test generation history. */
-  private TestSuite suite;
-  /** The list of listeners to be notified of new events as generation progresses. */
-  private GenerationListenerList listeners;
-  /** This is set when the test should end but @EndState is not yet achieved to signal ending ASAP. */
-  private boolean testEnding = false;
+  protected final OSMOConfiguration config;
   /** The parsed overall test model. */
-  private final FSM fsm;
+  protected final FSM fsm;
+  /** The list of listeners to be notified of new events as generation progresses. */
+  protected GenerationListenerList listeners;
+  /** Test generation history. */
+  protected TestSuite suite;
+  /** Requirements for model objects. */
+  private Requirements reqs;
+  /** This is set when the test should end but @EndState is not yet achieved to signal ending ASAP. */
+  protected boolean testEnding = false;
   /** Keeps track of overall number of tests generated. */
   private static int testCount = 0;
+  private String state = null;
 
   /**
    * Constructor.
    *
-   * @param fsm    Describes the test model in an FSM format.
+   * @param result Parsed model elements.
    * @param config The configuration for test generation parameters.
    */
-  public MainGenerator(FSM fsm, OSMOConfiguration config) {
-    this.fsm = fsm;
+  public MainGenerator(TestSuite suite, ParserResult result, OSMOConfiguration config) {
+    this.fsm = result.getFsm();
+    this.suite = suite;
+    this.reqs = result.getRequirements();
     this.config = config;
     this.listeners = config.getListeners();
   }
 
   /** Invoked to start the test generation using the configured parameters. */
   public void generate() {
+    log.debug("starting generation");
+    invokeAll(fsm.getGenerationEnablers());
     initSuite();
     while (!checkSuiteEndConditions() && !suite.shouldEndSuite()) {
       suite.setShouldEndTest(false);
@@ -64,30 +73,12 @@ public class MainGenerator {
     endSuite();
   }
 
-  /** Initializes test generation. Should be called before any tests are generated. */
-  public void initSuite() {
-    suite = fsm.getSuite();
-    log.debug("Starting test suite generation");
-    beforeSuite();
-  }
-
-  /** Handles suite shutdown. Should be called after all tests have been generated. */
-  public void endSuite() {
-    afterSuite();
-    log.debug("Finished test suite generation");
-  }
-
   /**
    * Generates a new test case from the test model.
    *
    * @return The generated test case.
    */
   public TestCase nextTest() {
-    for (EndCondition ec : config.getTestCaseEndConditions()) {
-      //re-initialize end conditions before new tests to remove previous test state
-      ec.init(fsm);
-    }
-    testCount++;
     log.debug("Starting new test generation");
     beforeTest();
     fsm.initSearchableInputs(config);
@@ -129,23 +120,6 @@ public class MainGenerator {
     return test;
   }
 
-  private RuntimeException unwrap(RuntimeException e) {
-    Throwable cause = e.getCause();
-    if (cause != null) {
-      if (e.getClass().equals(OSMOException.class)) {
-        if (cause.getClass().equals(InvocationTargetException.class)) {
-          cause = cause.getCause();
-          if (cause.getClass().equals(RuntimeException.class)) {
-            return (RuntimeException) cause;
-          }
-          //hack to avoid Java reflection + compiler checking incompatibilities
-          return new RuntimeException(cause);
-        }
-      }
-    }
-    return e;
-  }
-
   private boolean nextStep() {
     List<FSMTransition> enabled = getEnabled();
     if (enabled.size() == 0) {
@@ -162,7 +136,7 @@ public class MainGenerator {
       return false;
     }
     log.debug("Taking transition " + next.getName());
-    execute(fsm, next);
+    execute(next);
     if (checkModelEndConditions()) {
       //stop this test case generation if any end condition returns true
       return false;
@@ -171,11 +145,102 @@ public class MainGenerator {
   }
 
   /**
+   * Executes the given transition on the given model.
+   *
+   * @param transition The transition to be executed.
+   */
+  public void execute(FSMTransition transition) {
+    updateState(null);
+
+    transition.reset();
+    //we have to add this first or it will produce failures..
+    TestStep step = suite.addStep(transition);
+    //store state variable values for pre-methods
+    transition.storeState(fsm);
+    //store into test step the current state
+    step.storeStateBefore(fsm);
+    invokeAll(transition.getPreMethods(), transition.getPrePostParameter(), "pre", transition);
+    listeners.transition(transition);
+    InvocationTarget target = transition.getTransition();
+    target.invoke();
+
+    updateState(step);
+    //re-store state into transition to update parameters for post-methods
+    transition.storeState(fsm);
+    invokeAll(transition.getPostMethods(), transition.getPrePostParameter(), "post", transition);
+    //store into test step the current state
+    step.storeStateAfter(fsm);
+  }
+  
+  private void updateState(TestStep step) {
+    if (fsm.getStateDescription() != null) {
+      state = (String) fsm.getStateDescription().invoke();
+      if (state == null) {
+        throw new NullPointerException("Model state is null. Now allowed.");
+      }
+      suite.setState(state);
+      if (step != null) {
+        step.setState(state);
+      }
+      log.debug("new state:"+state);
+    }
+  }
+
+  /** Handles suite shutdown. Should be called after all tests have been generated. */
+  public void endSuite() {
+    afterSuite();
+    log.debug("Finished test suite generation");
+  }
+
+  /** @return True if there are @EndState defined and they are allowed to stop. */
+  private boolean checkEndStates() {
+    Collection<InvocationTarget> endStates = fsm.getEndStates();
+    for (InvocationTarget es : endStates) {
+      Boolean endable = (Boolean) es.invoke();
+      if (endable) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Invokes the given set of methods on the target test object.
+   *
+   * @param targets The methods to be invoked.
+   */
+  public void invokeAll(Collection<InvocationTarget> targets) {
+    for (InvocationTarget target : targets) {
+      target.invoke();
+    }
+  }
+
+  /**
+   * Invokes the given set of methods on the target test object.
+   *
+   * @param targets    The methods to be invoked.
+   * @param arg        Argument to methods invoked.
+   * @param element    Type of model element (pre or post)
+   * @param transition Transition to which the invocations are related.
+   */
+  protected void invokeAll(Collection<InvocationTarget> targets, Object arg, String element, FSMTransition transition) {
+    for (InvocationTarget target : targets) {
+      if (element.equals("pre")) {
+        listeners.pre(transition);
+      }
+      if (element.equals("post")) {
+        listeners.post(transition);
+      }
+      target.invoke(arg);
+    }
+  }
+
+  /**
    * Checks if suite generation should stop.
    *
    * @return True if should stop.
    */
-  private boolean checkSuiteEndConditions() {
+  protected boolean checkSuiteEndConditions() {
     boolean shouldEnd = true;
     for (EndCondition ec : config.getSuiteEndConditions()) {
       boolean temp = ec.endSuite(suite, fsm);
@@ -194,7 +259,7 @@ public class MainGenerator {
    *
    * @return True if this test generation should stop.
    */
-  private boolean checkTestCaseEndConditions() {
+  protected boolean checkTestCaseEndConditions() {
     if (testEnding) {
       //allow ending only if end state annotations are not present or return true
       return checkEndStates();
@@ -220,55 +285,60 @@ public class MainGenerator {
     return true;
   }
 
-  /** @return True if there are @EndState defined and they are allowed to stop. */
-  private boolean checkEndStates() {
-    Collection<InvocationTarget> endStates = fsm.getEndStates();
-    for (InvocationTarget es : endStates) {
-      Boolean endable = (Boolean) es.invoke();
-      if (endable) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   /**
-   * Calls every defind end condition and if any return true, also returns true. Otherwise, false.
+   * Calls every defined end condition and if any return true, also returns true. Otherwise, false.
    *
    * @return true if current test case (not suite) generation should be stopped.
    */
-  private boolean checkModelEndConditions() {
+  protected boolean checkModelEndConditions() {
     Collection<InvocationTarget> endConditions = fsm.getEndConditions();
     for (InvocationTarget ec : endConditions) {
       Boolean result = (Boolean) ec.invoke();
       if (result) {
+        log.debug("model @EndCondition signalled to stop");
         return true;
       }
     }
     return false;
   }
 
-  private void beforeSuite() {
+  public void initSuite() {
+    if (suite == null) {
+      log.debug("No suite object defined. Creating new.");
+      //user the setSuite method to also initialize the suite object missing state
+      suite = new TestSuite();
+    }
+    suite.reset();
+    suite.initRequirements(reqs);
+    //re-get since suite might have initialized it if it was null
+    reqs = suite.getRequirements();
+    fsm.setRequirements(reqs);
     listeners.suiteStarted(suite);
     Collection<InvocationTarget> befores = fsm.getBeforeSuites();
     invokeAll(befores);
   }
 
-  private void afterSuite() {
+  protected void afterSuite() {
     Collection<InvocationTarget> afters = fsm.getAfterSuites();
     invokeAll(afters);
     listeners.suiteEnded(suite);
   }
 
-  private void beforeTest() {
+  public TestCase beforeTest() {
+    testCount++;
+    for (EndCondition ec : config.getTestCaseEndConditions()) {
+      //re-initialize end conditions before new tests to remove previous test state
+      ec.init(fsm);
+    }
     //update suite
-    suite.startTest();
+    TestCase test = suite.startTest();
     listeners.testStarted(suite.getCurrentTest());
     Collection<InvocationTarget> befores = fsm.getBefores();
     invokeAll(befores);
+    return test;
   }
 
-  private void afterTest() {
+  public void afterTest() {
     Collection<InvocationTarget> afters = fsm.getAfters();
     invokeAll(afters);
     TestCase current = suite.getCurrentTest();
@@ -278,35 +348,9 @@ public class MainGenerator {
     testEnding = false;
   }
 
-  /**
-   * Invokes the given set of methods on the target test object.
-   *
-   * @param targets The methods to be invoked.
-   */
-  private void invokeAll(Collection<InvocationTarget> targets) {
-    for (InvocationTarget target : targets) {
-      target.invoke();
-    }
-  }
-
-  /**
-   * Invokes the given set of methods on the target test object.
-   *
-   * @param targets    The methods to be invoked.
-   * @param arg        Argument to methods invoked.
-   * @param element    Type of model element (pre or post)
-   * @param transition Transition to which the invocations are related.
-   */
-  private void invokeAll(Collection<InvocationTarget> targets, Object arg, String element, FSMTransition transition) {
-    for (InvocationTarget target : targets) {
-      if (element.equals("pre")) {
-        listeners.pre(transition);
-      }
-      if (element.equals("post")) {
-        listeners.post(transition);
-      }
-      target.invoke(arg);
-    }
+  /** Resets the suite, removing references to any generated tests. */
+  public void resetSuite() {
+    suite.reset();
   }
 
   /**
@@ -317,7 +361,7 @@ public class MainGenerator {
    *
    * @return The list of enabled {@link osmo.tester.annotation.Transition} methods.
    */
-  private List<FSMTransition> getEnabled() {
+  public List<FSMTransition> getEnabled() {
     List<FSMTransition> enabled = new ArrayList<>();
     enabled.addAll(fsm.getTransitions());
     //filter out all non-wanted transitions
@@ -341,38 +385,37 @@ public class MainGenerator {
     return enabled;
   }
 
-  /**
-   * Executes the given transition on the given model.
-   *
-   * @param fsm        The FSM model to which the transition belongs.
-   * @param transition The transition to be executed.
-   */
-  public void execute(FSM fsm, FSMTransition transition) {
-    transition.reset();
-    //we have to add this first or it will produce failures..
-    TestStep step = suite.addStep(transition);
-    //store state variable values for pre-methods
-    transition.storeState(fsm);
-    //store into test step the current state
-    step.storeStateBefore(fsm);
-    invokeAll(transition.getPreMethods(), transition.getPrePostParameter(), "pre", transition);
-    listeners.transition(transition);
-    InvocationTarget target = transition.getTransition();
-    target.invoke();
-    //store into test step the current state
-    step.storeStateAfter(fsm);
-    //re-store state into transition to update parameters for post-methods
-    transition.storeState(fsm);
-    invokeAll(transition.getPostMethods(), transition.getPrePostParameter(), "post", transition);
-  }
-  
-  /** Resets the suite, removing references to any generated tests. */
-  public void resetSuite() {
-    suite.reset();
+  protected RuntimeException unwrap(RuntimeException e) {
+    Throwable cause = e.getCause();
+    if (cause != null) {
+      if (e.getClass().equals(OSMOException.class)) {
+        if (cause.getClass().equals(InvocationTargetException.class)) {
+          cause = cause.getCause();
+          if (cause.getClass().equals(RuntimeException.class)) {
+            return (RuntimeException) cause;
+          }
+          //hack to avoid Java reflection + compiler checking incompatibilities
+          return new RuntimeException(cause);
+        }
+      }
+    }
+    return e;
   }
 
   /** @return Number of tests generated by this generator. Not affected by suite reset. */
   public int getTestCount() {
     return testCount;
+  }
+
+  public TestSuite getSuite() {
+    return suite;
+  }
+
+  public TestCase getCurrentTest() {
+    return suite.getCurrentTest();
+  }
+
+  public FSM getFsm() {
+    return fsm;
   }
 }

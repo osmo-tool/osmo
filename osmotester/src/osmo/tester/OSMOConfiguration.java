@@ -1,9 +1,7 @@
 package osmo.tester;
 
-import osmo.common.TestUtils;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.GenerationListenerList;
-import osmo.tester.generator.Observer;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.endcondition.And;
@@ -12,17 +10,18 @@ import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.Probability;
 import osmo.tester.generator.filter.TransitionFilter;
 import osmo.tester.model.FSM;
+import osmo.tester.model.ModelFactory;
 import osmo.tester.model.ScriptedValueProvider;
+import osmo.tester.model.dataflow.DataGenerationStrategy;
 import osmo.tester.model.dataflow.SearchableInput;
-import osmo.tester.model.dataflow.Text;
 import osmo.tester.model.dataflow.ValueSet;
-import osmo.tester.model.dataflow.serialization.Deserializer;
 import osmo.tester.parser.ModelObject;
+import osmo.tester.parser.ParserResult;
+import osmo.tester.suiteoptimizer.coverage.ScoreConfiguration;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,7 +29,7 @@ import java.util.Map;
  *
  * @author Teemu Kanstren
  */
-public class OSMOConfiguration {
+public class OSMOConfiguration implements ModelFactory {
   /** The set of test model objects, given by the user. */
   private final Collection<ModelObject> modelObjects = new ArrayList<>();
   /** When do we stop generating the overall test suite? (stopping all test generation). Ignored if junitLength is set. */
@@ -54,10 +53,24 @@ public class OSMOConfiguration {
   /** Should we try to throw original exception if model throws (remove OSMO Tester trace from the top)? */
   private boolean unwrapExceptions = true;
   /** Seed to be used for test generation. */
-  private Long seed = TestUtils.getRandom().getSeed();
+  private static Long seed = null;
   /** Serialized value options for defined variables. */
   private static Map<String, ValueSet<String>> slices = new HashMap<>();
+  /** Is the user in manual control? */
   private static boolean manual = false;
+  private ScoreConfiguration scoreConfig = new ScoreConfiguration();
+
+  public ScoreConfiguration getScoreConfig() {
+    return scoreConfig;
+  }
+
+  public void setScoreConfig(ScoreConfiguration scoreConfig) {
+    this.scoreConfig = scoreConfig;
+  }
+
+  public OSMOConfiguration() {
+
+  }
 
   /**
    * Adds a new model object, to be composed by OSMO to a single internal model along with other model objects.
@@ -79,7 +92,7 @@ public class OSMOConfiguration {
     modelObjects.add(new ModelObject(prefix, modelObject));
   }
 
-  public Collection<ModelObject> getModelObjects() {
+  public Collection<ModelObject> createModelObjects() {
     return modelObjects;
   }
 
@@ -198,14 +211,15 @@ public class OSMOConfiguration {
    * Initializes test generation configuration with the model to be used in test generation.
    * Includes initializing parameters for algorithms, end conditions, listeners, ..
    *
-   * @param fsm The model that will be used in generation.
+   * @param parserResult The parsing results.
    */
-  public void init(FSM fsm) {
+  public void check(ParserResult parserResult) {
     if (algorithm == null) {
       algorithm = new RandomAlgorithm();
     }
+    FSM fsm = parserResult.getFsm();
     fsm.initSearchableInputs(this);
-    algorithm.init(fsm);
+    algorithm.init(parserResult);
     for (EndCondition ec : suiteEndConditions) {
       ec.init(fsm);
     }
@@ -246,32 +260,23 @@ public class OSMOConfiguration {
     this.unwrapExceptions = unwrapExceptions;
   }
 
-  public long getSeed() {
+  public static long getSeed() {
+    if (seed == null) {
+      throw new IllegalStateException("Seed must be specified. Currently it is not.");
+    }
     return seed;
   }
 
-  public void setSeed(long seed) {
-    //we store and set the seed here as confusion might arise otherwise if using the methods from TestUtils before
-    //invoking OSMOTester.generate(). For example, to initialize model state (as in Calendar example).
-    this.seed = seed;
-    TestUtils.setSeed(seed);
+  public static void setSeed(long seed) {
+    OSMOConfiguration.seed = seed;
   }
 
   public static void setSlices(Map<String, ValueSet<String>> values) {
     slices = values;
   }
 
-  public static <T> ValueSet<T> getSlicesFor(String name, Deserializer<T> deserializer) {
-    ValueSet<String> set = slices.get(name);
-    if (set == null) {
-      return null;
-    }
-    List<String> options = set.getOptions();
-    ValueSet<T> result = new ValueSet<>();
-    for (String option : options) {
-      result.add(deserializer.deserialize(option));
-    }
-    return result;
+  public static ValueSet<String> getSlicesFor(String name) {
+    return slices.get(name);
   }
 
   public static void addSlice(String name, String value) {
@@ -284,17 +289,22 @@ public class OSMOConfiguration {
   }
 
   public static void reset() {
-    Observer.reset();
     slices = new HashMap<>();
     scripter = null;
+    manual = false;
   }
 
-  public static boolean checkGUI(SearchableInput si) {
+  public static void check(SearchableInput si) {
     if (manual == true) {
       si.enableGUI();
-      return true;
+      return;
     }
-    return false;
+    if (si.getSlices() != null) {
+      si.setStrategy(DataGenerationStrategy.SLICED);
+    }
+    if (scripter != null && scripter.getScripts().get(si.getName()) != null) {
+      si.setStrategy(DataGenerationStrategy.SCRIPTED);
+    }
   }
 
   public static void setManual(boolean manual) {

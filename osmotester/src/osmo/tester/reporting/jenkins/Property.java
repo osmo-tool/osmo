@@ -1,8 +1,14 @@
 package osmo.tester.reporting.jenkins;
 
-/** @author Teemu Kanstren */
+/**
+ * Represents a property for the Jenkins report, such as OS version.
+ *
+ * @author Teemu Kanstren
+ */
 public class Property {
+  /** Property name. */
   private final String name;
+  /** Property value. */
   private final String value;
 
   public Property(String name, String value) {

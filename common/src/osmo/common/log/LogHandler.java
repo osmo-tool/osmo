@@ -19,6 +19,9 @@ public class LogHandler extends Handler {
 
   @Override
   public void publish(LogRecord record) {
+    if (record.getLevel().intValue() < getLevel().intValue()) {
+      return;
+    }
     out.print(formatter.format(record));
   }
 

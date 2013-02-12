@@ -27,8 +27,8 @@ import java.util.Collection;
  * To use, add this as a listener to OSMO Tester and once generation is finished, call methods writeStepReport()
  * or writeTestReport() to produce a suitable report. The step report reports each test step as a different test case
  * in Jenkins. The test report reports test cases as Jenkins tests.
- * 
- * @author Teemu Kanstren 
+ *
+ * @author Teemu Kanstren
  */
 public class JenkinsReportGenerator implements GenerationListener {
   private static Logger log = new Logger(JenkinsReportGenerator.class);
@@ -47,7 +47,7 @@ public class JenkinsReportGenerator implements GenerationListener {
 
   /**
    * @param filename The name of the report file.
-   * @param steps If true, the report describes generated test steps as test cases, else generated tests as test cases.
+   * @param steps    If true, the report describes generated test steps as test cases, else generated tests as test cases.
    */
   public JenkinsReportGenerator(String filename, boolean steps) {
     this.filename = filename;
@@ -125,9 +125,7 @@ public class JenkinsReportGenerator implements GenerationListener {
     }
   }
 
-  /**
-   * Writes a test report where generated tests are reported as the actual test cases by Jenkins.
-   */
+  /** Writes a test report where generated tests are reported as the actual test cases by Jenkins. */
   public void writeTestReport() {
     String report = generateReport("tests");
     try {
@@ -141,7 +139,7 @@ public class JenkinsReportGenerator implements GenerationListener {
 
   /**
    * Generates a report for test steps.
-   * 
+   *
    * @return The generated report.
    */
   public String generateStepReport() {
@@ -150,7 +148,7 @@ public class JenkinsReportGenerator implements GenerationListener {
 
   /**
    * Generates a report for test cases.
-   * 
+   *
    * @return The generated report.
    */
   public String generateTestReport() {
@@ -163,7 +161,7 @@ public class JenkinsReportGenerator implements GenerationListener {
    * Apache Velocity is used to merge the template with generated tests.
    * Property "suite" contains the test suite generated.
    * Property "properties" contain miscellamous properties about test generation configuration.
-   * 
+   *
    * @param templateName The velocity template name to use for the report.
    * @return The generated report.
    */
@@ -190,7 +188,7 @@ public class JenkinsReportGenerator implements GenerationListener {
 
   /**
    * Fills in the generation configuration properties for reports.
-   * 
+   *
    * @return The properties of generator configuration.
    */
   private Collection<Property> fillProperties() {
@@ -211,7 +209,7 @@ public class JenkinsReportGenerator implements GenerationListener {
     for (GenerationListener listener : listeners) {
       properties.add(new Property(LISTENER, listener.getClass().getName()));
     }
-    Collection<ModelObject> modelObjects = config.getModelObjects();
+    Collection<ModelObject> modelObjects = config.createModelObjects();
     for (ModelObject mo : modelObjects) {
       String prefix = mo.getPrefix();
       String name = mo.getObject().getClass().getName();

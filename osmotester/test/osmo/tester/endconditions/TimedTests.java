@@ -17,7 +17,7 @@ import static junit.framework.Assert.*;
 public class TimedTests {
   private CalculatorModel calculator;
   private OSMOTester tester;
-  
+
   @Before
   public void setup() {
     calculator = new CalculatorModel();
@@ -34,7 +34,7 @@ public class TimedTests {
     long start = System.currentTimeMillis();
     tester.generate();
     long diff = System.currentTimeMillis() - start;
-    assertTrue("Time taken with 1000 millisecond end condition should be little over 1000, was "+diff, 1000 <= diff && diff <= 1200);
+    assertTrue("Time taken with 1000 millisecond end condition should be 1000-2000, was " + diff, 1000 <= diff && diff <= 2000);
     TestSuite suite = calculator.getHistory();
     List<TestCase> history = suite.getFinishedTestCases();
     assertEquals("Number of tests generated should be 1", 1, history.size());
@@ -48,7 +48,7 @@ public class TimedTests {
     tester.generate();
     long diff = System.currentTimeMillis() - start;
     //the suite can only end after a test has ended, so we still should get 1000 millis
-    assertTrue("Time taken with 1000 millisecond end condition should be close to 1000, was "+diff, 900 <= diff && diff <= 1100);
+    assertTrue("Time taken with 1000 millisecond end condition should be close to 1000, was " + diff, 1000 <= diff && diff <= 2000);
     TestSuite suite = calculator.getHistory();
     List<TestCase> history = suite.getFinishedTestCases();
     assertEquals("Number of tests generated should be 1", 1, history.size());
@@ -62,7 +62,7 @@ public class TimedTests {
     tester.generate();
     long diff = System.currentTimeMillis() - start;
     //the suite can only end after a test has ended, so we still should get 1000 millis
-    assertTrue("Time taken with 1000+1500 millisecond end condition should be little over 2000, was "+diff, 2000 <= diff && diff <= 2200);
+    assertTrue("Time taken with 1000+1500 millisecond end condition should be 2000-3200, was " + diff, 2000 <= diff && diff <= 3200);
     TestSuite suite = calculator.getHistory();
     List<TestCase> history = suite.getFinishedTestCases();
     assertEquals("Number of tests generated", 2, history.size());
@@ -76,7 +76,7 @@ public class TimedTests {
     tester.generate();
     long diff = System.currentTimeMillis() - start;
     //the suite can only end after a test has ended, so we still should get 1000 millis
-    assertTrue("Time taken with 1+2 second end condition should be close to 2000, was "+diff, 1900 <= diff && diff <= 2200);
+    assertTrue("Time taken with 1+2 second end condition should be close to 2000, was " + diff, 2000 <= diff && diff <= 3000);
     TestSuite suite = calculator.getHistory();
     List<TestCase> history = suite.getFinishedTestCases();
     assertEquals("Number of tests generated", 2, history.size());
@@ -87,7 +87,7 @@ public class TimedTests {
     try {
       tester.addTestEndCondition(new Time(-1, TimeUnit.SECONDS));
     } catch (IllegalArgumentException e) {
-      assertTrue("Error message should have bad value embedded (-1):"+e.getMessage(), e.getMessage().contains("-1"));
+      assertTrue("Error message should have bad value embedded (-1):" + e.getMessage(), e.getMessage().contains("-1"));
     }
     try {
       tester.addSuiteEndCondition(new Time(-2, TimeUnit.SECONDS));
@@ -95,5 +95,5 @@ public class TimedTests {
       assertTrue("Error message should have bad value embedded (-2):" + e.getMessage(), e.getMessage().contains("-2"));
     }
   }
-  
+
 }

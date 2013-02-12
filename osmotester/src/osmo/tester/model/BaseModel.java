@@ -26,7 +26,7 @@ public class BaseModel {
   protected TestCase test = null;
   /** The suite being generated. */
   @TestSuiteField
-  public TestSuite suite = new TestSuite();
+  public TestSuite suite = null;
   /** For defining requirements. */
   @RequirementsField
   protected Requirements req = new Requirements();

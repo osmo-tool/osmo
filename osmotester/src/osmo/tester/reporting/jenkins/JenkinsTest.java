@@ -7,10 +7,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/** 
+/**
  * Represents a separate test case for Jenkins reports.
- * 
- * @author Teemu Kanstren */
+ *
+ * @author Teemu Kanstren
+ */
 public class JenkinsTest {
   /** The set of steps in this test case. */
   private List<JenkinsStep> steps = new ArrayList<>();
@@ -19,9 +20,7 @@ public class JenkinsTest {
   /** ID for this test case. */
   private final int id;
 
-  /**
-   * Reset test ID's for testing.
-   */
+  /** Reset test ID's for testing. */
   public static void resetId() {
     nextId.set(0);
   }
@@ -32,7 +31,7 @@ public class JenkinsTest {
 
   /**
    * Add a step to this test case, in order.
-   * 
+   *
    * @param step The step to add.
    */
   public void add(JenkinsStep step) {
@@ -41,7 +40,7 @@ public class JenkinsTest {
 
   /**
    * The name of a test case is "TestN" where N is the test id.
-   * 
+   *
    * @return The name.
    */
   public String getName() {
@@ -50,7 +49,7 @@ public class JenkinsTest {
 
   /**
    * Provides a list of class names for model objects from which the different test steps have been executed.
-   * 
+   *
    * @return The string list.
    */
   public String getClassName() {
@@ -65,7 +64,7 @@ public class JenkinsTest {
 
   /**
    * The duration of the test case, equal to sum of duration for all steps.
-   * 
+   *
    * @return Test duration in seconds as string with 2 decimals.
    */
   public String getDuration() {

@@ -1,18 +1,21 @@
 package osmo.tester.testmodels;
 
+import osmo.common.NullPrintStream;
 import osmo.tester.OSMOTester;
 import osmo.tester.annotation.AfterSuite;
 import osmo.tester.annotation.AfterTest;
 import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
+import osmo.tester.annotation.ExplorationEnabler;
+import osmo.tester.annotation.GenerationEnabler;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
+import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.gui.manualdrive.ManualAlgorithm;
 import osmo.tester.model.Requirements;
 
 import java.io.PrintStream;
@@ -26,24 +29,30 @@ import java.io.PrintStream;
  */
 public class CalculatorModel {
   @RequirementsField
-  private Requirements requirement = new Requirements();
+  private Requirements req = new Requirements();
   @TestSuiteField
-  private TestSuite history = new TestSuite();
+  private TestSuite history = null;
   @Variable
   private int counter = 0;
   private int testCount = 1;
   private static final String REQ_INCREASE = "increase";
   private static final String REQ_DECREASE = "decrease";
   private PrintStream out;
+  private int sleepTime = 0;
 
   public CalculatorModel() {
     this(null);
   }
 
   public CalculatorModel(PrintStream out) {
-    requirement.add(REQ_INCREASE);
-    requirement.add(REQ_DECREASE);
+    req.add(REQ_INCREASE);
+    req.add(REQ_DECREASE);
     this.out = out;
+  }
+
+  public CalculatorModel(int sleepTime) {
+    this(null);
+    this.sleepTime = sleepTime;
   }
 
   public TestSuite getHistory() {
@@ -52,10 +61,23 @@ public class CalculatorModel {
 
   @BeforeSuite
   public void first() {
-    if (out == null) {
+    //stupid hack to capture the stream set in system.out by jenkinsreport that uses this model.. hacks on hacks and stuff dude
+    if (out != NullPrintStream.stream) {
       out = System.out;
     }
     out.println("first");
+  }
+
+  @ExplorationEnabler
+  public void enableExploration() {
+//    if (out == null) {out = NullPrintStream.stream;}
+    out = NullPrintStream.stream;
+  }
+
+  @GenerationEnabler
+  public void enableGeneration() {
+//    if (out == null) { out = System.out;}
+    out = System.out;
   }
 
   @AfterSuite
@@ -93,7 +115,12 @@ public class CalculatorModel {
 
   @Transition("decrease")
   public void decreaseState() {
-    requirement.covered(REQ_DECREASE);
+    try {
+      Thread.sleep(sleepTime);
+    } catch (InterruptedException e) {
+      //ignored
+    }
+    req.covered(REQ_DECREASE);
     counter--;
     out.println("- " + counter);
   }
@@ -105,14 +132,19 @@ public class CalculatorModel {
 
   @Transition("increase")
   public void increaseState() {
-    requirement.covered(REQ_INCREASE);
+    try {
+      Thread.sleep(sleepTime);
+    } catch (InterruptedException e) {
+      //ignored
+    }
+    req.covered(REQ_INCREASE);
     counter++;
     out.println("+ " + counter);
   }
 
   public static void main(String[] args) {
     OSMOTester tester = new OSMOTester(new CalculatorModel());
-    tester.setAlgorithm(new ManualAlgorithm());
+    tester.setAlgorithm(new RandomAlgorithm());
     tester.addTestEndCondition(new Length(100));
     tester.addSuiteEndCondition(new Length(100));
     tester.generate();

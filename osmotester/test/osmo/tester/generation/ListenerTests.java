@@ -44,6 +44,7 @@ public class ListenerTests {
 
   @Test
   public void generateTestModel2() {
+    listener.setTracePrePost(true);
     listener.addExpected("suite-start");
     listener.addExpected("start", "g:epixx", "g:hello", "g:world", "t:hello");
     listener.addExpected("g:epixx", "g:hello", "g:world", "t:world");

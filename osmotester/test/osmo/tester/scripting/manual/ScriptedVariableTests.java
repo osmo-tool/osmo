@@ -2,15 +2,15 @@ package osmo.tester.scripting.manual;
 
 import org.junit.Before;
 import org.junit.Test;
-import osmo.common.TestUtils;
 import osmo.tester.OSMOConfiguration;
-import osmo.tester.generator.Observer;
+import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.FSMTransition;
 import osmo.tester.model.ScriptedValueProvider;
-import osmo.tester.model.dataflow.DataGenerationStrategy;
+import osmo.tester.model.dataflow.Text;
 import osmo.tester.model.dataflow.ValueRange;
 import osmo.tester.model.dataflow.ValueRangeSet;
 import osmo.tester.model.dataflow.ValueSet;
-import osmo.tester.model.dataflow.Text;
 
 import static junit.framework.Assert.*;
 
@@ -24,14 +24,22 @@ public class ScriptedVariableTests {
 
   @Before
   public void start() {
-    Observer.setSuite(null);
-    set = new ValueSet<>(1, 4, 9);
-    range = new ValueRange<>(1, 5);
-    rangeSet = new ValueRangeSet<>();
-    text = new Text(8, 13);
+    TestSuite suite = new TestSuite();
+    TestCase test = suite.startTest();
+    test.addStep(new FSMTransition("test"));
 
-    TestUtils.setSeed(111);
+    OSMOConfiguration.setSeed(111);
     scripter = new ScriptedValueProvider();
+    OSMOConfiguration.setScripter(scripter);
+    set = new ValueSet<>(1, 4, 9);
+    set.setSuite(suite);
+    range = new ValueRange<>(1, 5);
+    range.setSuite(suite);
+    rangeSet = new ValueRangeSet<>();
+    rangeSet.setSuite(suite);
+    text = new Text(8, 13);
+    text.setSuite(suite);
+
     set.setName("bob");
     range.setName("alice");
     rangeSet.addPartition(1, 3);
@@ -45,7 +53,7 @@ public class ScriptedVariableTests {
   public void valueSetNoScript() {
     String expected = "4,9,4,9,9,4,1,9,4,1,9,1,9,9,4,9,1,9,9,1,";
     String actual = "";
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0 ; i < 20 ; i++) {
       actual += set.next() + ",";
     }
     assertEquals("Value from scripted set", expected, actual);
@@ -55,11 +63,9 @@ public class ScriptedVariableTests {
   public void valueSetValid() {
     scripter.addValue("bob", "4");
     scripter.addValue("bob", "9");
-    OSMOConfiguration.setScripter(scripter);
-    set.setStrategy(DataGenerationStrategy.SCRIPTED);
     String expected = "4,9,4,9,4,9,4,9,4,9,4,9,4,9,4,9,4,9,4,9,";
     String actual = "";
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0 ; i < 20 ; i++) {
       actual += set.next() + ",";
     }
     assertEquals("Value from scripted set", expected, actual);
@@ -69,9 +75,7 @@ public class ScriptedVariableTests {
   public void valueSetInvalid() {
     scripter.addValue("bob", "4");
     scripter.addValue("bob", "0");
-    OSMOConfiguration.setScripter(scripter);
-    set.setStrategy(DataGenerationStrategy.SCRIPTED);
-    assertEquals("Scripted defined value", 4, (int)set.next());
+    assertEquals("Scripted defined value", 4, (int) set.next());
     try {
       set.next();
       fail("Scripting values not in set should fail.");
@@ -84,7 +88,7 @@ public class ScriptedVariableTests {
   public void valueRangeNoScript() {
     String expected = "4,1,3,3,5,1,5,3,3,1,1,5,5,5,4,4,1,2,1,1,";
     String actual = "";
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0 ; i < 20 ; i++) {
       actual += range.next() + ",";
     }
     assertEquals("Value from scripted range", expected, actual);
@@ -94,11 +98,9 @@ public class ScriptedVariableTests {
   public void valueRangeValid() {
     scripter.addValue("alice", "2");
     scripter.addValue("alice", "4");
-    OSMOConfiguration.setScripter(scripter);
-    range.setStrategy(DataGenerationStrategy.SCRIPTED);
     String expected = "2,4,2,4,2,4,2,4,2,4,2,4,2,4,2,4,2,4,2,4,";
     String actual = "";
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0 ; i < 20 ; i++) {
       actual += range.next() + ",";
     }
     assertEquals("Value from scripted range", expected, actual);
@@ -108,8 +110,6 @@ public class ScriptedVariableTests {
   public void valueRangeInvalid() {
     scripter.addValue("alice", "2");
     scripter.addValue("alice", "0");
-    OSMOConfiguration.setScripter(scripter);
-    range.setStrategy(DataGenerationStrategy.SCRIPTED);
     range.next();
     try {
       range.next();
@@ -121,9 +121,9 @@ public class ScriptedVariableTests {
 
   @Test
   public void valueRangeSetNoScript() {
-    String expected = "9,9,104,3,7,73,75,9,3,91,9,2,2,88,7,76,74,97,8,82,";
+    String expected = "8,62,9,87,80,8,2,96,9,3,96,2,104,82,9,90,3,62,73,3,";
     String actual = "";
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0 ; i < 20 ; i++) {
       actual += rangeSet.next() + ",";
     }
     assertEquals("Value from scripted ValueRangeSet", expected, actual);
@@ -134,11 +134,9 @@ public class ScriptedVariableTests {
     scripter.addValue("john", "2");
     scripter.addValue("john", "69");
     scripter.addValue("john", "7");
-    OSMOConfiguration.setScripter(scripter);
-    rangeSet.setStrategy(DataGenerationStrategy.SCRIPTED);
     String expected = "2,69,7,2,69,7,2,69,7,2,69,7,2,69,7,2,69,7,2,69,";
     String actual = "";
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0 ; i < 20 ; i++) {
       actual += rangeSet.next() + ",";
     }
     assertEquals("Value from scripted ValueRangeSet", expected, actual);
@@ -149,8 +147,6 @@ public class ScriptedVariableTests {
     scripter.addValue("john", "2");
     scripter.addValue("john", "69");
     scripter.addValue("john", "11");
-    OSMOConfiguration.setScripter(scripter);
-    rangeSet.setStrategy(DataGenerationStrategy.SCRIPTED);
     rangeSet.next();
     rangeSet.next();
     try {
@@ -163,9 +159,9 @@ public class ScriptedVariableTests {
 
   @Test
   public void wordsNoScript() {
-    String expected = "ZB4åS}j(_,%O)+e5+JÅ],NL\"lGHa9Ö~\"ö=,xZ<:Ä2=~,+_&r{8 4^0w2,h<#V]C*?TOÅW,RvPwvh[.+0,;C,G3uDHä\"DL+.^,9*RWÄ9(Ef,_[_h%..s´HV\"g,2zh?2öwdTA,ÖhJr)tSz,w_6\\X4#,pÅ+,='Y=-Lk+,] l]'=mä8¨´[,=b&vI;}]0ÖI9,JQTxä^b\"id,QX1MehOg,=ö(T|7Szi,c~=,u-~,3,";
+    String expected = "hZB4åS}j(,_Å%O)+e5+J,Å]cNL\"lGH,a9Ö~\"ö=.xZ<:Ä,2=~)+_&r{8 4^,0w2'h<#V]C*?,TOÅW-RvP,wvh[.+0,;C,[G3uDHä\"D,L+.^H9*RWÄ9,(Ef~_[_h%.,.s´HV\"gQ,2zh?2öwdTAVÖh,Jr)tSz´w_6,\\X4#,pÅ+ö='Y,=-Lk+i] l]'=m,ä8¨´[ö=b,&vI;}]0ÖI9,=JQTxä^b\"i,dgQX1MehOgY,";
     String actual = "";
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0 ; i < 20 ; i++) {
       actual += text.next() + ",";
     }
     assertEquals("Value from scripted Text", expected, actual);
@@ -177,11 +173,9 @@ public class ScriptedVariableTests {
     scripter.addValue("zerowing", "all your");
     scripter.addValue("zerowing", "base are");
     scripter.addValue("zerowing", "belong to us!");
-    OSMOConfiguration.setScripter(scripter);
-    text.setStrategy(DataGenerationStrategy.SCRIPTED);
     String expected = "all your,base are,belong to us!,all your,base are,belong to us!,all your,base are,belong to us!,all your,base are,belong to us!,all your,base are,belong to us!,all your,base are,belong to us!,all your,base are,";
     String actual = "";
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0 ; i < 20 ; i++) {
       actual += text.next() + ",";
     }
     assertEquals("Value from scripted Text", expected, actual);
@@ -192,10 +186,8 @@ public class ScriptedVariableTests {
     scripter.addValue("zerowing", "all your");
     scripter.addValue("zerowing", "base");
     scripter.addValue("zerowing", "belong to us!");
-    OSMOConfiguration.setScripter(scripter);
-    text.setStrategy(DataGenerationStrategy.SCRIPTED);
     String word = text.next();
-    assertEquals("Generated word", "all your", word);    
+    assertEquals("Generated word", "all your", word);
     word = text.next();
     //this is less than minimum size
     assertEquals("Generated word", "base", word);

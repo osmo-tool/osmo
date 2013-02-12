@@ -13,9 +13,10 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Represents a test suite for generating Jenkins compatible test reports (in JUnit report format). 
- * 
- * @author Teemu Kanstren */
+ * Represents a test suite for generating Jenkins compatible test reports (in JUnit report format).
+ *
+ * @author Teemu Kanstren
+ */
 public class JenkinsSuite {
   /** Suite name. */
   private final String name;
@@ -52,9 +53,7 @@ public class JenkinsSuite {
     newErr = new PrintStream(err);
   }
 
-  /**
-   * Suite execution starts, initialize everything. 
-   */
+  /** Suite execution starts, initialize everything. */
   public void start() {
     //need to reset test id's for unit testing
     JenkinsTest.resetId();
@@ -65,9 +64,7 @@ public class JenkinsSuite {
     System.setErr(newErr);
   }
 
-  /**
-   * Suite execution finished, restore system state and store end time.
-   */
+  /** Suite execution finished, restore system state and store end time. */
   public void end() {
     endTime = System.currentTimeMillis();
     System.setOut(oldOut);
@@ -85,7 +82,7 @@ public class JenkinsSuite {
   public String getSystemErr() {
     return err.toString();
   }
-  
+
   public long getStartMillis() {
     if (testStartTime != null) {
       return testStartTime;
@@ -102,7 +99,7 @@ public class JenkinsSuite {
 
   /**
    * Provides suite duration as string representing seconds with 2 decimals.
-   * 
+   *
    * @return The duration string.
    */
   public String getDuration() {
@@ -113,7 +110,7 @@ public class JenkinsSuite {
 
   /**
    * Adds a test case to this suite.
-   * 
+   *
    * @param test The executed test.
    */
   public void add(TestCase test) {
@@ -122,9 +119,9 @@ public class JenkinsSuite {
     List<TestStep> steps = test.getSteps();
     for (TestStep step : steps) {
       //the name of the model object from which the test step was executed
-      String className = step.getTransition().getTransition().getModelObject().getClass().getName();
+      String className = step.getModelObjectName();
       //the name of the test step that was executed
-      String stepName = step.getTransition().getStringName();
+      String stepName = step.getName();
       //add the step to the jenkins test
       JenkinsStep jenkinsStep = new JenkinsStep(className, newTest, stepName);
       jenkinsStep.setStartTime(step.getStartTime());
@@ -148,7 +145,7 @@ public class JenkinsSuite {
 
   /**
    * Counts the total number of test steps in the suite.
-   * 
+   *
    * @return Total number of steps in all tests.
    */
   public int getStepCount() {
@@ -159,16 +156,12 @@ public class JenkinsSuite {
     return count;
   }
 
-  /**
-   * @return The number of tests in the suite.
-   */
+  /** @return The number of tests in the suite. */
   public int getTestCount() {
     return tests.size();
   }
 
-  /**
-   * @return Number of errors in test execution.
-   */
+  /** @return Number of errors in test execution. */
   public int getErrorCount() {
     int count = 0;
     for (JenkinsTest test : tests) {
@@ -184,16 +177,14 @@ public class JenkinsSuite {
 
   /**
    * JUnit reports make a distinction between failure and error. We only use errors so this is always zero.
-   * 
+   *
    * @return Always 0.
    */
   public int getFailureCount() {
     return 0;
   }
 
-  /**
-   * @return Suite test time formatted as a string.
-   */
+  /** @return Suite test time formatted as a string. */
   public String getStartTime() {
     return format.format(new Date(getStartMillis()));
   }

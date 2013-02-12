@@ -12,12 +12,12 @@ public class VectorSet extends ValueSet<String> {
   public static final String XML = "owasp/xml";
   public static final String XPATH = "owasp/xpath";
   public static final String XSS = "owasp/xss";
-  
+
   private final String name;
 
   public VectorSet(String name) {
     this.name = name;
-    String text = getResource(getClass(), name+".txt");
+    String text = getResource(getClass(), name + ".txt");
     text = unifyLineSeparators(text, "\n");
     String[] lines = text.split("\n");
     for (String line : lines) {

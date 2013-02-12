@@ -3,35 +3,46 @@ package osmo.tester.scripting.slicing;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOConfiguration;
+import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.FSMTransition;
 import osmo.tester.model.dataflow.CharSet;
 import osmo.tester.model.dataflow.DataGenerationStrategy;
+import osmo.tester.model.dataflow.Text;
 import osmo.tester.model.dataflow.ValueRange;
 import osmo.tester.model.dataflow.ValueRangeSet;
 import osmo.tester.model.dataflow.ValueSet;
-import osmo.tester.model.dataflow.Text;
 
 import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class DataObjectSliceTests {
+  private TestSuite suite = null;
+
   @Before
   public void setup() {
     OSMOConfiguration.reset();
+    OSMOConfiguration.setSeed(1);
+    suite = new TestSuite();
+    TestCase test = suite.startTest();
+    test.addStep(new FSMTransition("test"));
   }
 
   @Test
   public void charSetSlice() {
     CharSet set = new CharSet();
+    set.setSuite(suite);
     try {
       set.setStrategy(DataGenerationStrategy.SLICED);
     } catch (UnsupportedOperationException e) {
-      assertEquals("Error message for unsupported slicing for "+CharSet.class.getSimpleName(), "CharSet only supports Random, Looping, and Invalid generation strategies. Given:SLICED", e.getMessage());
+      assertEquals("Error message for unsupported slicing for " + CharSet.class.getSimpleName(), "CharSet only supports Random, Looping, and Invalid generation strategies. Given:SLICED", e.getMessage());
     }
   }
 
   @Test
   public void valueRangeSlice() {
     ValueRange<Integer> range = new ValueRange<>(0, 10);
+    range.setSuite(suite);
     range.setName("range");
     OSMOConfiguration.addSlice("range", "1");
     OSMOConfiguration.addSlice("range", "5");
@@ -52,17 +63,19 @@ public class DataObjectSliceTests {
           break;
       }
     }
-    assertTrue("Number of ones should be > 40, was "+ones, ones >= 40);
-    assertTrue("Number of fives should be > 40, was "+fives, fives >= 40);
+    assertTrue("Number of ones should be > 40, was " + ones, ones >= 40);
+    assertTrue("Number of fives should be > 40, was " + fives, fives >= 40);
   }
 
   @Test
   public void invalidValueRangeSlice() {
     ValueRange<Integer> range = new ValueRange<>(0, 10);
+    range.setStrategy(DataGenerationStrategy.SLICED);
     range.setName("range");
+    range.setSuite(suite);
     try {
       OSMOConfiguration.addSlice("range", "sdfs");
-      range.getSlices();
+      range.next();
       fail("Invalid serialized value for value range should throw NumberFormatException.");
     } catch (NumberFormatException e) {
       //
@@ -72,6 +85,7 @@ public class DataObjectSliceTests {
   @Test
   public void valueRangeSetSlice() {
     ValueRangeSet<Integer> range = new ValueRangeSet<>();
+    range.setSuite(suite);
     range.setName("range");
     range.addPartition(0, 10);
     range.addPartition(100, 200);
@@ -94,13 +108,14 @@ public class DataObjectSliceTests {
           break;
       }
     }
-    assertTrue("Number of ones should be > 40, was "+count55, count55 >= 40);
-    assertTrue("Number of fives should be > 40, was "+count555, count555 >= 40);
+    assertTrue("Number of ones should be > 40, was " + count55, count55 >= 40);
+    assertTrue("Number of fives should be > 40, was " + count555, count555 >= 40);
   }
 
   @Test
   public void valueSetSlice() {
     ValueSet<String> set = new ValueSet<>();
+    set.setSuite(suite);
     set.setName("set");
     set.add("bob");
     set.add("job");
@@ -125,17 +140,18 @@ public class DataObjectSliceTests {
           break;
       }
     }
-    assertTrue("Number of ones should be > 40, was "+whuts, whuts >= 40);
-    assertTrue("Number of fives should be > 40, was "+dhuts, dhuts >= 40);
+    assertTrue("Number of ones should be > 40, was " + whuts, whuts >= 40);
+    assertTrue("Number of fives should be > 40, was " + dhuts, dhuts >= 40);
   }
 
   @Test
   public void wordsSlice() {
     Text text = new Text();
+    text.setSuite(suite);
     try {
       text.setStrategy(DataGenerationStrategy.SLICED);
     } catch (UnsupportedOperationException e) {
-      assertEquals("Error message for unsupported slicing for "+Text.class.getSimpleName(), "Text supports only Scripted, Random and Invalid data generation strategy, given: SLICED.", e.getMessage());
+      assertEquals("Error message for unsupported slicing for " + Text.class.getSimpleName(), "Text supports only Scripted, Random and Invalid data generation strategy, given: SLICED.", e.getMessage());
     }
   }
 }

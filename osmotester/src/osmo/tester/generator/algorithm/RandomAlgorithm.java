@@ -1,28 +1,33 @@
 package osmo.tester.generator.algorithm;
 
+import osmo.common.Randomizer;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
+import osmo.tester.parser.ParserResult;
 
 import java.util.List;
 
-import static osmo.common.TestUtils.*;
-
 /**
  * A simple algorithm that randomly picks a transition from the given set.
- * It uses a static seed for randomization to produce a deterministic result.
- * An alternative implementation could use a random seed as well to produce different test suites every time.
+ * Seed is the usual seed for OSMO Tester.
+ * Typically configured through OSMOConfiguration.setSeed().
  *
  * @author Teemu Kanstren
  */
 public class RandomAlgorithm implements FSMTraversalAlgorithm {
+  private final Randomizer rand;
 
-  @Override
-  public void init(FSM fsm) {
+  public RandomAlgorithm() {
+    this.rand = new Randomizer(OSMOConfiguration.getSeed());
   }
 
   @Override
-  public FSMTransition choose(TestSuite history, List<FSMTransition> transitions) {
-    return oneOf(transitions);
+  public void init(ParserResult parserResult) {
+  }
+
+  @Override
+  public FSMTransition choose(TestSuite history, List<FSMTransition> choices) {
+    return rand.oneOf(choices);
   }
 }

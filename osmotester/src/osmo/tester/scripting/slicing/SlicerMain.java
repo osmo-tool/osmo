@@ -10,7 +10,6 @@ import osmo.tester.generator.endcondition.StepCoverage;
 import osmo.tester.generator.endcondition.data.DataCoverage;
 import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
 import osmo.tester.generator.filter.MaxTransitionFilter;
-import osmo.tester.scripting.OSMOConfigurationFactory;
 
 import java.io.FileInputStream;
 import java.util.Collection;
@@ -66,9 +65,6 @@ public class SlicerMain {
       osmoConfig.setAlgorithm(algorithm);
     }
     log.debug("Created OSMO Configuration:" + osmoConfig);
-    if (slicingConfig.getSeed() != null) {
-      osmoConfig.setSeed(slicingConfig.getSeed());
-    }
     List<DataCoverageRequirement> dataRequirements = slicingConfig.getDataRequirements();
     DataCoverage dc = new DataCoverage();
     for (DataCoverageRequirement req : dataRequirements) {
@@ -84,7 +80,7 @@ public class SlicerMain {
       String step = req.getStep();
       Integer min = req.getMin();
       if (min != null) {
-        for (int i = 0; i < min; i++) {
+        for (int i = 0 ; i < min ; i++) {
           sc.addRequiredStep(step);
         }
       }

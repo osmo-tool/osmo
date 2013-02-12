@@ -3,16 +3,18 @@ package osmo.tester.generation;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.Endless;
 import osmo.tester.generator.endcondition.Length;
-import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.Requirements;
 import osmo.tester.testmodels.BaseModelExtension;
 import osmo.tester.testmodels.EndStateModel;
 import osmo.tester.testmodels.GuardianModel;
 import osmo.tester.testmodels.PartialModel1;
 import osmo.tester.testmodels.PartialModel2;
+import osmo.tester.testmodels.StateDescriptionModel;
 import osmo.tester.testmodels.TestStepModel;
 import osmo.tester.testmodels.ValidTestModel1;
 import osmo.tester.testmodels.ValidTestModel2;
@@ -23,6 +25,7 @@ import osmo.tester.testmodels.VariableModel2;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.List;
 
 import static junit.framework.Assert.*;
 import static osmo.common.TestUtils.*;
@@ -37,6 +40,7 @@ public class GenerationTests {
 
   @Before
   public void testSetup() {
+    OSMOConfiguration.setSeed(111);
     osmo = new OSMOTester();
   }
 
@@ -143,6 +147,19 @@ public class GenerationTests {
   }
 
   @Test
+  public void generateWithStateDescription() {
+    StateDescriptionModel model = new StateDescriptionModel();
+    osmo.addModelObject(model);
+    Length length3 = new Length(3);
+    osmo.addTestEndCondition(length3);
+    osmo.addSuiteEndCondition(length3);
+    osmo.generate();
+    List<TestCase> tests = osmo.getSuite().getAllTestCases();
+    TestCase test1 = tests.get(0);
+    test1.getSteps();
+  }
+
+  @Test
   public void generateEndStateModelLength1() {
     EndStateModel model = new EndStateModel();
     osmo.addModelObject(model);
@@ -164,17 +181,17 @@ public class GenerationTests {
     assertEquals("Number of covered requirements", 3, model.getRequirements().getUniqueCoverage().size());
   }
 
+  
   @Test
   public void generatePartialModelsTimes2() {
-    Requirements req = new Requirements();
-    req.add(PartialModel1.REQ_HELLO);
-    req.add(PartialModel1.REQ_WORLD);
-    req.add(PartialModel1.REQ_EPIX);
+    Requirements reqs = new Requirements();
+    reqs.add(PartialModel1.REQ_HELLO);
+    reqs.add(PartialModel1.REQ_WORLD);
+    reqs.add(PartialModel1.REQ_EPIX);
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
-    TestSuite suite = new TestSuite();
-    PartialModel1 model1 = new PartialModel1(req, ps, suite);
-    PartialModel2 model2 = new PartialModel2(req, ps, suite);
+    PartialModel1 model1 = new PartialModel1(reqs, ps);
+    PartialModel2 model2 = new PartialModel2(reqs, ps);
     osmo.addModelObject(model1);
     osmo.addModelObject(model2);
     Length length3 = new Length(3);
@@ -192,7 +209,6 @@ public class GenerationTests {
   @Test
   public void generateBaseModelExtension() {
     BaseModelExtension model = new BaseModelExtension();
-//    osmo.setDebug(true);
     osmo.addModelObject(model);
     Length length5 = new Length(5);
     osmo.addTestEndCondition(length5);
@@ -206,7 +222,6 @@ public class GenerationTests {
   @Test
   public void thresholdBreak() {
     VariableModel2 model = new VariableModel2();
-//    osmo.setDebug(true);
     osmo.addModelObject(model);
     Endless endless = new Endless();
     osmo.addTestEndCondition(endless);
@@ -270,7 +285,7 @@ public class GenerationTests {
     assertEquals("Last step 1 in a test suite", 9, mo.getLastStep1SuiteCount());
     assertEquals("Last step 2 in a test suite", 9, mo.getLastStep2SuiteCount());
   }
-  
+
   @Test
   public void negatedGuard() {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);

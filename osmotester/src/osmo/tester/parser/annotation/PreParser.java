@@ -8,6 +8,7 @@ import osmo.tester.model.InvocationTarget;
 import osmo.tester.model.TransitionName;
 import osmo.tester.parser.AnnotationParser;
 import osmo.tester.parser.ParserParameters;
+import osmo.tester.parser.ParserResult;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -21,7 +22,7 @@ public class PreParser implements AnnotationParser {
   private static Logger log = new Logger(PreParser.class);
 
   @Override
-  public String parse(ParserParameters parameters) {
+  public String parse(ParserResult result, ParserParameters parameters) {
     Pre pre = (Pre) parameters.getAnnotation();
 
     Method method = parameters.getMethod();
@@ -39,7 +40,7 @@ public class PreParser implements AnnotationParser {
     }
 
     InvocationTarget target = new InvocationTarget(parameters, Pre.class);
-    FSM fsm = parameters.getFsm();
+    FSM fsm = result.getFsm();
     String[] transitionNames = pre.value();
     String prefix = parameters.getPrefix();
     for (String name : transitionNames) {

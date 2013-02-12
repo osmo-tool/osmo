@@ -34,7 +34,7 @@ public class VendingMachine2 {
   private int coins = 0;
   private int bottles = 10;
   @TestSuiteField
-  private TestSuite testSuite = new TestSuite();
+  private TestSuite testSuite = null;
   @RequirementsField
   private final Requirements req = new Requirements();
   private static final String C10 = "10cents";

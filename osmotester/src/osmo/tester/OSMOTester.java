@@ -1,6 +1,5 @@
 package osmo.tester;
 
-import osmo.common.TestUtils;
 import osmo.common.log.Logger;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.MainGenerator;
@@ -12,6 +11,10 @@ import osmo.tester.model.FSM;
 import osmo.tester.model.Requirements;
 import osmo.tester.model.ScriptedValueProvider;
 import osmo.tester.parser.MainParser;
+import osmo.tester.parser.ParserResult;
+import osmo.tester.suiteoptimizer.coverage.ScoreConfiguration;
+
+import java.util.logging.Level;
 
 /**
  * The main class for initiating the MBT tool.
@@ -24,10 +27,13 @@ import osmo.tester.parser.MainParser;
  * @author Teemu Kanstren
  */
 public class OSMOTester {
+  private static Logger log = new Logger(OSMOTester.class);
   /** The parsed model for test generation. */
   private FSM fsm = null;
   /** Configuration for test generation. */
   private OSMOConfiguration config = new OSMOConfiguration();
+  /** For generating the tests. */
+  private MainGenerator generator = null;
 
   /**
    * Create the tester with the initialized test model object.
@@ -64,29 +70,31 @@ public class OSMOTester {
 
   /** Invoke this to perform actual test generation from the given model, with the given algorithms and strategies. */
   public void generate() {
-    MainGenerator generator = initGenerator();
+    log.debug("generator starting up");
+    generator = initGenerator();
     generator.generate();
-    System.out.println("generated " + fsm.getSuite().getFinishedTestCases().size() + " tests.\n");
-    Requirements requirements = fsm.getRequirements();
+    TestSuite suite = generator.getSuite();
+    System.out.println("generated " + suite.getFinishedTestCases().size() + " tests.\n");
+    Requirements requirements = suite.getRequirements();
     if (!requirements.isEmpty()) {
       System.out.println(requirements.printCoverage());
     }
   }
 
   public MainGenerator initGenerator() {
-    //We do not initialize seed here since that would cause problems if model objects are initialized already with
-    //TestUtils static methods (which use the seed, which would not be set..)
-    //TestUtils.setSeed(config.getSeed());
     MainParser parser = new MainParser();
-    fsm = parser.parse(config);
-    MainGenerator generator = new MainGenerator(fsm, config);
-    config.init(fsm);
-//    generator.initSearchableInputs();
+    ScoreConfiguration scoreConfig = config.getScoreConfig();
+    TestSuite suite = new TestSuite();
+    ParserResult result = parser.parse(config, suite, scoreConfig);
+    fsm = result.getFsm();
+    scoreConfig.validate(fsm);
+    MainGenerator generator = new MainGenerator(suite, result, config);
+    config.check(result);
     return generator;
   }
 
   public TestSuite getSuite() {
-    return fsm.getSuite();
+    return generator.getSuite();
   }
 
   public FSM getFsm() {
@@ -129,7 +137,7 @@ public class OSMOTester {
    * @param debug True for debug information, false for no such information.
    */
   public void setDebug(boolean debug) {
-    Logger.debug = debug;
+    Logger.consoleLevel = Level.FINE;
   }
 
   public void addListener(GenerationListener listener) {
@@ -138,15 +146,7 @@ public class OSMOTester {
 
   /**
    * Allows the user to define their own random number generator.
-   * Typical use is to set a deterministic seed, as the standard approach in Java is to take
-   * the seed from the system clock to also randomize that.
-   * In practice this delegates the value to the {@link TestUtils} class, from which all the
-   * functionality in OSMOTester uses it.
-   * Note that if you use the functions from {@link TestUtils} yourself for any purposes
-   * (as they are intended to be used for any purpose you like), the sequence of the next value
-   * in algorithms etc. can change as they share the number generator.
-   * This should generally not be a problem but, for example, in trying to create deterministic test cases
-   * it may cause some confusion.
+   * This seed is used in OSMOTester internal components.
    *
    * @param seed The new random number generator.
    */

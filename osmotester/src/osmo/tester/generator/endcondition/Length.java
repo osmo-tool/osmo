@@ -29,7 +29,7 @@ public class Length extends AbstractEndCondition {
 
   @Override
   public boolean endSuite(TestSuite suite, FSM fsm) {
-    log.debug(" es:" + suite.getFinishedTestCases().size() + " c:" + suite.currentSteps());
+    log.debug("finished tests:" + suite.getFinishedTestCases().size() + " current steps:" + suite.currentSteps());
     return suite.getFinishedTestCases().size() >= length;
   }
 

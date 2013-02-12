@@ -12,7 +12,7 @@ import osmo.tester.generator.endcondition.Length;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.*;
 
 /**
  * Test cases to verify the example models in osmo.tester.osmo.visualizer.examples package.

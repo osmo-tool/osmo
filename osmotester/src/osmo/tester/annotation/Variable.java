@@ -12,10 +12,16 @@ import java.lang.annotation.Target;
  * a step has been taken into the {@link osmo.tester.generator.testsuite.TestStep} object.
  * Any Objects are also stored as such unless they implement the {@link osmo.tester.model.VariableValue}
  * interface. If this interface is implemented the value() method on it is queried for the value to store.
+ * <p/>
+ * If {@link osmo.tester.model.dataflow.SearchableInput} objects are annotated with this, their latest value
+ * will be stored. Otherwise, they will not be stored as part of the model state but only when they are used
+ * to provide a new value.
  *
  * @author Teemu Kanstren
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Variable {
+  /** The name of the variable. If not specified, uses the variable name from the class definition. */
+  String value() default "";
 }

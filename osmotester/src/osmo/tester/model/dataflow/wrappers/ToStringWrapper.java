@@ -12,6 +12,6 @@ public class ToStringWrapper {
 
   @Override
   public String toString() {
-    return ""+input.next();
+    return "" + input.next();
   }
 }

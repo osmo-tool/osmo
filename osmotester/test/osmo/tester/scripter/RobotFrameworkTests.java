@@ -3,7 +3,7 @@ package osmo.tester.scripter;
 import org.junit.Test;
 import osmo.common.TestUtils;
 import osmo.tester.scripter.robotframework.RFParameter;
-import osmo.tester.scripter.robotframework.Scripter;
+import osmo.tester.scripter.robotframework.RFScripter;
 
 import static junit.framework.Assert.*;
 import static osmo.common.TestUtils.*;
@@ -12,7 +12,7 @@ import static osmo.common.TestUtils.*;
 public class RobotFrameworkTests {
   @Test
   public void twoVariablesTwoTestsTwoSteps() {
-    Scripter scripter = new Scripter(2);
+    RFScripter scripter = new RFScripter(2);
     scripter.setTestLibrary("SeleniumLibrary");
     scripter.addVariable("var1", "hello");
     scripter.addVariable("var2", "world");

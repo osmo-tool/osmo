@@ -8,12 +8,13 @@ import osmo.tester.model.InvocationTarget;
 import osmo.tester.model.TransitionName;
 import osmo.tester.parser.AnnotationParser;
 import osmo.tester.parser.ParserParameters;
+import osmo.tester.parser.ParserResult;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
 /**
- * Parses {@link Guard} annotations from the given model object.
+ * Parses {@link osmo.tester.annotation.Guard} annotations from the given model object.
  *
  * @author Teemu Kanstren
  */
@@ -21,7 +22,7 @@ public class GuardParser implements AnnotationParser {
   private static Logger log = new Logger(GuardParser.class);
 
   @Override
-  public String parse(ParserParameters parameters) {
+  public String parse(ParserResult result, ParserParameters parameters) {
     Guard g = (Guard) parameters.getAnnotation();
 
     Method method = parameters.getMethod();
@@ -38,7 +39,7 @@ public class GuardParser implements AnnotationParser {
     String[] transitionNames = g.value();
     String prefix = parameters.getPrefix();
     for (String givenName : transitionNames) {
-      FSM fsm = parameters.getFsm();
+      FSM fsm = result.getFsm();
       InvocationTarget target = new InvocationTarget(parameters, Guard.class);
       if (givenName.equals("all")) {
         //generic guards should not have their own transition or it will fail the FSM check since it is a guard
@@ -47,7 +48,7 @@ public class GuardParser implements AnnotationParser {
         //it should also have no other associations defined, as they should be already part of it all
         if (transitionNames.length > 1) {
           errors += "A guard that is associated with 'all' transitions should not have any other associations defined. ";
-          errors += "One had "+ Arrays.asList(transitionNames)+" as a list of associations.";
+          errors += "One had " + Arrays.asList(transitionNames) + " as a list of associations.";
         }
         return errors;
       }

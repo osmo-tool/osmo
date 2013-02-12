@@ -44,9 +44,7 @@ public class FSMTransition implements Comparable<FSMTransition> {
     this.name = name;
   }
 
-  /**
-   * Sort all the elements to get more deterministic test generation.
-   */
+  /** Sort all the elements to get more deterministic test generation. */
   public void sort() {
     Collections.sort(pres);
     Collections.sort(posts);

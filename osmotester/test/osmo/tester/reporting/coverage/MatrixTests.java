@@ -2,12 +2,14 @@ package osmo.tester.reporting.coverage;
 
 import org.junit.Before;
 import org.junit.Test;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
 import osmo.tester.model.TransitionName;
+import osmo.tester.suiteoptimizer.coverage.ScoreConfiguration;
 
 import static junit.framework.Assert.*;
 import static osmo.common.TestUtils.*;
@@ -19,11 +21,13 @@ public class MatrixTests {
 
   @Before
   public void setup() {
+    OSMOConfiguration.reset();
     TestCase.reset();
     suite = new TestSuite();
+    suite.init(new ScoreConfiguration());
+    suite.initRequirements(null);
 
-    Requirements reqs = new Requirements();
-    reqs.setTestSuite(suite);
+    Requirements reqs = suite.getRequirements();
     reqs.add("req-one");
     reqs.add("req-two");
     reqs.add("req-three");
@@ -55,6 +59,7 @@ public class MatrixTests {
     suite.endTest();
 
     fsm = new FSM();
+    fsm.setRequirements(reqs);
     createTransition("one", 0);
     createTransition("two", 0);
     createTransition("three", 0);
@@ -64,8 +69,6 @@ public class MatrixTests {
     createTransition("seven", 0);
     createTransition("eight", 0);
     createTransition("ten", 0);
-
-    fsm.setRequirements(reqs);
   }
 
   private FSMTransition createTransition(String name, int weight) {

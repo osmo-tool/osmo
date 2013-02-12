@@ -5,10 +5,10 @@ import java.io.PrintStream;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/** 
+/**
  * Represents a test step in a Jenkins report.
- * 
- * @author Teemu Kanstren 
+ *
+ * @author Teemu Kanstren
  */
 public class JenkinsStep {
   /** Name of the class for the model object from which this step was executed. */
@@ -36,7 +36,7 @@ public class JenkinsStep {
 
   /**
    * Duration for step execution in seconds with two decimal precision.
-   * 
+   *
    * @return Step duration.
    */
   public String getDuration() {
@@ -68,16 +68,12 @@ public class JenkinsStep {
     return out.toString();
   }
 
-  /**
-   * @param startTime Time (in milliseconds) when step execution was started.
-   */
+  /** @param startTime Time (in milliseconds) when step execution was started. */
   public void setStartTime(long startTime) {
     this.startTime = startTime;
   }
 
-  /**
-   * @param endTime Time (in milliseconds) when step execution ended.
-   */
+  /** @param endTime Time (in milliseconds) when step execution ended. */
   public void setEndTime(long endTime) {
     this.endTime = endTime;
   }

@@ -2,14 +2,11 @@ package osmo.tester.examples.calendar.testmodel;
 
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
-import osmo.tester.annotation.Transition;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.model.dataflow.ValueSet;
 
 import java.io.PrintStream;
 import java.util.Collection;
-
-import static osmo.common.TestUtils.oneOf;
 
 /**
  * Adds participants to the calendar test model.

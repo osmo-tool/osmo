@@ -4,7 +4,6 @@ import osmo.tester.annotation.Post;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;

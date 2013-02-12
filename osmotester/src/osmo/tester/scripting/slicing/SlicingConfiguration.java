@@ -27,25 +27,10 @@ public class SlicingConfiguration {
   private String modelFactory = null;
   /** The test generation algorithm. */
   private String algorithm = null;
-  /** The random seed for OSMOTester. If not set (null), defaults from OSMOConfiguration are used. */
-  private Long seed = null;
   /** Allows the slicer to define the value options for a variable to be used. */
   private Map<String, ValueSet<String>> values = new HashMap<>();
   /** If the user wants to add a listener, this is the place to do it. */
   private GenerationListener listener = null;
-
-  public Long getSeed() {
-    return seed;
-  }
-
-  /**
-   * Set the random generation seed.
-   *
-   * @param seed The seed.
-   */
-  public void setSeed(long seed) {
-    this.seed = seed;
-  }
 
   public GenerationListener getListener() {
     return listener;
