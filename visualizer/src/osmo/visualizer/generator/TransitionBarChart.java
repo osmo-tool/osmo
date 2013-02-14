@@ -12,8 +12,7 @@ import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
-import osmo.tester.suiteoptimizer.coverage.ScoreConfiguration;
-import osmo.tester.suiteoptimizer.coverage.TestCoverage;
+import osmo.tester.coverage.TestCoverage;
 
 import javax.swing.JFrame;
 import java.awt.Color;
@@ -71,7 +70,7 @@ public class TransitionBarChart implements GenerationListener {
 
   @Override
   public void testEnded(TestCase test) {
-    TestCoverage tc = new TestCoverage(test, new ScoreConfiguration());
+    TestCoverage tc = new TestCoverage(test);
     String name = "Test"+nextId++;
     data.setValue(tc.getTransitions().size(), "Transitions", name);
     data.setValue(tc.getPairs().size(), "Pairs", name);

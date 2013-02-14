@@ -7,7 +7,6 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.TransitionName;
-import osmo.tester.suiteoptimizer.coverage.ScoreConfiguration;
 
 import static junit.framework.Assert.*;
 
@@ -41,7 +40,7 @@ public class TransitionCoverageTests {
     t9 = createTransition("t9", 1);
     t10 = createTransition("t10", 1);
     suite = new TestSuite();
-    suite.init(new ScoreConfiguration());
+    suite.init();
   }
 
 

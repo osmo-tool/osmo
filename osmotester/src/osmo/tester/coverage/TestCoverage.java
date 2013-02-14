@@ -1,4 +1,4 @@
-package osmo.tester.suiteoptimizer.coverage;
+package osmo.tester.coverage;
 
 import osmo.common.log.Logger;
 import osmo.tester.generator.testsuite.ModelVariable;
@@ -30,26 +30,23 @@ public class TestCoverage {
   private Collection<String> reqs = new LinkedHashSet<>();
   /** Set of values covered for different model data variables. */
   private Map<String, Collection<String>> variables = new LinkedHashMap<>();
-  /** Defines how the coverage score is calculated. */
-  private final ScoreConfiguration config;
+  /** Are we merging state? That is replacing old values in a state with new ones.. */
+  private boolean mergeState = false;
+  /** Custom calculators. */
+  private Collection<? extends CoverageCalculator> calculators= new LinkedHashSet<>();
 
   /**
    * Start with an empty set.
-   *
-   * @param config Used for coverage value calculations.
    */
-  public TestCoverage(ScoreConfiguration config) {
-    this.config = config;
+  public TestCoverage() {
   }
 
   /**
    * Start with the given set.
    *
    * @param tests  Add coverage from all these tests.
-   * @param config Used for coverage value calculations.
    */
-  public TestCoverage(Collection<TestCase> tests, ScoreConfiguration config) {
-    this.config = config;
+  public TestCoverage(Collection<TestCase> tests) {
     for (TestCase test : tests) {
       addTestCoverage(test);
     }
@@ -59,10 +56,8 @@ public class TestCoverage {
    * Initialized with coverage for a single test case.
    *
    * @param test   The test covered.
-   * @param config Used for coverage value calculations.
    */
-  public TestCoverage(TestCase test, ScoreConfiguration config) {
-    this.config = config;
+  public TestCoverage(TestCase test) {
     addTestCoverage(test);
   }
 
@@ -108,14 +103,11 @@ public class TestCoverage {
     Map<String, Map<String, ModelVariable>> stateMap = new LinkedHashMap<>();
     for (TestStep step : test.getSteps()) {
       names.add(step.getName());
-      //these calculations add values to the step, which are stored after on the addValues(step.getValues()) call
-      //we only want to add them once so we store with each step the information that we already processed it
-      //(to avoid duplicate values)
       if (!step.isCoverageProcessed()) {
-        calculate(step, config.getAllCalculators());
+        calculate(step);
         step.setCoverageProcessed();
       }
-      if (!config.isStateMerging()) {
+      if (mergeState) {
         addValues(step.getValues());
       } else {
         combineStateMap(stateMap, step);
@@ -126,12 +118,11 @@ public class TestCoverage {
         break;
       }
     }
-    if (config.isStateMerging()) {
+    if (mergeState) {
       for (Map<String, ModelVariable> map : stateMap.values()) {
         addValues(map.values());
       }
     }
-//    addValues(stateMap);
     addTransitions(names);
     log.debug("added coverage for " + stepCount + " steps in " + test);
   }
@@ -191,9 +182,8 @@ public class TestCoverage {
    * Stores the generated values as variable values for the step.
    *
    * @param step        The step to process.
-   * @param calculators The calculators to run.
    */
-  private void calculate(TestStep step, Collection<? extends CoverageCalculator> calculators) {
+  private void calculate(TestStep step) {
     for (CoverageCalculator calculator : calculators) {
       ModelVariable temp = calculator.process(step);
       if (temp != null) {
@@ -227,53 +217,13 @@ public class TestCoverage {
   }
 
   /**
-   * Calculates the coverage score for the data represented in this coverage object with the given score configuration.
-   *
-   * @return The score for the set described in this object.
-   */
-  public int calculateFitness() {
-    int fitness = transitions.size() * config.getLengthWeight();
-    fitness += singles.size() * config.getTransitionWeight();
-    fitness += pairs.size() * config.getPairsWeight();
-    fitness += variables.size() * config.getVariableCountWeight();
-    for (String name : variables.keySet()) {
-      Collection<String> values = variables.get(name);
-      fitness += values.size() * config.getVariableWeight(name);
-    }
-    fitness += reqs.size() * config.getRequirementWeight();
-    log.debug("calculated fitness:" + fitness);
-    return fitness;
-  }
-
-  public int addedFitnessFor(TestCase test) {
-    return addedFitnessFor(test, test.getAllTransitionNames().size());
-  }
-
-  /**
-   * Calculates how much the coverage score would raise if the given test case was added to this set.
-   * Does not add anything to this set, so after this the set is the same as before.
-   *
-   * @param test The test to check added coverage for.
-   * @return The new coverage score.
-   */
-  public int addedFitnessFor(TestCase test, int steps) {
-    TestCoverage tc = cloneMe();
-    tc.addTestCoverage(test, steps);
-    int oldScore = calculateFitness();
-    int newScore = tc.calculateFitness();
-    int added = newScore - oldScore;
-    log.debug("added fitness:" + added);
-    return added;
-  }
-
-  /**
    * Creates a clone of this coverage set.
    * The clone can then be modified without affecting the original set (no reference to same internal lists etc.).
    *
    * @return The clone object.
    */
   public TestCoverage cloneMe() {
-    TestCoverage clone = new TestCoverage(config);
+    TestCoverage clone = new TestCoverage();
     clone.pairs.addAll(pairs);
     clone.transitions.addAll(transitions);
     clone.reqs.addAll(reqs);

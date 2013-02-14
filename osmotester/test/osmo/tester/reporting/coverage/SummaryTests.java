@@ -8,7 +8,6 @@ import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
 import osmo.tester.model.TransitionName;
-import osmo.tester.suiteoptimizer.coverage.ScoreConfiguration;
 
 import static junit.framework.Assert.*;
 import static osmo.common.TestUtils.*;
@@ -22,7 +21,7 @@ public class SummaryTests {
   public void setup() {
     OSMOConfiguration.reset();
     suite = new TestSuite();
-    suite.init(new ScoreConfiguration());
+    suite.init();
     suite.initRequirements(null);
 
     Requirements reqs = suite.getRequirements();

@@ -3,7 +3,6 @@ package osmo.tester.generation;
 import org.junit.Test;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
-import osmo.tester.suiteoptimizer.coverage.ScoreConfiguration;
 
 import static junit.framework.Assert.*;
 
@@ -12,7 +11,7 @@ public class SuiteTests {
   @Test
   public void validSuite() {
     TestSuite suite = new TestSuite();
-    suite.init(new ScoreConfiguration());
+    suite.init();
     suite.startTest();
     suite.addStep(new FSMTransition("t1"));
     suite.addStep(new FSMTransition("t2"));
@@ -31,7 +30,7 @@ public class SuiteTests {
   @Test
   public void totalCoverage() {
     TestSuite suite = new TestSuite();
-    suite.init(new ScoreConfiguration());
+    suite.init();
     suite.startTest();
     suite.addStep(new FSMTransition("t1"));
     suite.addStep(new FSMTransition("t2"));

@@ -1,4 +1,4 @@
-package osmo.tester.suiteoptimizer.coverage;
+package osmo.tester.coverage;
 
 import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestStep;

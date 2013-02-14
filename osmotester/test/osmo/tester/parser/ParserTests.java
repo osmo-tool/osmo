@@ -10,7 +10,6 @@ import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
 import osmo.tester.model.VariableField;
 import osmo.tester.model.dataflow.SearchableInput;
-import osmo.tester.suiteoptimizer.coverage.ScoreConfiguration;
 import osmo.tester.testmodels.EmptyTestModel1;
 import osmo.tester.testmodels.EmptyTestModel2;
 import osmo.tester.testmodels.EmptyTestModel3;
@@ -55,7 +54,7 @@ public class ParserTests {
   @Test
   public void testModel1() throws Exception {
     EmptyTestModel1 model = new EmptyTestModel1();
-    ParserResult result = parser.parse(conf(model), new TestSuite(), new ScoreConfiguration());
+    ParserResult result = parser.parse(conf(model), new TestSuite());
     FSM fsm = result.getFsm();
     assertEquals("Number of @Before methods", 2, fsm.getBefores().size());
     assertEquals("Number of @BeforeSuite methods", 1, fsm.getBeforeSuites().size());
@@ -74,7 +73,7 @@ public class ParserTests {
   @Test
   public void testModel2() {
     try {
-      ParserResult result = parser.parse(conf(new EmptyTestModel2()), new TestSuite(), new ScoreConfiguration());
+      ParserResult result = parser.parse(conf(new EmptyTestModel2()), new TestSuite());
       fail("Should throw exception");
     } catch (Exception e) {
       String msg = e.getMessage();
@@ -88,7 +87,7 @@ public class ParserTests {
   @Test
   public void testModel3() {
     try {
-      ParserResult result = parser.parse(conf(new EmptyTestModel3()), new TestSuite(), new ScoreConfiguration());
+      ParserResult result = parser.parse(conf(new EmptyTestModel3()), new TestSuite());
       fail("Should throw exception");
     } catch (Exception e) {
       String msg = e.getMessage();
@@ -135,7 +134,7 @@ public class ParserTests {
   @Test
   public void testModel4() {
     try {
-      ParserResult result = parser.parse(conf(new EmptyTestModel4()), new TestSuite(), new ScoreConfiguration());
+      ParserResult result = parser.parse(conf(new EmptyTestModel4()), new TestSuite());
       fail("Should throw exception");
     } catch (Exception e) {
       //note that this exception checking will swallow real errors so it can be useful to print them..
@@ -157,7 +156,7 @@ public class ParserTests {
   @Test
   public void testModel5() {
     try {
-      ParserResult result = parser.parse(conf(new EmptyTestModel5()), new TestSuite(), new ScoreConfiguration());
+      ParserResult result = parser.parse(conf(new EmptyTestModel5()), new TestSuite());
       fail("Should throw exception");
     } catch (Exception e) {
       String msg = e.getMessage();
@@ -172,7 +171,7 @@ public class ParserTests {
   @Test
   public void testModel6() {
     try {
-      ParserResult result = parser.parse(conf(new EmptyTestModel6()), new TestSuite(), new ScoreConfiguration());
+      ParserResult result = parser.parse(conf(new EmptyTestModel6()), new TestSuite());
       fail("Should throw exception");
     } catch (Exception e) {
       String msg = e.getMessage();
@@ -190,7 +189,7 @@ public class ParserTests {
     Requirements req = new Requirements();
     PartialModel1 model1 = new PartialModel1(req, null);
     PartialModel2 model2 = new PartialModel2(req, null);
-    ParserResult result = parser.parse(conf(model1, model2), new TestSuite(), new ScoreConfiguration());
+    ParserResult result = parser.parse(conf(model1, model2), new TestSuite());
     FSM fsm = result.getFsm();
     assertEquals("Number of @Before methods", 2, fsm.getBefores().size());
     assertEquals("Number of @BeforeSuite methods", 2, fsm.getBeforeSuites().size());
@@ -210,7 +209,7 @@ public class ParserTests {
   @Test
   public void noMethods() {
     try {
-      ParserResult result = parser.parse(conf(new Object()), new TestSuite(), new ScoreConfiguration());
+      ParserResult result = parser.parse(conf(new Object()), new TestSuite());
       FSM fsm = result.getFsm();
       fsm.checkFSM("");
       fail("Should throw exception when no transition methods are available.");
@@ -233,7 +232,7 @@ public class ParserTests {
   @Test
   public void variableParsing() {
     VariableModel1 model = new VariableModel1();
-    ParserResult result = parser.parse(conf(model), new TestSuite(), new ScoreConfiguration());
+    ParserResult result = parser.parse(conf(model), new TestSuite());
     FSM fsm = result.getFsm();
     Collection<VariableField> variables = fsm.getStateVariables();
     assertEquals("All @" + Variable.class.getSimpleName() + " items should be parsed.", 10, variables.size());
@@ -262,7 +261,7 @@ public class ParserTests {
   public void searchableInputParsing() {
     VariableModel2 model = new VariableModel2();
     OSMOConfiguration config = conf(model);
-    ParserResult result = parser.parse(config, new TestSuite(), new ScoreConfiguration());
+    ParserResult result = parser.parse(config, new TestSuite());
     FSM fsm = result.getFsm();
     fsm.initSearchableInputs(config);
     Collection<SearchableInput> inputs = fsm.getSearchableInputs();
@@ -297,7 +296,7 @@ public class ParserTests {
     OSMOConfiguration config = new OSMOConfiguration();
     config.addModelObject("ap_", model);
     config.addModelObject("ip_", model);
-    ParserResult result = parser.parse(config, new TestSuite(), new ScoreConfiguration());
+    ParserResult result = parser.parse(config, new TestSuite());
     FSM fsm = result.getFsm();
     assertTransitionPresent(fsm, "ap_hello", 1, 2);
     assertTransitionPresent(fsm, "ip_hello", 1, 2);
@@ -320,7 +319,7 @@ public class ParserTests {
     config.addModelObject("ap_", model);
     config.addModelObject("ip_", model);
     config.addModelObject(model);
-    ParserResult result = parser.parse(config, new TestSuite(), new ScoreConfiguration());
+    ParserResult result = parser.parse(config, new TestSuite());
     FSM fsm = result.getFsm();
     assertTransitionPresent(fsm, "hello", 1, 3);
     assertTransitionPresent(fsm, "ap_hello", 1, 3);
@@ -346,7 +345,7 @@ public class ParserTests {
     config.addModelObject("ap_", model);
     config.addModelObject("ip_", model);
     config.addModelObject(model);
-    ParserResult result = parser.parse(config, new TestSuite(), new ScoreConfiguration());
+    ParserResult result = parser.parse(config, new TestSuite());
     FSM fsm = result.getFsm();
     assertTransitionPresent(fsm, "hello", 1, 3);
     assertTransitionPresent(fsm, "ap_hello", 1, 3);
@@ -373,7 +372,7 @@ public class ParserTests {
     config.addModelObject("ap_", model);
     config.addModelObject("ip_", model);
     config.addModelObject(model);
-    ParserResult result = parser.parse(config, new TestSuite(), new ScoreConfiguration());
+    ParserResult result = parser.parse(config, new TestSuite());
     FSM fsm = result.getFsm();
     assertTransitionPresent(fsm, "hello", 1, 3);
     assertTransitionPresent(fsm, "ap_hello", 1, 3);

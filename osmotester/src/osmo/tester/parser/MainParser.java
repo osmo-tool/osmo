@@ -40,7 +40,6 @@ import osmo.tester.parser.annotation.StateNameParser;
 import osmo.tester.parser.annotation.TestSuiteFieldParser;
 import osmo.tester.parser.annotation.TransitionParser;
 import osmo.tester.parser.annotation.VariableParser;
-import osmo.tester.suiteoptimizer.coverage.ScoreConfiguration;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -98,14 +97,13 @@ public class MainParser {
    * @param factory For providing model objects to be parsed.
    * @return The FSM object created from the given model object that can be used for test generation.
    */
-  public ParserResult parse(ModelFactory factory, TestSuite suite, ScoreConfiguration scoreConfig) {
+  public ParserResult parse(ModelFactory factory, TestSuite suite) {
     log.debug("parsing");
     FSM fsm = new FSM();
     ParserResult result = new ParserResult(fsm);
     ParserParameters parameters = new ParserParameters();
-    suite.init(scoreConfig);
+    suite.init();
     parameters.setSuite(suite);
-    parameters.setScoreConfig(scoreConfig);
     String errors = "";
     for (ModelObject mo : factory.createModelObjects()) {
       String prefix = mo.getPrefix();

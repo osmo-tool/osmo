@@ -12,7 +12,6 @@ import osmo.tester.model.Requirements;
 import osmo.tester.model.ScriptedValueProvider;
 import osmo.tester.parser.MainParser;
 import osmo.tester.parser.ParserResult;
-import osmo.tester.suiteoptimizer.coverage.ScoreConfiguration;
 
 import java.util.logging.Level;
 
@@ -83,11 +82,9 @@ public class OSMOTester {
 
   public MainGenerator initGenerator() {
     MainParser parser = new MainParser();
-    ScoreConfiguration scoreConfig = config.getScoreConfig();
     TestSuite suite = new TestSuite();
-    ParserResult result = parser.parse(config, suite, scoreConfig);
+    ParserResult result = parser.parse(config, suite);
     fsm = result.getFsm();
-    scoreConfig.validate(fsm);
     MainGenerator generator = new MainGenerator(suite, result, config);
     config.check(result);
     return generator;

@@ -3,8 +3,7 @@ package osmo.tester.generator.testsuite;
 import osmo.common.log.Logger;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
-import osmo.tester.suiteoptimizer.coverage.ScoreConfiguration;
-import osmo.tester.suiteoptimizer.coverage.TestCoverage;
+import osmo.tester.coverage.TestCoverage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,8 +36,8 @@ public class TestSuite {
   public TestSuite() {
   }
 
-  public void init(ScoreConfiguration scoreConfig) {
-    coverage = new TestCoverage(scoreConfig);
+  public void init() {
+    coverage = new TestCoverage();
   }
 
   public void setState(String state) {
