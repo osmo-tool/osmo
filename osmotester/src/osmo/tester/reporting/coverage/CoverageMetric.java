@@ -8,7 +8,7 @@ import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
 import osmo.tester.scripter.robotframework.CSSHelper;
-import osmo.tester.suiteoptimizer.coverage.TestCoverage;
+import osmo.tester.coverage.TestCoverage;
 
 import java.io.File;
 import java.io.FileOutputStream;

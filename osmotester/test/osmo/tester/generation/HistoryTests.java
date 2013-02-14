@@ -5,7 +5,6 @@ import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
-import osmo.tester.suiteoptimizer.coverage.ScoreConfiguration;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -20,7 +19,7 @@ public class HistoryTests {
   @Test
   public void historyContainsByName() {
     TestSuite suite = new TestSuite();
-    suite.init(new ScoreConfiguration());
+    suite.init();
     suite.startTest();
     suite.addStep(new FSMTransition("bob"));
     suite.addStep(new FSMTransition("alice"));
@@ -42,7 +41,7 @@ public class HistoryTests {
   @Test
   public void currentContainsByName() {
     TestSuite suite = new TestSuite();
-    suite.init(new ScoreConfiguration());
+    suite.init();
     suite.startTest();
     suite.addStep(new FSMTransition("bob"));
     suite.addStep(new FSMTransition("alice"));

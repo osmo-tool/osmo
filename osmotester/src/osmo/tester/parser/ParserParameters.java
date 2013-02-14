@@ -1,7 +1,6 @@
 package osmo.tester.parser;
 
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.suiteoptimizer.coverage.ScoreConfiguration;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -30,7 +29,6 @@ public class ParserParameters {
   private String prefix = null;
   /** Test suite object for the model. */
   private TestSuite suite = null;
-  private ScoreConfiguration scoreConfig = null;
 
   public Object getModel() {
     return model;
@@ -86,13 +84,5 @@ public class ParserParameters {
 
   public void setFieldAnnotations(Annotation[] annotations) {
     Collections.addAll(this.fieldAnnotations, annotations);
-  }
-
-  public void setScoreConfig(ScoreConfiguration scoreConfig) {
-    this.scoreConfig = scoreConfig;
-  }
-
-  public ScoreConfiguration getScoreConfig() {
-    return scoreConfig;
   }
 }

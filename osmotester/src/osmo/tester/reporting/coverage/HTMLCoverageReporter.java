@@ -3,7 +3,7 @@ package osmo.tester.reporting.coverage;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
-import osmo.tester.suiteoptimizer.coverage.TestCoverage;
+import osmo.tester.coverage.TestCoverage;
 
 import java.util.Collection;
 

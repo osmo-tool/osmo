@@ -8,7 +8,6 @@ import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
-import osmo.tester.suiteoptimizer.coverage.ScoreConfiguration;
 import osmo.tester.testmodels.VariableModel2;
 
 import static junit.framework.Assert.*;
@@ -24,7 +23,7 @@ public class TraceGenerationTests {
   @Test
   public void testNoSteps() throws Exception {
     TestSuite suite = new TestSuite();
-    suite.init(new ScoreConfiguration());
+    suite.init();
     suite.startTest();
     assertTrace(suite, "expected-no-steps.txt");
   }
@@ -41,7 +40,7 @@ public class TraceGenerationTests {
   @Test
   public void oneTestOneStepNoParams() throws Exception {
     TestSuite suite = new TestSuite();
-    suite.init(new ScoreConfiguration());
+    suite.init();
     suite.startTest();
     FSMTransition login = new FSMTransition("Login");
     TestStep loginStep = suite.addStep(login);
@@ -52,7 +51,7 @@ public class TraceGenerationTests {
   @Test
   public void oneTestOneStepWithParams() throws Exception {
     TestSuite suite = new TestSuite();
-    suite.init(new ScoreConfiguration());
+    suite.init();
     suite.startTest();
     FSMTransition login = new FSMTransition("Login");
     TestStep loginStep = suite.addStep(login);
@@ -68,7 +67,7 @@ public class TraceGenerationTests {
   @Test
   public void twoStepWithParams() throws Exception {
     TestSuite suite = new TestSuite();
-    suite.init(new ScoreConfiguration());
+    suite.init();
     suite.startTest();
 
     FSMTransition login = new FSMTransition("Login");
@@ -92,7 +91,7 @@ public class TraceGenerationTests {
   @Test
   public void twoTestsWithParams() throws Exception {
     TestSuite suite = new TestSuite();
-    suite.init(new ScoreConfiguration());
+    suite.init();
     suite.startTest();
 
     FSMTransition login = new FSMTransition("Login");

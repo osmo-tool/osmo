@@ -17,7 +17,6 @@ import osmo.tester.model.dataflow.SearchableInput;
 import osmo.tester.model.dataflow.ValueSet;
 import osmo.tester.parser.ModelObject;
 import osmo.tester.parser.ParserResult;
-import osmo.tester.suiteoptimizer.coverage.ScoreConfiguration;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -58,15 +57,6 @@ public class OSMOConfiguration implements ModelFactory {
   private static Map<String, ValueSet<String>> slices = new HashMap<>();
   /** Is the user in manual control? */
   private static boolean manual = false;
-  private ScoreConfiguration scoreConfig = new ScoreConfiguration();
-
-  public ScoreConfiguration getScoreConfig() {
-    return scoreConfig;
-  }
-
-  public void setScoreConfig(ScoreConfiguration scoreConfig) {
-    this.scoreConfig = scoreConfig;
-  }
 
   public OSMOConfiguration() {
 
