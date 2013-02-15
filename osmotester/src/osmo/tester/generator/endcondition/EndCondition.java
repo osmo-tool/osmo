@@ -37,7 +37,7 @@ public interface EndCondition {
   /**
    * Should return true if the end condition is strict (stop test/suite immediately if this indicates end even if others do not).
    *
-   * @return
+   * @return True if strict.
    */
   public boolean isStrict();
 

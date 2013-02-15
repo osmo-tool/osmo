@@ -16,6 +16,7 @@ public class ScripterMain {
 
   public void run(Collection<Object> modelObjects, List<TestScript> scripts) {
     OSMOTester osmo = new OSMOTester();
+    osmo.setSeed(seed);
     for (Object mo : modelObjects) {
       osmo.addModelObject(mo);
     }
@@ -33,7 +34,6 @@ public class ScripterMain {
     }
     osmo.setValueScripter(valueProvider);
     osmo.setAlgorithm(algorithm);
-    osmo.setSeed(seed);
     ScriptEndCondition sec = new ScriptEndCondition(algorithm);
     osmo.addTestEndCondition(sec);
     osmo.addSuiteEndCondition(sec);

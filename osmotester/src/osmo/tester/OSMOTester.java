@@ -83,7 +83,7 @@ public class OSMOTester {
   public MainGenerator initGenerator() {
     MainParser parser = new MainParser();
     TestSuite suite = new TestSuite();
-    ParserResult result = parser.parse(config, suite);
+    ParserResult result = parser.parse(config.createModelObjects(), suite);
     fsm = result.getFsm();
     MainGenerator generator = new MainGenerator(suite, result, config);
     config.check(result);
