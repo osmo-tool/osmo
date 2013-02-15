@@ -34,7 +34,7 @@ public class MainGenerator {
   /** The test generation configuration. */
   protected final OSMOConfiguration config;
   /** The parsed overall test model. */
-  protected final FSM fsm;
+  private final FSM fsm;
   /** The list of listeners to be notified of new events as generation progresses. */
   protected GenerationListenerList listeners;
   /** Test generation history. */

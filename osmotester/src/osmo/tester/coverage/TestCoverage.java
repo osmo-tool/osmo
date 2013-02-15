@@ -33,7 +33,7 @@ public class TestCoverage {
   /** Are we merging state? That is replacing old values in a state with new ones.. */
   private boolean mergeState = false;
   /** Custom calculators. */
-  private Collection<? extends CoverageCalculator> calculators= new LinkedHashSet<>();
+  private Collection<CoverageCalculator> calculators= new LinkedHashSet<>();
 
   /**
    * Start with an empty set.
@@ -52,6 +52,10 @@ public class TestCoverage {
     }
   }
 
+  public void setMergeState(boolean mergeState) {
+    this.mergeState = mergeState;
+  }
+
   /**
    * Initialized with coverage for a single test case.
    *
@@ -59,6 +63,10 @@ public class TestCoverage {
    */
   public TestCoverage(TestCase test) {
     addTestCoverage(test);
+  }
+  
+  public void addCalculator(CoverageCalculator calculator) {
+    calculators.add(calculator);
   }
 
   /**
@@ -107,7 +115,7 @@ public class TestCoverage {
         calculate(step);
         step.setCoverageProcessed();
       }
-      if (mergeState) {
+      if (!mergeState) {
         addValues(step.getValues());
       } else {
         combineStateMap(stateMap, step);

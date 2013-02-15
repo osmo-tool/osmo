@@ -344,13 +344,14 @@ public class FSM {
   }
 
   /**
-   * Initialize the test suite, adding observers to capture data from all registered {@link osmo.tester.model.dataflow.SearchableInput} variables.
+   * Initialize the test suite, adding observers to capture data from all registered 
+   * {@link osmo.tester.model.dataflow.SearchableInput} variables.
    * Also sets the scripted value options for data if defined.
    *
    * @param config This is where the scripter and value options are taken.
    */
   public void initSearchableInputs(OSMOConfiguration config) {
-    /* Scripter used for {@link SearchableInput}. */
+    /* Scripter used for SearchableInput variables. */
     ScriptedValueProvider scripter = config.getScripter();
     //initial capture to allow FSM to have names, etc. for algorithm initialization
     captureSearchableInputs();

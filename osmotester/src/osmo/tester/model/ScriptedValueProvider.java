@@ -16,6 +16,9 @@ public class ScriptedValueProvider {
   /** List of values for specific variables. Key = variable name, value = set of values in order, looped if needed. */
   private Map<String, ValueSet<String>> scripts = new HashMap<>();
 
+  public ScriptedValueProvider() {
+  }
+
   /**
    * Provides the next defined value for the given variable.
    *
