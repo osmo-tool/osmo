@@ -81,12 +81,12 @@ public class OSMOTester {
   }
 
   public MainGenerator initGenerator() {
-    MainParser parser = new MainParser();
+//    MainParser parser = new MainParser();
     TestSuite suite = new TestSuite();
-    ParserResult result = parser.parse(config.createModelObjects(), suite);
-    fsm = result.getFsm();
-    MainGenerator generator = new MainGenerator(suite, result, config);
-    config.check(result);
+//    ParserResult result = parser.parse(config, suite);
+//    fsm = result.getFsm();
+    MainGenerator generator = new MainGenerator(suite, config);
+//    config.check(result);
     return generator;
   }
 
@@ -134,7 +134,8 @@ public class OSMOTester {
    * @param debug True for debug information, false for no such information.
    */
   public void setDebug(boolean debug) {
-    Logger.consoleLevel = Level.FINE;
+    if (debug) Logger.consoleLevel = Level.FINE;
+     else Logger.consoleLevel = Level.INFO;
   }
 
   public void addListener(GenerationListener listener) {

@@ -57,6 +57,8 @@ public class OSMOConfiguration implements ModelFactory {
   private static Map<String, ValueSet<String>> slices = new HashMap<>();
   /** Is the user in manual control? */
   private static boolean manual = false;
+  /** Factory for creating model objects, alternative to adding them one by one. */
+  private ModelFactory factory = null;
 
   public OSMOConfiguration() {
 
@@ -82,7 +84,18 @@ public class OSMOConfiguration implements ModelFactory {
     modelObjects.add(new ModelObject(prefix, modelObject));
   }
 
+  public void setFactory(ModelFactory factory) {
+    this.factory = factory;
+  }
+
+  public ModelFactory getFactory() {
+    return factory;
+  }
+
   public Collection<ModelObject> createModelObjects() {
+    if (factory != null) {
+      return factory.createModelObjects();
+    }
     return modelObjects;
   }
 

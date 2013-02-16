@@ -94,10 +94,10 @@ public class MainParser {
    * Initiates parsing the given model object for the annotations that define the finite state machine (FSM) aspects
    * of the test model.
    *
-   * @param modelObjects Model objects to be parsed.
+   * @param factory Factory to create the model objects to be parsed.
    * @return The FSM object created from the given model object that can be used for test generation.
    */
-  public ParserResult parse(Collection<ModelObject> modelObjects, TestSuite suite) {
+  public ParserResult parse(ModelFactory factory, TestSuite suite) {
     log.debug("parsing");
     FSM fsm = new FSM();
     ParserResult result = new ParserResult(fsm);
@@ -106,7 +106,7 @@ public class MainParser {
     parameters.setSuite(suite);
     String errors = "";
 //    Collection<ModelObject> modelObjects = factory.createModelObjects();
-    for (ModelObject mo : modelObjects) {
+    for (ModelObject mo : factory.createModelObjects()) {
       String prefix = mo.getPrefix();
       parameters.setPrefix(prefix);
       Object obj = mo.getObject();
