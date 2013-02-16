@@ -30,14 +30,13 @@ public class TestSuite {
   /** The list of requirements that needs to be covered. */
   private Requirements requirements;
   /** The coverage for this test suite. */
-  private TestCoverage coverage;
+  private TestCoverage coverage=new TestCoverage();
   private String state = null;
 
   public TestSuite() {
   }
 
   public void init() {
-    coverage = new TestCoverage();
   }
 
   public void setState(String state) {

@@ -13,6 +13,7 @@ import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
 import osmo.tester.model.Requirements;
+import osmo.tester.parser.MainParser;
 import osmo.tester.parser.ParserResult;
 
 import java.lang.reflect.InvocationTargetException;
@@ -34,7 +35,7 @@ public class MainGenerator {
   /** The test generation configuration. */
   protected final OSMOConfiguration config;
   /** The parsed overall test model. */
-  private final FSM fsm;
+  private FSM fsm;
   /** The list of listeners to be notified of new events as generation progresses. */
   protected GenerationListenerList listeners;
   /** Test generation history. */
@@ -45,20 +46,17 @@ public class MainGenerator {
   protected boolean testEnding = false;
   /** Keeps track of overall number of tests generated. */
   private static int testCount = 0;
-  private String state = null;
 
   /**
    * Constructor.
    *
-   * @param result Parsed model elements.
    * @param config The configuration for test generation parameters.
    */
-  public MainGenerator(TestSuite suite, ParserResult result, OSMOConfiguration config) {
-    this.fsm = result.getFsm();
+  public MainGenerator(TestSuite suite, OSMOConfiguration config) {
     this.suite = suite;
-    this.reqs = result.getRequirements();
     this.config = config;
     this.listeners = config.getListeners();
+    createModelObjects();
   }
 
   /** Invoked to start the test generation using the configured parameters. */
@@ -68,10 +66,23 @@ public class MainGenerator {
     initSuite();
     while (!checkSuiteEndConditions() && !suite.shouldEndSuite()) {
       suite.setShouldEndTest(false);
+      createModelObjects();
       nextTest();
     }
     endSuite();
   }
+  
+  private void createModelObjects() {
+    if (config.getFactory() == null && fsm != null) return;
+    MainParser parser = new MainParser();
+    ParserResult result = parser.parse(config, suite);
+    config.check(result);
+    fsm = result.getFsm();
+    fsm.initSearchableInputs(config);
+    this.reqs = result.getRequirements();
+  }
+  
+  
 
   /**
    * Generates a new test case from the test model.
@@ -81,7 +92,6 @@ public class MainGenerator {
   public TestCase nextTest() {
     log.debug("Starting new test generation");
     beforeTest();
-    fsm.initSearchableInputs(config);
     TestCase test = suite.getCurrentTest();
     try {
       while (!checkTestCaseEndConditions()) {
@@ -174,7 +184,7 @@ public class MainGenerator {
   
   private void updateState(TestStep step) {
     if (fsm.getStateDescription() != null) {
-      state = (String) fsm.getStateDescription().invoke();
+      String state = (String) fsm.getStateDescription().invoke();
       if (state == null) {
         throw new NullPointerException("Model state is null. Now allowed.");
       }
