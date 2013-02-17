@@ -105,8 +105,8 @@ public class MainParser {
     suite.init();
     parameters.setSuite(suite);
     String errors = "";
-//    Collection<ModelObject> modelObjects = factory.createModelObjects();
-    for (ModelObject mo : factory.createModelObjects()) {
+    Collection<ModelObject> modelObjects = factory.createModelObjects();
+    for (ModelObject mo : modelObjects) {
       String prefix = mo.getPrefix();
       parameters.setPrefix(prefix);
       Object obj = mo.getObject();
