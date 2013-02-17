@@ -53,6 +53,7 @@ public class OSMOConfiguration implements ModelFactory {
   private boolean unwrapExceptions = true;
   /** Seed to be used for test generation. */
   private static Long seed = null;
+  private static Long baseSeed = null;
   /** Serialized value options for defined variables. */
   private static Map<String, ValueSet<String>> slices = new HashMap<>();
   /** Is the user in manual control? */
@@ -84,8 +85,9 @@ public class OSMOConfiguration implements ModelFactory {
     modelObjects.add(new ModelObject(prefix, modelObject));
   }
 
-  public void setFactory(ModelFactory factory) {
+  public void setFactory(ModelFactory factory, long baseSeed) {
     this.factory = factory;
+    OSMOConfiguration.baseSeed = baseSeed;
   }
 
   public ModelFactory getFactory() {
@@ -270,8 +272,12 @@ public class OSMOConfiguration implements ModelFactory {
     return seed;
   }
 
-  public static void setSeed(long seed) {
+  public static synchronized void setSeed(long seed) {
     OSMOConfiguration.seed = seed;
+  }
+
+  public static Long getBaseSeed() {
+    return baseSeed;
   }
 
   public static void setSlices(Map<String, ValueSet<String>> values) {

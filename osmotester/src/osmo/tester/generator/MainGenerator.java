@@ -62,7 +62,6 @@ public class MainGenerator {
   /** Invoked to start the test generation using the configured parameters. */
   public void generate() {
     log.debug("starting generation");
-    invokeAll(fsm.getGenerationEnablers());
     initSuite();
     while (!checkSuiteEndConditions() && !suite.shouldEndSuite()) {
       suite.setShouldEndTest(false);
@@ -74,15 +73,19 @@ public class MainGenerator {
   
   private void createModelObjects() {
     if (config.getFactory() == null && fsm != null) return;
+    if (config.getFactory() != null) {
+      long baseSeed = OSMOConfiguration.getBaseSeed();
+      int salt = suite.getCoverage().getTransitions().size();
+      OSMOConfiguration.setSeed(baseSeed+salt);
+    }
     MainParser parser = new MainParser();
     ParserResult result = parser.parse(config, suite);
     config.check(result);
     fsm = result.getFsm();
     fsm.initSearchableInputs(config);
+    invokeAll(fsm.getGenerationEnablers());
     this.reqs = result.getRequirements();
   }
-  
-  
 
   /**
    * Generates a new test case from the test model.
