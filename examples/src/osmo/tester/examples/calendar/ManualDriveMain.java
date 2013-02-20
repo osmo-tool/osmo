@@ -13,7 +13,7 @@ import osmo.tester.gui.manualdrive.ManualAlgorithm;
 import osmo.tester.scripting.manual.AsciiParser;
 import osmo.tester.scripting.manual.ScripterMain;
 import osmo.tester.scripting.manual.TestScript;
-import osmo.visualizer.model.FSMBuildVisualizer;
+import osmo.visualizer.fsmbuild.FSMBuildVisualizer;
 
 import java.util.ArrayList;
 import java.util.Collection;

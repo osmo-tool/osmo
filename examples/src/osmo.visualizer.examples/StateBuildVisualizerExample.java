@@ -11,21 +11,20 @@ import osmo.tester.examples.calendar.testmodel.CalendarParticipantModel;
 import osmo.tester.examples.calendar.testmodel.CalendarTaskModel;
 import osmo.tester.examples.calendar.testmodel.ModelState;
 import osmo.tester.generator.endcondition.Length;
-import osmo.tester.gui.manualdrive.ManualAlgorithm;
-import osmo.visualizer.generator.TransitionBarChart;
+import osmo.visualizer.state.StateVisualizer;
 
 import java.io.PrintStream;
 
 /** @author Teemu Kanstren */
-public class TransitionBarChartExample {
+public class StateBuildVisualizerExample {
   public static void main(String[] args) {
     OSMOConfiguration.setSeed(55);
-    TransitionBarChart barGraph = new TransitionBarChart();
+    StateVisualizer gv = new StateVisualizer();
     OSMOTester tester = new OSMOTester();
 //    ManualEndCondition mec = new ManualEndCondition();
     tester.addTestEndCondition(new Length(10));
     tester.addSuiteEndCondition(new Length(10));
-    tester.addListener(barGraph);
+    tester.addListener(gv);
 //    tester.addModelObject(new CalculatorModel());
     ModelState state = new ModelState();
     MockScripter scripter = new MockScripter();
@@ -39,7 +38,6 @@ public class TransitionBarChartExample {
     tester.addModelObject(new CalendarOverlappingModel(state, scripter, out));
     tester.addModelObject(new CalendarParticipantModel(state, scripter, out));
     tester.addModelObject(new CalendarErrorHandlingModel(state, scripter, out));
-    tester.setAlgorithm(new ManualAlgorithm());
     tester.generate();
   }
 }

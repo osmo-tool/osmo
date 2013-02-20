@@ -1,5 +1,6 @@
 package osmo.tester.examples.calendar.testmodel;
 
+import osmo.tester.annotation.StateName;
 import osmo.tester.model.dataflow.DataGenerationStrategy;
 import osmo.tester.model.dataflow.Text;
 import osmo.tester.model.dataflow.ValueRange;
@@ -20,7 +21,7 @@ import static osmo.common.TestUtils.*;
  */
 public class ModelState {
   /** How many users? */
-  private ValueRange<Integer> userCount = new ValueRange<>(1, 10);;
+  private ValueRange<Integer> userCount = new ValueRange<>(1, 10);
   /** Users with calendars. */
   private ValueSet<String> users = new ValueSet<>();
   /** Tasks for all users. */
@@ -174,5 +175,19 @@ public class ModelState {
 
   public ModelEvent getEventWithSpace() {
     return oneOf(getEventsWithSpace());
+  }
+  
+  @StateName
+  public String state() {
+    if (hasEvents() && hasTasks()) {
+      return "events & tasks";
+    }
+    if (hasEvents()) {
+      return "events";
+    }
+    if (hasTasks()) {
+      return "tasks";
+    }
+    return "empty";
   }
 }

@@ -9,6 +9,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
@@ -53,7 +54,7 @@ public class TransitionBarChart implements GenerationListener {
   }
 
   @Override
-  public void transition(FSMTransition transition) {
+  public void step(TestStep step) {
   }
 
   @Override

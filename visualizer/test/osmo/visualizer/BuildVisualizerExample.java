@@ -1,7 +1,7 @@
 package osmo.visualizer;
 
 import osmo.tester.OSMOTester;
-import osmo.visualizer.model.FSMBuildVisualizer;
+import osmo.visualizer.fsmbuild.FSMBuildVisualizer;
 
 /** @author Teemu Kanstren */
 public class BuildVisualizerExample {

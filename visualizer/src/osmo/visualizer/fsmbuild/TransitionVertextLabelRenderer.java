@@ -1,4 +1,4 @@
-package osmo.visualizer.model;
+package osmo.visualizer.fsmbuild;
 
 import edu.uci.ics.jung.visualization.renderers.DefaultVertexLabelRenderer;
 import osmo.tester.model.FSMTransition;

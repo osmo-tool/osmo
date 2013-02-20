@@ -3,6 +3,7 @@ package osmo.tester.generation;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
@@ -60,9 +61,9 @@ public class TestSequenceListener implements GenerationListener {
   }
 
   @Override
-  public void transition(FSMTransition transition) {
+  public void step(TestStep step) {
     storeGuards();
-    steps.add("t:" + transition.getName());
+    steps.add("t:" + step.getName());
   }
 
   @Override

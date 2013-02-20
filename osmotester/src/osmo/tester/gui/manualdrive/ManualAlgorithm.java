@@ -82,6 +82,9 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
   private static boolean running = false;
   /** The suite of created test cases. */
   private static TestSuite suite = null;
+  private final RandomAlgorithm randomAlgorithm = new RandomAlgorithm();
+  private final BalancingAlgorithm balancingAlgorithm = new BalancingAlgorithm();
+  private final WeightedRandomAlgorithm weightedRandomAlgorithm = new WeightedRandomAlgorithm();
   /** The model we are using for generation. */
   private FSM fsm = null;
   private static Object lock = new Object();
@@ -425,6 +428,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     Collection<SearchableInput> inputs = fsm.getSearchableInputs();
     for (SearchableInput input : inputs) {
       input.enableGUI();
+      input.setChecked(true);
     }
   }
 
@@ -458,13 +462,13 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     //Autorun mode
     switch (algorithmComboBox.getSelectedIndex()) {
       case 0:
-        return new RandomAlgorithm().choose(history, choices);
+        return randomAlgorithm.choose(history, choices);
       case 1:
-        return new BalancingAlgorithm().choose(history, choices);
+        return balancingAlgorithm.choose(history, choices);
       case 2:
-        return new WeightedRandomAlgorithm().choose(history, choices);
+        return weightedRandomAlgorithm.choose(history, choices);
       default:
-        throw new RuntimeException("Error in algrithm handler. The index was: " + algorithmComboBox.getSelectedIndex());
+        throw new RuntimeException("Error in algorithm handler. The index was: " + algorithmComboBox.getSelectedIndex());
     }
   }
 

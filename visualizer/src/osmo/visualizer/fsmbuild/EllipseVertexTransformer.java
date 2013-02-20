@@ -1,4 +1,4 @@
-package osmo.visualizer.model;
+package osmo.visualizer.fsmbuild;
 
 import edu.uci.ics.jung.visualization.decorators.AbstractVertexShapeTransformer;
 import org.apache.commons.collections15.Transformer;
@@ -9,14 +9,14 @@ import java.awt.Shape;
 /**
  * @author Teemu Kanstren
  */
-public class EllipseVertexTransformer extends AbstractVertexShapeTransformer<FSMTransition> implements Transformer<FSMTransition, Shape> {
+public class EllipseVertexTransformer extends AbstractVertexShapeTransformer<String> implements Transformer<String, Shape> {
   public EllipseVertexTransformer() {
     setAspectRatioTransformer(new EllipseAspectRatioTransformer());
     setSizeTransformer(new EllipseSizeTransformer());
   }
 
   @Override
-  public Shape transform(FSMTransition transition) {
-    return factory.getEllipse(transition);
+  public Shape transform(String name) {
+    return factory.getEllipse(name);
   }
 }
