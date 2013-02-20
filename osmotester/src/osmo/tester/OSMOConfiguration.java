@@ -304,6 +304,10 @@ public class OSMOConfiguration implements ModelFactory {
   }
 
   public static void check(SearchableInput si) {
+    if (si.isChecked()) {
+      return;
+    }
+    si.setChecked(true);
     if (manual == true) {
       si.enableGUI();
       return;

@@ -180,7 +180,6 @@ public class MainGenerator {
     //store into test step the current state
     step.storeStateBefore(fsm);
     invokeAll(transition.getPreMethods(), transition.getPrePostParameter(), "pre", transition);
-    listeners.transition(transition);
     InvocationTarget target = transition.getTransition();
     target.invoke();
 
@@ -190,6 +189,7 @@ public class MainGenerator {
     invokeAll(transition.getPostMethods(), transition.getPrePostParameter(), "post", transition);
     //store into test step the current state
     step.storeStateAfter(fsm);
+    listeners.step(step);
   }
   
   private void updateState(TestStep step) {

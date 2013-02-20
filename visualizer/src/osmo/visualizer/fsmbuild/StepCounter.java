@@ -1,4 +1,4 @@
-package osmo.visualizer.model;
+package osmo.visualizer.fsmbuild;
 
 /** @author Teemu Kanstren */
 public class StepCounter {

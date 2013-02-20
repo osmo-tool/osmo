@@ -2,6 +2,7 @@ package osmo.tester.generator;
 
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
@@ -22,11 +23,11 @@ public interface GenerationListener {
   public void guard(FSMTransition transition);
 
   /**
-   * A transition has been invoked.
+   * A test step has been invoked.
    *
-   * @param transition The associated transition.
+   * @param step The step taken.
    */
-  public void transition(FSMTransition transition);
+  public void step(TestStep step);
 
   /**
    * A pre method has been invoked.

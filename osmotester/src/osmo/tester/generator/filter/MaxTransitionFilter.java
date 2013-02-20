@@ -3,6 +3,7 @@ package osmo.tester.generator.filter;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
@@ -82,8 +83,8 @@ public class MaxTransitionFilter implements TransitionFilter {
   }
 
   @Override
-  public void transition(FSMTransition transition) {
-    String name = transition.getStringName();
+  public void step(TestStep step) {
+    String name = step.getName();
     Integer count = taken.get(name);
     if (count == null) {
       count = 0;

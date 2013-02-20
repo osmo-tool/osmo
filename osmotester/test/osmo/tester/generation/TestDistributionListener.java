@@ -3,6 +3,7 @@ package osmo.tester.generation;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
@@ -30,8 +31,8 @@ public class TestDistributionListener implements GenerationListener {
   }
 
   @Override
-  public void transition(FSMTransition transition) {
-    String name = transition.getStringName();
+  public void step(TestStep step) {
+    String name = step.getName();
     Integer count = steps.get(name);
     if (count == null) {
       count = 0;

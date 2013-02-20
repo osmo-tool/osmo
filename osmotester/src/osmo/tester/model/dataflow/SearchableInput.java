@@ -30,8 +30,17 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T>, Variabl
   private T latestValue = null;
   protected boolean guiEnabled = false;
   private TestSuite suite = null;
+  private boolean checked = false;
 
   protected SearchableInput() {
+  }
+
+  public boolean isChecked() {
+    return checked;
+  }
+
+  public void setChecked(boolean checked) {
+    this.checked = checked;
   }
 
   public ValueSet<String> getSlices() {
@@ -69,6 +78,10 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T>, Variabl
   public void observe(T value) {
     latestValue = value;
     if (name == null) {
+      return;
+    }
+    if (suite == null) {
+      //this can happen if the variables are used to initialize model before test generation
       return;
     }
     suite.getCurrentTest().addVariableValue(name, value, false);

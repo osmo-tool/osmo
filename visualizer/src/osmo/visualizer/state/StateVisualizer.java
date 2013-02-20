@@ -1,4 +1,4 @@
-package osmo.visualizer.model;
+package osmo.visualizer.state;
 
 import edu.uci.ics.jung.algorithms.layout.KKLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
@@ -13,9 +13,12 @@ import edu.uci.ics.jung.visualization.renderers.VertexLabelAsShapeRenderer;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
+import osmo.visualizer.fsmbuild.EllipseVertexTransformer;
+import osmo.visualizer.fsmbuild.StepCounter;
 
 import javax.swing.JFrame;
 import java.awt.Dimension;
@@ -27,17 +30,15 @@ import java.util.Set;
 /**
  * @author Teemu Kanstren
  */
-public class FSMBuildVisualizer extends JFrame implements GenerationListener {
-  private Graph<FSMTransition, StepCounter> graph;
+public class StateVisualizer extends JFrame implements GenerationListener {
+  private Graph<String, StepCounter> graph;
   private Map<String, StepCounter> edges = new HashMap<>();
-  private Set<FSMTransition> vertices = new HashSet<>();
-  private FSMTransition init = new FSMTransition("init");
-  private FSMTransition end = new FSMTransition("end");
-  private FSMTransition current = init;
-  private VisualizationViewer<FSMTransition, StepCounter> vv;
-  private final Layout<FSMTransition,StepCounter> layout;
+  private Set<String> vertices = new HashSet<>();
+  private String current = "init";
+  private VisualizationViewer<String, StepCounter> vv;
+  private final Layout<String, StepCounter> layout;
 
-  public FSMBuildVisualizer() {
+  public StateVisualizer() {
     super("Model Visualizer");
     graph = new DirectedSparseMultigraph<>();
     graph.addVertex(current);
@@ -49,7 +50,7 @@ public class FSMBuildVisualizer extends JFrame implements GenerationListener {
     vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
     vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller());
     vv.getRenderer().getVertexLabelRenderer().setPosition(Position.CNTR);
-    VertexLabelAsShapeRenderer<FSMTransition, StepCounter> vlasr = new VertexLabelAsShapeRenderer<>(vv.getRenderContext());
+    VertexLabelAsShapeRenderer<String, StepCounter> vlasr = new VertexLabelAsShapeRenderer<>(vv.getRenderContext());
 //    vv.getRenderContext().setVertexShapeTransformer(vlasr);
     vv.getRenderContext().setVertexShapeTransformer(new EllipseVertexTransformer());
 //    vv.getRenderContext().setVertexLabelRenderer(new TransitionVertextLabelRenderer(Color.GREEN));
@@ -70,33 +71,20 @@ public class FSMBuildVisualizer extends JFrame implements GenerationListener {
 
   @Override
   public void guard(FSMTransition t) {
-/*    String edge = current.getName() + "->" + t.getName();
-    if (!edges.contains(edge)) {
-      System.out.println("EDGE+" + edge);
-      if (!vertices.contains(t)) {
-        System.out.println("VERTEX+" + t);
-        graph.addVertex(t);
-        vertices.add(t);
-      }
-      edges.add(edge);
-      graph.addEdge("" + index, current, t);
-      index++;
-      vv.repaint();
-    }*/
   }
 
-  private void addEdge(FSMTransition t) {
-    String edge = current.getName() + "->" + t.getName();
+  private void addEdge(String step) {
+    String edge = current + "->" + step;
     if (!edges.containsKey(edge)) {
 //      System.out.println("EDGE+" + edge);
-      if (!vertices.contains(t)) {
+      if (!vertices.contains(step)) {
 //        System.out.println("VERTEX+" + t);
-        graph.addVertex(t);
-        vertices.add(t);
+        graph.addVertex(step);
+        vertices.add(step);
       }
       StepCounter counter = new StepCounter();
       edges.put(edge, counter);
-      graph.addEdge(counter, current, t);
+      graph.addEdge(counter, current, step);
       vv.repaint();
     } else {
       edges.get(edge).increment();
@@ -105,9 +93,9 @@ public class FSMBuildVisualizer extends JFrame implements GenerationListener {
   }
   
   @Override
-  public void transition(FSMTransition t) {
-    addEdge(t);
-    current = t;
+  public void step(TestStep t) {
+    addEdge(t.getState());
+    current = t.getState();
   }
 
   @Override
@@ -120,13 +108,13 @@ public class FSMBuildVisualizer extends JFrame implements GenerationListener {
 
   @Override
   public void testStarted(TestCase test) {
-    current = init;
+    current = "init";
   }
 
   @Override
   public void testEnded(TestCase test) {
-    addEdge(end);
-    current = end;
+    addEdge("end");
+    current = "end";
   }
 
   @Override

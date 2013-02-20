@@ -1,4 +1,4 @@
-package osmo.visualizer.model;
+package osmo.visualizer.fsmbuild;
 
 import org.apache.commons.collections15.Transformer;
 import osmo.tester.model.FSMTransition;
@@ -6,9 +6,9 @@ import osmo.tester.model.FSMTransition;
 /**
  * @author Teemu Kanstren
  */
-public class EllipseSizeTransformer implements Transformer<FSMTransition, Integer> {
+public class EllipseSizeTransformer implements Transformer<String, Integer> {
   @Override
-  public Integer transform(FSMTransition transition) {
+  public Integer transform(String name) {
     return 100;
   }
 }

@@ -5,6 +5,7 @@ import com.mxgraph.view.mxGraph;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
@@ -45,14 +46,14 @@ public class GraphVisualizer extends JFrame implements GenerationListener {
   }
 
   @Override
-  public void transition(FSMTransition transition) {
+  public void step(TestStep step) {
     Object parent = graph.getDefaultParent();
     graph.getModel().beginUpdate();
     try {
       if (currentState == null) {
-        currentState = graph.insertVertex(parent, null, transition.getName(), 200, 20 + (stateInd * 80), 140, 30);
+        currentState = graph.insertVertex(parent, null, step.getName(), 200, 20 + (stateInd * 80), 140, 30);
       } else {
-        Object state = graph.insertVertex(parent, null, transition.getName(), 200, 20 + (stateInd * 80), 140, 30);
+        Object state = graph.insertVertex(parent, null, step.getName(), 200, 20 + (stateInd * 80), 140, 30);
         //you can also set text descriptions on the edges, check the JGraphX docs for details
         graph.insertEdge(parent, null, null, currentState, state);
 //        graph.insertEdge(parent, null, messsage, currentState, state);
