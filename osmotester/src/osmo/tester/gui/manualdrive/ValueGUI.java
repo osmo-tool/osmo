@@ -4,10 +4,12 @@ import osmo.tester.model.dataflow.SearchableInput;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
@@ -20,7 +22,7 @@ import java.awt.event.ActionListener;
  *
  * @author Teemu Kanstren
  */
-public abstract class ValueGUI extends JFrame {
+public abstract class ValueGUI extends JDialog {
   /** The input variable the this GUI is for. */
   protected final SearchableInput input;
   /** The value to provide next. */
@@ -31,7 +33,8 @@ public abstract class ValueGUI extends JFrame {
   public ValueGUI(SearchableInput input) throws HeadlessException {
     this.input = input;
     setTitle(input.getName());
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+    setModalityType(ModalityType.APPLICATION_MODAL);
     setLayout(new BorderLayout());
     Container pane = getContentPane();
     pane.add(new JLabel(createValueLabel()), BorderLayout.NORTH);
@@ -117,13 +120,13 @@ public abstract class ValueGUI extends JFrame {
   public Object next() {
     observed = false;
     setVisible(true);
-    synchronized (this) {
-      try {
-        wait();
-      } catch (InterruptedException e) {
-        //ignored
-      }
-    }
+//    synchronized (this) {
+//      try {
+//        wait();
+//      } catch (InterruptedException e) {
+//        //ignored
+//      }
+//    }
     if (!observed) {
       input.observe(value);
     }

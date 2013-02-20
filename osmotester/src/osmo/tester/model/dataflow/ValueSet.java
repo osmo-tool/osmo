@@ -158,12 +158,12 @@ public class ValueSet<T> extends SearchableInput<T> {
    */
   @Override
   public T next() {
+    if (gui != null) {
+      return (T) gui.next();
+    }
     OSMOConfiguration.check(this);
     if (strategy != DataGenerationStrategy.SLICED && options.size() == 0) {
       throw new IllegalStateException("No value to provide (add some options).");
-    }
-    if (gui != null) {
-      return (T) gui.next();
     }
     T next = null;
     switch (strategy) {

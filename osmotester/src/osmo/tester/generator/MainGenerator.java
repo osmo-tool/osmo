@@ -36,14 +36,15 @@ public class MainGenerator {
   protected final OSMOConfiguration config;
   /** The parsed overall test model. */
   private FSM fsm;
+  private static Collection<GenerationListener> staticListeners = new ArrayList<>();
   /** The list of listeners to be notified of new events as generation progresses. */
-  protected GenerationListenerList listeners;
+  private GenerationListenerList listeners;
   /** Test generation history. */
-  protected TestSuite suite;
+  private TestSuite suite;
   /** Requirements for model objects. */
   private Requirements reqs;
   /** This is set when the test should end but @EndState is not yet achieved to signal ending ASAP. */
-  protected boolean testEnding = false;
+  private boolean testEnding = false;
   /** Keeps track of overall number of tests generated. */
   private static int testCount = 0;
 
@@ -56,6 +57,9 @@ public class MainGenerator {
     this.suite = suite;
     this.config = config;
     this.listeners = config.getListeners();
+    for (GenerationListener listener : staticListeners) {
+      listeners.addListener(listener);
+    }
     createModelObjects();
   }
 
@@ -85,6 +89,9 @@ public class MainGenerator {
     fsm.initSearchableInputs(config);
     invokeAll(fsm.getGenerationEnablers());
     this.reqs = result.getRequirements();
+    if (reqs != null) {
+      reqs.setTestSuite(suite);
+    }
   }
 
   /**
@@ -430,5 +437,9 @@ public class MainGenerator {
 
   public FSM getFsm() {
     return fsm;
+  }
+  
+  public static void addStaticListener(GenerationListener listener) {
+    staticListeners.add(listener);
   }
 }

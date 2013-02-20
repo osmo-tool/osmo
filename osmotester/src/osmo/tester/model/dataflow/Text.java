@@ -144,10 +144,10 @@ public class Text extends SearchableInput<String> {
    */
   @Override
   public String next() {
-    OSMOConfiguration.check(this);
     if (gui != null) {
       return (String) gui.next();
     }
+    OSMOConfiguration.check(this);
     switch (strategy) {
       case RANDOM:
         return randomNext();

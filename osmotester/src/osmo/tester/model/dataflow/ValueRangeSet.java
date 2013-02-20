@@ -197,11 +197,11 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
 
   @Override
   public T next() {
-    OSMOConfiguration.check(this);
-    validate();
     if (gui != null) {
       return (T) gui.next();
     }
+    OSMOConfiguration.check(this);
+    validate();
     T next;
     if (strategy == DataGenerationStrategy.SCRIPTED) {
       return scriptedNext(scriptNextSerialized());
