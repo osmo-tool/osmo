@@ -8,6 +8,7 @@ import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.filter.TransitionFilter;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
+import osmo.tester.model.ModelFactory;
 import osmo.tester.model.Requirements;
 import osmo.tester.model.ScriptedValueProvider;
 import osmo.tester.parser.MainParser;
@@ -54,6 +55,10 @@ public class OSMOTester {
    */
   public void addModelObject(Object modelObject) {
     config.addModelObject(modelObject);
+  }
+  
+  public void setModelFactory(ModelFactory factory, long baseSeed) {
+    config.setFactory(factory, baseSeed);
   }
 
   /**

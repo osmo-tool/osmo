@@ -89,6 +89,7 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T>, Variabl
 
   public void disableGUI() {
     gui = null;
+    guiEnabled = false;
   }
 
   public ToStringWrapper wrapper() {

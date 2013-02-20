@@ -11,8 +11,8 @@ public class Main1 {
     OSMOConfiguration.setSeed(52);
     OSMOTester tester = new OSMOTester(new HelloModel());
     tester.setAlgorithm(new ManualAlgorithm());
-    tester.addTestEndCondition(new Length(5));
-    tester.addSuiteEndCondition(new Length(2));
+    tester.addTestEndCondition(new Length(100));
+    tester.addSuiteEndCondition(new Length(100));
     tester.generate();
   }
 }

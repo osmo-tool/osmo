@@ -1,6 +1,8 @@
 package osmo.tester.gui.manualdrive;
 
 import osmo.tester.OSMOConfiguration;
+import osmo.tester.generator.GenerationListener;
+import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.algorithm.BalancingAlgorithm;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
@@ -17,6 +19,7 @@ import osmo.tester.model.dataflow.SearchableInput;
 import osmo.tester.parser.ParserResult;
 
 import javax.swing.AbstractListModel;
+import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -25,11 +28,13 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import java.awt.Component;
@@ -41,6 +46,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -78,13 +84,18 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
   private static TestSuite suite = null;
   /** The model we are using for generation. */
   private FSM fsm = null;
+  private static Object lock = new Object();
+  private static final JButton btnEndTest = new JButton("End Test");
+  private static final JButton btnEndSuite = new JButton("End Suite");
+  private static final JButton btnWriteScript = new JButton("Write Script");
 
   /** Create the frame. */
   public ManualAlgorithm() {
     OSMOConfiguration.setManual(true);
+    MainGenerator.addStaticListener(new GUIGenerationListener(this));
     setNimbus();
     setTitle("OSMOTester Manual Script Generation");
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     setBounds(100, 100, 600, 460);
     JPanel contentPane = new JPanel();
     contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -97,9 +108,9 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     JLabel lblNextStep = new JLabel("Next Step");
     JLabel lblTraceability = new JLabel("Value History");
 
-    autoPlayButton.addMouseListener(new MouseAdapter() {
+    autoPlayButton.addActionListener(new ActionListener() {
       @Override
-      public void mouseClicked(MouseEvent e) {
+      public void actionPerformed(ActionEvent e) {
         //Auto play action handling
         try {
           Integer.parseInt(autoPlayDelayTextPane.getText());
@@ -123,10 +134,6 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
         }
       }
     });
-    autoPlayButton.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-      }
-    });
 
     statePane.setBackground(SystemColor.menu);
     statePane.setText("Test metrics");
@@ -135,7 +142,11 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     availableTransitionsList.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        choiceFromList = availableTransitionsList.getSelectedValue().toString();
+        synchronized (lock) {
+          Object selectedValue = availableTransitionsList.getSelectedValue();
+          choiceFromList = selectedValue.toString();
+          lock.notifyAll();
+        }
       }
     });
     availableTransitionsList.setModel(new AbstractListModel() {
@@ -168,26 +179,25 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
 
     JLabel lblAutoPlayDelay = new JLabel("Auto play delay (ms)");
 
-    algorithmComboBox.setModel(new DefaultComboBoxModel(new String[]{"RandomAlgorithm", "LessRandomAlgorithm", "WeightedAlgorithm"}));
+    algorithmComboBox.setModel(new DefaultComboBoxModel(new String[]{"RandomAlgorithm", "BalancingRandomAlgorithm", "WeightedAlgorithm"}));
 
-    JButton btnEndTest = new JButton("End Test");
-    btnEndTest.addMouseListener(new MouseAdapter() {
+    btnEndTest.addActionListener(new ActionListener() {
       @Override
-      public void mouseClicked(MouseEvent e) {
+      public void actionPerformed(ActionEvent e) {
+        System.out.println("end test pressed");
         suite.setShouldEndTest(true);
       }
+
     });
 
-    JButton btnEndSuite = new JButton("End Suite");
-    btnEndSuite.addMouseListener(new MouseAdapter() {
+    btnEndSuite.addActionListener(new ActionListener() {
       @Override
-      public void mouseClicked(MouseEvent e) {
+      public void actionPerformed(ActionEvent e) {
         suite.setShouldEndTest(true);
         suite.setShouldEndSuite(true);
       }
     });
 
-    JButton btnWriteScript = new JButton("Write Script");
     btnWriteScript.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -276,8 +286,9 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
       EventQueue.invokeLater(new Runnable() {
         public void run() {
           try {
-            ManualAlgorithm frame = new ManualAlgorithm();
-            frame.setVisible(true);
+//            ManualAlgorithm frame = new ManualAlgorithm();
+//            frame.setVisible(true);
+            setVisible(true);
             running = true;
           } catch (Exception e) {
             e.printStackTrace();
@@ -314,6 +325,10 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
           i++;
         }
         ret += added;
+        Collection<String> coveredRequirements = ts.getCoveredRequirements();
+        for (String req : coveredRequirements) {
+          ret += "(Covered requirement:"+req+")\n";
+        }
       }
     }
     return ret;
@@ -363,25 +378,31 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
 
   /** Just waiting that user make the selection to the next transition */
   private void waitForSelection() {
-    choiceFromList = null;
-    if (autoplay) {
-      int temp = 0;
-      try {
-        temp = Integer.parseInt(autoPlayDelayTextPane.getText());
-      } catch (Exception e) {
-        return;
+    synchronized (lock) {
+      choiceFromList = null;
+      if (autoplay) {
+        int temp = 0;
+        try {
+          temp = Integer.parseInt(autoPlayDelayTextPane.getText());
+          lock.wait(temp);
+        } catch (Exception e) {
+          return;
+        }
+      } else {
+        do {
+          if (choiceFromList != null || autoplay) {
+            break;
+          }
+          if (suite.shouldEndSuite() || suite.shouldEndTest()) {
+            break;
+          }
+          try {
+            lock.wait(100);
+          } catch (InterruptedException e) {
+            //ignored
+          }
+        } while (true);
       }
-      sleep(temp);
-    } else {
-      do {
-        if (choiceFromList != null || autoplay) {
-          break;
-        }
-        if (suite.shouldEndSuite() || suite.shouldEndTest()) {
-          break;
-        }
-        sleep(100);
-      } while (true);
     }
   }
 
@@ -465,5 +486,26 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
   public void writeScript() {
     ManualScriptWriter writer = new ManualScriptWriter();
     writer.write(suite);
+    String separator = System.getProperty("file.separator");
+    String filename = System.getProperty("user.dir")+separator+ManualScriptWriter.FILENAME;
+    JOptionPane.showMessageDialog(this, "Wrote file to:"+filename);
+  }
+  
+  public void testEnded() {
+    availableTransitionsList.setEnabled(false);
+  }
+  
+  public void testStarted() {
+    availableTransitionsList.setEnabled(true);
+  }
+  
+  public void suiteEnded() {
+    availableTransitionsList.setEnabled(false);
+    autoPlayButton.setEnabled(false);
+    btnEndTest.setEnabled(false);
+    System.out.println("end test disabled");
+//    btnEndTest.repaint();
+    btnEndSuite.setEnabled(false);
+//    btnEndSuite.repaint();
   }
 }

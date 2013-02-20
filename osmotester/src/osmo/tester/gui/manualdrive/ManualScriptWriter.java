@@ -19,11 +19,12 @@ import java.util.List;
  */
 public class ManualScriptWriter {
   private static final Logger log = new Logger(ManualScriptWriter.class);
+  public static String FILENAME = "osmo-tests.txt";
 
   public void write(TestSuite suite) {
     BufferedWriter fw = null;
     try {
-      fw = new BufferedWriter(new FileWriter("osmo-tests.txt"));
+      fw = new BufferedWriter(new FileWriter(FILENAME));
       fw.write("action, name, value");
       fw.newLine();
       List<TestCase> tests = suite.getAllTestCases();
