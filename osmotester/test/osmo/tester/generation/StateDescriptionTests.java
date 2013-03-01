@@ -70,7 +70,7 @@ public class StateDescriptionTests {
     osmo.addTestEndCondition(length3);
     osmo.addSuiteEndCondition(length1);
     osmo.generate();
-    String expected = ":hello1:-hello1-:hello1:-hello1-:hello1:-hello1-";
+    String expected = ":null:-hello1-:null:-hello1-:null:-hello1-";
     assertEquals("State over generation with no state defined", expected, model1.getStates());
 
     TestSuite suite = osmo.getSuite();
@@ -87,7 +87,7 @@ public class StateDescriptionTests {
     osmo.addTestEndCondition(length3);
     osmo.addSuiteEndCondition(length1);
     osmo.generate();
-    assertEquals("State over generation with no state defined", ":0:-1-:1:-2-:2:-3-", model.getStates());
+    assertEquals("State over generation with no state defined", ":null:-1-:null:-2-:null:-3-", model.getStates());
     TestCase testCase = osmo.getSuite().getAllTestCases().get(0);
 
     List<TestStep> steps = testCase.getSteps();
@@ -156,7 +156,7 @@ public class StateDescriptionTests {
     osmo.addSuiteEndCondition(length1);
     osmo.generate();
 
-    assertEquals("State", ":start:-3-:3:-3-:3:-2-", model.getStates());
+    assertEquals("State", ":null:-3-:null:-3-:null:-2-", model.getStates());
 
     TestSuite suite = osmo.getSuite();
     Map<String,ModelVariable> testVariables = suite.getTestVariables();

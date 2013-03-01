@@ -18,13 +18,13 @@ import java.util.Map;
 
 /**
  * A test generation algorithm that is similar to the {@link RandomAlgorithm} but prefers to take
- * a the least covered of all available transitions (randomly). The difference is that a single
- * transition is not taken many times until other available ones have been taken equally many times.
- * The same also applies to transition-pairs such that the next transition chosen is based on either the set
- * of completely uncovered transitions (with "null" source for a pair) and for a transition pair with the
- * previously taken transition as a source.
- * In summary the transition chosen is one where the source->destination transitions of a pair is one of the
- * least covered pairs. The source can be "null" meaning it is the first time ever the transition is taken.
+ * a the least covered of all available steps (randomly). The difference is that a single
+ * test step is not taken many times until other available ones have been taken equally many times.
+ * The same also applies to step-pairs such that the next transition chosen is based on either the set
+ * of completely uncovered transitions (with "null" source for a pair) and for a step pair with the
+ * previously taken step as a source.
+ * In summary the step chosen is one where the source->destination pair is one of the
+ * least covered pairs. The source can be "null" meaning it is the first time ever the step is taken.
  *
  * @author Teemu Kanstren, Olli-Pekka Puolitaival
  */

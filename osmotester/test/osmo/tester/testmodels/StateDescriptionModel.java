@@ -78,7 +78,7 @@ public class StateDescriptionModel {
 
   @Post
   public void stateCheck() {
-    states += "-"+suite.getState()+"-";
+    states += "-"+suite.getCurrentTest().getCurrentStep().getState()+"-";
   }
 
   @StateName

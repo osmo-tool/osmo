@@ -31,7 +31,6 @@ public class TestSuite {
   private Requirements requirements;
   /** The coverage for this test suite. */
   private TestCoverage coverage = new TestCoverage();
-  private String state = null;
 
   public TestSuite() {
   }
@@ -41,10 +40,6 @@ public class TestSuite {
   }
 
   public void init() {
-  }
-
-  public void setState(String state) {
-    this.state = state;
   }
 
   /** Start a new test case. */
@@ -335,9 +330,5 @@ public class TestSuite {
    */
   public void addValue(String inputName, Object value) {
     current.addVariableValue(inputName, value, false);
-  }
-
-  public String getState() {
-    return state;
   }
 }

@@ -37,12 +37,12 @@ public class ValidTestModel6 {
 
   @Pre
   public void savePreState() {
-    states += ":"+history.getState()+":";
+    states += ":"+history.getCurrentTest().getCurrentStep().getState()+":";
   }
 
   @Post
   public void savePostState() {
-    states += "-"+history.getState()+"-";
+    states += "-"+history.getCurrentTest().getCurrentStep().getState()+"-";
   }
 
   public String getStates() {
