@@ -98,7 +98,6 @@ public class ParserTests {
               "@RequirementsField class must be of type osmo.tester.model.Requirements. Was java.lang.String.\n" +
               "@TestSuiteField class must be of type osmo.tester.generator.testsuite.TestSuite. Was java.lang.String.\n" +
               "Invalid return type for @EndCondition (\"end()\"):void. Should be boolean.\n" +
-              "Invalid return type for @EndState (\"toEnd()\"):void. Should be boolean.\n"+
               "Invalid return type for @ExplorationEnabler (\"enableExploration()\"):class java.lang.String.\n" +
               "Invalid return type for @ExplorationEnabler (\"enableExploration()\"):int.\n" +
               "Invalid return type for @GenerationEnabler (\"enableGeneration()\"):int.\n" +
@@ -143,10 +142,8 @@ public class ParserTests {
       msg = sortErrors(msg);
       String expected = "Invalid FSM:\n" +
               "@EndCondition methods are not allowed to have parameters: \"ending()\" has 1 parameters.\n" +
-              "@EndState methods are not allowed to have parameters: \"badArgument()\" has 1 parameters.\n"+
               "@RequirementsField value was null, which is not allowed.\n" +
               "Guard methods are not allowed to have parameters: \"hello()\" has 1 parameters.\n" +
-              "Invalid return type for @EndState (\"badArgument()\"):class java.lang.String. Should be boolean.\n"+
               "StateName methods are not allowed to have parameters: \"badArgument()\" has 1 parameters.\n"+
               "";
       assertEquals(expected, msg);

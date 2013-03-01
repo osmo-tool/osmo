@@ -10,7 +10,6 @@ import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.Requirements;
 import osmo.tester.testmodels.BaseModelExtension;
-import osmo.tester.testmodels.EndStateModel;
 import osmo.tester.testmodels.GuardianModel;
 import osmo.tester.testmodels.PartialModel1;
 import osmo.tester.testmodels.PartialModel2;
@@ -158,29 +157,6 @@ public class GenerationTests {
     TestCase test1 = tests.get(0);
     test1.getSteps();
   }
-
-  @Test
-  public void generateEndStateModelLength1() {
-    EndStateModel model = new EndStateModel();
-    osmo.addModelObject(model);
-    Length length1 = new Length(1);
-    osmo.addTestEndCondition(length1);
-    osmo.addSuiteEndCondition(length1);
-    osmo.generate();
-    assertEquals("Number of covered requirements", 3, model.getRequirements().getUniqueCoverage().size());
-  }
-
-  @Test
-  public void generateEndStateModelLength2() {
-    EndStateModel model = new EndStateModel();
-    osmo.addModelObject(model);
-    Length length1 = new Length(2);
-    osmo.addTestEndCondition(length1);
-    osmo.addSuiteEndCondition(length1);
-    osmo.generate();
-    assertEquals("Number of covered requirements", 3, model.getRequirements().getUniqueCoverage().size());
-  }
-
   
   @Test
   public void generatePartialModelsTimes2() {

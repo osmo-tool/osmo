@@ -69,7 +69,6 @@ public class MainGenerator {
     initSuite();
     while (!checkSuiteEndConditions() && !suite.shouldEndSuite()) {
       suite.setShouldEndTest(false);
-      createModelObjects();
       nextTest();
     }
     endSuite();
@@ -100,6 +99,7 @@ public class MainGenerator {
    * @return The generated test case.
    */
   public TestCase nextTest() {
+    createModelObjects();
     log.debug("Starting new test generation");
     beforeTest();
     TestCase test = suite.getCurrentTest();
@@ -186,10 +186,10 @@ public class MainGenerator {
     updateState(step);
     //re-store state into transition to update parameters for post-methods
     transition.storeState(fsm);
+    listeners.step(step);
     invokeAll(transition.getPostMethods(), transition.getPrePostParameter(), "post", transition);
     //store into test step the current state
     step.storeStateAfter(fsm);
-    listeners.step(step);
   }
   
   private void updateState(TestStep step) {

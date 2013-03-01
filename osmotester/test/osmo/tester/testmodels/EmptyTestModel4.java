@@ -1,7 +1,6 @@
 package osmo.tester.testmodels;
 
 import osmo.tester.annotation.EndCondition;
-import osmo.tester.annotation.EndState;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.StateName;
@@ -31,7 +30,6 @@ public class EmptyTestModel4 {
     return false;
   }
 
-  @EndState
   @StateName
   public String badArgument(String bar) {
     return "";
