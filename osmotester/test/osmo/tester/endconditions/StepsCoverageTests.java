@@ -5,7 +5,7 @@ import org.junit.Test;
 import osmo.tester.OSMOTester;
 import osmo.tester.generation.TestSequenceListener;
 import osmo.tester.generator.endcondition.Length;
-import osmo.tester.generator.endcondition.StepCoverage;
+import osmo.tester.generator.endcondition.structure.StepCoverage;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;

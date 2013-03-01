@@ -2,7 +2,7 @@ package osmo.tester.examples.tutorial.basic;
 
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
-import osmo.tester.generator.endcondition.And;
+import osmo.tester.generator.endcondition.logical.And;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.Probability;
 

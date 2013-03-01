@@ -1,5 +1,7 @@
-package osmo.tester.generator.endcondition;
+package osmo.tester.generator.endcondition.logical;
 
+import osmo.tester.generator.endcondition.AbstractEndCondition;
+import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 

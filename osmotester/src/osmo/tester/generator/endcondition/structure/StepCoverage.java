@@ -1,6 +1,7 @@
-package osmo.tester.generator.endcondition;
+package osmo.tester.generator.endcondition.structure;
 
 import osmo.common.log.Logger;
+import osmo.tester.generator.endcondition.AbstractEndCondition;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -15,6 +16,8 @@ import java.util.List;
 
 /**
  * An end condition that defines a set of test steps (transitions) that need to be covered.
+ * The given set of required coverage can include duplicates, meaning the same step needs to be covered as many
+ * times as it appears in the given set.
  *
  * @author Teemu Kanstren
  */

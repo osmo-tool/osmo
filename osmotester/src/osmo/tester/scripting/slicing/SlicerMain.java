@@ -6,7 +6,7 @@ import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
-import osmo.tester.generator.endcondition.StepCoverage;
+import osmo.tester.generator.endcondition.structure.StepCoverage;
 import osmo.tester.generator.endcondition.data.DataCoverage;
 import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
 import osmo.tester.generator.filter.MaxTransitionFilter;
