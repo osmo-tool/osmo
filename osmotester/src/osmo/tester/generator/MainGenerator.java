@@ -170,8 +170,6 @@ public class MainGenerator {
    * @param transition The transition to be executed.
    */
   public void execute(FSMTransition transition) {
-    updateState(null);
-
     transition.reset();
     //we have to add this first or it will produce failures..
     TestStep step = suite.addStep(transition);
@@ -191,17 +189,19 @@ public class MainGenerator {
     //store into test step the current state
     step.storeStateAfter(fsm);
   }
-  
+
+  /**
+   * Updates the state in the test suite and stores it into test step etc.
+   * 
+   * @param step The step.
+   */
   private void updateState(TestStep step) {
     if (fsm.getStateDescription() != null) {
       String state = (String) fsm.getStateDescription().invoke();
       if (state == null) {
         throw new NullPointerException("Model state is null. Now allowed.");
       }
-      suite.setState(state);
-      if (step != null) {
-        step.setState(state);
-      }
+      step.setState(state);
       log.debug("new state:"+state);
     }
   }

@@ -34,6 +34,8 @@ public class TestCoverage {
   private boolean mergeState = false;
   /** Custom calculators. */
   private Collection<CoverageCalculator> calculators= new LinkedHashSet<>();
+  /** Set of covered states. */
+  private Collection<String> states = new LinkedHashSet<>();
 
   /**
    * Start with an empty set.
@@ -50,6 +52,12 @@ public class TestCoverage {
     for (TestCase test : tests) {
       addTestCoverage(test);
     }
+  }
+
+  public Collection<String> getStates() {
+    Collection<String> clone = new ArrayList<>();
+    clone.addAll(states);
+    return clone;
   }
 
   public void setMergeState(boolean mergeState) {
@@ -115,6 +123,8 @@ public class TestCoverage {
         calculate(step);
         step.setCoverageProcessed();
       }
+      states.add(step.getState());
+      //TODO: remove the merge state option if it is not found useful beyond transformation testing prototyping
       if (!mergeState) {
         addValues(step.getValues());
       } else {

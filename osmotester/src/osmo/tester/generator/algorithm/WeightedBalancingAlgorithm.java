@@ -16,17 +16,19 @@ import java.util.Set;
 
 /**
  * A test generation algorithm that is similar to the {@link BalancingAlgorithm} but also takes into account
- * weights assigned to transitions.
- * For example, consider a model that has 2 transitions A and B, and both have been visited twice.
+ * weights assigned to test steps. This algorithm does not consider step-pairs, it only balances the steps according
+ * to their frequency in the trace so far and the weight they have been given.
+ * <p/>
+ * For example, consider a model that has 2 steps A and B, and both have been visited twice.
  * Now if A has a weight of 2 and B a weight of 3, the algorithm favors B due to its combined weight and coverage values.
  * The formula is:
- * -for each possible choice: transition weight / number of times transitions covered
+ * -for each possible choice: test step weight / number of times step covered
  * -multiply coverage values until you get a value over 10
- * -use the resulting values as the "weight" to pick one of the transitions
+ * -use the resulting values as the "weight" to pick one of the test steps
  * <p/>
- * Note than in calculation, a transition that is never visited has a visited value of 1 (and one that is visited once
- * has a value of 2 and so on) to allow for simplified calculation of transition visit scores (otherwise all
- * transitions would start with score of 0, and the choices of first transitions would be random without weight).
+ * Note than in calculation, a step that is never visited has a visited value of 1 (and one that is visited once
+ * has a value of 2 and so on) to allow for simplified calculation of test step scores (otherwise all
+ * test steps would start with score of 0, and the choices of first step would be random without weight).
  *
  * @author Teemu Kanstren
  */
