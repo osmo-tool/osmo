@@ -1,7 +1,6 @@
 package osmo.tester.testmodels;
 
 import osmo.tester.annotation.EndCondition;
-import osmo.tester.annotation.EndState;
 import osmo.tester.annotation.ExplorationEnabler;
 import osmo.tester.annotation.GenerationEnabler;
 import osmo.tester.annotation.Guard;
@@ -29,10 +28,6 @@ public class EmptyTestModel3 {
 
   @EndCondition
   public void end() {
-  }
-
-  @EndState
-  public void toEnd() {
   }
 
   @StateName

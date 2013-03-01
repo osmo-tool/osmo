@@ -206,7 +206,7 @@ public class ErrorHandlingTests {
   @Test
   public void transitionWithTrap() {
     listener.setTracePrePost(true);
-    listener.addExpected("suite-start", "start", "g:hello", "pre:hello", "t:hello", "end", "suite-end");
+    listener.addExpected("suite-start", "start", "g:hello", "pre:hello", "end", "suite-end");
     osmo.addModelObject(new ErrorModel5());
     config.setFailWhenError(false);
     Length length3 = new Length(3);
