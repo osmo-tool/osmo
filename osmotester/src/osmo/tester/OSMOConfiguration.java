@@ -4,7 +4,7 @@ import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.GenerationListenerList;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
-import osmo.tester.generator.endcondition.And;
+import osmo.tester.generator.endcondition.logical.And;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.Probability;
