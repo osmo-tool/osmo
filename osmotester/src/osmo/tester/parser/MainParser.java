@@ -21,7 +21,7 @@ import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.ModelFactory;
-import osmo.tester.model.dataflow.SearchableInput;
+import osmo.tester.model.data.SearchableInput;
 import osmo.tester.parser.annotation.AfterSuiteParser;
 import osmo.tester.parser.annotation.AfterTestParser;
 import osmo.tester.parser.annotation.BeforeSuiteParser;

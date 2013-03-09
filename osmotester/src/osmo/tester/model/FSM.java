@@ -2,8 +2,8 @@ package osmo.tester.model;
 
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
-import osmo.tester.model.dataflow.SearchableInput;
-import osmo.tester.model.dataflow.ValueSet;
+import osmo.tester.model.data.SearchableInput;
+import osmo.tester.model.data.ValueSet;
 import osmo.tester.parser.field.SearchableInputField;
 
 import java.util.ArrayList;
@@ -51,9 +51,9 @@ public class FSM {
   private Collection<VariableField> stateVariables = new ArrayList<>();
   /** List of variables that can be used for coverage calculations. */
   private Collection<VariableField> coverageVariables = new ArrayList<>();
-  /** The list of {@link osmo.tester.model.dataflow.SearchableInput} elements parsed from model objects. */
+  /** The list of {@link osmo.tester.model.data.SearchableInput} elements parsed from model objects. */
   private Collection<SearchableInput> searchableInputs = new ArrayList<>();
-  /** We read the {@link osmo.tester.model.dataflow.SearchableInput} values from these when tests start. */
+  /** We read the {@link osmo.tester.model.data.SearchableInput} values from these when tests start. */
   private Collection<SearchableInputField> searchableInputFields = new ArrayList<>();
   private Requirements requirements = null;
   private InvocationTarget stateDescription = null;
@@ -282,7 +282,7 @@ public class FSM {
   }
 
   /**
-   * State variables as tagged by @Variable annotations. Does not include {@link osmo.tester.model.dataflow.SearchableInput} classes.
+   * State variables as tagged by @Variable annotations. Does not include {@link osmo.tester.model.data.SearchableInput} classes.
    *
    * @return variables tagged @Variable.
    */
@@ -295,7 +295,7 @@ public class FSM {
   }
 
   /**
-   * These provide access to the {@link osmo.tester.model.dataflow.SearchableInput} elements, to enable capturing changes between tests.
+   * These provide access to the {@link osmo.tester.model.data.SearchableInput} elements, to enable capturing changes between tests.
    *
    * @return The access codes for the searchable inputs.
    */
@@ -304,9 +304,9 @@ public class FSM {
   }
 
   /**
-   * Model variables extending the {@link osmo.tester.model.dataflow.SearchableInput} class. Does not include @Variable annotated classes.
+   * Model variables extending the {@link osmo.tester.model.data.SearchableInput} class. Does not include @Variable annotated classes.
    *
-   * @return Variables extending {@link osmo.tester.model.dataflow.SearchableInput} classes.
+   * @return Variables extending {@link osmo.tester.model.data.SearchableInput} classes.
    */
   public Collection<SearchableInput> getSearchableInputs() {
     return searchableInputs;
@@ -318,7 +318,7 @@ public class FSM {
   }
 
   /**
-   * Add a new access method for a {@link osmo.tester.model.dataflow.SearchableInput} to the model.
+   * Add a new access method for a {@link osmo.tester.model.data.SearchableInput} to the model.
    *
    * @param field to add.
    */
@@ -327,7 +327,7 @@ public class FSM {
   }
 
   /**
-   * Add a new variable of type {@link osmo.tester.model.dataflow.SearchableInput} to the model.
+   * Add a new variable of type {@link osmo.tester.model.data.SearchableInput} to the model.
    *
    * @param input to add.
    */
@@ -345,7 +345,7 @@ public class FSM {
 
   /**
    * Initialize the test suite, adding observers to capture data from all registered 
-   * {@link osmo.tester.model.dataflow.SearchableInput} variables.
+   * {@link osmo.tester.model.data.SearchableInput} variables.
    * Also sets the scripted value options for data if defined.
    *
    * @param config This is where the scripter and value options are taken.

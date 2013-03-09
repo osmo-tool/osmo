@@ -1,6 +1,6 @@
-package osmo.tester.model.dataflow.wrappers;
+package osmo.tester.model.data.wrappers;
 
-import osmo.tester.model.dataflow.SearchableInput;
+import osmo.tester.model.data.SearchableInput;
 
 /** @author Teemu Kanstren */
 public class ToStringWrapper {

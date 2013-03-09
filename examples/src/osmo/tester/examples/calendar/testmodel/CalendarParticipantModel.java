@@ -3,7 +3,7 @@ package osmo.tester.examples.calendar.testmodel;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
-import osmo.tester.model.dataflow.ValueSet;
+import osmo.tester.model.data.ValueSet;
 
 import java.io.PrintStream;
 import java.util.Collection;

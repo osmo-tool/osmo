@@ -3,7 +3,7 @@ package osmo.tester.gui.slicing;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.VariableField;
-import osmo.tester.model.dataflow.SearchableInput;
+import osmo.tester.model.data.SearchableInput;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;

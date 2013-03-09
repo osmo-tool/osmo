@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  * Any Objects are also stored as such unless they implement the {@link osmo.tester.model.VariableValue}
  * interface. If this interface is implemented the value() method on it is queried for the value to store.
  * <p/>
- * If {@link osmo.tester.model.dataflow.SearchableInput} objects are annotated with this, their latest value
+ * If {@link osmo.tester.model.data.SearchableInput} objects are annotated with this, their latest value
  * will be stored. Otherwise, they will not be stored as part of the model state but only when they are used
  * to provide a new value.
  *

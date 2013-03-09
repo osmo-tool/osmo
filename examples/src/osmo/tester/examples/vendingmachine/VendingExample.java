@@ -11,8 +11,8 @@ import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.model.dataflow.Input;
-import osmo.tester.model.dataflow.ValueSet;
+import osmo.tester.model.data.Input;
+import osmo.tester.model.data.ValueSet;
 
 import java.io.PrintStream;
 

@@ -1,7 +1,7 @@
 package osmo.tester.parser.annotation;
 
 import osmo.tester.annotation.Variable;
-import osmo.tester.model.dataflow.SearchableInput;
+import osmo.tester.model.data.SearchableInput;
 import osmo.tester.parser.AnnotationParser;
 import osmo.tester.parser.ParserParameters;
 import osmo.tester.parser.ParserResult;
@@ -11,7 +11,7 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 
 /**
- * Parses fields of the {@link osmo.tester.model.dataflow.SearchableInput} and stores them to the test model FSM.
+ * Parses fields of the {@link osmo.tester.model.data.SearchableInput} and stores them to the test model FSM.
  *
  * @author Teemu Kanstren
  */

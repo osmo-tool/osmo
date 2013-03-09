@@ -7,9 +7,9 @@ import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.model.Requirements;
-import osmo.tester.model.dataflow.DataGenerationStrategy;
-import osmo.tester.model.dataflow.ValueRange;
-import osmo.tester.model.dataflow.ValueSet;
+import osmo.tester.model.data.DataGenerationStrategy;
+import osmo.tester.model.data.ValueRange;
+import osmo.tester.model.data.ValueSet;
 
 /** @author Teemu Kanstren */
 public class HelloModel {

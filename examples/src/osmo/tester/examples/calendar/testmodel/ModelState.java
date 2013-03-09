@@ -1,10 +1,10 @@
 package osmo.tester.examples.calendar.testmodel;
 
 import osmo.tester.annotation.StateName;
-import osmo.tester.model.dataflow.DataGenerationStrategy;
-import osmo.tester.model.dataflow.Text;
-import osmo.tester.model.dataflow.ValueRange;
-import osmo.tester.model.dataflow.ValueSet;
+import osmo.tester.model.data.DataGenerationStrategy;
+import osmo.tester.model.data.Text;
+import osmo.tester.model.data.ValueRange;
+import osmo.tester.model.data.ValueSet;
 
 import java.util.ArrayList;
 import java.util.Calendar;

@@ -5,9 +5,9 @@ import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
-import osmo.tester.model.dataflow.DataGenerationStrategy;
-import osmo.tester.model.dataflow.ValueRange;
-import osmo.tester.model.dataflow.ValueSet;
+import osmo.tester.model.data.DataGenerationStrategy;
+import osmo.tester.model.data.ValueRange;
+import osmo.tester.model.data.ValueSet;
 
 import static junit.framework.Assert.*;
 

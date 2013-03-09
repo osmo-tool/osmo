@@ -296,7 +296,7 @@ public abstract class CoverageMetric {
 
   /**
    * Gives a list of all model variables. Include those tagged as @Variable
-   * and those with type of {@link osmo.tester.model.dataflow.SearchableInput}
+   * and those with type of {@link osmo.tester.model.data.SearchableInput}
    *
    * @param tc
    * @return The variable names.

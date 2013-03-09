@@ -5,7 +5,7 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.VariableField;
-import osmo.tester.model.dataflow.SearchableInput;
+import osmo.tester.model.data.SearchableInput;
 import osmo.tester.parser.ParserResult;
 
 import java.util.ArrayList;

@@ -48,7 +48,7 @@ public class RequirementPrintTests {
     String actual = out.toString();
     expected = unifyLineSeparators(expected, "\n");
     actual = unifyLineSeparators(actual, "\n");
-    assertEquals("Model printout for requirements testing", expected, actual);
+    assertEquals("Generator printout for requirements testing", expected, actual);
   }
 
   @Test
@@ -61,7 +61,7 @@ public class RequirementPrintTests {
     String actual = out.toString();
     expected = unifyLineSeparators(expected, "\n");
     actual = unifyLineSeparators(actual, "\n");
-    assertEquals("Model printout for requirements testing", expected, actual);
+    assertEquals("Generator printout for requirements testing", expected, actual);
   }
 
   @Test
@@ -74,7 +74,7 @@ public class RequirementPrintTests {
     String actual = out.toString();
     expected = unifyLineSeparators(expected, "\n");
     actual = unifyLineSeparators(actual, "\n");
-    assertEquals("Model printout for requirements testing", expected, actual);
+    assertEquals("Generator printout for requirements testing", expected, actual);
   }
 
   @Test
@@ -87,6 +87,6 @@ public class RequirementPrintTests {
     String actual = out.toString();
     expected = unifyLineSeparators(expected, "\n");
     actual = unifyLineSeparators(actual, "\n");
-    assertEquals("Model printout for requirements testing", expected, actual);
+    assertEquals("Generator printout for requirements testing", expected, actual);
   }
 }

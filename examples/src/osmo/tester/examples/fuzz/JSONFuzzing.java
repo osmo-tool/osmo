@@ -3,8 +3,8 @@ package osmo.tester.examples.fuzz;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
-import osmo.tester.model.dataflow.DataGenerationStrategy;
-import osmo.tester.model.dataflow.Text;
+import osmo.tester.model.data.DataGenerationStrategy;
+import osmo.tester.model.data.Text;
 
 import java.io.StringWriter;
 

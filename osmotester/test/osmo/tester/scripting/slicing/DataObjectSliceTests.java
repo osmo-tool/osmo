@@ -6,12 +6,12 @@ import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
-import osmo.tester.model.dataflow.CharSet;
-import osmo.tester.model.dataflow.DataGenerationStrategy;
-import osmo.tester.model.dataflow.Text;
-import osmo.tester.model.dataflow.ValueRange;
-import osmo.tester.model.dataflow.ValueRangeSet;
-import osmo.tester.model.dataflow.ValueSet;
+import osmo.tester.model.data.CharSet;
+import osmo.tester.model.data.DataGenerationStrategy;
+import osmo.tester.model.data.Text;
+import osmo.tester.model.data.ValueRange;
+import osmo.tester.model.data.ValueRangeSet;
+import osmo.tester.model.data.ValueSet;
 
 import static junit.framework.Assert.*;
 

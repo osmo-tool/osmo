@@ -1,7 +1,6 @@
 package osmo.tester.gui.manualdrive;
 
 import osmo.tester.OSMOConfiguration;
-import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.algorithm.BalancingAlgorithm;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
@@ -15,11 +14,10 @@ import osmo.tester.gui.ModelHelper;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.VariableField;
-import osmo.tester.model.dataflow.SearchableInput;
+import osmo.tester.model.data.SearchableInput;
 import osmo.tester.parser.ParserResult;
 
 import javax.swing.AbstractListModel;
-import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -46,7 +44,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;

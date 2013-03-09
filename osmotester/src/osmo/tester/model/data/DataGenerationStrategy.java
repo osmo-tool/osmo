@@ -1,4 +1,4 @@
-package osmo.tester.model.dataflow;
+package osmo.tester.model.data;
 
 /**
  * Defines a set of strategies for how the different data-flow modeling objects produce input values when their input
