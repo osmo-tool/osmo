@@ -135,7 +135,7 @@ public class Requirements {
     int n = uniqueCoverage.size() - getExcess().size();
     int total = reqs.size();
     if (total > 0) {
-      double p = n / total * 100;
+      double p = (double) n / (double) total * 100;
       final MessageFormat format = new MessageFormat("Total = {0}/{1} ({2}%) requirements.");
       Object args = new Object[]{n, total, p};
       out.append(format.format(args));
