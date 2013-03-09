@@ -9,7 +9,7 @@ import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
 import osmo.tester.model.VariableField;
-import osmo.tester.model.dataflow.SearchableInput;
+import osmo.tester.model.data.SearchableInput;
 import osmo.tester.testmodels.EmptyTestModel1;
 import osmo.tester.testmodels.EmptyTestModel2;
 import osmo.tester.testmodels.EmptyTestModel3;

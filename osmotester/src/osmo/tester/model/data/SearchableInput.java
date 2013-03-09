@@ -1,4 +1,4 @@
-package osmo.tester.model.dataflow;
+package osmo.tester.model.data;
 
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
@@ -6,7 +6,7 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.gui.manualdrive.ValueGUI;
 import osmo.tester.model.ScriptedValueProvider;
 import osmo.tester.model.VariableValue;
-import osmo.tester.model.dataflow.wrappers.ToStringWrapper;
+import osmo.tester.model.data.wrappers.ToStringWrapper;
 
 import java.util.Collection;
 

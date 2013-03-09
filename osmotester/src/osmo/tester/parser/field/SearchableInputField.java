@@ -1,7 +1,7 @@
 package osmo.tester.parser.field;
 
 import osmo.common.log.Logger;
-import osmo.tester.model.dataflow.SearchableInput;
+import osmo.tester.model.data.SearchableInput;
 
 import java.lang.reflect.Field;
 

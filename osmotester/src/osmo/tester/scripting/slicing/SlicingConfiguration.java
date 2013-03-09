@@ -5,7 +5,7 @@ import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.algorithm.WeightedBalancingAlgorithm;
 import osmo.tester.generator.algorithm.WeightedRandomAlgorithm;
 import osmo.tester.generator.endcondition.data.DataCoverageRequirement;
-import osmo.tester.model.dataflow.ValueSet;
+import osmo.tester.model.data.ValueSet;
 
 import java.util.ArrayList;
 import java.util.Collection;

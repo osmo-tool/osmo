@@ -1,4 +1,4 @@
-package osmo.tester.model.dataflow;
+package osmo.tester.model.data;
 
 /**
  * Interface for input data generation objects.

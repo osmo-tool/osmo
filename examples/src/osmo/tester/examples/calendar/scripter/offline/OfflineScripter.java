@@ -5,7 +5,7 @@ import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.examples.calendar.testmodel.ModelEvent;
 import osmo.tester.examples.calendar.testmodel.ModelState;
 import osmo.tester.examples.calendar.testmodel.ModelTask;
-import osmo.tester.model.dataflow.Text;
+import osmo.tester.model.data.Text;
 import osmo.tester.scripter.robotframework.RFParameter;
 import osmo.tester.scripter.robotframework.RFScripter;
 

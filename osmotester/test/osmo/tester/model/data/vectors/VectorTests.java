@@ -1,7 +1,7 @@
-package osmo.tester.model.dataflow.vectors;
+package osmo.tester.model.data.vectors;
 
 import org.junit.Test;
-import osmo.tester.model.dataflow.DataGenerationStrategy;
+import osmo.tester.model.data.DataGenerationStrategy;
 
 import java.util.List;
 

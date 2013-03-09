@@ -5,7 +5,7 @@ import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
-import osmo.tester.model.dataflow.Text;
+import osmo.tester.model.data.Text;
 
 /** @author Teemu Kanstren */
 public class HelloModel3 {

@@ -1,11 +1,11 @@
-package osmo.tester.model.dataflow.wrappers;
+package osmo.tester.model.data.wrappers;
 
-import osmo.tester.model.dataflow.DataType;
-import osmo.tester.model.dataflow.SearchableInput;
-import osmo.tester.model.dataflow.Text;
-import osmo.tester.model.dataflow.ValueRange;
-import osmo.tester.model.dataflow.ValueRangeSet;
-import osmo.tester.model.dataflow.ValueSet;
+import osmo.tester.model.data.DataType;
+import osmo.tester.model.data.SearchableInput;
+import osmo.tester.model.data.Text;
+import osmo.tester.model.data.ValueRange;
+import osmo.tester.model.data.ValueRangeSet;
+import osmo.tester.model.data.ValueSet;
 
 /** @author Teemu Kanstren */
 public class JSONWrapper extends ValueSet<String> {

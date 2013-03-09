@@ -1,6 +1,6 @@
-package osmo.tester.model.dataflow.vectors;
+package osmo.tester.model.data.vectors;
 
-import osmo.tester.model.dataflow.ValueSet;
+import osmo.tester.model.data.ValueSet;
 
 import static osmo.common.TestUtils.*;
 

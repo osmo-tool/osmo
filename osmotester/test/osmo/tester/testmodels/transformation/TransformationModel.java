@@ -8,7 +8,7 @@ import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.model.dataflow.ValueSet;
+import osmo.tester.model.data.ValueSet;
 
 /** @author Teemu Kanstren */
 public class TransformationModel {

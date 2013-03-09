@@ -7,9 +7,9 @@ import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.model.dataflow.CollectionCount;
-import osmo.tester.model.dataflow.ValueRange;
-import osmo.tester.model.dataflow.ValueSet;
+import osmo.tester.model.data.CollectionCount;
+import osmo.tester.model.data.ValueRange;
+import osmo.tester.model.data.ValueSet;
 
 import java.io.PrintStream;
 import java.util.ArrayList;

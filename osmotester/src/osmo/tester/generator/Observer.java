@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Observer that is called from all {@link osmo.tester.model.dataflow.SearchableInput} instances to
+ * Observer that is called from all {@link osmo.tester.model.data.SearchableInput} instances to
  * track generated data in the generated test suite.
  *
  * @author Teemu Kanstren

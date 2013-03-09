@@ -1,4 +1,4 @@
-package osmo.tester.model.dataflow;
+package osmo.tester.model.data;
 
 import osmo.common.Randomizer;
 import osmo.common.log.Logger;

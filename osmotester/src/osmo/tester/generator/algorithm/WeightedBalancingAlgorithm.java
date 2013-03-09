@@ -23,7 +23,7 @@ import java.util.Set;
  * Now if A has a weight of 2 and B a weight of 3, the algorithm favors B due to its combined weight and coverage values.
  * The formula is:
  * -for each possible choice: test step weight / number of times step covered
- * -multiply coverage values until you get a value over 10
+ * -multiply these values until you get a value over 10
  * -use the resulting values as the "weight" to pick one of the test steps
  * <p/>
  * Note than in calculation, a step that is never visited has a visited value of 1 (and one that is visited once

@@ -1,6 +1,6 @@
 package osmo.tester.generator.endcondition.data;
 
-import osmo.tester.model.dataflow.SearchableInput;
+import osmo.tester.model.data.SearchableInput;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,7 +8,7 @@ import java.util.Collection;
 /**
  * Defines coverage requirements for {@link DataCoverage} end condition for a given variable.
  * Each variable should have one or more instances of this object, with one or more values
- * defines as required. Some OSMO objects such as {@link osmo.tester.model.dataflow.ValueRange} and
+ * defines as required. Some OSMO objects such as {@link osmo.tester.model.data.ValueRange} and
  *
  * @author Teemu Kanstren
  * @{link ValueSet} can also support a definition of requiring all possible values covered.

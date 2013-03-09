@@ -7,7 +7,7 @@ import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.model.dataflow.ValueRange;
+import osmo.tester.model.data.ValueRange;
 
 /** @author Teemu Kanstren */
 public class StateDescriptionModel2 {

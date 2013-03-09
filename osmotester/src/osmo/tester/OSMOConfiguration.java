@@ -12,9 +12,9 @@ import osmo.tester.generator.filter.TransitionFilter;
 import osmo.tester.model.FSM;
 import osmo.tester.model.ModelFactory;
 import osmo.tester.model.ScriptedValueProvider;
-import osmo.tester.model.dataflow.DataGenerationStrategy;
-import osmo.tester.model.dataflow.SearchableInput;
-import osmo.tester.model.dataflow.ValueSet;
+import osmo.tester.model.data.DataGenerationStrategy;
+import osmo.tester.model.data.SearchableInput;
+import osmo.tester.model.data.ValueSet;
 import osmo.tester.parser.ModelObject;
 import osmo.tester.parser.ParserResult;
 

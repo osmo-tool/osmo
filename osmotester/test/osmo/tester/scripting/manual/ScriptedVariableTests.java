@@ -7,10 +7,10 @@ import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.ScriptedValueProvider;
-import osmo.tester.model.dataflow.Text;
-import osmo.tester.model.dataflow.ValueRange;
-import osmo.tester.model.dataflow.ValueRangeSet;
-import osmo.tester.model.dataflow.ValueSet;
+import osmo.tester.model.data.Text;
+import osmo.tester.model.data.ValueRange;
+import osmo.tester.model.data.ValueRangeSet;
+import osmo.tester.model.data.ValueSet;
 
 import static junit.framework.Assert.*;
 

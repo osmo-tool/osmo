@@ -1,8 +1,8 @@
 package osmo.tester.gui.manualdrive;
 
-import osmo.tester.model.dataflow.SearchableInput;
-import osmo.tester.model.dataflow.Text;
-import osmo.tester.model.dataflow.ValueSet;
+import osmo.tester.model.data.SearchableInput;
+import osmo.tester.model.data.Text;
+import osmo.tester.model.data.ValueSet;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
