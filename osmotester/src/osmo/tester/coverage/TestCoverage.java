@@ -246,6 +246,7 @@ public class TestCoverage {
     clone.transitions.addAll(transitions);
     clone.reqs.addAll(reqs);
     clone.singles.addAll(singles);
+    clone.states.addAll(states);
     for (String key : variables.keySet()) {
       Collection<String> values = new LinkedHashSet<>();
       values.addAll(variables.get(key));
