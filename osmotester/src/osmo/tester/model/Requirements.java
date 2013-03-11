@@ -7,6 +7,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -95,7 +96,7 @@ public class Requirements {
    * @return The number of covered but unexpected requirements.
    */
   public Collection<String> getExcess() {
-    Collection<String> excess = new ArrayList<>();
+    Collection<String> excess = new HashSet<>();
     excess.addAll(covered);
     excess.removeAll(reqs);
     return excess;

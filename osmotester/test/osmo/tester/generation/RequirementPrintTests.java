@@ -55,7 +55,7 @@ public class RequirementPrintTests {
   public void excessCoverage() {
     real.excessCoverage();
     String expected = "generated 1 tests.\n\n" +
-            "Requirements:[epix]\n" +
+            "Requirements:[hello]\n" +
             "Covered:[epix, hello, world]\n" +
             "Total = 1/1 (100%) requirements.\n";
     String actual = out.toString();
