@@ -117,4 +117,8 @@ public class ScriptAlgorithm implements FSMTraversalAlgorithm {
     boolean done = !(stepsRemain || testsRemain);
     return done;
   }
+
+  @Override
+  public void initTest() {
+  }
 }

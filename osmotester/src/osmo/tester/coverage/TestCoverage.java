@@ -73,7 +73,7 @@ public class TestCoverage {
     addTestCoverage(test);
   }
   
-  public void addCalculator(CoverageCalculator calculator) {
+  public synchronized void addCalculator(CoverageCalculator calculator) {
     calculators.add(calculator);
   }
 
@@ -100,7 +100,7 @@ public class TestCoverage {
    *
    * @param test The test to add.
    */
-  public void addTestCoverage(TestCase test) {
+  public synchronized void addTestCoverage(TestCase test) {
     addTestCoverage(test, test.getAllTransitionNames().size());
   }
 
@@ -112,7 +112,7 @@ public class TestCoverage {
    * @param test      The test containing the steps to add.
    * @param stepCount The number of steps to take from the test.
    */
-  public void addTestCoverage(TestCase test, int stepCount) {
+  public synchronized void addTestCoverage(TestCase test, int stepCount) {
     Collection<String> names = new ArrayList<>();
 
     int count = 0;
@@ -164,7 +164,7 @@ public class TestCoverage {
    *
    * @param toAdd The variables to add.
    */
-  private void addValues(Collection<ModelVariable> toAdd) {
+  private synchronized void addValues(Collection<ModelVariable> toAdd) {
     for (ModelVariable variable : toAdd) {
       String name = variable.getName();
       Collection<String> values = variables.get(name);
@@ -185,7 +185,7 @@ public class TestCoverage {
    *
    * @param names The names of transitions to add.
    */
-  private void addTransitions(Collection<String> names) {
+  private synchronized void addTransitions(Collection<String> names) {
     transitions.addAll(names);
     singles.addAll(names);
     String previous = "init";
@@ -240,7 +240,7 @@ public class TestCoverage {
    *
    * @return The clone object.
    */
-  public TestCoverage cloneMe() {
+  public synchronized TestCoverage cloneMe() {
     TestCoverage clone = new TestCoverage();
     clone.pairs.addAll(pairs);
     clone.transitions.addAll(transitions);

@@ -42,4 +42,8 @@ public class WeightedRandomAlgorithm implements FSMTraversalAlgorithm {
     int index = rand.rawWeightedRandomFrom(weights);
     return choices.get(index);
   }
+
+  @Override
+  public void initTest() {
+  }
 }

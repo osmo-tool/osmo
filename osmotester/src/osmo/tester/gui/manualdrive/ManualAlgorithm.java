@@ -509,4 +509,8 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     btnEndSuite.setEnabled(false);
 //    btnEndSuite.repaint();
   }
+
+  @Override
+  public void initTest() {
+  }
 }

@@ -195,4 +195,8 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
     int count = currentTpCoverage.get(choice);
     currentTpCoverage.put(choice, count + 1);
   }
+
+  @Override
+  public void initTest() {
+  }
 }

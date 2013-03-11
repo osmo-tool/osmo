@@ -100,6 +100,8 @@ public class MainGenerator {
    */
   public TestCase nextTest() {
     createModelObjects();
+    FSMTraversalAlgorithm algorithm = config.getAlgorithm();
+    algorithm.initTest();
     log.debug("Starting new test generation");
     beforeTest();
     TestCase test = suite.getCurrentTest();
