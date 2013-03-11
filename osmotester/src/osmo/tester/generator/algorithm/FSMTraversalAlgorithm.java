@@ -31,4 +31,9 @@ public interface FSMTraversalAlgorithm {
    * @param parserResult From parsing all given model objects.
    */
   public void init(ParserResult parserResult);
+
+  /**
+   * This is called before a new test is started.
+   */
+  public void initTest();
 }

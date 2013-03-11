@@ -128,4 +128,8 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
     log.debug("weighted scores:" + scores);
     return scores;
   }
+
+  @Override
+  public void initTest() {
+  }
 }
