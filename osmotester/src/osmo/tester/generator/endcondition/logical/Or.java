@@ -46,6 +46,9 @@ public class Or extends AbstractEndCondition {
 
   @Override
   public void init(FSM fsm) {
+    for (EndCondition condition : conditions) {
+      condition.init(fsm);
+    }
   }
 
   @Override

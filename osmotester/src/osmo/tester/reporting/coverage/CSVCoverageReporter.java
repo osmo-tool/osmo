@@ -30,7 +30,7 @@ public class CSVCoverageReporter extends CoverageMetric {
     return super.getTransitionPairCounts("osmo/tester/reporting/coverage/templates/transitionpair-coverage.csv");
   }
 
-  public String getTagCounts() {
+  public String getRequirementCounts() {
     return super.getRequirementCounts("osmo/tester/reporting/coverage/templates/req-coverage.csv");
   }
 

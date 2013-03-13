@@ -103,7 +103,7 @@ public class SummaryTests {
     String expected = getResource(getClass(), "expected-requirements.csv");
     expected = unifyLineSeparators(expected, "\n");
     CSVCoverageReporter csv = new CSVCoverageReporter(suite, fsm);
-    String actual = csv.getTagCounts();
+    String actual = csv.getRequirementCounts();
     actual = unifyLineSeparators(actual, "\n");
     assertEquals("Generated CSV report for tag coverage", expected, actual);
   }
@@ -143,7 +143,7 @@ public class SummaryTests {
     String expected = getResource(getClass(), "expected-requirements.txt");
     expected = unifyLineSeparators(expected, "\n");
     HTMLCoverageReporter html = new HTMLCoverageReporter(suite, fsm);
-    String actual = html.getTagCounts();
+    String actual = html.getRequirementCounts();
     actual = unifyLineSeparators(actual, "\n");
 /*    System.out.println("----------------");
     System.out.println("expected:\n"+expected);
