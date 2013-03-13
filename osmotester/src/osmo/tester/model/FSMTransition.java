@@ -143,7 +143,7 @@ public class FSMTransition implements Comparable<FSMTransition> {
    *
    * @param fsm The model where this should be stored.
    */
-  public void storeState(FSM fsm) {
+  public void updatePrePostMap(FSM fsm) {
     Collection<VariableField> variables = fsm.getStateVariables();
     log.debug("Storing variables:" + variables);
     for (VariableField var : variables) {
