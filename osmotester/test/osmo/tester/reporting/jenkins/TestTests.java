@@ -11,7 +11,7 @@ public class TestTests {
 
   @Before
   public void setUp() throws Exception {
-    test = new JenkinsTest();
+    test = new JenkinsTest(true);
   }
 
   @Test
@@ -22,7 +22,7 @@ public class TestTests {
 
   @Test
   public void classNameDuplicates() {
-    JenkinsTest test = new JenkinsTest();
+    JenkinsTest test = new JenkinsTest(true);
     test.add(new JenkinsStep("classname1", test, "step1"));
     test.add(new JenkinsStep("classname1", test, "step1"));
     test.add(new JenkinsStep("classname2", test, "step1"));
@@ -38,7 +38,7 @@ public class TestTests {
 
   @Test
   public void durationOneStep() {
-    JenkinsTest test = new JenkinsTest();
+    JenkinsTest test = new JenkinsTest(false);
     JenkinsStep step = new JenkinsStep("class", test, "step");
     step.setStartTime(1000);
     step.setEndTime(2344);
@@ -48,7 +48,7 @@ public class TestTests {
 
   @Test
   public void durationThreeSteps() {
-    JenkinsTest test = new JenkinsTest();
+    JenkinsTest test = new JenkinsTest(false);
     JenkinsStep step1 = new JenkinsStep("class", test, "step");
     step1.setStartTime(1000);
     step1.setEndTime(2000);

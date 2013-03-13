@@ -19,14 +19,16 @@ public class JenkinsTest {
   private static AtomicInteger nextId = new AtomicInteger(0);
   /** ID for this test case. */
   private final int id;
+  private boolean testing = false;
 
   /** Reset test ID's for testing. */
   public static void resetId() {
     nextId.set(0);
   }
 
-  public JenkinsTest() {
+  public JenkinsTest(boolean testing) {
     id = nextId.incrementAndGet();
+    this.testing = testing;
   }
 
   /**
@@ -70,6 +72,9 @@ public class JenkinsTest {
   public String getDuration() {
     if (steps.size() == 0) {
       return "!test has no steps!";
+    }
+    if (testing) {
+      return "0.00";
     }
     JenkinsStep first = steps.get(0);
     JenkinsStep last = steps.get(steps.size() - 1);

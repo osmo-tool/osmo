@@ -11,7 +11,7 @@ public class StepTests {
 
   @Before
   public void setUp() throws Exception {
-    JenkinsTest test = new JenkinsTest();
+    JenkinsTest test = new JenkinsTest(true);
     step = new JenkinsStep(StepTests.class.getName(), test, "duration");
   }
 

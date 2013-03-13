@@ -44,9 +44,12 @@ public class JenkinsSuite {
   private Long testStartTime = null;
   /** For testing only. Overrider normal end time if defined. */
   private Long testEndTime = null;
+  /** If we are testing ourselves we report 0 for duration to get deterministic test cases. */ 
+  private boolean testing = false;
 
-  public JenkinsSuite(String name) {
+  public JenkinsSuite(String name, boolean testing) {
     this.name = name;
+    this.testing = testing;
     out = new ByteArrayOutputStream(1000);
     newOut = new PrintStream(out);
     err = new ByteArrayOutputStream(1000);
@@ -114,7 +117,7 @@ public class JenkinsSuite {
    * @param test The executed test.
    */
   public void add(TestCase test) {
-    JenkinsTest newTest = new JenkinsTest();
+    JenkinsTest newTest = new JenkinsTest(testing);
     JenkinsStep.resetId();
     List<TestStep> steps = test.getSteps();
     for (TestStep step : steps) {
