@@ -40,7 +40,7 @@ public class JenkinsReportGenerator implements GenerationListener {
   /** We use the generation configuration to provide us with properties to the test report. */
   private OSMOConfiguration config = null;
   /** The Jenkins (Ant) report format requires a name for the test suite. */
-  private final JenkinsSuite suite = new JenkinsSuite("OSMO Test Suite");
+  private JenkinsSuite suite = new JenkinsSuite("OSMO Test Suite", false);
   /** Prefix for the name of the file where the report should be written. */
   private final String filename;
   /** If true, steps are described in the report, if false, test cases are described. */
@@ -53,6 +53,10 @@ public class JenkinsReportGenerator implements GenerationListener {
   public JenkinsReportGenerator(String filename, boolean steps) {
     this.filename = filename;
     this.steps = steps;
+  }
+  
+  public void enableTestMode() {
+    suite = new JenkinsSuite("OSMO Test Suite", true);
   }
 
   @Override

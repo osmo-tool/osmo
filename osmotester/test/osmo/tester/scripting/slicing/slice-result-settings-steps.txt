@@ -38,5 +38,5 @@ generated 3 tests.
 
 Requirements:[decrease, increase]
 Covered:[increase]
-Total = 1/2 (0%) requirements.
+Total = 1/2 (50%) requirements.
 

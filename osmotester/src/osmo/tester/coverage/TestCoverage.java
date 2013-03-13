@@ -124,40 +124,16 @@ public class TestCoverage {
         step.setCoverageProcessed();
       }
       states.add(step.getState());
-      //TODO: remove the merge state option if it is not found useful beyond transformation testing prototyping
-      if (!mergeState) {
-        addValues(step.getValues());
-      } else {
-        combineStateMap(stateMap, step);
-      }
+      addValues(step.getValues());
       reqs.addAll(step.getCoveredRequirements());
       count++;
       if (count == stepCount) {
         break;
       }
     }
-    if (mergeState) {
-      for (Map<String, ModelVariable> map : stateMap.values()) {
-        addValues(map.values());
-      }
-    }
     addTransitions(names);
     log.debug("added coverage for " + stepCount + " steps in " + test);
   }
-
-  private void combineStateMap(Map<String, Map<String, ModelVariable>> stateMap, TestStep step) {
-    String state = step.getState();
-    Map<String, ModelVariable> map = stateMap.get(state);
-    if (map == null) {
-      map = new LinkedHashMap<>();
-      stateMap.put(state, map);
-    }
-    Collection<ModelVariable> values = step.getValues();
-    for (ModelVariable value : values) {
-      map.put(value.getName(), value);
-    }
-  }
-
 
   /**
    * Adds the values for the variables in the given test case to the covered set.

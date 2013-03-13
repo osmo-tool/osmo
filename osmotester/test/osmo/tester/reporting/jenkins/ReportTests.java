@@ -63,6 +63,7 @@ public class ReportTests {
     CalculatorModel calculator = new CalculatorModel();
     tester.addModelObject(calculator);
     JenkinsReportGenerator listener = new JenkinsReportGenerator(null, true);
+    listener.enableTestMode();
     tester.addListener(listener);
     tester.generate();
     listener.getSuite().setStartTime(1234);
@@ -82,6 +83,7 @@ public class ReportTests {
     tester.addModelObject(p1);
     tester.addModelObject(p2);
     JenkinsReportGenerator listener = new JenkinsReportGenerator(null, false);
+    listener.enableTestMode();
     tester.addListener(listener);
     tester.generate();
     listener.getSuite().setStartTime(1234);
@@ -96,12 +98,12 @@ public class ReportTests {
   @Test
   public void partialModelTests() {
     Requirements req = new Requirements();
-    TestSuite suite = new TestSuite();
     PartialModel1 p1 = new PartialModel1(req);
     PartialModel2 p2 = new PartialModel2(req);
     tester.addModelObject(p1);
     tester.addModelObject(p2);
     JenkinsReportGenerator listener = new JenkinsReportGenerator(null, false);
+    listener.enableTestMode();
     tester.addListener(listener);
     tester.generate();
     listener.getSuite().setStartTime(1234);
