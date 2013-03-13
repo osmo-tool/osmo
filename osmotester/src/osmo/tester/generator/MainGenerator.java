@@ -126,7 +126,7 @@ public class MainGenerator {
         listeners.testError(test, e);
         TestStep step = suite.getCurrentTest().getCurrentStep();
         if (step != null) {
-          step.storeStateAfter(fsm);
+          step.storeGeneralState(fsm);
         }
         afterTest();
         afterSuite();
@@ -176,20 +176,24 @@ public class MainGenerator {
     //we have to add this first or it will produce failures..
     TestStep step = suite.addStep(transition);
     //store state variable values for pre-methods
-    transition.storeState(fsm);
+    transition.updatePrePostMap(fsm);
     //store into test step the current state
-    step.storeStateBefore(fsm);
+    step.start();
     invokeAll(transition.getPreMethods(), transition.getPrePostParameter(), "pre", transition);
+    //this is the actual transition/test step being executed
     InvocationTarget target = transition.getTransition();
     target.invoke();
-
-    updateState(step);
+    //we store the "custom" state returned by @StateName tagged methods
+    //we do it here to allow any post-processing of state value for a step
+    storeUserState(step);
     //re-store state into transition to update parameters for post-methods
-    transition.storeState(fsm);
+    transition.updatePrePostMap(fsm);
+    //store into test step the current state, do it here to allow the post methods and listeners to see step state
+    step.storeGeneralState(fsm);
     listeners.step(step);
     invokeAll(transition.getPostMethods(), transition.getPrePostParameter(), "post", transition);
-    //store into test step the current state
-    step.storeStateAfter(fsm);
+    //set end time
+    step.end();
   }
 
   /**
@@ -197,13 +201,13 @@ public class MainGenerator {
    * 
    * @param step The step.
    */
-  private void updateState(TestStep step) {
+  private void storeUserState(TestStep step) {
     if (fsm.getStateDescription() != null) {
       String state = (String) fsm.getStateDescription().invoke();
       if (state == null) {
         throw new NullPointerException("Model state is null. Now allowed.");
       }
-      step.setState(state);
+      step.setUserState(state);
       log.debug("new state:"+state);
     }
   }

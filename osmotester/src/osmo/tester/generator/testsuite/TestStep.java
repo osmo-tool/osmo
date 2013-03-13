@@ -30,9 +30,9 @@ public class TestStep {
   /** The set of requirements covered by this test step. */
   private Collection<String> coveredRequirements = null;
   /** Stores values of all {@link osmo.tester.annotation.Variable} annotated fields in the model before this step was generated. */
-  private Map<String, Object> stateValuesBefore = new LinkedHashMap<>();
+//  private Map<String, Object> stateValuesBefore = new LinkedHashMap<>();
   /** Stores values of all {@link osmo.tester.annotation.Variable} annotated fields in the model after this step was generated. */
-  private Map<String, Object> stateValuesAfter = new LinkedHashMap<>();
+//  private Map<String, Object> stateValuesAfter = new LinkedHashMap<>();
   /** The data variables and the values covered for each in this test case. */
   private Map<String, ModelVariable> values = new LinkedHashMap<>();
   /** Step identifier. */
@@ -105,48 +105,52 @@ public class TestStep {
     return transitionName;
   }
 
-  /** @return Values of state variables (tagged @Variable) before this step. */
-  public Map<String, Object> getStateValuesBefore() {
-    return stateValuesBefore;
-  }
-
-  /** @return Values of state variables (tagged @Variable) after this step. */
-  public Map<String, Object> getStateValuesAfter() {
-    return stateValuesAfter;
-  }
+//  /** @return Values of state variables (tagged @Variable) before this step. */
+//  public Map<String, Object> getStateValuesBefore() {
+//    return stateValuesBefore;
+//  }
+//
+//  /** @return Values of state variables (tagged @Variable) after this step. */
+//  public Map<String, Object> getStateValuesAfter() {
+//    return stateValuesAfter;
+//  }
 
   /**
-   * Stores the model state that was before the transition is executed.
-   *
-   * @param fsm This is where the state is copied from.
+   * Sets the start time.
    */
-  public void storeStateBefore(FSM fsm) {
-    Collection<VariableField> variables = fsm.getStateVariables();
-    for (VariableField variable : variables) {
-      String name = variable.getName();
-      Object value = variable.getValue();
-      stateValuesBefore.put(name, value);
-      //we do not do this here to avoid silly values for coverage
-//      parent.addVariableValue(name, value, true);
-    }
+  public void start() {
+//    Collection<VariableField> variables = fsm.getStateVariables();
+//    for (VariableField variable : variables) {
+//      String name = variable.getName();
+//      Object value = variable.getValue();
+//      stateValuesBefore.put(name, value);
+//      //we do not do this here to avoid silly values for coverage
+////      parent.addVariableValue(name, value, true);
+//    }
     startTime = System.currentTimeMillis();
   }
 
   /**
-   * Stores the model state that is after the transition has been executed.
+   * Sets the end time.
+   */
+  public void end() {
+    endTime = System.currentTimeMillis();
+  }
+
+  /**
+   * Stores the general step state.
    *
    * @param fsm This is where the state is copied from.
    */
-  public void storeStateAfter(FSM fsm) {
+  public void storeGeneralState(FSM fsm) {
     Collection<VariableField> variables = fsm.getStateVariables();
     for (VariableField variable : variables) {
       String name = variable.getName();
       Object value = variable.getValue();
-
-      stateValuesAfter.put(name, value);
+//
+//      stateValuesAfter.put(name, value);
       parent.addVariableValue(name, value, true);
     }
-    endTime = System.currentTimeMillis();
   }
 
   public long getStartTime() {
@@ -220,7 +224,7 @@ public class TestStep {
     return state;
   }
 
-  public void setState(String state) {
+  public void setUserState(String state) {
     this.state = state;
   }
 
