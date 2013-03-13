@@ -91,6 +91,7 @@ public class OSMOTester {
 //    ParserResult result = parser.parse(config, suite);
 //    fsm = result.getFsm();
     MainGenerator generator = new MainGenerator(suite, config);
+    fsm = generator.getFsm();
 //    config.check(result);
     return generator;
   }

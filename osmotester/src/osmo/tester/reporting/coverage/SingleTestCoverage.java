@@ -3,9 +3,11 @@ package osmo.tester.reporting.coverage;
 import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 
 /**
@@ -94,7 +96,7 @@ public class SingleTestCoverage {
       ModelVariable modelVariable = variables.get(var);
       Collection<Object> values = variableValues.get(var);
       if (values == null) {
-        values = new HashSet<>();
+        values = new LinkedHashSet<>();
         variableValues.put(var, values);
       }
       values.addAll(modelVariable.getValues());

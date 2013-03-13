@@ -121,6 +121,9 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
     //then we divide each score by the weight of the transition
     Set<FSMTransition> transitions = coverage.keySet();
     for (FSMTransition transition : transitions) {
+      if (!available.contains(transition)) {
+        continue;
+      }
       double score = transition.getWeight();
       score /= coverage.get(transition);
       scores.put(transition, score);

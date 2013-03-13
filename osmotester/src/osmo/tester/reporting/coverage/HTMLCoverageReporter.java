@@ -30,7 +30,7 @@ public class HTMLCoverageReporter extends CoverageMetric {
     return super.getTransitionPairCounts("osmo/tester/reporting/coverage/templates/transitionpair-coverage.txt");
   }
 
-  public String getTagCounts() {
+  public String getRequirementCounts() {
     return super.getRequirementCounts("osmo/tester/reporting/coverage/templates/req-coverage.txt");
   }
 
