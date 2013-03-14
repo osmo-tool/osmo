@@ -10,6 +10,7 @@ import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.Requirements;
 import osmo.tester.testmodels.BaseModelExtension;
+import osmo.tester.testmodels.GroupModel2;
 import osmo.tester.testmodels.GuardianModel;
 import osmo.tester.testmodels.PartialModel1;
 import osmo.tester.testmodels.PartialModel2;
@@ -300,6 +301,22 @@ public class GenerationTests {
     String actual = out.toString();
     actual = unifyLineSeparators(actual, "\n");
     assertEquals("Print from model", expected, actual);
+  }
+  
+  @Test
+  public void groups() {
+    ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
+    PrintStream ps = new PrintStream(out);
+    osmo.addModelObject(new GroupModel2(ps));
+    osmo.addTestEndCondition(new Length(5));
+    osmo.addSuiteEndCondition(new Length(15));
+    osmo.setSeed(650);
+    osmo.generate();
+    String actual = out.toString();
+    actual = unifyLineSeparators(actual, "\n");
+    String expected = getResource(getClass(), "expected-group.txt");
+    expected = unifyLineSeparators(expected, "\n");
+    assertEquals("Generation with groups", expected, actual);
   }
 }
 

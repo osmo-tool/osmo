@@ -25,10 +25,12 @@ public class FSM {
   private Map<TransitionName, FSMTransition> transitions = new HashMap<>();
   /** List of steps to execute after test is otherwise done. */
   private List<InvocationTarget> lastSteps = new ArrayList<>();
+  /** List of specific guards, associated to groups or transitions. */
+  private List<FSMGuard> specificGuards = new ArrayList<>();
   /** List of generic guards that apply to all transitions. */
   private Collection<InvocationTarget> genericGuards = new ArrayList<>();
   /** List of guards that should be associated to all but the given name. */
-  private Collection<NegatedGuard> negatedGuards = new ArrayList<>();
+  private List<FSMGuard> negatedGuards = new ArrayList<>();
   /** List of generic pre-methods that apply to all transitions. */
   private Collection<InvocationTarget> genericPre = new ArrayList<>();
   /** List of generic post-methods that apply to all transitions. */
@@ -45,6 +47,7 @@ public class FSM {
   private Collection<InvocationTarget> endConditions = new ArrayList<>();
   /** List of conditions when the models allows to stop test generation. */
   private Collection<InvocationTarget> endStates = new ArrayList<>();
+  //TODO: remove one
   private Collection<InvocationTarget> explorationEnablers = new ArrayList<>();
   private Collection<InvocationTarget> generationEnablers = new ArrayList<>();
   /** List of state variables to store for each test step. */
@@ -55,7 +58,9 @@ public class FSM {
   private Collection<SearchableInput> searchableInputs = new ArrayList<>();
   /** We read the {@link osmo.tester.model.data.SearchableInput} values from these when tests start. */
   private Collection<SearchableInputField> searchableInputFields = new ArrayList<>();
+  /** User defined requirements. */
   private Requirements requirements = null;
+  /** Method for getting the user defined state description. */
   private InvocationTarget stateDescription = null;
 
   /** Constructor. */
@@ -101,23 +106,47 @@ public class FSM {
     if (transitions.size() == 0) {
       errors += "No transitions found in given model object. Model cannot be processed.\n";
     }
+    List<String> transitionNames = new ArrayList<>();
+    List<String> groupNames = new ArrayList<>();
     for (FSMTransition transition : transitions.values()) {
       InvocationTarget target = transition.getTransition();
       TransitionName name = transition.getName();
       log.debug("Checking transition:" + name);
       if (target == null) {
-        errors += "Guard/Pre/Post without transition:" + name + "\n";
-        log.debug("Error: Found guard/pre/post without a matching transition - " + name);
+        errors += "Pre/Post without transition:" + name + "\n";
+        log.debug("Error: Found pre/post without a matching transition - " + name);
       }
-      transition.sort();
       errors = addGenericElements(transition, errors);
+      errors = addSpecificGuards(transition, errors);
+      errors = addNegatedGuards(transition, errors);
+      transition.sort();
+      transitionNames.add(transition.getStringName());
+      String groupName = transition.getGroupName().toString();
+      if (groupName.length() > 0) {
+        groupNames.add(groupName);
+      }
     }
-    errors = addNegatedElements(errors);
+    errors = checkGuards(negatedGuards, errors, "Negation");
+    errors = checkGuards(specificGuards, errors, "Guard");
+    for (String groupName : groupNames) {
+      if (transitionNames.contains(groupName)) {
+        errors += "Groupname same as a step name ("+groupName+"). Must be different.\n";
+      }
+    }
     if (errors.length() > 0) {
       throw new IllegalStateException("Invalid FSM:\n" + errors);
     }
     Collections.sort(lastSteps);
     log.debug("FSM checked");
+  }
+  
+  private String checkGuards(List<FSMGuard> guards, String errors, String errorMsg) {
+    for (FSMGuard guard : guards) {
+      if (guard.getCount() == 0) {
+        errors += errorMsg+" without matching transition:" + guard.getName()+".\n";
+      }
+    }
+    return errors;
   }
 
   /**
@@ -141,18 +170,43 @@ public class FSM {
     return errors;
   }
 
-  private String addNegatedElements(String errors) {
-    for (NegatedGuard ng : negatedGuards) {
-      int count = 0;
-      for (TransitionName transitionName : transitions.keySet()) {
-        if (transitionName.shouldNegationApply(ng.getName())) {
-          log.debug("Negation '" + ng.getName() + "' applies to :" + transitionName);
-          transitions.get(transitionName).addGuard(ng.getTarget());
-          count++;
-        }
+  /**
+   * Adds guards annotated for specific transitions and groups.
+   * 
+   * @param transition The transition to process.
+   * @param errors Possible errors so far.
+   * @return The old and new errors.
+   */
+  private String addSpecificGuards(FSMTransition transition, String errors) {
+    TransitionName name = transition.getName();
+    TransitionName groupName = transition.getGroupName();
+    for (FSMGuard guard : specificGuards) {
+      TransitionName guardName = guard.getName();
+      if (name.equals(guardName) || groupName.equals(guardName)) {
+        log.debug("Adding guard "+guardName+" to transition "+name);
+        transition.addGuard(guard.getTarget());
+        guard.found();
       }
-      if (count == 0) {
-        errors += "Negation without matching transition to negate for:" + ng.getName();
+    }
+    return errors;
+  }
+
+  /**
+   * Adds negated guards (the !name naming) annotated to matching transitions.
+   *
+   * @param transition The transition to process.
+   * @param errors Possible errors so far.
+   * @return The old and new errors.
+   */
+  private String addNegatedGuards(FSMTransition transition, String errors) {
+    TransitionName name = transition.getName();
+    TransitionName groupName = transition.getGroupName();
+    for (FSMGuard guard : negatedGuards) {
+      TransitionName guardName = guard.getName();
+      if (name.shouldNegationApply(guardName) || groupName.shouldNegationApply(guardName)) {
+        log.debug("Adding negated guard "+guardName+" to transition "+name);
+        transition.addGuard(guard.getTarget());
+        guard.found();
       }
     }
     return errors;
@@ -222,6 +276,7 @@ public class FSM {
   public Collection<InvocationTarget> getEndStates() {
     return endStates;
   }
+  
 
   /**
    * Add a guard that should return true for all transitions in the test model.
@@ -392,8 +447,13 @@ public class FSM {
     return scripts.keySet();
   }
 
+  public void addSpecificGuard(TransitionName name, InvocationTarget target) {
+    FSMGuard sg = new FSMGuard(name, target);
+    specificGuards.add(sg);
+  }
+
   public void addNegatedGuard(TransitionName name, InvocationTarget target) {
-    NegatedGuard ng = new NegatedGuard(name, target);
+    FSMGuard ng = new FSMGuard(name, target);
     negatedGuards.add(ng);
   }
 

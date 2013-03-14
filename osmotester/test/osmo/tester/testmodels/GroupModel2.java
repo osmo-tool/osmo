@@ -1,0 +1,54 @@
+package osmo.tester.testmodels;
+
+import org.junit.Before;
+import osmo.tester.annotation.BeforeTest;
+import osmo.tester.annotation.Guard;
+import osmo.tester.annotation.TestStep;
+import osmo.tester.annotation.Transition;
+
+import java.io.PrintStream;
+
+/** @author Teemu Kanstren */
+public class GroupModel2 {
+  private boolean loggedIn = false;
+  private boolean hello = false;
+  private PrintStream ps;
+
+  public GroupModel2(PrintStream ps) {
+    this.ps = ps;
+  }
+
+  @BeforeTest
+  public void reset() {
+    loggedIn = false;
+    hello = false;
+    ps.println("--new test--");
+  }
+  
+  @TestStep(name="login")
+  public void login() {
+    loggedIn = true;
+    ps.println("login");
+  }
+
+  @Transition(name="hello", group="logged in")
+  public void hello() {
+    hello = true;
+    ps.println("hello");
+  }
+
+  @TestStep(name="world", group="logged in")
+  public void world() {
+    ps.println("world");
+  }
+  
+  @Guard("logged in")
+  public boolean loggedInGuard() {
+    return loggedIn;
+  }
+
+  @Guard("world")
+  public boolean worldGuard() {
+    return hello;
+  }
+}

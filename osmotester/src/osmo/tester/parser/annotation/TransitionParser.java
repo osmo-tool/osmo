@@ -13,7 +13,8 @@ import osmo.tester.parser.ParserResult;
 import java.lang.reflect.Method;
 
 /**
- * Parses {@link osmo.tester.annotation.Transition} and {@link osmo.tester.annotation.TestStep} annotations from the given model object.
+ * Parses {@link osmo.tester.annotation.Transition} and {@link osmo.tester.annotation.TestStep} annotations 
+ * from the given model object.
  *
  * @author Teemu Kanstren
  */
@@ -28,6 +29,7 @@ public class TransitionParser implements AnnotationParser {
     Object annotation = parameters.getAnnotation();
     String name = null;
     int weight = 0;
+    String group = null;
     if (annotation instanceof Transition) {
       Transition t = (Transition) annotation;
       name = t.name();
@@ -39,6 +41,7 @@ public class TransitionParser implements AnnotationParser {
         name = t.value();
       }
       weight = t.weight();
+      group = t.group();
       type = Transition.class.getSimpleName();
     } else {
       TestStep ts = (TestStep) annotation;
@@ -48,18 +51,21 @@ public class TransitionParser implements AnnotationParser {
         name = ts.value();
       }
       weight = ts.weight();
+      group = ts.group();
       type = TestStep.class.getSimpleName();
     }
     TransitionName tName = checkName(name, parameters);
+    TransitionName groupName = new TransitionName(parameters.getPrefix(), group);
     if (tName == null) {
       return errors;
     }
-    createTransition(result, parameters, tName, weight);
+    createTransition(result, parameters, tName, weight, groupName);
 
     Method method = parameters.getMethod();
     Class<?>[] parameterTypes = method.getParameterTypes();
     if (parameterTypes.length > 0) {
-      errors += "@" + type + " methods are not allowed to have parameters: \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n";
+      errors += "@" + type + " methods are not allowed to have parameters: \"" + 
+              method.getName() + "()\" has " + parameterTypes.length + " parameters.\n";
     }
 
     return errors;
@@ -77,11 +83,13 @@ public class TransitionParser implements AnnotationParser {
     String prefix = parameters.getPrefix();
     return new TransitionName(prefix, name);
   }
-
-  private void createTransition(ParserResult result, ParserParameters parameters, TransitionName name, int weight) {
+  
+  private void createTransition(ParserResult result, ParserParameters parameters, 
+                                TransitionName name, int weight, TransitionName group) {
     log.debug("creating transition:" + name);
     FSMTransition transition = result.getFsm().createTransition(name, weight);
     transition.setTransition(new InvocationTarget(parameters, Transition.class));
+    transition.setGroupName(group);
   }
 }
 

@@ -44,5 +44,7 @@ public @interface Transition {
 
   String name() default "";
 
+  String group() default "";
+
   int weight() default 10;
 }
