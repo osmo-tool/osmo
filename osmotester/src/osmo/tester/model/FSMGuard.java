@@ -1,11 +1,12 @@
 package osmo.tester.model;
 
 /** @author Teemu Kanstren */
-public class NegatedGuard {
+public class FSMGuard {
   private final TransitionName name;
   private final InvocationTarget target;
+  private int count = 0;
 
-  public NegatedGuard(TransitionName name, InvocationTarget target) {
+  public FSMGuard(TransitionName name, InvocationTarget target) {
     this.name = name;
     this.target = target;
   }
@@ -17,13 +18,21 @@ public class NegatedGuard {
   public InvocationTarget getTarget() {
     return target;
   }
+  
+  public void found() {
+    count++;
+  }
+
+  public int getCount() {
+    return count;
+  }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    NegatedGuard that = (NegatedGuard) o;
+    FSMGuard that = (FSMGuard) o;
 
     if (name != null ? !name.equals(that.name) : that.name != null) return false;
     if (target != null ? !target.equals(that.target) : that.target != null) return false;

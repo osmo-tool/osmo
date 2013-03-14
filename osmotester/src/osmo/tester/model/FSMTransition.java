@@ -35,6 +35,8 @@ public class FSMTransition implements Comparable<FSMTransition> {
   private final List<InvocationTarget> posts = new ArrayList<>();
   /** This is to allow @Pre and @Post to store and share properties over this transition. */
   private Map<String, Object> prePostParameter = new HashMap<>();
+  /** The group this transition belongs to, null or "" are considered as no group. */
+  private TransitionName groupName;
 
   public FSMTransition(String name) {
     this.name = new TransitionName("", name);
@@ -55,6 +57,10 @@ public class FSMTransition implements Comparable<FSMTransition> {
     return prePostParameter;
   }
 
+  public void setGroupName(TransitionName groupName) {
+    this.groupName = groupName;
+  }
+
   public void addGuard(InvocationTarget target) {
     guards.add(target);
   }
@@ -69,6 +75,10 @@ public class FSMTransition implements Comparable<FSMTransition> {
 
   public TransitionName getName() {
     return name;
+  }
+  
+  public TransitionName getGroupName() {
+    return groupName;
   }
 
   public int getWeight() {

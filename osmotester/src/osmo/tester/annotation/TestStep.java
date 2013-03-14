@@ -16,6 +16,8 @@ public @interface TestStep {
   String value() default "";
 
   String name() default "";
+  
+  String group() default "";
 
   int weight() default 10;
 }

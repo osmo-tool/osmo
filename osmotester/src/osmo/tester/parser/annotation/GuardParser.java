@@ -63,8 +63,7 @@ public class GuardParser implements AnnotationParser {
         continue;
       }
       TransitionName name = new TransitionName(prefix, givenName);
-      FSMTransition transition = fsm.createTransition(name, -1);
-      transition.addGuard(target);
+      fsm.addSpecificGuard(name, target);
     }
     return errors;
   }

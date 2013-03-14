@@ -79,7 +79,8 @@ public class ParserTests {
       String msg = e.getMessage();
       String expected = "Invalid FSM:\n" +
               "Only one @RequirementsField allowed in the model.\n" +
-              "Guard/Pre/Post without transition:foo\n";
+              "No transitions found in given model object. Model cannot be processed.\n" +
+              "Guard without matching transition:foo.\n";
       assertEquals(expected, msg);
     }
   }
@@ -176,7 +177,7 @@ public class ParserTests {
               "@Transition methods are not allowed to have parameters: \"epix()\" has 1 parameters.\n" +
               "Invalid return type for guard (\"listCheck()\"):class java.lang.String.\n" +
               "@Transition methods are not allowed to have parameters: \"transition1()\" has 1 parameters.\n" +
-              "Guard/Pre/Post without transition:world\n";
+              "Guard without matching transition:world.\n";
       assertEquals(expected, msg);
     }
   }

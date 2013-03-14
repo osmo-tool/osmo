@@ -32,6 +32,9 @@ public class TransitionName {
 
     TransitionName that = (TransitionName) o;
 
+    //special check to avoid unnamed groups for transitions
+    if (name.length() == 0) return false;
+    
     if (name != null ? !name.equals(that.name) : that.name != null) return false;
     if (prefix != null ? !prefix.equals(that.prefix) : that.prefix != null) return false;
 
@@ -50,6 +53,9 @@ public class TransitionName {
       //wrong prefix
       return false;
     }
+    //special check to avoid unnamed groups for transitions
+    if (name.length() == 0) return false;
+
     return !negationName.name.equals(name);
   }
 }
