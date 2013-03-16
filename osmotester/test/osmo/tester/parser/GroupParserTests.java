@@ -57,6 +57,8 @@ public class GroupParserTests {
     } catch (Exception e) {
       String expected = "Invalid FSM:\n" +
               "Guard without matching transition:group1.\n" +
+              "Pre without matching transition:group1.\n" +
+              "Post without matching transition:group1.\n" +
               "Groupname same as a step name (step3). Must be different.\n";
       assertEquals("Errors for parsing invalid group model", expected, e.getMessage());
     }

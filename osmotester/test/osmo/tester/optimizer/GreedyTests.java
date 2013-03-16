@@ -237,7 +237,7 @@ public class GreedyTests {
     ScoreConfiguration gc = new ScoreConfiguration();
     gc.setStepWeight(0);
     gc.setPairsWeight(0);
-    gc.setDefaultValueWeight(0);
+    gc.setDefaultValueWeight(1);
     gc.setVariableCountWeight(0);
     gc.setRequirementWeight(0);
     GreedyOptimizer greedy = new GreedyOptimizer(gc, 100, new LengthProbability(10, 1d));
@@ -247,6 +247,6 @@ public class GreedyTests {
     greedy.search();
     long end = System.currentTimeMillis();
     long diff = end - start;
-    assertTrue("Timeout should be 1-2s was "+diff+" ms", diff > 1000 && diff < 2000);
+    assertTrue("Timeout should be 1-3s was "+diff+" ms", diff > 1000 && diff < 3000);
   }
 }
