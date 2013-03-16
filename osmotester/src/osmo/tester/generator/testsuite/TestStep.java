@@ -29,10 +29,6 @@ public class TestStep {
   private final String modelObjectName;
   /** The set of requirements covered by this test step. */
   private Collection<String> coveredRequirements = null;
-  /** Stores values of all {@link osmo.tester.annotation.Variable} annotated fields in the model before this step was generated. */
-//  private Map<String, Object> stateValuesBefore = new LinkedHashMap<>();
-  /** Stores values of all {@link osmo.tester.annotation.Variable} annotated fields in the model after this step was generated. */
-//  private Map<String, Object> stateValuesAfter = new LinkedHashMap<>();
   /** The data variables and the values covered for each in this test case. */
   private Map<String, ModelVariable> values = new LinkedHashMap<>();
   /** Step identifier. */
@@ -105,28 +101,10 @@ public class TestStep {
     return transitionName;
   }
 
-//  /** @return Values of state variables (tagged @Variable) before this step. */
-//  public Map<String, Object> getStateValuesBefore() {
-//    return stateValuesBefore;
-//  }
-//
-//  /** @return Values of state variables (tagged @Variable) after this step. */
-//  public Map<String, Object> getStateValuesAfter() {
-//    return stateValuesAfter;
-//  }
-
   /**
    * Sets the start time.
    */
   public void start() {
-//    Collection<VariableField> variables = fsm.getStateVariables();
-//    for (VariableField variable : variables) {
-//      String name = variable.getName();
-//      Object value = variable.getValue();
-//      stateValuesBefore.put(name, value);
-//      //we do not do this here to avoid silly values for coverage
-////      parent.addVariableValue(name, value, true);
-//    }
     startTime = System.currentTimeMillis();
   }
 
@@ -147,8 +125,6 @@ public class TestStep {
     for (VariableField variable : variables) {
       String name = variable.getName();
       Object value = variable.getValue();
-//
-//      stateValuesAfter.put(name, value);
       parent.addVariableValue(name, value, true);
     }
   }

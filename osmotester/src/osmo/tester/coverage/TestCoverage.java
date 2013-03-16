@@ -30,8 +30,6 @@ public class TestCoverage {
   private Collection<String> reqs = new LinkedHashSet<>();
   /** Set of values covered for different model data variables. */
   private Map<String, Collection<String>> variables = new LinkedHashMap<>();
-  /** Are we merging state? That is replacing old values in a state with new ones.. */
-  private boolean mergeState = false;
   /** Custom calculators. */
   private Collection<CoverageCalculator> calculators= new LinkedHashSet<>();
   /** Set of covered states. */
@@ -58,10 +56,6 @@ public class TestCoverage {
     Collection<String> clone = new ArrayList<>();
     clone.addAll(states);
     return clone;
-  }
-
-  public void setMergeState(boolean mergeState) {
-    this.mergeState = mergeState;
   }
 
   /**
@@ -116,14 +110,17 @@ public class TestCoverage {
     Collection<String> names = new ArrayList<>();
 
     int count = 0;
-    Map<String, Map<String, ModelVariable>> stateMap = new LinkedHashMap<>();
     for (TestStep step : test.getSteps()) {
       names.add(step.getName());
       if (!step.isCoverageProcessed()) {
         calculate(step);
         step.setCoverageProcessed();
       }
-      states.add(step.getState());
+      String state = step.getState();
+      if (state != null) {
+        //we ignore null so if there is no state we do not mess calculations for coverage score
+        states.add(state);
+      }
       addValues(step.getValues());
       reqs.addAll(step.getCoveredRequirements());
       count++;

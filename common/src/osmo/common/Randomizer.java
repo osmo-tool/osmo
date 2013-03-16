@@ -51,7 +51,13 @@ public class Randomizer {
    * @return Random integer between the given bounds, bounds included.
    */
   public int nextInt(int min, int max) {
-    int diff = max - min + 1;
+    //we need this trickery here or we will get "n must be positive" errors for any random set where min-max range
+    //is bigger than MAX_INTEGER. For example if range is MIN_INTEGER to MAX_INTEGER it is twice that.
+    long ldiff = (long)max - (long)min + 1;
+    if (ldiff > Integer.MAX_VALUE) {
+      throw new IllegalArgumentException("Only integers in range up to "+Integer.MAX_VALUE+" supported. Given was "+ldiff+".");
+    }
+    int diff = (int)ldiff;
     int rnd = random.nextInt(diff);
     rnd += min;
     return rnd;
