@@ -3,6 +3,8 @@ package osmo.tester.testmodels;
 import org.junit.Before;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
+import osmo.tester.annotation.Post;
+import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Transition;
 
@@ -50,5 +52,25 @@ public class GroupModel2 {
   @Guard("world")
   public boolean worldGuard() {
     return hello;
+  }
+
+  @Pre("logged in")
+  public void loggedInPre() {
+    ps.println("pre-logged");
+  }
+
+  @Post("logged in")
+  public void loggedInPost() {
+    ps.println("post-logged");
+  }
+
+  @Pre("world")
+  public void worldPre() {
+    ps.println("pre-world");
+  }
+
+  @Post("world")
+  public void worldPost() {
+    ps.println("post-world");
   }
 }

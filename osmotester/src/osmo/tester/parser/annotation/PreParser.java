@@ -53,8 +53,7 @@ public class PreParser implements AnnotationParser {
         continue;
       }
       TransitionName tName = new TransitionName(prefix, name);
-      FSMTransition transition = fsm.createTransition(tName, -1);
-      transition.addPre(target);
+      fsm.addSpecificPre(tName, target);
     }
     return errors;
   }

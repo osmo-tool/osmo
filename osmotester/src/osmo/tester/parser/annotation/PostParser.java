@@ -3,6 +3,7 @@ package osmo.tester.parser.annotation;
 import osmo.common.log.Logger;
 import osmo.tester.annotation.Post;
 import osmo.tester.model.FSM;
+import osmo.tester.model.FSMGuard;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
 import osmo.tester.model.TransitionName;
@@ -50,8 +51,7 @@ public class PostParser implements AnnotationParser {
       }
       TransitionName tName = new TransitionName(prefix, name);
       log.debug("created specific post:" + name);
-      FSMTransition transition = fsm.createTransition(tName, -1);
-      transition.addPost(target);
+      fsm.addSpecificPost(tName, target);
     }
     return errors;
   }

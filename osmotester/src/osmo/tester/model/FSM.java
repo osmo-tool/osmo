@@ -35,6 +35,10 @@ public class FSM {
   private Collection<InvocationTarget> genericPre = new ArrayList<>();
   /** List of generic post-methods that apply to all transitions. */
   private Collection<InvocationTarget> genericPost = new ArrayList<>();
+  /** List of specific pre-methods that apply to a specific transition or group. */
+  private List<FSMGuard> specificPre = new ArrayList<>();
+  /** List of specific post-methods that apply to a specific transition or group.. */
+  private List<FSMGuard> specificPost = new ArrayList<>();
   /** List of methods to be executed before each test case. */
   private Collection<InvocationTarget> befores = new ArrayList<>();
   /** List of methods to be executed after each test case. */
@@ -45,8 +49,6 @@ public class FSM {
   private Collection<InvocationTarget> afterSuites = new ArrayList<>();
   /** List of conditions when to stop (prematurely) test generation (single test, not suite). */
   private Collection<InvocationTarget> endConditions = new ArrayList<>();
-  /** List of conditions when the models allows to stop test generation. */
-  private Collection<InvocationTarget> endStates = new ArrayList<>();
   //TODO: remove one
   private Collection<InvocationTarget> explorationEnablers = new ArrayList<>();
   private Collection<InvocationTarget> generationEnablers = new ArrayList<>();
@@ -113,11 +115,12 @@ public class FSM {
       TransitionName name = transition.getName();
       log.debug("Checking transition:" + name);
       if (target == null) {
-        errors += "Pre/Post without transition:" + name + "\n";
-        log.debug("Error: Found pre/post without a matching transition - " + name);
+        errors += "Transition without invocation target" + name + "\n";
+        log.debug("Error: Found transition without invocation target - " + name);
       }
       errors = addGenericElements(transition, errors);
       errors = addSpecificGuards(transition, errors);
+      errors = addSpecificPrePosts(transition, errors);
       errors = addNegatedGuards(transition, errors);
       transition.sort();
       transitionNames.add(transition.getStringName());
@@ -126,8 +129,10 @@ public class FSM {
         groupNames.add(groupName);
       }
     }
-    errors = checkGuards(negatedGuards, errors, "Negation");
     errors = checkGuards(specificGuards, errors, "Guard");
+    errors = checkGuards(negatedGuards, errors, "Negation");
+    errors = checkGuards(specificPre, errors, "Pre");
+    errors = checkGuards(specificPost, errors, "Post");
     for (String groupName : groupNames) {
       if (transitionNames.contains(groupName)) {
         errors += "Groupname same as a step name ("+groupName+"). Must be different.\n";
@@ -186,6 +191,35 @@ public class FSM {
         log.debug("Adding guard "+guardName+" to transition "+name);
         transition.addGuard(guard.getTarget());
         guard.found();
+      }
+    }
+    return errors;
+  }
+
+  /**
+   * Adds annotated pre- and post-methods for specific transitions and groups.
+   *
+   * @param transition The transition to process.
+   * @param errors Possible errors so far.
+   * @return The old and new errors.
+   */
+  private String addSpecificPrePosts(FSMTransition transition, String errors) {
+    TransitionName name = transition.getName();
+    TransitionName groupName = transition.getGroupName();
+    for (FSMGuard pre : specificPre) {
+      TransitionName preName = pre.getName();
+      if (name.equals(preName) || groupName.equals(preName)) {
+        log.debug("Adding pre "+preName+" to transition "+name);
+        transition.addPre(pre.getTarget());
+        pre.found();
+      }
+    }
+    for (FSMGuard post : specificPost) {
+      TransitionName postName = post.getName();
+      if (name.equals(postName) || groupName.equals(postName)) {
+        log.debug("Adding post "+postName+" to transition "+name);
+        transition.addPost(post.getTarget());
+        post.found();
       }
     }
     return errors;
@@ -273,11 +307,6 @@ public class FSM {
     return endConditions;
   }
 
-  public Collection<InvocationTarget> getEndStates() {
-    return endStates;
-  }
-  
-
   /**
    * Add a guard that should return true for all transitions in the test model.
    *
@@ -285,6 +314,15 @@ public class FSM {
    */
   public void addGenericGuard(InvocationTarget target) {
     genericGuards.add(target);
+  }
+
+  /**
+   * Add a pre-method that should be executed for a specific transitions or group in the test model.
+   *
+   * @param target The pre method to be invoked for evaluation.
+   */
+  public void addSpecificPre(TransitionName name, InvocationTarget target) {
+    specificPre.add(new FSMGuard(name, target));
   }
 
   /**
@@ -306,21 +344,21 @@ public class FSM {
   }
 
   /**
+   * Add a post-method that should be executed for a specific transitions or group in the test model.
+   *
+   * @param target The post method to be invoked for evaluation.
+   */
+  public void addSpecificPost(TransitionName name, InvocationTarget target) {
+    specificPost.add(new FSMGuard(name, target));
+  }
+
+  /**
    * Add an end condition that should be checked for test case generation termination condition.
    *
    * @param target The end condition.
    */
   public void addEndCondition(InvocationTarget target) {
     endConditions.add(target);
-  }
-
-  /**
-   * Add an end condition that should be checked before terminating a test case.
-   *
-   * @param target The end condition.
-   */
-  public void addEndState(InvocationTarget target) {
-    endStates.add(target);
   }
 
   /**

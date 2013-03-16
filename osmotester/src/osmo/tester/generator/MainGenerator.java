@@ -43,8 +43,6 @@ public class MainGenerator {
   private TestSuite suite;
   /** Requirements for model objects. */
   private Requirements reqs;
-  /** This is set when the test should end but @EndState is not yet achieved to signal ending ASAP. */
-  private boolean testEnding = false;
   /** Keeps track of overall number of tests generated. */
   private static int testCount = 0;
 
@@ -218,18 +216,6 @@ public class MainGenerator {
     log.debug("Finished test suite generation");
   }
 
-  /** @return True if there are @EndState defined and they are allowed to stop. */
-  private boolean checkEndStates() {
-    Collection<InvocationTarget> endStates = fsm.getEndStates();
-    for (InvocationTarget es : endStates) {
-      Boolean endable = (Boolean) es.invoke();
-      if (endable) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   /**
    * Invokes the given set of methods on the target test object.
    *
@@ -286,10 +272,6 @@ public class MainGenerator {
    * @return True if this test generation should stop.
    */
   protected boolean checkTestCaseEndConditions() {
-    if (testEnding) {
-      //allow ending only if end state annotations are not present or return true
-      return checkEndStates();
-    }
     boolean shouldEnd = true;
     for (EndCondition ec : config.getTestCaseEndConditions()) {
       //check if all end conditions are met
@@ -303,10 +285,6 @@ public class MainGenerator {
     }
     if (!shouldEnd) {
       return false;
-    }
-    testEnding = true;
-    if (fsm.getEndStates().size() > 0) {
-      return checkEndStates();
     }
     return true;
   }
@@ -371,7 +349,6 @@ public class MainGenerator {
     //update history
     suite.endTest();
     listeners.testEnded(current);
-    testEnding = false;
   }
 
   /** Resets the suite, removing references to any generated tests. */
