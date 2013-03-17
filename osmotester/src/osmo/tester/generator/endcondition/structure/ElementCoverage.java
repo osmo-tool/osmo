@@ -9,12 +9,20 @@ import osmo.tester.model.FSM;
  * 
  * @author Teemu Kanstren 
  */
-public class CoverageEndCondition extends AbstractEndCondition {
+public class ElementCoverage extends AbstractEndCondition {
   /** Defines what needs to be covered for this to end. */
-  private final CoverageRequirement requirement;
+  private final ElementCoverageRequirement requirement;
 
-  public CoverageEndCondition(CoverageRequirement requirement) {
+  public ElementCoverage(int steps, int pairs, int requirements) {
+    this(new ElementCoverageRequirement(steps, pairs, requirements));
+  }
+
+  public ElementCoverage(ElementCoverageRequirement requirement) {
     this.requirement = requirement;
+  }
+  
+  public void setCheck(boolean check) {
+    requirement.setCheck(check);
   }
 
   @Override

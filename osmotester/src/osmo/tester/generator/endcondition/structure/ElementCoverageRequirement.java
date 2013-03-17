@@ -15,17 +15,19 @@ import java.util.List;
  * Defines coverage requirements for test case/test suite related to the model structure.
  * Includes the number of unique test steps covered, the number of unique step-pairs covered, and
  * the number of requirements covered.
- * Typically used for defining a requirement for {@link CoverageEndCondition}.
+ * Typically used for defining a requirement for {@link ElementCoverage}.
  * 
  * @author Teemu Kanstren 
  */
-public class CoverageRequirement {
+public class ElementCoverageRequirement {
   /** Number of unique steps that need to be covered. */
   private int steps = 0;
   /** Number of unique step-pairs that need to be covered. */
   private int pairs = 0;
   /** Number of requirements that need to be covered. */
   private int requirements = 0;
+  /** Check if coverage requirements are satisfiable? */
+  private boolean check = true;
 
   /**
    * Creates the requirement.
@@ -34,10 +36,14 @@ public class CoverageRequirement {
    * @param pairs The number of step-pairs to cover. If negative, the number of all parsed pairs will be used.
    * @param requirements The number of requirements to cover. Again, model defined number if negative.
    */
-  public CoverageRequirement(int steps, int pairs, int requirements) {
+  public ElementCoverageRequirement(int steps, int pairs, int requirements) {
     this.steps = steps;
     this.pairs = pairs;
     this.requirements = requirements;
+  }
+
+  public void setCheck(boolean check) {
+    this.check = check;
   }
 
   /**
@@ -55,18 +61,30 @@ public class CoverageRequirement {
    */
   public void init(FSM fsm) {
     Collection<FSMTransition> transitions = fsm.getTransitions();
+    int maxSteps = transitions.size();
     if (steps < 0) {
-      steps = transitions.size();
+      steps = maxSteps;
     }
+    if (check && steps > maxSteps) {
+      throw new IllegalArgumentException("Too many steps requested (model has "+maxSteps+", requested "+ steps +").");
+    }
+    List<String> names = new ArrayList<>();
+    for (FSMTransition transition : transitions) {
+      names.add(transition.getStringName());
+    }
+    int maxPairs = names.size() * names.size() + 1;
     if (pairs < 0) {
-      List<String> names = new ArrayList<>();
-      for (FSMTransition transition : transitions) {
-        names.add(transition.getStringName());
-      }
-      pairs = names.size()*names.size()+1;
+      pairs = maxPairs;
     }
+    if (check && pairs > maxPairs) {
+      throw new IllegalArgumentException("Too many pairs requested (model has "+maxPairs+", requested "+pairs+").");
+    }
+    int fsmRequirements = fsm.getRequirements().getRequirements().size();
     if (requirements < 0) {
-      requirements = fsm.getRequirements().getRequirements().size();
+      requirements = fsmRequirements;
+    }
+    if (check && requirements > 0 && requirements > fsmRequirements) {
+      throw new IllegalArgumentException("Too many requirements requested (model has "+fsmRequirements+", requested "+requirements+").");
     }
   }
 
