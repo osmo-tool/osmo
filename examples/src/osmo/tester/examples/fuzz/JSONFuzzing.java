@@ -16,7 +16,7 @@ public class JSONFuzzing {
     ve.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
     ve.init();
     VelocityContext context = new VelocityContext();
-    context.put("username", new Text(1, 5).setStrategy(DataGenerationStrategy.RANDOM_INVALID).wrapper());
+    context.put("username", new Text(1, 5).setStrategy(DataGenerationStrategy.RANDOM_INVALID));
     Template template = ve.getTemplate("/osmo/tester/examples/fuzz/login_manual.vm");
     StringWriter sw = new StringWriter();
     template.merge(context, sw);

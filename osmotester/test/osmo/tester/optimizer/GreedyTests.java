@@ -41,7 +41,7 @@ public class GreedyTests {
   }
 
   @Test
-  public void tagOptimizer3TestsNoOverlap() {
+  public void requirementOptimizer3TestsNoOverlap() {
     TestSuite suite = new TestSuite();
     suite.init();
     suite.startTest();
@@ -76,7 +76,7 @@ public class GreedyTests {
   }
 
   @Test
-  public void tagOptimizer3TestsWithOverlap() {
+  public void requirementOptimizer3TestsWithOverlap() {
     gc.setRequirementWeight(1);
     GreedyOptimizer optimizer = new GreedyOptimizer(gc, new LengthProbability(1, 10, 0.2d));
     TestSuite suite = createSuite1();
@@ -90,7 +90,7 @@ public class GreedyTests {
   }
 
   @Test
-  public void tagOptimizer3TestsWithCunningOverlap() {
+  public void requirementOptimizer3TestsWithCunningOverlap() {
     GreedyOptimizer optimizer = new GreedyOptimizer(gc, new LengthProbability(1, 10, 0.1d));
     gc.setRequirementWeight(1);
     TestSuite suite = createSuite2();

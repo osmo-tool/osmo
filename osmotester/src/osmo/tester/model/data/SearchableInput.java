@@ -6,7 +6,6 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.gui.manualdrive.ValueGUI;
 import osmo.tester.model.ScriptedValueProvider;
 import osmo.tester.model.VariableValue;
-import osmo.tester.model.data.wrappers.ToStringWrapper;
 
 import java.util.Collection;
 
@@ -103,9 +102,5 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T>, Variabl
   public void disableGUI() {
     gui = null;
     guiEnabled = false;
-  }
-
-  public ToStringWrapper wrapper() {
-    return new ToStringWrapper(this);
   }
 }

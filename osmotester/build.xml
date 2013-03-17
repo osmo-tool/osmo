@@ -6,6 +6,7 @@
   <property name="prod-dest" value="${main-output}/production"/>
   <property name="test-dest" value="${main-output}/testing"/>
   <property name="test-report" value="${main-output}/junit-report"/>
+  <property name="clover-report" value="${main-output}/clover-report"/>
   <property name="instrumented-dest" value="${main-output}/instrumented"/>
   <property name="coverage-dir" value="${main-output}/coverage"/>
   <property name="javadoc-dir" value="${main-output}/docs/api"/>
@@ -24,16 +25,7 @@
     <path location="${osmo-common-output}"/>
   </path>
 
-  <!--path id="cobertura.classpath">
-    <fileset dir="${cobertura.home}">
-      <include name="cobertura.jar"/>
-      <include name="lib/**/*.jar"/>
-    </fileset>
-  </path-->
-
   <taskdef resource="cloverlib.xml" classpath="${clover.home}/lib/clover.jar"/>
-
-  <!--taskdef classpathref="cobertura.classpath" resource="tasks.properties"/-->
 
   <!-- CLEAN -->
   <target name="clean">
@@ -43,6 +35,7 @@
     <delete file="${jar.file}"/>
     <echo message="Removing zip file:${zip.file}"/>
     <delete file="${zip.file}"/>
+    <clover-clean/>
   </target>
 
   <!-- MK DEPLOY DIR -->
@@ -76,17 +69,12 @@
     <clover-setup>
       <files>
         <exclude name="osmo/tester/gui/**/*.java"/>
+        <exclude name="osmo/tester/issues/**/*.java"/>
       </files>
     </clover-setup>
   </target>
 
   <target name="test" depends="init.clover, clean, compile, copyresources">
-    <!--cobertura-instrument todir="${instrumented-dest}">
-      <fileset dir="${prod-dest}">
-        <include name="**/*.class"/>
-      </fileset>
-    </cobertura-instrument-->
-
     <junit printsummary="yes" haltonfailure="no">
       <classpath>
         <pathelement location="${instrumented-dest}"/>
@@ -107,8 +95,8 @@
     </junit>
 
 
-    <clover-html-report outdir="clover_html" title="OSMO Tester"/>
-    <clover-pdf-report outfile="coverage.pdf" title="OSMO Tester"/>
+    <clover-html-report outdir="${clover-report}/clover_html" title="OSMO Tester"/>
+    <clover-pdf-report outfile="${clover-report}/coverage.pdf" title="OSMO Tester"/>
     <!--cobertura-report format="xml" srcdir="${prod-src}" destdir="${coverage-dir}"/>
     <cobertura-report format="html" srcdir="${prod-src}" destdir="${coverage-dir}/html"/-->
   </target>
