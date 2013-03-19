@@ -1,0 +1,32 @@
+The number of times a given test case includes a given transition:
+Test ID,#foreach ($tn in $transition_names)$tn,#end
+
+#foreach ($t in $tests)$t.name,#foreach ($tn in $transition_names)$t.transitionCount($tn),#end
+
+#end
+
+The number of times a given test case includes a given requirement:
+Test ID,#foreach ($rn in $req_names)$rn,#end
+
+#foreach ($t in $tests)$t.name,#foreach ($rn in $req_names)$t.reqCount($rn),#end
+
+#end
+
+The number of times a given test case includes a given transition pair (T1->T2, T2 occurred after T1):
+Test ID,#foreach ($tpn in $transition_pair_names)$tpn,#end
+
+#foreach ($t in $tests)$t.name,#foreach ($tpn in $transition_pair_names)$t.pairCount($tpn),#end
+
+#end
+
+The set of values for model variables in a given test case:
+Test ID,#foreach ($vn in $variable_names)$vn,#end
+
+#foreach ($t in $tests)$t.name,#foreach ($vn in $variable_names)$t.variableCoverage($vn),#end
+
+#end
+
+Overall coverage for all tests:
+#foreach ($vc in $overall_coverage)
+$vc.name,$vc.values
+#end

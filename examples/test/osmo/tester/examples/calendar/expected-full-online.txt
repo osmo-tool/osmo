@@ -1,0 +1,100 @@
+-NEW TEST
+--ADDTASK:ModelTask{uid='user2', description='task1', time=Wed Jul 23 17:25:01 EEST 2003}
+--REMOVETASKTHATDOESNOTEXIST:
+--REMOVETASK:ModelTask{uid='user2', description='task1', time=Wed Jul 23 17:25:01 EEST 2003}
+--ADDEVENT:ModelEvent{uid='user1', description='event1', location='location1', start=Mon Jun 13 11:07:00 EEST 2005, end=Mon Jun 13 12:31:37 EEST 2005}
+--REMOVETASKTHATDOESNOTEXIST:
+--LINKEVENTTOUSER:user3 - ModelEvent{uid='user1', description='event1', location='location1', start=Mon Jun 13 11:07:00 EEST 2005, end=Mon Jun 13 12:31:37 EEST 2005}
+--REMOVEPARTICIPANTEVENT:ParticipantEvent{participant='user3', event=ModelEvent{uid='user1', description='event1', location='location1', start=Mon Jun 13 11:07:00 EEST 2005, end=Mon Jun 13 12:31:37 EEST 2005}}
+--ADDTASK:ModelTask{uid='user3', description='task2', time=Thu Oct 09 11:44:43 EEST 2003}
+--REMOVETASK:ModelTask{uid='user3', description='task2', time=Thu Oct 09 11:44:43 EEST 2003}
+-NEW TEST
+--ADDTASK:ModelTask{uid='user1', description='task1', time=Mon Apr 26 08:08:09 EEST 2010}
+--REMOVETASKTHATDOESNOTEXIST:
+--REMOVETASK:ModelTask{uid='user1', description='task1', time=Mon Apr 26 08:08:09 EEST 2010}
+--REMOVETASKTHATDOESNOTEXIST:
+-NEW TEST
+--REMOVETASKTHATDOESNOTEXIST:
+--ADDEVENT:ModelEvent{uid='user3', description='event1', location='location1', start=Sun Aug 25 09:25:49 EEST 2002, end=Sun Aug 25 10:08:41 EEST 2002}
+--ADDOVERLAPPINGEVENT:ModelEvent{uid='user3', description='event1', location='location1', start=Sun Aug 25 09:25:49 EEST 2002, end=Sun Aug 25 10:08:41 EEST 2002}
+--ADDTASKOVERLAPPINGEVENT:ModelTask{uid='user3', description='task1', time=Sun Aug 25 09:25:49 EEST 2002}
+--LINKEVENTTOUSER:user1 - ModelEvent{uid='user3', description='event2', location='location2', start=Sun Aug 25 09:47:44 EEST 2002, end=Sun Aug 25 12:37:17 EEST 2002}
+--REMOVETASK:ModelTask{uid='user3', description='task1', time=Sun Aug 25 09:25:49 EEST 2002}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user3', description='event1', location='location1', start=Sun Aug 25 09:25:49 EEST 2002, end=Sun Aug 25 10:08:41 EEST 2002}
+--ADDTASKOVERLAPPINGEVENT:ModelTask{uid='user3', description='task2', time=Sun Aug 25 09:47:44 EEST 2002}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user3', description='event2', location='location2', start=Sun Aug 25 09:47:44 EEST 2002, end=Sun Aug 25 12:37:17 EEST 2002}
+--REMOVETASKTHATDOESNOTEXIST:
+--REMOVETASKTHATDOESNOTEXIST:
+--REMOVETASK:ModelTask{uid='user3', description='task2', time=Sun Aug 25 09:47:44 EEST 2002}
+--REMOVETASKTHATDOESNOTEXIST:
+--ADDTASK:ModelTask{uid='user4', description='task3', time=Mon May 18 13:38:48 EEST 2009}
+--REMOVETASK:ModelTask{uid='user4', description='task3', time=Mon May 18 13:38:48 EEST 2009}
+--ADDEVENT:ModelEvent{uid='user4', description='event3', location='location3', start=Tue Jul 03 20:35:19 EEST 2001, end=Tue Jul 03 21:48:17 EEST 2001}
+--ADDOVERLAPPINGEVENT:ModelEvent{uid='user4', description='event3', location='location3', start=Tue Jul 03 20:35:19 EEST 2001, end=Tue Jul 03 21:48:17 EEST 2001}
+--REMOVETASKTHATDOESNOTEXIST:
+--ADDEVENT:ModelEvent{uid='user1', description='event5', location='location5', start=Mon May 02 08:50:19 EEST 2005, end=Mon May 02 09:43:50 EEST 2005}
+--LINKEVENTTOUSER:user2 - ModelEvent{uid='user4', description='event3', location='location3', start=Tue Jul 03 20:35:19 EEST 2001, end=Tue Jul 03 21:48:17 EEST 2001}
+-NEW TEST
+--REMOVETASKTHATDOESNOTEXIST:
+--ADDTASK:ModelTask{uid='user1', description='task1', time=Mon Feb 19 12:33:16 EET 2001}
+--REMOVETASKTHATDOESNOTEXIST:
+--ADDEVENT:ModelEvent{uid='user1', description='event1', location='location1', start=Thu Sep 06 07:52:15 EEST 2007, end=Thu Sep 06 10:21:57 EEST 2007}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user1', description='event1', location='location1', start=Thu Sep 06 07:52:15 EEST 2007, end=Thu Sep 06 10:21:57 EEST 2007}
+--REMOVETASK:ModelTask{uid='user1', description='task1', time=Mon Feb 19 12:33:16 EET 2001}
+--REMOVETASKTHATDOESNOTEXIST:
+--ADDTASK:ModelTask{uid='user1', description='task2', time=Thu Aug 03 14:57:14 EEST 2000}
+--ADDTASK:ModelTask{uid='user1', description='task3', time=Wed Dec 07 18:04:49 EET 2005}
+--ADDOVERLAPPINGTASK:ModelTask{uid='user1', description='task4', time=Wed Dec 07 18:04:49 EET 2005}
+--REMOVETASKTHATDOESNOTEXIST:
+--REMOVETASK:ModelTask{uid='user1', description='task3', time=Wed Dec 07 18:04:49 EET 2005}
+--ADDEVENT:ModelEvent{uid='user1', description='event2', location='location2', start=Sun Oct 14 10:34:05 EEST 2007, end=Sun Oct 14 13:31:26 EEST 2007}
+--ADDTASKOVERLAPPINGEVENT:ModelTask{uid='user1', description='task5', time=Sun Oct 14 10:34:05 EEST 2007}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user1', description='event2', location='location2', start=Sun Oct 14 10:34:05 EEST 2007, end=Sun Oct 14 13:31:26 EEST 2007}
+-NEW TEST
+--REMOVETASKTHATDOESNOTEXIST:
+--REMOVETASKTHATDOESNOTEXIST:
+--ADDTASK:ModelTask{uid='user4', description='task1', time=Wed Dec 26 10:21:18 EET 2001}
+--ADDEVENT:ModelEvent{uid='user1', description='event1', location='location1', start=Thu Nov 26 20:01:17 EET 2009, end=Thu Nov 26 21:12:19 EET 2009}
+--ADDOVERLAPPINGEVENT:ModelEvent{uid='user1', description='event1', location='location1', start=Thu Nov 26 20:01:17 EET 2009, end=Thu Nov 26 21:12:19 EET 2009}
+--ADDEVENT:ModelEvent{uid='user1', description='event3', location='location3', start=Thu May 29 04:15:53 EEST 2003, end=Thu May 29 06:26:53 EEST 2003}
+--ADDTASKOVERLAPPINGEVENT:ModelTask{uid='user1', description='task2', time=Thu Nov 26 20:01:17 EET 2009}
+--ADDOVERLAPPINGTASK:ModelTask{uid='user1', description='task3', time=Thu Nov 26 20:01:17 EET 2009}
+--REMOVETASKTHATDOESNOTEXIST:
+--ADDTASK:ModelTask{uid='user4', description='task4', time=Wed Aug 06 05:39:32 EEST 2008}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user1', description='event2', location='location2', start=Thu Nov 26 20:54:27 EET 2009, end=Thu Nov 26 23:59:47 EET 2009}
+--LINKEVENTTOUSER:user2 - ModelEvent{uid='user1', description='event3', location='location3', start=Thu May 29 04:15:53 EEST 2003, end=Thu May 29 06:26:53 EEST 2003}
+--REMOVETASKTHATDOESNOTEXIST:
+--REMOVETASKTHATDOESNOTEXIST:
+--ADDTASK:ModelTask{uid='user3', description='task5', time=Mon Oct 01 10:28:37 EEST 2001}
+--ADDTASK:ModelTask{uid='user2', description='task6', time=Mon Jul 21 18:29:09 EEST 2003}
+--REMOVEPARTICIPANTEVENT:ParticipantEvent{participant='user2', event=ModelEvent{uid='user1', description='event3', location='location3', start=Thu May 29 04:15:53 EEST 2003, end=Thu May 29 06:26:53 EEST 2003}}
+--ADDOVERLAPPINGTASK:ModelTask{uid='user2', description='task7', time=Mon Jul 21 18:29:09 EEST 2003}
+--ADDOVERLAPPINGTASK:ModelTask{uid='user1', description='task8', time=Thu Nov 26 20:01:17 EET 2009}
+--ADDTASK:ModelTask{uid='user3', description='task9', time=Sat Jun 09 10:09:36 EEST 2007}
+--ADDTASKOVERLAPPINGEVENT:ModelTask{uid='user1', description='task10', time=Thu May 29 04:15:53 EEST 2003}
+--REMOVETASK:ModelTask{uid='user3', description='task9', time=Sat Jun 09 10:09:36 EEST 2007}
+--LINKEVENTTOUSER:user4 - ModelEvent{uid='user1', description='event3', location='location3', start=Thu May 29 04:15:53 EEST 2003, end=Thu May 29 06:26:53 EEST 2003}
+--ADDTASKOVERLAPPINGEVENT:ModelTask{uid='user1', description='task11', time=Thu Nov 26 20:01:17 EET 2009}
+--LINKEVENTTOUSER:user3 - ModelEvent{uid='user1', description='event3', location='location3', start=Thu May 29 04:15:53 EEST 2003, end=Thu May 29 06:26:53 EEST 2003}
+--ADDTASK:ModelTask{uid='user2', description='task12', time=Sat Apr 15 05:18:47 EEST 2000}
+-NEW TEST
+--ADDEVENT:ModelEvent{uid='user3', description='event1', location='location1', start=Thu Jul 07 06:44:52 EEST 2005, end=Thu Jul 07 07:58:51 EEST 2005}
+--ADDOVERLAPPINGEVENT:ModelEvent{uid='user3', description='event1', location='location1', start=Thu Jul 07 06:44:52 EEST 2005, end=Thu Jul 07 07:58:51 EEST 2005}
+--ADDEVENT:ModelEvent{uid='user4', description='event3', location='location3', start=Mon Nov 13 13:39:18 EET 2006, end=Mon Nov 13 14:54:15 EET 2006}
+--ADDEVENT:ModelEvent{uid='user2', description='event4', location='location4', start=Sun May 07 21:22:35 EEST 2000, end=Sun May 07 21:38:43 EEST 2000}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user3', description='event2', location='location2', start=Thu Jul 07 07:06:59 EEST 2005, end=Thu Jul 07 09:32:05 EEST 2005}
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user4', description='event3', location='location3', start=Mon Nov 13 13:39:18 EET 2006, end=Mon Nov 13 14:54:15 EET 2006}
+--ADDTASK:ModelTask{uid='user2', description='task1', time=Mon Sep 01 19:43:16 EEST 2003}
+--REMOVETASK:ModelTask{uid='user2', description='task1', time=Mon Sep 01 19:43:16 EEST 2003}
+--ADDEVENT:ModelEvent{uid='user3', description='event5', location='location5', start=Mon Apr 07 05:00:40 EEST 2003, end=Mon Apr 07 08:44:48 EEST 2003}
+--REMOVETASKTHATDOESNOTEXIST:
+--REMOVEORGANIZEREVENT:ModelEvent{uid='user2', description='event4', location='location4', start=Sun May 07 21:22:35 EEST 2000, end=Sun May 07 21:38:43 EEST 2000}
+--ADDEVENT:ModelEvent{uid='user3', description='event6', location='location6', start=Mon Aug 07 05:23:04 EEST 2006, end=Mon Aug 07 08:01:14 EEST 2006}
+--ADDTASKOVERLAPPINGEVENT:ModelTask{uid='user3', description='task2', time=Mon Apr 07 05:00:40 EEST 2003}
+--REMOVETASKTHATDOESNOTEXIST:
+--ADDTASK:ModelTask{uid='user3', description='task3', time=Wed May 17 13:14:57 EEST 2006}
+--REMOVETASKTHATDOESNOTEXIST:
+--ADDOVERLAPPINGEVENT:ModelEvent{uid='user3', description='event6', location='location6', start=Mon Aug 07 05:23:04 EEST 2006, end=Mon Aug 07 08:01:14 EEST 2006}
+--LINKEVENTTOUSER:user4 - ModelEvent{uid='user3', description='event7', location='location7', start=Mon Aug 07 05:26:58 EEST 2006, end=Mon Aug 07 06:09:40 EEST 2006}
+--ADDOVERLAPPINGEVENT:ModelEvent{uid='user3', description='event7', location='location7', start=Mon Aug 07 05:26:58 EEST 2006, end=Mon Aug 07 06:09:40 EEST 2006}
+

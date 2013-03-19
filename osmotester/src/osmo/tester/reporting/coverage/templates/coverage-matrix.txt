@@ -1,0 +1,195 @@
+<html>
+<head>
+  <style type="text/css">
+    .osmo-table
+    {
+      font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+      border-collapse:collapse;
+    }
+    .osmo-table th
+    {
+      font-size:1.1em;
+      text-align:left;
+      padding-top:5px;
+      padding-bottom:4px;
+      background-color:#A7C942;
+      color:#ffffff;
+    }
+    .osmo-table th.colhead
+    {
+      font-size:1.1em;
+      text-align:left;
+      padding-top:5px;
+      padding-bottom:4px;
+      background-color:#A7C942;
+      color:#ffffff;
+      border-bottom: 2px solid #333;
+    }
+    .osmo-table th.corner
+    {
+      font-size:1.1em;
+      text-align:left;
+      padding-top:5px;
+      padding-bottom:4px;
+      background-color:#A7C942;
+      color:#ffffff;
+      border-bottom: 2px solid #333;
+      border-right: 2px solid #333;
+    }
+    .osmo-table td, .osmo-table th[scope=row]
+    {
+      font-size:1em;
+      border:1px solid #98bf21;
+      padding:3px 7px 2px 7px;
+    }
+    .osmo-table th.testhead
+    {
+      font-size:1.1em;
+      text-align:left;
+      padding-top:5px;
+      padding-bottom:4px;
+      background-color:#B8DA53;
+      color:#ffffff;
+      border-right: 2px solid #333;
+    }
+    .osmo-table tr.alt td
+    {
+      color:#000000;
+      background-color:#EAF2D3;
+    }
+    .osmo-table tr:hover th[scope=row], .osmo-table tr:hover td
+    {
+      background-color: #632a2a;
+      color: #fff;
+    }
+    .osmo-table caption
+    {
+      caption-side: top;
+      font-size: 0.9em;
+      font-style: bold;
+      text-align: center;
+      padding: 0.5em 0;
+    }
+  </style>
+</head>
+<body>
+  <table class="osmo-table" border="1">
+    <caption>The number of times a given test case includes a given transition:</caption>
+    <thead>
+      <tr>
+        <th class='corner' scope='col' rowspan='2'>Test ID</th>
+        <th scope='col' colspan='$transition_names.size()'>Transition coverage</th>
+      </tr>
+      <tr>
+#foreach ($tn in $transition_names)
+        <th class='colhead' scope='col'>$tn</th>
+#end
+      </tr>
+    </thead>
+    <tbody>
+#foreach ($t in $tests)
+      <tr$alt>
+        <th class='testhead' scope='row'>$t.name</th>
+#foreach ($tn in $transition_names)
+        <td>$t.transitionCount($tn)</td>
+#end
+      </tr>
+#end
+    </tbody>
+  </table>
+
+  <table class="osmo-table" border="1">
+    <caption>The number of times a given test case includes a given requirement:</caption>
+    <thead>
+      <tr>
+        <th class='corner' scope='col' rowspan='2'>Test ID</th>
+        <th scope='col' colspan='$req_names.size()'>Requirement coverage</th>
+      </tr>
+      <tr>
+#foreach ($rn in $req_names)
+        <th class='colhead' scope='col'>$rn</th>
+#end
+      </tr>
+    </thead>
+    <tbody>
+#foreach ($t in $tests)
+      <tr$alt>
+        <th class='testhead' scope='row'>$t.name</th>
+#foreach ($rn in $req_names)
+        <td>$t.reqCount($rn)</td>
+#end
+      </tr>
+#end
+    </tbody>
+  </table>
+
+  <table class="osmo-table" border="1">
+    <caption>The number of times a given test case includes a given transition pair (T1->T2, T2 occurred after T1):</caption>
+    <thead>
+      <tr>
+        <th class='corner' scope='col' rowspan='2'>Test ID</th>
+        <th scope='col' colspan='$transition_pair_names.size()'>Transition-pair coverage</th>
+      </tr>
+      <tr>
+#foreach ($tpn in $transition_pair_names)
+        <th class='colhead' scope='col'>$tpn</th>
+#end
+      </tr>
+    </thead>
+    <tbody>
+#foreach ($t in $tests)
+      <tr$alt>
+        <th class='testhead' scope='row'>$t.name</th>
+#foreach ($tpn in $transition_pair_names)
+        <td>$t.pairCount($tpn)</td>
+#end
+      </tr>
+#end
+    </tbody>
+  </table>
+
+  <table class="osmo-table" border="1">
+    <caption>The set of values for model variables in a given test case:</caption>
+    <thead>
+      <tr>
+        <th class='corner' scope='col' rowspan='2'>Test ID</th>
+        <th scope='col' colspan='$variable_names.size()'>Variable coverage</th>
+      </tr>
+      <tr>
+#foreach ($vn in $variable_names)
+        <th class='colhead' scope='col'>$vn</th>
+#end
+      </tr>
+    </thead>
+    <tbody>
+#foreach ($t in $tests)
+      <tr$alt>
+        <th class='testhead' scope='row'>$t.name</th>
+#foreach ($vn in $variable_names)
+        <td>$t.variableCoverage($vn)</td>
+#end
+      </tr>
+#end
+    </tbody>
+  </table>
+
+  <table class="osmo-table" border="1">
+    <caption>Overall coverage for all tests:</caption>
+    <thead>
+      <tr>
+        <th class='corner' scope='col' rowspan='2'>Variable</th>
+        <th scope='col' colspan='1'>Values observed</th>
+      </tr>
+    </thead>
+    <tbody>
+#foreach ($vc in $overall_coverage)
+      <tr$alt>
+        <th class='testhead' scope='row'>$vc.name</th>
+        <td>$vc.values</td>
+      </tr>
+#end
+    </tbody>
+  </table>
+
+</body>
+</html>

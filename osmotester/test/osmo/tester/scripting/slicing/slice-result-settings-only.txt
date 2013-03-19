@@ -1,0 +1,43 @@
+Warning:Input does not define any valid coverage requirements (steps or variables) or script.
+first
+Starting new test case 1
+S:0
++ 2
+- 1
++ 2
++ 3
+- 2
++ 3
++ 4
++ 5
++ 6
++ 7
+Test case ended
+Starting new test case 2
+S:0
++ 2
++ 3
+Test case ended
+Starting new test case 3
+S:0
++ 2
+- 1
++ 2
+- 1
++ 2
+- 1
++ 2
+- 1
++ 2
++ 3
+- 2
+- 1
++ 2
+Test case ended
+last
+generated 3 tests.
+
+Requirements:[decrease, increase]
+Covered:[decrease, increase]
+Total = 2/2 (100%) requirements.
+
