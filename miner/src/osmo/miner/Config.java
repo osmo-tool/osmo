@@ -45,7 +45,7 @@ public class Config {
     variablePost = props.getProperty("variable_post");
     String debug = props.getProperty("debug");
     if ("true".equals(debug)) {
-      Logger.debug = true;
+      //Logger.debug = true;
     }
 
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
