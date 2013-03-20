@@ -15,12 +15,6 @@
     <module>osmotester</module>
     <module>visualizer</module>
   </modules>
-  <distributionManagement>
-    <snapshotRepository>
-      <id>snapshots</id>
-      <url>http://da067.priv.spillgroup.org/nexus/content/repositories/snapshots</url>
-    </snapshotRepository>
-  </distributionManagement>
   <dependencyManagement>
     <dependencies>
       <dependency>
