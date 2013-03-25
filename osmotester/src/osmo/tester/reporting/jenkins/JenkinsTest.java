@@ -80,6 +80,10 @@ public class JenkinsTest {
     JenkinsStep last = steps.get(steps.size() - 1);
     long startTime = first.getStartTime();
     long endTime = last.getEndTime();
+    if (endTime == 0) {
+      //if step fails it can be 0
+      return "0.00";
+    }
     long duration = endTime - startTime;
     double seconds = duration / 1000d;
     return String.format(Locale.US, "%.2f", seconds);

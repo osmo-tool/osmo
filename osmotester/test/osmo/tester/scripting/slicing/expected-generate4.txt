@@ -2,32 +2,20 @@ NEW TEST
 :first:
 :second:
 range:2
-:third=v2:
-range:4
-:third=v3:
-range:1
-:third=v1:
-range:1
-:third=v2:
-range:2
-:third=v3:
-range:5
-:third=v2:
-range:2
 :third=v3:
 range:3
 :third=v3:
 range:2
 :third=v3:
+range:3
+:third=v1:
+range:2
+:third=v1:
+range:5
+:third=v2:
 NEW TEST
 :first:
 :second:
-range:3
-:third=v1:
-range:2
-:third=v1:
-range:5
-:third=v2:
 range:2
 :third=v1:
 range:3
@@ -61,16 +49,16 @@ range:3
 range:3
 :third=v3:
 range:1
+:third=v1:
+range:3
+:third=v2:
+range:2
+:third=v1:
+range:4
 :third=v1:
 NEW TEST
 :first:
 :second:
-range:3
-:third=v2:
-range:2
-:third=v1:
-range:4
-:third=v1:
 range:4
 :third=v2:
 range:1
@@ -103,6 +91,12 @@ range:5
 :third=v1:
 range:3
 :third=v3:
+range:5
+:third=v1:
+range:1
+:third=v2:
+range:2
+:third=v2:
 generated 3 tests.
 
 

@@ -193,8 +193,8 @@
         <th class='testhead'>valueCount</th>
       </tr>
       <tr>
-        <td>3</td>
-        <td>v3</td>
+        <td>5</td>
+        <td>v2</td>
         <td>true</td>
         <td>true</td>
         <td>1</td>
@@ -208,8 +208,8 @@
         <th class='testhead'>valueCount</th>
       </tr>
       <tr>
-        <td>3</td>
-        <td>v2</td>
+        <td>2</td>
+        <td>v3</td>
         <td>true</td>
         <td>true</td>
         <td>2</td>
@@ -223,7 +223,7 @@
         <th class='testhead'>valueCount</th>
       </tr>
       <tr>
-        <td>5</td>
+        <td>3</td>
         <td>v3</td>
         <td>true</td>
         <td>true</td>
@@ -280,8 +280,8 @@
         <th class='testhead'>valueCount</th>
       </tr>
       <tr>
-        <td>5</td>
-        <td>v3</td>
+        <td>2</td>
+        <td>v1</td>
         <td>true</td>
         <td>true</td>
         <td>1</td>
@@ -296,7 +296,7 @@
       </tr>
       <tr>
         <td>2</td>
-        <td>v1</td>
+        <td>v3</td>
         <td>true</td>
         <td>true</td>
         <td>2</td>
@@ -310,8 +310,8 @@
         <th class='testhead'>valueCount</th>
       </tr>
       <tr>
-        <td>1</td>
-        <td>v3</td>
+        <td>4</td>
+        <td>v1</td>
         <td>true</td>
         <td>true</td>
         <td>3</td>
@@ -367,7 +367,7 @@
         <th class='testhead'>valueCount</th>
       </tr>
       <tr>
-        <td>5</td>
+        <td>3</td>
         <td>v2</td>
         <td>true</td>
         <td>true</td>
@@ -382,8 +382,8 @@
         <th class='testhead'>valueCount</th>
       </tr>
       <tr>
-        <td>2</td>
-        <td>v3</td>
+        <td>1</td>
+        <td>v1</td>
         <td>true</td>
         <td>true</td>
         <td>2</td>
@@ -397,7 +397,7 @@
         <th class='testhead'>valueCount</th>
       </tr>
       <tr>
-        <td>3</td>
+        <td>4</td>
         <td>v3</td>
         <td>true</td>
         <td>true</td>

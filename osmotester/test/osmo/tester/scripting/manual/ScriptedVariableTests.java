@@ -51,7 +51,7 @@ public class ScriptedVariableTests {
 
   @Test
   public void valueSetNoScript() {
-    String expected = "4,9,4,9,9,4,1,9,4,1,9,1,9,9,4,9,1,9,9,1,";
+    String expected = "1,9,4,1,9,1,9,9,4,9,1,9,9,1,4,9,1,4,1,4,";
     String actual = "";
     for (int i = 0 ; i < 20 ; i++) {
       actual += set.next() + ",";
@@ -86,7 +86,7 @@ public class ScriptedVariableTests {
 
   @Test
   public void valueRangeNoScript() {
-    String expected = "4,1,3,3,5,1,5,3,3,1,1,5,5,5,4,4,1,2,1,1,";
+    String expected = "5,3,3,1,1,5,5,5,4,4,1,2,1,1,1,1,5,1,3,3,";
     String actual = "";
     for (int i = 0 ; i < 20 ; i++) {
       actual += range.next() + ",";
@@ -121,7 +121,7 @@ public class ScriptedVariableTests {
 
   @Test
   public void valueRangeSetNoScript() {
-    String expected = "8,62,9,87,80,8,2,96,9,3,96,2,104,82,9,90,3,62,73,3,";
+    String expected = "1,82,7,3,90,2,62,73,9,81,1,73,66,3,8,75,1,7,3,9,";
     String actual = "";
     for (int i = 0 ; i < 20 ; i++) {
       actual += rangeSet.next() + ",";
@@ -158,8 +158,8 @@ public class ScriptedVariableTests {
   }
 
   @Test
-  public void wordsNoScript() {
-    String expected = "hZB4åS}j(,_Å%O)+e5+J,Å]cNL\"lGH,a9Ö~\"ö=.xZ<:Ä,2=~)+_&r{8 4^,0w2'h<#V]C*?,TOÅW-RvP,wvh[.+0,;C,[G3uDHä\"D,L+.^H9*RWÄ9,(Ef~_[_h%.,.s´HV\"gQ,2zh?2öwdTAVÖh,Jr)tSz´w_6,\\X4#,pÅ+ö='Y,=-Lk+i] l]'=m,ä8¨´[ö=b,&vI;}]0ÖI9,=JQTxä^b\"i,dgQX1MehOgY,";
+  public void textNoScript() {
+    String expected = "}j(_Å%O),+e5+JÅ]cNL,\"lGHa9Ö~\",ö=.xZ<:Ä2=~,)+_&r{8 4^,0w2'h<#V,]C*?TOÅW-RvPw,vh[.+0,;C[,G3uDHä\"DL+.^,H9*RWÄ9(Ef~_[,_h%..s´H,V\"gQ2zh?2ö,wdTAVÖhJr),tSz´w_6\\X4#,,pÅ+ö='Y=,-Lk+i] l]'=mä,8¨´[ö=b&,vI;}]0ÖI9,=JQTxä^b,\"idgQX1Me,";
     String actual = "";
     for (int i = 0 ; i < 20 ; i++) {
       actual += text.next() + ",";

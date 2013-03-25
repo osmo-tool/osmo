@@ -1,6 +1,5 @@
 --new test--
 login
-login
 pre-logged
 hello
 post-logged
@@ -9,15 +8,6 @@ pre-world
 world
 post-logged
 post-world
-pre-logged
-hello
-post-logged
---new test--
-login
-login
-pre-logged
-hello
-post-logged
 pre-logged
 pre-world
 world
@@ -43,76 +33,12 @@ pre-world
 world
 post-logged
 post-world
-pre-logged
-pre-world
-world
-post-logged
-post-world
---new test--
-login
-pre-logged
-hello
-post-logged
-login
-pre-logged
-hello
-post-logged
-pre-logged
-pre-world
-world
-post-logged
-post-world
---new test--
-login
-login
-pre-logged
-hello
-post-logged
-login
 login
 --new test--
 login
 pre-logged
 hello
 post-logged
-login
-pre-logged
-pre-world
-world
-post-logged
-post-world
-pre-logged
-pre-world
-world
-post-logged
-post-world
---new test--
-login
-login
-login
-pre-logged
-hello
-post-logged
-login
---new test--
-login
-login
-login
-login
-login
---new test--
-login
-login
-login
-pre-logged
-hello
-post-logged
-pre-logged
-hello
-post-logged
---new test--
-login
-login
 pre-logged
 hello
 post-logged
@@ -128,11 +54,31 @@ post-logged
 post-world
 --new test--
 login
+pre-logged
+hello
+post-logged
+login
+login
+pre-logged
+pre-world
+world
+post-logged
+post-world
+--new test--
+login
+login
 login
 login
 pre-logged
 hello
 post-logged
+--new test--
+login
+login
+pre-logged
+hello
+post-logged
+login
 pre-logged
 hello
 post-logged
@@ -148,7 +94,9 @@ login
 pre-logged
 hello
 post-logged
-login
+pre-logged
+hello
+post-logged
 login
 --new test--
 login
@@ -160,6 +108,20 @@ pre-world
 world
 post-logged
 post-world
+pre-logged
+pre-world
+world
+post-logged
+post-world
+pre-logged
+hello
+post-logged
+--new test--
+login
+login
+pre-logged
+hello
+post-logged
 pre-logged
 hello
 post-logged
@@ -176,4 +138,44 @@ login
 pre-logged
 hello
 post-logged
+--new test--
+login
+pre-logged
+hello
+post-logged
+login
+login
+login
+--new test--
+login
+login
+pre-logged
+hello
+post-logged
+pre-logged
+pre-world
+world
+post-logged
+post-world
+pre-logged
+hello
+post-logged
+--new test--
+login
+login
+login
+pre-logged
+hello
+post-logged
+pre-logged
+pre-world
+world
+post-logged
+post-world
+--new test--
+login
+login
+login
+login
+login
 
