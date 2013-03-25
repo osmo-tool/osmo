@@ -1,4 +1,4 @@
-<testsuite name="OSMO Test Suite" timestamp="01.01.1970 00:00:00" hostname="OSMO rules" tests="81" failures="0" errors="0" time="3.23">
+<testsuite name="OSMO Test Suite" timestamp="01.01.1970 00:00:00" hostname="OSMO rules" tests="55" failures="0" errors="0" time="3.23">
   <properties>
     <property name="Algorithm" value="osmo.tester.generator.algorithm.RandomAlgorithm"/>
     <property name="Scripter" value="Null"/>
@@ -12,17 +12,11 @@
   </testcase>
   <testcase name="Test1_step_2_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
-  <testcase name="Test1_step_3_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
+  <testcase name="Test1_step_3_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
-  <testcase name="Test1_step_4_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
+  <testcase name="Test1_step_4_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
   <testcase name="Test1_step_5_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test1_step_6_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test1_step_7_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test1_step_8_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
   <testcase name="Test2_step_1_start" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
@@ -40,15 +34,15 @@
   </testcase>
   <testcase name="Test2_step_8_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
-  <testcase name="Test2_step_9_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
+  <testcase name="Test2_step_9_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
   <testcase name="Test2_step_10_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
   <testcase name="Test2_step_11_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
-  <testcase name="Test2_step_12_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
+  <testcase name="Test2_step_12_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
-  <testcase name="Test2_step_13_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
+  <testcase name="Test2_step_13_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
   <testcase name="Test2_step_14_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
@@ -60,37 +54,37 @@
   </testcase>
   <testcase name="Test2_step_18_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
-  <testcase name="Test2_step_19_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
+  <testcase name="Test2_step_19_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
   <testcase name="Test2_step_20_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
   <testcase name="Test2_step_21_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
-  <testcase name="Test2_step_22_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
+  <testcase name="Test2_step_22_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
   <testcase name="Test2_step_23_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
-  <testcase name="Test2_step_24_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
+  <testcase name="Test2_step_24_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
-  <testcase name="Test2_step_25_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
+  <testcase name="Test2_step_25_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
-  <testcase name="Test2_step_26_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
+  <testcase name="Test2_step_26_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
-  <testcase name="Test2_step_27_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
+  <testcase name="Test2_step_27_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
-  <testcase name="Test2_step_28_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
+  <testcase name="Test2_step_28_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
   <testcase name="Test3_step_1_start" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
   <testcase name="Test3_step_2_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
-  <testcase name="Test3_step_3_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
+  <testcase name="Test3_step_3_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
-  <testcase name="Test3_step_4_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
+  <testcase name="Test3_step_4_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
-  <testcase name="Test3_step_5_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
+  <testcase name="Test3_step_5_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
-  <testcase name="Test3_step_6_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
+  <testcase name="Test3_step_6_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
   <testcase name="Test4_step_1_start" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
@@ -106,11 +100,11 @@
   </testcase>
   <testcase name="Test4_step_7_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
-  <testcase name="Test4_step_8_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
+  <testcase name="Test4_step_8_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
-  <testcase name="Test4_step_9_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
+  <testcase name="Test4_step_9_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
-  <testcase name="Test4_step_10_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
+  <testcase name="Test4_step_10_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
   <testcase name="Test5_step_1_start" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
@@ -120,66 +114,17 @@
   </testcase>
   <testcase name="Test5_step_4_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
-  <testcase name="Test5_step_5_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
+  <testcase name="Test5_step_5_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
-  <testcase name="Test5_step_6_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test6_step_1_start" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test7_step_1_start" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test7_step_2_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test7_step_3_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test7_step_4_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test7_step_5_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test7_step_6_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test7_step_7_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test7_step_8_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test7_step_9_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test7_step_10_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test7_step_11_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test7_step_12_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test7_step_13_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test7_step_14_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test7_step_15_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test7_step_16_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test7_step_17_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test7_step_18_decrease" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test7_step_19_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test7_step_20_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test8_step_1_start" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
-  </testcase>
-  <testcase name="Test8_step_2_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
+  <testcase name="Test5_step_6_increase" classname="osmo.tester.testmodels.CalculatorModel" time="0.00">
   </testcase>
   <system-out>first
 Starting new test case 1
 S:0
 + 2
+- 1
++ 2
 + 3
-- 2
-+ 3
-- 2
-+ 3
-- 2
 Test case ended
 Starting new test case 2
 S:0
@@ -190,11 +135,9 @@ S:0
 + 4
 - 3
 + 4
-+ 5
-- 4
-+ 5
-- 4
 - 3
+- 2
++ 3
 + 4
 + 5
 + 6
@@ -202,22 +145,24 @@ S:0
 + 8
 + 9
 + 10
-+ 11
-- 10
+- 9
++ 10
 + 11
 + 12
 + 13
-+ 14
-- 13
 - 12
+- 11
+- 10
++ 11
++ 12
 Test case ended
 Starting new test case 3
 S:0
 + 2
-+ 3
-- 2
-+ 3
-- 2
+- 1
++ 2
+- 1
++ 2
 Test case ended
 Starting new test case 4
 S:0
@@ -227,45 +172,16 @@ S:0
 - 1
 + 2
 + 3
-- 2
-+ 3
 + 4
+- 3
+- 2
 Test case ended
 Starting new test case 5
 S:0
 + 2
 - 1
 + 2
-+ 3
-- 2
-Test case ended
-Starting new test case 6
-S:0
-Test case ended
-Starting new test case 7
-S:0
-+ 2
 - 1
-+ 2
-+ 3
-+ 4
-- 3
-+ 4
-+ 5
-- 4
-- 3
-- 2
-- 1
-+ 2
-+ 3
-+ 4
-+ 5
-- 4
-+ 5
-+ 6
-Test case ended
-Starting new test case 8
-S:0
 + 2
 Test case ended
 last

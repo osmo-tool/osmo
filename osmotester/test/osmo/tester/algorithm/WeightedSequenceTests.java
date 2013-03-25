@@ -28,7 +28,7 @@ public class WeightedSequenceTests {
 
   @Test
   public void length4() {
-    listener.addExpected("suite-start", "start", "t:bob3", "t:bob1", "t:bob3", "t:bob4", "end", "suite-end");
+    listener.addExpected("suite-start", "start", "t:bob4", "t:bob4", "t:bob3", "t:bob3", "end", "suite-end");
     osmo.addModelObject(new WeightedModel1());
     Length length4 = new Length(4);
     Length length1 = new Length(1);
@@ -51,7 +51,7 @@ public class WeightedSequenceTests {
 
   @Test
   public void length20() {
-    listener.addExpected("suite-start", "start", "t:bob3", "t:bob1", "t:bob3", "t:bob4", "t:bob2", "t:bob4", "t:bob4", "t:bob4", "t:bob3", "t:bob3", "t:bob2", "t:bob4", "t:bob4", "t:bob4", "t:bob2", "t:bob4", "t:bob1", "t:bob4", "t:bob3", "t:bob4", "end", "suite-end");
+    listener.addExpected("suite-start", "start", "t:bob4", "t:bob4", "t:bob3", "t:bob3", "t:bob2", "t:bob4", "t:bob4", "t:bob4", "t:bob2", "t:bob4", "t:bob1", "t:bob4", "t:bob3", "t:bob4", "t:bob3", "t:bob4", "t:bob3", "t:bob2", "t:bob4", "t:bob2", "end", "suite-end");
     osmo.addModelObject(new WeightedModel1());
     Length length15 = new Length(20);
     Length length1 = new Length(1);
