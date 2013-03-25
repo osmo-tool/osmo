@@ -168,10 +168,10 @@ public class ValuetSetTests {
           throw new IllegalArgumentException("Invalid value received from valueset (allowed 'one', 'two', 'three', 'four'):" + next);
       }
     }
-    assertEquals("Number of 'ones' generated", 98, ones);
-    assertEquals("Number of 'twos' generated", 107, twos);
-    assertEquals("Number of 'threes' generated", 106, threes);
-    assertEquals("Number of 'fours' generated", 289, fours);
+    assertEquals("Number of 'ones' generated", 97, ones);
+    assertEquals("Number of 'twos' generated", 106, twos);
+    assertEquals("Number of 'threes' generated", 109, threes);
+    assertEquals("Number of 'fours' generated", 288, fours);
   }
 
   @Test

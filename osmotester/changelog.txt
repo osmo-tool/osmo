@@ -82,9 +82,18 @@ v2.4.0 12/10/2012
 -Added annotation for @LastStep
 -Guard association negation support
 -Sorting of steps, guards, and pre-post elements (determinism++)
-v2.5.0 20/02/2012
+v2.5.0 20/02/2013
 -@StateName added
 -Cleaned up old stuff
 -Fixed various bugs in ManualDrive
 -Seed must now be set explicitly
+v3.0.0 16/03/2013
+-@EndState removed
+-Cleaned up old stuff
+-Merged some end conditions to ElementCoverage end condition
+-Added end condition for StateCoverage (of @StateName values)
+-Fixed bugs
+-Added group support to test steps, guards, and pre-post-elements
+-Added offline optimizer and associated test generation coverage mechanisms
+
 

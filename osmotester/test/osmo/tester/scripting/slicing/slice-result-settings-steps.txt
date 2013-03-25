@@ -8,9 +8,6 @@ S:0
 + 6
 + 7
 + 8
-+ 9
-+ 10
-+ 11
 Test case ended
 Starting new test case 2
 S:0

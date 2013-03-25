@@ -270,7 +270,9 @@ public class ElementCoverageTests {
     osmo.addTestEndCondition(new ElementCoverage(3, 3, 2));
     osmo.addSuiteEndCondition(length1);
     osmo.generate();
-    assertEquals("Generated tests", "[TestCase:[start, increase, increase, decrease]]", osmo.getSuite().getAllTestCases().toString());
+    String expected = "[TestCase:[start, increase, increase, increase, increase, increase, decrease]]";
+    String actual = osmo.getSuite().getAllTestCases().toString();
+    assertEquals("Generated tests", expected, actual);
   }
 
   private void assertNoSuiteEnd(String msg) {

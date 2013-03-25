@@ -29,10 +29,10 @@ public class WeightedDistributionTests {
 
   @Test
   public void randomLength1000() {
-    listener.setExpected("bob1", 109);
+    listener.setExpected("bob1", 108);
     listener.setExpected("bob2", 191);
-    listener.setExpected("bob3", 296);
-    listener.setExpected("bob4", 404);
+    listener.setExpected("bob3", 298);
+    listener.setExpected("bob4", 403);
     osmo.addModelObject(new WeightedModel1());
     Length length4 = new Length(1000);
     Length length1 = new Length(1);
@@ -55,10 +55,10 @@ public class WeightedDistributionTests {
 
   @Test
   public void balancingLength1000() {
-    listener.setExpected("bob1", 1619);
-    listener.setExpected("bob2", 2314);
-    listener.setExpected("bob3", 2828);
-    listener.setExpected("bob4", 3239);
+    listener.setExpected("bob1", 1633);
+    listener.setExpected("bob2", 2301);
+    listener.setExpected("bob3", 2858);
+    listener.setExpected("bob4", 3208);
     osmo.addModelObject(new WeightedModel1());
     Length length4 = new Length(10000);
     Length length1 = new Length(1);
@@ -83,8 +83,8 @@ public class WeightedDistributionTests {
   @Test
   public void randomLength200Suite6() {
     listener.setExpected("bob1", 125);
-    listener.setExpected("bob2", 235);
-    listener.setExpected("bob3", 360);
+    listener.setExpected("bob2", 237);
+    listener.setExpected("bob3", 358);
     listener.setExpected("bob4", 480);
     osmo.addModelObject(new WeightedModel1());
     Length length4 = new Length(200);
@@ -108,10 +108,10 @@ public class WeightedDistributionTests {
 
   @Test
   public void balancingLength200Suite6() {
-    listener.setExpected("bob1", 196);
-    listener.setExpected("bob2", 278);
-    listener.setExpected("bob3", 327);
-    listener.setExpected("bob4", 399);
+    listener.setExpected("bob1", 192);
+    listener.setExpected("bob2", 274);
+    listener.setExpected("bob3", 348);
+    listener.setExpected("bob4", 386);
     osmo.addModelObject(new WeightedModel1());
     Length length4 = new Length(200);
     Length length1 = new Length(6);

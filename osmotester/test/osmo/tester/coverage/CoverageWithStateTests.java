@@ -38,11 +38,11 @@ public class CoverageWithStateTests {
     assertEquals("Number of generated tests", 1, tests.size());
     Map<String,ModelVariable> variables = tests.get(0).getStepVariables();
     assertEquals("Variable coverage", "teemu([on paras])", variables.get("teemu").toString());
-    assertEquals("Variable coverage", "range-range([many, many, many, two, one, many, two, one, one, many, one])", 
+    assertEquals("Variable coverage", "range-range([one, many, many, one, many, many, two, many])", 
             variables.get("range-range").toString());
-    assertEquals("Variable coverage", "range2-range([many, many, many, many, many, many, many, many, many])", 
+    assertEquals("Variable coverage", "range2-range([many, many, many, many, many, many, many, many])", 
             variables.get("range2-range").toString());
-    assertEquals("Variable coverage", "names&range-range&range2-range([null&many&null, null&many&null, null&many&null, null&null&null, null&two&null, null&one&null, null&many&null, keijo&null&null, teemu&null&null, paavo&null&null, null&null&many, null&two&null, teemu&null&null, null&null&many, null&null&many, null&one&null, null&one&null, keijo&null&null, null&many&null, null&null&many, paavo&null&null, teemu&null&null, null&null&null, null&null&many, null&null&many, null&null&many, keijo&null&null, null&null&many, null&one&null, paavo&null&null, null&null&many, paavo&null&null])", 
+    assertEquals("Variable coverage", "names&range-range&range2-range([null&one&null, null&null&null, null&many&null, null&many&null, null&null&many, null&null&many, paavo&null&null, null&null&null, null&null&many, null&null&many, null&one&null, teemu&null&null, null&many&null, null&null&many, keijo&null&null, null&null&null, null&null&many, null&null&null, teemu&null&null, null&many&null, null&two&null, null&null&many, teemu&null&null, null&many&null, null&null&many])", 
             variables.get("names&range-range&range2-range").toString());
     
   }

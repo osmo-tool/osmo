@@ -35,7 +35,12 @@ public class Randomizer {
    * @param seed Seed for the new random generator.
    */
   public void setSeed(long seed) {
+    this.seed = seed;
     random = new Random(seed);
+    //if we do not grab the initial set, it will always produce almost the same numbers for new instances first values..
+    random.nextDouble();
+    random.nextDouble();
+    random.nextDouble();
   }
 
   /**
