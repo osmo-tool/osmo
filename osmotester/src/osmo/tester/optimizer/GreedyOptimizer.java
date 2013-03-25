@@ -167,7 +167,7 @@ public class GreedyOptimizer {
       csv3 += csvNumberOfTests(suite);
       csv4 += csvTotalScores(suite);
       TestCoverage suiteCoverage = new TestCoverage(suite);
-      int score = scoreCalculator.calculateFitness(suiteCoverage);
+      int score = scoreCalculator.calculateScore(suiteCoverage);
       gain = score - previousScore;
       previousScore = score;
       if (timeout > 0 && timeout < System.currentTimeMillis()) {
@@ -213,7 +213,7 @@ public class GreedyOptimizer {
     TestCoverage tc = new TestCoverage();
     for (TestCase test : tests) {
       tc.addTestCoverage(test);
-      csv += scoreCalculator.calculateFitness(tc) + "; ";
+      csv += scoreCalculator.calculateScore(tc) + "; ";
     }
     csv += "\n";
     return csv;
@@ -232,7 +232,7 @@ public class GreedyOptimizer {
     for (TestCase test : tests) {
       tc.addTestCoverage(test);
     }
-    csv += scoreCalculator.calculateFitness(tc);
+    csv += scoreCalculator.calculateScore(tc);
     csv += "\n";
     return csv;
   }
@@ -241,9 +241,9 @@ public class GreedyOptimizer {
     String csv = "";
     TestCoverage tc = new TestCoverage();
     for (TestCase test : tests) {
-      int old = scoreCalculator.calculateFitness(tc);
+      int old = scoreCalculator.calculateScore(tc);
       tc.addTestCoverage(test);
-      int now = scoreCalculator.calculateFitness(tc);
+      int now = scoreCalculator.calculateScore(tc);
       int gain = now - old;
       csv += gain + "; ";
     }
@@ -267,7 +267,7 @@ public class GreedyOptimizer {
       int bestFitness = 0;
       TestCase best = null;
       for (TestCase test : from) {
-        int fitness = scoreCalculator.addedFitnessFor(suiteCoverage, test);
+        int fitness = scoreCalculator.addedScoreFor(suiteCoverage, test);
         if (fitness > bestFitness) {
           bestFitness = fitness;
           best = test;

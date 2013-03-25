@@ -1,7 +1,6 @@
 package osmo.tester.coverage;
 import org.junit.Before;
 import org.junit.Test;
-import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -22,7 +21,7 @@ public class IntegerRangeTests {
   public void setUp() {
     config = new ScoreConfiguration();
     config.setLengthWeight(0);
-    config.setPairsWeight(0);
+    config.setStepPairWeight(0);
     config.setRequirementWeight(0);
     config.setStepWeight(0);
     config.setDefaultValueWeight(0);
@@ -73,7 +72,7 @@ public class IntegerRangeTests {
     FSM fsm = new FSM();
     TestCase test1 = createTest1(fsm);
     tc.addTestCoverage(test1);
-    assertEquals(3, scoreCalculator.calculateFitness(tc));
+    assertEquals(3, scoreCalculator.calculateScore(tc));
   }
 
   @Test
@@ -88,7 +87,7 @@ public class IntegerRangeTests {
     FSM fsm = new FSM();
     TestCase test1 = createTest1(fsm);
     tc.addTestCoverage(test1);
-    assertEquals(6, scoreCalculator.calculateFitness(tc));
+    assertEquals(6, scoreCalculator.calculateScore(tc));
     Map<String, Collection<String>> variables = tc.getVariables();
     Collection<String> ranges = variables.get("teemu-range");
     assertEquals("Number of merged variables", 2, ranges.size());
@@ -111,7 +110,7 @@ public class IntegerRangeTests {
     FSM fsm = new FSM();
     TestCase test1 = createTest1(fsm);
     tc.addTestCoverage(test1);
-    assertEquals(9, scoreCalculator.calculateFitness(tc));
+    assertEquals(9, scoreCalculator.calculateScore(tc));
     Map<String, Collection<String>> variables = tc.getVariables();
     Collection<String> ranges = variables.get("teemu-range");
     assertEquals("Number of merged variables", 3, ranges.size());

@@ -28,7 +28,7 @@ public class GreedyTests {
     gc = new ScoreConfiguration();
     gc.setStepWeight(0);
     gc.setLengthWeight(0);
-    gc.setPairsWeight(0);
+    gc.setStepPairWeight(0);
     gc.setDefaultValueWeight(0);
     gc.setVariableCountWeight(0);
     gc.setRequirementWeight(0);
@@ -37,7 +37,7 @@ public class GreedyTests {
   private int scoreFor(Collection<TestCase> tests) {
     TestCoverage tc = new TestCoverage(tests);
     ScoreCalculator scoreCalculator = new ScoreCalculator(gc);
-    return scoreCalculator.calculateFitness(tc);
+    return scoreCalculator.calculateScore(tc);
   }
 
   @Test
@@ -236,7 +236,7 @@ public class GreedyTests {
     OSMOConfiguration.setSeed(8);
     ScoreConfiguration gc = new ScoreConfiguration();
     gc.setStepWeight(0);
-    gc.setPairsWeight(0);
+    gc.setStepPairWeight(0);
     gc.setDefaultValueWeight(1);
     gc.setVariableCountWeight(0);
     gc.setRequirementWeight(0);

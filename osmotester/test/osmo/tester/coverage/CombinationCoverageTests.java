@@ -2,7 +2,6 @@ package osmo.tester.coverage;
 
 import org.junit.Before;
 import org.junit.Test;
-import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -20,7 +19,7 @@ public class CombinationCoverageTests {
   public void setUp() {
     config = new ScoreConfiguration();
     config.setLengthWeight(0);
-    config.setPairsWeight(0);
+    config.setStepPairWeight(0);
     config.setRequirementWeight(0);
     config.setStepWeight(0);
     config.setDefaultValueWeight(0);
@@ -58,7 +57,7 @@ public class CombinationCoverageTests {
     TestCoverage tc = new TestCoverage();
     config.bind(tc);
     tc.addTestCoverage(test1);
-    int score = scoreCalculator.calculateFitness(tc);
+    int score = scoreCalculator.calculateScore(tc);
     //there is one value in all steps: all values are null, and it should not be considered
     assertEquals("Coverage with missing data", 5, score);
   }
@@ -73,7 +72,7 @@ public class CombinationCoverageTests {
     TestCoverage tc = new TestCoverage();
     config.bind(tc);
     tc.addTestCoverage(test1);
-    int actual = scoreCalculator.calculateFitness(tc);
+    int actual = scoreCalculator.calculateScore(tc);
     //we have three values for bob&teemu&jaska, three values for teemu&jaska, three values for bob&teemu
     //3*7+3*10+3*7=21+30+21=72
     assertEquals("Partial coverage score", 72, actual);
@@ -92,7 +91,7 @@ public class CombinationCoverageTests {
     TestCoverage tc = new TestCoverage();
     config.bind(tc);
     tc.addTestCoverage(test1);
-    int actual = scoreCalculator.calculateFitness(tc);
+    int actual = scoreCalculator.calculateScore(tc);
     //3xbob&teemu = 3x3 = 9
     //3xjohn&teemu = 3x8 = 24
     //3xbob&john&teemu = 3x11 = 33
@@ -130,9 +129,10 @@ public class CombinationCoverageTests {
     TestCoverage tc = new TestCoverage();
     config.bind(tc);
     tc.addTestCoverage(test1);
-    int actual = scoreCalculator.calculateFitness(tc);
-    //there are 3 states and 8 unique value combos
-    assertEquals("Partial coverage score", 158, actual);
+    int actual = scoreCalculator.calculateScore(tc);
+    //there are 3 states and 8 unique value combos = 50*3+8 = 158
+    //there are also 5 state-pairs, adding 40*5 = 200 for a total of 358
+    assertEquals("Partial coverage score", 318, actual);
   }
 
   private TestCase createTest2(FSM fsm) {

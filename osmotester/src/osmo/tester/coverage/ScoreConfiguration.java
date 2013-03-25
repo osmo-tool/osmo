@@ -32,13 +32,15 @@ public class ScoreConfiguration {
    */
   protected Map<String, Integer> valueWeights = new LinkedHashMap<>();
   /** Weight for number of unique transition pairs (subsequent transitions), used in fitness calculation. */
-  protected int pairsWeight = 10;
-  /** Weight for number of unique transitions, used in fitness calculation. */
-  protected int transitionWeight = 10;
+  protected int stepPairWeight = 10;
+  /** Weight for number of unique steps, used in fitness calculation. */
+  protected int stepWeight = 10;
   /** Weight for number of covered requirements, used in fitness calculation. */
   protected int requirementWeight = 10;
   /** Weight for covered user defined states. */
   private int stateWeight = 50;
+  /** Weight for covered pairs of user defined states (transitions between them). */
+  private int statePairWeight = 40;
   /** The combination variable calculators that combine several existing variables to new ones for coverage. */
   protected Collection<CombinationCoverage> combinations = new ArrayList<>();
   /** The set of value ranges defined. */
@@ -125,20 +127,28 @@ public class ScoreConfiguration {
     this.stateWeight = stateWeight;
   }
 
-  public int getPairsWeight() {
-    return pairsWeight;
+  public int getStepPairWeight() {
+    return stepPairWeight;
   }
 
-  public void setPairsWeight(int pairsWeight) {
-    this.pairsWeight = pairsWeight;
+  public void setStepPairWeight(int pairsWeight) {
+    this.stepPairWeight = pairsWeight;
   }
 
-  public int getTransitionWeight() {
-    return transitionWeight;
+  public int getStatePairWeight() {
+    return statePairWeight;
   }
 
-  public void setStepWeight(int transitionWeight) {
-    this.transitionWeight = transitionWeight;
+  public void setStatePairWeight(int statePairWeight) {
+    this.statePairWeight = statePairWeight;
+  }
+
+  public int getStepWeight() {
+    return stepWeight;
+  }
+
+  public void setStepWeight(int stepWeight) {
+    this.stepWeight = stepWeight;
   }
 
   public void setRequirementWeight(int requirementWeight) {
@@ -288,16 +298,15 @@ public class ScoreConfiguration {
 
   @Override
   public String toString() {
-    return "ScoreConfiguration{\n" +
+    return "ScoreConfiguration{" +
             "lengthWeight=" + lengthWeight +
-            ",\n variableCountWeight=" + variableCountWeight +
-            ",\n defaultValueWeight=" + defaultValueWeight +
-            ",\n valueWeights=" + valueWeights +
-            ",\n pairsWeight=" + pairsWeight +
-            ",\n transitionWeight=" + transitionWeight +
-            ",\n requirementWeight=" + requirementWeight +
-            ",\n ignoreList=" + ignoreList +
+            ", variableCountWeight=" + variableCountWeight +
+            ", defaultValueWeight=" + defaultValueWeight +
+            ", stepPairWeight=" + stepPairWeight +
+            ", stepWeight=" + stepWeight +
+            ", requirementWeight=" + requirementWeight +
+            ", stateWeight=" + stateWeight +
+            ", statePairWeight=" + statePairWeight +
             '}';
   }
-
 }
