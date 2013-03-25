@@ -22,8 +22,8 @@ public class TestCoverage {
   private static final Logger log = new Logger(TestCoverage.class);
   /** The list of transitions covered, in order, including duplicates. */
   private Collection<String> transitions = new ArrayList<>();
-  /** The set of transition pairs covered. */
-  private Collection<String> pairs = new LinkedHashSet<>();
+  /** The set of step pairs covered. */
+  private Collection<String> stepPairs = new LinkedHashSet<>();
   /** The unique set of transitions covered. */
   private Collection<String> singles = new LinkedHashSet<>();
   /** The set of covered requirements. */
@@ -34,6 +34,8 @@ public class TestCoverage {
   private Collection<CoverageCalculator> calculators= new LinkedHashSet<>();
   /** Set of covered states. */
   private Collection<String> states = new LinkedHashSet<>();
+  /** Set of covered transitions between states. */
+  private Collection<String> statePairs = new LinkedHashSet<>();
 
   /**
    * Start with an empty set.
@@ -55,6 +57,12 @@ public class TestCoverage {
   public Collection<String> getStates() {
     Collection<String> clone = new ArrayList<>();
     clone.addAll(states);
+    return clone;
+  }
+
+  public Collection<String> getStatePairs() {
+    Collection<String> clone = new ArrayList<>();
+    clone.addAll(statePairs);
     return clone;
   }
 
@@ -110,6 +118,7 @@ public class TestCoverage {
     Collection<String> names = new ArrayList<>();
 
     int count = 0;
+    String previousState = "osmo.start.state";
     for (TestStep step : test.getSteps()) {
       names.add(step.getName());
       if (!step.isCoverageProcessed()) {
@@ -120,6 +129,8 @@ public class TestCoverage {
       if (state != null) {
         //we ignore null so if there is no state we do not mess calculations for coverage score
         states.add(state);
+        statePairs.add(previousState+"->"+state);
+        previousState = state;
       }
       addValues(step.getValues());
       reqs.addAll(step.getCoveredRequirements());
@@ -128,7 +139,7 @@ public class TestCoverage {
         break;
       }
     }
-    addTransitions(names);
+    addSteps(names);
     log.debug("added coverage for " + stepCount + " steps in " + test);
   }
 
@@ -158,12 +169,12 @@ public class TestCoverage {
    *
    * @param names The names of transitions to add.
    */
-  private synchronized void addTransitions(Collection<String> names) {
+  private synchronized void addSteps(Collection<String> names) {
     transitions.addAll(names);
     singles.addAll(names);
     String previous = "init";
     for (String name : names) {
-      pairs.add(previous + "-" + name);
+      stepPairs.add(previous + "-" + name);
       previous = name;
     }
   }
@@ -191,8 +202,8 @@ public class TestCoverage {
     return transitions;
   }
 
-  public Collection<String> getPairs() {
-    return pairs;
+  public Collection<String> getStepPairs() {
+    return stepPairs;
   }
 
   public Collection<String> getSingles() {
@@ -215,11 +226,12 @@ public class TestCoverage {
    */
   public synchronized TestCoverage cloneMe() {
     TestCoverage clone = new TestCoverage();
-    clone.pairs.addAll(pairs);
+    clone.stepPairs.addAll(stepPairs);
     clone.transitions.addAll(transitions);
     clone.reqs.addAll(reqs);
     clone.singles.addAll(singles);
     clone.states.addAll(states);
+    clone.statePairs.addAll(statePairs);
     for (String key : variables.keySet()) {
       Collection<String> values = new LinkedHashSet<>();
       values.addAll(variables.get(key));
@@ -232,10 +244,11 @@ public class TestCoverage {
   public String toString() {
     return "TestCoverage{" +
             "transitions=" + transitions +
-            ", pairs=" + pairs +
+            ", stepPairs=" + stepPairs +
             ", singles=" + singles +
             ", requirements=" + reqs +
-            ", variables=" + variables +
+            ", states=" + states +
+            ", statePairs=" + statePairs +
             '}';
   }
 }

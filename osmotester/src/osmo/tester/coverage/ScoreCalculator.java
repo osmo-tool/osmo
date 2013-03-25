@@ -21,24 +21,25 @@ public class ScoreCalculator {
    *
    * @return The score for the set described in this object.
    */
-  public int calculateFitness(TestCoverage tc) {
-    int fitness = tc.getTransitions().size() * config.getLengthWeight();
-    fitness += tc.getSingles().size() * config.getTransitionWeight();
-    fitness += tc.getPairs().size() * config.getPairsWeight();
-    fitness += tc.getStates().size() * config.getStateWeight();
+  public int calculateScore(TestCoverage tc) {
+    int score = tc.getTransitions().size() * config.getLengthWeight();
+    score += tc.getSingles().size() * config.getStepWeight();
+    score += tc.getStepPairs().size() * config.getStepPairWeight();
+    score += tc.getStates().size() * config.getStateWeight();
+    score += tc.getStatePairs().size() * config.getStatePairWeight();
     Map<String,Collection<String>> variables = tc.getVariables();
-    fitness += variables.size() * config.getVariableCountWeight();
+    score += variables.size() * config.getVariableCountWeight();
     for (String name : variables.keySet()) {
       Collection<String> values = variables.get(name);
-      fitness += values.size() * config.getVariableWeight(name);
+      score += values.size() * config.getVariableWeight(name);
     }
-    fitness += tc.getRequirements().size() * config.getRequirementWeight();
-    log.debug("calculated fitness:" + fitness);
-    return fitness;
+    score += tc.getRequirements().size() * config.getRequirementWeight();
+    log.debug("calculated score:" + score);
+    return score;
   }
 
-  public int addedFitnessFor(TestCoverage tc, TestCase test) {
-    return addedFitnessFor(tc, test, test.getAllTransitionNames().size());
+  public int addedScoreFor(TestCoverage tc, TestCase test) {
+    return addedScoreFor(tc, test, test.getAllTransitionNames().size());
   }
 
   /**
@@ -48,11 +49,11 @@ public class ScoreCalculator {
    * @param test The test to check added coverage for.
    * @return The new coverage score.
    */
-  public int addedFitnessFor(TestCoverage tc1, TestCase test, int steps) {
+  public int addedScoreFor(TestCoverage tc1, TestCase test, int steps) {
     TestCoverage tc2 = tc1.cloneMe();
     tc2.addTestCoverage(test, steps);
-    int oldScore = calculateFitness(tc1);
-    int newScore = calculateFitness(tc2);
+    int oldScore = calculateScore(tc1);
+    int newScore = calculateScore(tc2);
     int added = newScore - oldScore;
     log.debug("added fitness:" + added);
     return added;
@@ -65,13 +66,13 @@ public class ScoreCalculator {
    * @param tests The tests to check added coverage for.
    * @return The new coverage score.
    */
-  public int addedFitnessFor(TestCoverage tc1, Collection<TestCase> tests) {
+  public int addedScoreFor(TestCoverage tc1, Collection<TestCase> tests) {
     TestCoverage tc2 = tc1.cloneMe();
     for (TestCase test : tests) {
       tc2.addTestCoverage(test);
     }
-    int oldScore = calculateFitness(tc1);
-    int newScore = calculateFitness(tc2);
+    int oldScore = calculateScore(tc1);
+    int newScore = calculateScore(tc2);
     int added = newScore - oldScore;
     log.debug("added fitness:" + added);
     return added;

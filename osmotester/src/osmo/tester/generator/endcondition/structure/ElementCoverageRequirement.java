@@ -97,7 +97,7 @@ public class ElementCoverageRequirement {
    */
   public boolean checkCoverage(TestSuite suite) {
     TestCoverage coverage = suite.getCoverage();
-    if (pairs > 0 && pairs > coverage.getPairs().size()) return false;
+    if (pairs > 0 && pairs > coverage.getStepPairs().size()) return false;
     if (requirements > 0 && requirements > coverage.getRequirements().size()) return false;
     if (steps > 0 && steps > coverage.getSingles().size()) return false;
     return true;

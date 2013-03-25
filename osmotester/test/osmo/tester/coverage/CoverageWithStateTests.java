@@ -10,6 +10,8 @@ import osmo.tester.testmodels.RandomValueModel2;
 import osmo.tester.testmodels.StateDescriptionModel2;
 import osmo.tester.testmodels.VariableModel1;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +30,7 @@ public class CoverageWithStateTests {
 
     config.setLengthWeight(0);
     config.setVariableCountWeight(0);
-    config.setPairsWeight(0);
+    config.setStepPairWeight(0);
     config.setRequirementWeight(0);
     config.setStepWeight(0);
     config.addCombination(1, "names", "range-range", "range2-range");
@@ -49,24 +51,30 @@ public class CoverageWithStateTests {
 
   @Test
   public void userState() {
-    OSMOConfiguration.setSeed(55);
+    OSMOConfiguration.setSeed(155);
     ScoreConfiguration config = new ScoreConfiguration();
     config.setDefaultValueWeight(0);
     config.setStateWeight(10);
+    config.setStatePairWeight(10);
     config.setLengthWeight(0);
     config.setVariableCountWeight(0);
-    config.setPairsWeight(0);
+    config.setStepPairWeight(0);
     config.setRequirementWeight(0);
     config.setStepWeight(0);
     GreedyOptimizer osmo = new GreedyOptimizer(config, new LengthProbability(1, 4, 0.1d));
     osmo.addModelClass(StateDescriptionModel2.class);
     List<TestCase> tests = osmo.search();
-    TestCoverage tc = new TestCoverage();
+    TestCoverage tc = new TestCoverage(tests);
     ScoreCalculator scorer = new ScoreCalculator(config);
-    assertEquals("Number of tests", 1, tests.size());
+    assertEquals("Number of tests", 6, tests.size());
     assertEquals("Test steps" , "TestCase:[t1, t2, t3, t4]", tests.get(0). toString());
-    tc.addTestCoverage(tests.get(0));
-    assertEquals("Coverage score", 40, scorer.calculateFitness(tc));
+    assertEquals("States covered", "[1, 2, 3, 4]", tc.getStates().toString());
+    List<String> statePairs = new ArrayList<>();
+    statePairs.addAll(tc.getStatePairs());
+    Collections.sort(statePairs);
+    assertEquals("State-Pairs covered", "[1->1, 1->2, 1->3, 1->4, 2->1, 2->2, 2->3, 2->4, 3->1, 3->2, 3->3, 3->4, 4->1, 4->2, 4->3, 4->4, osmo.start.state->1, osmo.start.state->2, osmo.start.state->3, osmo.start.state->4]", statePairs.toString());
+    //there are 20 state-pairs and 4 states, so it is a total of 24*10
+    assertEquals("Coverage score", 240, scorer.calculateScore(tc));
   }
 
   @Test

@@ -15,7 +15,8 @@ import java.util.Map;
 
 /**
  * Describes a single test step in a test case.
- * Difference to {@link osmo.tester.model.FSMTransition} is that this includes the runtime information such as covered requirements.
+ * Difference to {@link osmo.tester.model.FSMTransition} is that this includes the runtime information 
+ * such as covered requirements.
  * Model state variable values (annotated with {@link osmo.tester.annotation.Variable}) are stored at the end of
  * the executed transition function.
  *
@@ -54,7 +55,7 @@ public class TestStep {
     this.parent = parent;
     this.transitionName = transition.getStringName();
     if (transition.getTransition() == null) {
-      log.debug("NULL transition object, assuming test execution in progress..");
+      log.debug("NULL transition object, assuming unit test in progress..");
       this.modelObjectName = transition.toString();
     } else {
       this.modelObjectName = transition.getTransition().getModelObject().getClass().getName();
@@ -116,7 +117,8 @@ public class TestStep {
   }
 
   /**
-   * Stores the general step state.
+   * Stores the general step state. General state refers to the state in the model variables that the generator sees.
+   * Another state is the user defined state, which is queried from specifically annotated methods.
    *
    * @param fsm This is where the state is copied from.
    */
