@@ -3,6 +3,7 @@ package osmo.tester.reporting.jenkins;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
@@ -34,10 +35,9 @@ public class ReportTests {
     if (file.exists()) {
       file.delete();
     }
+    OSMOConfiguration.setSeed(333);
     tester = new OSMOTester();
-    tester.setSeed(333);
     SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-    //TODO:.. WTF report
     format.setTimeZone(TimeZone.getTimeZone("UTC"));
     JenkinsSuite.format = format;
   }
@@ -146,6 +146,7 @@ public class ReportTests {
     CalculatorModel calculator = new CalculatorModel();
     tester.addModelObject(calculator);
     JenkinsReportGenerator listener = new JenkinsReportGenerator(filename, false);
+    listener.enableTestMode();
     tester.addListener(listener);
     listener.getSuite().setStartTime(1234);
     listener.getSuite().setEndTime(3234);
@@ -157,23 +158,6 @@ public class ReportTests {
   }
 
   @Test
-  public void error1Tests() throws Exception {
-    ErrorModel1 error = new ErrorModel1();
-    tester.addModelObject(error);
-    JenkinsReportGenerator listener = new JenkinsReportGenerator(filename, false);
-    tester.addListener(listener);
-    try {
-      tester.generate();
-    } catch (Exception e) {
-      //this should happen..
-    }
-    String expected = getResource(ReportTests.class, "expected-test-report.txt");
-    expected = unifyLineSeparators(expected, "\n");
-    String actual = readFile(filename);
-    assertEquals("Jenkins report for tests", expected, actual);
-  }
-
-  @Ignore
   public void error5Tests() throws Exception {
     ErrorModel5 error = new ErrorModel5();
     tester.addModelObject(error);

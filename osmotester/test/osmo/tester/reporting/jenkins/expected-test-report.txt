@@ -1,4 +1,4 @@
-<testsuite name="OSMO Test Suite" timestamp="01.01.1970 00:00:01" hostname="OSMO rules" tests="8" failures="0" errors="0" time="2.00">
+<testsuite name="OSMO Test Suite" timestamp="01.01.1970 00:00:01" hostname="OSMO rules" tests="5" failures="0" errors="0" time="2.00">
   <properties>
     <property name="Algorithm" value="osmo.tester.generator.algorithm.RandomAlgorithm"/>
     <property name="Scripter" value="Null"/>
@@ -18,22 +18,13 @@
   </testcase>
   <testcase name="Test5" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
   </testcase>
-  <testcase name="Test6" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
-  </testcase>
-  <testcase name="Test7" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
-  </testcase>
-  <testcase name="Test8" classname="[osmo.tester.testmodels.CalculatorModel]" time="0.00">
-  </testcase>
   <system-out>first
 Starting new test case 1
 S:0
 + 2
+- 1
++ 2
 + 3
-- 2
-+ 3
-- 2
-+ 3
-- 2
 Test case ended
 Starting new test case 2
 S:0
@@ -44,11 +35,9 @@ S:0
 + 4
 - 3
 + 4
-+ 5
-- 4
-+ 5
-- 4
 - 3
+- 2
++ 3
 + 4
 + 5
 + 6
@@ -56,22 +45,24 @@ S:0
 + 8
 + 9
 + 10
-+ 11
-- 10
+- 9
++ 10
 + 11
 + 12
 + 13
-+ 14
-- 13
 - 12
+- 11
+- 10
++ 11
++ 12
 Test case ended
 Starting new test case 3
 S:0
 + 2
-+ 3
-- 2
-+ 3
-- 2
+- 1
++ 2
+- 1
++ 2
 Test case ended
 Starting new test case 4
 S:0
@@ -81,45 +72,16 @@ S:0
 - 1
 + 2
 + 3
-- 2
-+ 3
 + 4
+- 3
+- 2
 Test case ended
 Starting new test case 5
 S:0
 + 2
 - 1
 + 2
-+ 3
-- 2
-Test case ended
-Starting new test case 6
-S:0
-Test case ended
-Starting new test case 7
-S:0
-+ 2
 - 1
-+ 2
-+ 3
-+ 4
-- 3
-+ 4
-+ 5
-- 4
-- 3
-- 2
-- 1
-+ 2
-+ 3
-+ 4
-+ 5
-- 4
-+ 5
-+ 6
-Test case ended
-Starting new test case 8
-S:0
 + 2
 Test case ended
 last

@@ -44,7 +44,7 @@ public class DataCoverageTests {
     TestSuite suite = model.getSuite();
     List<TestCase> tests = suite.getFinishedTestCases();
     TestCase test = tests.get(0);
-    String expected = "[4, 4, 3, 3, 4, 2, 2, 2, 2, 3, 2, 5, 2, 5, 4, 5, 1]";
+    String expected = "[2, 2, 2, 3, 2, 5, 2, 5, 4, 5, 1]";
     String actual = test.getStepVariables().get("range").getValues().toString();
     assertEquals("Expected value for range", expected, actual);
   }
@@ -68,7 +68,7 @@ public class DataCoverageTests {
     TestSuite suite = model.getSuite();
     List<TestCase> tests = suite.getFinishedTestCases();
     TestCase test = tests.get(0);
-    String expected = "[4, 4, 3, 3, 4, 2, 2, 2, 2, 3, 2, 5, 2, 5, 4, 5, 1]";
+    String expected = "[2, 2, 2, 3, 2, 5, 2, 5, 4, 5, 1]";
     String actual = test.getStepVariables().get("range").getValues().toString();
     assertEquals("Expected value for range", expected, actual);
     //suite should be exactly same for one test
@@ -100,13 +100,13 @@ public class DataCoverageTests {
     TestSuite suite = model.getSuite();
     List<TestCase> tests = suite.getFinishedTestCases();
     TestCase test = tests.get(0);
-    String expected = "[4, 4, 3, 3, 4, 2, 2, 2, 2, 3, 2, 5, 2, 5, 4, 5, 1]";
+    String expected = "[2, 2, 2, 3, 2, 5, 2, 5, 4, 5, 1]";
     String actual = test.getStepVariables().get("range").getValues().toString();
     assertEquals("Expected value for range", expected, actual);
     //suite should be exactly same for one test
     String actualSuite = suite.getStepVariables().get("range").getValues().toString();
     assertEquals("Expected value for suite range", expected, actualSuite);
-    String expected2 = "[v1, v3, v2, v3, v2, v1, v3, v3, v2, v2, v1, v1, v1, v3, v1, v2, v3]";
+    String expected2 = "[v3, v3, v2, v2, v1, v1, v1, v3, v1, v2, v3]";
     String actual2 = test.getStepVariables().get("named-set").getValues().toString();
     assertEquals("Expected value for range", expected2, actual2);
     //suite should be exactly same for one test
@@ -132,14 +132,14 @@ public class DataCoverageTests {
     TestSuite suite = model.getSuite();
     List<TestCase> tests = suite.getFinishedTestCases();
     TestCase test = tests.get(0);
-    String expected = "[4, 4, 3, 3, 4, 2, 2, 2, 2, 3, 2, 5, 2, 5, 4, 5, 1]";
+    String expected = "[2, 2, 2, 3, 2, 5, 2, 5, 4, 5, 1]";
     String actual = test.getStepVariables().get("range").getValues().toString();
     assertEquals("Expected value for range", expected, actual);
     //suite should be exactly same for one test
     String actualSuite = suite.getStepVariables().get("range").getValues().toString();
     assertEquals("Expected value for suite range", expected, actualSuite);
 
-    String expected2 = "[v1, v3, v2, v3, v2, v1, v3, v3, v2, v2, v1, v1, v1, v3, v1, v2, v3]";
+    String expected2 = "[v3, v3, v2, v2, v1, v1, v1, v3, v1, v2, v3]";
     String actual2 = test.getStepVariables().get("named-set").getValues().toString();
     assertEquals("Expected value for set", expected2, actual2);
     //suite should be exactly same for one test
@@ -162,14 +162,14 @@ public class DataCoverageTests {
     TestSuite suite = model.getSuite();
     List<TestCase> tests = suite.getFinishedTestCases();
     TestCase test = tests.get(0);
-    String expected = "[4, 4, 3]";
+    String expected = "[2, 2, 2, 3, 2]";
     String actual = test.getStepVariables().get("range").getValues().toString();
     assertEquals("Expected value for range", expected, actual);
     //suite should be exactly same for one test
     String actualSuite = suite.getStepVariables().get("range").getValues().toString();
     assertEquals("Expected value for suite range", expected, actualSuite);
 
-    String expected2 = "[v1, v3, v2]";
+    String expected2 = "[v3, v3, v2, v2, v1]";
     String actual2 = test.getStepVariables().get("named-set").getValues().toString();
     assertEquals("Expected value for set", expected2, actual2);
     //suite should be exactly same for one test
@@ -193,14 +193,14 @@ public class DataCoverageTests {
     TestSuite suite = model.getSuite();
     List<TestCase> tests = suite.getFinishedTestCases();
     TestCase test = tests.get(0);
-    String expected = "[4]";
+    String expected = "[2]";
     String actual = test.getStepVariables().get("range").getValues().toString();
     assertEquals("Expected value for range", expected, actual);
     //suite should be exactly same for one test
     String actualSuite = suite.getStepVariables().get("range").getValues().toString();
     assertEquals("Expected value for suite range", expected, actualSuite);
 
-    String expected2 = "[v1]";
+    String expected2 = "[v3]";
     String actual2 = test.getStepVariables().get("named-set").getValues().toString();
     assertEquals("Expected value for set", expected2, actual2);
     //suite should be exactly same for one test
@@ -333,17 +333,15 @@ public class DataCoverageTests {
     osmo.generate();
     TestSuite suite = model.getSuite();
     List<TestCase> tests = suite.getFinishedTestCases();
-    assertEquals("Number of tests", 6, tests.size());
+    assertEquals("Number of tests", 4, tests.size());
 
-    assertRange(tests.get(0), "[4, 4, 3]");
-    assertRange(tests.get(1), "[3, 4, 2]");
-    assertRange(tests.get(2), "[2, 2, 2]");
-    assertRange(tests.get(3), "[3, 2, 5]");
-    assertRange(tests.get(4), "[2, 5, 4]");
-    assertRange(tests.get(5), "[5, 1, 3]");
+    assertRange(tests.get(0), "[2, 2, 2]");
+    assertRange(tests.get(1), "[3, 2, 5]");
+    assertRange(tests.get(2), "[2, 5, 4]");
+    assertRange(tests.get(3), "[5, 1, 3]");
 
     //suite is evaluated after each test, so the last tests gets two 1's even if just one is enough to end suite
-    String expectedSuite = "[4, 4, 3, 3, 4, 2, 2, 2, 2, 3, 2, 5, 2, 5, 4, 5, 1, 3]";
+    String expectedSuite = "[2, 2, 2, 3, 2, 5, 2, 5, 4, 5, 1, 3]";
     String actualSuite = suite.getStepVariables().get("range").getValues().toString();
     assertEquals("Expected value for suite range", expectedSuite, actualSuite);
   }

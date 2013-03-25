@@ -162,11 +162,11 @@
         <td>guest</td>
       </tr>
       <tr>
-        <th class='testhead' rowspan='2'>1.2:Step1</th>
+        <th class='testhead' rowspan='2'>1.2:Step2</th>
         <th class='testhead'>user</th>
       </tr>
       <tr>
-        <td>guest</td>
+        <td>bob</td>
       </tr>
       <tr>
         <th class='testhead' rowspan='2'>1.3:Step1</th>
@@ -209,11 +209,11 @@
         <td>guest</td>
       </tr>
       <tr>
-        <th class='testhead' rowspan='2'>2.2:Step1</th>
+        <th class='testhead' rowspan='2'>2.2:Step2</th>
         <th class='testhead'>user</th>
       </tr>
       <tr>
-        <td>guest</td>
+        <td>bob</td>
       </tr>
       <tr>
         <th class='testhead' rowspan='2'>2.3:Step2</th>
@@ -223,11 +223,11 @@
         <td>bob</td>
       </tr>
       <tr>
-        <th class='testhead' rowspan='2'>2.4:Step2</th>
+        <th class='testhead' rowspan='2'>2.4:Step1</th>
         <th class='testhead'>user</th>
       </tr>
       <tr>
-        <td>bob</td>
+        <td>guest</td>
       </tr>
       <tr>
         <th class='testhead' rowspan='2'>2.5:Step1</th>
@@ -270,11 +270,11 @@
         <td>guest</td>
       </tr>
       <tr>
-        <th class='testhead' rowspan='2'>3.4:Step2</th>
+        <th class='testhead' rowspan='2'>3.4:Step1</th>
         <th class='testhead'>user</th>
       </tr>
       <tr>
-        <td>bob</td>
+        <td>guest</td>
       </tr>
       <tr>
         <th class='testhead' rowspan='2'>3.5:Step2</th>
@@ -303,18 +303,18 @@
         <td>guest</td>
       </tr>
       <tr>
-        <th class='testhead' rowspan='2'>4.2:Step1</th>
-        <th class='testhead'>user</th>
-      </tr>
-      <tr>
-        <td>guest</td>
-      </tr>
-      <tr>
-        <th class='testhead' rowspan='2'>4.3:Step2</th>
+        <th class='testhead' rowspan='2'>4.2:Step2</th>
         <th class='testhead'>user</th>
       </tr>
       <tr>
         <td>bob</td>
+      </tr>
+      <tr>
+        <th class='testhead' rowspan='2'>4.3:Step1</th>
+        <th class='testhead'>user</th>
+      </tr>
+      <tr>
+        <td>guest</td>
       </tr>
       <tr>
         <th class='testhead' rowspan='2'>4.4:Step1</th>
@@ -324,11 +324,11 @@
         <td>guest</td>
       </tr>
       <tr>
-        <th class='testhead' rowspan='2'>4.5:Step2</th>
+        <th class='testhead' rowspan='2'>4.5:Step1</th>
         <th class='testhead'>user</th>
       </tr>
       <tr>
-        <td>bob</td>
+        <td>guest</td>
       </tr>
     </tbody>
   </table>
@@ -350,11 +350,11 @@
         <td>guest</td>
       </tr>
       <tr>
-        <th class='testhead' rowspan='2'>5.2:Step2</th>
+        <th class='testhead' rowspan='2'>5.2:Step1</th>
         <th class='testhead'>user</th>
       </tr>
       <tr>
-        <td>bob</td>
+        <td>guest</td>
       </tr>
       <tr>
         <th class='testhead' rowspan='2'>5.3:Step1</th>
@@ -364,18 +364,18 @@
         <td>guest</td>
       </tr>
       <tr>
-        <th class='testhead' rowspan='2'>5.4:Step1</th>
-        <th class='testhead'>user</th>
-      </tr>
-      <tr>
-        <td>guest</td>
-      </tr>
-      <tr>
-        <th class='testhead' rowspan='2'>5.5:Step2</th>
+        <th class='testhead' rowspan='2'>5.4:Step2</th>
         <th class='testhead'>user</th>
       </tr>
       <tr>
         <td>bob</td>
+      </tr>
+      <tr>
+        <th class='testhead' rowspan='2'>5.5:Step1</th>
+        <th class='testhead'>user</th>
+      </tr>
+      <tr>
+        <td>guest</td>
       </tr>
     </tbody>
   </table>

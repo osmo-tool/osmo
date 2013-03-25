@@ -79,8 +79,8 @@ public class VariableTests {
     TestSuite suite = model.getSuite();
     List<TestCase> tests = suite.getFinishedTestCases();
     TestCase test = tests.get(0);
-    String expectedSet = "[v3, v3, v3, v3, v1, v3, v1, v2]";
-    String expectedRange = "[3, 1, 2, 5, 1, 3, 5, 3]";
+    String expectedSet = "[v1, v2, v3, v2, v3, v1, v3, v3]";
+    String expectedRange = "[5, 3, 1, 4, 5, 2, 3, 1]";
     assertModel2Values(test, expectedSet, expectedRange);
   }
 
@@ -96,12 +96,12 @@ public class VariableTests {
     TestSuite suite = model.getSuite();
     List<TestCase> tests = suite.getFinishedTestCases();
     TestCase test = tests.get(0);
-    String expectedSet = "[v3, v3, v3, v3, v1, v3, v1]";
-    String expectedRange = "[3, 1, 2, 5, 1, 3, 5]";
+    String expectedSet = "[v1, v2, v3, v2, v3, v1, v3]";
+    String expectedRange = "[5, 3, 1, 4, 5, 2, 3]";
     assertModel2Values(test, expectedSet, expectedRange);
     test = tests.get(1);
-    expectedSet = "[v2, v3, v2, v3, v1, v3, v3]";
-    expectedRange = "[3, 1, 4, 5, 2, 3, 1]";
+    expectedSet = "[v3, v2, v1, v3, v3, v1, v1]";
+    expectedRange = "[1, 3, 5, 1, 1, 5, 2]";
     assertModel2Values(test, expectedSet, expectedRange);
   }
 
