@@ -1,4 +1,0 @@
-    <ProcessInstance id="$id" description="$desc">
-      <Data>
-$attrs      </Data>
-$entries    </ProcessInstance>
