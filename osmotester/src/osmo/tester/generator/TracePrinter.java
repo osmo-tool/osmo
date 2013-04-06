@@ -1,25 +1,18 @@
-package osmo.tester.gui.manualdrive;
+package osmo.tester.generator;
 
 import osmo.tester.OSMOConfiguration;
-import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
-/** 
- * Helps the manual drive GUI keep track of test generation.
- * 
- * @author Teemu Kanstren 
- */
-public class GUIGenerationListener implements GenerationListener {
-  private final ManualAlgorithm driver;
+import java.io.PrintStream;
 
-  public GUIGenerationListener(ManualAlgorithm driver) {
-    this.driver = driver;
-  }
-
+/** @author Teemu Kanstren */
+public class TracePrinter implements GenerationListener {
+  private PrintStream out = System.out;
+  
   @Override
   public void init(FSM fsm, OSMOConfiguration config) {
   }
@@ -30,6 +23,8 @@ public class GUIGenerationListener implements GenerationListener {
 
   @Override
   public void step(TestStep step) {
+    String name = step.getName();
+    out.println(name.toUpperCase());
   }
 
   @Override
@@ -42,12 +37,10 @@ public class GUIGenerationListener implements GenerationListener {
 
   @Override
   public void testStarted(TestCase test) {
-    driver.testStarted();
   }
 
   @Override
   public void testEnded(TestCase test) {
-    driver.testEnded();
   }
 
   @Override
@@ -60,6 +53,5 @@ public class GUIGenerationListener implements GenerationListener {
 
   @Override
   public void suiteEnded(TestSuite suite) {
-    driver.suiteEnded();
   }
 }

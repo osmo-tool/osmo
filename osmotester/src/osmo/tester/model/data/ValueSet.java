@@ -96,6 +96,15 @@ public class ValueSet<T> extends SearchableInput<T> {
   }
 
   /**
+   * Add all values in the given collection as potential input/output.
+   * 
+   * @param options The options to add.
+   */
+  public void addAll(Collection<T> options) {
+    this.options.addAll(options);
+  }
+
+  /**
    * Adds a new value to the set as potential input and accepted output (evaluation parameter) with a weight.
    * The weight means that the given object will have "weight" number of instances in this set, whereas the
    * ones added with the non-weighted add() method only have one instance. For example, add("teemu");add("bob",6)
