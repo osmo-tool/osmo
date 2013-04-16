@@ -19,6 +19,7 @@ import osmo.tester.testmodels.EmptyTestModel6;
 import osmo.tester.testmodels.PartialModel1;
 import osmo.tester.testmodels.PartialModel2;
 import osmo.tester.testmodels.StepAndTransitionModel;
+import osmo.tester.testmodels.StrictTestModel;
 import osmo.tester.testmodels.TestStepModel;
 import osmo.tester.testmodels.ValidTestModel3;
 import osmo.tester.testmodels.VariableModel1;
@@ -385,5 +386,29 @@ public class ParserTests {
     assertEquals("Number of @BeforeSuite elements", 3, fsm.getBeforeSuites().size());
     assertEquals("Number of @AfterTest elements", 3, fsm.getAfters().size());
     assertEquals("Number of @AfterSuite elements", 3, fsm.getAfterSuites().size());
+  }
+
+  @Test
+  public void strictOrNot() {
+    StrictTestModel model = new StrictTestModel();
+    OSMOConfiguration config = new OSMOConfiguration();
+    config.addModelObject(model);
+    ParserResult result = parser.parse(config, new TestSuite());
+    FSM fsm = result.getFsm();
+    assertTransitionPresent(fsm, "a non-strict one", 1, 0);
+    assertTransitionPresent(fsm, "a strict one", 1, 0);
+    assertTransitionPresent(fsm, "default strictness", 1, 0);
+    assertEquals("Number of @BeforeTest elements", 0, fsm.getBefores().size());
+    assertEquals("Number of @BeforeSuite elements", 0, fsm.getBeforeSuites().size());
+    assertEquals("Number of @AfterTest elements", 0, fsm.getAfters().size());
+    assertEquals("Number of @AfterSuite elements", 0, fsm.getAfterSuites().size());
+    assertEquals("Number of @LastStep elements", 0, fsm.getLastSteps().size());
+
+    FSMTransition t1 = fsm.getTransition("a non-strict one");
+    assertFalse("Transition 1 should be non-strict", t1.isStrict());
+    FSMTransition t2 = fsm.getTransition("a strict one");
+    assertTrue("Transition 2 should be non-strict", t2.isStrict());
+    FSMTransition t3 = fsm.getTransition("default strictness");
+    assertTrue("Detaulf strictness should be true", t3.isStrict());
   }
 }

@@ -20,4 +20,6 @@ public @interface TestStep {
   String group() default "";
 
   int weight() default 10;
+  
+  boolean strict() default true;
 }

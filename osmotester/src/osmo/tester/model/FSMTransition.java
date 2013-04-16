@@ -37,6 +37,8 @@ public class FSMTransition implements Comparable<FSMTransition> {
   private Map<String, Object> prePostParameter = new HashMap<>();
   /** The group this transition belongs to, null or "" are considered as no group. */
   private TransitionName groupName;
+  /** A strict one stops the generator, throwing any exceptions. Non-strict will log the error but continue. */
+  private boolean strict = true; //again, the true default value is in the annotation
 
   public FSMTransition(String name) {
     this.name = new TransitionName("", name);
@@ -112,6 +114,14 @@ public class FSMTransition implements Comparable<FSMTransition> {
 
   public Collection<InvocationTarget> getPostMethods() {
     return posts;
+  }
+
+  public boolean isStrict() {
+    return strict;
+  }
+
+  public void setStrict(boolean strict) {
+    this.strict = strict;
   }
 
   @Override
