@@ -20,9 +20,9 @@ public class TestSequenceListener implements GenerationListener {
   private Collection<String> steps = new ArrayList<>();
   private Collection<String> expected = new ArrayList<>();
   private List<String> temp = new ArrayList<>();
-  private boolean previousWasGuard = false;
-  private final boolean traceGuards;
+  private boolean traceGuards = false;
   private boolean tracePostPre = false;
+  private boolean traceErrors = false;
 
   public TestSequenceListener() {
     this.traceGuards = true;
@@ -30,6 +30,14 @@ public class TestSequenceListener implements GenerationListener {
 
   public TestSequenceListener(boolean traceGuards) {
     this.traceGuards = traceGuards;
+  }
+
+  public void setTraceGuards(boolean traceGuards) {
+    this.traceGuards = traceGuards;
+  }
+
+  public void setTraceErrors(boolean traceErrors) {
+    this.traceErrors = traceErrors;
   }
 
   public void addExpected(String... items) {
@@ -42,7 +50,6 @@ public class TestSequenceListener implements GenerationListener {
 
   @Override
   public void guard(FSMTransition transition) {
-    previousWasGuard = true;
     if (traceGuards) {
       temp.add("g:" + transition.getName());
     }
@@ -54,7 +61,6 @@ public class TestSequenceListener implements GenerationListener {
    * a reliable test result.
    */
   private void storeGuards() {
-    previousWasGuard = false;
     Collections.sort(temp);
     steps.addAll(temp);
     temp.clear();
@@ -116,6 +122,10 @@ public class TestSequenceListener implements GenerationListener {
 
   @Override
   public void testError(TestCase test, Exception error) {
+    if (traceErrors) {
+      storeGuards();
+      steps.add("e:"+test.getCurrentStep().getName());
+    }
   }
 
   public void setTracePrePost(boolean tracePrePost) {

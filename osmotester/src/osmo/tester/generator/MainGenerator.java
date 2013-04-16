@@ -180,7 +180,16 @@ public class MainGenerator {
     invokeAll(transition.getPreMethods(), transition.getPrePostParameter(), "pre", transition);
     //this is the actual transition/test step being executed
     InvocationTarget target = transition.getTransition();
-    target.invoke();
+    if (transition.isStrict()) {
+      target.invoke();
+    } else {
+      try {
+        target.invoke();
+      } catch (Exception e) {
+        e.printStackTrace();
+        listeners.testError(getCurrentTest(), e);
+      }
+    }
     //we store the "custom" state returned by @StateName tagged methods
     //we do it here to allow any post-processing of state value for a step
     storeUserState(step);

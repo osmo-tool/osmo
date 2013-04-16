@@ -2,6 +2,7 @@ package osmo.tester.generation;
 
 import org.junit.Before;
 import org.junit.Test;
+import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.Length;
@@ -14,6 +15,9 @@ import osmo.tester.testmodels.ErrorModel6;
 import osmo.tester.testmodels.ErrorModel7;
 import osmo.tester.testmodels.ErrorModel8;
 import osmo.tester.testmodels.ErrorModel9;
+import osmo.tester.testmodels.StrictTestModel;
+
+import java.util.logging.Level;
 
 import static junit.framework.Assert.*;
 
@@ -29,6 +33,7 @@ public class ErrorHandlingTests {
 
   @Before
   public void testSetup() {
+//    Logger.consoleLevel = Level.ALL;
     osmo = new OSMOTester();
     osmo.setSeed(100);
     config = osmo.getConfig();
@@ -302,5 +307,26 @@ public class ErrorHandlingTests {
     osmo.addSuiteEndCondition(length1);
     osmo.generate();
     listener.validate("@EndCondition with trap");
+  }
+
+  @Test
+  public void nonStrictStepFails() {
+    listener.addExpected("suite-start", "start", "e:a non-strict one 2", "t:a non-strict one 2", "e:a non-strict one", "t:a non-strict one", "e:a strict one", "end", "suite-end");
+    listener.setTraceGuards(false);
+    listener.setTraceErrors(true);
+    osmo.addModelObject(new StrictTestModel());
+    Length length3 = new Length(3);
+    Length length1 = new Length(1);
+    osmo.addTestEndCondition(length3);
+    osmo.addSuiteEndCondition(length1);
+    try {
+      osmo.generate();
+      fail("The final strict test step failure should stop the generator");
+    } catch (RuntimeException e) {
+      e.printStackTrace();
+      //expected..
+    }
+    listener.validate("Strict/non-strict generation combination.");
+    
   }
 }
