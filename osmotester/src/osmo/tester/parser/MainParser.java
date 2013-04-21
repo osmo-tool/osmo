@@ -143,7 +143,7 @@ public class MainParser {
         log.debug("class:" + annotationClass);
         AnnotationParser parser = annotationParsers.get(annotationClass);
         if (parser == null) {
-          //unsupported annotation (e.g. for some completely different aspect)
+          //unsupported annotation (e.g. for some completely different tool)
           continue;
         }
         log.debug("parser:" + parser);

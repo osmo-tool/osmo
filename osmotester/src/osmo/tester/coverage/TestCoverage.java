@@ -120,7 +120,8 @@ public class TestCoverage {
     int count = 0;
     String previousState = "osmo.start.state";
     for (TestStep step : test.getSteps()) {
-      names.add(step.getName());
+      String name = step.getName();
+      names.add(name);
       if (!step.isCoverageProcessed()) {
         calculate(step);
         step.setCoverageProcessed();
@@ -132,7 +133,7 @@ public class TestCoverage {
         statePairs.add(previousState+"->"+state);
         previousState = state;
       }
-      addValues(step.getValues());
+      addValues(step);
       reqs.addAll(step.getCoveredRequirements());
       count++;
       if (count == stepCount) {
@@ -146,9 +147,10 @@ public class TestCoverage {
   /**
    * Adds the values for the variables in the given test case to the covered set.
    *
-   * @param toAdd The variables to add.
+   * @param step This is where we take the steps from.
    */
-  private synchronized void addValues(Collection<ModelVariable> toAdd) {
+  private synchronized void addValues(TestStep step) {
+    Collection<ModelVariable> toAdd = step.getValues();
     for (ModelVariable variable : toAdd) {
       String name = variable.getName();
       Collection<String> values = variables.get(name);

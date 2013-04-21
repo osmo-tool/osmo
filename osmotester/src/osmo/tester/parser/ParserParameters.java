@@ -83,6 +83,7 @@ public class ParserParameters {
   }
 
   public void setFieldAnnotations(Annotation[] annotations) {
+    fieldAnnotations.clear();
     Collections.addAll(this.fieldAnnotations, annotations);
   }
 }
