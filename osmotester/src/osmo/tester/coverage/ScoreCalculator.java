@@ -6,7 +6,11 @@ import osmo.tester.generator.testsuite.TestCase;
 import java.util.Collection;
 import java.util.Map;
 
-/** @author Teemu Kanstren */
+/** 
+ * Calculates coverage score for given configuration and test coverage values.
+ * 
+ * @author Teemu Kanstren 
+ */
 public class ScoreCalculator {
   private static Logger log = new Logger(ScoreCalculator.class);
   /** Defines how the coverage score is calculated. */

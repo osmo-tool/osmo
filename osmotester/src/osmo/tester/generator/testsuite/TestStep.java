@@ -40,8 +40,6 @@ public class TestStep {
   private long startTime = 0;
   /** When did the step execution end? */
   private long endTime = 0;
-  /** Defines if we have already processed custom coverage calculations for this step. */
-  private boolean coverageProcessed = false;
   /** Stores the user defined custom state string when this step was executed. */
   private String state;
 
@@ -204,14 +202,6 @@ public class TestStep {
 
   public void setUserState(String state) {
     this.state = state;
-  }
-
-  public void setCoverageProcessed() {
-    coverageProcessed = true;
-  }
-
-  public boolean isCoverageProcessed() {
-    return coverageProcessed;
   }
 
   public TestCase getParent() {

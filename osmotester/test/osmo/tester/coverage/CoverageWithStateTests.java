@@ -2,12 +2,10 @@ package osmo.tester.coverage;
 
 import org.junit.Test;
 import osmo.tester.OSMOConfiguration;
-import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.LengthProbability;
-import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.model.data.ValueSet;
 import osmo.tester.optimizer.GreedyOptimizer;
-import osmo.tester.testmodels.RandomValueModel2;
 import osmo.tester.testmodels.RandomValueModel3;
 import osmo.tester.testmodels.RandomValueModel4;
 import osmo.tester.testmodels.StateDescriptionModel2;
@@ -24,10 +22,34 @@ import static org.junit.Assert.*;
 /** @author Teemu Kanstren */
 public class CoverageWithStateTests {
   @Test
+  public void badCombinationArguments() {
+    try {
+      CombinationCoverage combo = new CombinationCoverage(null);
+      fail("Combination with null input should fail.");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Error msg for null input", "You must specify some input variables to combine.", e.getMessage());
+    }
+    try {
+      CombinationCoverage combo = new CombinationCoverage();
+      fail("Zero inputs should fail.");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Error msg for null input", "You must specify some input variables to combine.", e.getMessage());
+    }
+    try {
+      ValueSet<String> vs = new ValueSet<>();
+      vs.setName("test-variable");
+      CombinationCoverage combo = new CombinationCoverage(vs, vs);
+      fail("Duplicate inputs should fail");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Error msg for no input", "Variable only allowed once in combination:ValueSet{name=test-variable, options=[]}", e.getMessage());
+    }
+  }
+
+  @Test
   public void combineWithCustomAndStateVariables() {
     OSMOConfiguration.setSeed(55);
     ScoreConfiguration config = new ScoreConfiguration();
-    config.setDefaultValueWeight(0);
+    config.setDefaultValueWeight(10);
     config.disableCheckingFor("teemu");
 
     config.setLengthWeight(0);
@@ -35,7 +57,6 @@ public class CoverageWithStateTests {
     config.setStepPairWeight(0);
     config.setRequirementWeight(0);
     config.setStepWeight(0);
-    config.addCombination(1, "names", "rangeRange", "range2Range");
     GreedyOptimizer osmo = new GreedyOptimizer(config, new LengthProbability(1, 0.1d));
     osmo.addModelClass(RandomValueModel4.class);
     List<TestCase> tests = osmo.search();
@@ -45,13 +66,23 @@ public class CoverageWithStateTests {
     }
     assertEquals("Number of generated tests", 5, tests.size());
     Map<String, Collection<String>> variables = tc.getVariables();
+    //1 value = 10
     assertEquals("Variable coverage", "[on paras]", variables.get("teemu").toString());
-    assertEquals("Variable coverage", "[one, many, zero, null]", 
-            variables.get("rangeRange").toString());
-    assertEquals("Variable coverage", "[null, many]", 
-            variables.get("range2Range").toString());
-    assertEquals("Variable coverage", "[null&null&one, null&null&many, keijo&null&many, null&null&zero, null&many&many, keijo&many&many, paavo&many&many, null&many&one, teemu&many&one, paavo&many&one, keijo&many&one, null&many&null, null&many&zero, teemu&many&zero, keijo&many&zero, teemu&many&many, paavo&many&zero, paavo&null&null, keijo&null&null, teemu&null&null, null&null&null, teemu&many&null, paavo&many&null, keijo&many&null, paavo&null&many, keijo&null&one, paavo&null&one, teemu&null&one, teemu&null&zero, keijo&null&zero, paavo&null&zero, teemu&null&many]", 
-            variables.get("names&range2Range&rangeRange").toString());    
+    //4 values = 40
+    assertEquals("Variable coverage", "[null, many, zero, one]", variables.get("rangeRange").toString());
+    //2 values = 20
+    assertEquals("Variable coverage", "[null, many]", variables.get("range2Range").toString());
+    //32 values = 320
+    assertEquals("Variable coverage", "[teemu&null&null, teemu&many&null, teemu&zero&null, keijo&zero&null, paavo&zero&null, paavo&zero&many, paavo&one&many, paavo&null&many, keijo&null&many, keijo&one&many, teemu&null&many, teemu&many&many, keijo&many&many, keijo&zero&many, teemu&zero&many, null&zero&null, null&null&null, null&many&null, null&many&many, paavo&many&many, teemu&one&many, null&one&null, keijo&one&null, teemu&one&null, paavo&one&null, paavo&many&null, null&one&many, null&null&many, null&zero&many, paavo&null&null, keijo&null&null, keijo&many&null]",
+            variables.get("combo").toString());
+    //2 values = 100
+    assertEquals("Covered states", "[state1, state2]", tc.getStates().toString());
+    //6 values = 240
+    assertEquals("Covered state pairs", "[osmo.start.state->state1, state1->state1, state1->state2, state2->state1, state2->state2, osmo.start.state->state2]", tc.getStatePairs().toString());
+    
+    ScoreCalculator sc = new ScoreCalculator(config);
+    //10+40+20+320+100+240=70+320+340=70+660=730
+    assertEquals("Coverage score", 730, sc.calculateScore(tc));
   }
 
   @Test
@@ -72,7 +103,7 @@ public class CoverageWithStateTests {
     TestCoverage tc = new TestCoverage(tests);
     ScoreCalculator scorer = new ScoreCalculator(config);
     assertEquals("Number of tests", 6, tests.size());
-    assertEquals("Test steps" , "TestCase:[t1, t2, t3, t4]", tests.get(0). toString());
+    assertEquals("Test steps", "TestCase:[t1, t2, t3, t4]", tests.get(0).toString());
     assertEquals("States covered", "[1, 2, 3, 4]", tc.getStates().toString());
     List<String> statePairs = new ArrayList<>();
     statePairs.addAll(tc.getStatePairs());
@@ -86,7 +117,6 @@ public class CoverageWithStateTests {
   public void wrongVariables() {
     ScoreConfiguration config = new ScoreConfiguration();
     OSMOConfiguration.setSeed(55);
-    config.addCombination(5, "i1", "i2", "j7", "q8");
     GreedyOptimizer greedy = new GreedyOptimizer(config, new LengthProbability(1, 0.2d));
     greedy.addModelClass(VariableModel1.class);
     try {

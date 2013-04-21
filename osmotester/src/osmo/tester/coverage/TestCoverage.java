@@ -30,8 +30,6 @@ public class TestCoverage {
   private Collection<String> reqs = new LinkedHashSet<>();
   /** Set of values covered for different model data variables. */
   private Map<String, Collection<String>> variables = new LinkedHashMap<>();
-  /** Custom calculators. */
-  private Collection<CoverageCalculator> calculators= new LinkedHashSet<>();
   /** Set of covered states. */
   private Collection<String> states = new LinkedHashSet<>();
   /** Set of covered transitions between states. */
@@ -75,10 +73,6 @@ public class TestCoverage {
     addTestCoverage(test);
   }
   
-  public synchronized void addCalculator(CoverageCalculator calculator) {
-    calculators.add(calculator);
-  }
-
   /**
    * Gives all transitions in this test suite, including coverage number.
    * Coverage number tells how many times transition is taken in this test suite
@@ -122,10 +116,6 @@ public class TestCoverage {
     for (TestStep step : test.getSteps()) {
       String name = step.getName();
       names.add(name);
-      if (!step.isCoverageProcessed()) {
-        calculate(step);
-        step.setCoverageProcessed();
-      }
       String state = step.getState();
       if (state != null) {
         //we ignore null so if there is no state we do not mess calculations for coverage score
@@ -178,25 +168,6 @@ public class TestCoverage {
     for (String name : names) {
       stepPairs.add(previous + "-" + name);
       previous = name;
-    }
-  }
-
-  /**
-   * Runs the given set of coverage calculators on the given test step.
-   * Stores the generated values as variable values for the step.
-   *
-   * @param step        The step to process.
-   */
-  private void calculate(TestStep step) {
-    for (CoverageCalculator calculator : calculators) {
-      ModelVariable temp = calculator.process(step);
-      if (temp != null) {
-        String name = temp.getName();
-        Collection<Object> values = temp.getValues();
-        for (Object value : values) {
-          step.addVariableValue(name, value);
-        }
-      }
     }
   }
 

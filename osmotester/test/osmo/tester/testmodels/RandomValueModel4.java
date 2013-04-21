@@ -1,28 +1,30 @@
 package osmo.tester.testmodels;
 
 import osmo.tester.annotation.AfterTest;
+import osmo.tester.annotation.StateName;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Variable;
-import osmo.tester.coverage.RangeCategory2;
+import osmo.tester.coverage.CombinationCoverage;
+import osmo.tester.coverage.RangeCategory;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.data.ValueRange;
 import osmo.tester.model.data.ValueSet;
 
 /** @author Teemu Kanstren */
 public class RandomValueModel4 {
-  @Variable
   private ValueRange<Integer> range = new ValueRange<>(0, 5);
-  @Variable
   private ValueRange<Integer> range2 = new ValueRange<>(1, Integer.MAX_VALUE);
-  @Variable
   private ValueSet<String> names = new ValueSet<>("teemu", "paavo", "keijo");
+  private ValueSet<String> state = new ValueSet<>("state1", "state2");
   @TestSuiteField
   private TestSuite suite = null;
   @Variable
-  private RangeCategory2 rangeRange = new RangeCategory2(range).oneTwoManyRanges();
+  private RangeCategory rangeRange = new RangeCategory(range).oneTwoManyRanges();
   @Variable
-  private RangeCategory2 range2Range = new RangeCategory2(range2).zeroOneManyRanges();
+  private RangeCategory range2Range = new RangeCategory(range2).zeroOneManyRanges();
+  @Variable
+  private CombinationCoverage combo = new CombinationCoverage(names, rangeRange, range2Range);
 
   @TestStep("Step1")
   public void step() {
@@ -42,5 +44,10 @@ public class RandomValueModel4 {
   @AfterTest
   public void finish() {
     suite.addValue("teemu", "on paras");
+  }
+  
+  @StateName
+  public String stateName() {
+    return state.next();
   }
 }
