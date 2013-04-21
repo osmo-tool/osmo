@@ -136,7 +136,6 @@ public class GreedyOptimizer {
     tester.addTestEndCondition(endCondition);
     this.fsm = generator.getFsm();
     config.validate(fsm);
-    config.bind(generatorCoverage);
     log.debug("greedy configuration validated");
 
     List<TestCase> suite = new ArrayList<>();

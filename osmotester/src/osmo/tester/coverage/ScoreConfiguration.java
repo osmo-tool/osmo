@@ -38,8 +38,6 @@ public class ScoreConfiguration {
   private int stateWeight = 50;
   /** Weight for covered pairs of user defined states (transitions between them). */
   private int statePairWeight = 40;
-  /** The combination variable calculators that combine several existing variables to new ones for coverage. */
-  protected Collection<CombinationCoverage> combinations = new ArrayList<>();
   /** Names of variables that should not be validated, e.g. custom user variables. */
   protected Collection<String> ignoreList = new LinkedHashSet<>();
 
@@ -61,14 +59,6 @@ public class ScoreConfiguration {
     for (String name : valueWeights.keySet()) {
       if (!variableNames.contains(name) && !name.contains("&") && !ignoreList.contains(name)) {
         notFound.add(name);
-      }
-    }
-    for (CoverageCalculator calculator : getAllCalculators()) {
-      Collection<String> inputNames = calculator.getInputNames();
-      for (String name : inputNames) {
-        if (!variableNames.contains(name) && !name.contains("&") && !ignoreList.contains(name)) {
-          notFound.add(name);
-        }
       }
     }
     if (notFound.size() == 0) {
@@ -173,34 +163,6 @@ public class ScoreConfiguration {
     Collections.addAll(ignoreList, names);
   }
 
-  public Collection<CombinationCoverage> getCombinations() {
-    return combinations;
-  }
-
-  /** @return The different types of coverage calculators: ranges, combinations, ... */
-  protected Collection<CoverageCalculator> getAllCalculators() {
-    Collection<CoverageCalculator> result = new ArrayList<>();
-    result.addAll(combinations);
-    return result;
-  }
-
-  /**
-   * Adds a new coverage variable as a combination of the values of all given input variables.
-   *
-   * @param weight The weight of the new combination.
-   * @param names  The names of all input variables for which the values need to be taken.
-   */
-  public void addCombination(int weight, String... names) {
-    List<String> nameList = new ArrayList<>();
-    Collections.addAll(nameList, names);
-    Collections.sort(nameList);
-    String name = combine(nameList);
-    valueWeights.put(name, weight);
-    CombinationCoverage combo = new CombinationCoverage(names);
-    combinations.add(combo);
-    log.debug("Added coverage combination:" + combo);
-  }
-
   /**
    * Combines a list of given input variable names or values into a format used internally to represent their
    * combinations.
@@ -216,13 +178,6 @@ public class ScoreConfiguration {
     }
     combination = combination.substring(0, combination.length() - 1);
     return combination;
-  }
-
-  public void bind(TestCoverage tc) {
-    Collection<CoverageCalculator> calculators = getAllCalculators();
-    for (CoverageCalculator calculator : calculators) {
-      tc.addCalculator(calculator);
-    }
   }
 
   @Override

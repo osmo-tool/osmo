@@ -1,7 +1,5 @@
 package osmo.tester.coverage;
 
-import osmo.tester.generator.testsuite.ModelVariable;
-import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.model.VariableValue;
 
 import java.util.ArrayList;
@@ -19,7 +17,7 @@ import java.util.Collection;
  *
  * @author Teemu Kanstren
  */
-public class RangeCategory2 implements VariableValue {
+public class RangeCategory implements VariableValue {
   /** The set of ranges or categories for this coverage variable. */
   private Collection<IntegerRange> ranges = new ArrayList<>();
   /** Last observed value, set by user or taken from target. */
@@ -27,10 +25,10 @@ public class RangeCategory2 implements VariableValue {
   /** The underlying variable from which the range value is taken, if specified. */
   private VariableValue<Integer> target = null;
 
-  public RangeCategory2() {
+  public RangeCategory() {
   }
 
-  public RangeCategory2(VariableValue<Integer> target) {
+  public RangeCategory(VariableValue<Integer> target) {
     this.target = target;
   }
 
@@ -42,14 +40,14 @@ public class RangeCategory2 implements VariableValue {
     return value;
   }
   
-  public RangeCategory2 zeroOneManyRanges() {
+  public RangeCategory zeroOneManyRanges() {
     addCategory(0, 0, "zero");
     addCategory(1, 1, "one");
     addCategory(2, Integer.MAX_VALUE, "many");
     return this;
   }
 
-  public RangeCategory2 oneTwoManyRanges() {
+  public RangeCategory oneTwoManyRanges() {
     addCategory(1, 1, "zero");
     addCategory(2, 2, "one");
     addCategory(3, Integer.MAX_VALUE, "many");
@@ -63,7 +61,7 @@ public class RangeCategory2 implements VariableValue {
    * @param max  Range maximum.
    * @param name chaining reference.
    */
-  public RangeCategory2 addCategory(int min, int max, String name) {
+  public RangeCategory addCategory(int min, int max, String name) {
     if (name == null) {
       throw new NullPointerException("Range name cannot be null.");
     }
@@ -72,7 +70,7 @@ public class RangeCategory2 implements VariableValue {
     return this;
   }
 
-  public RangeCategory2 process(int value) {
+  public RangeCategory process(int value) {
     boolean found = false;
     for (IntegerRange range : ranges) {
       if (value >= range.min && value <= range.max) {

@@ -416,7 +416,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
 
   @Override
   public String toString() {
-    return "ValueRange{" +
+    return "ValueRange{ name=" +getName()+", " + 
             "min=" + min +
             ", max=" + max +
             '}';

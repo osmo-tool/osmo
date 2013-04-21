@@ -290,7 +290,7 @@ public class ValueSet<T> extends SearchableInput<T> {
 
   @Override
   public String toString() {
-    return "ValueSet{" +
+    return "ValueSet{name="+getName()+", " +
             "options=" + options +
             '}';
   }
