@@ -29,13 +29,20 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T>, Variabl
   private T latestValue = null;
   protected boolean guiEnabled = false;
   private TestSuite suite = null;
+  /** Has the manual GUI definition been checked already? */
   private boolean checked = false;
+  /** Should the values be tracked and stored in test steps? */
+  private boolean stored = false;
 
   protected SearchableInput() {
   }
 
   public boolean isChecked() {
     return checked;
+  }
+
+  public void setStored(boolean stored) {
+    this.stored = stored;
   }
 
   public void setChecked(boolean checked) {
@@ -83,6 +90,7 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T>, Variabl
       //this can happen if the variables are used to initialize model before test generation
       return;
     }
+    if (!stored) return;
     suite.getCurrentTest().addVariableValue(name, value, false);
   }
 

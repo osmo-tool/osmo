@@ -35,6 +35,7 @@ public class SearchableInputTests {
     range.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     String name = "test-range";
     range.setName(name);
+    range.setStored(true);
     Collection<Integer> expected = new ArrayList<>();
     for (int i = 0 ; i < 11 ; i++) {
       range.next();
@@ -53,6 +54,7 @@ public class SearchableInputTests {
     set.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     String name = "test-set";
     set.setName(name);
+    set.setStored(true);
     Collection<String> expected = new ArrayList<>();
     Collection<String> expected2 = new LinkedHashSet<>();
     for (int i = 0 ; i < 5 ; i++) {

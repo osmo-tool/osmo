@@ -2,11 +2,13 @@ package osmo.tester.coverage;
 
 import org.junit.Test;
 import osmo.tester.OSMOConfiguration;
+import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.LengthProbability;
 import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.optimizer.GreedyOptimizer;
 import osmo.tester.testmodels.RandomValueModel2;
+import osmo.tester.testmodels.RandomValueModel3;
 import osmo.tester.testmodels.StateDescriptionModel2;
 import osmo.tester.testmodels.VariableModel1;
 
@@ -45,8 +47,7 @@ public class CoverageWithStateTests {
     assertEquals("Variable coverage", "range2-range([many, many, many, many, many, many, many, many])", 
             variables.get("range2-range").toString());
     assertEquals("Variable coverage", "names&range-range&range2-range([null&one&null, null&null&null, null&many&null, null&many&null, null&null&many, null&null&many, paavo&null&null, null&null&null, null&null&many, null&null&many, null&one&null, teemu&null&null, null&many&null, null&null&many, keijo&null&null, null&null&null, null&null&many, null&null&null, teemu&null&null, null&many&null, null&two&null, null&null&many, teemu&null&null, null&many&null, null&null&many])", 
-            variables.get("names&range-range&range2-range").toString());
-    
+            variables.get("names&range-range&range2-range").toString());    
   }
 
   @Test
@@ -94,4 +95,28 @@ public class CoverageWithStateTests {
     }
   }
 
+  @Test
+  public void stepValues() {
+    OSMOConfiguration.setSeed(55);
+    ScoreConfiguration config = new ScoreConfiguration();
+    config.setDefaultValueWeight(10);
+
+    config.setLengthWeight(0);
+    config.setVariableCountWeight(0);
+    config.setStepPairWeight(0);
+    config.setRequirementWeight(0);
+    config.setStepWeight(0);
+    GreedyOptimizer osmo = new GreedyOptimizer(config, 100, new LengthProbability(1, 0.1d));
+    osmo.addModelClass(RandomValueModel3.class);
+    List<TestCase> tests = osmo.search();
+//    OSMOTester osmo = new OSMOTester(new RandomValueModel3());
+//    osmo.generate();
+//    List<TestCase> tests = osmo.getSuite().getAllTestCases();
+    assertEquals("Number of generated tests", 1, tests.size());
+    TestCoverage tc = new TestCoverage();
+    tc.addTestCoverage(tests.get(0));
+    ScoreCalculator sc = new ScoreCalculator(config);
+    assertEquals("Coverage score", 30, sc.calculateScore(tc));
+    assertEquals("Covered values", "[many, zero, one]", tc.getVariables().get("rc2").toString());
+  }
 }

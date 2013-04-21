@@ -36,6 +36,7 @@ public class SearchableInputParser implements AnnotationParser {
     Collection<Object> annotations = parameters.getFieldAnnotations();
     for (Object annotation : annotations) {
       if (annotation instanceof Variable) {
+        inputField.getInput().setStored(true);
         Variable var = (Variable) annotation;
         if (var.value().length() > 0) {
           input.setName(var.value());

@@ -34,9 +34,8 @@ public class SearchableInputField {
     } catch (IllegalAccessException e) {
       throw new RuntimeException("Failed to read " + SearchableInput.class.getSimpleName() + " field.", e);
     }
-    String name = field.getName();
     if (input.getName() == null) {
-      input.setName(name);
+      input.setName(field.getName());
     }
     return input;
   }

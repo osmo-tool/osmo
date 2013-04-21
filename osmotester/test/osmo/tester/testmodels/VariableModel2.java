@@ -23,6 +23,7 @@ public class VariableModel2 {
   private boolean second = false;
   @TestSuiteField
   private TestSuite suite = null;
+  @Variable
   private ValueRange<Integer> range = new ValueRange<>(1, 5);
   @Variable("named-set")
   private ValueSet<String> set = new ValueSet<>("v1", "v2", "v3");

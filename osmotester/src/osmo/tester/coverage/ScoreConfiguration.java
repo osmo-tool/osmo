@@ -26,10 +26,7 @@ public class ScoreConfiguration {
   protected int variableCountWeight = 10;
   /** Weight for number of unique values if no specific one defined for a variable, used in fitness calculation. */
   protected int defaultValueWeight = 1;
-  /**
-   * Weights for specific variables and their values.
-   * Each unique value for a variable is given the weight defined for that variable in this mapping.
-   */
+  /** Weights for specific variables (each unique value scores this much). */
   protected Map<String, Integer> valueWeights = new LinkedHashMap<>();
   /** Weight for number of unique transition pairs (subsequent transitions), used in fitness calculation. */
   protected int stepPairWeight = 10;
@@ -45,10 +42,7 @@ public class ScoreConfiguration {
   protected Collection<CombinationCoverage> combinations = new ArrayList<>();
   /** The set of value ranges defined. */
   private Map<String, RangeCategory> ranges = new LinkedHashMap<>();
-  /**
-   * A list of variable names that should be ignored when validating if coverage criteria are possible to compute.
-   * Can be useful, for example, if the user adds custom values directly in the model that have no variables.
-   */
+  /** Names of variables that should not be validated, e.g. custom user variables. */
   protected Collection<String> ignoreList = new LinkedHashSet<>();
 
   /**
