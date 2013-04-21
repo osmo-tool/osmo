@@ -9,10 +9,12 @@ import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.optimizer.GreedyOptimizer;
 import osmo.tester.testmodels.RandomValueModel2;
 import osmo.tester.testmodels.RandomValueModel3;
+import osmo.tester.testmodels.RandomValueModel4;
 import osmo.tester.testmodels.StateDescriptionModel2;
 import osmo.tester.testmodels.VariableModel1;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -27,27 +29,29 @@ public class CoverageWithStateTests {
     ScoreConfiguration config = new ScoreConfiguration();
     config.setDefaultValueWeight(0);
     config.disableCheckingFor("teemu");
-    config.addOneTwoManyRange("range", 0);
-    config.addZeroOneManyRange("range2", 0);
 
     config.setLengthWeight(0);
     config.setVariableCountWeight(0);
     config.setStepPairWeight(0);
     config.setRequirementWeight(0);
     config.setStepWeight(0);
-    config.addCombination(1, "names", "range-range", "range2-range");
+    config.addCombination(1, "names", "rangeRange", "range2Range");
     GreedyOptimizer osmo = new GreedyOptimizer(config, new LengthProbability(1, 0.1d));
-    osmo.addModelClass(RandomValueModel2.class);
+    osmo.addModelClass(RandomValueModel4.class);
     List<TestCase> tests = osmo.search();
-    assertEquals("Number of generated tests", 1, tests.size());
-    Map<String,ModelVariable> variables = tests.get(0).getStepVariables();
-    assertEquals("Variable coverage", "teemu([on paras])", variables.get("teemu").toString());
-    assertEquals("Variable coverage", "range-range([one, many, many, one, many, many, two, many])", 
-            variables.get("range-range").toString());
-    assertEquals("Variable coverage", "range2-range([many, many, many, many, many, many, many, many])", 
-            variables.get("range2-range").toString());
-    assertEquals("Variable coverage", "names&range-range&range2-range([null&one&null, null&null&null, null&many&null, null&many&null, null&null&many, null&null&many, paavo&null&null, null&null&null, null&null&many, null&null&many, null&one&null, teemu&null&null, null&many&null, null&null&many, keijo&null&null, null&null&null, null&null&many, null&null&null, teemu&null&null, null&many&null, null&two&null, null&null&many, teemu&null&null, null&many&null, null&null&many])", 
-            variables.get("names&range-range&range2-range").toString());    
+    TestCoverage tc = new TestCoverage();
+    for (TestCase test : tests) {
+      tc.addTestCoverage(test);
+    }
+    assertEquals("Number of generated tests", 5, tests.size());
+    Map<String, Collection<String>> variables = tc.getVariables();
+    assertEquals("Variable coverage", "[on paras]", variables.get("teemu").toString());
+    assertEquals("Variable coverage", "[one, many, zero, null]", 
+            variables.get("rangeRange").toString());
+    assertEquals("Variable coverage", "[null, many]", 
+            variables.get("range2Range").toString());
+    assertEquals("Variable coverage", "[null&null&one, null&null&many, keijo&null&many, null&null&zero, null&many&many, keijo&many&many, paavo&many&many, null&many&one, teemu&many&one, paavo&many&one, keijo&many&one, null&many&null, null&many&zero, teemu&many&zero, keijo&many&zero, teemu&many&many, paavo&many&zero, paavo&null&null, keijo&null&null, teemu&null&null, null&null&null, teemu&many&null, paavo&many&null, keijo&many&null, paavo&null&many, keijo&null&one, paavo&null&one, teemu&null&one, teemu&null&zero, keijo&null&zero, paavo&null&zero, teemu&null&many]", 
+            variables.get("names&range2Range&rangeRange").toString());    
   }
 
   @Test
@@ -83,14 +87,12 @@ public class CoverageWithStateTests {
     ScoreConfiguration config = new ScoreConfiguration();
     OSMOConfiguration.setSeed(55);
     config.addCombination(5, "i1", "i2", "j7", "q8");
-    config.addRange("h5", "i1", 0, 0);
-    config.setRangeWeight("h5", 6);
     GreedyOptimizer greedy = new GreedyOptimizer(config, new LengthProbability(1, 0.2d));
     greedy.addModelClass(VariableModel1.class);
     try {
       List<TestCase> tests = greedy.search();
     } catch (IllegalArgumentException e) {
-      String expected = "Following coverage variables not found in the model:[h5, j7, q8]";
+      String expected = "Following coverage variables not found in the model:[j7, q8]";
       assertEquals("Error message for unknown variable names", expected, e.getMessage());
     }
   }

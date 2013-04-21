@@ -16,11 +16,11 @@ package osmo.tester.model;
  *
  * @author Teemu Kanstren
  */
-public interface VariableValue {
+public interface VariableValue<T> {
   /**
    * Implement this to return the value that should be stored for this object.
    *
    * @return The value to be stored.
    */
-  public Object value();
+  public T value();
 }

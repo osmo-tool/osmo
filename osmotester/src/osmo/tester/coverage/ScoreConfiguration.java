@@ -40,8 +40,6 @@ public class ScoreConfiguration {
   private int statePairWeight = 40;
   /** The combination variable calculators that combine several existing variables to new ones for coverage. */
   protected Collection<CombinationCoverage> combinations = new ArrayList<>();
-  /** The set of value ranges defined. */
-  private Map<String, RangeCategory> ranges = new LinkedHashMap<>();
   /** Names of variables that should not be validated, e.g. custom user variables. */
   protected Collection<String> ignoreList = new LinkedHashSet<>();
 
@@ -182,31 +180,8 @@ public class ScoreConfiguration {
   /** @return The different types of coverage calculators: ranges, combinations, ... */
   protected Collection<CoverageCalculator> getAllCalculators() {
     Collection<CoverageCalculator> result = new ArrayList<>();
-    result.addAll(ranges.values());
     result.addAll(combinations);
     return result;
-  }
-
-  /**
-   * Creates a new integer range for the given variable, with the given definitions.
-   * If the variable already has existing range definitions, this will be added on top of those.
-   * Thus it does not impact the existing ones in any way.
-   *
-   * @param variableName The name of the input variable.
-   * @param categoryName The name of the range category, for example, "one" for 1-1="one"
-   * @param min          The minimum value in the range.
-   * @param max          The maximum value in the range.
-   */
-  public void addRange(String variableName, String categoryName, int min, int max) {
-    String rangeName = variableName + "-range";
-    RangeCategory range = ranges.get(rangeName);
-    if (range == null) {
-      range = new RangeCategory(variableName, rangeName);
-      ranges.put(rangeName, range);
-    }
-    IntegerRange added = range.addCategory(min, max, categoryName);
-    ignoreList.add(rangeName);
-    log.debug("New range added for variable " + variableName + ":" + added);
   }
 
   /**
@@ -224,46 +199,6 @@ public class ScoreConfiguration {
     CombinationCoverage combo = new CombinationCoverage(names);
     combinations.add(combo);
     log.debug("Added coverage combination:" + combo);
-  }
-
-  /**
-   * Convenience method for creating a specific integer range category with the given parameters.
-   * This produces three categories: 0-0 = "zero", 1-1 = "one", 1-N = "many".
-   *
-   * @param inputName The name of the input variable to create the range category for.
-   * @param weight    The coverage weight of the created range.
-   */
-  public void addZeroOneManyRange(String inputName, int weight) {
-    addRange(inputName, "zero", 0, 0);
-    addRange(inputName, "one", 1, 1);
-    addRange(inputName, "many", 2, Integer.MAX_VALUE);
-    setRangeWeight(inputName, weight);
-    log.debug("added zero-one-many range:" + inputName + "=" + weight);
-  }
-
-  public Collection<RangeCategory> getRanges() {
-    return ranges.values();
-  }
-
-  /**
-   * Convenience method for creating a specific integer range category with the given parameters.
-   * This produces three categories: 1-1 = "one", 2-2 = "two", 1-N = "many".
-   *
-   * @param inputName The name of the input variable to create the range category for.
-   * @param weight    The coverage weight of the created range.
-   */
-  public void addOneTwoManyRange(String inputName, int weight) {
-    addRange(inputName, "one", 1, 1);
-    addRange(inputName, "two", 2, 2);
-    addRange(inputName, "many", 3, Integer.MAX_VALUE);
-    setRangeWeight(inputName, weight);
-    log.debug("added one-two-many range:" + inputName + "=" + weight);
-  }
-
-  public void setRangeWeight(String inputName, int weight) {
-    String rangeName = inputName + "-range";
-    valueWeights.put(rangeName, weight);
-    ignoreList.add(rangeName);
   }
 
   /**

@@ -22,10 +22,23 @@ import java.util.Collection;
 public class RangeCategory2 implements VariableValue {
   /** The set of ranges or categories for this coverage variable. */
   private Collection<IntegerRange> ranges = new ArrayList<>();
+  /** Last observed value, set by user or taken from target. */
   private String value = null;
+  /** The underlying variable from which the range value is taken, if specified. */
+  private VariableValue<Integer> target = null;
+
+  public RangeCategory2() {
+  }
+
+  public RangeCategory2(VariableValue<Integer> target) {
+    this.target = target;
+  }
 
   @Override
   public String value() {
+    if (target != null && target.value() != null) {
+      process(target.value());
+    }
     return value;
   }
   
@@ -36,25 +49,38 @@ public class RangeCategory2 implements VariableValue {
     return this;
   }
 
+  public RangeCategory2 oneTwoManyRanges() {
+    addCategory(1, 1, "zero");
+    addCategory(2, 2, "one");
+    addCategory(3, Integer.MAX_VALUE, "many");
+    return this;
+  }
+
   /**
    * Adds a new range category with the given specs.
    *
    * @param min  Range minimum.
    * @param max  Range maximum.
-   * @param name Range name, used to replace values in the range.
+   * @param name chaining reference.
    */
-  public IntegerRange addCategory(int min, int max, String name) {
+  public RangeCategory2 addCategory(int min, int max, String name) {
+    if (name == null) {
+      throw new NullPointerException("Range name cannot be null.");
+    }
     IntegerRange range = new IntegerRange(min, max, name);
     ranges.add(range);
-    return range;
+    return this;
   }
 
   public RangeCategory2 process(int value) {
+    boolean found = false;
     for (IntegerRange range : ranges) {
       if (value >= range.min && value <= range.max) {
         this.value = range.name;
+        found = true;
       }
     }
+    if (!found) this.value = null;
     return this;
   }
 

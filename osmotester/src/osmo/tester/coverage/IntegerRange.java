@@ -17,7 +17,7 @@ public class IntegerRange {
     this.min = min;
     this.max = max;
     if (min > max) {
-      throw new IllegalArgumentException("Minimum cannot be bigger than maximum:" + min + ">" + max);
+      throw new IllegalArgumentException("Minimum cannot be bigger than maximum:" + min + " > " + max);
     }
     this.name = name;
   }

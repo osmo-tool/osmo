@@ -14,7 +14,7 @@ import java.util.Collection;
  *
  * @author Teemu Kanstren
  */
-public abstract class SearchableInput<T> implements Input<T>, Output<T>, VariableValue {
+public abstract class SearchableInput<T> implements Input<T>, Output<T>, VariableValue<T> {
   private static Logger log = new Logger(SearchableInput.class);
   /** Variable name. */
   private String name;
@@ -61,7 +61,7 @@ public abstract class SearchableInput<T> implements Input<T>, Output<T>, Variabl
   }
 
   @Override
-  public Object value() {
+  public T value() {
     return getLatestValue();
   }
 
