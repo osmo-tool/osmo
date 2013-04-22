@@ -8,6 +8,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A holder for all the parameters to be passed to different {@link AnnotationParser} implementations.
@@ -19,11 +21,13 @@ public class ParserParameters {
   private Object model = null;
   /** The annotation being currently processed. */
   private Object annotation = null;
-  /** All annotations for the represented field, including the one being processed. */
+  /** All OSMO annotations for the class of the model object. */
+  private Map<String, String> classAnnotations = new HashMap<>();
+  /** All OSMO annotations for the represented field, including the one being processed. */
   private Collection<Object> fieldAnnotations = new ArrayList<>();
-  /** The annotated field, if any. When method are parsed, this is null, otherwise must be non-null. */
+  /** The annotated field, if any. When fields are parsed, this is non-null, otherwise null. */
   private Field field = null;
-  /** The annotated method, if any. When fields are parsed this is null, otherwise must be non-null. */
+  /** The annotated method, if any. When methods are parsed this is non-null, otherwise must null. */
   private Method method = null;
   /** The prefix of the model object, to be added to names of all parsed transitions, guards, etc. for that object. */
   private String prefix = null;
@@ -32,6 +36,10 @@ public class ParserParameters {
 
   public Object getModel() {
     return model;
+  }
+
+  public Class getModelClass() {
+    return model.getClass();
   }
 
   public void setModel(Object model) {
@@ -85,5 +93,15 @@ public class ParserParameters {
   public void setFieldAnnotations(Annotation[] annotations) {
     fieldAnnotations.clear();
     Collections.addAll(this.fieldAnnotations, annotations);
+  }
+  
+  public void addClassAnnotation(String name, String value) {
+    classAnnotations.put(name, value);
+  }
+  
+  public String getClassAnnotation(Class type) {
+    String value = classAnnotations.get(type.getSimpleName());
+    if (value == null) value = "";
+    return value;
   }
 }
