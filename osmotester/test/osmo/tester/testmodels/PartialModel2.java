@@ -6,6 +6,7 @@ import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.ExplorationEnabler;
+import osmo.tester.annotation.Group;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.RequirementsField;
@@ -17,6 +18,7 @@ import osmo.tester.model.Requirements;
 import java.io.PrintStream;
 
 /** @author Teemu Kanstren */
+@Group("part2-group")
 public class PartialModel2 {
   @RequirementsField
   private final Requirements req;
