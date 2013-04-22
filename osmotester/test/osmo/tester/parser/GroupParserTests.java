@@ -46,7 +46,12 @@ public class GroupParserTests {
     FSMTransition step3 = fsm.getTransition("step3");
     assertEquals("Number of guards", 3, step3.getGuards().size());
     FSMTransition step4 = fsm.getTransition("step4");
-    assertEquals("Number of guards", 2, step4.getGuards().size());
+    assertEquals("Number of guards", 3, step4.getGuards().size());
+
+    assertEquals("Group name", "group1", step1.getGroupName().toString());
+    assertEquals("Group name", "group1", step2.getGroupName().toString());
+    assertEquals("Group name", "group1", step3.getGroupName().toString());
+    assertEquals("Group name", "big-group", step4.getGroupName().toString());
   }
 
   @Test
@@ -56,6 +61,7 @@ public class GroupParserTests {
       ParserResult result = parser.parse(conf(model), new TestSuite());
     } catch (Exception e) {
       String expected = "Invalid FSM:\n" +
+              "@Group must have name.\n" +
               "Guard without matching transition:group1.\n" +
               "Pre without matching transition:group1.\n" +
               "Post without matching transition:group1.\n" +

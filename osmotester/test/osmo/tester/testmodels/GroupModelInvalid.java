@@ -1,5 +1,6 @@
 package osmo.tester.testmodels;
 
+import osmo.tester.annotation.Group;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
@@ -7,6 +8,7 @@ import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Transition;
 
 /** @author Teemu Kanstren */
+@Group()
 public class GroupModelInvalid {
   @TestStep(name="step1", group="")
   public void groupedStep() {

@@ -1,10 +1,12 @@
 package osmo.tester.testmodels;
 
+import osmo.tester.annotation.Group;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Transition;
 
 /** @author Teemu Kanstren */
+@Group("big-group")
 public class GroupModel1 {
   @TestStep(name="step1", group="group1")
   public void groupedStep() {
@@ -43,6 +45,11 @@ public class GroupModel1 {
 
   @Guard("step4")
   public boolean step4Guard() {
+    return false;
+  }
+  
+  @Guard("big-group")
+  public boolean classGuard() {
     return false;
   }
 }

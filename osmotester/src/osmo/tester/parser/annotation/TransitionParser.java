@@ -1,6 +1,7 @@
 package osmo.tester.parser.annotation;
 
 import osmo.common.log.Logger;
+import osmo.tester.annotation.Group;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Transition;
 import osmo.tester.model.FSMTransition;
@@ -29,7 +30,7 @@ public class TransitionParser implements AnnotationParser {
     Object annotation = parameters.getAnnotation();
     String name = null;
     int weight = 0;
-    String group = null;
+    String group = parameters.getClassAnnotation(Group.class);
     boolean strict = true;
     if (annotation instanceof Transition) {
       Transition t = (Transition) annotation;
@@ -42,7 +43,9 @@ public class TransitionParser implements AnnotationParser {
         name = t.value();
       }
       weight = t.weight();
-      group = t.group();
+      if (t.group().length() > 0) {
+        group = t.group();
+      }
       type = Transition.class.getSimpleName();
       strict = t.strict();
     } else {
@@ -53,7 +56,9 @@ public class TransitionParser implements AnnotationParser {
         name = ts.value();
       }
       weight = ts.weight();
-      group = ts.group();
+      if (ts.group().length() > 0) {
+        group = ts.group();
+      }
       type = TestStep.class.getSimpleName();
       strict = ts.strict();
     }

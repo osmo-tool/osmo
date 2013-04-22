@@ -5,6 +5,7 @@ import osmo.tester.annotation.AfterSuite;
 import osmo.tester.annotation.AfterTest;
 import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
+import osmo.tester.annotation.Group;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.ExplorationEnabler;
 import osmo.tester.annotation.GenerationEnabler;
@@ -26,6 +27,7 @@ import osmo.tester.parser.annotation.AfterSuiteParser;
 import osmo.tester.parser.annotation.AfterTestParser;
 import osmo.tester.parser.annotation.BeforeSuiteParser;
 import osmo.tester.parser.annotation.BeforeTestParser;
+import osmo.tester.parser.annotation.GroupParser;
 import osmo.tester.parser.annotation.EndConditionParser;
 import osmo.tester.parser.annotation.ExplorationEnablerParser;
 import osmo.tester.parser.annotation.GenerationEnablerParser;
@@ -83,7 +85,9 @@ public class MainParser {
     annotationParsers.put(Variable.class, new VariableParser());
     annotationParsers.put(ExplorationEnabler.class, new ExplorationEnablerParser());
     annotationParsers.put(GenerationEnabler.class, new GenerationEnablerParser());
-
+    annotationParsers.put(Group.class, new GroupParser());
+    annotationParsers.put(Group.class, new GroupParser());
+    
     fieldParsers.put(SearchableInput.class, new SearchableInputParser());
   }
 
@@ -108,9 +112,11 @@ public class MainParser {
       parameters.setPrefix(prefix);
       Object obj = mo.getObject();
       parameters.setModel(obj);
-      //first we check any annotated fields that are relevant
+      //first we parse generic annotations from class level
+      errors += parseClass(result, parameters);
+      //next we check any annotated fields that are relevant
       errors += parseFields(result, parameters);
-      //next we check any annotated methods that are relevant
+      //finally we check any annotated methods that are relevant
       errors += parseMethods(result, parameters);
     }
     //finally we check that the generated FSM itself is valid
@@ -118,6 +124,27 @@ public class MainParser {
     return result;
   }
 
+  //TODO: these are the same for class, field, method, ->refactor..
+  private String parseClass(ParserResult result, ParserParameters parameters) {
+    Class clazz = parameters.getModelClass();
+    Annotation[] annotations = clazz.getAnnotations();
+    String errors = "";
+    for (Annotation annotation : annotations) {
+      Class<? extends Annotation> annotationClass = annotation.annotationType();
+      log.debug("class annotation:" + annotationClass);
+      AnnotationParser parser = annotationParsers.get(annotationClass);
+      if (parser == null) {
+        //unsupported annotation (e.g. for some completely different tool)
+        continue;
+      }
+      log.debug("parser:" + parser);
+      //set the annotation itself as a parameter to the used parser object
+      parameters.setAnnotation(annotation);
+      //and finally parse it
+      errors += parser.parse(result, parameters);
+    }
+    return errors;
+  }
   /**
    * Parse the relevant annotated fields and pass these to correct {@link AnnotationParser} objects.
    *
@@ -140,7 +167,7 @@ public class MainParser {
       //loop through all defined annotations for each field
       for (Annotation annotation : annotations) {
         Class<? extends Annotation> annotationClass = annotation.annotationType();
-        log.debug("class:" + annotationClass);
+        log.debug("field annotation:" + annotationClass);
         AnnotationParser parser = annotationParsers.get(annotationClass);
         if (parser == null) {
           //unsupported annotation (e.g. for some completely different tool)
@@ -152,6 +179,7 @@ public class MainParser {
         //and finally parse it
         errors += parser.parse(result, parameters);
       }
+      //parse specific types of fields, without annotations (searchableinput)
       errors = parseField(field, result, parameters, errors);
     }
     return errors;
