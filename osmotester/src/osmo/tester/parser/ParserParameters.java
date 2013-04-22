@@ -104,4 +104,8 @@ public class ParserParameters {
     if (value == null) value = "";
     return value;
   }
+
+  public void reset() {
+    classAnnotations.clear();
+  }
 }

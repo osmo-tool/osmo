@@ -6,8 +6,11 @@ import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
+import osmo.tester.model.Requirements;
 import osmo.tester.testmodels.GroupModel1;
 import osmo.tester.testmodels.GroupModelInvalid;
+import osmo.tester.testmodels.PartialModel1;
+import osmo.tester.testmodels.PartialModel2;
 
 import static junit.framework.Assert.*;
 
@@ -52,6 +55,34 @@ public class GroupParserTests {
     assertEquals("Group name", "group1", step2.getGroupName().toString());
     assertEquals("Group name", "group1", step3.getGroupName().toString());
     assertEquals("Group name", "big-group", step4.getGroupName().toString());
+  }
+
+  @Test
+  public void testTwoModels() throws Exception {
+    Requirements req = new Requirements();
+    PartialModel1 model1 = new PartialModel1(req);
+    PartialModel2 model2 = new PartialModel2(req);
+
+    ParserResult result = parser.parse(conf(model1, model2), new TestSuite());
+    FSM fsm = result.getFsm();
+    FSMTransition hello = fsm.getTransition("hello");
+    FSMTransition world = fsm.getTransition("world");
+    FSMTransition epixx = fsm.getTransition("epixx");
+    assertEquals("Group name", "", hello.getGroupName().toString());
+    assertEquals("Group name", "part2-group", world.getGroupName().toString());
+    assertEquals("Group name", "part2-group", epixx.getGroupName().toString());
+
+    //turn the order around to check that class group name is reset as should be
+    model1 = new PartialModel1(req);
+    model2 = new PartialModel2(req);
+    result = parser.parse(conf(model2, model1), new TestSuite());
+    fsm = result.getFsm();
+    hello = fsm.getTransition("hello");
+    world = fsm.getTransition("world");
+    epixx = fsm.getTransition("epixx");
+    assertEquals("Group name", "", hello.getGroupName().toString());
+    assertEquals("Group name", "part2-group", world.getGroupName().toString());
+    assertEquals("Group name", "part2-group", epixx.getGroupName().toString());
   }
 
   @Test

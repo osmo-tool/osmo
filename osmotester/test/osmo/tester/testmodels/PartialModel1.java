@@ -6,6 +6,7 @@ import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.ExplorationEnabler;
 import osmo.tester.annotation.GenerationEnabler;
+import osmo.tester.annotation.Group;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
