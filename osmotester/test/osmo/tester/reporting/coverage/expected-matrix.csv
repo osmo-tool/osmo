@@ -9,9 +9,9 @@ Test1,0,0,2,
 Test2,2,0,1,
 
 The number of times a given test case includes a given transition pair (T1->T2, T2 occurred after T1):
-Test ID,Start->one,eight->eight,eight->five,eight->four,eight->one,eight->seven,eight->six,eight->ten,eight->three,eight->two,five->eight,five->five,five->four,five->one,five->seven,five->six,five->ten,five->three,five->two,four->eight,four->five,four->four,four->one,four->seven,four->six,four->ten,four->three,four->two,one->eight,one->five,one->four,one->one,one->seven,one->six,one->ten,one->three,one->two,seven->eight,seven->five,seven->four,seven->one,seven->seven,seven->six,seven->ten,seven->three,seven->two,six->eight,six->five,six->four,six->one,six->seven,six->six,six->ten,six->three,six->two,ten->eight,ten->five,ten->four,ten->one,ten->seven,ten->six,ten->ten,ten->three,ten->two,three->eight,three->five,three->four,three->one,three->seven,three->six,three->ten,three->three,three->two,two->eight,two->five,two->four,two->one,two->seven,two->six,two->ten,two->three,two->two,
-Test1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,
-Test2,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,
+Test ID,.osmo.tester.init->one,eight->six,five->six,four->five,four->four,one->one,one->two,seven->eight,six->seven,six->six,three->four,three->three,two->five,two->three,
+Test1,1,0,0,1,1,1,1,0,0,0,1,1,0,1,
+Test2,1,1,1,0,0,0,1,1,1,1,0,0,1,0,
 
 The set of values for model variables in a given test case:
 Test ID,

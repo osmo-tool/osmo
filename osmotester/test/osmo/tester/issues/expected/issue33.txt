@@ -160,26 +160,14 @@
     <thead>
       <tr>
         <th class='corner' scope='col' rowspan='2'>Test ID</th>
-        <th scope='col' colspan='17'>Transition-pair coverage</th>
+        <th scope='col' colspan='5'>Transition-pair coverage</th>
       </tr>
       <tr>
-        <th class='colhead' scope='col'>Start->Step1</th>
+        <th class='colhead' scope='col'>.osmo.tester.init->Step1</th>
         <th class='colhead' scope='col'>Step1->Step1</th>
         <th class='colhead' scope='col'>Step1->Step2</th>
-        <th class='colhead' scope='col'>Step1->Step3</th>
-        <th class='colhead' scope='col'>Step1->Step4</th>
         <th class='colhead' scope='col'>Step2->Step1</th>
         <th class='colhead' scope='col'>Step2->Step2</th>
-        <th class='colhead' scope='col'>Step2->Step3</th>
-        <th class='colhead' scope='col'>Step2->Step4</th>
-        <th class='colhead' scope='col'>Step3->Step1</th>
-        <th class='colhead' scope='col'>Step3->Step2</th>
-        <th class='colhead' scope='col'>Step3->Step3</th>
-        <th class='colhead' scope='col'>Step3->Step4</th>
-        <th class='colhead' scope='col'>Step4->Step1</th>
-        <th class='colhead' scope='col'>Step4->Step2</th>
-        <th class='colhead' scope='col'>Step4->Step3</th>
-        <th class='colhead' scope='col'>Step4->Step4</th>
       </tr>
     </thead>
     <tbody>
@@ -188,59 +176,23 @@
         <td>1</td>
         <td>0</td>
         <td>2</td>
-        <td>0</td>
-        <td>0</td>
         <td>1</td>
         <td>1</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
       </tr>
       <tr class='alt'>
         <th class='testhead' scope='row'>Test2</th>
         <td>1</td>
         <td>1</td>
         <td>1</td>
-        <td>0</td>
-        <td>0</td>
         <td>1</td>
         <td>1</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
       </tr>
       <tr>
         <th class='testhead' scope='row'>Test3</th>
         <td>1</td>
         <td>1</td>
         <td>2</td>
-        <td>0</td>
-        <td>0</td>
         <td>1</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
         <td>0</td>
       </tr>
       <tr class='alt'>
@@ -248,19 +200,7 @@
         <td>1</td>
         <td>2</td>
         <td>1</td>
-        <td>0</td>
-        <td>0</td>
         <td>1</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
         <td>0</td>
       </tr>
       <tr>
@@ -268,19 +208,7 @@
         <td>1</td>
         <td>2</td>
         <td>1</td>
-        <td>0</td>
-        <td>0</td>
         <td>1</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
         <td>0</td>
       </tr>
     </tbody>

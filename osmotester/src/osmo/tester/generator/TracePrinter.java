@@ -24,7 +24,7 @@ public class TracePrinter implements GenerationListener {
   @Override
   public void step(TestStep step) {
     String name = step.getName();
-    out.println(name.toUpperCase());
+    out.println("STEP:"+name.toUpperCase());
   }
 
   @Override
@@ -45,6 +45,8 @@ public class TracePrinter implements GenerationListener {
 
   @Override
   public void testError(TestCase test, Exception error) {
+    String name = test.getCurrentStep().getName();
+    out.println("ERROR:"+name.toUpperCase());
   }
 
   @Override

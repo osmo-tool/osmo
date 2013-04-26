@@ -1,6 +1,7 @@
 package osmo.tester;
 
 import osmo.common.log.Logger;
+import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
@@ -79,8 +80,12 @@ public class OSMOTester {
     generator.generate();
     TestSuite suite = generator.getSuite();
     System.out.println("generated " + suite.getFinishedTestCases().size() + " tests.\n");
+    TestCoverage tc = new TestCoverage(suite.getAllTestCases());
+    String coverage = tc.coverageString();
+    System.out.println(coverage);
     Requirements requirements = suite.getRequirements();
     if (!requirements.isEmpty()) {
+      System.out.println();
       System.out.println(requirements.printCoverage());
     }
   }

@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +31,7 @@ public abstract class CoverageMetric {
   /** The tests to report. */
   protected final Collection<TestCase> tests;
   /** Coverage for the tests. */
-  private final TestCoverage tc;
+  private final TestCoverage suiteCoverage;
   /** The parsed model for test generation. */
   protected final FSM fsm;
   /** For template->report generation. */
@@ -40,10 +39,10 @@ public abstract class CoverageMetric {
   /** For storing template variables. */
   private VelocityContext vc = new VelocityContext();
 
-  public CoverageMetric(Collection<TestCase> tests, TestCoverage tc, FSM fsm) {
-    this.tests = tests;
-    this.tc = tc;
+  public CoverageMetric(Collection<TestCase> tests, FSM fsm) {
     this.fsm = fsm;
+    this.tests = tests;
+    this.suiteCoverage = new TestCoverage().addAll(tests);
     velocity.setProperty("resource.loader", "class");
     velocity.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
   }
@@ -51,19 +50,28 @@ public abstract class CoverageMetric {
   /**
    * Count the number of times a transition has been covered.
    *
-   * @return Key = transition, Value = number of times covered.
+   * @return the counts.
    */
-  protected Map<String, Integer> countTransitions() {
-    Map<String, Integer> covered = tc.getTransitionCoverage();
+  protected List<ValueCount> countTransitions() {
+    Map<String, Integer> covered = suiteCoverage.getTransitionCoverage();
+    List<ValueCount> counts = new ArrayList<>();
 
     Collection<FSMTransition> all = fsm.getTransitions();
+    //make sure every possible transition is there even if never covered
     for (FSMTransition t : all) {
       String tn = t.getStringName();
       if (!covered.containsKey(tn)) {
         covered.put(tn, 0);
       }
     }
-    return covered;
+
+    for (Map.Entry<String, Integer> a : covered.entrySet()) {
+      ValueCount count = new ValueCount(a.getKey(), a.getValue());
+      counts.add(count);
+    }
+    Collections.sort(counts);
+
+    return counts;
   }
 
   /**
@@ -74,14 +82,14 @@ public abstract class CoverageMetric {
    *
    * @return List defining how often each pair has been taken so far.
    */
-  protected List<TransitionPairCount> countTransitionPairs() {
-    Map<TransitionPair, Integer> coverage = new HashMap<>();
+  protected List<ValueCount> countTransitionPairs() {
+    Map<String, Integer> coverage = new HashMap<>();
 
     for (TestCase tc : tests) {
-      String previous = "Start";
+      String previous = FSM.START_NAME;
       for (TestStep ts : tc.getSteps()) {
         String next = ts.getName();
-        TransitionPair key = new TransitionPair(previous, next);
+        String key = previous + "->" + next;
         Integer count = coverage.get(key);
         if (count == null) {
           count = 0;
@@ -91,20 +99,25 @@ public abstract class CoverageMetric {
       }
     }
 
-    Collection<FSMTransition> all = fsm.getTransitions();
-    for (FSMTransition t1 : all) {
-      for (FSMTransition t2 : all) {
-        TransitionPair pair = new TransitionPair(t1.getStringName(), t2.getStringName());
-        if (!coverage.containsKey(pair)) {
-          coverage.put(pair, 0);
-        }
+    List<String> allPairs = getTransitionPairs();
+    for (String pair : allPairs) {
+      if (!coverage.containsKey(pair)) {
+        coverage.put(pair, 0);
       }
     }
-
-    List<TransitionPairCount> tpc = new ArrayList<>();
-    for (Map.Entry<TransitionPair, Integer> entry : coverage.entrySet()) {
-      TransitionPair pair = entry.getKey();
-      TransitionPairCount count = new TransitionPairCount(pair, entry.getValue());
+//    Collection<FSMTransition> all = fsm.getTransitions();
+//    for (FSMTransition t1 : all) {
+//      for (FSMTransition t2 : all) {
+//        String pair = t1.getStringName() + "->" + t2.getStringName();
+//        if (!coverage.containsKey(pair)) {
+//          coverage.put(pair, 0);
+//        }
+//      }
+//    }
+    List<ValueCount> tpc = new ArrayList<>();
+    for (Map.Entry<String, Integer> entry : coverage.entrySet()) {
+      String pair = entry.getKey();
+      ValueCount count = new ValueCount(pair, entry.getValue());
       tpc.add(count);
     }
     return tpc;
@@ -158,14 +171,8 @@ public abstract class CoverageMetric {
    * @return Transition coverage formatted with given template.
    */
   public String getTransitionCounts(String templateName) {
-    Map<String, Integer> coverage = countTransitions();
-    List<TransitionCount> counts = new ArrayList<>();
+    List<ValueCount> counts = countTransitions();
 
-    for (Map.Entry<String, Integer> a : coverage.entrySet()) {
-      TransitionCount count = new TransitionCount(a.getKey(), a.getValue());
-      counts.add(count);
-    }
-    Collections.sort(counts);
     vc.put("transitions", counts);
 
     StringWriter sw = new StringWriter();
@@ -181,7 +188,7 @@ public abstract class CoverageMetric {
    * @return Transition pair coverage formatted with given template.
    */
   public String getTransitionPairCounts(String templateName) {
-    List<TransitionPairCount> tpc = countTransitionPairs();
+    List<ValueCount> tpc = countTransitionPairs();
     Collections.sort(tpc);
 
     vc.put("pairs", tpc);
@@ -219,14 +226,10 @@ public abstract class CoverageMetric {
   public String getTraceabilityMatrix(String templateName) {
     List<SingleTestCoverage> tc = getTestCoverage();
     List<String> transitions = getTransitions();
-    Collections.sort(transitions);
     List<String> pairs = getTransitionPairs();
-    Collections.sort(pairs);
     List<String> reqs = getRequirements();
-    Collections.sort(reqs);
-    List<String> variables = getVariables(tc);
-    Collections.sort(variables);
-    List<VariableValues> tcVariables = getTCVariables();
+    List<String> variables = getVariables();
+    List<VariableValues> variableValues = getVariableValues();
 
     vc.put("alt", new CSSHelper());
     vc.put("tests", tc);
@@ -234,11 +237,18 @@ public abstract class CoverageMetric {
     vc.put("req_names", reqs);
     vc.put("transition_pair_names", pairs);
     vc.put("variable_names", variables);
-    vc.put("overall_coverage", tcVariables);
+    vc.put("variable_values", variableValues);
 
     StringWriter sw = new StringWriter();
     velocity.mergeTemplate(templateName, "UTF8", vc, sw);
     return sw.toString();
+  }
+
+  private List<String> getVariables() {
+    List<String> variables = new ArrayList<>();
+    variables.addAll(suiteCoverage.getVariables().keySet());
+    Collections.sort(variables);
+    return variables;
   }
 
   private List<SingleTestCoverage> getTestCoverage() {
@@ -260,6 +270,7 @@ public abstract class CoverageMetric {
     for (FSMTransition transition : transitions) {
       result.add(transition.getStringName());
     }
+    Collections.sort(result);
     return result;
   }
 
@@ -269,18 +280,15 @@ public abstract class CoverageMetric {
    * @return The pair names, with transitions separated by "->".
    */
   private List<String> getTransitionPairs() {
-    List<TransitionPairCount> pairCounts = countTransitionPairs();
-    List<String> pairs = new ArrayList<>();
-    for (TransitionPairCount count : pairCounts) {
-      String from = count.getFrom();
-      String to = count.getTo();
-      pairs.add(from + "->" + to);
-    }
-    return pairs;
+    List<String> result = new ArrayList<>();
+    Collection<String> pairs = suiteCoverage.getStepPairs();
+    result.addAll(pairs);
+    Collections.sort(result);
+    return result;
   }
 
   /**
-   * Get the list of requirements defined in the model.
+   * Get the list of requirements defined in the model and/or covered by executed test cases.
    *
    * @return The requirement names.
    */
@@ -291,25 +299,8 @@ public abstract class CoverageMetric {
     temp.addAll(fsmReqs.getExcess());
     List<String> reqs = new ArrayList<>();
     reqs.addAll(temp);
+    Collections.sort(reqs);
     return reqs;
-  }
-
-  /**
-   * Gives a list of all model variables. Include those tagged as @Variable
-   * and those with type of {@link osmo.tester.model.data.SearchableInput}
-   *
-   * @param tc
-   * @return The variable names.
-   */
-  private List<String> getVariables(List<SingleTestCoverage> tc) {
-    List<String> result = new ArrayList<>();
-    Collection<String> temp = new HashSet<>();
-    for (SingleTestCoverage stc : tc) {
-      temp.addAll(stc.variableNames());
-    }
-    result.addAll(temp);
-    Collections.sort(result);
-    return result;
   }
 
   /**
@@ -318,9 +309,9 @@ public abstract class CoverageMetric {
    *
    * @return The variable names from test coverage.
    */
-  private List<VariableValues> getTCVariables() {
+  private List<VariableValues> getVariableValues() {
     List<VariableValues> result = new ArrayList<>();
-    Map<String, Collection<String>> variables = tc.getVariables();
+    Map<String, Collection<String>> variables = suiteCoverage.getVariables();
     List<String> coverageNames = new ArrayList<>();
     coverageNames.addAll(variables.keySet());
     Collections.sort(coverageNames);
@@ -333,7 +324,7 @@ public abstract class CoverageMetric {
   /**
    * Write given string to a file with given name. Used to write coverage reports to files.
    *
-   * @param text The report to write.
+   * @param text     The report to write.
    * @param fileName Name of the file where to write it.
    * @throws java.io.IOException If something goes wrong with the file access.
    */

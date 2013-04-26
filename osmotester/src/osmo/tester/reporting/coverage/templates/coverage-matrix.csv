@@ -27,6 +27,6 @@ Test ID,#foreach ($vn in $variable_names)$vn,#end
 #end
 
 Overall coverage for all tests:
-#foreach ($vc in $overall_coverage)
+#foreach ($vc in $variable_values)
 $vc.name,$vc.values
 #end

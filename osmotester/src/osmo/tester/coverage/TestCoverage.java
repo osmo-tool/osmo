@@ -4,6 +4,7 @@ import osmo.common.log.Logger;
 import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
+import osmo.tester.model.FSM;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -101,6 +102,19 @@ public class TestCoverage {
   }
 
   /**
+   * Adds coverage for all the given tests.
+   * 
+   * @param tests To add.
+   * @return Self reference.
+   */
+  public TestCoverage addAll(Collection<TestCase> tests) {
+    for (TestCase test : tests) {
+      addTestCoverage(test);
+    }
+    return this;
+  }
+
+  /**
    * Add the coverage in the given test case up to a given number of steps in the test case.
    * Useful for calculating what would be the added coverage is different number of steps was added.
    * Especially when comparing different paths to each other.
@@ -164,9 +178,9 @@ public class TestCoverage {
   private synchronized void addSteps(Collection<String> names) {
     transitions.addAll(names);
     singles.addAll(names);
-    String previous = "init";
+    String previous = FSM.START_NAME;
     for (String name : names) {
-      stepPairs.add(previous + "-" + name);
+      stepPairs.add(previous + "->" + name);
       previous = name;
     }
   }
@@ -223,5 +237,16 @@ public class TestCoverage {
             ", states=" + states +
             ", statePairs=" + statePairs +
             '}';
+  }
+
+  public String coverageString() {
+    String result = "Covered elements:\n";
+    result += "Total steps: "+transitions.size();
+    result += "\nUnique steps: "+singles.size();
+    result += "\nUnique step-pairs: "+stepPairs.size();
+    result += "\nUnique requirements: "+reqs.size();
+    result += "\nUnique states: "+states.size();
+    result += "\nUnique state-pairs: "+statePairs.size();
+    return result;
   }
 }

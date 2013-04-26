@@ -64,6 +64,7 @@ public class FSM {
   private Requirements requirements = null;
   /** Method for getting the user defined state description. */
   private InvocationTarget stateDescription = null;
+  public static final String START_NAME = ".osmo.tester.init";
 
   /** Constructor. */
   public FSM() {
