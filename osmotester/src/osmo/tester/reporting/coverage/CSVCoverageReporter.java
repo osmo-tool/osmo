@@ -13,12 +13,12 @@ import java.util.Collection;
  * @author Olli-Pekka Puolitaival, Teemu Kanstrén
  */
 public class CSVCoverageReporter extends CoverageMetric {
-  public CSVCoverageReporter(Collection<TestCase> tests, TestCoverage tc, FSM fsm) {
-    super(tests, tc, fsm);
+  public CSVCoverageReporter(Collection<TestCase> tests, FSM fsm) {
+    super(tests, fsm);
   }
 
   public CSVCoverageReporter(TestSuite ts, FSM fsm) {
-    this(ts.getFinishedTestCases(), ts.getCoverage(), fsm);
+    this(ts.getFinishedTestCases(), fsm);
   }
 
   public String getTransitionCounts() {

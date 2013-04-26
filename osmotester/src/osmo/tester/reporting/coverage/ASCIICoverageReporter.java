@@ -18,31 +18,27 @@ import java.util.Map;
  * @author Olli-Pekka Puolitaival, Teemu Kanstren
  */
 public class ASCIICoverageReporter extends CoverageMetric {
-  public ASCIICoverageReporter(Collection<TestCase> tests, TestCoverage tc, FSM fsm) {
-    super(tests, tc, fsm);
+  public ASCIICoverageReporter(Collection<TestCase> tests, FSM fsm) {
+    super(tests, fsm);
   }
 
   public ASCIICoverageReporter(TestSuite ts, FSM fsm) {
-    this(ts.getFinishedTestCases(), ts.getCoverage(), fsm);
+    this(ts.getFinishedTestCases(), fsm);
   }
 
   public String getTransitionCounts() {
-    int maxNumb = 0;
-    Map<String, Integer> coverage = countTransitions();
-    List<TransitionCount> counts = new ArrayList<>();
-
-    for (Map.Entry<String, Integer> a : coverage.entrySet()) {
-      TransitionCount count = new TransitionCount(a.getKey(), a.getValue());
-      counts.add(count);
-      if (count.getName().length() > (maxNumb))
-        maxNumb = count.getName().length();
+    List<ValueCount> coverage = countTransitions();
+    int longest = 0;
+    for (ValueCount tc : coverage) {
+      if (tc.getValue().length() > longest) {
+        longest = tc.getValue().length();
+      }
     }
-    Collections.sort(counts);
 
     String ret = "";
-    for (TransitionCount t : counts) {
-      ret += t.getName();
-      ret += getSpaces(maxNumb - t.getName().length() + 2);
+    for (ValueCount t : coverage) {
+      ret += t.getValue();
+      ret += getSpaces(longest - t.getValue().length() + 2);
       ret += t.getCount() + "\n";
     }
     return ret;
@@ -62,23 +58,22 @@ public class ASCIICoverageReporter extends CoverageMetric {
    * transition2   transition3  0
    */
   public String getTransitionPairCounts() {
-    List<TransitionPairCount> tpc = countTransitionPairs();
+    List<ValueCount> tpc = countTransitionPairs();
     Collections.sort(tpc);
 
     //Find longest
     int max = 0;
-    for (TransitionPairCount t : tpc) {
-      if (t.getFrom().length() > max) {
-        max = t.getFrom().length();
+    for (ValueCount t : tpc) {
+      int length = t.getValue().length();
+      if (length > max) {
+        max = length;
       }
     }
 
     String ret = "";
-    for (TransitionPairCount t : tpc) {
-      ret += t.getFrom();
-      ret += getSpaces(max - t.getFrom().length() + 2);
-      ret += t.getTo();
-      ret += getSpaces(max - t.getTo().length() + 2);
+    for (ValueCount t : tpc) {
+      ret += t.getValue();
+      ret += getSpaces(max - t.getValue().length() + 2);
       ret += t.getCount() + "\n";
 
     }

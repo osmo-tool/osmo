@@ -13,12 +13,12 @@ import java.util.Collection;
  * @author Olli-Pekka Puolitaival, Teemu Kanstrén
  */
 public class HTMLCoverageReporter extends CoverageMetric {
-  public HTMLCoverageReporter(Collection<TestCase> tests, TestCoverage tc, FSM fsm) {
-    super(tests, tc, fsm);
+  public HTMLCoverageReporter(Collection<TestCase> tests, FSM fsm) {
+    super(tests, fsm);
   }
 
   public HTMLCoverageReporter(TestSuite ts, FSM fsm) {
-    this(ts.getFinishedTestCases(), ts.getCoverage(), fsm);
+    this(ts.getFinishedTestCases(), fsm);
   }
 
   public String getTransitionCounts() {

@@ -3,11 +3,18 @@ package osmo.tester.reporting.coverage;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOConfiguration;
+import osmo.tester.OSMOTester;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
 import osmo.tester.model.TransitionName;
+import osmo.tester.testmodels.RandomValueModel2;
+import osmo.tester.testmodels.ValidTestModel1;
+
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 import static junit.framework.Assert.*;
 import static osmo.common.TestUtils.*;
@@ -90,16 +97,11 @@ public class SummaryTests {
     CSVCoverageReporter csv = new CSVCoverageReporter(suite, fsm);
     String actual = csv.getTransitionPairCounts();
     actual = unifyLineSeparators(actual, "\n");
-/*    System.out.println("----------------");
-    System.out.println("expected:\n"+expected);
-    System.out.println("----------------");
-    System.out.println("actual:\n"+actual);
-    System.out.println("----------------");*/
     assertEquals("Generated CSV report for transition coverage", expected, actual);
   }
 
   @Test
-  public void csvTags() {
+  public void csvRequirements() {
     String expected = getResource(getClass(), "expected-requirements.csv");
     expected = unifyLineSeparators(expected, "\n");
     CSVCoverageReporter csv = new CSVCoverageReporter(suite, fsm);
@@ -145,11 +147,6 @@ public class SummaryTests {
     HTMLCoverageReporter html = new HTMLCoverageReporter(suite, fsm);
     String actual = html.getRequirementCounts();
     actual = unifyLineSeparators(actual, "\n");
-/*    System.out.println("----------------");
-    System.out.println("expected:\n"+expected);
-    System.out.println("----------------");
-    System.out.println("actual:\n"+actual);
-    System.out.println("----------------");*/
     assertEquals("Generated HTML report for requirement coverage", expected, actual);
   }
 

@@ -3,14 +3,12 @@
 <body>
   <table border="1">
     <tr>
-      <td>From</td>
-      <td>To</td>
+      <td>Pair</td>
       <td>Count</td>
     </tr>
 #foreach ($tp in $pairs)
     <tr>
-      <td>$tp.from</td>
-      <td>$tp.to</td>
+      <td>$tp.value</td>
       <td>$tp.count</td>
     </tr>
 #end

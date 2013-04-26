@@ -87,6 +87,7 @@ public class OSMOConfiguration implements ModelFactory {
 
   public void setFactory(ModelFactory factory, long baseSeed) {
     this.factory = factory;
+    OSMOConfiguration.setSeed(baseSeed);
     OSMOConfiguration.baseSeed = baseSeed;
   }
 
@@ -267,7 +268,7 @@ public class OSMOConfiguration implements ModelFactory {
 
   public static long getSeed() {
     if (seed == null) {
-      throw new IllegalStateException("Seed must be specified. Currently it is not.");
+      throw new IllegalStateException("No seed specified. Please set one with OSMOConfiguration.setSeed() before calling anything else.");
     }
     return seed;
   }

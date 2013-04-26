@@ -8,7 +8,7 @@
     </tr>
 #foreach ($t in $transitions)
     <tr>
-      <td>$t.name</td>
+      <td>$t.value</td>
       <td>$t.count</td>
     </tr>
 #end

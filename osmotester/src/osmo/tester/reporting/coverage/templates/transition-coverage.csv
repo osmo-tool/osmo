@@ -1,4 +1,4 @@
 Name,Count
 #foreach ($t in $transitions)
-$t.name,$t.count
+$t.value,$t.count
 #end

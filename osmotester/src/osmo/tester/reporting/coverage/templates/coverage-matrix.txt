@@ -182,7 +182,7 @@
       </tr>
     </thead>
     <tbody>
-#foreach ($vc in $overall_coverage)
+#foreach ($vc in $variable_values)
       <tr$alt>
         <th class='testhead' scope='row'>$vc.name</th>
         <td>$vc.values</td>

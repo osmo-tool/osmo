@@ -137,11 +137,11 @@ public class Requirements {
     int total = reqs.size();
     if (total > 0) {
       double p = (double) n / (double) total * 100;
-      final MessageFormat format = new MessageFormat("Total = {0}/{1} ({2}%) requirements.");
+      final MessageFormat format = new MessageFormat("Total unique requirements = {0}/{1} ({2}%) requirements.");
       Object args = new Object[]{n, total, p};
       out.append(format.format(args));
     } else {
-      out.append("No requirements were defined as expected (with the add() method) so no percentage is calculated.");
+//      out.append("No requirements were defined (with the add() method) so no percentage is calculated.");
     }
     return out.toString();
   }

@@ -96,7 +96,7 @@ public class MatrixTests {
     String actual = csv.getTraceabilityMatrix();
     expected = unifyLineSeparators(expected, "\n");
     actual = unifyLineSeparators(actual, "\n");
-    assertEquals("Generated ASCII coverage matrix", expected, actual);
+    assertEquals("Generated CSV coverage matrix", expected, actual);
   }
 
   @Test

@@ -2,6 +2,7 @@ package osmo.tester.reporting.coverage;
 
 import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.model.FSM;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -61,7 +62,7 @@ public class SingleTestCoverage {
    */
   private void countTransitions(TestCase tc) {
     Collection<String> names = tc.getAllTransitionNames();
-    String previous = "Start";
+    String previous = FSM.START_NAME;
     for (String name : names) {
       incrementCountFor(transitionCount, name);
       String pair = previous + "->" + name;
