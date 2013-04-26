@@ -34,7 +34,15 @@ Test case ended
 last
 generated 3 tests.
 
+Covered elements:
+Total steps: 25
+Unique steps: 3
+Unique step-pairs: 6 (of 6)
+Unique requirements: 2
+Unique states: 0
+Unique state-pairs: 0
+
 Requirements:[decrease, increase]
 Covered:[decrease, increase]
-Total = 2/2 (100%) requirements.
+Total unique requirements = 2/2 (100%) requirements.
 

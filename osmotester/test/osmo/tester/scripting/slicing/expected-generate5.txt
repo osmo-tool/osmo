@@ -99,4 +99,11 @@ range:2
 :third=2:
 generated 3 tests.
 
+Covered elements:
+Total steps: 51
+Unique steps: 3
+Unique step-pairs: 4 (of 4)
+Unique requirements: 0
+Unique states: 0
+Unique state-pairs: 0
 

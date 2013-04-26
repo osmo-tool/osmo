@@ -20,8 +20,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The main test generator class.
@@ -36,6 +40,7 @@ public class MainGenerator {
   protected final OSMOConfiguration config;
   /** The parsed overall test model. */
   private FSM fsm;
+  //TODO: this is only used from manualdrive. should remove and refactor the manualdrive differently.
   private static Collection<GenerationListener> staticListeners = new ArrayList<>();
   /** The list of listeners to be notified of new events as generation progresses. */
   private GenerationListenerList listeners;
@@ -45,6 +50,8 @@ public class MainGenerator {
   private Requirements reqs;
   /** Keeps track of overall number of tests generated. */
   private static int testCount = 0;
+  /** Set of possible pairs, key = source, value = targets. */
+  private Collection<String> possiblePairs = new HashSet<>();
 
   /**
    * Constructor.
@@ -142,6 +149,7 @@ public class MainGenerator {
 
   private boolean nextStep() {
     List<FSMTransition> enabled = getEnabled();
+    addOptionsFor(suite.getCurrentTest().getCurrentStep(), enabled);
     if (enabled.size() == 0) {
       if (config.shouldFailWhenNoWayForward()) {
         throw new IllegalStateException("No transition available.");
@@ -433,5 +441,19 @@ public class MainGenerator {
   
   public static void addStaticListener(GenerationListener listener) {
     staticListeners.add(listener);
+  }
+
+  public void addOptionsFor(TestStep step, List<FSMTransition> enabled) {
+    String stepName = FSM.START_NAME;
+    if (step != null) {
+      stepName = step.getName();
+    }
+    for (FSMTransition transition : enabled) {
+      possiblePairs.add(stepName+"->"+transition.getStringName());
+    }
+  }
+
+  public Collection<String> getPossiblePairs() {
+    return possiblePairs;
   }
 }

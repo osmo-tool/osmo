@@ -4,13 +4,17 @@ import osmo.common.log.Logger;
 import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
+import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
+import osmo.tester.model.FSMTransition;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -239,14 +243,20 @@ public class TestCoverage {
             '}';
   }
 
-  public String coverageString() {
+  public String coverageString(int possibleStepPairs, int possibleStates, int possibleStatePairs) {
     String result = "Covered elements:\n";
     result += "Total steps: "+transitions.size();
     result += "\nUnique steps: "+singles.size();
-    result += "\nUnique step-pairs: "+stepPairs.size();
+    result += "\nUnique step-pairs: "+stepPairs.size() + " (of "+possibleStepPairs+")";
     result += "\nUnique requirements: "+reqs.size();
     result += "\nUnique states: "+states.size();
+    if (possibleStates > 0) {
+      result += " (of "+possibleStates+")";
+    }
     result += "\nUnique state-pairs: "+statePairs.size();
+    if (possibleStatePairs >0) {
+      result += "(of "+possibleStatePairs+")";
+    }
     return result;
   }
 }
