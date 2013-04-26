@@ -19,7 +19,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Generates test cases and greedily optimizes the resulting test suite with regards to coverage criteria as
@@ -60,6 +62,7 @@ public class GreedyOptimizer {
   private final EndCondition endCondition;
   private int threshold = 1;
   private long timeout = -1;
+  private Collection<String> possiblePairs = new HashSet<>();
 
   /**
    * Uses a default population size of 100.
@@ -116,7 +119,7 @@ public class GreedyOptimizer {
     OSMOTester tester = new OSMOTester();
     long seed = OSMOConfiguration.getSeed();
     if (config.getLengthWeight() > 0) {
-      log.warn("Length weight was defined a > 0, reset to 0.");
+      log.warn("Length weight was defined as > 0, reset to 0.");
       //we do not use length weight as it would potentially go on for ever..
       config.setLengthWeight(0);
     }
@@ -132,7 +135,7 @@ public class GreedyOptimizer {
     }
     MainGenerator generator = tester.initGenerator();
     generator.initSuite();
-    TestCoverage generatorCoverage = generator.getSuite().getCoverage();
+//    TestCoverage generatorCoverage = generator.getSuite().getCoverage();
     tester.addTestEndCondition(endCondition);
     this.fsm = generator.getFsm();
     config.validate(fsm);
@@ -175,21 +178,27 @@ public class GreedyOptimizer {
         break;
       }
     }
+    generator.endSuite();
+    this.possiblePairs = generator.getPossiblePairs();
+    TestCoverage suiteCoverage = new TestCoverage(suite);
+
+    String summary = "summary\n";
+    summary += suiteCoverage.coverageString(possiblePairs.size(), 0, 0);
+    
     String totalCsv = "";
     totalCsv += csv1+"\n";
     totalCsv += csv2+"\n";
     totalCsv += csv3+"\n";
     totalCsv += csv4+"\n";
+    totalCsv += summary+"\n";
     writeFile(id+"-scores.csv", totalCsv);
     long end = System.currentTimeMillis();
     long diff = end - start;
     log.info("GreedyOptimizer "+id+" generated "+(iteration*populationSize)+" tests.");
     log.info("Resulting suite has " + suite.size() + " tests. Generation time " + diff + " millis");
-    generator.endSuite();
     
     //finally, we need to update the coverage in the FSM to reflect the final pruned suite
     //the coverage in fsm is used by coverage reporters which is why we need this
-    TestCoverage suiteCoverage = new TestCoverage(suite);
     Requirements reqs = fsm.getRequirements();
     reqs.clearCoverage();
     Collection<String> coveredReqs = suiteCoverage.getRequirements();
@@ -285,5 +294,9 @@ public class GreedyOptimizer {
 
   public FSM getFsm() {
     return fsm;
+  }
+
+  public Collection<String> getPossiblePairs() {
+    return possiblePairs;
   }
 }

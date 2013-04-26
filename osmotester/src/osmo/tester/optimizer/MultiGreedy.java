@@ -13,7 +13,10 @@ import osmo.tester.model.Requirements;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -78,7 +81,7 @@ public class MultiGreedy {
   public List<TestCase> search(int optimizerCount) {
     log.info("Starting search with " + optimizerCount + " optimizers");
     Collection<Future<List<TestCase>>> futures = new ArrayList<>();
-    GreedyOptimizer hack = null;
+    List<GreedyOptimizer> optimizers = new ArrayList<>();
     for (int i = 0 ; i < optimizerCount ; i++) {
       OSMOConfiguration.setSeed(rand.nextLong());
       GreedyOptimizer optimizer = new GreedyOptimizer(optimizerConfig, populationSize, endCondition);
@@ -90,9 +93,7 @@ public class MultiGreedy {
       Future<List<TestCase>> future = greedyPool.submit(task);
       log.debug("task submitted to pool");
       futures.add(future);
-      if (hack == null) {
-        hack = optimizer;
-      }
+      optimizers.add(optimizer);
     }
     List<TestCase> allTests = new ArrayList<>();
     for (Future<List<TestCase>> future : futures) {
@@ -106,17 +107,18 @@ public class MultiGreedy {
     greedyPool.shutdown();
 
     log.info("sorting set from all optimizers");
-    GreedyOptimizer optimizer = new GreedyOptimizer(optimizerConfig, populationSize, endCondition);
+    GreedyOptimizer optimizer = optimizers.get(0);
+//    GreedyOptimizer optimizer = new GreedyOptimizer(optimizerConfig, populationSize, endCondition);
 //    Collections.sort(allTests, new TestSorter());
     List<TestCase> cases = optimizer.sortAndPrune(allTests);
     TestCoverage coverage = new TestCoverage(cases);
 
-    writeFinalReport(optimizer, cases);
+    writeFinalReport(optimizers, cases);
 
     //trick or treat. we use this to get valid set of requirements from the created model
     //and in the end we update this with the correct covered requirements in order for coverage reporters to
     //report the correct requirements coverage
-    fsm = hack.getFsm();
+    fsm = optimizer.getFsm();
 
     //finally, we need to update the coverage in the FSM to reflect the final pruned suite
     //the coverage in fsm is used by coverage reporters which is why we need this
@@ -130,22 +132,33 @@ public class MultiGreedy {
     return cases;
   }
 
-  private void writeFinalReport(GreedyOptimizer optimizer, List<TestCase> cases) {
+  private void writeFinalReport(List<GreedyOptimizer> optimizers, List<TestCase> cases) {
     String csv1 = "cumulative coverage per test\n";
     String csv2 = "gained coverage per test\n";
     String csv3 = "number of tests in suite\n";
     String csv4 = "total score\n";
+    String summary = "summary\n";
 
+    Collection<String> possiblePairs = new HashSet<>();
+    for (GreedyOptimizer optimizer : optimizers) {
+      possiblePairs.addAll(optimizer.getPossiblePairs());
+    }
+    
+    GreedyOptimizer optimizer = optimizers.get(0);
     csv1 += optimizer.csvForCoverage(cases);
     csv2 += optimizer.csvForGain(cases);
     csv3 += optimizer.csvNumberOfTests(cases);
     csv4 += optimizer.csvTotalScores(cases);
 
+    TestCoverage tc = new TestCoverage(cases);
+    summary += tc.coverageString(possiblePairs.size(), 0, 0);
+
     String totalCsv = "";
-    totalCsv += csv1+"\n";
-    totalCsv += csv2+"\n";
-    totalCsv += csv3+"\n";
-    totalCsv += csv4+"\n";
+    totalCsv += csv1 + "\n";
+    totalCsv += csv2 + "\n";
+    totalCsv += csv3 + "\n";
+    totalCsv += csv4 + "\n";
+    totalCsv += summary + "\n";
     optimizer.writeFile("final-scores.csv", totalCsv);
   }
 
