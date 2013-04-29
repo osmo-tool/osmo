@@ -20,9 +20,9 @@ public class RandomValueModel4 {
   @TestSuiteField
   private TestSuite suite = null;
   @Variable
-  private RangeCategory rangeRange = new RangeCategory(range).oneTwoManyRanges();
+  private RangeCategory rangeRange = new RangeCategory(range).oneTwoMany();
   @Variable
-  private RangeCategory range2Range = new RangeCategory(range2).zeroOneManyRanges();
+  private RangeCategory range2Range = new RangeCategory(range2).zeroOneMany();
   @Variable
   private CombinationCoverage combo = new CombinationCoverage(names, rangeRange, range2Range);
 
