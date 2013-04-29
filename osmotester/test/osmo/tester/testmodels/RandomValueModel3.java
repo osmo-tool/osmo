@@ -8,7 +8,7 @@ import osmo.tester.model.data.ValueRange;
 /** @author Teemu Kanstren */
 public class RandomValueModel3 {
   @Variable
-  private RangeCategory rc2 = new RangeCategory().zeroOneManyRanges();
+  private RangeCategory rc2 = new RangeCategory().zeroOneMany();
 
   private ValueRange<Integer> range = new ValueRange<>(0, 5);
 

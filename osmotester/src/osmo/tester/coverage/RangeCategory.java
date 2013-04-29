@@ -39,15 +39,21 @@ public class RangeCategory implements VariableValue {
     }
     return value;
   }
-  
-  public RangeCategory zeroOneManyRanges() {
+
+  public RangeCategory zeroMany() {
+    addCategory(0, 0, "zero");
+    addCategory(1, Integer.MAX_VALUE, "many");
+    return this;
+  }
+
+  public RangeCategory zeroOneMany() {
     addCategory(0, 0, "zero");
     addCategory(1, 1, "one");
     addCategory(2, Integer.MAX_VALUE, "many");
     return this;
   }
 
-  public RangeCategory oneTwoManyRanges() {
+  public RangeCategory oneTwoMany() {
     addCategory(1, 1, "zero");
     addCategory(2, 2, "one");
     addCategory(3, Integer.MAX_VALUE, "many");
