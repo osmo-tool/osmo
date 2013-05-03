@@ -31,7 +31,7 @@ public class EmptyTestModel4 {
   }
 
   @StateName
-  public String badArgument(String bar) {
+  public String noArgument() {
     return "";
   }
 }

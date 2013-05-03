@@ -110,8 +110,8 @@ public class PartialModel1 {
   }
   
   @StateName
-  public String state1() {
-    return "hello1";
+  public String state1(osmo.tester.generator.testsuite.TestStep step) {
+    return step.getName()+"-hello1";
   }
 
   @Pre

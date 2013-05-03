@@ -58,4 +58,8 @@ public class TransitionName {
 
     return !negationName.name.equals(name);
   }
+
+  public String getPrefix() {
+    return prefix;
+  }
 }

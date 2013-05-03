@@ -179,4 +179,16 @@ public class FSMTransition implements Comparable<FSMTransition> {
   public int compareTo(FSMTransition o) {
     return name.toString().compareTo(o.name.toString());
   }
+  
+  public String getModelObjectName() {
+    return createModelObjectName(name.getPrefix(), transition.getModelObject().getClass());
+  }
+  
+  public static String createModelObjectName(String prefix, Class modelClass) {
+    String className = modelClass.getName();
+    if (prefix != null && prefix.length() > 0) {
+      return prefix +"-"+ className;
+    }
+    return className;
+  }
 }

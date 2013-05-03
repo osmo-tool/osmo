@@ -2,6 +2,8 @@ package osmo.tester.parser.annotation;
 
 import osmo.common.log.Logger;
 import osmo.tester.annotation.StateName;
+import osmo.tester.generator.testsuite.TestStep;
+import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
 import osmo.tester.parser.AnnotationParser;
 import osmo.tester.parser.ParserParameters;
@@ -29,15 +31,16 @@ public class StateNameParser implements AnnotationParser {
       errors += "Invalid return type for @"+name+" in (\"" + method.getName() + "()\"):" + returnType + ". Should be String.\n";
     }
     Class<?>[] parameterTypes = method.getParameterTypes();
-    if (parameterTypes.length > 0) {
-      errors += name +" methods are not allowed to have parameters: \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n";
+    if (parameterTypes.length != 1) {
+      errors += name +" methods must have 1 parameter: \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n";
     }
-    
-    if (result.getFsm().getStateDescription() != null) {
-      errors += name+" is only expected to appear once.\n";
+      
+    if (parameterTypes.length > 0 && parameterTypes[0] != TestStep.class) {
+      errors += name +" parameter must be of type "+TestStep.class+": \"" + method.getName() + "()\" has type " + parameterTypes[0]+"\n";
     }
 
-    result.getFsm().setStateDescription(new InvocationTarget(parameters, StateName.class));
+    String modelObjectName = FSMTransition.createModelObjectName(parameters.getPrefix(), parameters.getModelClass());
+    result.getFsm().addStateNameFor(modelObjectName, new InvocationTarget(parameters, StateName.class));
     return errors;
   }
 }

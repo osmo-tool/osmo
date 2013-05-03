@@ -47,7 +47,7 @@ public class RandomValueModel4 {
   }
   
   @StateName
-  public String stateName() {
+  public String stateName(osmo.tester.generator.testsuite.TestStep step) {
     return state.next();
   }
 }

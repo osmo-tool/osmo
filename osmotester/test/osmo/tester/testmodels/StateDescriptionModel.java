@@ -82,7 +82,7 @@ public class StateDescriptionModel {
   }
 
   @StateName
-  public String state() {
+  public String state(osmo.tester.generator.testsuite.TestStep step) {
     return ""+req.getUniqueCoverage().size();
   }
 

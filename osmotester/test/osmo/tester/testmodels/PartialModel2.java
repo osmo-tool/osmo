@@ -10,6 +10,7 @@ import osmo.tester.annotation.Group;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.RequirementsField;
+import osmo.tester.annotation.StateName;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -86,5 +87,10 @@ public class PartialModel2 {
 
   @ExplorationEnabler
   public void enabler1() {
+  }
+
+  @StateName
+  public String state2(osmo.tester.generator.testsuite.TestStep step) {
+    return step.getName()+"-hello2";
   }
 }

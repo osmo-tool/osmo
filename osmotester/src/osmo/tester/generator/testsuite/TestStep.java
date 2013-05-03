@@ -56,7 +56,7 @@ public class TestStep {
       log.debug("NULL transition object, assuming unit test in progress..");
       this.modelObjectName = transition.toString();
     } else {
-      this.modelObjectName = transition.getTransition().getModelObject().getClass().getName();
+      this.modelObjectName = transition.getModelObjectName();
     }
     this.id = id;
   }
