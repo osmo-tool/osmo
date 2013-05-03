@@ -96,7 +96,7 @@ public class ValidTestModel4 {
   }
 
   @StateName
-  public String state1() {
+  public String state1(osmo.tester.generator.testsuite.TestStep step) {
     return ""+req.getUniqueCoverage().size();
   }
 

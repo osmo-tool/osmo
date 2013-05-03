@@ -43,7 +43,7 @@ public class StateDescriptionModel2 {
   }
 
   @StateName
-  public String state() {
+  public String state(osmo.tester.generator.testsuite.TestStep step) {
     return state;
   }
 

@@ -62,8 +62,7 @@ public class FSM {
   private Collection<SearchableInputField> searchableInputFields = new ArrayList<>();
   /** User defined requirements. */
   private Requirements requirements = null;
-  /** Method for getting the user defined state description. */
-  private InvocationTarget stateDescription = null;
+  private Map<String, InvocationTarget> stateNames = new HashMap<>();
   public static final String START_NAME = ".osmo.tester.init";
 
   /** Constructor. */
@@ -512,11 +511,15 @@ public class FSM {
     return generationEnablers;
   }
 
-  public InvocationTarget getStateDescription() {
-    return stateDescription;
+  public InvocationTarget getStateNameFor(String modelObjectName) {
+    return stateNames.get(modelObjectName);
   }
 
-  public void setStateDescription(InvocationTarget stateDescription) {
-    this.stateDescription = stateDescription;
+  public void addStateNameFor(String modelObjectName, InvocationTarget stateName) {
+    this.stateNames.put(modelObjectName, stateName);
+  }
+
+  public Map<String, InvocationTarget> getStateNames() {
+    return stateNames;
   }
 }

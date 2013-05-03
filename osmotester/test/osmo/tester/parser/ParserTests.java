@@ -103,9 +103,11 @@ public class ParserTests {
               "Invalid return type for @ExplorationEnabler (\"enableExploration()\"):class java.lang.String.\n" +
               "Invalid return type for @ExplorationEnabler (\"enableExploration()\"):int.\n" +
               "Invalid return type for @GenerationEnabler (\"enableGeneration()\"):int.\n" +
-              "Invalid return type for @StateName in (\"state()\"):void. Should be String.\n"+
+              "Invalid return type for @StateName in (\"badArgument()\"):void. Should be String.\n"+
               "Invalid return type for guard (\"hello()\"):class java.lang.String.\n" +
               "Post-methods are allowed to have only one parameter of type Map<String, Object>: \"wrong()\" has one of type class java.lang.String.\n" +
+              "StateName methods must have 1 parameter: \"badArgument()\" has 2 parameters.\n" +
+              "StateName parameter must be of type class osmo.tester.generator.testsuite.TestStep: \"badArgument()\" has type class java.lang.String\n"+
               "";
       assertEquals(expected, msg);
     }
@@ -146,7 +148,7 @@ public class ParserTests {
               "@EndCondition methods are not allowed to have parameters: \"ending()\" has 1 parameters.\n" +
               "@RequirementsField value was null, which is not allowed.\n" +
               "Guard methods are not allowed to have parameters: \"hello()\" has 1 parameters.\n" +
-              "StateName methods are not allowed to have parameters: \"badArgument()\" has 1 parameters.\n"+
+              "StateName methods must have 1 parameter: \"noArgument()\" has 0 parameters.\n"+
               "";
       assertEquals(expected, msg);
     }
@@ -196,7 +198,7 @@ public class ParserTests {
     assertEquals("Number of @AfterSuite methods", 1, fsm.getAfterSuites().size());
     assertEquals("Number of @ExplorationEnabler methods", 2, fsm.getExplorationEnablers().size());
     assertEquals("Number of @GenerationEnabler methods", 1, fsm.getGenerationEnablers().size());
-    assertNotNull("@StateDescription method", fsm.getStateDescription());
+    assertNotNull("@StateDescription method", fsm.getStateNames());
     //these also test for the correct number of guards
     assertTransitionPresent(fsm, "hello", 1, 3);
     assertTransitionPresent(fsm, "world", 3, 3);

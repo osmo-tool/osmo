@@ -54,7 +54,7 @@ public class VariableField {
       try {
         variable = (VariableValue) field.get(modelObject);
       } catch (IllegalAccessException e) {
-        throw new RuntimeException("Failed to read state variable value for field:" + field, e);
+        throw new RuntimeException("Failed to read @Variable instance for field:" + field, e);
       }
     }
   }
@@ -86,7 +86,7 @@ public class VariableField {
       throw new RuntimeException("Failed to read state variable value for field:" + field, e);
     }
   }
-
+  
   @Override
   public String toString() {
     return "VariableField{" +

@@ -31,7 +31,7 @@ public class EmptyTestModel3 {
   }
 
   @StateName
-  public void state() {
+  public void badArgument(String s1, String s2) {
   }
 
   @Post

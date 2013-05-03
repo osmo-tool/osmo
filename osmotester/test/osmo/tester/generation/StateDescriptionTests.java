@@ -59,7 +59,7 @@ public class StateDescriptionTests {
   }
   
   @Test
-  public void oneStateNoVariables() {
+  public void twoStatesNoVariables() {
     Requirements reqs = new Requirements();
     PartialModel1 model1 = new PartialModel1(reqs);
     PartialModel2 model2 = new PartialModel2(reqs);
@@ -70,8 +70,8 @@ public class StateDescriptionTests {
     osmo.addTestEndCondition(length3);
     osmo.addSuiteEndCondition(length1);
     osmo.generate();
-    String expected = ":null:-hello1-:null:-hello1-:null:-hello1-";
-    assertEquals("State over generation with no state defined", expected, model1.getStates());
+    String expected = ":null:-hello-hello1-:null:-world-hello2-:null:-epixx-hello2-";
+    assertEquals("State over generation with two states defined", expected, model1.getStates());
 
     TestSuite suite = osmo.getSuite();
     Map<String,ModelVariable> testVariables = suite.getTestVariables();

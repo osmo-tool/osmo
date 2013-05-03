@@ -20,12 +20,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 
 /**
  * The main test generator class.
@@ -217,14 +214,16 @@ public class MainGenerator {
    * @param step The step.
    */
   private void storeUserState(TestStep step) {
-    if (fsm.getStateDescription() != null) {
-      String state = (String) fsm.getStateDescription().invoke();
+    InvocationTarget stateName = fsm.getStateNameFor(step.getModelObjectName());
+    if (stateName != null) {
+      String state = (String) stateName.invoke(step);
       if (state == null) {
         throw new NullPointerException("Model state is null. Now allowed.");
       }
       step.setUserState(state);
       log.debug("new state:"+state);
     }
+    
   }
 
   /** Handles suite shutdown. Should be called after all tests have been generated. */
