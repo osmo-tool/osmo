@@ -2,6 +2,7 @@ package osmo.tester.algorithm;
 
 import org.junit.Before;
 import org.junit.Test;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generation.TestDistributionListener;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
@@ -21,8 +22,8 @@ public class WeightedDistributionTests {
 
   @Before
   public void testSetup() {
+    OSMOConfiguration.setSeed(100);
     osmo = new OSMOTester();
-    osmo.setSeed(100);
     listener = new TestDistributionListener();
     osmo.addListener(listener);
   }
@@ -36,8 +37,8 @@ public class WeightedDistributionTests {
     osmo.addModelObject(new WeightedModel1());
     Length length4 = new Length(1000);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length4);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length4);
+    osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new WeightedRandomAlgorithm());
     osmo.generate();
     listener.validate("Weighted random generator steps");
@@ -45,8 +46,8 @@ public class WeightedDistributionTests {
 
     testSetup();
     osmo.addModelObject(new WeightedModel1());
-    osmo.addTestEndCondition(length4);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length4);
+    osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new RandomAlgorithm());
     osmo.generate();
     Map<String, Integer> random = listener.getSteps();
@@ -62,8 +63,8 @@ public class WeightedDistributionTests {
     osmo.addModelObject(new WeightedModel1());
     Length length4 = new Length(10000);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length4);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length4);
+    osmo.setSuiteEndCondition(length1);
 //    osmo.setAlgorithm(new RandomAlgorithm());
     osmo.setAlgorithm(new WeightedBalancingAlgorithm());
     osmo.generate();
@@ -72,8 +73,8 @@ public class WeightedDistributionTests {
 
     testSetup();
     osmo.addModelObject(new WeightedModel1());
-    osmo.addTestEndCondition(length4);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length4);
+    osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new RandomAlgorithm());
     osmo.generate();
     Map<String, Integer> random = listener.getSteps();
@@ -89,8 +90,8 @@ public class WeightedDistributionTests {
     osmo.addModelObject(new WeightedModel1());
     Length length4 = new Length(200);
     Length length1 = new Length(6);
-    osmo.addTestEndCondition(length4);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length4);
+    osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new WeightedRandomAlgorithm());
     osmo.generate();
     listener.validate("Weighted balancing generator steps");
@@ -98,8 +99,8 @@ public class WeightedDistributionTests {
 
     testSetup();
     osmo.addModelObject(new WeightedModel1());
-    osmo.addTestEndCondition(length4);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length4);
+    osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new RandomAlgorithm());
     osmo.generate();
     Map<String, Integer> random = listener.getSteps();
@@ -115,8 +116,8 @@ public class WeightedDistributionTests {
     osmo.addModelObject(new WeightedModel1());
     Length length4 = new Length(200);
     Length length1 = new Length(6);
-    osmo.addTestEndCondition(length4);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length4);
+    osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new WeightedBalancingAlgorithm());
     osmo.generate();
     listener.validate("Weighted balancing generator steps");
@@ -124,8 +125,8 @@ public class WeightedDistributionTests {
 
     testSetup();
     osmo.addModelObject(new WeightedModel1());
-    osmo.addTestEndCondition(length4);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length4);
+    osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new RandomAlgorithm());
     osmo.generate();
     Map<String, Integer> random = listener.getSteps();

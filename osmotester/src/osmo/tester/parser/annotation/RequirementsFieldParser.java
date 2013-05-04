@@ -39,7 +39,7 @@ public class RequirementsFieldParser implements AnnotationParser {
         return errors;
       }
       if (this.req != null && this.req != requirements) {
-        errors += "Only one " + name + " allowed in the model.\n";
+        errors += "Only one " + name + " instance allowed in the model.\n";
       }
       result.setRequirements(requirements);
       this.req = requirements;
