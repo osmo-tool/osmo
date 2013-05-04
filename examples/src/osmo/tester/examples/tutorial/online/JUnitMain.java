@@ -15,7 +15,7 @@ public class JUnitMain {
     config.setSeed(52);
     config.addModelObject(new HelloModel3());
     config.setJUnitLength(2);
-    config.addTestEndCondition(new Length(5));
+    config.setTestEndCondition(new Length(5));
     return config;
   }
 }

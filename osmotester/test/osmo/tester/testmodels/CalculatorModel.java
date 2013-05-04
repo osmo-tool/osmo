@@ -145,8 +145,8 @@ public class CalculatorModel {
   public static void main(String[] args) {
     OSMOTester tester = new OSMOTester(new CalculatorModel());
     tester.setAlgorithm(new RandomAlgorithm());
-    tester.addTestEndCondition(new Length(100));
-    tester.addSuiteEndCondition(new Length(100));
+    tester.setTestEndCondition(new Length(100));
+    tester.setSuiteEndCondition(new Length(100));
     tester.generate();
   }
 }

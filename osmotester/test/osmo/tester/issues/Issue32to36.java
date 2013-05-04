@@ -36,8 +36,8 @@ public class Issue32to36 {
   public void issue32() {
     OSMOConfiguration.setSeed(333);
     OSMOTester tester = new OSMOTester();
-    tester.addTestEndCondition(new Length(5));
-    tester.addSuiteEndCondition(new Length(5));
+    tester.setTestEndCondition(new Length(5));
+    tester.setSuiteEndCondition(new Length(5));
     tester.setAlgorithm(new WeightedBalancingAlgorithm());
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
     PrintStream ps = new PrintStream(bos);
@@ -54,8 +54,8 @@ public class Issue32to36 {
   public void issue33() throws IOException {
     OSMOConfiguration.setSeed(333);
     OSMOTester tester = new OSMOTester();
-    tester.addTestEndCondition(new Length(5));
-    tester.addSuiteEndCondition(new Length(5));
+    tester.setTestEndCondition(new Length(5));
+    tester.setSuiteEndCondition(new Length(5));
     tester.setAlgorithm(new WeightedBalancingAlgorithm());
     tester.addModelObject(new Issue32(NullPrintStream.stream));
     tester.generate();
@@ -73,8 +73,8 @@ public class Issue32to36 {
   public void issue34() throws Exception {
     OSMOConfiguration.setSeed(333);
     OSMOTester tester = new OSMOTester();
-    tester.addTestEndCondition(new Length(5));
-    tester.addSuiteEndCondition(new Length(5));
+    tester.setTestEndCondition(new Length(5));
+    tester.setSuiteEndCondition(new Length(5));
     tester.setAlgorithm(new WeightedBalancingAlgorithm());
     tester.addModelObject(new Issue32(NullPrintStream.stream));
     tester.generate();
@@ -93,8 +93,8 @@ public class Issue32to36 {
     OSMOTester tester = new OSMOTester();
     CustomEndCondition testCustom = new CustomEndCondition();
     CustomEndCondition suiteCustom = new CustomEndCondition();
-    tester.addTestEndCondition(new And(new Length(5), new Length(3), testCustom));
-    tester.addSuiteEndCondition(new Or(new Length(5), new Length(3), suiteCustom));
+    tester.setTestEndCondition(new And(new Length(5), new Length(3), testCustom));
+    tester.setSuiteEndCondition(new Or(new Length(5), new Length(3), suiteCustom));
     tester.setAlgorithm(new WeightedBalancingAlgorithm());
     tester.addModelObject(new Issue32(NullPrintStream.stream));
     tester.generate();
@@ -122,15 +122,6 @@ public class Issue32to36 {
     @Override
     public void init(FSM fsm) {
       initialized = true;
-    }
-
-    @Override
-    public boolean isStrict() {
-      return false;
-    }
-
-    @Override
-    public void setStrict(boolean strict) {
     }
   }
 }

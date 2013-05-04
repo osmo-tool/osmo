@@ -1,8 +1,0 @@
-setting, value
-model factory, osmo.tester.osmo.visualizer.examples.dsm.TestModelFactory
-
-step, times
-AddTask, <=2
-
-variable, coverage
-eventCount, 2

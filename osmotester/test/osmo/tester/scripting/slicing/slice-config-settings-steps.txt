@@ -1,7 +1,0 @@
-setting, value
-algorithm, Random
-model factory, osmo.tester.scripting.slicing.TestModelFactory
-
-step, times
-decrease,==0
-

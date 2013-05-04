@@ -1,7 +1,7 @@
 package osmo.tester.generator.endcondition.structure;
 
 import osmo.common.log.Logger;
-import osmo.tester.generator.endcondition.AbstractEndCondition;
+import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -21,7 +21,7 @@ import java.util.List;
  *
  * @author Teemu Kanstren
  */
-public class StepCoverage extends AbstractEndCondition {
+public class StepCoverage implements EndCondition {
   private static Logger log = new Logger(StepCoverage.class);
   /** The names of the steps (transitions) that need to be covered. */
   private Collection<String> required = new ArrayList<>();

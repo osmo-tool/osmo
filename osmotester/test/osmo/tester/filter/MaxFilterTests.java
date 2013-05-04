@@ -28,11 +28,11 @@ public class MaxFilterTests {
 
   @Before
   public void testSetup() {
+    OSMOConfiguration.setSeed(123);
     out = new ByteArrayOutputStream(1000);
     ps = new PrintStream(out);
     osmo = new OSMOTester();
     config = osmo.getConfig();
-    osmo.setSeed(123);
     validTestModel2 = new ValidTestModel2(new Requirements(), ps);
   }
 
@@ -84,7 +84,7 @@ public class MaxFilterTests {
     MaxTransitionFilter filter = new MaxTransitionFilter();
     filter.setMax("epixx", 1);
     osmo.addFilter(filter);
-    osmo.addSuiteEndCondition(new Length(1));
+    osmo.setSuiteEndCondition(new Length(1));
     config.setFailWhenNoWayForward(false);
     osmo.generate();
     assertTransitions(":hello:world:epixx_pre:epixx:epixx_oracle");
@@ -101,8 +101,8 @@ public class MaxFilterTests {
     filter.setMax("t2", 2);
     filter.setMax("t3", 2);
     osmo.addFilter(filter);
-    osmo.addTestEndCondition(new Length(20));
-    osmo.addSuiteEndCondition(new Length(1));
+    osmo.setTestEndCondition(new Length(20));
+    osmo.setSuiteEndCondition(new Length(1));
     osmo.generate();
     listener.addExpected("suite-start", "start", "t:t3", "t:t2", "t:t4", "t:t3", "t:t4", "t:t1", "t:t4", "t:t2", "t:t4",
             "t:t4", "t:t4", "t:t4", "t:t4", "t:t4", "t:t4", "t:t4", "t:t4", "t:t4", "t:t4", "t:t4", "end", "suite-end");
@@ -115,7 +115,7 @@ public class MaxFilterTests {
     MaxTransitionFilter filter = new MaxTransitionFilter();
     filter.setMax("epixx", 2);
     osmo.addFilter(filter);
-    osmo.addSuiteEndCondition(new Length(1));
+    osmo.setSuiteEndCondition(new Length(1));
     config.setFailWhenNoWayForward(false);
     osmo.generate();
     assertTransitions(":hello:world:epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle");

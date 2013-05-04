@@ -12,8 +12,8 @@ public class FSMBuildVisualizerExample {
     OSMOConfiguration.setSeed(55);
     FSMBuildVisualizer gv = new FSMBuildVisualizer();
     OSMOTester osmo = new OSMOTester(new CalculatorModel());
-    osmo.addTestEndCondition(new Length(15));
-    osmo.addSuiteEndCondition(new Length(5));
+    osmo.setTestEndCondition(new Length(15));
+    osmo.setSuiteEndCondition(new Length(5));
     osmo.addListener(gv);
     osmo.generate();
   }

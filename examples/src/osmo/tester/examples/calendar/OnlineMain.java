@@ -11,16 +11,15 @@ import osmo.tester.generator.endcondition.Length;
 /** @author Teemu Kanstren */
 public class OnlineMain {
   public static void main(String[] args) {
+    OSMOConfiguration.setSeed(111);
     OSMOTester osmo = new OSMOTester();
-    osmo.addSuiteEndCondition(new Length(5));
-    osmo.addTestEndCondition(new Length(5));
+    osmo.setSuiteEndCondition(new Length(5));
+    osmo.setTestEndCondition(new Length(5));
     ModelState state = new ModelState();
     CalendarScripter scripter = new OnlineScripter();
     osmo.addModelObject(new CalendarMeetingModel(state, scripter));
     OSMOConfiguration config = osmo.getConfig();
     config.setFailWhenError(false);
-//    osmo.addModelObject(new CalendarFailureModel(state, scripter));
-    osmo.setSeed(111);
     osmo.generate();
   }
 

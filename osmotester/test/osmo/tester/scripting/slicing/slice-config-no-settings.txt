@@ -1,2 +1,0 @@
-step, times
-decrease,==0

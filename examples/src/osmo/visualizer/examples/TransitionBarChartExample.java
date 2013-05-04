@@ -23,8 +23,8 @@ public class TransitionBarChartExample {
     TransitionBarChart barGraph = new TransitionBarChart();
     OSMOTester tester = new OSMOTester();
 //    ManualEndCondition mec = new ManualEndCondition();
-    tester.addTestEndCondition(new Length(10));
-    tester.addSuiteEndCondition(new Length(10));
+    tester.setTestEndCondition(new Length(10));
+    tester.setSuiteEndCondition(new Length(10));
     tester.addListener(barGraph);
 //    tester.addModelObject(new CalculatorModel());
     ModelState state = new ModelState();
@@ -39,7 +39,7 @@ public class TransitionBarChartExample {
     tester.addModelObject(new CalendarOverlappingModel(state, scripter, out));
     tester.addModelObject(new CalendarParticipantModel(state, scripter, out));
     tester.addModelObject(new CalendarErrorHandlingModel(state, scripter, out));
-    tester.setAlgorithm(new ManualAlgorithm());
+    tester.setAlgorithm(new ManualAlgorithm(tester));
     tester.generate();
   }
 }

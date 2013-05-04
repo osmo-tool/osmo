@@ -28,7 +28,7 @@ public class CalendarJenkins {
     JenkinsReportGenerator reporter = new JenkinsReportGenerator("calendar-steps.xml", true);
     config.addListener(reporter);
     osmo.setConfig(config);
-    osmo.addSuiteEndCondition(new Length(20));
+    osmo.setSuiteEndCondition(new Length(20));
     ModelState state = new ModelState();
     CalendarScripter scripter = new OfflineScripter(state, "tests.html");
     osmo.addModelObject(state);

@@ -42,9 +42,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
   @Override
   public ValueRangeSet<T> setStrategy(DataGenerationStrategy strategy) {
     this.strategy = strategy;
-    if (strategy != DataGenerationStrategy.SLICED && strategy != DataGenerationStrategy.SCRIPTED) {
-      partitions.setStrategy(strategy);
-    }
+    partitions.setStrategy(strategy);
     return this;
   }
 
@@ -203,12 +201,6 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
     OSMOConfiguration.check(this);
     validate();
     T next;
-    if (strategy == DataGenerationStrategy.SCRIPTED) {
-      return scriptedNext(scriptNextSerialized());
-    }
-    if (strategy == DataGenerationStrategy.SLICED) {
-      return (T) convert(getSlices().next());
-    }
     ValueRange vr = nextPartition();
     if (vr.getType() == DataType.INT) {
       next = (T) new Integer(vr.nextInt());
@@ -233,13 +225,6 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
       default:
         throw new IllegalArgumentException("Enum type:" + range.getType() + " unsupported.");
     }
-  }
-
-  private T scriptedNext(String serialized) {
-    if (!evaluateSerialized(serialized)) {
-      throw new IllegalArgumentException("Requested invalid scripted value for variable '" + getName() + "': " + serialized);
-    }
-    return (T) convert(serialized);
   }
 
   /**
@@ -276,37 +261,6 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
     ValueRange i = nextPartition();
 //    history.add(value);
     return i.nextLong();
-  }
-
-  /**
-   * Evaluates the given value to see if it fits into the defined set of partitions (domains).
-   *
-   * @param value The value to check.
-   * @return True if the value fits in the defined partitions, false otherwise.
-   */
-  @Override
-  public boolean evaluate(Number value) {
-    Collection<ValueRange> partitions = this.partitions.getOptions();
-    log.debug("Evaluating value:" + value);
-    for (ValueRange partition : partitions) {
-      log.debug("Checking partition:" + partition);
-      if (partition.evaluate(value)) {
-        log.debug("Found match");
-        return true;
-      }
-    }
-    return false;
-  }
-
-  @Override
-  public boolean evaluateSerialized(String item) {
-    double value = 0;
-    try {
-      value = Double.parseDouble(item);
-    } catch (NumberFormatException e) {
-      return false;
-    }
-    return evaluate(value);
   }
 
   @Override

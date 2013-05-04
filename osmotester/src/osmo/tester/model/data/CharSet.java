@@ -154,19 +154,6 @@ public class CharSet extends SearchableInput<Character> {
   }
 
   @Override
-  public boolean evaluate(Character item) {
-    return validChars.contains(item.toString());
-  }
-
-  @Override
-  public boolean evaluateSerialized(String item) {
-    if (item.length() != 1) {
-      return false;
-    }
-    return evaluate(item.charAt(0));
-  }
-
-  @Override
   public Collection<Character> getOptions() {
     List<Character> result = new ArrayList<>();
     char[] temp = validChars.toCharArray();

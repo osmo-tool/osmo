@@ -127,7 +127,6 @@ public class Text extends SearchableInput<String> {
   public Text setStrategy(DataGenerationStrategy algorithm) {
     switch (algorithm) {
       case RANDOM:
-      case SCRIPTED:
       case ORDERED_LOOP_INVALID:
       case RANDOM_INVALID:
         this.strategy = algorithm;
@@ -151,8 +150,6 @@ public class Text extends SearchableInput<String> {
     switch (strategy) {
       case RANDOM:
         return randomNext();
-      case SCRIPTED:
-        return scriptedNext();
       case RANDOM_INVALID:
         return invalidRandomNext();
       case ORDERED_LOOP_INVALID:
@@ -282,33 +279,6 @@ public class Text extends SearchableInput<String> {
     chars.reduceBy(charsToRemove);
     return this;
   }
-
-  @Override
-  /**
-   * Evaluate that all characters in the given char sequence are in the readable set and if the length of the word
-   * is withing the bounds defined in this object.
-   *
-   * @param word The char sequence to evaluate.
-   * @return True if all characters are in the readable set and length is ok, false otherwise.
-   */
-  public boolean evaluate(String word) {
-    char[] wordChars = word.toCharArray();
-    if (wordChars.length < min || wordChars.length > max) {
-      return false;
-    }
-    boolean result = true;
-    for (char c : wordChars) {
-      boolean b = chars.evaluate(c);
-      result = result && b;
-    }
-    return result;
-  }
-
-  @Override
-  public boolean evaluateSerialized(String item) {
-    return evaluate(item);
-  }
-
   public Collection<String> getHistory() {
     return history;
   }

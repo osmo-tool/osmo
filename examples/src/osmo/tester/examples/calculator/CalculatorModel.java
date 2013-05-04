@@ -109,9 +109,7 @@ public class CalculatorModel {
 
   public static void main(String[] args) {
     OSMOTester tester = new OSMOTester(new CalculatorModel());
-    tester.setAlgorithm(new ManualAlgorithm());
-    tester.addTestEndCondition(new Length(100));
-    tester.addSuiteEndCondition(new Length(100));
+    tester.setAlgorithm(new ManualAlgorithm(tester));
     tester.generate();
   }
 }

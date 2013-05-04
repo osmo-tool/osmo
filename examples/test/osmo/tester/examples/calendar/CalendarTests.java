@@ -3,6 +3,7 @@ package osmo.tester.examples.calendar;
 import junit.framework.AssertionFailedError;
 import org.junit.Before;
 import org.junit.Test;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.examples.calendar.scripter.offline.OfflineScripter;
@@ -31,8 +32,8 @@ public class CalendarTests {
 
   @Before
   public void testSetup() {
+    OSMOConfiguration.setSeed(111);
     osmo = new OSMOTester();
-    osmo.setSeed(111);
     bos = new ByteArrayOutputStream();
     out = new PrintStream(bos);
   }

@@ -27,8 +27,8 @@ public class Example {
 
   @OSMOConfigurationProvider
   public static OSMOConfiguration giefConf() {
+    OSMOConfiguration.setSeed(333);
     OSMOConfiguration config = new OSMOConfiguration();
-    config.setSeed(333);
     config.addModelObject(new CalculatorModel(ps));
     config.setJUnitLength(5);
     return config;

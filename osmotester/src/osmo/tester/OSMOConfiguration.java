@@ -32,9 +32,9 @@ public class OSMOConfiguration implements ModelFactory {
   /** The set of test model objects, given by the user. */
   private final Collection<ModelObject> modelObjects = new ArrayList<>();
   /** When do we stop generating the overall test suite? (stopping all test generation). Ignored if junitLength is set. */
-  private Collection<EndCondition> suiteEndConditions = new ArrayList<>();
+  private EndCondition suiteEndCondition = new And(new Length(1), new Probability(0.05d));
   /** When do we stop generating individual tests and start a new one? */
-  private Collection<EndCondition> testCaseEndConditions = new ArrayList<>();
+  private EndCondition testCaseEndCondition = new And(new Length(1), new Probability(0.1d));
   /** Set of filters to define when given transitions should not be considered for execution. */
   private Collection<TransitionFilter> filters = new ArrayList<>();
   /** The algorithm to traverse the test model to generate test steps. */
@@ -56,10 +56,9 @@ public class OSMOConfiguration implements ModelFactory {
   private static Long baseSeed = null;
   /** Serialized value options for defined variables. */
   private static Map<String, ValueSet<String>> slices = new HashMap<>();
-  /** Is the user in manual control? */
-  private static boolean manual = false;
   /** Factory for creating model objects, alternative to adding them one by one. */
   private ModelFactory factory = null;
+  private static boolean manual = false;
 
   public OSMOConfiguration() {
 
@@ -111,47 +110,35 @@ public class OSMOConfiguration implements ModelFactory {
   }
 
   /**
-   * Provides the defined suite end conditions. If none are defined, one is created that requires at least
-   * one test to be generated and after that ends the suite with 5% probability.
-   *
-   * @return The user defined suite end conditions or the default end condition.
+   * @return The defined suite end condition.
    */
-  public Collection<EndCondition> getSuiteEndConditions() {
-    if (suiteEndConditions.size() == 0) {
-      addSuiteEndCondition(new And(new Length(1), new Probability(0.05d)));
-    }
-    return suiteEndConditions;
+  public EndCondition getSuiteEndCondition() {
+    return suiteEndCondition;
   }
 
   /**
-   * Provides the defined test case end conditions. If none are defined, one is created that requires at least
-   * one step for a test to be generated and after that ends the test with 10% probability.
-   *
-   * @return The user defined suite end conditions or the default end condition.
+   * @return The test end condition.
    */
-  public Collection<EndCondition> getTestCaseEndConditions() {
-    if (testCaseEndConditions.size() == 0) {
-      addTestEndCondition(new And(new Length(1), new Probability(0.1d)));
-    }
-    return testCaseEndConditions;
+  public EndCondition getTestCaseEndCondition() {
+    return testCaseEndCondition;
   }
 
   /**
-   * Add a condition for stopping the generation of whole test suite.
+   * Set the condition for stopping the generation of whole test suite.
    *
    * @param condition The new condition to stop overall suite generation.
    */
-  public void addSuiteEndCondition(EndCondition condition) {
-    suiteEndConditions.add(condition);
+  public void setSuiteEndCondition(EndCondition condition) {
+    suiteEndCondition = condition;
   }
 
   /**
-   * Add a condition for stopping the generation of individual test cases.
+   * Set the condition for stopping the generation of individual test cases.
    *
    * @param condition The new condition to stop individual test generation.
    */
-  public void addTestEndCondition(EndCondition condition) {
-    testCaseEndConditions.add(condition);
+  public void setTestEndCondition(EndCondition condition) {
+    testCaseEndCondition = condition;
   }
 
   /**
@@ -226,9 +213,8 @@ public class OSMOConfiguration implements ModelFactory {
     FSM fsm = parserResult.getFsm();
     fsm.initSearchableInputs(this);
     algorithm.init(parserResult);
-    for (EndCondition ec : suiteEndConditions) {
-      ec.init(fsm);
-    }
+    suiteEndCondition.init(fsm);
+    //test end condition is initialized in generator between each test case
     listeners.init(fsm, this);
   }
 
@@ -301,7 +287,6 @@ public class OSMOConfiguration implements ModelFactory {
   public static void reset() {
     slices = new HashMap<>();
     scripter = null;
-    manual = false;
   }
 
   public static void check(SearchableInput si) {
@@ -313,15 +298,9 @@ public class OSMOConfiguration implements ModelFactory {
       si.enableGUI();
       return;
     }
-    if (si.getSlices() != null) {
-      si.setStrategy(DataGenerationStrategy.SLICED);
-    }
-    if (scripter != null && scripter.getScripts().get(si.getName()) != null) {
-      si.setStrategy(DataGenerationStrategy.SCRIPTED);
-    }
   }
 
-  public static void setManual(boolean manual) {
-    OSMOConfiguration.manual = manual;
+  public void setManual(boolean manual) {
+    this.manual = manual;
   }
 }

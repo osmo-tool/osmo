@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Teemu Kanstren, Olli-Pekka Puolitaival
  */
-public class Time extends AbstractEndCondition {
+public class Time implements EndCondition {
   /** Indicates whether time has passed or not, meaning should generation be stopped. */
   private boolean shouldEnd = false;
   /** The number of time units until this should return true. */

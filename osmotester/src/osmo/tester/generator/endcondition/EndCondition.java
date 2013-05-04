@@ -33,14 +33,5 @@ public interface EndCondition {
    * @param fsm Representation of the model.
    */
   public void init(FSM fsm);
-
-  /**
-   * Should return true if the end condition is strict (stop test/suite immediately if this indicates end even if others do not).
-   *
-   * @return True if strict.
-   */
-  public boolean isStrict();
-
-  public void setStrict(boolean strict);
 }
 

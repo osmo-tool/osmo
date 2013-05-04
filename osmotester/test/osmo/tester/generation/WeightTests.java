@@ -3,6 +3,7 @@ package osmo.tester.generation;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.algorithm.WeightedBalancingAlgorithm;
 import osmo.tester.generator.endcondition.Length;
@@ -15,8 +16,8 @@ public class WeightTests {
 
   @Before
   public void testSetup() {
+    OSMOConfiguration.setSeed(100);
     osmo = new OSMOTester();
-    osmo.setSeed(100);
     listener = new TestSequenceListener();
     osmo.addListener(listener);
   }
@@ -32,8 +33,8 @@ public class WeightTests {
     osmo.setAlgorithm(new WeightedBalancingAlgorithm());
     Length length3 = new Length(11);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length1);
     osmo.generate();
     listener.validate("Generated sequence for weighted model 1");
   }
@@ -46,8 +47,8 @@ public class WeightTests {
     osmo.setAlgorithm(new WeightedBalancingAlgorithm());
     Length length3 = new Length(6);
     Length length1 = new Length(2);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length1);
     osmo.generate();
     listener.validate("Generated sequence 2 for weighted model 1");
   }

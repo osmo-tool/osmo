@@ -12,8 +12,8 @@ public class Main2 {
     OSMOTester tester = new OSMOTester();
     tester.addModelObject(new HelloModule(state));
     tester.addModelObject(new WorldModule(state));
-    tester.addTestEndCondition(new Length(5));
-    tester.addSuiteEndCondition(new Length(2));
+    tester.setTestEndCondition(new Length(5));
+    tester.setSuiteEndCondition(new Length(2));
     tester.generate();
   }
 }

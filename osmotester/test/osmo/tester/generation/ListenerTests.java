@@ -31,8 +31,8 @@ public class ListenerTests {
     osmo.addModelObject(new ValidTestModel1());
     Length length3 = new Length(3);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length1);
     try {
       osmo.generate();
       fail("Generation without available transitions should fail.");
@@ -55,8 +55,8 @@ public class ListenerTests {
     osmo.addModelObject(new ValidTestModel2(new Requirements(), ps));
     Length length3 = new Length(3);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length1);
     osmo.generate();
     listener.validate("Generated sequence for test model 2");
   }

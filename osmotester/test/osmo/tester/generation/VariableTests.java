@@ -2,6 +2,7 @@ package osmo.tester.generation;
 
 import org.junit.Before;
 import org.junit.Test;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.ModelVariable;
@@ -23,8 +24,8 @@ public class VariableTests {
 
   @Before
   public void testSetup() {
+    OSMOConfiguration.setSeed(123);
     osmo = new OSMOTester();
-    osmo.setSeed(123);
     listener = new VariableTestListener();
     osmo.addListener(listener);
   }
@@ -35,8 +36,8 @@ public class VariableTests {
     osmo.addModelObject(model);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length1);
     osmo.generate();
     TestSuite suite = model.getSuite();
     List<TestCase> tests = suite.getFinishedTestCases();
@@ -73,8 +74,8 @@ public class VariableTests {
     osmo.addModelObject(model);
     Length length10 = new Length(10);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length10);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length10);
+    osmo.setSuiteEndCondition(length1);
     osmo.generate();
     TestSuite suite = model.getSuite();
     List<TestCase> tests = suite.getFinishedTestCases();
@@ -90,8 +91,8 @@ public class VariableTests {
     osmo.addModelObject(model);
     Length length9 = new Length(9);
     Length length2 = new Length(2);
-    osmo.addTestEndCondition(length9);
-    osmo.addSuiteEndCondition(length2);
+    osmo.setTestEndCondition(length9);
+    osmo.setSuiteEndCondition(length2);
     osmo.generate();
     TestSuite suite = model.getSuite();
     List<TestCase> tests = suite.getFinishedTestCases();
@@ -121,8 +122,8 @@ public class VariableTests {
     osmo.addModelObject(model);
     Length length9 = new Length(9);
     Length length2 = new Length(2);
-    osmo.addTestEndCondition(length9);
-    osmo.addSuiteEndCondition(length2);
+    osmo.setTestEndCondition(length9);
+    osmo.setSuiteEndCondition(length2);
     osmo.generate();
     TestSuite suite = osmo.getSuite();
     List<TestCase> tests = suite.getFinishedTestCases();
