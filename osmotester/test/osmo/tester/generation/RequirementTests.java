@@ -24,8 +24,8 @@ public class RequirementTests {
     reqs.add(ValidTestModel2.REQ_HELLO);
     reqs.add(ValidTestModel2.REQ_WORLD);
     OSMOTester osmo = new OSMOTester(new ValidTestModel2(reqs));
-    osmo.addTestEndCondition(new Length(3));
-    osmo.addSuiteEndCondition(new Length(1));
+    osmo.setTestEndCondition(new Length(3));
+    osmo.setSuiteEndCondition(new Length(1));
     osmo.generate();
     assertEquals(3, reqs.getUniqueCoverage().size());
     assertEquals(3, reqs.getRequirements().size());
@@ -37,8 +37,8 @@ public class RequirementTests {
     Requirements reqs = new Requirements();
     reqs.add(ValidTestModel2.REQ_HELLO);
     OSMOTester osmo = new OSMOTester(new ValidTestModel2(reqs));
-    osmo.addTestEndCondition(new Length(10));
-    osmo.addSuiteEndCondition(new Length(1));
+    osmo.setTestEndCondition(new Length(10));
+    osmo.setSuiteEndCondition(new Length(1));
     osmo.generate();
     assertEquals(3, reqs.getUniqueCoverage().size());
     assertEquals(1, reqs.getRequirements().size());
@@ -49,8 +49,8 @@ public class RequirementTests {
   public void fullExcessCoverage() {
     Requirements reqs = new Requirements();
     OSMOTester osmo = new OSMOTester(new ValidTestModel2(reqs));
-    osmo.addTestEndCondition(new Length(3));
-    osmo.addSuiteEndCondition(new Length(1));
+    osmo.setTestEndCondition(new Length(3));
+    osmo.setSuiteEndCondition(new Length(1));
     osmo.generate();
     assertEquals(3, reqs.getUniqueCoverage().size());
     assertEquals(0, reqs.getRequirements().size());
@@ -65,8 +65,8 @@ public class RequirementTests {
     reqs.add(ValidTestModel2.REQ_WORLD);
     reqs.add("undefined");
     OSMOTester osmo = new OSMOTester(new ValidTestModel2(reqs));
-    osmo.addTestEndCondition(new Length(3));
-    osmo.addSuiteEndCondition(new Length(1));
+    osmo.setTestEndCondition(new Length(3));
+    osmo.setSuiteEndCondition(new Length(1));
     osmo.generate();
     assertEquals(3, reqs.getUniqueCoverage().size());
     assertEquals(4, reqs.getRequirements().size());

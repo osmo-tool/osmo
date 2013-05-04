@@ -111,8 +111,8 @@ public class CalculatorModel2 {
     OSMOTester tester = new OSMOTester(new CalculatorModel2());
     tester.setAlgorithm(new RandomAlgorithm());
     tester.setDebug(true);
-    tester.addSuiteEndCondition(new Length(10));
-    tester.addTestEndCondition(new Length(10));
+    tester.setSuiteEndCondition(new Length(10));
+    tester.setTestEndCondition(new Length(10));
     tester.generate();
   }
 }

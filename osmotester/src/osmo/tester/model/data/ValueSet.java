@@ -79,9 +79,7 @@ public class ValueSet<T> extends SearchableInput<T> {
    */
   @Override
   public ValueSet<T> setStrategy(DataGenerationStrategy strategy) {
-    if (this.strategy != DataGenerationStrategy.SCRIPTED) {
-      this.strategy = strategy;
-    }
+    this.strategy = strategy;
     return this;
     //otherwise we just ignore it since we are running in scripted mode
   }
@@ -147,18 +145,6 @@ public class ValueSet<T> extends SearchableInput<T> {
     return options.contains(value);
   }
 
-  @Override
-  public boolean evaluateSerialized(String item) {
-    for (T option : options) {
-      //avoid nullpointer if null option is given
-      String str = "" + option;
-      if (str.equals(item)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   /**
    * Produces an object from this set to be used as input in test cases.
    * The choice depends on the chosen input strategy.
@@ -171,7 +157,7 @@ public class ValueSet<T> extends SearchableInput<T> {
       return (T) gui.next();
     }
     OSMOConfiguration.check(this);
-    if (strategy != DataGenerationStrategy.SLICED && options.size() == 0) {
+    if (options.size() == 0) {
       throw new IllegalStateException("No value to provide (add some options).");
     }
     T next = null;
@@ -184,13 +170,6 @@ public class ValueSet<T> extends SearchableInput<T> {
         break;
       case RANDOM:
         next = rand.oneOf(options);
-        break;
-      case SCRIPTED:
-        next = scriptedNext(scriptNextSerialized());
-        break;
-      case SLICED:
-        //this only works for strings but what can we say..
-        next = (T) getSlices().next();
         break;
       default:
         throw new IllegalArgumentException("Unsupported strategy (" + strategy.name() + ") for " + ValueSet.class.getSimpleName());
@@ -274,11 +253,7 @@ public class ValueSet<T> extends SearchableInput<T> {
    * @return All the objects in this set.
    */
   public List<T> getOptions() {
-    if (strategy != DataGenerationStrategy.SLICED) {
-      return options;
-    } else {
-      return (List<T>) getSlices().getOptions();
-    }
+    return options;
   }
 
   @Override

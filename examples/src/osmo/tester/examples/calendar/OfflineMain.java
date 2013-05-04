@@ -32,8 +32,9 @@ public class OfflineMain {
    * @param args command line arguments, ignored.
    */
   public static void main1(String[] args) {
+    OSMOConfiguration.setSeed(111);
     OSMOTester osmo = new OSMOTester();
-//    osmo.addSuiteEndCondition(new Length(2));
+//    osmo.setSuiteEndCondition(new Length(2));
     ModelState state = new ModelState();
     CalendarScripter scripter = new OnlineScripter();
 //    CalendarScripter scripter = new OfflineScripter("tests.html");
@@ -44,13 +45,12 @@ public class OfflineMain {
     osmo.addModelObject(new CalendarParticipantModel(state, scripter));
 //    osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter));
 //    osmo.addModelObject(new CalendarFailureModel(state, scripter));
-    osmo.setSeed(111);
     osmo.generate();
   }
 
   public static void main2(String[] args) {
     OSMOTester osmo = new OSMOTester();
-//    osmo.addSuiteEndCondition(new Length(2));
+//    osmo.setSuiteEndCondition(new Length(2));
     ModelState state = new ModelState();
 //    CalendarScripter scripter = new OnlineScripter();
     CalendarScripter scripter = new OfflineScripter(state, "tests.html");
@@ -69,15 +69,15 @@ public class OfflineMain {
   }
 
   public static void main(String[] args) throws Exception {
+    OSMOConfiguration.setSeed(566);
     OSMOTester osmo = new OSMOTester();
     OSMOConfiguration config = new OSMOConfiguration();
-    osmo.setSeed(566);
     config.setUnwrapExceptions(true);
 //    FSMBuildVisualizer visu = new FSMBuildVisualizer();
 //    config.addListener(visu);
     osmo.setConfig(config);
-    osmo.addTestEndCondition(new Length(5));
-    osmo.addSuiteEndCondition(new Length(5));
+    osmo.setTestEndCondition(new Length(5));
+    osmo.setSuiteEndCondition(new Length(5));
     ModelState state = new ModelState();
 //    CalendarScripter scripter = new OnlineScripter();
 //    CalendarScripter scripter = new MockScripter();

@@ -13,11 +13,10 @@ public class TransitionPieChartExample {
     OSMOConfiguration.setSeed(55);
     TransitionsPieChart transitionsBarChart = new TransitionsPieChart();
     OSMOTester tester = new OSMOTester();
-    tester.addTestEndCondition(new Endless());
     tester.addListener(transitionsBarChart);
 //    tester.addListener(new TransitionsPieChart());
     tester.addModelObject(new CalculatorModel());
-    tester.setAlgorithm(new ManualAlgorithm());
+    tester.setAlgorithm(new ManualAlgorithm(tester));
     tester.generate();
   }
 }

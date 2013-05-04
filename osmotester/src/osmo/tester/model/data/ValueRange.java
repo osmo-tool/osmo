@@ -35,7 +35,6 @@ import java.util.List;
  *
  * @author Teemu Kanstren
  * @see Input
- * @see Output
  */
 public class ValueRange<T extends Number> extends SearchableInput<T> {
   private static final Logger log = new Logger(ValueRange.class);
@@ -184,12 +183,6 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
       case BOUNDARY_SCAN_INVALID:
         value = nextBoundaryScan();
         break;
-      case SCRIPTED:
-        value = scriptedNext(scriptNextSerialized());
-        break;
-      case SLICED:
-        value = convert(getSlices().next());
-        break;
       default:
         value = nextRandom(type);
         break;
@@ -211,13 +204,6 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
       default:
         throw new IllegalArgumentException("Enum type:" + type + " unsupported.");
     }
-  }
-
-  private T scriptedNext(String serialized) {
-    if (!evaluateSerialized(serialized)) {
-      throw new IllegalArgumentException("Requested invalid scripted value for variable '" + getName() + "': " + serialized);
-    }
-    return (T) convert(serialized);
   }
 
   /**
@@ -353,25 +339,6 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
     result = 31 * result + (max != null ? max.hashCode() : 0);
     result = 31 * result + (increment != null ? increment.hashCode() : 0);
     return result;
-  }
-
-  @Override
-  public boolean evaluate(Number value) {
-    boolean high = value.doubleValue() <= max.doubleValue();
-    boolean low = value.doubleValue() >= min.doubleValue();
-    return high && low;
-  }
-
-  @Override
-  public boolean evaluateSerialized(String item) {
-    double value = 0;
-    try {
-      value = Double.parseDouble(item);
-    } catch (NumberFormatException e) {
-      e.printStackTrace();
-      return false;
-    }
-    return evaluate(value);
   }
 
   @Override

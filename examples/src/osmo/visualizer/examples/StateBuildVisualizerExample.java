@@ -22,8 +22,8 @@ public class StateBuildVisualizerExample {
     StateVisualizer gv = new StateVisualizer();
     OSMOTester tester = new OSMOTester();
 //    ManualEndCondition mec = new ManualEndCondition();
-    tester.addTestEndCondition(new Length(10));
-    tester.addSuiteEndCondition(new Length(10));
+    tester.setTestEndCondition(new Length(10));
+    tester.setSuiteEndCondition(new Length(10));
     tester.addListener(gv);
 //    tester.addModelObject(new CalculatorModel());
     ModelState state = new ModelState();
