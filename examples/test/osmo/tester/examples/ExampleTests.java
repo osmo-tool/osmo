@@ -2,6 +2,7 @@ package osmo.tester.examples;
 
 import org.junit.Before;
 import org.junit.Test;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.calculator.CalculatorModel;
 import osmo.tester.examples.calculator.CalculatorModel2;
@@ -25,7 +26,7 @@ public class ExampleTests {
 
   @Before
   public void setUp() {
-    osmo.setSeed(100);
+    OSMOConfiguration.setSeed(100);
   }
 
   @Test
@@ -35,8 +36,8 @@ public class ExampleTests {
     osmo.addModelObject(new CalculatorModel(ps));
     Length length3 = new Length(3);
     Length length2 = new Length(2);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length2);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length2);
     osmo.generate();
     String expected = "first" + ln +
             "Starting new test case 1" + ln +
@@ -61,8 +62,8 @@ public class ExampleTests {
     osmo.addModelObject(new CalculatorModel2(ps));
     Length length3 = new Length(3);
     Length length2 = new Length(2);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length2);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length2);
     osmo.generate();
     String expected = "first" + ln +
             "Starting new test case 1" + ln +
@@ -87,8 +88,8 @@ public class ExampleTests {
     osmo.addModelObject(new VendingExample(ps));
     Length length3 = new Length(3);
     Length length2 = new Length(2);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length2);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length2);
     osmo.generate();
     String expected = "Starting test:1\n" +
             "INSERT 20\n" +
@@ -122,8 +123,8 @@ public class ExampleTests {
     osmo.addModelObject(new VendingMachine2(ps));
     Length length3 = new Length(15);
     Length length2 = new Length(2);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length2);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length2);
     osmo.generate();
     String expected = "Starting test:1\n" +
             "10c\n" +

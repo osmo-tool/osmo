@@ -10,8 +10,8 @@ public class CalculatorMatrix {
   public static void main(String[] args) throws Exception {
     OSMOTester osmo = new OSMOTester();
     osmo.addModelObject(new CalculatorModel());
-    osmo.addSuiteEndCondition(new Length(10));
-    osmo.addTestEndCondition(new Length(5));
+    osmo.setSuiteEndCondition(new Length(10));
+    osmo.setTestEndCondition(new Length(5));
     osmo.generate();
     HTMLCoverageReporter reporter = new HTMLCoverageReporter(osmo.getSuite(), osmo.getFsm());
     String matrix = reporter.getTraceabilityMatrix();

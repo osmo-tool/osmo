@@ -225,14 +225,10 @@ public class JenkinsReportGenerator implements GenerationListener {
       }
     }
     properties.add(new Property(SEED, "" + config.getSeed()));
-    Collection<EndCondition> suiteEndConditions = config.getSuiteEndConditions();
-    for (EndCondition ec : suiteEndConditions) {
-      properties.add(new Property(SUITE_END_CONDITION, ec.toString()));
-    }
-    Collection<EndCondition> testEndConditions = config.getTestCaseEndConditions();
-    for (EndCondition ec : testEndConditions) {
-      properties.add(new Property(TEST_CASE_END_CONDITION, ec.toString()));
-    }
+    EndCondition suiteEndCondition = config.getSuiteEndCondition();
+    properties.add(new Property(SUITE_END_CONDITION, suiteEndCondition.toString()));
+    EndCondition testEndCondition = config.getTestCaseEndCondition();
+    properties.add(new Property(TEST_CASE_END_CONDITION, testEndCondition.toString()));
     return properties;
   }
 

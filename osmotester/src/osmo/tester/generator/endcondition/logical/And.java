@@ -1,6 +1,5 @@
 package osmo.tester.generator.endcondition.logical;
 
-import osmo.tester.generator.endcondition.AbstractEndCondition;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
@@ -13,7 +12,7 @@ import java.util.Arrays;
  *
  * @author Teemu Kanstren
  */
-public class And extends AbstractEndCondition {
+public class And implements EndCondition {
   /** The set of end conditions to be checked. */
   private final EndCondition[] conditions;
 

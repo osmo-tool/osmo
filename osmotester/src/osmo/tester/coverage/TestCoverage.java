@@ -243,10 +243,23 @@ public class TestCoverage {
             '}';
   }
 
-  public String coverageString(int possibleStepPairs, int possibleStates, int possibleStatePairs) {
+  public String coverageString(FSM fsm, int possibleStepPairs, int possibleStates, int possibleStatePairs) {
     String result = "Covered elements:\n";
     result += "Total steps: "+transitions.size();
     result += "\nUnique steps: "+singles.size();
+    if (fsm != null) {
+      Collection<FSMTransition> fsmTransitions = fsm.getTransitions();
+      int fsmMax = fsmTransitions.size();
+      result += (" (of "+ fsmMax +")");
+      if (fsmMax > singles.size()) {
+        Collection<String> all = new HashSet<>();
+        for (FSMTransition ft : fsmTransitions) {
+          all.add(ft.getStringName());
+        }
+        all.removeAll(singles);
+        result += " missing:"+all;
+      }
+    }
     result += "\nUnique step-pairs: "+stepPairs.size() + " (of "+possibleStepPairs+")";
     result += "\nUnique requirements: "+reqs.size();
     result += "\nUnique states: "+states.size();

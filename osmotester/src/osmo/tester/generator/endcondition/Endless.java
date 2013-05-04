@@ -23,13 +23,4 @@ public class Endless implements EndCondition {
   @Override
   public void init(FSM fsm) {
   }
-
-  @Override
-  public boolean isStrict() {
-    return false;
-  }
-
-  @Override
-  public void setStrict(boolean strict) {
-  }
 }

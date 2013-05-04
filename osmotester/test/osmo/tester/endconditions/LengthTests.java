@@ -22,8 +22,8 @@ public class LengthTests {
     CalculatorModel calculator = new CalculatorModel();
     OSMOTester tester = new OSMOTester(calculator);
     Length testStrategy = new Length(expectedLength);
-    tester.addTestEndCondition(testStrategy);
-    tester.addSuiteEndCondition(testStrategy);
+    tester.setTestEndCondition(testStrategy);
+    tester.setSuiteEndCondition(testStrategy);
     tester.generate();
     TestSuite testLog = calculator.getHistory();
     List<TestCase> history = testLog.getFinishedTestCases();

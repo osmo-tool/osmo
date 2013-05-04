@@ -136,7 +136,7 @@ public class GreedyOptimizer {
     MainGenerator generator = tester.initGenerator();
     generator.initSuite();
 //    TestCoverage generatorCoverage = generator.getSuite().getCoverage();
-    tester.addTestEndCondition(endCondition);
+    tester.setTestEndCondition(endCondition);
     this.fsm = generator.getFsm();
     config.validate(fsm);
     log.debug("greedy configuration validated");
@@ -183,7 +183,7 @@ public class GreedyOptimizer {
     TestCoverage suiteCoverage = new TestCoverage(suite);
 
     String summary = "summary\n";
-    summary += suiteCoverage.coverageString(possiblePairs.size(), 0, 0);
+    summary += suiteCoverage.coverageString(fsm, possiblePairs.size(), 0, 0);
     
     String totalCsv = "";
     totalCsv += csv1+"\n";

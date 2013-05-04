@@ -1,6 +1,7 @@
 package osmo.tester.gui.manualdrive;
 
 import osmo.tester.OSMOConfiguration;
+import osmo.tester.OSMOTester;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.algorithm.BalancingAlgorithm;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
@@ -88,11 +89,15 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
   private static final JButton btnEndTest = new JButton("End Test");
   private static final JButton btnEndSuite = new JButton("End Suite");
   private static final JButton btnWriteScript = new JButton("Write Script");
+  private final ManualEndCondition mec = new ManualEndCondition();
 
   /** Create the frame. */
-  public ManualAlgorithm() {
-    OSMOConfiguration.setManual(true);
-    MainGenerator.addStaticListener(new GUIGenerationListener(this));
+  public ManualAlgorithm(OSMOTester tester) {
+    OSMOConfiguration config = tester.getConfig();
+    config.setManual(true);
+    config.setSuiteEndCondition(mec);
+    config.setTestEndCondition(mec);
+    tester.addListener(new GUIGenerationListener(this));
     setNimbus();
     setTitle("OSMOTester Manual Script Generation");
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -185,7 +190,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
       @Override
       public void actionPerformed(ActionEvent e) {
         System.out.println("end test pressed");
-        suite.setShouldEndTest(true);
+        mec.setEndSuite(true);
       }
 
     });
@@ -193,8 +198,8 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     btnEndSuite.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        suite.setShouldEndTest(true);
-        suite.setShouldEndSuite(true);
+        mec.setEndSuite(true);
+        mec.setEndTest(true);
       }
     });
 
@@ -393,7 +398,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
           if (choiceFromList != null || autoplay) {
             break;
           }
-          if (suite.shouldEndSuite() || suite.shouldEndTest()) {
+          if (mec.endSuite(null, null) || mec.endTest(null, null)) {
             break;
           }
           try {
@@ -444,7 +449,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
 
     //Waiting for selection
     waitForSelection();
-    if (suite.shouldEndTest() || suite.shouldEndSuite()) {
+    if (mec.endSuite(null, null) || mec.endTest(null, null)) {
       return null;
     }
 

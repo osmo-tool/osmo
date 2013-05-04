@@ -23,10 +23,6 @@ public class TestSuite {
   private final List<TestCase> testCases = new ArrayList<>();
   /** List of covered transitions and number of how many times it exist in the test suite */
   private Map<String, Integer> transitionCoverage = new HashMap<>();
-  /** If true, current test generation should end when possible. */
-  private boolean shouldEndTest = false;
-  /** If true, test suite generation should end when possible. */
-  private boolean shouldEndSuite = false;
   /** The list of requirements that needs to be covered. */
   private Requirements requirements;
   /** The coverage for this test suite. */
@@ -287,22 +283,6 @@ public class TestSuite {
       }
     }
     return variables;
-  }
-
-  public boolean shouldEndTest() {
-    return shouldEndTest;
-  }
-
-  public boolean shouldEndSuite() {
-    return shouldEndSuite;
-  }
-
-  public void setShouldEndTest(boolean shouldEndTest) {
-    this.shouldEndTest = shouldEndTest;
-  }
-
-  public void setShouldEndSuite(boolean shouldEndSuite) {
-    this.shouldEndSuite = shouldEndSuite;
   }
 
   public void initRequirements(Requirements requirements) {

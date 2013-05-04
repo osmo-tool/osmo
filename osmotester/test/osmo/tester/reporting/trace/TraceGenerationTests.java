@@ -2,6 +2,7 @@ package osmo.tester.reporting.trace;
 
 import org.junit.Before;
 import org.junit.Test;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
@@ -129,11 +130,11 @@ public class TraceGenerationTests {
 
   @Test
   public void traceFromGenerator() {
+    OSMOConfiguration.setSeed(5);
     OSMOTester tester = new OSMOTester();
-    tester.setSeed(5);
     tester.addModelObject(new VariableModel2());
-    tester.addTestEndCondition(new Length(5));
-    tester.addSuiteEndCondition(new Length(3));
+    tester.setTestEndCondition(new Length(5));
+    tester.setSuiteEndCondition(new Length(3));
     tester.generate();
     TestSuite suite = tester.getSuite();
     assertTrace(suite, "expected-generator-trace.txt");
@@ -141,11 +142,11 @@ public class TraceGenerationTests {
 
   @Test
   public void failTraceFromGenerator() {
+    OSMOConfiguration.setSeed(5);
     OSMOTester tester = new OSMOTester();
-    tester.setSeed(5);
     tester.addModelObject(new VariableModel2());
-    tester.addTestEndCondition(new Length(5));
-    tester.addSuiteEndCondition(new Length(3));
+    tester.setTestEndCondition(new Length(5));
+    tester.setSuiteEndCondition(new Length(3));
     tester.generate();
     TestSuite suite = tester.getSuite();
     suite.getAllTestCases().get(1).setFailed(true);

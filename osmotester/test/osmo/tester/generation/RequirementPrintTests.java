@@ -47,7 +47,7 @@ public class RequirementPrintTests {
             "\n" +
             "Covered elements:\n" +
             "Total steps: 3\n" +
-            "Unique steps: 3\n" +
+            "Unique steps: 3 (of 3)\n" +
             "Unique step-pairs: 3 (of 3)\n" +
             "Unique requirements: 3\n" +
             "Unique states: 0\n" +
@@ -69,7 +69,7 @@ public class RequirementPrintTests {
             "\n" +
             "Covered elements:\n" +
             "Total steps: 10\n" +
-            "Unique steps: 3\n" +
+            "Unique steps: 3 (of 3)\n" +
             "Unique step-pairs: 4 (of 4)\n" +
             "Unique requirements: 3\n" +
             "Unique states: 0\n" +
@@ -91,7 +91,7 @@ public class RequirementPrintTests {
             "\n" +
             "Covered elements:\n" +
             "Total steps: 3\n" +
-            "Unique steps: 3\n" +
+            "Unique steps: 3 (of 3)\n" +
             "Unique step-pairs: 3 (of 3)\n" +
             "Unique requirements: 3\n" +
             "Unique states: 0\n" +
@@ -113,7 +113,7 @@ public class RequirementPrintTests {
             "\n" +
             "Covered elements:\n" +
             "Total steps: 3\n" +
-            "Unique steps: 3\n" +
+            "Unique steps: 3 (of 3)\n" +
             "Unique step-pairs: 3 (of 3)\n" +
             "Unique requirements: 3\n" +
             "Unique states: 0\n" +
@@ -138,7 +138,7 @@ public class RequirementPrintTests {
             "\n" +
             "Covered elements:\n" +
             "Total steps: 530\n" +
-            "Unique steps: 3\n" +
+            "Unique steps: 3 (of 3)\n" +
             "Unique step-pairs: 12 (of 12)\n" +
             "Unique requirements: 0\n" +
             "Unique states: 0\n" +
@@ -158,7 +158,7 @@ public class RequirementPrintTests {
             "\n" +
             "Covered elements:\n" +
             "Total steps: 530\n" +
-            "Unique steps: 3\n" +
+            "Unique steps: 3 (of 3)\n" +
             "Unique step-pairs: 4 (of 4)\n" +
             "Unique requirements: 3\n" +
             "Unique states: 3\n" +

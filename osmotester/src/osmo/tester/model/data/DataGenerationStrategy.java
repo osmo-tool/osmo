@@ -17,10 +17,6 @@ public enum DataGenerationStrategy {
   BOUNDARY_SCAN,
   /** Same as boundary but with invalid values (out of bounds). */
   BOUNDARY_SCAN_INVALID,
-  /** Values are provided as a list of values to be used in order. Typically from Manual Drive Algorithm. */
-  SCRIPTED,
-  /** Values are provided as a a set of options, and random generation is applied. Used in slicing. */
-  SLICED,
   /** Provide random invalid values. */
   RANDOM_INVALID,
   /** Provide invalid values looping through the set of options. */

@@ -2,6 +2,7 @@ package osmo.tester.algorithm;
 
 import org.junit.Before;
 import org.junit.Test;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generation.TestSequenceListener;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
@@ -20,8 +21,8 @@ public class WeightedSequenceTests {
 
   @Before
   public void testSetup() {
+    OSMOConfiguration.setSeed(100);
     osmo = new OSMOTester();
-    osmo.setSeed(100);
     listener = new TestSequenceListener();
     osmo.addListener(listener);
   }
@@ -32,8 +33,8 @@ public class WeightedSequenceTests {
     osmo.addModelObject(new WeightedModel1());
     Length length4 = new Length(4);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length4);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length4);
+    osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new WeightedRandomAlgorithm());
     osmo.generate();
     listener.validate("Weighted random generator steps");
@@ -41,8 +42,8 @@ public class WeightedSequenceTests {
 
     testSetup();
     osmo.addModelObject(new WeightedModel1());
-    osmo.addTestEndCondition(length4);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length4);
+    osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new RandomAlgorithm());
     osmo.generate();
     Collection<String> random = listener.getSteps();
@@ -55,8 +56,8 @@ public class WeightedSequenceTests {
     osmo.addModelObject(new WeightedModel1());
     Length length15 = new Length(20);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length15);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length15);
+    osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new WeightedRandomAlgorithm());
     osmo.generate();
     listener.validate("Weighted random generator steps");
@@ -64,8 +65,8 @@ public class WeightedSequenceTests {
 
     testSetup();
     osmo.addModelObject(new WeightedModel1());
-    osmo.addTestEndCondition(length15);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length15);
+    osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new RandomAlgorithm());
     osmo.generate();
     Collection<String> random = listener.getSteps();

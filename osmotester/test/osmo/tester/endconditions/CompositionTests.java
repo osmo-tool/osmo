@@ -30,8 +30,8 @@ public class CompositionTests {
 
     CalculatorModel calculator = new CalculatorModel();
     OSMOTester tester = new OSMOTester(calculator);
-    tester.addTestEndCondition(and);
-    tester.addSuiteEndCondition(length2);
+    tester.setTestEndCondition(and);
+    tester.setSuiteEndCondition(length2);
     tester.generate();
     TestSuite testLog = calculator.getHistory();
     List<TestCase> history = testLog.getFinishedTestCases();
@@ -50,8 +50,8 @@ public class CompositionTests {
 
     CalculatorModel calculator = new CalculatorModel();
     OSMOTester tester = new OSMOTester(calculator);
-    tester.addTestEndCondition(and);
-    tester.addSuiteEndCondition(length2);
+    tester.setTestEndCondition(and);
+    tester.setSuiteEndCondition(length2);
     tester.generate();
     TestSuite testLog = calculator.getHistory();
     List<TestCase> history = testLog.getFinishedTestCases();
@@ -70,8 +70,8 @@ public class CompositionTests {
 
     CalculatorModel calculator = new CalculatorModel();
     OSMOTester tester = new OSMOTester(calculator);
-    tester.addTestEndCondition(or);
-    tester.addSuiteEndCondition(length2);
+    tester.setTestEndCondition(or);
+    tester.setSuiteEndCondition(length2);
     tester.generate();
     TestSuite testLog = calculator.getHistory();
     List<TestCase> history = testLog.getFinishedTestCases();
@@ -90,8 +90,8 @@ public class CompositionTests {
 
     CalculatorModel calculator = new CalculatorModel();
     OSMOTester tester = new OSMOTester(calculator);
-    tester.addTestEndCondition(and);
-    tester.addSuiteEndCondition(and);
+    tester.setTestEndCondition(and);
+    tester.setSuiteEndCondition(and);
     tester.generate();
     TestSuite testLog = calculator.getHistory();
     List<TestCase> history = testLog.getFinishedTestCases();

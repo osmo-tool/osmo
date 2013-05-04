@@ -3,6 +3,7 @@ package osmo.tester.algorithm;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.common.log.Logger;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generation.TestSequenceListener;
 import osmo.tester.generator.algorithm.BalancingAlgorithm;
@@ -23,8 +24,8 @@ public class BalancingTests {
 
   @Before
   public void testSetup() {
+    OSMOConfiguration.setSeed(100);
     osmo = new OSMOTester();
-    osmo.setSeed(100);
     listener = new TestSequenceListener();
     osmo.addListener(listener);
   }
@@ -35,8 +36,8 @@ public class BalancingTests {
     osmo.addModelObject(new ValidTestModel6());
     Length length4 = new Length(4);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length4);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length4);
+    osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new BalancingAlgorithm());
     osmo.generate();
     listener.validate("Balancing random generator steps");
@@ -44,8 +45,8 @@ public class BalancingTests {
 
     testSetup();
     osmo.addModelObject(new ValidTestModel6());
-    osmo.addTestEndCondition(length4);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length4);
+    osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new RandomAlgorithm());
     osmo.generate();
     Collection<String> random = listener.getSteps();
@@ -58,8 +59,8 @@ public class BalancingTests {
     osmo.addModelObject(new ValidTestModel6());
     Length length20 = new Length(20);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length20);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length20);
+    osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new BalancingAlgorithm());
     osmo.generate();
     listener.validate("Balancing random generator steps");
@@ -67,8 +68,8 @@ public class BalancingTests {
 
     testSetup();
     osmo.addModelObject(new ValidTestModel6());
-    osmo.addTestEndCondition(length20);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length20);
+    osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new RandomAlgorithm());
     osmo.generate();
     Collection<String> random = listener.getSteps();
@@ -80,8 +81,8 @@ public class BalancingTests {
     osmo.addModelObject(new ValidTestModel6());
     Length length1000 = new Length(1000);
     Length length10 = new Length(10);
-    osmo.addTestEndCondition(length1000);
-    osmo.addSuiteEndCondition(length10);
+    osmo.setTestEndCondition(length1000);
+    osmo.setSuiteEndCondition(length10);
     osmo.setAlgorithm(new BalancingAlgorithm());
     osmo.generate();
   }
@@ -92,8 +93,8 @@ public class BalancingTests {
     osmo.addModelObject(new ValidTestModel7());
     Length length200 = new Length(200);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length200);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length200);
+    osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new BalancingAlgorithm());
     osmo.generate();
   }

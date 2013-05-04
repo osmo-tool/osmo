@@ -37,8 +37,6 @@ public class MainGenerator {
   protected final OSMOConfiguration config;
   /** The parsed overall test model. */
   private FSM fsm;
-  //TODO: this is only used from manualdrive. should remove and refactor the manualdrive differently.
-  private static Collection<GenerationListener> staticListeners = new ArrayList<>();
   /** The list of listeners to be notified of new events as generation progresses. */
   private GenerationListenerList listeners;
   /** Test generation history. */
@@ -59,9 +57,6 @@ public class MainGenerator {
     this.suite = suite;
     this.config = config;
     this.listeners = config.getListeners();
-    for (GenerationListener listener : staticListeners) {
-      listeners.addListener(listener);
-    }
     createModelObjects();
   }
 
@@ -69,8 +64,7 @@ public class MainGenerator {
   public void generate() {
     log.debug("starting generation");
     initSuite();
-    while (!checkSuiteEndConditions() && !suite.shouldEndSuite()) {
-      suite.setShouldEndTest(false);
+    while (!config.getSuiteEndCondition().endSuite(suite, fsm)) {
       nextTest();
     }
     endSuite();
@@ -108,7 +102,7 @@ public class MainGenerator {
     beforeTest();
     TestCase test = suite.getCurrentTest();
     try {
-      while (!checkTestCaseEndConditions()) {
+      while (!config.getTestCaseEndCondition().endTest(suite, fsm)) {
         boolean shouldContinue = nextStep();
         if (!shouldContinue) {
           break;
@@ -157,9 +151,6 @@ public class MainGenerator {
     }
     FSMTraversalAlgorithm algorithm = config.getAlgorithm();
     FSMTransition next = algorithm.choose(suite, enabled);
-    if (suite.shouldEndTest()) {
-      return false;
-    }
     log.debug("Taking transition " + next.getName());
     execute(next);
     if (checkModelEndConditions()) {
@@ -264,48 +255,6 @@ public class MainGenerator {
   }
 
   /**
-   * Checks if suite generation should stop.
-   *
-   * @return True if should stop.
-   */
-  protected boolean checkSuiteEndConditions() {
-    boolean shouldEnd = true;
-    for (EndCondition ec : config.getSuiteEndConditions()) {
-      boolean temp = ec.endSuite(suite, fsm);
-      if (ec.isStrict() && temp) {
-        return true;
-      }
-      if (!temp) {
-        shouldEnd = false;
-      }
-    }
-    return shouldEnd;
-  }
-
-  /**
-   * Check if generation of current test case should stop based on given end conditions.
-   *
-   * @return True if this test generation should stop.
-   */
-  protected boolean checkTestCaseEndConditions() {
-    boolean shouldEnd = true;
-    for (EndCondition ec : config.getTestCaseEndConditions()) {
-      //check if all end conditions are met
-      boolean temp = ec.endTest(suite, fsm);
-      if (ec.isStrict() && temp) {
-        return true;
-      }
-      if (!temp) {
-        shouldEnd = false;
-      }
-    }
-    if (!shouldEnd) {
-      return false;
-    }
-    return true;
-  }
-
-  /**
    * Calls every defined end condition and if any return true, also returns true. Otherwise, false.
    *
    * @return true if current test case (not suite) generation should be stopped.
@@ -346,10 +295,8 @@ public class MainGenerator {
 
   public TestCase beforeTest() {
     testCount++;
-    for (EndCondition ec : config.getTestCaseEndConditions()) {
-      //re-initialize end conditions before new tests to remove previous test state
-      ec.init(fsm);
-    }
+    //re-initialize end conditions before new tests to remove previous test state
+    config.getTestCaseEndCondition().init(fsm);
     //update suite
     TestCase test = suite.startTest();
     listeners.testStarted(suite.getCurrentTest());
@@ -438,10 +385,6 @@ public class MainGenerator {
     return fsm;
   }
   
-  public static void addStaticListener(GenerationListener listener) {
-    staticListeners.add(listener);
-  }
-
   public void addOptionsFor(TestStep step, List<FSMTransition> enabled) {
     String stepName = FSM.START_NAME;
     if (step != null) {

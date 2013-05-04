@@ -34,8 +34,8 @@ public class ErrorHandlingTests {
   @Before
   public void testSetup() {
 //    Logger.consoleLevel = Level.ALL;
+    OSMOConfiguration.setSeed(100);
     osmo = new OSMOTester();
-    osmo.setSeed(100);
     config = osmo.getConfig();
     listener = new TestSequenceListener();
     osmo.addListener(listener);
@@ -46,8 +46,8 @@ public class ErrorHandlingTests {
     osmo.addModelObject(new ErrorModel1());
     Length length3 = new Length(3);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length1);
     try {
       osmo.generate();
       fail("Throwing an exception without trap should propagate.");
@@ -62,8 +62,8 @@ public class ErrorHandlingTests {
     config.setFailWhenError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length1);
     try {
       osmo.generate();
       fail("Trap should not catch @BeforeTest");
@@ -77,8 +77,8 @@ public class ErrorHandlingTests {
     osmo.addModelObject(new ErrorModel3());
     Length length3 = new Length(3);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length1);
     try {
       osmo.generate();
       fail("Throwing an exception without trap should propagate.");
@@ -93,8 +93,8 @@ public class ErrorHandlingTests {
     config.setFailWhenError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length1);
     try {
       osmo.generate();
       fail("Trap should not catch @BeforeSuite");
@@ -108,8 +108,8 @@ public class ErrorHandlingTests {
     osmo.addModelObject(new ErrorModel2());
     Length length3 = new Length(3);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length1);
     try {
       osmo.generate();
       fail("Throwing an exception without trap should propagate.");
@@ -124,8 +124,8 @@ public class ErrorHandlingTests {
     config.setFailWhenError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length1);
     try {
       osmo.generate();
       fail("Trap should not catch @AfterTest");
@@ -139,8 +139,8 @@ public class ErrorHandlingTests {
     osmo.addModelObject(new ErrorModel4());
     Length length3 = new Length(3);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length1);
     try {
       osmo.generate();
       fail("Throwing an exception without trap should propagate.");
@@ -155,8 +155,8 @@ public class ErrorHandlingTests {
     config.setFailWhenError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length1);
     try {
       osmo.generate();
       fail("Trap should not catch @AfterSuite");
@@ -170,8 +170,8 @@ public class ErrorHandlingTests {
     osmo.addModelObject(new ErrorModel6());
     Length length3 = new Length(3);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length1);
     try {
       osmo.generate();
       fail("Throwing an exception without trap should propagate.");
@@ -187,8 +187,8 @@ public class ErrorHandlingTests {
     config.setFailWhenError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length1);
     osmo.generate();
     listener.validate("@Guard with trap");
   }
@@ -198,8 +198,8 @@ public class ErrorHandlingTests {
     osmo.addModelObject(new ErrorModel5());
     Length length3 = new Length(3);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length1);
     try {
       osmo.generate();
       fail("Throwing an exception without trap should propagate.");
@@ -216,8 +216,8 @@ public class ErrorHandlingTests {
     config.setFailWhenError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length1);
     osmo.generate();
     listener.validate("@Transition with trap");
   }
@@ -227,8 +227,8 @@ public class ErrorHandlingTests {
     osmo.addModelObject(new ErrorModel8());
     Length length3 = new Length(3);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length1);
     try {
       osmo.generate();
       fail("Throwing an exception without trap should propagate.");
@@ -245,8 +245,8 @@ public class ErrorHandlingTests {
     config.setFailWhenError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length1);
     osmo.generate();
     listener.validate("@Pre with trap");
   }
@@ -256,8 +256,8 @@ public class ErrorHandlingTests {
     osmo.addModelObject(new ErrorModel7());
     Length length3 = new Length(3);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length1);
     try {
       osmo.generate();
       fail("Throwing an exception without trap should propagate.");
@@ -274,8 +274,8 @@ public class ErrorHandlingTests {
     config.setFailWhenError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length1);
     osmo.generate();
     listener.validate("@Post with trap");
   }
@@ -285,8 +285,8 @@ public class ErrorHandlingTests {
     osmo.addModelObject(new ErrorModel9());
     Length length3 = new Length(3);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length1);
     try {
       osmo.generate();
       fail("Throwing an exception without trap should propagate.");
@@ -303,8 +303,8 @@ public class ErrorHandlingTests {
     config.setFailWhenError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length1);
     osmo.generate();
     listener.validate("@EndCondition with trap");
   }
@@ -317,8 +317,8 @@ public class ErrorHandlingTests {
     osmo.addModelObject(new StrictTestModel());
     Length length3 = new Length(3);
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(length3);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(length3);
+    osmo.setSuiteEndCondition(length1);
     try {
       osmo.generate();
       fail("The final strict test step failure should stop the generator");

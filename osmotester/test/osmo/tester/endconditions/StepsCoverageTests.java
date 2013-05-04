@@ -178,8 +178,8 @@ public class StepsCoverageTests {
     StepCoverage sc = new StepCoverage();
     sc.addRequiredStep("non-existent");
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(sc);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(sc);
+    osmo.setSuiteEndCondition(length1);
     try {
       osmo.generate();
       fail("Generation with coverage for non-existent test step (transition) should fail.");
@@ -198,8 +198,8 @@ public class StepsCoverageTests {
     sc.addRequiredStep("third");
     sc.addRequiredStep("third");
     Length length1 = new Length(1);
-    osmo.addTestEndCondition(sc);
-    osmo.addSuiteEndCondition(length1);
+    osmo.setTestEndCondition(sc);
+    osmo.setSuiteEndCondition(length1);
     TestSequenceListener listener = new TestSequenceListener(false);
     listener.addExpected("suite-start", "start", "t:first", "t:second", "t:third", "t:third", "end", "suite-end");
     osmo.addListener(listener);

@@ -1,6 +1,6 @@
 package osmo.tester.generator.endcondition.structure;
 
-import osmo.tester.generator.endcondition.AbstractEndCondition;
+import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 
@@ -9,7 +9,7 @@ import osmo.tester.model.FSM;
  * 
  * @author Teemu Kanstren 
  */
-public class ElementCoverage extends AbstractEndCondition {
+public class ElementCoverage implements EndCondition {
   /** Defines what needs to be covered for this to end. */
   private final ElementCoverageRequirement requirement;
 

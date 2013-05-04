@@ -81,7 +81,7 @@ public class OSMOTester {
     TestSuite suite = generator.getSuite();
     System.out.println("generated " + suite.getFinishedTestCases().size() + " tests.\n");
     TestCoverage tc = new TestCoverage(suite.getAllTestCases());
-    String coverage = tc.coverageString(generator.getPossiblePairs().size(), 0, 0);
+    String coverage = tc.coverageString(fsm, generator.getPossiblePairs().size(), 0, 0);
     System.out.println(coverage);
     Requirements requirements = suite.getRequirements();
     if (!requirements.isEmpty()) {
@@ -117,8 +117,8 @@ public class OSMOTester {
    *
    * @param condition The new condition to stop overall suite generation.
    */
-  public void addSuiteEndCondition(EndCondition condition) {
-    config.addSuiteEndCondition(condition);
+  public void setSuiteEndCondition(EndCondition condition) {
+    config.setSuiteEndCondition(condition);
   }
 
   /**
@@ -126,8 +126,8 @@ public class OSMOTester {
    *
    * @param condition The new condition to stop individual test generation.
    */
-  public void addTestEndCondition(EndCondition condition) {
-    config.addTestEndCondition(condition);
+  public void setTestEndCondition(EndCondition condition) {
+    config.setTestEndCondition(condition);
   }
 
   /**
@@ -151,16 +151,6 @@ public class OSMOTester {
 
   public void addListener(GenerationListener listener) {
     config.addListener(listener);
-  }
-
-  /**
-   * Allows the user to define their own random number generator.
-   * This seed is used in OSMOTester internal components.
-   *
-   * @param seed The new random number generator.
-   */
-  public void setSeed(long seed) {
-    config.setSeed(seed);
   }
 
   public void addFilter(TransitionFilter filter) {

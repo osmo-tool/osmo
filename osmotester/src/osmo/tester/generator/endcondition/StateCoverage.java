@@ -1,6 +1,6 @@
-package osmo.tester.generator.endcondition.data;
+package osmo.tester.generator.endcondition;
 
-import osmo.tester.generator.endcondition.AbstractEndCondition;
+import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -18,7 +18,7 @@ import java.util.List;
  * 
  * @author Teemu Kanstren 
  */
-public class StateCoverage extends AbstractEndCondition {
+public class StateCoverage implements EndCondition {
   private Collection<String> required = new ArrayList<>();
   private Collection<String> suiteStates = new LinkedHashSet<>();
   private List<String> remainingForTest = new ArrayList<>();

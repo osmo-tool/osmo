@@ -72,43 +72,6 @@ public class WordsTests {
     assertTrue("Should have generated length 4 char sequence.", four);
     assertTrue("Should have generated length 5 char sequence.", five);
   }
-
-  @Test
-  public void evaluateEmptySequence() {
-    Text text = new Text(0, 5);
-    assertTrue("Evaluating empty string should work.", text.evaluate(""));
-  }
-
-  @Test
-  public void evaluateSequenceOf20NotMax() {
-    Text text = new Text(10, 30);
-    assertTrue("Evaluating 20 length string should work for 10-30.", text.evaluate("12345678901234567890"));
-  }
-
-  @Test
-  public void evaluateBelowMinLength() {
-    Text text = new Text(10, 20);
-    assertFalse("Evaluating below minimum length should fail.", text.evaluate("123456789"));
-  }
-
-  @Test
-  public void evaluateAboveMaxLength() {
-    Text text = new Text(10, 20);
-    assertFalse("Evaluating above maximum length should fail.", text.evaluate("123456789012345678901"));
-  }
-
-  @Test
-  public void evaluateMaxLength() {
-    Text text = new Text(10, 20);
-    assertTrue("Evaluating at maximum length should work.", text.evaluate("12345678901234567890"));
-  }
-
-  @Test
-  public void evaluateMinLength() {
-    Text text = new Text(10, 20);
-    assertTrue("Evaluating at minimum length should work.", text.evaluate("1234567890"));
-  }
-
   @Test
   public void invalidLength() {
     testLength(DataGenerationStrategy.ORDERED_LOOP_INVALID);

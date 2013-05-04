@@ -6,7 +6,7 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 
 /** @author Teemu Kanstren */
-public class LengthProbability extends AbstractEndCondition {
+public class LengthProbability implements EndCondition {
   private EndCondition delegate = null;
 
   public LengthProbability(int minLength, double probability) {

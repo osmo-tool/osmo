@@ -79,7 +79,7 @@ public class ParserTests {
     } catch (Exception e) {
       String msg = e.getMessage();
       String expected = "Invalid FSM:\n" +
-              "Only one @RequirementsField allowed in the model.\n" +
+              "Only one @RequirementsField instance allowed in the model.\n" +
               "No transitions found in given model object. Model cannot be processed.\n" +
               "Guard without matching transition:foo.\n";
       assertEquals(expected, msg);

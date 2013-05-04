@@ -9,8 +9,8 @@ public class Main1 {
   public static void main(String[] args) {
     OSMOConfiguration.setSeed(52);
     OSMOTester tester = new OSMOTester(new HelloModel1());
-    tester.addTestEndCondition(new Length(5));
-    tester.addSuiteEndCondition(new Length(2));
+    tester.setTestEndCondition(new Length(5));
+    tester.setSuiteEndCondition(new Length(2));
     tester.generate();
   }
 }
