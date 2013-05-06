@@ -121,7 +121,7 @@ public class TestSequenceListener implements GenerationListener {
   }
 
   @Override
-  public void testError(TestCase test, Exception error) {
+  public void testError(TestCase test, Throwable error) {
     if (traceErrors) {
       storeGuards();
       steps.add("e:"+test.getCurrentStep().getName());

@@ -124,6 +124,6 @@ public class MaxTransitionFilter implements TransitionFilter {
   }
 
   @Override
-  public void testError(TestCase test, Exception error) {
+  public void testError(TestCase test, Throwable error) {
   }
 }

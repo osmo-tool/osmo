@@ -96,7 +96,7 @@ public class GenerationListenerList implements GenerationListener {
   }
 
   @Override
-  public void testError(TestCase test, Exception error) {
+  public void testError(TestCase test, Throwable error) {
     for (GenerationListener listener : listeners) {
       listener.testError(test, error);
     }

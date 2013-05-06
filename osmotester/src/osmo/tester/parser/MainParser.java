@@ -10,7 +10,6 @@ import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.ExplorationEnabler;
 import osmo.tester.annotation.GenerationEnabler;
 import osmo.tester.annotation.Guard;
-import osmo.tester.annotation.LastStep;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.RequirementsField;
@@ -32,7 +31,6 @@ import osmo.tester.parser.annotation.EndConditionParser;
 import osmo.tester.parser.annotation.ExplorationEnablerParser;
 import osmo.tester.parser.annotation.GenerationEnablerParser;
 import osmo.tester.parser.annotation.GuardParser;
-import osmo.tester.parser.annotation.LastStepParser;
 import osmo.tester.parser.annotation.PostParser;
 import osmo.tester.parser.annotation.PreParser;
 import osmo.tester.parser.annotation.SearchableInputParser;
@@ -70,7 +68,6 @@ public class MainParser {
     //we set up the parser objects for the different annotation types
     annotationParsers.put(Transition.class, new TransitionParser());
     annotationParsers.put(TestStep.class, new TransitionParser());
-    annotationParsers.put(LastStep.class, new LastStepParser());
     annotationParsers.put(Guard.class, new GuardParser());
     annotationParsers.put(AfterTest.class, new AfterTestParser());
     annotationParsers.put(BeforeTest.class, new BeforeTestParser());

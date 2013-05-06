@@ -244,26 +244,6 @@ public class GenerationTests {
   }
 
   @Test
-  public void lastSteps() {
-    ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
-    PrintStream ps = new PrintStream(out);
-    TestStepModel mo = new TestStepModel(ps);
-    osmo.addModelObject("p1", mo);
-    osmo.addModelObject("p2", mo);
-    osmo.addModelObject(mo);
-    osmo.setTestEndCondition(new Length(3));
-    osmo.setSuiteEndCondition(new Length(3));
-    osmo.generate();
-    String actual = out.toString();
-    String expected = ":hello:gen_oracle:gen_oracle:gen_oracle:world:gen_oracle:gen_oracle:gen_oracle:epixx_pre:epixx:epixx_oracle:gen_oracle:gen_oracle:gen_oracle:last_step1:last_step1:last_step1:last_step2:last_step2:last_step2:hello:gen_oracle:gen_oracle:gen_oracle:world:gen_oracle:gen_oracle:gen_oracle:epixx_pre:epixx:epixx_oracle:gen_oracle:gen_oracle:gen_oracle:last_step1:last_step1:last_step1:last_step2:last_step2:last_step2:hello:gen_oracle:gen_oracle:gen_oracle:world:gen_oracle:gen_oracle:gen_oracle:epixx_pre:epixx:epixx_oracle:gen_oracle:gen_oracle:gen_oracle:last_step1:last_step1:last_step1:last_step2:last_step2:last_step2";
-    assertEquals(expected, actual);
-    assertEquals("Last step 1 in a test case", 3, mo.getLastStep1TestCount());
-    assertEquals("Last step 2 in a test case", 3, mo.getLastStep2TestCount());
-    assertEquals("Last step 1 in a test suite", 9, mo.getLastStep1SuiteCount());
-    assertEquals("Last step 2 in a test suite", 9, mo.getLastStep2SuiteCount());
-  }
-
-  @Test
   public void negatedGuard() {
     OSMOConfiguration.setSeed(65);
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);

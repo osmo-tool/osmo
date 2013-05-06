@@ -23,8 +23,6 @@ public class FSM {
   private static final Logger log = new Logger(FSM.class);
   /** Key = transition name (from @Transition("name")), Value = transition object */
   private Map<TransitionName, FSMTransition> transitions = new HashMap<>();
-  /** List of steps to execute after test is otherwise done. */
-  private List<InvocationTarget> lastSteps = new ArrayList<>();
   /** List of specific guards, associated to groups or transitions. */
   private List<FSMGuard> specificGuards = new ArrayList<>();
   /** List of generic guards that apply to all transitions. */
@@ -141,7 +139,6 @@ public class FSM {
     if (errors.length() > 0) {
       throw new IllegalStateException("Invalid FSM:\n" + errors);
     }
-    Collections.sort(lastSteps);
     log.debug("FSM checked");
   }
   
@@ -279,10 +276,6 @@ public class FSM {
     beforeSuites.add(target);
   }
 
-  public void addLastStep(InvocationTarget lastStep) {
-    lastSteps.add(lastStep);
-  }
-
   public Collection<InvocationTarget> getBefores() {
     return befores;
   }
@@ -297,10 +290,6 @@ public class FSM {
 
   public Collection<InvocationTarget> getAfterSuites() {
     return afterSuites;
-  }
-
-  public Collection<InvocationTarget> getLastSteps() {
-    return lastSteps;
   }
 
   public Collection<InvocationTarget> getEndConditions() {

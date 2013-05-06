@@ -63,7 +63,7 @@ public interface GenerationListener {
    * @param test  The test case being generated.
    * @param error The exception observed.
    */
-  public void testError(TestCase test, Exception error);
+  public void testError(TestCase test, Throwable error);
 
   /**
    * Test suite generation has started.

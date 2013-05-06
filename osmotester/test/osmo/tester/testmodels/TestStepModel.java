@@ -5,7 +5,6 @@ import osmo.tester.annotation.AfterTest;
 import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
-import osmo.tester.annotation.LastStep;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.RequirementsField;
@@ -18,7 +17,7 @@ import java.util.Map;
 import static junit.framework.Assert.*;
 
 /**
- * A test model with tags that can all be covered.
+ * A test model with requirements that can all be covered.
  *
  * @author Teemu Kanstren
  */
@@ -29,10 +28,6 @@ public class TestStepModel {
   public static final String TAG_WORLD = "world";
   public static final String TAG_EPIX = "epix";
   private final PrintStream out;
-  private int lastStep1TestCount = 0;
-  private int lastStep2TestCount = 0;
-  private int lastStep1SuiteCount = 0;
-  private int lastStep2SuiteCount = 0;
 
   public TestStepModel(PrintStream out) {
     this.out = out;
@@ -41,8 +36,6 @@ public class TestStepModel {
   @BeforeTest
   public void reset() {
     tags.clearCoverage();
-    lastStep1TestCount = 0;
-    lastStep2TestCount = 0;
   }
 
   @AfterTest
@@ -102,35 +95,5 @@ public class TestStepModel {
   @Post
   public void stateCheck() {
     out.print(":gen_oracle");
-  }
-
-  @LastStep
-  public void finish() {
-    out.print(":last_step1");
-    lastStep1TestCount++;
-    lastStep1SuiteCount++;
-  }
-
-  @LastStep
-  public void powerball() {
-    out.print(":last_step2");
-    lastStep2TestCount++;
-    lastStep2SuiteCount++;
-  }
-
-  public int getLastStep1TestCount() {
-    return lastStep1TestCount;
-  }
-
-  public int getLastStep2TestCount() {
-    return lastStep2TestCount;
-  }
-
-  public int getLastStep1SuiteCount() {
-    return lastStep1SuiteCount;
-  }
-
-  public int getLastStep2SuiteCount() {
-    return lastStep2SuiteCount;
   }
 }

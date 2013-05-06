@@ -42,6 +42,7 @@ public class TestStep {
   private long endTime = 0;
   /** Stores the user defined custom state string when this step was executed. */
   private String state;
+  private boolean failed;
 
   /**
    * Constructor.
@@ -206,5 +207,13 @@ public class TestStep {
 
   public TestCase getParent() {
     return parent;
+  }
+
+  public void setFailed(boolean failed) {
+    this.failed = failed;
+  }
+
+  public boolean isFailed() {
+    return failed;
   }
 }

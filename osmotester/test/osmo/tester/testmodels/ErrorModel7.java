@@ -39,7 +39,7 @@ public class ErrorModel7 {
 
   @Post
   public void stateOracle() {
-    throw new RuntimeException("@Post fail");
+    throw new AssertionError("@Post fail");
   }
 
   @Pre

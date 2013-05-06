@@ -76,6 +76,6 @@ public class JUnitGenerationListener implements GenerationListener {
   }
 
   @Override
-  public void testError(TestCase test, Exception error) {
+  public void testError(TestCase test, Throwable error) {
   }
 }

@@ -189,7 +189,12 @@ public class ErrorHandlingTests {
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
-    osmo.generate();
+    try {
+      osmo.generate();
+      fail("Runtime exception with trap should propagate.");
+    } catch (Exception e) {
+      assertEquals("@Guard fail", e.getMessage());
+    }
     listener.validate("@Guard with trap");
   }
 
@@ -204,14 +209,14 @@ public class ErrorHandlingTests {
       osmo.generate();
       fail("Throwing an exception without trap should propagate.");
     } catch (RuntimeException e) {
-      assertEquals("@Transition fail", e.getMessage());
+      assertEquals("Error in test generation:@Transition assert fail", e.getMessage());
     }
   }
 
   @Test
   public void transitionWithTrap() {
     listener.setTracePrePost(true);
-    listener.addExpected("suite-start", "start", "g:hello", "pre:hello", "end", "suite-end");
+    listener.addExpected("suite-start", "start", "g:hello", "pre:hello", "g:hello", "pre:hello", "g:hello", "pre:hello", "end", "suite-end");
     osmo.addModelObject(new ErrorModel5());
     config.setFailWhenError(false);
     Length length3 = new Length(3);
@@ -247,7 +252,12 @@ public class ErrorHandlingTests {
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
-    osmo.generate();
+    try {
+      osmo.generate();
+      fail("Runtime exception with trap should propagate.");
+    } catch (Exception e) {
+      assertEquals("@Pre fail", e.getMessage());
+    }
     listener.validate("@Pre with trap");
   }
 
@@ -262,14 +272,14 @@ public class ErrorHandlingTests {
       osmo.generate();
       fail("Throwing an exception without trap should propagate.");
     } catch (RuntimeException e) {
-      assertEquals("@Post fail", e.getMessage());
+      assertEquals("Error in test generation:@Post fail", e.getMessage());
     }
   }
 
   @Test
   public void postWithTrap() {
     listener.setTracePrePost(true);
-    listener.addExpected("suite-start", "start", "g:hello", "pre:hello", "t:hello", "post:hello", "end", "suite-end");
+    listener.addExpected("suite-start", "start", "g:hello", "pre:hello", "t:hello", "post:hello", "g:hello", "pre:hello", "t:hello", "post:hello", "g:hello", "pre:hello", "t:hello", "post:hello", "end", "suite-end");
     osmo.addModelObject(new ErrorModel7());
     config.setFailWhenError(false);
     Length length3 = new Length(3);
@@ -305,7 +315,12 @@ public class ErrorHandlingTests {
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
-    osmo.generate();
+    try {
+      osmo.generate();
+      fail("Throwing an exception without trap should propagate.");
+    } catch (Exception e) {
+      assertEquals("@EndCondition fail", e.getMessage());
+    }
     listener.validate("@EndCondition with trap");
   }
 
@@ -323,8 +338,7 @@ public class ErrorHandlingTests {
       osmo.generate();
       fail("The final strict test step failure should stop the generator");
     } catch (RuntimeException e) {
-      e.printStackTrace();
-      //expected..
+      assertEquals("t2 fail", e.getMessage());
     }
     listener.validate("Strict/non-strict generation combination.");
     
