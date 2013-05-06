@@ -30,7 +30,7 @@ public class ErrorModel5 {
 
   @Transition("hello")
   public void transition1() {
-    throw new RuntimeException("@Transition fail");
+    throw new AssertionError("@Transition assert fail");
   }
 
   @Guard("hello")

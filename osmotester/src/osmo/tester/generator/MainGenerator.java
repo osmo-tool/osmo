@@ -69,13 +69,13 @@ public class MainGenerator {
     }
     endSuite();
   }
-  
+
   private void createModelObjects() {
     if (config.getFactory() == null && fsm != null) return;
     if (config.getFactory() != null) {
       long baseSeed = OSMOConfiguration.getBaseSeed();
       int salt = suite.getCoverage().getTransitions().size();
-      OSMOConfiguration.setSeed(baseSeed+salt);
+      OSMOConfiguration.setSeed(baseSeed + salt);
     }
     MainParser parser = new MainParser();
     ParserResult result = parser.parse(config, suite);
@@ -101,35 +101,35 @@ public class MainGenerator {
     log.debug("Starting new test generation");
     beforeTest();
     TestCase test = suite.getCurrentTest();
-    try {
-      while (!config.getTestCaseEndCondition().endTest(suite, fsm)) {
+    while (!config.getTestCaseEndCondition().endTest(suite, fsm)) {
+      try {
         boolean shouldContinue = nextStep();
         if (!shouldContinue) {
           break;
         }
-      }
-      Collection<InvocationTarget> lastSteps = fsm.getLastSteps();
-      for (InvocationTarget lst : lastSteps) {
-        lst.invoke();
-      }
-    } catch (RuntimeException e) {
-      test.setFailed(true);
-      log.error("Error in test generation", e);
-      if (config.shouldUnwrapExceptions()) {
-        e = unwrap(e);
-      }
-      if (config.shouldFailWhenError()) {
-        listeners.testError(test, e);
+      } catch (RuntimeException | AssertionError e) {
+        test.setFailed(true);
         TestStep step = suite.getCurrentTest().getCurrentStep();
         if (step != null) {
-          step.storeGeneralState(fsm);
+          test.getCurrentStep().setFailed(true);
         }
-        afterTest();
-        afterSuite();
-        throw e;
-      } else {
-        listeners.testError(test, unwrap(e));
-        e.printStackTrace();
+        Throwable unwrap = unwrap(e);
+        String errorMsg = "Error in test generation:"+unwrap.getMessage();
+        log.error(errorMsg, e);
+        listeners.testError(test, unwrap);
+        if (!(unwrap instanceof AssertionError) || config.shouldFailWhenError()) {
+          if (step != null) {
+            step.storeGeneralState(fsm);
+          }
+          afterTest();
+          afterSuite();
+          if (unwrap instanceof RuntimeException) {
+            throw (RuntimeException) unwrap;
+          }
+          throw new OSMOException(errorMsg, unwrap);
+        } else {
+          unwrap.printStackTrace();
+        }
       }
       log.debug("Skipped test error due to settings (no fail when error)");
     }
@@ -201,7 +201,7 @@ public class MainGenerator {
 
   /**
    * Updates the state in the test suite and stores it into test step etc.
-   * 
+   *
    * @param step The step.
    */
   private void storeUserState(TestStep step) {
@@ -212,9 +212,9 @@ public class MainGenerator {
         throw new NullPointerException("Model state is null. Now allowed.");
       }
       step.setUserState(state);
-      log.debug("new state:"+state);
+      log.debug("new state:" + state);
     }
-    
+
   }
 
   /** Handles suite shutdown. Should be called after all tests have been generated. */
@@ -351,20 +351,23 @@ public class MainGenerator {
     return enabled;
   }
 
-  protected RuntimeException unwrap(RuntimeException e) {
-    Throwable cause = e.getCause();
-    if (cause != null) {
-      if (e.getClass().equals(OSMOException.class)) {
-        if (cause.getClass().equals(InvocationTargetException.class)) {
-          cause = cause.getCause();
-          if (cause.getClass().equals(RuntimeException.class)) {
-            return (RuntimeException) cause;
-          }
-          //hack to avoid Java reflection + compiler checking incompatibilities
-          return new RuntimeException(cause);
-        }
-      }
+  protected Throwable unwrap(Throwable e) {
+    while (e instanceof OSMOException || e instanceof InvocationTargetException) {
+      e = e.getCause();
     }
+//    Throwable cause = e.getCause();
+//    if (cause != null) {
+//      if (e.getClass().equals(OSMOException.class)) {
+//        if (cause.getClass().equals(InvocationTargetException.class)) {
+//          cause = cause.getCause();
+//          if (cause.getClass().equals(RuntimeException.class)) {
+//            return cause;
+//          }
+//          //hack to avoid Java reflection + compiler checking incompatibilities
+//          return new OSMOException(cause);
+//        }
+//      }
+//    }
     return e;
   }
 
@@ -384,14 +387,14 @@ public class MainGenerator {
   public FSM getFsm() {
     return fsm;
   }
-  
+
   public void addOptionsFor(TestStep step, List<FSMTransition> enabled) {
     String stepName = FSM.START_NAME;
     if (step != null) {
       stepName = step.getName();
     }
     for (FSMTransition transition : enabled) {
-      possiblePairs.add(stepName+"->"+transition.getStringName());
+      possiblePairs.add(stepName + "->" + transition.getStringName());
     }
   }
 

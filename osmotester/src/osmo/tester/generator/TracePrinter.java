@@ -44,7 +44,7 @@ public class TracePrinter implements GenerationListener {
   }
 
   @Override
-  public void testError(TestCase test, Exception error) {
+  public void testError(TestCase test, Throwable error) {
     String name = test.getCurrentStep().getName();
     out.println("ERROR:"+name.toUpperCase());
   }

@@ -361,7 +361,6 @@ public class ParserTests {
     assertEquals("Number of @BeforeSuite elements", 3, fsm.getBeforeSuites().size());
     assertEquals("Number of @AfterTest elements", 3, fsm.getAfters().size());
     assertEquals("Number of @AfterSuite elements", 3, fsm.getAfterSuites().size());
-    assertEquals("Number of @LastStep elements", 6, fsm.getLastSteps().size());
   }
 
   @Test
@@ -404,7 +403,6 @@ public class ParserTests {
     assertEquals("Number of @BeforeSuite elements", 0, fsm.getBeforeSuites().size());
     assertEquals("Number of @AfterTest elements", 0, fsm.getAfters().size());
     assertEquals("Number of @AfterSuite elements", 0, fsm.getAfterSuites().size());
-    assertEquals("Number of @LastStep elements", 0, fsm.getLastSteps().size());
 
     FSMTransition t1 = fsm.getTransition("a non-strict one");
     assertFalse("Transition 1 should be non-strict", t1.isStrict());
