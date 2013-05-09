@@ -136,7 +136,7 @@ public class Logger {
     return false;
   }
   
-  public void debug(String msg, Exception e) {
+  public void debug(String msg, Throwable e) {
     if (isOff()) {
       return;
     }
@@ -173,7 +173,7 @@ public class Logger {
    * @param msg The error message to print.
    * @param e   The exception to print.
    */
-  public void error(String msg, Exception e) {
+  public void error(String msg, Throwable e) {
     if (isOff()) {
       return;
     }

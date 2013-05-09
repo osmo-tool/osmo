@@ -5,7 +5,7 @@ import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.generator.testsuite.TestStep;
+import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
@@ -29,7 +29,7 @@ public class VariableTestListener implements GenerationListener {
   }
 
   @Override
-  public void step(TestStep step) {
+  public void step(TestCaseStep step) {
   }
 
   @Override

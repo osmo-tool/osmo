@@ -5,7 +5,7 @@ import com.mxgraph.view.mxGraph;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.generator.testsuite.TestStep;
+import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
@@ -46,7 +46,7 @@ public class GraphVisualizer extends JFrame implements GenerationListener {
   }
 
   @Override
-  public void step(TestStep step) {
+  public void step(TestCaseStep step) {
     Object parent = graph.getDefaultParent();
     graph.getModel().beginUpdate();
     try {
@@ -96,6 +96,6 @@ public class GraphVisualizer extends JFrame implements GenerationListener {
   }
 
   @Override
-  public void testError(TestCase test, Exception error) {
+  public void testError(TestCase test, Throwable error) {
   }
 }

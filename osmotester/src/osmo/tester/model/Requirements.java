@@ -13,7 +13,7 @@ import java.util.TreeSet;
 
 /**
  * Used to define a set of requirements that should be covered and to evaluate which ones have been covered overall.
- * Additionally, each {@link osmo.tester.generator.testsuite.TestStep} also defines which requirements have been
+ * Additionally, each {@link osmo.tester.generator.testsuite.TestCaseStep} also defines which requirements have been
  * covered in which test case and test step. A requirement is defined as a string that is expected to be both its
  * unique identifier and expressive enough to describe the actual intent of the requirement for the user to be able
  * to understand what it is.

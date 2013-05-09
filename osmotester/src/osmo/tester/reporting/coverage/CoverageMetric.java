@@ -3,7 +3,7 @@ package osmo.tester.reporting.coverage;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.generator.testsuite.TestStep;
+import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
@@ -87,7 +87,7 @@ public abstract class CoverageMetric {
 
     for (TestCase tc : tests) {
       String previous = FSM.START_NAME;
-      for (TestStep ts : tc.getSteps()) {
+      for (TestCaseStep ts : tc.getSteps()) {
         String next = ts.getName();
         String key = previous + "->" + next;
         Integer count = coverage.get(key);
@@ -134,7 +134,7 @@ public abstract class CoverageMetric {
     Map<String, Integer> coverage = new HashMap<>();
 
     for (TestCase tc : tests) {
-      for (TestStep ts : tc.getSteps()) {
+      for (TestCaseStep ts : tc.getSteps()) {
         Collection<String> keys = ts.getCoveredRequirements();
 
         for (String key : keys) {

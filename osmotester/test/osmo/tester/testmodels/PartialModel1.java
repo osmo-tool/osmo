@@ -6,7 +6,6 @@ import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.ExplorationEnabler;
 import osmo.tester.annotation.GenerationEnabler;
-import osmo.tester.annotation.Group;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
@@ -14,6 +13,7 @@ import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.StateName;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
+import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
 
@@ -110,7 +110,7 @@ public class PartialModel1 {
   }
   
   @StateName
-  public String state1(osmo.tester.generator.testsuite.TestStep step) {
+  public String state1(TestCaseStep step) {
     return step.getName()+"-hello1";
   }
 

@@ -7,6 +7,7 @@ import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Variable;
 import osmo.tester.coverage.CombinationCoverage;
 import osmo.tester.coverage.RangeCategory;
+import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.data.ValueRange;
 import osmo.tester.model.data.ValueSet;
@@ -47,7 +48,7 @@ public class RandomValueModel4 {
   }
   
   @StateName
-  public String stateName(osmo.tester.generator.testsuite.TestStep step) {
+  public String stateName(TestCaseStep step) {
     return state.next();
   }
 }

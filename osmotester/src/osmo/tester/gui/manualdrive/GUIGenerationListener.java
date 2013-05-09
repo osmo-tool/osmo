@@ -3,7 +3,7 @@ package osmo.tester.gui.manualdrive;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.generator.testsuite.TestStep;
+import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
@@ -29,7 +29,7 @@ public class GUIGenerationListener implements GenerationListener {
   }
 
   @Override
-  public void step(TestStep step) {
+  public void step(TestCaseStep step) {
   }
 
   @Override

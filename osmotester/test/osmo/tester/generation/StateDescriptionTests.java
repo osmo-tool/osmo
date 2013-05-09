@@ -8,7 +8,7 @@ import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.generator.testsuite.TestStep;
+import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
 import osmo.tester.testmodels.PartialModel1;
@@ -90,9 +90,9 @@ public class StateDescriptionTests {
     assertEquals("State over generation with no state defined", ":null:-1-:null:-2-:null:-3-", model.getStates());
     TestCase testCase = osmo.getSuite().getAllTestCases().get(0);
 
-    List<TestStep> steps = testCase.getSteps();
+    List<TestCaseStep> steps = testCase.getSteps();
 
-    TestStep step = steps.get(0);
+    TestCaseStep step = steps.get(0);
     assertEquals("Step name", "hello", step.getName());
     assertEquals("State in step", "1", step.getState());
     Collection<ModelVariable> values = step.getValues();

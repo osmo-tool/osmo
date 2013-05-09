@@ -183,7 +183,7 @@ public class GreedyOptimizer {
     TestCoverage suiteCoverage = new TestCoverage(suite);
 
     String summary = "summary\n";
-    summary += suiteCoverage.coverageString(fsm, possiblePairs.size(), 0, 0);
+    summary += suiteCoverage.coverageString(fsm, possiblePairs, null, null);
     
     String totalCsv = "";
     totalCsv += csv1+"\n";

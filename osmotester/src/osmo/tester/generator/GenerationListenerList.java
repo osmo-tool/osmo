@@ -2,7 +2,7 @@ package osmo.tester.generator;
 
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.generator.testsuite.TestStep;
+import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
@@ -47,7 +47,7 @@ public class GenerationListenerList implements GenerationListener {
   }
 
   @Override
-  public void step(TestStep step) {
+  public void step(TestCaseStep step) {
     for (GenerationListener listener : listeners) {
       listener.step(step);
     }

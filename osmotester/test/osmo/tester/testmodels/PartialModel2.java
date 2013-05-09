@@ -13,6 +13,7 @@ import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.StateName;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
+import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
 
@@ -90,7 +91,7 @@ public class PartialModel2 {
   }
 
   @StateName
-  public String state2(osmo.tester.generator.testsuite.TestStep step) {
+  public String state2(TestCaseStep step) {
     return step.getName()+"-hello2";
   }
 }

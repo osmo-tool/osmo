@@ -5,7 +5,7 @@ import osmo.tester.annotation.Post;
 import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.generator.testsuite.TestStep;
+import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class BaseModel {
   @RequirementsField
   protected Requirements req = new Requirements();
   /** Previous generated test case. */
-  protected TestStep previous = null;
+  protected TestCaseStep previous = null;
   /** Id of the currently generated test case. */
   protected int id = -1;
 
@@ -52,7 +52,7 @@ public class BaseModel {
    */
   @Post
   public void afterTransition() {
-    List<TestStep> steps = test.getSteps();
+    List<TestCaseStep> steps = test.getSteps();
     int size = steps.size();
     if (size < 1) {
       return;

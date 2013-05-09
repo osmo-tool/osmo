@@ -81,7 +81,7 @@ public class OSMOTester {
     TestSuite suite = generator.getSuite();
     System.out.println("generated " + suite.getFinishedTestCases().size() + " tests.\n");
     TestCoverage tc = new TestCoverage(suite.getAllTestCases());
-    String coverage = tc.coverageString(fsm, generator.getPossiblePairs().size(), 0, 0);
+    String coverage = tc.coverageString(fsm, generator.getPossiblePairs(), null, null);
     System.out.println(coverage);
     Requirements requirements = suite.getRequirements();
     if (!requirements.isEmpty()) {
