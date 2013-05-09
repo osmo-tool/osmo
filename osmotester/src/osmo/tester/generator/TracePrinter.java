@@ -2,7 +2,7 @@ package osmo.tester.generator;
 
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.generator.testsuite.TestStep;
+import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
@@ -12,6 +12,8 @@ import java.io.PrintStream;
 /** @author Teemu Kanstren */
 public class TracePrinter implements GenerationListener {
   private PrintStream out = System.out;
+  int testIndex = 1;
+  private int stepIndex = 1;
   
   @Override
   public void init(FSM fsm, OSMOConfiguration config) {
@@ -22,9 +24,10 @@ public class TracePrinter implements GenerationListener {
   }
 
   @Override
-  public void step(TestStep step) {
+  public void step(TestCaseStep step) {
     String name = step.getName();
-    out.println("STEP:"+name.toUpperCase());
+    out.println(testIndex+"."+stepIndex+".STEP:"+name.toUpperCase());
+    stepIndex++;
   }
 
   @Override
@@ -41,12 +44,15 @@ public class TracePrinter implements GenerationListener {
 
   @Override
   public void testEnded(TestCase test) {
+    testIndex++;
+    stepIndex = 1;
   }
 
   @Override
   public void testError(TestCase test, Throwable error) {
     String name = test.getCurrentStep().getName();
-    out.println("ERROR:"+name.toUpperCase());
+    out.println(testIndex+"."+stepIndex+".ERROR:"+name.toUpperCase());
+    stepIndex++;
   }
 
   @Override

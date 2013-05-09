@@ -1,8 +1,7 @@
 package osmo.tester.generator.endcondition;
 
-import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.generator.testsuite.TestStep;
+import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 
@@ -47,7 +46,7 @@ public class StateCoverage implements EndCondition {
       testCount = suiteSize;
     }
     TestCase currentTest = suite.getCurrentTest();
-    TestStep currentStep = currentTest.getCurrentStep();
+    TestCaseStep currentStep = currentTest.getCurrentStep();
     //step is null if we are just starting the test case
     if (currentStep == null) return false;
     String state = currentStep.getState();

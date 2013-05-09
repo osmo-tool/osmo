@@ -1,7 +1,7 @@
 package osmo.tester.reporting.jenkins;
 
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.generator.testsuite.TestStep;
+import osmo.tester.generator.testsuite.TestCaseStep;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -119,8 +119,8 @@ public class JenkinsSuite {
   public void add(TestCase test) {
     JenkinsTest newTest = new JenkinsTest(testing);
     JenkinsStep.resetId();
-    List<TestStep> steps = test.getSteps();
-    for (TestStep step : steps) {
+    List<TestCaseStep> steps = test.getSteps();
+    for (TestCaseStep step : steps) {
       //the name of the model object from which the test step was executed
       String className = step.getModelObjectName();
       //the name of the test step that was executed

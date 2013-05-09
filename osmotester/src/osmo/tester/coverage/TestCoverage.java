@@ -3,8 +3,7 @@ package osmo.tester.coverage;
 import osmo.common.log.Logger;
 import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.generator.testsuite.TestStep;
-import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
@@ -131,7 +130,7 @@ public class TestCoverage {
 
     int count = 0;
     String previousState = "osmo.start.state";
-    for (TestStep step : test.getSteps()) {
+    for (TestCaseStep step : test.getSteps()) {
       String name = step.getName();
       names.add(name);
       String state = step.getState();
@@ -157,7 +156,7 @@ public class TestCoverage {
    *
    * @param step This is where we take the steps from.
    */
-  private synchronized void addValues(TestStep step) {
+  private synchronized void addValues(TestCaseStep step) {
     Collection<ModelVariable> toAdd = step.getValues();
     for (ModelVariable variable : toAdd) {
       String name = variable.getName();
@@ -243,7 +242,7 @@ public class TestCoverage {
             '}';
   }
 
-  public String coverageString(FSM fsm, int possibleStepPairs, int possibleStates, int possibleStatePairs) {
+  public String coverageString(FSM fsm, Collection<String> possibleStepPairs, Collection<String> possibleStates, Collection<String> possibleStatePairs) {
     String result = "Covered elements:\n";
     result += "Total steps: "+transitions.size();
     result += "\nUnique steps: "+singles.size();
@@ -260,15 +259,37 @@ public class TestCoverage {
         result += " missing:"+all;
       }
     }
-    result += "\nUnique step-pairs: "+stepPairs.size() + " (of "+possibleStepPairs+")";
+    result += "\nUnique step-pairs: "+stepPairs.size();
+    if (possibleStepPairs != null) {
+      Collection<String> all = new HashSet<>();
+      all.addAll(possibleStepPairs);
+      all.removeAll(stepPairs);
+      result += " (of "+possibleStepPairs.size()+")";
+      if (all.size() > 0 && all.size() < 5) {
+        result += " missing:"+all;
+      }
+    }
+    
     result += "\nUnique requirements: "+reqs.size();
     result += "\nUnique states: "+states.size();
-    if (possibleStates > 0) {
-      result += " (of "+possibleStates+")";
+    if (possibleStates != null) {
+      Collection<String> all = new HashSet<>();
+      all.addAll(possibleStates);
+      all.removeAll(states);
+      result += " (of "+possibleStates.size()+")";
+      if (all.size() > 0 && all.size() < 5) {
+        result += " missing:"+all;
+      }
     }
     result += "\nUnique state-pairs: "+statePairs.size();
-    if (possibleStatePairs >0) {
-      result += "(of "+possibleStatePairs+")";
+    if (possibleStatePairs != null) {
+      Collection<String> all = new HashSet<>();
+      all.addAll(possibleStatePairs);
+      all.removeAll(statePairs);
+      result += " (of "+possibleStatePairs.size()+")";
+      if (all.size() > 0 && all.size() < 5) {
+        result += " missing:"+all;
+      }
     }
     return result;
   }

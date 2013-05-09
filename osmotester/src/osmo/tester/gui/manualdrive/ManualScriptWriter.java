@@ -3,7 +3,7 @@ package osmo.tester.gui.manualdrive;
 import osmo.common.log.Logger;
 import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.generator.testsuite.TestStep;
+import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 
 import java.io.BufferedWriter;
@@ -30,8 +30,8 @@ public class ManualScriptWriter {
       List<TestCase> tests = suite.getAllTestCases();
       for (TestCase test : tests) {
         fw.write("new test,,\n");
-        List<TestStep> steps = test.getSteps();
-        for (TestStep step : steps) {
+        List<TestCaseStep> steps = test.getSteps();
+        for (TestCaseStep step : steps) {
           fw.write("step,");
           fw.write(step.getName());
           fw.write(",");

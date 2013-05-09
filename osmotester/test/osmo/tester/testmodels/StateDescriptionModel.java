@@ -8,6 +8,7 @@ import osmo.tester.annotation.StateName;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
+import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
 
@@ -82,7 +83,7 @@ public class StateDescriptionModel {
   }
 
   @StateName
-  public String state(osmo.tester.generator.testsuite.TestStep step) {
+  public String state(TestCaseStep step) {
     return ""+req.getUniqueCoverage().size();
   }
 

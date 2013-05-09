@@ -21,7 +21,7 @@ import java.util.Map;
 public class ScoreConfiguration {
   private static final Logger log = new Logger(ScoreConfiguration.class);
   /** Weight for length (number of non-unique transitions), used in fitness calculation. */
-  protected int lengthWeight = 10;
+  protected int lengthWeight = 0;
   /** Weight for number of variables, used in fitness calculation. */
   protected int variableCountWeight = 10;
   /** Weight for number of unique values if no specific one defined for a variable, used in fitness calculation. */

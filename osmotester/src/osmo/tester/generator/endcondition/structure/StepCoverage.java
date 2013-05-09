@@ -3,7 +3,7 @@ package osmo.tester.generator.endcondition.structure;
 import osmo.common.log.Logger;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.generator.testsuite.TestStep;
+import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
@@ -71,9 +71,9 @@ public class StepCoverage implements EndCondition {
    * @return The names of covered steps for the given test case.
    */
   private Collection<String> stepsFor(TestCase test) {
-    Collection<TestStep> testSteps = test.getSteps();
+    Collection<TestCaseStep> testSteps = test.getSteps();
     Collection<String> steps = new ArrayList<>();
-    for (TestStep step : testSteps) {
+    for (TestCaseStep step : testSteps) {
       steps.add(step.getName());
     }
     return steps;

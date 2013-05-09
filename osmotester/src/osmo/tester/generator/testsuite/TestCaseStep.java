@@ -22,8 +22,8 @@ import java.util.Map;
  *
  * @author Teemu Kanstren
  */
-public class TestStep {
-  private static Logger log = new Logger(TestStep.class);
+public class TestCaseStep {
+  private static Logger log = new Logger(TestCaseStep.class);
   /** The transition that was taken in this test step. */
   private final String transitionName;
   /** The model object from which the transition was executed. */
@@ -50,7 +50,7 @@ public class TestStep {
    * @param transition The transition that was taken in this test step.
    * @param id         The identifier for this step.
    */
-  public TestStep(TestCase parent, FSMTransition transition, int id) {
+  public TestCaseStep(TestCase parent, FSMTransition transition, int id) {
     this.parent = parent;
     this.transitionName = transition.getStringName();
     if (transition.getTransition() == null) {
@@ -149,7 +149,7 @@ public class TestStep {
    * @param value The value of the variable.
    */
   public void addVariableValue(String name, Object value, boolean merge) {
-    log.debug("Variable:" + name + " add value:" + value);
+//    log.debug("Variable:" + name + " add value:" + value);
     ModelVariable mv = values.get(name);
     if (mv == null) {
       mv = new ModelVariable(name);

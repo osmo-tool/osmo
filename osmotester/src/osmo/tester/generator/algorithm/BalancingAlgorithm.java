@@ -3,7 +3,7 @@ package osmo.tester.generator.algorithm;
 import osmo.common.Randomizer;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
-import osmo.tester.generator.testsuite.TestStep;
+import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.parser.ParserResult;
@@ -47,7 +47,7 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
   public FSMTransition choose(TestSuite history, List<FSMTransition> choices) {
     //how many times each transition has been taken so far
     Map<String, Integer> tCoverage = history.getTransitionCoverage();
-    TestStep ts = history.getCurrentTest().getCurrentStep();
+    TestCaseStep ts = history.getCurrentTest().getCurrentStep();
     String previous = null;
     if (ts != null) {
       previous = ts.getName();

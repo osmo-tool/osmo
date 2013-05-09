@@ -2,14 +2,13 @@ package osmo.tester.gui.manualdrive;
 
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
-import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.algorithm.BalancingAlgorithm;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.algorithm.WeightedRandomAlgorithm;
 import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.generator.testsuite.TestStep;
+import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.gui.ModelHelper;
 import osmo.tester.model.FSM;
@@ -320,7 +319,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     for (TestCase tc : tests) {
       ret += "----== NEW TEST " + tcId + " ==----\n";
       tcId++;
-      for (TestStep ts : tc.getSteps()) {
+      for (TestCaseStep ts : tc.getSteps()) {
         int tsId = ts.getId();
         String added = tsId + ". " + ts.getName() + "\n";
         Collection<ModelVariable> values = ts.getValues();

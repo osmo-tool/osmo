@@ -7,7 +7,7 @@ import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.generator.testsuite.TestStep;
+import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.testmodels.VariableModel1;
 import osmo.tester.testmodels.VariableModel2;
@@ -42,7 +42,7 @@ public class VariableTests {
     TestSuite suite = model.getSuite();
     List<TestCase> tests = suite.getFinishedTestCases();
     for (TestCase test : tests) {
-      List<TestStep> steps = test.getSteps();
+      List<TestCaseStep> steps = test.getSteps();
 //      int expected = 1;
 //      boolean expectedB = false;
 //      for (TestStep step : steps) {

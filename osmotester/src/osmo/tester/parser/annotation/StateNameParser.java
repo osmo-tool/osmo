@@ -2,7 +2,7 @@ package osmo.tester.parser.annotation;
 
 import osmo.common.log.Logger;
 import osmo.tester.annotation.StateName;
-import osmo.tester.generator.testsuite.TestStep;
+import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
 import osmo.tester.parser.AnnotationParser;
@@ -32,11 +32,11 @@ public class StateNameParser implements AnnotationParser {
     }
     Class<?>[] parameterTypes = method.getParameterTypes();
     if (parameterTypes.length != 1) {
-      errors += name +" methods must have 1 parameter: \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n";
+      errors += name +" methods must have 1 parameter (TestStep): \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n";
     }
       
-    if (parameterTypes.length > 0 && parameterTypes[0] != TestStep.class) {
-      errors += name +" parameter must be of type "+TestStep.class+": \"" + method.getName() + "()\" has type " + parameterTypes[0]+"\n";
+    if (parameterTypes.length > 0 && parameterTypes[0] != TestCaseStep.class) {
+      errors += name +" parameter must be of type "+TestCaseStep.class+": \"" + method.getName() + "()\" has type " + parameterTypes[0]+"\n";
     }
 
     String modelObjectName = FSMTransition.createModelObjectName(parameters.getPrefix(), parameters.getModelClass());

@@ -20,9 +20,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class TestCase {
   private static Logger log = new Logger(TestCase.class);
   /** The test steps (taken) for this test case. */
-  private List<TestStep> steps = new ArrayList<>();
+  private List<TestCaseStep> steps = new ArrayList<>();
   /** The latest test step (being/having been generated). */
-  private TestStep currentStep = null;
+  private TestCaseStep currentStep = null;
   /** Unique identifier for this test case. */
   private final int id;
   /** The next identifier in line to set for test cases. */
@@ -37,10 +37,8 @@ public class TestCase {
   private long endTime = 0;
   /** Set to true if during test generation there is an exception thrown. */
   private boolean failed = false;
-  private final TestSuite parent;
 
   public TestCase(TestSuite parent) {
-    this.parent = parent;
     this.id = nextId.getAndIncrement();
   }
 
@@ -62,13 +60,13 @@ public class TestCase {
     return id;
   }
 
-  public TestStep getCurrentStep() {
+  public TestCaseStep getCurrentStep() {
     return currentStep;
   }
 
   public int getParameterCount() {
     int count = 0;
-    for (TestStep step : steps) {
+    for (TestCaseStep step : steps) {
       int ps = step.getValues().size();
       if (ps > count) count = ps;
     }
@@ -101,8 +99,8 @@ public class TestCase {
    * @param transition The transition for the test step.
    * @return The new step object.
    */
-  public TestStep addStep(FSMTransition transition) {
-    TestStep step = new TestStep(this, transition, nextStepId++);
+  public TestCaseStep addStep(FSMTransition transition) {
+    TestCaseStep step = new TestCaseStep(this, transition, nextStepId++);
     log.debug("Added step:" + step);
     steps.add(step);
     currentStep = step;
@@ -123,7 +121,7 @@ public class TestCase {
    *
    * @return List of test steps (transitions).
    */
-  public List<TestStep> getSteps() {
+  public List<TestCaseStep> getSteps() {
     return steps;
   }
 
@@ -134,7 +132,7 @@ public class TestCase {
    */
   public Collection<String> getCoveredTransitions() {
     Collection<String> transitionCoverage = new LinkedHashSet<>();
-    for (TestStep teststep : steps) {
+    for (TestCaseStep teststep : steps) {
       transitionCoverage.add(teststep.getName());
     }
     return transitionCoverage;
@@ -147,7 +145,7 @@ public class TestCase {
    */
   public Collection<String> getUniqueRequirementCoverage() {
     Collection<String> requirementsCoverage = new LinkedHashSet<>();
-    for (TestStep teststep : steps) {
+    for (TestCaseStep teststep : steps) {
       requirementsCoverage.addAll(teststep.getCoveredRequirements());
     }
     return requirementsCoverage;
@@ -161,7 +159,7 @@ public class TestCase {
    */
   public Collection<String> getFullRequirementCoverage() {
     Collection<String> requirementsCoverage = new ArrayList<>();
-    for (TestStep teststep : steps) {
+    for (TestCaseStep teststep : steps) {
       requirementsCoverage.addAll(teststep.getCoveredRequirements());
     }
     return requirementsCoverage;
@@ -178,7 +176,7 @@ public class TestCase {
    * @param value The value of the variable.
    */
   public void addVariableValue(String name, Object value, boolean merge) {
-    log.debug("Variable:" + name + " add value:" + value);
+//    log.debug("Variable:" + name + " add value:" + value);
     currentStep.addVariableValue(name, value, merge);
   }
 
@@ -198,7 +196,7 @@ public class TestCase {
   public Map<String, ModelVariable> getStateVariables() {
     Map<String, Map<String, ModelVariable>> temp = new LinkedHashMap<>();
 
-    for (TestStep step : steps) {
+    for (TestCaseStep step : steps) {
       Map<String, ModelVariable> stateMap = temp.get(step.getState());
       if (stateMap == null) {
         stateMap = new LinkedHashMap<>();
@@ -231,7 +229,7 @@ public class TestCase {
   public Map<String, ModelVariable> getVariables(boolean merge) {
     Map<String, ModelVariable> result = new LinkedHashMap<>();
 
-    for (TestStep step : steps) {
+    for (TestCaseStep step : steps) {
       Collection<ModelVariable> variables = step.getValues();
       for (ModelVariable variable : variables) {
         String name = variable.getName();
@@ -273,7 +271,7 @@ public class TestCase {
    */
   public List<String> getAllTransitionNames() {
     List<String> names = new ArrayList<>();
-    for (TestStep teststep : steps) {
+    for (TestCaseStep teststep : steps) {
       names.add(teststep.getName());
     }
     return names;

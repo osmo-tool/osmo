@@ -4,10 +4,9 @@ import osmo.common.OSMOException;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
-import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.filter.TransitionFilter;
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.generator.testsuite.TestStep;
+import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
@@ -67,6 +66,7 @@ public class MainGenerator {
     while (!config.getSuiteEndCondition().endSuite(suite, fsm)) {
       nextTest();
     }
+    log.debug("Ending suite");
     endSuite();
   }
 
@@ -105,11 +105,12 @@ public class MainGenerator {
       try {
         boolean shouldContinue = nextStep();
         if (!shouldContinue) {
+          log.debug("Ending test case");
           break;
         }
       } catch (RuntimeException | AssertionError e) {
         test.setFailed(true);
-        TestStep step = suite.getCurrentTest().getCurrentStep();
+        TestCaseStep step = suite.getCurrentTest().getCurrentStep();
         if (step != null) {
           test.getCurrentStep().setFailed(true);
         }
@@ -130,8 +131,8 @@ public class MainGenerator {
         } else {
           unwrap.printStackTrace();
         }
+        log.debug("Skipped test error due to settings (no fail when error)", e);
       }
-      log.debug("Skipped test error due to settings (no fail when error)");
     }
     afterTest();
     log.debug("Finished new test generation");
@@ -168,7 +169,7 @@ public class MainGenerator {
   public void execute(FSMTransition transition) {
     transition.reset();
     //we have to add this first or it will produce failures..
-    TestStep step = suite.addStep(transition);
+    TestCaseStep step = suite.addStep(transition);
     //store state variable values for pre-methods
     transition.updatePrePostMap(fsm);
     //store into test step the current state
@@ -204,7 +205,7 @@ public class MainGenerator {
    *
    * @param step The step.
    */
-  private void storeUserState(TestStep step) {
+  private void storeUserState(TestCaseStep step) {
     InvocationTarget stateName = fsm.getStateNameFor(step.getModelObjectName());
     if (stateName != null) {
       String state = (String) stateName.invoke(step);
@@ -353,6 +354,10 @@ public class MainGenerator {
 
   protected Throwable unwrap(Throwable e) {
     while (e instanceof OSMOException || e instanceof InvocationTargetException) {
+      if (e.getCause() == null) {
+        //might happen if OSMO throws OSMOException
+        break;
+      }
       e = e.getCause();
     }
 //    Throwable cause = e.getCause();
@@ -388,7 +393,7 @@ public class MainGenerator {
     return fsm;
   }
 
-  public void addOptionsFor(TestStep step, List<FSMTransition> enabled) {
+  public void addOptionsFor(TestCaseStep step, List<FSMTransition> enabled) {
     String stepName = FSM.START_NAME;
     if (step != null) {
       stepName = step.getName();

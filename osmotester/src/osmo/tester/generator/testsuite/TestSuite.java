@@ -91,8 +91,8 @@ public class TestSuite {
    * @param transition The transition to add.
    * @return The added step object.
    */
-  public TestStep addStep(FSMTransition transition) {
-    TestStep step = current.addStep(transition);
+  public TestCaseStep addStep(FSMTransition transition) {
+    TestCaseStep step = current.addStep(transition);
     Integer count = transitionCoverage.get(transition.getStringName());
     if (count == null) {
       count = 0;
@@ -212,8 +212,8 @@ public class TestSuite {
    * @return True if the given transition is found in the given test case, otherwise false.
    */
   private boolean testContains(TestCase testCase, FSMTransition transition) {
-    List<TestStep> steps = testCase.getSteps();
-    for (TestStep step : steps) {
+    List<TestCaseStep> steps = testCase.getSteps();
+    for (TestCaseStep step : steps) {
       if (step.getName().equals(transition.getStringName())) {
         return true;
       }
