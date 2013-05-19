@@ -55,6 +55,7 @@ public class RequirementPrintTests {
             "\n" +
             "Requirements:[epix, hello, world]\n" +
             "Covered:[epix, hello, world]\n" +
+            "Not covered:[]\n"+
             "Total unique requirements = 3/3 (100%) requirements.\n";
     String actual = out.toString();
     expected = unifyLineSeparators(expected, "\n");
@@ -77,6 +78,7 @@ public class RequirementPrintTests {
             "\n" +
             "Requirements:[hello]\n" +
             "Covered:[epix, hello, world]\n" +
+            "Not covered:[]\n"+
             "Total unique requirements = 1/1 (100%) requirements.\n";
     String actual = out.toString();
     expected = unifyLineSeparators(expected, "\n");
@@ -99,6 +101,7 @@ public class RequirementPrintTests {
             "\n" +
             "Requirements:[]\n" +
             "Covered:[epix, hello, world]\n" +
+            "Not covered:[]\n"+
             "\n";
     String actual = out.toString();
     expected = unifyLineSeparators(expected, "\n");
@@ -121,6 +124,7 @@ public class RequirementPrintTests {
             "\n" +
             "Requirements:[epix, hello, undefined, world]\n" +
             "Covered:[epix, hello, world]\n" +
+            "Not covered:[undefined]\n"+
             "Total unique requirements = 3/4 (75%) requirements.\n";
     String actual = out.toString();
     expected = unifyLineSeparators(expected, "\n");
@@ -166,6 +170,7 @@ public class RequirementPrintTests {
             "\n" +
             "Requirements:[]\n" +
             "Covered:[hello, world]\n" +
+            "Not covered:[]\n"+
             "\n";
     expected = unifyLineSeparators(expected, "\n");
     actual = unifyLineSeparators(actual, "\n");

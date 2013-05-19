@@ -36,7 +36,11 @@ public class ValueSet<T> extends SearchableInput<T> {
   /** Constructor for when no initial options are provided. Options need to be added later with addOption(). */
   public ValueSet() {
     init();
-    this.rand = new Randomizer(OSMOConfiguration.getSeed());
+    long seed = OSMOConfiguration.getSeed();
+//    long id = Thread.currentThread().getId();
+//    //REMOVE ME!!
+//    System.out.println(id+":VS:"+seed);
+    this.rand = new Randomizer(seed);
   }
 
   public void setSeed(long seed) {
@@ -136,16 +140,6 @@ public class ValueSet<T> extends SearchableInput<T> {
   }
 
   /**
-   * Evaluates the given object to see if it belongs to this set.
-   *
-   * @param value The object to be evaluated.
-   * @return True if found in the set, false if not.
-   */
-  public boolean evaluate(T value) {
-    return options.contains(value);
-  }
-
-  /**
    * Produces an object from this set to be used as input in test cases.
    * The choice depends on the chosen input strategy.
    *
@@ -178,15 +172,6 @@ public class ValueSet<T> extends SearchableInput<T> {
     //log.debug("Value:"+next);
     observe(next);
     return next;
-  }
-
-  private T scriptedNext(String serialized) {
-    for (T option : options) {
-      if (option.toString().equals(serialized)) {
-        return option;
-      }
-    }
-    throw new IllegalArgumentException(getClass().getSimpleName() + " does not support scripting undefined values: Requested scripted value for variable '" + getName() + "' not found: " + serialized);
   }
 
   /**
@@ -279,5 +264,9 @@ public class ValueSet<T> extends SearchableInput<T> {
     history.clear();
     options.clear();
     options.addAll(newOptions);
+  }
+
+  public void clear() {
+    options.clear();
   }
 }

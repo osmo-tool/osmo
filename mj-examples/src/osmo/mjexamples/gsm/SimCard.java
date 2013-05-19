@@ -1,30 +1,34 @@
 package osmo.mjexamples.gsm;
 
-import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import osmo.common.NullPrintStream;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.ExplorationEnabler;
 import osmo.tester.annotation.GenerationEnabler;
+import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.StateName;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.coverage.ScoreConfiguration;
 import osmo.tester.coverage.TestCoverage;
-import osmo.tester.generator.SimpleModelFactory;
-import osmo.tester.generator.TracePrinter;
+import osmo.tester.generator.algorithm.BalancingAlgorithm;
 import osmo.tester.generator.algorithm.WeightedBalancingAlgorithm;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.LengthProbability;
 import osmo.tester.generator.endcondition.Time;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
+import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.gui.manualdrive.ManualAlgorithm;
 import osmo.tester.model.ModelFactory;
+import osmo.tester.model.Requirements;
 import osmo.tester.optimizer.MultiGreedy;
 import osmo.tester.parser.ModelObject;
 
@@ -74,6 +78,9 @@ public class SimCard {
   public static final int Max_Puk_Try = 10;
   protected String read_data;
   protected Status_Word result;
+  @RequirementsField
+  private Requirements req = new Requirements();
+  private PrintStream out = System.out;
 
   // These variables model what a SimCard knows about Files.
   protected File DF;  // the current directory (never null)
@@ -94,6 +101,42 @@ public class SimCard {
    */
   public SimCard(SimCardAdaptor sut0) {
     sut = sut0;
+    //TODO: read these automatically
+    req.add(Req.Change1);
+    req.add(Req.Change2);
+    req.add(Req.Change3);
+    req.add(Req.Change4);
+    req.add(Req.Change5);
+    req.add(Req.Disable1);
+    req.add(Req.Disable2);
+    req.add(Req.Disable3);
+    req.add(Req.Disable4);
+    req.add(Req.Disable5);
+    req.add(Req.Enable1);
+    req.add(Req.Enable2);
+    req.add(Req.Enable3);
+    req.add(Req.Enable4);
+    req.add(Req.Enable5);
+    req.add(Req.ReadBin1);
+    req.add(Req.ReadBin1_67);
+    req.add(Req.ReadBin2);
+    req.add(Req.ReadBin3);
+    req.add(Req.ReadBin3_5);
+    req.add(Req.ReadBin3_8);
+    req.add(Req.SelectFile2);
+    req.add(Req.SelectFile2_File3_File4);
+    req.add(Req.SelectFile6);
+    req.add(Req.SelectFile7);
+    req.add(Req.Unblock3);
+    req.add(Req.Unblock4);
+    req.add(Req.Unblock5);
+    req.add(Req.Unblock7Unblock2);
+    req.add(Req.UnblockCHV1);
+    req.add(Req.VerifyCHV1);
+    req.add(Req.VerifyCHV2);
+    req.add(Req.VerifyCHV3);
+    req.add(Req.VerifyCHV4);
+    req.add(Req.VerifyCHV5);
   }
 
   @GenerationEnabler
@@ -104,6 +147,7 @@ public class SimCard {
   @ExplorationEnabler
   public void simulation() {
     sut = null;
+    out = NullPrintStream.stream;
   }
 
   /**
@@ -156,13 +200,14 @@ public class SimCard {
     DF = files.get(F_Name.MF);
     EF = null;
     result = Status_Word.sw_9000;  // Okay
-    /*@REQ: RESET @*/
     if (sut != null) {
+      //cannot cover stuff in reset function as there is no test at that time...
+//      req.covered("@REQ: RESET @");
       sut.reset();
     }
   }
 
-  @TestStep("Vefiy PIN 11")
+  @TestStep("Verify PIN 11")
   public void verifyPIN11() {
     Verify_PIN(11);
   }
@@ -176,21 +221,26 @@ public class SimCard {
     // Pre: Pin > 0 and Pin < 10000
 
     if (status_PIN_block == B_Status.Blocked) {
-      result = Status_Word.sw_9840; /*@REQ: VERIFY_CHV1 @*/
+      result = Status_Word.sw_9840;
+      req.covered(Req.VerifyCHV1);//"@REQ: VERIFY_CHV1 @"
     } else if (status_en == E_Status.Disabled) {
-      result = Status_Word.sw_9808; /*@REQ: VERIFY_CHV5 @*/
+      result = Status_Word.sw_9808;
+      req.covered(Req.VerifyCHV5); //"@REQ: VERIFY_CHV5 @"
     } else if (Pin == PIN) {
       counter_PIN_try = 0;
       perm_session = true;
-      result = Status_Word.sw_9000; /*@REQ: REQ6,VERIFY_CHV2 @*/
+      result = Status_Word.sw_9000;
+      req.covered(Req.VerifyCHV2); //"@REQ: REQ6,VERIFY_CHV2 @"
     } else if (counter_PIN_try == Max_Pin_Try - 1) {
       counter_PIN_try = Max_Pin_Try;
       status_PIN_block = B_Status.Blocked;
       perm_session = false;
-      result = Status_Word.sw_9840; /*@REQ: REQ6, VERIFY_CHV4 @*/
+      result = Status_Word.sw_9840;
+      req.covered(Req.VerifyCHV4); //"@REQ: REQ6, VERIFY_CHV4 @"
     } else {
       counter_PIN_try = counter_PIN_try + 1;
-      result = Status_Word.sw_9804;  /*@REQ: VERIFY_CHV3 @*/
+      result = Status_Word.sw_9804;
+      req.covered(Req.VerifyCHV3); //"@REQ: VERIFY_CHV3 @"
     }
 
     if (sut != null) {
@@ -212,7 +262,8 @@ public class SimCard {
     // pre: Puk > 0 and Puk < 10000 and new_Pin > 0 and new_Pin < 10000
 
     if (status_block == B_Status.Blocked) {
-      result = Status_Word.sw_9840; /*@REQ: Unblock_CHV1 @*/
+      result = Status_Word.sw_9840;
+      req.covered(Req.UnblockCHV1); //"@REQ: Unblock_CHV1 @"
     } else if (Puk == PUK) {
       PIN = new_Pin;
       counter_PIN_try = 0;
@@ -225,19 +276,24 @@ public class SimCard {
         // (The B model did not model enabled/disabled PINs, and the
         //  UML/OCL model set status_en to Disabled rather than Enabled.)
         // status_en = E_Status.Disabled; /*@REQ: Unblock5 @*/
-        status_en = E_Status.Enabled; /*@REQ: Unblock5 @*/
+        status_en = E_Status.Enabled;
+        req.covered(Req.Unblock5); //"@REQ: Unblock5 @"
       } else {
+        //unclear from line below if this belongs here or someplace else
+        req.covered(Req.Unblock7Unblock2); //"@REQ: Unblock7,Unblock2 @"
         // leave status_en unchanged
       }/*@REQ: Unblock7,Unblock2 @*/
     } else if (counter_PUK_try == Max_Puk_Try - 1) {
-      System.out.println("BLOCKED PUK!!! PUK try counter=" + counter_PUK_try);
+      out.println("BLOCKED PUK!!! PUK try counter=" + counter_PUK_try);
       counter_PUK_try = Max_Puk_Try;
       status_block = B_Status.Blocked;
       perm_session = false;
-      result = Status_Word.sw_9840; /*@REQ: REQ7, Unblock4 @*/
+      result = Status_Word.sw_9840;
+      req.covered(Req.Unblock4); //"@REQ: REQ7, Unblock4 @"
     } else {
       counter_PUK_try = counter_PUK_try + 1;
-      result = Status_Word.sw_9804;  /*@REQ: Unblock3 @*/
+      result = Status_Word.sw_9804;
+      req.covered(Req.Unblock3); //"@REQ: Unblock3 @"
     }
 
     if (sut != null) {
@@ -253,24 +309,33 @@ public class SimCard {
 
   public void Enabled_PIN(int Pin) {
     // pre: Pin > 0 and Pin < 10000
+    out.println("status_PIN_block:"+status_PIN_block+", status_en:"+status_en+" "+Pin+"="+PIN);
+    if (status_PIN_block != B_Status.Blocked && status_en != E_Status.Enabled && PIN != Pin) {
+      System.out.println("HERE WE ARE");
+    }
 
     if (status_PIN_block == B_Status.Blocked) {
-      result = Status_Word.sw_9840; /*@REQ: ENABLE2 @*/
+      result = Status_Word.sw_9840;
+      req.covered(Req.Enable2); //"@REQ: ENABLE2 @"
     } else if (status_en == E_Status.Enabled) {
-      result = Status_Word.sw_9808; /*@REQ: ENABLE3 @*/
+      result = Status_Word.sw_9808;
+      req.covered(Req.Enable3); //"@REQ: ENABLE3 @"
     } else if (Pin == PIN) {
       counter_PIN_try = 0;
       perm_session = true;
       status_en = E_Status.Enabled;
-      result = Status_Word.sw_9000; /*@REQ: ENABLE1 @*/
+      result = Status_Word.sw_9000;
+      req.covered(Req.Enable1); //"@REQ: ENABLE1 @"
     } else if (counter_PIN_try == Max_Pin_Try - 1) {
       counter_PIN_try = Max_Pin_Try;
       status_PIN_block = B_Status.Blocked;
       perm_session = false;
-      result = Status_Word.sw_9840; /*@REQ: ENABLE4 @*/
+      result = Status_Word.sw_9840;
+      req.covered(Req.Enable4); //"@REQ: ENABLE4 @"
     } else {
       counter_PIN_try = counter_PIN_try + 1;
-      result = Status_Word.sw_9804;  /*@REQ: ENABLE5 @*/
+      result = Status_Word.sw_9804;
+      req.covered(Req.Enable5); //"@REQ: ENABLE5 @"
     }
 
     if (sut != null) {
@@ -288,22 +353,27 @@ public class SimCard {
     // pre:     Pin > 0 and Pin < 10000
 
     if (status_PIN_block == B_Status.Blocked) {
-      result = Status_Word.sw_9840; /*@REQ: DISABLE2 @*/
+      result = Status_Word.sw_9840;
+      req.covered(Req.Disable2); //"@REQ: DISABLE2 @"
     } else if (status_en == E_Status.Disabled) {
-      result = Status_Word.sw_9808; /*@REQ: DISABLE3 @*/
+      result = Status_Word.sw_9808;
+      req.covered(Req.Disable3); //"@REQ: DISABLE3 @"
     } else if (Pin == PIN) {
       counter_PIN_try = 0;
       perm_session = true;
       status_en = E_Status.Disabled;
-      result = Status_Word.sw_9000; /*@REQ: DISABLE1 @*/
+      result = Status_Word.sw_9000;
+      req.covered(Req.Disable1); //"@REQ: DISABLE1 @"
     } else if (counter_PIN_try == Max_Pin_Try - 1) {
       counter_PIN_try = Max_Pin_Try;
       status_PIN_block = B_Status.Blocked;
       perm_session = false;
-      result = Status_Word.sw_9840; /*@REQ: DISABLE4 @*/
+      result = Status_Word.sw_9840;
+      req.covered(Req.Disable4); //"@REQ: DISABLE4 @"
     } else {
       counter_PIN_try = counter_PIN_try + 1;
-      result = Status_Word.sw_9804;  /*@REQ: DISABLE5 @*/
+      result = Status_Word.sw_9804; 
+      req.covered(Req.Disable5); //"@REQ: DISABLE5 @"
     }
 
     if (sut != null) {
@@ -326,22 +396,27 @@ public class SimCard {
     // pre: old_Pin > 0 and old_Pin < 10000 and new_Pin > 0 and new_Pin < 10000
 
     if (status_PIN_block == B_Status.Blocked) {
-      result = Status_Word.sw_9840; /*@REQ: CHANGE2 @*/
+      result = Status_Word.sw_9840;
+      req.covered(Req.Change2); //"@REQ: CHANGE2 @"
     } else if (status_en == E_Status.Disabled) {
-      result = Status_Word.sw_9808; /*@REQ: CHANGE3 @*/
+      result = Status_Word.sw_9808;
+      req.covered(Req.Change3); //"@REQ: CHANGE3 @"
     } else if (old_Pin == PIN) {
       PIN = new_Pin;
       counter_PIN_try = 0;
       perm_session = true;
-      result = Status_Word.sw_9000; /*@REQ: CHANGE1 @*/
+      result = Status_Word.sw_9000;
+      req.covered(Req.Change1); //"@REQ: CHANGE1 @"
     } else if (counter_PIN_try == Max_Pin_Try - 1) {
       counter_PIN_try = Max_Pin_Try;
       status_PIN_block = B_Status.Blocked;
       perm_session = false;
-      result = Status_Word.sw_9840; /*@REQ: CHANGE4 @*/
+      result = Status_Word.sw_9840;
+      req.covered(Req.Change4); //"@REQ: CHANGE4 @"
     } else {
       counter_PIN_try = counter_PIN_try + 1;
-      result = Status_Word.sw_9804;  /*@REQ: CHANGE5 @*/
+      result = Status_Word.sw_9804;
+      req.covered(Req.Change5); //"@REQ: CHANGE5 @"
     }
 
     if (sut != null) {
@@ -404,22 +479,26 @@ public class SimCard {
               || (temp_file.parent != null && temp_file.parent == DF)) {
         result = Status_Word.sw_9000;
         DF = temp_file;
-        EF = null; /*@REQ: REQ1, REQ3, SELECT_FILE2, SELECT_FILE3, SELECT_FILE4 @*/
+        EF = null;
+        req.covered(Req.SelectFile2_File3_File4); //"@REQ: REQ1, REQ3, SELECT_FILE2, SELECT_FILE3, SELECT_FILE4 @"
       } else {
             /* the directory file_name cannot be selected */
-        result = Status_Word.sw_9404; /*@REQ: SELECT_FILE6 @*/
+        result = Status_Word.sw_9404;
+        req.covered(Req.SelectFile6); //"@REQ: SELECT_FILE6 @"
       }
     } else {
       /* file_name is a elementary file */
       if (temp_file.parent == DF) {
         /*? file_name is a child of the current directory ?*/
         result = Status_Word.sw_9000;
-        EF = temp_file; /*@REQ: REQ2, SELECT_FILE2  @*/
+        EF = temp_file;
+        req.covered(Req.SelectFile2); //"@REQ: REQ2, SELECT_FILE2@"
       } else {
         /* file_name is not a child of the current directory 
          * and is not the current directory
          */
-        result = Status_Word.sw_9405; /*@REQ: SELECT_FILE7 @*/
+        result = Status_Word.sw_9405;
+        req.covered(Req.SelectFile7); //"@REQ: SELECT_FILE7 @"
       }
     }
 
@@ -434,19 +513,25 @@ public class SimCard {
 
     /*? No current file selected ?*/
     if (EF == null) {
-      result = Status_Word.sw_9400; /*@REQ: READ_BINARY2 @*/
+      result = Status_Word.sw_9400;
+      req.covered(Req.ReadBin2); //"@REQ: READ_BINARY2 @"
     } else if (EF.perm_read == Permission.Always) {
       result = Status_Word.sw_9000;
-      read_data = EF.data;  /*@REQ: READ_BINARY1, REQ4 @*/
+      read_data = EF.data;
+      req.covered(Req.ReadBin1); //"@REQ: READ_BINARY1, REQ4 @"
     } else if (EF.perm_read == Permission.Never) {
-      result = Status_Word.sw_9804; /*@REQ: READ_BINARY3, REQ5 @*/
+      result = Status_Word.sw_9804;
+      req.covered(Req.ReadBin3_5); //"@REQ: READ_BINARY3, REQ5 @"
     } else if (EF.perm_read == Permission.Adm) {
-      result = Status_Word.sw_9804; /*@REQ: READ_BINARY3, REQ8 @*/
+      result = Status_Word.sw_9804;
+      req.covered(Req.ReadBin3_8); //"@REQ: READ_BINARY3, REQ8 @"
     } else if (perm_session) {
       result = Status_Word.sw_9000;
-      read_data = EF.data; /*@REQ: READ_BINARY1, REQ6, REQ7 @*/
+      read_data = EF.data;
+      req.covered(Req.ReadBin1_67); //"@REQ: READ_BINARY1, REQ6, REQ7 @"
     } else {
-      result = Status_Word.sw_9804; /*@REQ: READ_BINARY3 @*/
+      result = Status_Word.sw_9804;
+      req.covered(Req.ReadBin3); //"@REQ: READ_BINARY3 @"
     }
 
     if (sut != null) {
@@ -454,25 +539,84 @@ public class SimCard {
     }
   }
 
-  public static void main1(String[] args) {
+  public static void main_impossible_reqs(String[] args) {
+    SimCard model = new SimCard(new SimCardAdaptor());
+    model.reset();
+    model.req.setTestSuite(new TestSuite());
+    model.disablePINGood();
+    model.changePinNew();
+    model.enablePIN11();
+  }
+  
+  public static void main(String[] args) {
+    SimCard model = new SimCard(new SimCardAdaptor());
+    model.reset();
+    model.req.setTestSuite(new TestSuite());
+    model.unblockPINBad();//1 
+    model.Read_Binary(); //2
+    model.selectDF_Roaming(); //3
+    model.changePinNew(); //4
+    model.unblockPINBad(); //5
+    model.selectDF_Gsm(); //6
+    model.selectEF_LP(); //7
+    model.enablePIN11(); //8
+    model.changePinNew(); //9
+    model.selectDF_Gsm(); //10
+    model.unblockPINBad();  //11
+    model.unblockPINBad(); //12
+    model.selectEF_LP(); //13
+    model.selectEF_LP(); //14
+    model.changePinNew(); //15
+    model.verifyPIN12(); //16
+    model.selectMF(); //17
+    model.unblockPINBad(); //18
+    model.changePinNew(); //19
+    model.unblockPINBad(); //20
+    model.selectEF_IMSI(); //21
+    model.Read_Binary(); //22
+    model.unblockPINBad(); //23
+    model.Read_Binary(); //24
+    model.enablePIN11(); //25
+    model.verifyPIN11(); //26
+    model.selectDF_Roaming(); //27
+    model.unblockPINBad(); //28
+    model.enablePIN11(); //29
+    model.Read_Binary(); //30
+    model.verifyPIN12(); //31
+    model.Read_Binary(); //32
+    model.selectEF_FR(); //33
+    model.selectDF_Roaming(); //34
+    model.selectDF_Gsm(); //35
+    model.Read_Binary(); //36
+    model.unblockPINBad(); //37
+    model.Read_Binary(); //38
+    model.enablePIN11(); //39
+    model.unblockPINBad(); //40
+    model.selectEF_IMSI(); //41
+    model.unblockPINGood12(); //42
+    model.Read_Binary(); //43
+  }
+  
+  public static void main_(String[] args) {
     OSMOConfiguration.setSeed(44);
     OSMOTester tester = new OSMOTester();
-    tester.setAlgorithm(new WeightedBalancingAlgorithm());
+    tester.setAlgorithm(new ManualAlgorithm(tester));
+//    tester.setAlgorithm(new BalancingAlgorithm());
 //    tester.addListener(new TracePrinter());
     tester.addModelObject(new SimCard(new SimCardAdaptor()));
-//    tester.setSuiteEndCondition(new Length(200));
-    tester.setSuiteEndCondition(new Time(345));
+    tester.setSuiteEndCondition(new Length(200));
+//    tester.setSuiteEndCondition(new Time(345));
     tester.setTestEndCondition(new LengthProbability(50, 0.2d));
     tester.generate();
   }
 
-  public static void main(String[] args) {
+  public static void main_g(String[] args) {
     OSMOConfiguration.setSeed(44);
     MultiGreedy greedy = new MultiGreedy(new ScoreConfiguration(), 4, 1000, new LengthProbability(50, 0.2d));
     greedy.setFactory(new GSMModelFactory());
     List<TestCase> tests = greedy.search(4);
     TestCoverage tc = new TestCoverage(tests);
-    System.out.println(tc.coverageString(greedy.getFsm(), null, null, null));
+    System.out.println(tc.coverageString(greedy.getFsm(), null, null, null, false));
   }
 
   //  public static void main(String[] args) throws FileNotFoundException {

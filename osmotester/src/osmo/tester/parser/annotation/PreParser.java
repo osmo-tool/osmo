@@ -1,6 +1,7 @@
 package osmo.tester.parser.annotation;
 
 import osmo.common.log.Logger;
+import osmo.tester.annotation.Group;
 import osmo.tester.annotation.Pre;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
@@ -43,9 +44,15 @@ public class PreParser implements AnnotationParser {
     FSM fsm = result.getFsm();
     String[] transitionNames = pre.value();
     String prefix = parameters.getPrefix();
+    //TODO: add tests for partial model with class level groups with steps and post- pre-
+    String group = parameters.getClassAnnotation(Group.class);
     for (String name : transitionNames) {
       log.debug("Parsing pre-method '" + name + "'");
       //todo: add test for transition named "all" in a test model
+      //TODO: move "all" to a constant..
+      if (name.equals("all") && group.length() > 0) {
+        name = group;
+      }
       if (name.equals("all")) {
         fsm.addGenericPre(target);
         //generic pre-methods should not be have their own transition or it will fail the FSM check since it is a guard

@@ -35,6 +35,7 @@ public class OSMOTester {
   private OSMOConfiguration config = new OSMOConfiguration();
   /** For generating the tests. */
   private MainGenerator generator = null;
+  private boolean printCoverage = true;
 
   /**
    * Create the tester with the initialized test model object.
@@ -47,6 +48,10 @@ public class OSMOTester {
 
   /** A constructor for use with addModelObject() method. */
   public OSMOTester() {
+  }
+
+  public void setPrintCoverage(boolean printCoverage) {
+    this.printCoverage = printCoverage;
   }
 
   /**
@@ -78,11 +83,13 @@ public class OSMOTester {
     log.debug("generator starting up");
     generator = initGenerator();
     generator.generate();
+    if (!printCoverage) return;
     TestSuite suite = generator.getSuite();
     System.out.println("generated " + suite.getFinishedTestCases().size() + " tests.\n");
     TestCoverage tc = new TestCoverage(suite.getAllTestCases());
-    String coverage = tc.coverageString(fsm, generator.getPossiblePairs(), null, null);
+    String coverage = tc.coverageString(fsm, generator.getPossiblePairs(), null, null, false);
     System.out.println(coverage);
+    //TODO: using a model factory seems to break the requirements tracking
     Requirements requirements = suite.getRequirements();
     if (!requirements.isEmpty()) {
       System.out.println();

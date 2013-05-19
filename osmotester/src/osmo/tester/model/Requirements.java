@@ -1,6 +1,7 @@
 package osmo.tester.model;
 
 import osmo.common.log.Logger;
+import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.testsuite.TestSuite;
 
 import java.text.MessageFormat;
@@ -35,6 +36,12 @@ public class Requirements {
   public void setTestSuite(TestSuite testSuite) {
     log.debug("Setting test suite:" + testSuite);
     this.testSuite = testSuite;
+    fillCoverage(testSuite.getCoverage());
+  }
+  
+  public void fillCoverage(TestCoverage tc) {
+    covered.clear();
+    covered.addAll(tc.getRequirements());
   }
 
   /**
@@ -42,22 +49,29 @@ public class Requirements {
    *
    * @param requirement The identifier of the requirement.
    */
-  public void add(String requirement) {
-    //check if already exists
-    if (reqs.contains(requirement)) {
-      throw new IllegalArgumentException("Attempted to register '" + requirement + "' twice. Duplicates not allowed.");
+  public void add(Object requirement) {
+    if (requirement == null) {
+      log.warn("NULL value given as requirement. Is that intended?");
     }
-    reqs.add(requirement);
+    String name = ""+requirement;
+    //check if already exists
+    if (reqs.contains(name)) {
+      throw new IllegalArgumentException("Attempted to register '" + name + "' twice. Duplicates not allowed.");
+    }
+    reqs.add(name);
   }
 
   /**
    * Marks the given requirement as covered.
    *
-   * @param requirement The identifier of the requirement.
+   * @param requirement The identifier of the requirement, which will be turned into a string (toString()).
    */
-  public void covered(String requirement) {
-    covered.add(requirement);
-    testSuite.covered(requirement);
+  public void covered(Object requirement) {
+    if (requirement == null) {
+      log.warn("NULL value given as requirement. Is that intended?");
+    }
+    covered.add(""+requirement);
+    testSuite.covered(""+requirement);
   }
 
   /**
@@ -77,6 +91,18 @@ public class Requirements {
   public Collection<String> getUniqueCoverage() {
     Collection<String> set = new TreeSet<>();
     set.addAll(covered);
+    return set;
+  }
+
+  /**
+   * Gives the list of requirements that have not been covered.
+   *
+   * @return List of requirements not covered by this suite.
+   */
+  public Collection<String> getMissingCoverage() {
+    Collection<String> set = new TreeSet<>();
+    set.addAll(reqs);
+    set.removeAll(covered);
     return set;
   }
 
@@ -128,22 +154,23 @@ public class Requirements {
               "If you want to see requirement coverage you need to define a @RequirementsField\n" +
               "and add some requirements and their coverage into the model.";
     }
-    StringBuilder out = new StringBuilder();
+    String result = "";
     Collections.sort(reqs);
-    out.append("Requirements:" + reqs + "\n");
+    result += "Requirements:" + reqs + "\n";
     Collection<String> uniqueCoverage = getUniqueCoverage();
-    out.append("Covered:" + uniqueCoverage + "\n");
+    result += "Covered:" + uniqueCoverage + "\n";
+    result += "Not covered:" + getMissingCoverage() + "\n";
     int n = uniqueCoverage.size() - getExcess().size();
     int total = reqs.size();
     if (total > 0) {
       double p = (double) n / (double) total * 100;
       final MessageFormat format = new MessageFormat("Total unique requirements = {0}/{1} ({2}%) requirements.");
       Object args = new Object[]{n, total, p};
-      out.append(format.format(args));
+      result += format.format(args);
     } else {
 //      out.append("No requirements were defined (with the add() method) so no percentage is calculated.");
     }
-    return out.toString();
+    return result;
   }
 
   public boolean isEmpty() {

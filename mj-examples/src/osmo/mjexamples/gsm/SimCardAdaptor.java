@@ -1,8 +1,10 @@
 package osmo.mjexamples.gsm;
 
 import junit.framework.Assert;
+import osmo.common.NullPrintStream;
 
 import java.io.FileNotFoundException;
+import java.io.PrintStream;
 
 /** This class connects the SimCard model to the GSM11Impl.
  *
@@ -13,6 +15,7 @@ public class SimCardAdaptor
   protected byte[] apdu = new byte[258];
   protected byte[] response = null;
   protected GSM11Impl sut = new GSM11Impl();
+  private PrintStream out = NullPrintStream.stream;
 
   /** Sets up the first few bytes of the APDU, ready to send to the SIM. */
   protected void initCmd(int cmdnum, int p1, int p2, int p3)
@@ -189,7 +192,7 @@ public class SimCardAdaptor
       initCmd(0xC0, 0x00, 0x00, length);
       response = sut.cmd(apdu);
       // then check the first two bytes of the data
-      System.out.println("checking read_binary result against "+read_data 
+      out.println("checking read_binary result against "+read_data 
           + " response="+response[0]+","+response[1]+","+response[2]+","+response[3]);
       Assert.assertEquals(read_data.codePointAt(0), getByte(response,0));
       Assert.assertEquals(read_data.codePointAt(1), getByte(response,1));

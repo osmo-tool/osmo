@@ -29,9 +29,9 @@ public class ScoreConfiguration {
   /** Weights for specific variables (each unique value scores this much). */
   protected Map<String, Integer> valueWeights = new LinkedHashMap<>();
   /** Weight for number of unique transition pairs (subsequent transitions), used in fitness calculation. */
-  protected int stepPairWeight = 10;
+  protected int stepPairWeight = 30;
   /** Weight for number of unique steps, used in fitness calculation. */
-  protected int stepWeight = 10;
+  protected int stepWeight = 20;
   /** Weight for number of covered requirements, used in fitness calculation. */
   protected int requirementWeight = 10;
   /** Weight for covered user defined states. */

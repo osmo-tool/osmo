@@ -84,9 +84,11 @@ public class MainGenerator {
     fsm.initSearchableInputs(config);
     invokeAll(fsm.getGenerationEnablers());
     this.reqs = result.getRequirements();
-    if (reqs != null) {
-      reqs.setTestSuite(suite);
-    }
+    //TODO: add test to see reqs are initialized
+    suite.initRequirements(reqs);
+//    if (reqs != null) {
+//      reqs.setTestSuite(suite);
+//    }
   }
 
   /**
@@ -275,7 +277,7 @@ public class MainGenerator {
   public void initSuite() {
     if (suite == null) {
       log.debug("No suite object defined. Creating new.");
-      //user the setSuite method to also initialize the suite object missing state
+      //use the setSuite method to also initialize the suite object missing state
       suite = new TestSuite();
     }
     suite.reset();

@@ -5,14 +5,23 @@ import org.junit.Test;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
+import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generation.TestSequenceListener;
 import osmo.tester.generator.algorithm.BalancingAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.endcondition.Length;
+import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.generator.testsuite.TestCaseStep;
+import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.FSM;
 import osmo.tester.testmodels.ValidTestModel6;
 import osmo.tester.testmodels.ValidTestModel7;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import static junit.framework.Assert.*;
@@ -31,71 +40,88 @@ public class BalancingTests {
   }
 
   @Test
-  public void testModel6Length4() {
-    listener.addExpected("suite-start", "start", "t:t4", "t:t2", "t:t2", "t:t3", "end", "suite-end");
-    osmo.addModelObject(new ValidTestModel6());
-    Length length4 = new Length(4);
-    Length length1 = new Length(1);
-    osmo.setTestEndCondition(length4);
-    osmo.setSuiteEndCondition(length1);
-    osmo.setAlgorithm(new BalancingAlgorithm());
-    osmo.generate();
-    listener.validate("Balancing random generator steps");
-    Collection<String> optimized = listener.getSteps();
+  public void stepsOnly() {
+    for (int i = 0 ; i < 1000 ; i++) {
+      OSMOConfiguration.setSeed(i);
+      OSMOTester tester = new OSMOTester();
+      tester.setAlgorithm(new BalancingAlgorithm());
+      tester.addModelObject(new ValidTestModel6());
+      tester.setTestEndCondition(new Length(4));
+      tester.setSuiteEndCondition(new Length(1));
+      tester.generate();
+      assertStepsFound(tester.getSuite(), "t1", "t2", "t3", "t4");
+    }
+  }
 
-    testSetup();
-    osmo.addModelObject(new ValidTestModel6());
-    osmo.setTestEndCondition(length4);
-    osmo.setSuiteEndCondition(length1);
-    osmo.setAlgorithm(new RandomAlgorithm());
-    osmo.generate();
-    Collection<String> random = listener.getSteps();
-    assertFalse("Balancing generator should be different from random", random.equals(optimized));
+  private void assertStepsFound(TestSuite suite, String... steps) {
+    TestCoverage tc = new TestCoverage(suite.getAllTestCases());
+    Collection<String> singles = tc.getSingles();
+    for (String step : steps) {
+      assertTrue("Test should contain step " + step, singles.contains(step));
+    }
   }
 
   @Test
-  public void testModel6Length20() {
-    listener.addExpected("suite-start", "start", "t:t4", "t:t2", "t:t2", "t:t3", "t:t3", "t:t4", "t:t4", "t:t1", "t:t2", "t:t1", "t:t4", "t:t3", "t:t2", "t:t4", "t:t2", "t:t2", "t:t4", "t:t3", "t:t1", "t:t1", "end", "suite-end");
-    osmo.addModelObject(new ValidTestModel6());
-    Length length20 = new Length(20);
-    Length length1 = new Length(1);
-    osmo.setTestEndCondition(length20);
-    osmo.setSuiteEndCondition(length1);
-    osmo.setAlgorithm(new BalancingAlgorithm());
-    osmo.generate();
-    listener.validate("Balancing random generator steps");
-    Collection<String> optimized = listener.getSteps();
+  public void statistics() {
+    List<String> pairs = createPairList("t1", "t2", "t3", "t4");
+    OSMOConfiguration.setSeed(55);
+    OSMOTester tester = new OSMOTester();
+    tester.setAlgorithm(new BalancingAlgorithm());
+    tester.addModelObject(new ValidTestModel6());
+    tester.setTestEndCondition(new Length(2500));
+    tester.setSuiteEndCondition(new Length(4));
+    tester.generate();
 
-    testSetup();
-    osmo.addModelObject(new ValidTestModel6());
-    osmo.setTestEndCondition(length20);
-    osmo.setSuiteEndCondition(length1);
-    osmo.setAlgorithm(new RandomAlgorithm());
-    osmo.generate();
-    Collection<String> random = listener.getSteps();
-    assertFalse("Balancing generator should be different from random", random.equals(optimized));
+    Map<String, Integer> counts = new HashMap<>();
+    List<TestCase> tests = tester.getSuite().getAllTestCases();
+    List<String> starters = new ArrayList<>();
+    for (TestCase test : tests) {
+      String previous = FSM.START_NAME;
+      starters.add(test.getSteps().get(0).getName());
+      for (TestCaseStep step : test.getSteps()) {
+        String name = step.getName();
+        String pair = previous + "->" + name;
+        previous = name;
+        Integer count = counts.get(pair);
+        if (count == null) count = 0;
+        counts.put(pair, ++count);
+      }
+    }
+    
+    assertEquals("Number of pairs", 20, counts.size());
+
+    for (String pair : pairs) {
+      int count = counts.get(pair);
+      int avg = 2500 * 4 / 16;
+      int threshold = 5;
+      int min = avg - threshold;
+      int max = avg + threshold;
+      if (count < min || count > max) {
+        if (pair.startsWith(FSM.START_NAME)) {
+          assertEquals("Start pair count for "+pair, 1, count);
+          continue;
+        }
+        String msg = "Step pair count should be between " + min + " and " + max + ". " + pair + " was " + count + ".";
+        msg += " All pairs:" + counts;
+        fail(msg);
+      }
+    }
+    assertTrue("t1 should start a test", starters.contains("t1"));
+    assertTrue("t2 should start a test", starters.contains("t2"));
+    assertTrue("t3 should start a test", starters.contains("t3"));
+    assertTrue("t4 should start a test", starters.contains("t4"));
   }
 
-  @Test
-  public void testModel6Length10000() {
-    osmo.addModelObject(new ValidTestModel6());
-    Length length1000 = new Length(1000);
-    Length length10 = new Length(10);
-    osmo.setTestEndCondition(length1000);
-    osmo.setSuiteEndCondition(length10);
-    osmo.setAlgorithm(new BalancingAlgorithm());
-    osmo.generate();
-  }
-
-  @Test
-  public void testModel7Length200() {
-//    Logger.consoleLevel = Level.FINE;
-    osmo.addModelObject(new ValidTestModel7());
-    Length length200 = new Length(200);
-    Length length1 = new Length(1);
-    osmo.setTestEndCondition(length200);
-    osmo.setSuiteEndCondition(length1);
-    osmo.setAlgorithm(new BalancingAlgorithm());
-    osmo.generate();
+  private List<String> createPairList(String... steps) {
+    List<String> list = new ArrayList<>();
+    for (String source : steps) {
+      for (String target : steps) {
+        list.add(source + "->" + target);
+      }
+    }
+    for (String step : steps) {
+      list.add(FSM.START_NAME + "->" + step);
+    }
+    return list;
   }
 }
