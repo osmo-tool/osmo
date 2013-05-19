@@ -5,8 +5,20 @@ import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-/** @author Teemu Kanstren */
+/** 
+ * 
+ * 
+ * @author Teemu Kanstren 
+ */
 public class TableUtil {
+  /**
+   * Find a row with the given set of cells in the given table.
+   * 
+   * @param expected The set of expected cells to find (defines the row to find).
+   * @param rows The set of rows where to find the row in.
+   * @param strict If cell data must be exactly the given or just contained in the cell.
+   * @return Index to the found row in the given rows list.
+   */
   public static int findRow(List<String> expected, List<WebElement> rows, boolean strict) {
     int index = 0;
     for (WebElement row : rows) {
