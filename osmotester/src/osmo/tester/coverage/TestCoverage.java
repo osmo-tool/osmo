@@ -242,7 +242,7 @@ public class TestCoverage {
             '}';
   }
 
-  public String coverageString(FSM fsm, Collection<String> possibleStepPairs, Collection<String> possibleStates, Collection<String> possibleStatePairs) {
+  public String coverageString(FSM fsm, Collection<String> possibleStepPairs, Collection<String> possibleStates, Collection<String> possibleStatePairs, boolean printAll) {
     String result = "Covered elements:\n";
     result += "Total steps: "+transitions.size();
     result += "\nUnique steps: "+singles.size();
@@ -265,7 +265,7 @@ public class TestCoverage {
       all.addAll(possibleStepPairs);
       all.removeAll(stepPairs);
       result += " (of "+possibleStepPairs.size()+")";
-      if (all.size() > 0 && all.size() < 5) {
+      if (printAll || (all.size() > 0 && all.size() < 5)) {
         result += " missing:"+all;
       }
     }
@@ -287,7 +287,7 @@ public class TestCoverage {
       all.addAll(possibleStatePairs);
       all.removeAll(statePairs);
       result += " (of "+possibleStatePairs.size()+")";
-      if (all.size() > 0 && all.size() < 5) {
+      if (printAll || (all.size() > 0 && all.size() < 5)) {
         result += " missing:"+all;
       }
     }

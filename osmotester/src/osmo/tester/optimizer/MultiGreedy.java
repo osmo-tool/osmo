@@ -151,7 +151,7 @@ public class MultiGreedy {
     csv4 += optimizer.csvTotalScores(cases);
 
     TestCoverage tc = new TestCoverage(cases);
-    summary += tc.coverageString(fsm, possiblePairs, null, null);
+    summary += tc.coverageString(fsm, possiblePairs, null, null, false);
 
     String totalCsv = "";
     totalCsv += csv1 + "\n";

@@ -5,14 +5,15 @@ import osmo.tester.OSMOTester;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
+import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.StateName;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.generator.TracePrinter;
 import osmo.tester.generator.algorithm.BalancingAlgorithm;
-import osmo.tester.generator.algorithm.WeightedBalancingAlgorithm;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.LengthProbability;
 import osmo.tester.generator.testsuite.TestCaseStep;
+import osmo.tester.model.Requirements;
 import osmo.tester.model.data.ValueSet;
 
 import java.util.LinkedHashMap;
@@ -38,6 +39,7 @@ public class ECinema {
   public enum State {
     welcome, register, displayTickets, terminal
   }
+
   public State state = State.welcome;
   /** This is the most recent message that has been output. */
   public String message = null;
@@ -46,9 +48,11 @@ public class ECinema {
   public Map<String, User> allUsers = new LinkedHashMap<>();
   public Showtime[] showtimes = new Showtime[2];
   private boolean done = false;
-  private ValueSet<User> users = new ValueSet<>();
-  private ValueSet<String> invalidUsers = new ValueSet<>("", "bob");
-  private ValueSet<String> invalidPasswords = new ValueSet<>("", "bad");
+  //  private ValueSet<User> users = new ValueSet<>();
+//  private ValueSet<String> invalidUsers = new ValueSet<>("", "bob");
+//  private ValueSet<String> invalidPasswords = new ValueSet<>("", "bad");
+  @RequirementsField
+  private Requirements req = new Requirements();
 
   @StateName
   public String getState(TestCaseStep step) {
@@ -64,9 +68,10 @@ public class ECinema {
 
     // one registered user
     allUsers = new LinkedHashMap<>();
+//    users.clear();
     User eric = new User("ERIC", "ETO");
     allUsers.put("ERIC", eric);
-    users.add(eric);
+//    users.add(eric);
 
     // two showtimes
     showtimes[0] = new Showtime();
@@ -93,56 +98,50 @@ public class ECinema {
     return state == State.welcome;
   }
 
-  @TestStep(name="Invalid User Login", group="login", weight=1)
-  public void invalidUser() {
-    login(invalidUsers.next(), "ETO");
+  @TestStep(name="Login Empty", group="login")
+  public void loginEmpty() {
+    login("", "ETO");
   }
 
-  @TestStep(name="Invalid PW Login", group="login", weight=1)
-  public void invalidPW() {
-    login("ERIC", invalidPasswords.next());
+  @TestStep(name="Login Eric OK", group="login")
+  public void loginEricOk() {
+    login("ERIC", "ETO");
   }
 
-  @TestStep(name="Valid Login", group="login")
-  public void validLogin() {
-    User user = users.next();
-    login(user.name, user.password);
+  @TestStep(name="Login Eric BAD", group="login")
+  public void loginEricBad() {
+    login("ERIC", "ACH");
   }
 
-//  @TestStep(name="Login Eric Bad", group="login")
-//  public void loginEricBad() {
-//    login("ERIC", "ACH");
-//  }
-//
-//  @TestStep(name="Login Amandine OK", group="login")
-//  public void loginAmandineOk() {
-//    login("AMANDINE", "ACH");
-//  }
+  @TestStep(name="Login Amandine OK", group="login")
+  public void loginAmandineOk() {
+    login("AMANDINE", "ACH");
+  }
 
-//  @TestStep(name="Login Amandine Empty", group="login")
-//  public void loginAmandineEmpty() {
-//    login("AMANDINE", "");
-//  }
-  
-  public String lastUser = "";
-  public String lastPw = "";
+  @TestStep(name="Login Amandine Empty", group="login")
+  public void loginAmandineEmpty() {
+    login("AMANDINE", "");
+  }
 
   public void login(String userName, String userPassword) {
     if (userName.equals("")) {
-      message = "EMPTY_USERNAME"; /*@REQ: CIN_031 @*/
+      message = "EMPTY_USERNAME";
+      req.covered("@REQ: CIN_031 @");
     } else if (userPassword.equals("")) {
-      message = "EMPTY_PASSWORD"; /*@REQ: CIN_032 @*/
+      message = "EMPTY_PASSWORD";
+      req.covered("@REQ: CIN_032 @");
     } else if (!allUsers.containsKey(userName)) {
-      message = "UNKNOWN_USER_NAME_PASSWORD"; /*@REQ: CIN_033 @*/
+      message = "UNKNOWN_USER_NAME_PASSWORD";
+      req.covered("@REQ: CIN_033 @");
     } else {
-      lastUser = userName;
-      lastPw = userPassword;
       User user_found = allUsers.get(userName);
       if (user_found.password.equals(userPassword)) {
         currentUser = user_found;
-        message = "WELCOME";  /*@REQ: CIN_030 @*/
+        message = "WELCOME";
+        req.covered("@REQ: CIN_030 @");
       } else {
-        message = "WRONG_PASSWORD"; /*@REQ: CIN_034 @*/
+        message = "WRONG_PASSWORD";
+        req.covered("@REQ: CIN_034 @");
       }
     }
   }
@@ -155,7 +154,8 @@ public class ECinema {
   @TestStep("Logout")
   public void logout() {
     message = "BYE";
-    currentUser = null; /*@REQ: CIN_100@*/
+    currentUser = null;
+    req.covered("@REQ: CIN_100@");
     state = State.welcome;
   }
 
@@ -188,14 +188,17 @@ public class ECinema {
   /** Buy one ticket for current user, from the given shtime. */
   public void buyTicket(Showtime shtime) {
     if (currentUser == null) {
-      message = "LOGIN_FIRST"; /*@REQ: CIN_061@*/
+      message = "LOGIN_FIRST";
+      req.covered("@REQ: CIN_061@");
     } else {
       if (shtime.ticketsLeft == 1) {
         message = "NO_MORE_TICKET";
-        shtime.buyButtonActive = false; /*@REQ: CIN_062@*/
+        shtime.buyButtonActive = false;
+        req.covered("@REQ: CIN_062@");
       } else {
         message = null;
-        shtime.buyButtonActive = true; /*@REQ: CIN_060@*/
+        shtime.buyButtonActive = true;
+        req.covered("@REQ: CIN_060@");
       }
       shtime.clearAllButtonActive = currUsersTickets(shtime).size() >= 1;
       // search for an unallocated ticket [Nasty!]
@@ -220,7 +223,8 @@ public class ECinema {
 
   @Guard("Delete ticket show 1")
   public boolean deleteTicketShow1Guard() {
-    return deleteTicketGrd(showtimes[0]);
+    boolean b = deleteTicketGrd(showtimes[0]);
+    return b;
   }
 
   @TestStep("Delete ticket show 1")
@@ -239,9 +243,14 @@ public class ECinema {
   }
 
   public boolean deleteTicketGrd(Showtime shtime) {
-    return state == State.displayTickets
-            && currentUser != null
-            && !currUsersTickets(shtime).isEmpty();
+    if (state != State.displayTickets) {
+      return false;
+    }
+    if (currentUser == null) {
+      return false;
+    }
+    boolean enable = !currUsersTickets(shtime).isEmpty();
+    return enable;
   }
 
   public void deleteTicket(Showtime shtime) {
@@ -249,7 +258,8 @@ public class ECinema {
     String ticket = shtickets.iterator().next();  // choose one to delete
     shtime.clearAllButtonActive = shtickets.size() > 1;
     shtime.buyButtonActive = true;
-    currentUser.tickets.remove(ticket);  /*@REQ: CIN_090@*/
+    currentUser.tickets.remove(ticket);
+    req.covered("@REQ: CIN_090@");
   }
 
   @Guard("Delete all tickets show 1")
@@ -280,7 +290,8 @@ public class ECinema {
   public void deleteAllTickets(Showtime shtime) {
     shtime.ticketsLeft += currUsersTickets(shtime).size();
     currentUser.tickets.removeAll(currUsersTickets(shtime));
-    shtime.clearAllButtonActive = false;  /*@REQ: CIN_080@*/
+    shtime.clearAllButtonActive = false;
+    req.covered("@REQ: CIN_080@");
   }
 
   @Guard("Go to register")
@@ -298,33 +309,35 @@ public class ECinema {
     return state == State.register;
   }
 
-  @TestStep(name="Register Amandine", group="register")
+  @TestStep(name = "Register Amandine", group = "register")
   public void registerAmandine() {
     reg("AMANDINE", "ACH");
   }
 
-  @TestStep(name="Register Eric", group="register")
+  @TestStep(name = "Register Eric", group = "register")
   public void registerEric() {
     reg("ERIC", "ACH");
   }
 
-  @TestStep(name="Register Empty", group="register")
+  @TestStep(name = "Register Empty", group = "register")
   public void registerEmpty() {
     reg("", "ACH");
   }
 
   public void reg(String userName, String userPassword) {
     if (userName.equals("")) {
-      message = "EMPTY_USERNAME"; /*@REQ: CIN_020@*/
+      message = "EMPTY_USERNAME";
+      req.covered("@REQ: CIN_020@");
       //FIXED here
     } else if (allUsers.containsKey(userName)) {
-      message = "EXISTING_USER_NAME"; /*@REQ: CIN_040@*/
+      message = "EXISTING_USER_NAME";
+      req.covered("@REQ: CIN_040@");
     } else {
       User newUser = new User(userName, userPassword);
       allUsers.put(userName, newUser);
-      users.add(newUser);
       currentUser = newUser;
-      message = "WELCOME"; /*@REQ: CIN_050@*/
+      message = "WELCOME";
+      req.covered("@REQ: CIN_050@");
       state = State.welcome;
     }
   }
@@ -337,10 +350,12 @@ public class ECinema {
   @TestStep("Display tickets")
   public void displayTickets() {
     if (currentUser == null) {
-      message = "LOGIN_FIRST"; /*@REQ: CIN_063@*/
+      message = "LOGIN_FIRST";
+      req.covered("@REQ: CIN_063@");
       // and stay in the welcome state
     } else {
-      message = null; /*@REQ: CIN_070@*/
+      message = null;
+      req.covered("@REQ: CIN_070@");
       state = State.displayTickets;
     }
   }
@@ -366,11 +381,12 @@ public class ECinema {
   @TestStep("Close")
   public void close() {
     message = null;
-    currentUser = null; /*@REQ: CIN_110@*/
+    currentUser = null;
+    req.covered("@REQ: CIN_110@");
     state = State.terminal;
     done = true;
   }
-  
+
   @EndCondition
   public boolean done() {
     return done;
@@ -407,7 +423,7 @@ public class ECinema {
   public static void main(String[] args) {
     OSMOConfiguration.setSeed(44);
     OSMOTester tester = new OSMOTester();
-    tester.setAlgorithm(new WeightedBalancingAlgorithm());
+    tester.setAlgorithm(new BalancingAlgorithm());
     tester.addListener(new TracePrinter());
     tester.addModelObject(new ECinema());
     tester.setSuiteEndCondition(new Length(200));

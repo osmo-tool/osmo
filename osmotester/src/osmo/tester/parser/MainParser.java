@@ -83,7 +83,6 @@ public class MainParser {
     annotationParsers.put(ExplorationEnabler.class, new ExplorationEnablerParser());
     annotationParsers.put(GenerationEnabler.class, new GenerationEnablerParser());
     annotationParsers.put(Group.class, new GroupParser());
-    annotationParsers.put(Group.class, new GroupParser());
     
     fieldParsers.put(SearchableInput.class, new SearchableInputParser());
   }

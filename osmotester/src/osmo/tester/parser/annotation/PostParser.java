@@ -1,6 +1,7 @@
 package osmo.tester.parser.annotation;
 
 import osmo.common.log.Logger;
+import osmo.tester.annotation.Group;
 import osmo.tester.annotation.Post;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMGuard;
@@ -40,9 +41,14 @@ public class PostParser implements AnnotationParser {
     FSM fsm = result.getFsm();
     String[] transitionNames = oracle.value();
     String prefix = parameters.getPrefix();
+    String group = parameters.getClassAnnotation(Group.class);
     for (String name : transitionNames) {
       log.debug("Parsing post '" + name + "'");
-      if (name.equals("all")) {
+      //TODO: move "all" to a constant..
+      if (name.equals("all") && group.length() > 0) {
+        name = group;
+      }
+       if (name.equals("all")) {
         fsm.addGenericPost(target);
         //generic post should not be have their own transition or it will fail the FSM check since it is a guard
         //without a transition

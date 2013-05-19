@@ -8,6 +8,7 @@ import osmo.tester.model.VariableField;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -43,6 +44,7 @@ public class TestCaseStep {
   /** Stores the user defined custom state string when this step was executed. */
   private String state;
   private boolean failed;
+  private Map<String, Object> attributes = new HashMap<>();
 
   /**
    * Constructor.
@@ -215,5 +217,13 @@ public class TestCaseStep {
 
   public boolean isFailed() {
     return failed;
+  }
+  
+  public void setAttribute(String name, Object value) {
+    attributes.put(name, value);
+  }
+  
+  public Object getAttribute(String name) {
+    return attributes.get(name);
   }
 }

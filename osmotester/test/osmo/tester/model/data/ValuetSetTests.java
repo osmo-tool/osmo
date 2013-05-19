@@ -117,15 +117,6 @@ public class ValuetSetTests {
   }
 
   @Test
-  public void evaluationTest() {
-    set.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
-    assertTrue("Should find \"one\" in the set of objects.", set.evaluate("one"));
-    assertTrue("Should find \"two\" in the set of objects.", set.evaluate("two"));
-    assertTrue("Should find \"three\" in the set of objects.", set.evaluate("three"));
-    assertFalse("Should not find \"four\" in the set of objects.", set.evaluate("four"));
-  }
-
-  @Test
   public void addAndRemoveOrderedTest() {
     set.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     assertEquals("one", set.next());
