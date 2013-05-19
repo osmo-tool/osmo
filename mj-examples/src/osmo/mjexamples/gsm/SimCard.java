@@ -6,8 +6,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import osmo.common.NullPrintStream;
+import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.annotation.BeforeTest;
@@ -548,7 +550,7 @@ public class SimCard {
     model.enablePIN11();
   }
   
-  public static void main(String[] args) {
+  public static void main_bug(String[] args) {
     SimCard model = new SimCard(new SimCardAdaptor());
     model.reset();
     model.req.setTestSuite(new TestSuite());
@@ -610,10 +612,12 @@ public class SimCard {
     tester.generate();
   }
 
-  public static void main_g(String[] args) {
+  public static void main(String[] args) {
     OSMOConfiguration.setSeed(44);
+    Logger.consoleLevel = Level.INFO;
     MultiGreedy greedy = new MultiGreedy(new ScoreConfiguration(), 4, 1000, new LengthProbability(50, 0.2d));
     greedy.setFactory(new GSMModelFactory());
+    greedy.setTimeout(3600);
     List<TestCase> tests = greedy.search(4);
     TestCoverage tc = new TestCoverage(tests);
     System.out.println(tc.coverageString(greedy.getFsm(), null, null, null, false));

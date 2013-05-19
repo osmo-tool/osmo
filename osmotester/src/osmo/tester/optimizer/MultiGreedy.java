@@ -51,6 +51,7 @@ public class MultiGreedy {
   private final Collection<Class> modelClasses = new ArrayList<>();
   private ModelFactory factory = null;
   private final EndCondition endCondition;
+  private int timeout = 1;
 
   public MultiGreedy(ScoreConfiguration optimizerConfig, int populationSize, EndCondition endCondition) {
     this(optimizerConfig, Runtime.getRuntime().availableProcessors(), populationSize, endCondition);
@@ -79,12 +80,14 @@ public class MultiGreedy {
    * @return The optimized set of tests.
    */
   public List<TestCase> search(int optimizerCount) {
+    long start = System.currentTimeMillis();
     log.info("Starting search with " + optimizerCount + " optimizers");
     Collection<Future<List<TestCase>>> futures = new ArrayList<>();
     List<GreedyOptimizer> optimizers = new ArrayList<>();
     for (int i = 0 ; i < optimizerCount ; i++) {
       OSMOConfiguration.setSeed(rand.nextLong());
       GreedyOptimizer optimizer = new GreedyOptimizer(optimizerConfig, populationSize, endCondition);
+      optimizer.setTimeout(timeout);
       for (Class modelClass : modelClasses) {
         optimizer.addModelClass(modelClass);
       }
@@ -129,6 +132,9 @@ public class MultiGreedy {
       reqs.covered(req);
     }
     log.info("search done");
+    long end = System.currentTimeMillis();
+    long seconds = (end-start)/1000;
+    System.out.println("duration of search: "+seconds+"s.");
     return cases;
   }
 
@@ -164,5 +170,13 @@ public class MultiGreedy {
 
   public FSM getFsm() {
     return fsm;
+  }
+
+  public void setTimeout(int timeout) {
+    this.timeout = timeout;
+  }
+
+  public int getTimeout() {
+    return timeout;
   }
 }

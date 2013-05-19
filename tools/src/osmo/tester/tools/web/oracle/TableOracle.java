@@ -8,11 +8,31 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-/** @author Teemu Kanstren */
+/** 
+ * A test oracle for a HTML table.
+ * 
+ * A strict oracle means that the actual observed table must match exactly the data in the order stored in the
+ * given {@link ExpectedTable} instance. That is, expected table row 1 must be exactly the same as actual table 1.
+ * Also, row 1 must have the cells in the exact order in strict mode.
+ * 
+ * In 'loose' mode (strict is false), the ordering is irrelevant. What matters is that there is an
+ * equal number of rows in the expected and actual table (after headers and footers are removed).
+ * Also, the data is checked so that for each row in the expected table, there exists a row in the actual table
+ * that has the same set of cells (regardless of order in the row). The row can have more or less data just that
+ * one of the cells matches.
+ * If a match is found, it is removed so a single cell or row cannot match several expected cells or rows even if
+ * the expected rows or cells are equal.
+ * 
+ * @author Teemu Kanstren 
+ */
 public class TableOracle {
+  /** How big is your table header? We skip this many first rows in the table. */
   private final int headerSize;
+  /** How big is your table footer? We remove this many from expected number of rows. */
   private final int footerSize;
+  /** Name of the table, used to give meaningful error reports. */
   private final String tableName;
+  /** Is the check strict, that is should all rows be in added order or is it enough the data exists? */
   private boolean strict;
 
   public TableOracle(int headerSize, String tableName) {
@@ -25,9 +45,17 @@ public class TableOracle {
     this.tableName = tableName;
   }
 
+  /**
+   * Call this to perform the check of expected vs actual.
+   * 
+   * @param expectedTable An object filled with the expected set of rows/cells.
+   * @param table The actual table, the root "table" element of the HTML table.
+   */
   public void check(ExpectedTable expectedTable, WebElement table) {
+    //get all rows in table
     List<WebElement> rows = table.findElements(By.tagName("tr"));
     List<List<String>> expectedRows = expectedTable.getRows();
+    //count hte number of actual rows to compare against number of expected rows
     int bodyCount = rows.size() - headerSize - footerSize;
     assertEquals(tableName + " table size", expectedRows.size(), bodyCount);
     if (strict) {
@@ -38,6 +66,12 @@ public class TableOracle {
     }
   }
 
+  /**
+   * Performs the strict mode check, where everything should be in the same order.
+   * 
+   * @param expectedTable The expected data.
+   * @param rows The actual data.
+   */
   private void checkStrict(ExpectedTable expectedTable, List<WebElement> rows) {
     List<List<String>> expectedRows = expectedTable.getRows();
 
@@ -52,7 +86,13 @@ public class TableOracle {
       rowIndex++;
     }
   }
-  
+
+  /**
+   * Performs the 'loose' mode check, where order is irrelevant.
+   * 
+   * @param expectedTable The expected data.
+   * @param rows The actual data.
+   */
   private void checkLoose(ExpectedTable expectedTable, List<WebElement> rows) {
     List<List<String>> expectedRows = expectedTable.getRows();
     
@@ -70,6 +110,7 @@ public class TableOracle {
         }
         if (found == cells.size()) {
           i.remove();
+          break;
         }
       }
     }
