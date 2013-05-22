@@ -1,5 +1,6 @@
 package osmo.tester.examples.calculator;
 
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.annotation.AfterSuite;
 import osmo.tester.annotation.AfterTest;
@@ -108,6 +109,7 @@ public class CalculatorModel {
   }
 
   public static void main(String[] args) {
+    OSMOConfiguration.setSeed(4343);
     OSMOTester tester = new OSMOTester(new CalculatorModel());
     tester.setAlgorithm(new ManualAlgorithm(tester));
     tester.generate();

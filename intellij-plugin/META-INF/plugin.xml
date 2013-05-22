@@ -35,7 +35,7 @@
   <actions>
     <!-- Add your actions here -->
     <group id="OSMOTester.MainMenu" text="OSMO Tester" description="OSMO Tester">
-      <add-to-group group-id="MainMenu" anchor="last"  />
+      <add-to-group group-id="MainMenu" anchor="last"/>
       <action id="OSMOTester.ModelViewAction" class="osmo.tester.ide.intellij.ModelViewAction" text="Model Viewer"
               description="Provides a view of the registered OSMO Tester model">
         <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt M"/>
@@ -44,6 +44,9 @@
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">
+    <configurationType implementation="osmo.tester.ide.intellij.OSMORunConfigType"/>
     <!-- Add your extensions here -->
+    <projectConfigurable implementation="osmo.tester.ide.intellij.ConfigDialog"/>
+    <!--applicationConfigurable implementation="osmo.tester.ide.intellij.ConfigDialog"/-->
   </extensions>
 </idea-plugin>
