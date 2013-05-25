@@ -49,6 +49,10 @@ public class Probability implements EndCondition {
   public void init(FSM fsm) {
   }
 
+  public double getThreshold() {
+    return threshold;
+  }
+
   @Override
   public String toString() {
     return "Probability{" +

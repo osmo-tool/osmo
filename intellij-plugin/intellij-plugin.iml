@@ -8,6 +8,8 @@
     </content>
     <orderEntry type="jdk" jdkName="IDEA IC-129.451" jdkType="IDEA JDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="osmotester" />
+    <orderEntry type="module" module-name="common" />
   </component>
 </module>
 

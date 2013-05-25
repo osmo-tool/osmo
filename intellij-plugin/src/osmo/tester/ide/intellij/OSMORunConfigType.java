@@ -16,7 +16,6 @@ import javax.swing.Icon;
 /** @author Teemu Kanstren */
 public class OSMORunConfigType implements ConfigurationType {
   private static final Logger LOGGER = Logger.getInstance("OSMO Runner");
-
   private final ConfigurationFactory myFactory;
 
   public OSMORunConfigType() {
@@ -32,15 +31,6 @@ public class OSMORunConfigType implements ConfigurationType {
         ((ModuleBasedConfiguration) configuration).onNewConfigurationCreated();
       }
     };
-  }
-
-//  public static TestNGConfigurationType getInstance() {
-//    return ConfigurationTypeUtil.findConfigurationType(TestNGConfigurationType.class);
-//  }
-
-  public boolean isConfigurationByLocation(RunConfiguration runConfiguration, Location location) {
-    OSMORunConfig config = (OSMORunConfig) runConfiguration;
-    return false;
   }
 
   public String getDisplayName() {
