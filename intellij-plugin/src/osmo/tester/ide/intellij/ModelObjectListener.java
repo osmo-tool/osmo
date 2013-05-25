@@ -11,15 +11,15 @@ import javax.swing.event.ChangeListener;
 /** @author Teemu Kanstren */
 public class ModelObjectListener implements ChangeListener {
   private final JLabel label;
+  private final JLabel label2;
   private final String text;
-  private JTextField field;
   private JButton button;
   private JTabbedPane tabbedPane;
   private boolean enabled;
 
   public ModelObjectListener(OSMORunConfigEditor editor, String text, boolean enabled) {
     this.label = editor.getModelObjectLabel();
-    this.field = editor.getModelObjectField();
+    this.label2 = editor.getModelObjectLabel2();
     this.button = editor.getModelObjectButton();
     this.tabbedPane = editor.getTabbedPane();
     this.text = text;
@@ -32,8 +32,8 @@ public class ModelObjectListener implements ChangeListener {
     if (source.isSelected()) {
       label.setText(text);
     }
-    field.setVisible(enabled);
     button.setVisible(enabled);
+    label2.setVisible(!enabled);
     tabbedPane.setEnabledAt(1, !enabled);
   }
 }
