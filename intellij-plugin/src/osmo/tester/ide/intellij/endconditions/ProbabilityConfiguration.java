@@ -12,6 +12,7 @@ import java.util.Map;
 /** @author Teemu Kanstren */
 public class ProbabilityConfiguration implements EndConditionConfiguration {
   private Double threshold = 0.2d;
+  public static final String KEY_THRESHOLD = "threshold";
   
   public EndCondition createEndCondition() {
     return new Probability(threshold);
@@ -43,6 +44,13 @@ public class ProbabilityConfiguration implements EndConditionConfiguration {
 
   @Override
   public Map<String, String> getMap() {
-    return new HashMap<>();
+    HashMap<String, String> map = new HashMap<>();
+    map.put(KEY_THRESHOLD, ""+threshold);
+    return map;
+  }
+
+  @Override
+  public void setMap(Map<String, String> map) {
+    threshold = Double.parseDouble(map.get(KEY_THRESHOLD));
   }
 }

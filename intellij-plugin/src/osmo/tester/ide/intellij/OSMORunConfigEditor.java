@@ -9,14 +9,25 @@ import com.intellij.openapi.project.Project;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import org.jetbrains.annotations.NotNull;
 import osmo.tester.ide.intellij.filters.LongOnlyDocument;
+import osmo.tester.ide.intellij.listeners.AddClassListener;
+import osmo.tester.ide.intellij.listeners.AddFilterListener;
+import osmo.tester.ide.intellij.listeners.AddListenerListener;
 import osmo.tester.ide.intellij.listeners.AlgorithmChoiceListener;
 import osmo.tester.ide.intellij.listeners.ECChoiceListener;
 import osmo.tester.ide.intellij.listeners.ECConfigurationListener;
+import osmo.tester.ide.intellij.listeners.FactoryFieldListener;
+import osmo.tester.ide.intellij.listeners.ModelObjectListener;
+import osmo.tester.ide.intellij.listeners.PackageFactoryListener;
+import osmo.tester.ide.intellij.listeners.PackageFieldListener;
 import osmo.tester.ide.intellij.listeners.RandomizeSeedListener;
+import osmo.tester.ide.intellij.listeners.RemoveClassListener;
+import osmo.tester.ide.intellij.listeners.RemoveFilterListener;
+import osmo.tester.ide.intellij.listeners.RemoveListenerListener;
 import osmo.tester.ide.intellij.listeners.SuiteFieldListener;
 import osmo.tester.ide.intellij.listeners.TestFieldListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -54,7 +65,7 @@ public class OSMORunConfigEditor extends SettingsEditor<OSMORunConfig> {
   private JCheckBox stopOnErrorCheckBox;
   private JCheckBox unwrapExceptionsCheckBox;
   private JPanel modelObjectPanel;
-  private JTextField modelObjectField;
+  private JTextField factoryField;
   private JLabel modelObjectLabel;
   private JButton modelObjectButton;
   private JButton addClassButton;
@@ -69,6 +80,10 @@ public class OSMORunConfigEditor extends SettingsEditor<OSMORunConfig> {
   private JLabel modelObjectLabel2;
   private JTextField algorithmField;
   private JButton algorithmButton;
+  private JTextField packageField;
+  private DefaultListModel<String> classesModel = new DefaultListModel<>();
+  private DefaultListModel<String> filtersModel = new DefaultListModel<>();
+  private DefaultListModel<String> listenersModel = new DefaultListModel<>();
   private final CommonJavaParametersPanel commonJavaParametersPanel = new CommonJavaParametersPanel();
   //this gives the "use alternative JDK selection"
   private AlternativeJREPanel alternateJDK = new AlternativeJREPanel();
@@ -82,24 +97,39 @@ public class OSMORunConfigEditor extends SettingsEditor<OSMORunConfig> {
 //    jdkBottomPanel.setBorder(BorderFactory.createEmptyBorder(0,0,5,0));
     jdkBottomPanel.add(alternateJDK, BorderLayout.SOUTH);
     moduleSelector = new ConfigurationModuleSelector(project, moduleComboBox);
-    packageRadioButton.addChangeListener(new ModelObjectListener(this, "Package:", true));
-    factoryRadioButton.addChangeListener(new ModelObjectListener(this, "Factory:", true));
-    classesRadioButton.addChangeListener(new ModelObjectListener(this, "Label:", false));
+    packageRadioButton.addChangeListener(new ModelObjectListener(this, ModelObjectListener.PACKAGE));
+    factoryRadioButton.addChangeListener(new ModelObjectListener(this, ModelObjectListener.FACTORY));
+    classesRadioButton.addChangeListener(new ModelObjectListener(this, ModelObjectListener.CLASSES));
 
     addClassButton.setIcon(Resources.PLUS_ICON);
     addClassButton.setText("");
+    addClassButton.addActionListener(new AddClassListener(project, this));
+
     removeClassButton.setIcon(Resources.MINUS_ICON);
     removeClassButton.setText("");
+    removeClassButton.addActionListener(new RemoveClassListener(classesList, this));
+    
+    classesList.setModel(classesModel);
 
     addListenerButton.setIcon(Resources.PLUS_ICON);
     addListenerButton.setText("");
+    addListenerButton.addActionListener(new AddListenerListener(project, this));
+    
     removeListenerButton.setIcon(Resources.MINUS_ICON);
     removeListenerButton.setText("");
+    removeListenerButton.addActionListener(new RemoveListenerListener(listenersList, this));
+    
+    listenersList.setModel(listenersModel);
 
     addFilterButton.setIcon(Resources.PLUS_ICON);
     addFilterButton.setText("");
+    addFilterButton.addActionListener(new AddFilterListener(project, this));
+
     removeFilterButton.setIcon(Resources.MINUS_ICON);
     removeFilterButton.setText("");
+    removeFilterButton.addActionListener(new RemoveFilterListener(filterList, this));
+
+    filterList.setModel(filtersModel);
     
     algorithmButton.addActionListener(new AlgorithmChoiceListener(project, algorithmField, moduleSelector));
 
@@ -117,15 +147,31 @@ public class OSMORunConfigEditor extends SettingsEditor<OSMORunConfig> {
     
     randomizeButton.addActionListener(new RandomizeSeedListener(seedTextField));
     seedTextField.setDocument(new LongOnlyDocument());
+    factoryField.getDocument().addDocumentListener(new FactoryFieldListener(parameters, factoryField));
+    packageField.getDocument().addDocumentListener(new PackageFieldListener(parameters, packageField));
 
     GridLayoutManager layout = (GridLayoutManager) modelObjectPanel.getLayout();
     layout.getConstraintsForComponent(modelObjectLabel2).setColSpan(2);
     
     classesRadioButton.setSelected(true);
+    
+    modelObjectButton.addActionListener(new PackageFactoryListener(this, project, factoryRadioButton));
   }
 
-  public JTextField getModelObjectField() {
-    return modelObjectField;
+  public DefaultListModel<String> getClassesListModel() {
+    return classesModel;
+  }
+
+  public DefaultListModel<String> getFiltersListModel() {
+    return filtersModel;
+  }
+
+  public DefaultListModel<String> getListenersListModel() {
+    return listenersModel;
+  }
+
+  public JTextField getFactoryField() {
+    return factoryField;
   }
 
   public JLabel getModelObjectLabel() {
@@ -153,9 +199,14 @@ public class OSMORunConfigEditor extends SettingsEditor<OSMORunConfig> {
     stopOnErrorCheckBox.setSelected(parameters.isStopOnError());
     unwrapExceptionsCheckBox.setSelected(parameters.isUnWrapExceptions());
     algorithmField.setText(parameters.getAlgorithm());
-    testEndConditionTextField.setText(parameters.getTestEndCondition().get(OSMORunParameters.EC_CLASS_NAME));
-    suiteEndConditionTextField.setText(parameters.getSuiteEndCondition().get(OSMORunParameters.EC_CLASS_NAME));
+    testEndConditionTextField.setText(parameters.getTestEndCondition().get(OSMORunParameters.KEY_EC_CLASS_NAME));
+    suiteEndConditionTextField.setText(parameters.getSuiteEndCondition().get(OSMORunParameters.KEY_EC_CLASS_NAME));
     seedTextField.setText(""+parameters.getSeed());
+    packageField.setText(parameters.getPackage());
+    factoryField.setText(parameters.getRunClass());
+    packageRadioButton.setSelected(parameters.isPackageInUse());
+    factoryRadioButton.setSelected(parameters.isFactoryInUse());
+    classesRadioButton.setSelected(parameters.isClassesInUse());
   }
 
   @Override
@@ -168,7 +219,13 @@ public class OSMORunConfigEditor extends SettingsEditor<OSMORunConfig> {
     parameters.setSeed(seedTextField.getText());
     parameters.setStopOnError(stopOnErrorCheckBox.isSelected());
     parameters.setUnWrapExceptions(unwrapExceptionsCheckBox.isSelected());
+    parameters.setPackageInUse(packageRadioButton.isSelected());
+    parameters.setFactoryInUse(factoryRadioButton.isSelected());
+    parameters.setClassesInUse(classesRadioButton.isSelected());
+    parameters.setRunClass(factoryField.getText());
+    parameters.setPackageName(packageField.getText());
 //    parameters.setListeners(listenersList.getModel().getSize())
+//    parameters.setClasses(classesList.getModel())
     
   }
 
@@ -180,5 +237,17 @@ public class OSMORunConfigEditor extends SettingsEditor<OSMORunConfig> {
 
   @Override
   protected void disposeEditor() {
+  }
+
+  public OSMORunParameters getRunParameters() {
+    return parameters;
+  }
+
+  public JTextField getPackageField() {
+    return packageField;
+  }
+
+  public ConfigurationModuleSelector getModuleSelector() {
+    return moduleSelector;
   }
 }

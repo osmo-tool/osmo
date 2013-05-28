@@ -31,4 +31,8 @@ public class LengthProbabilityConfiguration implements EndConditionConfiguration
   public Map<String, String> getMap() {
     return new HashMap<>();
   }
+
+  @Override
+  public void setMap(Map<String, String> map) {
+  }
 }
