@@ -16,4 +16,6 @@ public interface EndConditionConfiguration {
   public void showGUI(Project project);
 
   public Map<String,String> getMap();
+  
+  public void setMap(Map<String, String> map);
 }

@@ -2,18 +2,17 @@ package osmo.tester.ide.intellij;
 
 import com.intellij.execution.CommonJavaRunConfigurationParameters;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.JDOMExternalizable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import osmo.common.log.Logger;
-import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
-import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.ide.intellij.endconditions.DefaultConfiguration;
 import osmo.tester.ide.intellij.endconditions.EndConditionConfiguration;
 import osmo.tester.ide.intellij.endconditions.EndConditions;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeSet;
 
 /** @author Teemu Kanstren */
 public class OSMORunParameters implements CommonJavaRunConfigurationParameters {  
@@ -30,13 +29,19 @@ public class OSMORunParameters implements CommonJavaRunConfigurationParameters {
   public boolean passParentEnvs = false;
   public boolean stopOnError;
   public boolean unWrapExceptions;
+  private boolean packageInUse = false;
+  private boolean factoryInUse = false;
+  private boolean classesInUse = false;
   public Map<String, String> testEndCondition = new HashMap<>();
   public Map<String, String> suiteEndCondition = new HashMap<>();
   public Long seed = null;
   public String algorithm = "";
   private transient Map<String, EndConditionConfiguration> testEndConditions = new HashMap<>();
   private transient Map<String, EndConditionConfiguration> suiteEndConditions = new HashMap<>();
-  public static final String EC_CLASS_NAME = "osmo.end.condition.class";
+  public static final String KEY_EC_CLASS_NAME = "osmo.end.condition.class";
+  public Collection<String> classes = new TreeSet<>();
+  public Collection<String> filters = new TreeSet<>();
+  public Collection<String> listeners = new TreeSet<>();
 
   @Override
   public void setVMParameters(String value) {
@@ -175,12 +180,12 @@ public class OSMORunParameters implements CommonJavaRunConfigurationParameters {
 
   public void setTestEndCondition(String className) {
     this.testEndCondition = getTestConfigurationFor(className).getMap();
-    this.testEndCondition.put(EC_CLASS_NAME, className);
+    this.testEndCondition.put(KEY_EC_CLASS_NAME, className);
   }
 
   public void setSuiteEndCondition(String className) {
     this.suiteEndCondition = getSuiteConfigurationFor(className).getMap();
-    this.suiteEndCondition.put(EC_CLASS_NAME, className);
+    this.suiteEndCondition.put(KEY_EC_CLASS_NAME, className);
   }
 
   public Map<String, String> getTestEndCondition() {
@@ -194,10 +199,21 @@ public class OSMORunParameters implements CommonJavaRunConfigurationParameters {
   public void setSeed(String seed) {
     try {
       this.seed = Long.parseLong(seed);
-      System.out.println("seed now:"+seed);
     } catch (NumberFormatException e) {
       log.debug("Failed to set seed from:" + seed, e);
     }
+  }
+
+  public void setPackageInUse(boolean packageInUse) {
+    this.packageInUse = packageInUse;
+  }
+
+  public void setFactoryInUse(boolean factoryInUse) {
+    this.factoryInUse = factoryInUse;
+  }
+
+  public void setClassesInUse(boolean classesInUse) {
+    this.classesInUse = classesInUse;
   }
 
   public String getAlgorithm() {
@@ -223,12 +239,68 @@ public class OSMORunParameters implements CommonJavaRunConfigurationParameters {
     this.passParentEnvs = from.passParentEnvs;
     this.stopOnError = from.stopOnError;
     this.unWrapExceptions = from.unWrapExceptions;
+    this.packageInUse = from.packageInUse;
+    this.factoryInUse = from.factoryInUse;
+    this.classesInUse = from.classesInUse;
     this.seed = from.seed;
+
+    String testEC = from.testEndCondition.get(KEY_EC_CLASS_NAME);
+    setTestEndCondition(testEC);
+    getTestConfigurationFor(testEC).setMap(from.testEndCondition);
+
+    String suiteEC = from.suiteEndCondition.get(KEY_EC_CLASS_NAME);
+    setSuiteEndCondition(suiteEC);
+    getSuiteConfigurationFor(suiteEC).setMap(from.suiteEndCondition);
+
     this.testEndCondition.putAll(from.testEndCondition);
     this.suiteEndCondition.putAll(from.suiteEndCondition);
   }
 
   public Long getSeed() {
     return seed;
+  }
+
+  public void setRunClass(String runClass) {
+    this.runClass = runClass;
+  }
+
+  public void setPackageName(String packageName) {
+    this.packageName = packageName;
+  }
+
+  public boolean isPackageInUse() {
+    return packageInUse;
+  }
+
+  public boolean isFactoryInUse() {
+    return factoryInUse;
+  }
+
+  public boolean isClassesInUse() {
+    return classesInUse;
+  }
+
+  public void addClass(String qualifiedName) {
+    this.classes.add(qualifiedName);
+  }
+
+  public void addFilter(String qualifiedName) {
+    this.filters.add(qualifiedName);
+  }
+
+  public void addListener(String qualifiedName) {
+    this.listeners.add(qualifiedName);
+  }
+
+  public void removeClass(String selection) {
+    this.classes.remove(selection);
+  }
+
+  public void removeFilter(String selection) {
+    this.filters.remove(selection);
+  }
+
+  public void removeListener(String selection) {
+    this.listeners.remove(selection);
   }
 }

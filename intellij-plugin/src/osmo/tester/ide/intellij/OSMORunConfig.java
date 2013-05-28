@@ -34,13 +34,11 @@ public class OSMORunConfig extends ModuleBasedConfiguration<JavaRunConfiguration
   public OSMORunConfig(String name, Project project, ConfigurationFactory factory) {
     super(name, new JavaRunConfigurationModule(project, false), factory);
     this.runParameters = new OSMORunParameters();
-    System.out.println("created with name:"+name);
   }
 
   public OSMORunConfig(String name, Project project, OSMORunParameters parameters, ConfigurationFactory factory) {
     super(name, new JavaRunConfigurationModule(project, false), factory);
     this.runParameters = parameters;
-    System.out.println("created with name:"+name+ " s:"+parameters.getSeed());
   }
 
   public OSMORunParameters getRunParameters() {
