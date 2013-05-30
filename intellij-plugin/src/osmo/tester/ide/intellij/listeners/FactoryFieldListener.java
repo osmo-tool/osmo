@@ -1,7 +1,6 @@
 package osmo.tester.ide.intellij.listeners;
 
 import osmo.tester.ide.intellij.OSMORunParameters;
-import osmo.tester.ide.intellij.endconditions.DefaultConfiguration;
 
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
@@ -35,6 +34,6 @@ public class FactoryFieldListener implements DocumentListener {
   }
 
   private void store() {
-    parameters.setRunClass(field.getText());
+    parameters.setFactoryClass(field.getText());
   }
 }

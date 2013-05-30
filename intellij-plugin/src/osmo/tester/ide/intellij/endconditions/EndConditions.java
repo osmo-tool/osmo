@@ -23,10 +23,10 @@ public class EndConditions {
     addConfiguration(Length.class, new LengthConfiguration());
     addConfiguration(LengthProbability.class, new LengthProbabilityConfiguration());
     addConfiguration(Probability.class, new ProbabilityConfiguration());
-    addConfiguration(Endless.class, new DefaultConfiguration());
-    addConfiguration(ElementCoverage.class, new DefaultConfiguration());
-    addConfiguration(StepCoverage.class, new DefaultConfiguration());
-    addConfiguration(StateCoverage.class, new DefaultConfiguration());
+    addConfiguration(Endless.class, new EndlessConfiguration());
+    addConfiguration(ElementCoverage.class, new ElementCoverageConfiguration());
+    addConfiguration(StepCoverage.class, new StepCoverageConfiguration());
+    addConfiguration(StateCoverage.class, new StateCoverageConfiguration());
     addConfiguration(Time.class, new TimeConfiguration());
   }
   
@@ -35,8 +35,6 @@ public class EndConditions {
   }
   
   public static EndConditionConfiguration getConfigurationFor(String className) {
-    EndConditionConfiguration configuration = endConditions.get(className);
-    if (configuration == null) configuration = new DefaultConfiguration();
-    return configuration;
+    return endConditions.get(className);
   }
 }

@@ -21,13 +21,11 @@ import java.awt.event.ActionListener;
 /** @author Teemu Kanstren */
 public class AddFilterListener implements ActionListener {
   private final Project project;
-  private final ConfigurationModuleSelector moduleSelector;
   private final OSMORunParameters parameters;
   private final DefaultListModel<String> listModel;
 
   public AddFilterListener(Project project, OSMORunConfigEditor editor) {
     this.project = project;
-    this.moduleSelector = editor.getModuleSelector();
     this.parameters = editor.getRunParameters();
     this.listModel = editor.getFiltersListModel();
   }
@@ -35,13 +33,7 @@ public class AddFilterListener implements ActionListener {
   @Override
   public void actionPerformed(ActionEvent e) {
     TreeClassChooserFactory factory = TreeClassChooserFactory.getInstance(project);
-    final Module module = moduleSelector.getModule();
-    GlobalSearchScope scope = null;
-    if (module != null) {
-      scope = GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module);
-    } else {
-      scope = GlobalSearchScope.allScope(project);
-    }
+    GlobalSearchScope scope = GlobalSearchScope.allScope(project);
     PsiClass filterClass = JavaPsiFacade.getInstance(project).findClass(TransitionFilter.class.getName(), scope);
 
     TreeClassChooser chooser = factory.createInheritanceClassChooser("Choose Filter", scope, filterClass, null);

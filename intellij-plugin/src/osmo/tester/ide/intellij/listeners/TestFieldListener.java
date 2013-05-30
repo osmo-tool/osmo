@@ -1,7 +1,7 @@
 package osmo.tester.ide.intellij.listeners;
 
 import osmo.tester.ide.intellij.OSMORunParameters;
-import osmo.tester.ide.intellij.endconditions.DefaultConfiguration;
+import osmo.tester.ide.intellij.endconditions.EndConditions;
 
 import javax.swing.JButton;
 import javax.swing.JTextField;
@@ -37,7 +37,7 @@ public class TestFieldListener implements DocumentListener {
 
   private void check() {
     String tec = testEndConditionTextField.getText();
-    if (parameters.getTestConfigurationFor(tec) instanceof DefaultConfiguration) {
+    if (EndConditions.getConfigurationFor(tec) == null) {
       configureTECButton.setEnabled(false);
     } else {
       configureTECButton.setEnabled(true);

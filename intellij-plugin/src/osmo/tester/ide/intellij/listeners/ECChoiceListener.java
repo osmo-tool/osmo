@@ -21,25 +21,17 @@ public class ECChoiceListener implements ActionListener {
   private final String title;
   private final Project project;
   private final JTextField ecField;
-  private final ConfigurationModuleSelector moduleSelector;
 
-  public ECChoiceListener(Project project, String title, JTextField ecField, ConfigurationModuleSelector moduleSelector) {
+  public ECChoiceListener(Project project, String title, JTextField ecField) {
     this.title = title;
     this.project = project;
     this.ecField = ecField;
-    this.moduleSelector = moduleSelector;
   }
 
   @Override
   public void actionPerformed(ActionEvent e) {
     TreeClassChooserFactory factory = TreeClassChooserFactory.getInstance(project);
-    final Module module = moduleSelector.getModule();
-    GlobalSearchScope scope = null;
-    if (module != null) {
-      scope = GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module);
-    } else {
-      scope = GlobalSearchScope.allScope(project);
-    }
+    GlobalSearchScope scope = GlobalSearchScope.allScope(project);
     PsiClass ecClass = JavaPsiFacade.getInstance(project).findClass(EndCondition.class.getName(), scope);
     PsiClass current = JavaPsiFacade.getInstance(project).findClass(ecField.getText(), scope);
     

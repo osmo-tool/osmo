@@ -8,6 +8,9 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="selenium" level="project" />
+    <orderEntry type="module" module-name="common" />
+    <orderEntry type="library" name="sip" level="project" />
+    <orderEntry type="module" module-name="osmotester" />
   </component>
 </module>
 

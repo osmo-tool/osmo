@@ -17,7 +17,6 @@ public class ModelObjectListener implements ChangeListener {
   private final JLabel label2;
   private final String text;
   private final JTextField factoryField;
-  private final JTextField packageField;
   private final OSMORunParameters parameters;
   private JButton button;
   private JTabbedPane tabbedPane;
@@ -30,7 +29,6 @@ public class ModelObjectListener implements ChangeListener {
     this.label2 = editor.getModelObjectLabel2();
     this.button = editor.getModelObjectButton();
     this.factoryField = editor.getFactoryField();
-    this.packageField = editor.getPackageField();
     this.tabbedPane = editor.getTabbedPane();
     this.parameters = editor.getRunParameters();
     this.text = text;
@@ -46,25 +44,21 @@ public class ModelObjectListener implements ChangeListener {
           button.setVisible(true);
           label.setVisible(true);
           label2.setVisible(false);
-          packageField.setVisible(true);
           factoryField.setVisible(false);
-          packageField.setText(parameters.getPackage());
           tabbedPane.setEnabledAt(1, false);
           break;
         case FACTORY:
           button.setVisible(true);
           label.setVisible(true);
           label2.setVisible(false);
-          packageField.setVisible(false);
           factoryField.setVisible(true);
-          factoryField.setText(parameters.getRunClass());
+          factoryField.setText(parameters.getFactoryClass());
           tabbedPane.setEnabledAt(1, false);
           break;
         case CLASSES:
           button.setVisible(false);
           label.setVisible(false);
           label2.setVisible(true);
-          packageField.setVisible(false);
           factoryField.setVisible(false);
           tabbedPane.setEnabledAt(1, true);
           break;

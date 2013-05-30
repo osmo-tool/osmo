@@ -6,29 +6,19 @@ import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.endcondition.Probability;
 
 import javax.swing.Icon;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /** @author Teemu Kanstren */
 public class ProbabilityConfiguration implements EndConditionConfiguration {
   private Double threshold = 0.2d;
-  public static final String KEY_THRESHOLD = "threshold";
   
   public EndCondition createEndCondition() {
     return new Probability(threshold);
   }
-
-  @Override
-  public String getType() {
-    return Probability.class.getName();
-  }
-
-  @Override
-  public void fillFrom(EndCondition endCondition) {
-    Probability p = (Probability) endCondition;
-    this.threshold = p.getThreshold();
-  }
-
   public void showGUI(Project project) {
     String value = "";
     if (threshold != null) value = threshold.toString();
@@ -43,14 +33,13 @@ public class ProbabilityConfiguration implements EndConditionConfiguration {
   }
 
   @Override
-  public Map<String, String> getMap() {
-    HashMap<String, String> map = new HashMap<>();
-    map.put(KEY_THRESHOLD, ""+threshold);
-    return map;
+  public String getType() {
+    return Probability.class.getName();
   }
 
   @Override
-  public void setMap(Map<String, String> map) {
-    threshold = Double.parseDouble(map.get(KEY_THRESHOLD));
+  public String getCreateString() {
+    return "new Probability("+threshold+"d);\n";
   }
+
 }

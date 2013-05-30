@@ -1,4 +1,4 @@
-package osmo.tester.ide.intellij;
+package osmo.tester.ide.intellij.actions;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;

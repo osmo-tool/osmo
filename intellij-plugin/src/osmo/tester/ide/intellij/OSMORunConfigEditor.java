@@ -6,8 +6,10 @@ import com.intellij.execution.ui.ConfigurationModuleSelector;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import osmo.tester.ide.intellij.filters.LongOnlyDocument;
 import osmo.tester.ide.intellij.listeners.AddClassListener;
 import osmo.tester.ide.intellij.listeners.AddFilterListener;
@@ -39,15 +41,15 @@ import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import java.awt.BorderLayout;
+import java.util.Collection;
 
 /** @author Teemu Kanstren */
-public class OSMORunConfigEditor extends SettingsEditor<OSMORunConfig> {
+public class OSMORunConfigEditor extends DialogWrapper {
   private JPanel topPanel;
   private JTextField seedTextField;
   private JRadioButton classesRadioButton;
   private JRadioButton factoryRadioButton;
   private JTabbedPane tabbedPane;
-  private JRadioButton packageRadioButton;
   private JTextField testEndConditionTextField;
   private JButton testECChoiceButton;
   private JTextField suiteEndConditionTextField;
@@ -55,13 +57,6 @@ public class OSMORunConfigEditor extends SettingsEditor<OSMORunConfig> {
   private JButton configureTECButton;
   private JButton configureSECButton;
   private JButton randomizeButton;
-  private JPanel jdkSettingsTab;
-  private JPanel listenersTab;
-  private JPanel filtersTab;
-  private JPanel jdkSettingsPanel;
-  private JComboBox moduleComboBox;
-  private JPanel jdkBottomPanel;
-  private JPanel jdkBottom2;
   private JCheckBox stopOnErrorCheckBox;
   private JCheckBox unwrapExceptionsCheckBox;
   private JPanel modelObjectPanel;
@@ -84,20 +79,13 @@ public class OSMORunConfigEditor extends SettingsEditor<OSMORunConfig> {
   private DefaultListModel<String> classesModel = new DefaultListModel<>();
   private DefaultListModel<String> filtersModel = new DefaultListModel<>();
   private DefaultListModel<String> listenersModel = new DefaultListModel<>();
-  private final CommonJavaParametersPanel commonJavaParametersPanel = new CommonJavaParametersPanel();
-  //this gives the "use alternative JDK selection"
-  private AlternativeJREPanel alternateJDK = new AlternativeJREPanel();
-  private final ConfigurationModuleSelector moduleSelector;
   private final OSMORunParameters parameters = new OSMORunParameters();
 
   public OSMORunConfigEditor(Project project) {
-    jdkSettingsPanel.add(commonJavaParametersPanel, BorderLayout.CENTER);
-    jdkSettingsPanel.add(jdkBottomPanel, BorderLayout.SOUTH);
-    alternateJDK.setBorder(BorderFactory.createEmptyBorder(5,0,5,0));
-//    jdkBottomPanel.setBorder(BorderFactory.createEmptyBorder(0,0,5,0));
-    jdkBottomPanel.add(alternateJDK, BorderLayout.SOUTH);
-    moduleSelector = new ConfigurationModuleSelector(project, moduleComboBox);
-    packageRadioButton.addChangeListener(new ModelObjectListener(this, ModelObjectListener.PACKAGE));
+    super(project);
+    init();
+    setTitle("Generate Main Class");
+    parameters.project = project;
     factoryRadioButton.addChangeListener(new ModelObjectListener(this, ModelObjectListener.FACTORY));
     classesRadioButton.addChangeListener(new ModelObjectListener(this, ModelObjectListener.CLASSES));
 
@@ -131,7 +119,7 @@ public class OSMORunConfigEditor extends SettingsEditor<OSMORunConfig> {
 
     filterList.setModel(filtersModel);
     
-    algorithmButton.addActionListener(new AlgorithmChoiceListener(project, algorithmField, moduleSelector));
+    algorithmButton.addActionListener(new AlgorithmChoiceListener(project, algorithmField));
 
     TestFieldListener testFieldListener = new TestFieldListener(parameters, testEndConditionTextField, configureTECButton);
     testEndConditionTextField.getDocument().addDocumentListener(testFieldListener);
@@ -142,8 +130,8 @@ public class OSMORunConfigEditor extends SettingsEditor<OSMORunConfig> {
     configureTECButton.addActionListener(new ECConfigurationListener(project, testEndConditionTextField, parameters, true));
     configureSECButton.addActionListener(new ECConfigurationListener(project, suiteEndConditionTextField, parameters, false));
     
-    testECChoiceButton.addActionListener(new ECChoiceListener(project, "Choose Test End Condition", testEndConditionTextField, moduleSelector));
-    suiteECChoiceButton.addActionListener(new ECChoiceListener(project, "Choose Suite End Condition", suiteEndConditionTextField, moduleSelector));
+    testECChoiceButton.addActionListener(new ECChoiceListener(project, "Choose Test End Condition", testEndConditionTextField));
+    suiteECChoiceButton.addActionListener(new ECChoiceListener(project, "Choose Suite End Condition", suiteEndConditionTextField));
     
     randomizeButton.addActionListener(new RandomizeSeedListener(seedTextField));
     seedTextField.setDocument(new LongOnlyDocument());
@@ -189,54 +177,39 @@ public class OSMORunConfigEditor extends SettingsEditor<OSMORunConfig> {
   public JTabbedPane getTabbedPane() {
     return tabbedPane;
   }
-
-  @Override
-  protected void resetEditorFrom(OSMORunConfig s) {
-    //this fills in the combobox for module selections
-    moduleSelector.reset(s);
-    OSMORunParameters parameters = s.getRunParameters();
-    commonJavaParametersPanel.reset(parameters);
-    stopOnErrorCheckBox.setSelected(parameters.isStopOnError());
-    unwrapExceptionsCheckBox.setSelected(parameters.isUnWrapExceptions());
-    algorithmField.setText(parameters.getAlgorithm());
-    testEndConditionTextField.setText(parameters.getTestEndCondition().get(OSMORunParameters.KEY_EC_CLASS_NAME));
-    suiteEndConditionTextField.setText(parameters.getSuiteEndCondition().get(OSMORunParameters.KEY_EC_CLASS_NAME));
-    seedTextField.setText(""+parameters.getSeed());
-    packageField.setText(parameters.getPackage());
-    factoryField.setText(parameters.getRunClass());
-    packageRadioButton.setSelected(parameters.isPackageInUse());
-    factoryRadioButton.setSelected(parameters.isFactoryInUse());
-    classesRadioButton.setSelected(parameters.isClassesInUse());
+  
+  private void addToList(Collection<String> items, DefaultListModel<String> model) {
+    for (String item : items) {
+      model.addElement(item);
+    }
   }
 
-  @Override
-  protected void applyEditorTo(OSMORunConfig s) throws ConfigurationException {
-    OSMORunParameters parameters = s.getRunParameters();
-    commonJavaParametersPanel.applyTo(parameters);
+  public void fill(OSMORunParameters parameters) {
     parameters.setAlgorithm(algorithmField.getText());
     parameters.setTestEndCondition(testEndConditionTextField.getText());
     parameters.setSuiteEndCondition(suiteEndConditionTextField.getText());
     parameters.setSeed(seedTextField.getText());
     parameters.setStopOnError(stopOnErrorCheckBox.isSelected());
     parameters.setUnWrapExceptions(unwrapExceptionsCheckBox.isSelected());
-    parameters.setPackageInUse(packageRadioButton.isSelected());
     parameters.setFactoryInUse(factoryRadioButton.isSelected());
     parameters.setClassesInUse(classesRadioButton.isSelected());
-    parameters.setRunClass(factoryField.getText());
+    parameters.setFactoryClass(factoryField.getText());
     parameters.setPackageName(packageField.getText());
-//    parameters.setListeners(listenersList.getModel().getSize())
-//    parameters.setClasses(classesList.getModel())
-    
+    for (int i = 0 ; i < classesModel.getSize() ; i++) {
+      parameters.addClass(classesModel.get(i));
+    }
+    for (int i = 0 ; i < listenersModel.getSize() ; i++) {
+      parameters.addListener(listenersModel.get(i));
+    }
+    for (int i = 0 ; i < filtersModel.getSize() ; i++) {
+      parameters.addFilter(filtersModel.get(i));
+    }
   }
 
-  @NotNull
+  @Nullable
   @Override
-  protected JComponent createEditor() {
+  protected JComponent createCenterPanel() {
     return topPanel;
-  }
-
-  @Override
-  protected void disposeEditor() {
   }
 
   public OSMORunParameters getRunParameters() {
@@ -245,9 +218,5 @@ public class OSMORunConfigEditor extends SettingsEditor<OSMORunConfig> {
 
   public JTextField getPackageField() {
     return packageField;
-  }
-
-  public ConfigurationModuleSelector getModuleSelector() {
-    return moduleSelector;
   }
 }
