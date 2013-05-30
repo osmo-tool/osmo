@@ -36,7 +36,6 @@ import java.util.HashSet;
  * @author Teemu Kanstren */
 public class ModelObjectFilter implements ClassFilter.ClassFilterWithScope {
   private final Project project;
-  private final Module module;
   private final GlobalSearchScope scope;
   private static Collection<String> annotations = new HashSet<>();
   
@@ -55,14 +54,9 @@ public class ModelObjectFilter implements ClassFilter.ClassFilterWithScope {
 //    annotations.add(Variable.class.getName());
   }
 
-  public ModelObjectFilter(Project project, Module module) {
-    if (module != null) {
-      scope = GlobalSearchScope.moduleScope(module);
-    } else {
-      scope = GlobalSearchScope.allScope(project);
-    }
+  public ModelObjectFilter(Project project) {
+    scope = GlobalSearchScope.allScope(project);
     this.project = project;
-    this.module = module;
   }
 
   @Override

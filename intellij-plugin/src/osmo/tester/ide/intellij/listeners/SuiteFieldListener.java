@@ -1,7 +1,7 @@
 package osmo.tester.ide.intellij.listeners;
 
 import osmo.tester.ide.intellij.OSMORunParameters;
-import osmo.tester.ide.intellij.endconditions.DefaultConfiguration;
+import osmo.tester.ide.intellij.endconditions.EndConditions;
 
 import javax.swing.JButton;
 import javax.swing.JTextField;
@@ -37,7 +37,7 @@ public class SuiteFieldListener implements DocumentListener {
 
   private void check() {
     String tec = suiteEndConditionTextField.getText();
-    if (parameters.getSuiteConfigurationFor(tec) instanceof DefaultConfiguration) {
+    if (EndConditions.getConfigurationFor(tec) != null) {
       configureSECButton.setEnabled(false);
     } else {
       configureSECButton.setEnabled(true);

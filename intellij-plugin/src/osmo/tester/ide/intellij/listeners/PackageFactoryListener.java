@@ -26,27 +26,19 @@ public class PackageFactoryListener implements ActionListener {
   private final JTextField packageField;
   private final Project project;
   private final JRadioButton factory;
-  private final ConfigurationModuleSelector moduleSelector;
 
   public PackageFactoryListener(OSMORunConfigEditor editor, Project project, JRadioButton factoryButton) {
     this.factoryField = editor.getFactoryField();
     this.packageField = editor.getPackageField();
     this.project = project;
     this.factory = factoryButton;
-    this.moduleSelector = editor.getModuleSelector();
   }
 
   @Override
   public void actionPerformed(ActionEvent e) {
     if (factory.isSelected()) {
       TreeClassChooserFactory factory = TreeClassChooserFactory.getInstance(project);
-      final Module module = moduleSelector.getModule();
-      GlobalSearchScope scope = null;
-      if (module != null) {
-        scope = GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module);
-      } else {
-        scope = GlobalSearchScope.allScope(project);
-      }
+      GlobalSearchScope scope = GlobalSearchScope.allScope(project);
       PsiClass ecClass = JavaPsiFacade.getInstance(project).findClass(ModelFactory.class.getName(), scope);
       PsiClass current = JavaPsiFacade.getInstance(project).findClass(factoryField.getText(), scope);
 

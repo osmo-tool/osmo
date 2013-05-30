@@ -21,13 +21,11 @@ import java.awt.event.ActionListener;
 /** @author Teemu Kanstren */
 public class AddClassListener implements ActionListener {
   private final Project project;
-  private final ConfigurationModuleSelector moduleSelector;
   private final OSMORunParameters parameters;
   private final DefaultListModel<String> listModel;
 
   public AddClassListener(Project project, OSMORunConfigEditor editor) {
     this.project = project;
-    this.moduleSelector = editor.getModuleSelector();
     this.parameters = editor.getRunParameters();
     this.listModel = editor.getClassesListModel();
   }
@@ -35,14 +33,8 @@ public class AddClassListener implements ActionListener {
   @Override
   public void actionPerformed(ActionEvent e) {
     TreeClassChooserFactory factory = TreeClassChooserFactory.getInstance(project);
-    final Module module = moduleSelector.getModule();
-    GlobalSearchScope scope = null;
-    if (module != null) {
-      scope = GlobalSearchScope.moduleScope(module);
-    } else {
-      scope = GlobalSearchScope.allScope(project);
-    }
-    TreeClassChooser chooser = factory.createWithInnerClassesScopeChooser("Add test model class", scope, new ModelObjectFilter(project, module), null);
+    GlobalSearchScope scope = GlobalSearchScope.allScope(project);
+    TreeClassChooser chooser = factory.createWithInnerClassesScopeChooser("Add test model class", scope, new ModelObjectFilter(project), null);
     //InheritanceClassChooser("Add test model class", scope, ecClass, null);
     chooser.showDialog();
     PsiClass selected = chooser.getSelected();

@@ -2,6 +2,7 @@ package osmo.tester.ide.intellij.listeners;
 
 import com.intellij.openapi.project.Project;
 import osmo.tester.ide.intellij.OSMORunParameters;
+import osmo.tester.ide.intellij.endconditions.EndConditions;
 
 import javax.swing.JTextField;
 import java.awt.event.ActionEvent;
@@ -24,9 +25,9 @@ public class ECConfigurationListener implements ActionListener {
   @Override
   public void actionPerformed(ActionEvent e) {
     if (test) {
-      parameters.getTestConfigurationFor(ecTextField.getText()).showGUI(project);
+      EndConditions.getConfigurationFor(ecTextField.getText()).showGUI(project);
     } else {
-      parameters.getSuiteConfigurationFor(ecTextField.getText()).showGUI(project);
+      EndConditions.getConfigurationFor(ecTextField.getText()).showGUI(project);
     }
   }
 }

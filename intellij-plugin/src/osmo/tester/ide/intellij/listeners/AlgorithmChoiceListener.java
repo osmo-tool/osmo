@@ -19,24 +19,16 @@ import java.awt.event.ActionListener;
 public class AlgorithmChoiceListener implements ActionListener {
   private final Project project;
   private final JTextField field;
-  private final ConfigurationModuleSelector moduleSelector;
 
-  public AlgorithmChoiceListener(Project project, JTextField field, ConfigurationModuleSelector moduleSelector) {
+  public AlgorithmChoiceListener(Project project, JTextField field) {
     this.project = project;
     this.field = field;
-    this.moduleSelector = moduleSelector;
   }
 
   @Override
   public void actionPerformed(ActionEvent e) {
     TreeClassChooserFactory factory = TreeClassChooserFactory.getInstance(project);
-    final Module module = moduleSelector.getModule();
-    GlobalSearchScope scope = null;
-    if (module != null) {
-      scope = GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module);
-    } else {
-      scope = GlobalSearchScope.allScope(project);
-    }
+    GlobalSearchScope scope = GlobalSearchScope.allScope(project);
     PsiClass ecClass = JavaPsiFacade.getInstance(project).findClass(FSMTraversalAlgorithm.class.getName(), scope);
     PsiClass current = JavaPsiFacade.getInstance(project).findClass(field.getText(), scope);
     
