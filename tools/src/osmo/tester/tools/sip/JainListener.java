@@ -12,13 +12,19 @@ import javax.sip.TimeoutEvent;
 import javax.sip.TransactionTerminatedEvent;
 import javax.sip.header.FromHeader;
 import javax.sip.header.ToHeader;
+import javax.sip.message.MessageFactory;
 import javax.sip.message.Request;
 import javax.sip.message.Response;
 
 /** @author Teemu Kanstren */
 public class JainListener implements SipListener {
   private Logger log = new Logger(JainListener.class);
-  
+  private MessageFactory messageFactory;
+
+  public JainListener(MessageFactory messageFactory) {
+    this.messageFactory = messageFactory;
+  }
+
   /**
    * This method is called by the SIP stack when a new request arrives. 
    */
@@ -33,10 +39,12 @@ public class JainListener implements SipListener {
     }
 
     FromHeader from = (FromHeader) req.getHeader("From");
+    String tag = from.getAddress().getDisplayName();
+    System.out.println("tag:"+tag);
 //    messageProcessor.processMessage(from.getAddress().toString(), new String(req.getRawContent()));
     Response response = null;
     try { //Reply with OK
-//      response = messageFactory.createResponse(200, req);
+      response = messageFactory.createResponse(200, req);
       ToHeader toHeader = (ToHeader) response.getHeader(ToHeader.NAME);
       toHeader.setTag("888"); //This is mandatory as per the spec.
 //      ServerTransaction st = sipProvider.getNewServerTransaction(req);
