@@ -34,7 +34,7 @@ public class JainScripter {
   private final String myUserName;
   private final String myHost;
   private final int myPort;
-  public static final String HEADER_FROM_CLIENT = "OSMO SIP Tester v0.1";
+  public static final String HEADER_FROM_CLIENT = "OSMO_SIP_Tester_v0.1";
 
   public JainScripter(String userName, String ip, int port) {
     this.myUserName = userName;
@@ -43,8 +43,8 @@ public class JainScripter {
     SipFactory sipFactory = SipFactory.getInstance();
     sipFactory.setPathName("gov.nist");
     Properties properties = new Properties();
-    properties.setProperty("javax.sip.STACK_NAME", "TextClient");
-    properties.setProperty("javax.sip.IP_ADDRESS", ip);
+    //the stack name allows configuring different instances in the same VM
+    properties.setProperty("javax.sip.STACK_NAME", userName+"-client");
 
     properties.setProperty("gov.nist.javax.sip.TRACE_LEVEL", "32");
     properties.setProperty("gov.nist.javax.sip.SERVER_LOG", userName+"-server-log.txt");
@@ -59,7 +59,7 @@ public class JainScripter {
       ListeningPoint tcp = sipStack.createListeningPoint(ip, port, "tcp");
       ListeningPoint udp = sipStack.createListeningPoint(ip, port, "udp");
 
-      JainListener listener = new JainListener();
+      JainListener listener = new JainListener(messageFactory);
       sipProvider = sipStack.createSipProvider(tcp);
       sipProvider.addSipListener(listener);
       sipProvider = sipStack.createSipProvider(udp);
