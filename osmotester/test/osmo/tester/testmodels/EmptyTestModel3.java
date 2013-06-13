@@ -26,6 +26,10 @@ public class EmptyTestModel3 {
   public void epixx() {
   }
 
+  @Transition("foo")
+  public void epixxx() {
+  }
+
   @EndCondition
   public void end() {
   }
