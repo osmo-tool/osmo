@@ -62,7 +62,7 @@ public class TransitionParser implements AnnotationParser {
       type = TestStep.class.getSimpleName();
       strict = ts.strict();
     }
-    TransitionName tName = checkName(name, parameters);
+    TransitionName tName = checkName(name, result, parameters);
     TransitionName groupName = new TransitionName(parameters.getPrefix(), group);
     if (tName == null) {
       return errors;
@@ -79,7 +79,7 @@ public class TransitionParser implements AnnotationParser {
     return errors;
   }
 
-  private TransitionName checkName(String name, ParserParameters parameters) {
+  private TransitionName checkName(String name, ParserResult result, ParserParameters parameters) {
     if (name.length() == 0) {
       errors += "Transition must have a name. Define the \"name\" or \"value\" property.\n";
       return null;
@@ -89,7 +89,12 @@ public class TransitionParser implements AnnotationParser {
       return null;
     }
     String prefix = parameters.getPrefix();
-    return new TransitionName(prefix, name);
+    TransitionName tName = new TransitionName(prefix, name);
+    if (result.getFsm().getTransition(tName) != null) {
+      errors += "Transition name must be unique. '"+tName+"' given several times.\n";
+      return null;
+    }
+    return tName;
   }
   
   private void createTransition(ParserResult result, ParserParameters parameters, 

@@ -47,8 +47,9 @@ public class FSM {
   private Collection<InvocationTarget> afterSuites = new ArrayList<>();
   /** List of conditions when to stop (prematurely) test generation (single test, not suite). */
   private Collection<InvocationTarget> endConditions = new ArrayList<>();
-  //TODO: remove one
+  /** List of methods to invoke when entering exploration mode */
   private Collection<InvocationTarget> explorationEnablers = new ArrayList<>();
+  /** List of method to invoke when entering generation mode. */
   private Collection<InvocationTarget> generationEnablers = new ArrayList<>();
   /** List of state variables to store for each test step. */
   private Collection<VariableField> stateVariables = new ArrayList<>();
@@ -61,6 +62,7 @@ public class FSM {
   /** User defined requirements. */
   private Requirements requirements = null;
   private Map<String, InvocationTarget> stateNames = new HashMap<>();
+  /** Name of the start step (before anything else). */
   public static final String START_NAME = ".osmo.tester.init";
 
   /** Constructor. */

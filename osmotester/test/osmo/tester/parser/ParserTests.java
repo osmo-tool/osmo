@@ -40,6 +40,7 @@ public class ParserTests {
 
   @Before
   public void setup() {
+    OSMOConfiguration.setSeed(111);
     parser = new MainParser();
   }
 
@@ -108,6 +109,7 @@ public class ParserTests {
               "Post-methods are allowed to have only one parameter of type Map<String, Object>: \"wrong()\" has one of type class java.lang.String.\n" +
               "StateName methods must have 1 parameter (TestStep): \"badArgument()\" has 2 parameters.\n" +
               "StateName parameter must be of type class osmo.tester.generator.testsuite.TestCaseStep: \"badArgument()\" has type class java.lang.String\n"+
+              "Transition name must be unique. 'foo' given several times.\n"+
               "";
       assertEquals(expected, msg);
     }
