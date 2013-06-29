@@ -1,5 +1,6 @@
 package osmo.tester.optimizer;
 
+import osmo.common.TestUtils;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
@@ -209,11 +210,7 @@ public class GreedyOptimizer {
   }
 
   public void writeFile(String name, String content) {
-    try {
-      CoverageMetric.write(content, "osmo-output/"+name);
-    } catch (IOException e) {
-      log.error("Failed to write coverage data to file", e);
-    }
+    TestUtils.write(content, "osmo-output/" + name);
   }
 
   protected String csvForCoverage(Collection<TestCase> tests) {

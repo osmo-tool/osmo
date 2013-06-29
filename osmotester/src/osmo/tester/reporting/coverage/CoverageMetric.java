@@ -320,21 +320,4 @@ public abstract class CoverageMetric {
     }
     return result;
   }
-
-  /**
-   * Write given string to a file with given name. Used to write coverage reports to files.
-   *
-   * @param text     The report to write.
-   * @param fileName Name of the file where to write it.
-   * @throws java.io.IOException If something goes wrong with the file access.
-   */
-  public static void write(String text, String fileName) throws IOException {
-    File file = new File(fileName);
-    File parent = file.getParentFile();
-    if (parent != null) {
-      parent.mkdirs();
-    }
-    FileOutputStream out = new FileOutputStream(file);
-    out.write(text.getBytes());
-  }
 }

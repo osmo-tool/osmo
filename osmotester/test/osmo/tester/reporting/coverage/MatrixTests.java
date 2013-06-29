@@ -2,6 +2,7 @@ package osmo.tester.reporting.coverage;
 
 import org.junit.Before;
 import org.junit.Test;
+import osmo.common.TestUtils;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -83,7 +84,7 @@ public class MatrixTests {
     String expected = getResource(MatrixTests.class, "expected-matrix.txt");
     HTMLCoverageReporter html = new HTMLCoverageReporter(suite, fsm);
     String actual = html.getTraceabilityMatrix();
-    html.write(actual, "test-matrix.html");
+    TestUtils.write(actual, "test-matrix.html");
     expected = unifyLineSeparators(expected, "\n");
     actual = unifyLineSeparators(actual, "\n");
     assertEquals("Generated HTML coverage matrix", expected, actual);

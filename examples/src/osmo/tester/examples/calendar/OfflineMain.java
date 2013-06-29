@@ -1,5 +1,6 @@
 package osmo.tester.examples.calendar;
 
+import osmo.common.TestUtils;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
@@ -97,7 +98,7 @@ public class OfflineMain {
     FSM fsm = osmo.getFsm();
     HTMLCoverageReporter html = new HTMLCoverageReporter(suite, fsm);
     String report = html.getTraceabilityMatrix();
-    html.write(report, "coverage.html");
+    TestUtils.write(report, "coverage.html");
   }
 
   //time limit = 10 years
