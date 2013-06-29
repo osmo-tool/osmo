@@ -1,5 +1,6 @@
 package osmo.tester.issues.models;
 
+import osmo.common.TestUtils;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.annotation.BeforeTest;
@@ -78,7 +79,7 @@ public class Issue32 {
     FSM fsm = tester.getFsm();
     HTMLCoverageReporter reporter = new HTMLCoverageReporter(suite, fsm);
     String matrix = reporter.getTraceabilityMatrix();
-    reporter.write(matrix, "osmo-report.html");
+    TestUtils.write(matrix, "osmo-report.html");
   }
 
   private static class TestUser implements VariableValue {

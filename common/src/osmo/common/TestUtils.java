@@ -25,6 +25,9 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -321,6 +324,28 @@ public class TestUtils {
       return xmlOutput.getWriter().toString();
     } catch (Exception e) {
       throw new RuntimeException(e); // simple exception handling, please review it
+    }
+  }
+
+  /**
+   * Writes the given text to a file with the given name. 
+   * The filename should be a valid path given the working directory.
+   * IOExceptions are re-thrown as RuntimeExceptions.
+   * 
+   * @param text The text to write.
+   * @param fileName The file name and path to write it to.
+   */
+  public static void write(String text, String fileName) {
+    File file = new File(fileName);
+    File parent = file.getParentFile();
+    if (parent != null) {
+      parent.mkdirs();
+    }
+    try {
+      FileOutputStream out = new FileOutputStream(file);
+      out.write(text.getBytes());
+    } catch (IOException e) {
+      throw new RuntimeException("Failed to write to file:"+fileName, e);
     }
   }
 }
