@@ -615,29 +615,27 @@ public class SimCard {
   public static void main(String[] args) {
     OSMOConfiguration.setSeed(44);
     Logger.consoleLevel = Level.INFO;
-    MultiGreedy greedy = new MultiGreedy(new ScoreConfiguration(), 4, 1000, new LengthProbability(50, 0.2d));
-    greedy.setFactory(new GSMModelFactory());
+    MultiGreedy greedy = new MultiGreedy(new ScoreConfiguration(), 4, 100, new LengthProbability(50, 0.2d));
+    greedy.setFactory(new GSMModelFactory(NullPrintStream.stream));
     greedy.setTimeout(3600);
     List<TestCase> tests = greedy.search(4);
     TestCoverage tc = new TestCoverage(tests);
     System.out.println(tc.coverageString(greedy.getFsm(), null, null, null, false));
   }
 
-  //  public static void main(String[] args) throws FileNotFoundException {
-//    System.out.println("Exploring the SimCard model without testing the SUT.");
-//    RandomTester tester = new GreedyTester(new SimCard(null));
-//    tester.setResetProbability(0.01);  // long test sequences
-//    GraphListener graph = tester.buildGraph(100000);
-//    graph.printGraphDot("gsm.dot");
-//    System.out.println("Graph contains "
-//            + graph.getGraph().numVertices() + " states and "
-//            + graph.getGraph().numEdges() + " transitions.");
-//  }
   private static class GSMModelFactory implements ModelFactory {
+    private final PrintStream out;
+
+    private GSMModelFactory(PrintStream out) {
+      this.out = out;
+    }
+
     @Override
     public Collection<ModelObject> createModelObjects() {
       Collection<ModelObject> models = new ArrayList<>();
-      models.add(new ModelObject(new SimCard(new SimCardAdaptor())));
+      SimCard sim = new SimCard(new SimCardAdaptor());
+      sim.out = out;
+      models.add(new ModelObject(sim));
       return models;
     }
   }

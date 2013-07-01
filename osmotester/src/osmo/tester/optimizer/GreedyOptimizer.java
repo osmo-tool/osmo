@@ -156,29 +156,36 @@ public class GreedyOptimizer {
       //timeout is given in seconds so we multiple by 1000 to get milliseconds
       timeout = System.currentTimeMillis()+timeout*1000;
     }
+    //7, 20, 50
     while (gain >= threshold) {
-      log.info(id + ":iteration " + iteration);
+      long iStart = System.currentTimeMillis();
+      log.info(id + ":starting iteration " + iteration);
       iteration++;
       for (int i = 0 ; i < populationSize ; i++) {
         log.debug("creating test case " + i);
         TestCase testCase = generator.nextTest();
         suite.add(testCase);
       }
+//      System.out.println(id+".1:"+(System.currentTimeMillis()-iStart));
       suite = sortAndPrune(suite);
+//      System.out.println(id+".2:"+(System.currentTimeMillis()-iStart));
       csv1 += csvForCoverage(suite);
       csv2 += csvForGain(suite);
       csv3 += csvNumberOfTests(suite);
       csv4 += csvTotalScores(suite);
       TestCoverage suiteCoverage = new TestCoverage(suite);
       int score = scoreCalculator.calculateScore(suiteCoverage);
+//      System.out.println(id+".3:"+(System.currentTimeMillis()-iStart));
       gain = score - previousScore;
       previousScore = score;
       if (timeout > 0 && timeout < System.currentTimeMillis()) {
-        System.out.println("Generation timed out");
-        log.debug("Generation timed out");
+        log.info("Generation timed out");
         break;
       }
+      long diff = System.currentTimeMillis()-iStart;
+      log.info(id+":iteration time:("+iteration+")"+diff);
     }
+    
     generator.endSuite();
     this.possiblePairs = generator.getPossiblePairs();
     TestCoverage suiteCoverage = new TestCoverage(suite);
@@ -266,15 +273,24 @@ public class GreedyOptimizer {
     //this sort is here to ensure deterministic results (as far as sequence of steps and scores go..)
     Collections.sort(from, new TestSorter());
     List<TestCase> suite = new ArrayList<>();
-    TestCoverage suiteCoverage = new TestCoverage();
+    String ATTR_NAME = "osmo.tester.sorter.temp.coverage";
+    for (TestCase test : from) {
+      //first create initial coverage for all
+      TestCoverage tc = new TestCoverage(test);
+      test.setAttribute(ATTR_NAME, tc);
+    }
+
     int count = from.size();
+    TestCoverage previous = new TestCoverage();
     for (int i = 0 ; i < count ; i++) {
-      int bestFitness = 0;
+      int bestScore = 0;
       TestCase best = null;
       for (TestCase test : from) {
-        int fitness = scoreCalculator.addedScoreFor(suiteCoverage, test);
-        if (fitness > bestFitness) {
-          bestFitness = fitness;
+        TestCoverage tc = (TestCoverage) test.getAttribute(ATTR_NAME);
+        tc.removeAll(previous);
+        int score = scoreCalculator.calculateScore(tc);
+        if (score > bestScore) {
+          bestScore = score;
           best = test;
         }
       }
@@ -284,8 +300,31 @@ public class GreedyOptimizer {
       }
       from.remove(best);
       suite.add(best);
-      suiteCoverage.addTestCoverage(best);
+      previous = (TestCoverage) best.getAttribute(ATTR_NAME);
     }
+    
+
+
+//    TestCoverage suiteCoverage = new TestCoverage();
+//    int count = from.size();
+//    for (int i = 0 ; i < count ; i++) {
+//      int bestFitness = 0;
+//      TestCase best = null;
+//      for (TestCase test : from) {
+//        int fitness = scoreCalculator.addedScoreFor(suiteCoverage, test);
+//        if (fitness > bestFitness) {
+//          bestFitness = fitness;
+//          best = test;
+//        }
+//      }
+//      if (best == null) {
+//        //no more gains found in coverage
+//        break;
+//      }
+//      from.remove(best);
+//      suite.add(best);
+//      suiteCoverage.addTestCoverage(best);
+//    }
     return suite;
   }
 

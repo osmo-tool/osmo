@@ -31,11 +31,11 @@ public class ScoreCalculator {
     score += tc.getStepPairs().size() * config.getStepPairWeight();
     score += tc.getStates().size() * config.getStateWeight();
     score += tc.getStatePairs().size() * config.getStatePairWeight();
-    Map<String,Collection<String>> variables = tc.getVariables();
-    score += variables.size() * config.getVariableCountWeight();
-    for (String name : variables.keySet()) {
-      Collection<String> values = variables.get(name);
-      score += values.size() * config.getVariableWeight(name);
+    score += tc.getVariables().size() * config.getVariableCountWeight();
+    Map<String,Collection<String>> values = tc.getValues();
+    for (String name : values.keySet()) {
+      Collection<String> varValues = values.get(name);
+      score += varValues.size() * config.getVariableWeight(name);
     }
     score += tc.getRequirements().size() * config.getRequirementWeight();
     log.debug("calculated score:" + score);
@@ -59,7 +59,7 @@ public class ScoreCalculator {
     int oldScore = calculateScore(tc1);
     int newScore = calculateScore(tc2);
     int added = newScore - oldScore;
-    log.debug("added fitness:" + added);
+    log.debug("added score:" + added);
     return added;
   }
 

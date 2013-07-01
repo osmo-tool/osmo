@@ -65,7 +65,7 @@ public class CoverageWithStateTests {
       tc.addTestCoverage(test);
     }
     assertEquals("Number of generated tests", 5, tests.size());
-    Map<String, Collection<String>> variables = tc.getVariables();
+    Map<String, Collection<String>> variables = tc.getValues();
     //1 value = 10
     assertEquals("Variable coverage", "[on paras]", variables.get("teemu").toString());
     //4 values = 40
@@ -149,6 +149,6 @@ public class CoverageWithStateTests {
     tc.addTestCoverage(tests.get(0));
     ScoreCalculator sc = new ScoreCalculator(config);
     assertEquals("Coverage score", 30, sc.calculateScore(tc));
-    assertEquals("Covered values", "[many, zero, one]", tc.getVariables().get("rc2").toString());
+    assertEquals("Covered values", "[many, zero, one]", tc.getValues().get("rc2").toString());
   }
 }
