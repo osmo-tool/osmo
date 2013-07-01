@@ -32,8 +32,10 @@ public class TestCoverage {
   private Collection<String> singles = new LinkedHashSet<>();
   /** The set of covered requirements. */
   private Collection<String> reqs = new LinkedHashSet<>();
+  /** The set of covered variables. */
+  private Collection<String> variables = new LinkedHashSet<>();
   /** Set of values covered for different model data variables. */
-  private Map<String, Collection<String>> variables = new LinkedHashMap<>();
+  private Map<String, Collection<String>> values = new LinkedHashMap<>();
   /** Set of covered states. */
   private Collection<String> states = new LinkedHashSet<>();
   /** Set of covered transitions between states. */
@@ -160,7 +162,8 @@ public class TestCoverage {
     Collection<ModelVariable> toAdd = step.getValues();
     for (ModelVariable variable : toAdd) {
       String name = variable.getName();
-      Collection<String> values = variables.get(name);
+      variables.add(name);
+      Collection<String> values = this.values.get(name);
       if (values == null) {
         values = new LinkedHashSet<>();
       }
@@ -168,7 +171,7 @@ public class TestCoverage {
         values.add("" + value);
       }
 
-      variables.put(name, values);
+      this.values.put(name, values);
     }
   }
 
@@ -204,8 +207,12 @@ public class TestCoverage {
     return reqs;
   }
 
-  public Map<String, Collection<String>> getVariables() {
+  public Collection<String> getVariables() {
     return variables;
+  }
+
+  public Map<String, Collection<String>> getValues() {
+    return values;
   }
 
   /**
@@ -222,10 +229,11 @@ public class TestCoverage {
     clone.singles.addAll(singles);
     clone.states.addAll(states);
     clone.statePairs.addAll(statePairs);
-    for (String key : variables.keySet()) {
+    clone.variables.addAll(variables);
+    for (String key : values.keySet()) {
       Collection<String> values = new LinkedHashSet<>();
-      values.addAll(variables.get(key));
-      clone.variables.put(key, values);
+      values.addAll(this.values.get(key));
+      clone.values.put(key, values);
     }
     return clone;
   }
@@ -292,5 +300,21 @@ public class TestCoverage {
       }
     }
     return result;
+  }
+
+  public void removeAll(TestCoverage in) {
+    transitions.removeAll(in.transitions);
+    singles.removeAll((in.singles));
+    stepPairs.removeAll(in.stepPairs);
+    states.removeAll(in.states);
+    statePairs.removeAll(in.statePairs);
+    reqs.removeAll(in.reqs);
+    variables.removeAll(in.variables);
+    for (String var : values.keySet()) {
+      Collection<String> yourValues = in.values.get(var);
+      if (yourValues == null) continue;
+      Collection<String> myValues = values.get(var);
+      myValues.removeAll(yourValues);
+    }
   }
 }

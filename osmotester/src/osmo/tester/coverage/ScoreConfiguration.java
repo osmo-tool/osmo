@@ -20,19 +20,19 @@ import java.util.Map;
  */
 public class ScoreConfiguration {
   private static final Logger log = new Logger(ScoreConfiguration.class);
-  /** Weight for length (number of non-unique transitions), used in fitness calculation. */
+  /** Weight for length (number of non-unique transitions). */
   protected int lengthWeight = 0;
-  /** Weight for number of variables, used in fitness calculation. */
+  /** Weight for number of variables. */
   protected int variableCountWeight = 10;
-  /** Weight for number of unique values if no specific one defined for a variable, used in fitness calculation. */
+  /** Weight for number of unique values if no specific one defined for a variable. */
   protected int defaultValueWeight = 1;
   /** Weights for specific variables (each unique value scores this much). */
   protected Map<String, Integer> valueWeights = new LinkedHashMap<>();
-  /** Weight for number of unique transition pairs (subsequent transitions), used in fitness calculation. */
+  /** Weight for number of unique transition pairs (subsequent transitions). */
   protected int stepPairWeight = 30;
-  /** Weight for number of unique steps, used in fitness calculation. */
+  /** Weight for number of unique steps. */
   protected int stepWeight = 20;
-  /** Weight for number of covered requirements, used in fitness calculation. */
+  /** Weight for number of covered requirements. */
   protected int requirementWeight = 10;
   /** Weight for covered user defined states. */
   private int stateWeight = 50;

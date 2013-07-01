@@ -77,7 +77,7 @@ public class TransitionBarChart implements GenerationListener {
     data.setValue(tc.getStepPairs().size(), "Pairs", name);
     data.setValue(tc.getRequirements().size(), "Requirements", name);
     data.setValue(tc.getSingles().size(), "Singles", name);
-    Map<String,Collection<String>> variables = tc.getVariables();
+    Map<String,Collection<String>> variables = tc.getValues();
     data.setValue(variables.size(), "Variables", name);
     int values = 0;
     for (Collection<String> variable : variables.values()) {

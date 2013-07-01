@@ -246,7 +246,7 @@ public abstract class CoverageMetric {
 
   private List<String> getVariables() {
     List<String> variables = new ArrayList<>();
-    variables.addAll(suiteCoverage.getVariables().keySet());
+    variables.addAll(suiteCoverage.getVariables());
     Collections.sort(variables);
     return variables;
   }
@@ -311,7 +311,7 @@ public abstract class CoverageMetric {
    */
   private List<VariableValues> getVariableValues() {
     List<VariableValues> result = new ArrayList<>();
-    Map<String, Collection<String>> variables = suiteCoverage.getVariables();
+    Map<String, Collection<String>> variables = suiteCoverage.getValues();
     List<String> coverageNames = new ArrayList<>();
     coverageNames.addAll(variables.keySet());
     Collections.sort(coverageNames);
