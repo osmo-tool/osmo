@@ -37,15 +37,15 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
   /** Keeps a list of how many times each transition has been covered. */
   private Map<FSMTransition, Integer> coverage;
   /** For randomization. Specific instance to allow parallel executions inside single VM. */
-  private final Randomizer rand;
+  private Randomizer rand = null;
 
   public WeightedBalancingAlgorithm() {
-    this.rand = new Randomizer(OSMOConfiguration.getSeed());
   }
 
   @Override
-  public void init(ParserResult parserResult) {
+  public void init(long seed, ParserResult parserResult) {
     coverage = new HashMap<>(parserResult.getFsm().getTransitions().size());
+    this.rand = new Randomizer(seed);
   }
 
   @Override

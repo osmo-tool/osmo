@@ -21,7 +21,6 @@ public class TimedTests {
 
   @Before
   public void setup() {
-    OSMOConfiguration.setSeed(333);
     calculator = new CalculatorModel();
     tester = new OSMOTester(calculator);
   }
@@ -33,7 +32,7 @@ public class TimedTests {
     tester.setSuiteEndCondition(new Time(800, TimeUnit.MILLISECONDS));
 //    tester.setTestEndCondition(new TimedEndCondition(500, TimeUnit.MILLISECONDS));
     long start = System.currentTimeMillis();
-    tester.generate();
+    tester.generate(333);
     long diff = System.currentTimeMillis() - start;
     assertTrue("Time taken with 1000 millisecond end condition should be 1000-2000, was " + diff, 1000 <= diff && diff <= 2000);
     TestSuite suite = calculator.getHistory();
@@ -46,7 +45,7 @@ public class TimedTests {
     tester.setTestEndCondition(new Time(1000, TimeUnit.MILLISECONDS));
     tester.setSuiteEndCondition(new Time(500, TimeUnit.MILLISECONDS));
     long start = System.currentTimeMillis();
-    tester.generate();
+    tester.generate(333);
     long diff = System.currentTimeMillis() - start;
     //the suite can only end after a test has ended, so we still should get 1000 millis
     assertTrue("Time taken with 1000 millisecond end condition should be close to 1000, was " + diff, 1000 <= diff && diff <= 2000);
@@ -60,7 +59,7 @@ public class TimedTests {
     tester.setTestEndCondition(new Time(1000, TimeUnit.MILLISECONDS));
     tester.setSuiteEndCondition(new Time(1500, TimeUnit.MILLISECONDS));
     long start = System.currentTimeMillis();
-    tester.generate();
+    tester.generate(333);
     long diff = System.currentTimeMillis() - start;
     //the suite can only end after a test has ended, so we still should get 1000 millis
     assertTrue("Time taken with 1000+1500 millisecond end condition should be 2000-3200, was " + diff, 2000 <= diff && diff <= 3200);
@@ -74,7 +73,7 @@ public class TimedTests {
     tester.setTestEndCondition(new Time(1, TimeUnit.SECONDS));
     tester.setSuiteEndCondition(new Time(2, TimeUnit.SECONDS));
     long start = System.currentTimeMillis();
-    tester.generate();
+    tester.generate(333);
     long diff = System.currentTimeMillis() - start;
     //the suite can only end after a test has ended, so we still should get 1000 millis
     assertTrue("Time taken with 1+2 second end condition should be close to 2000, was " + diff, 2000 <= diff && diff <= 3000);

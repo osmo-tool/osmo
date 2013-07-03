@@ -16,7 +16,7 @@ public class TracePrinter implements GenerationListener {
   private int stepIndex = 1;
   
   @Override
-  public void init(FSM fsm, OSMOConfiguration config) {
+  public void init(long seed, FSM fsm, OSMOConfiguration config) {
   }
 
   @Override

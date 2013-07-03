@@ -54,8 +54,6 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
   private DataType type;
   /** Handles boundary scan data generation strategy. */
   private Boundary boundary;
-  /** Personal randomizer for deterministic generation and concurrency. */
-  private final Randomizer rand;
 
   /**
    * Constructor that takes an explicit type argument for generation.
@@ -75,7 +73,6 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
     } else {
       setType(DataType.DOUBLE);
     }
-    this.rand = new Randomizer(OSMOConfiguration.getSeed());
   }
 
   /**
@@ -96,18 +93,11 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
       setType(DataType.DOUBLE);
     }
     boundary = new Boundary(this.type, min, max);
-    allSupported = true;
-    this.rand = new Randomizer(OSMOConfiguration.getSeed());
-  }
-
-  public void setSeed(long seed) {
-    rand.setSeed(seed);
   }
 
   private void setType(DataType type) {
     this.type = type;
     boundary = new Boundary(this.type, min, max);
-    allSupported = true;
   }
 
   public DataType getType() {

@@ -24,7 +24,7 @@ public class LengthTests {
     Length testStrategy = new Length(expectedLength);
     tester.setTestEndCondition(testStrategy);
     tester.setSuiteEndCondition(testStrategy);
-    tester.generate();
+    tester.generate(111);
     TestSuite testLog = calculator.getHistory();
     List<TestCase> history = testLog.getFinishedTestCases();
     assertEquals("Number of tests generated", expectedLength, history.size());

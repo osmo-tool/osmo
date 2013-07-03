@@ -52,15 +52,18 @@ public class MultiGreedy {
   private ModelFactory factory = null;
   private final EndCondition endCondition;
   private int timeout = 1;
+  private final long seed;
+  private boolean failOnError = true;
 
-  public MultiGreedy(ScoreConfiguration optimizerConfig, int populationSize, EndCondition endCondition) {
-    this(optimizerConfig, Runtime.getRuntime().availableProcessors(), populationSize, endCondition);
+  public MultiGreedy(ScoreConfiguration optimizerConfig, int populationSize, EndCondition endCondition, long seed) {
+    this(optimizerConfig, Runtime.getRuntime().availableProcessors(), populationSize, endCondition, seed);
   }
 
-  public MultiGreedy(ScoreConfiguration optimizerConfig, int parallelism, int populationSize, EndCondition endCondition) {
+  public MultiGreedy(ScoreConfiguration optimizerConfig, int parallelism, int populationSize, EndCondition endCondition, long seed) {
     this.optimizerConfig = optimizerConfig;
     greedyPool = Executors.newFixedThreadPool(parallelism);
-    rand = new Randomizer(OSMOConfiguration.getSeed());
+    this.seed = seed;
+    rand = new Randomizer(seed);
     this.populationSize = populationSize;
     this.endCondition = endCondition;
   }
@@ -85,9 +88,9 @@ public class MultiGreedy {
     Collection<Future<List<TestCase>>> futures = new ArrayList<>();
     List<GreedyOptimizer> optimizers = new ArrayList<>();
     for (int i = 0 ; i < optimizerCount ; i++) {
-      OSMOConfiguration.setSeed(rand.nextLong());
-      GreedyOptimizer optimizer = new GreedyOptimizer(optimizerConfig, populationSize, endCondition);
+      GreedyOptimizer optimizer = new GreedyOptimizer(optimizerConfig, populationSize, endCondition, seed);
       optimizer.setTimeout(timeout);
+      optimizer.setFailOnError(failOnError);
       for (Class modelClass : modelClasses) {
         optimizer.addModelClass(modelClass);
       }
@@ -178,5 +181,9 @@ public class MultiGreedy {
 
   public int getTimeout() {
     return timeout;
+  }
+
+  public void setFailOnError(boolean failOnError) {
+    this.failOnError = failOnError;
   }
 }

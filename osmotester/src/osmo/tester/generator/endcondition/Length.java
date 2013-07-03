@@ -40,7 +40,7 @@ public class Length implements EndCondition {
   }
 
   @Override
-  public void init(FSM fsm) {
+  public void init(long seed, FSM fsm) {
   }
 
   @Override

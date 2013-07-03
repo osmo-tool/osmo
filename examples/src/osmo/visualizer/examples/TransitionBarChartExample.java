@@ -19,7 +19,6 @@ import java.io.PrintStream;
 /** @author Teemu Kanstren */
 public class TransitionBarChartExample {
   public static void main(String[] args) {
-    OSMOConfiguration.setSeed(55);
     TransitionBarChart barGraph = new TransitionBarChart();
     OSMOTester tester = new OSMOTester();
 //    ManualEndCondition mec = new ManualEndCondition();
@@ -40,6 +39,6 @@ public class TransitionBarChartExample {
     tester.addModelObject(new CalendarParticipantModel(state, scripter, out));
     tester.addModelObject(new CalendarErrorHandlingModel(state, scripter, out));
     tester.setAlgorithm(new ManualAlgorithm(tester));
-    tester.generate();
+    tester.generate(55);
   }
 }

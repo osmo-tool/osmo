@@ -21,14 +21,14 @@ import java.util.List;
 public class WeightedRandomAlgorithm implements FSMTraversalAlgorithm {
   private static final Logger log = new Logger(WeightedRandomAlgorithm.class);
   /** Randomizer instance that allows us to run stuff in parallel vs static imports. */
-  private final Randomizer rand;
+  private Randomizer rand = null;
 
   public WeightedRandomAlgorithm() {
-    this.rand = new Randomizer(OSMOConfiguration.getSeed());
   }
 
   @Override
-  public void init(ParserResult parserResult) {
+  public void init(long seed, ParserResult parserResult) {
+    this.rand = new Randomizer(seed);
   }
 
   @Override

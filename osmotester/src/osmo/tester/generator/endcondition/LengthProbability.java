@@ -41,6 +41,7 @@ public class LengthProbability implements EndCondition {
   }
 
   @Override
-  public void init(FSM fsm) {
+  public void init(long seed, FSM fsm) {
+    delegate.init(seed, fsm);
   }
 }

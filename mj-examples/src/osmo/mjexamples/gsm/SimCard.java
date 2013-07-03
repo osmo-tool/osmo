@@ -600,7 +600,6 @@ public class SimCard {
   }
   
   public static void main_(String[] args) {
-    OSMOConfiguration.setSeed(44);
     OSMOTester tester = new OSMOTester();
     tester.setAlgorithm(new ManualAlgorithm(tester));
 //    tester.setAlgorithm(new BalancingAlgorithm());
@@ -609,18 +608,26 @@ public class SimCard {
     tester.setSuiteEndCondition(new Length(200));
 //    tester.setSuiteEndCondition(new Time(345));
     tester.setTestEndCondition(new LengthProbability(50, 0.2d));
-    tester.generate();
+    tester.generate(44);
   }
 
   public static void main(String[] args) {
-    OSMOConfiguration.setSeed(44);
-    Logger.consoleLevel = Level.INFO;
-    MultiGreedy greedy = new MultiGreedy(new ScoreConfiguration(), 4, 100, new LengthProbability(50, 0.2d));
-    greedy.setFactory(new GSMModelFactory(NullPrintStream.stream));
-    greedy.setTimeout(3600);
-    List<TestCase> tests = greedy.search(4);
-    TestCoverage tc = new TestCoverage(tests);
-    System.out.println(tc.coverageString(greedy.getFsm(), null, null, null, false));
+    long seed = Long.parseLong(args[0]);
+    int cores = Integer.parseInt(args[1]);
+    int population = Integer.parseInt(args[2]);
+    int timeout = Integer.parseInt(args[3]);
+    for (int i = 0 ; i < 100 ; i++) {
+      seed += 100;
+      System.out.println("seed:"+seed+" cores:"+cores+" pop:"+population+" time:"+timeout);
+      Logger.consoleLevel = Level.INFO;
+      MultiGreedy greedy = new MultiGreedy(new ScoreConfiguration(), cores, population, new LengthProbability(50, 0.2d), seed);
+      greedy.setFailOnError(false);
+      greedy.setFactory(new GSMModelFactory(NullPrintStream.stream));
+      greedy.setTimeout(timeout);
+      List<TestCase> tests = greedy.search(cores);
+      TestCoverage tc = new TestCoverage(tests);
+      System.out.println(tc.coverageString(greedy.getFsm(), null, null, null, false));
+    }
   }
 
   private static class GSMModelFactory implements ModelFactory {

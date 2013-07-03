@@ -97,7 +97,7 @@ public class StepCoverage implements EndCondition {
   }
 
   @Override
-  public void init(FSM fsm) {
+  public void init(long seed, FSM fsm) {
     Collection<FSMTransition> transitions = fsm.getTransitions();
     Collection<String> toClear = new HashSet<>();
     toClear.addAll(required);

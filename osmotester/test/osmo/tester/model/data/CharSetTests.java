@@ -1,5 +1,6 @@
 package osmo.tester.model.data;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -9,9 +10,16 @@ import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class CharSetTests {
+  private CharSet set = null;
+
+  @Before
+  public void setUp() throws Exception {
+    set = new CharSet();
+    set.setSeed(444);
+  }
+
   @Test
   public void charTypesGenerated() {
-    CharSet set = new CharSet();
     set.setStrategy(DataGenerationStrategy.RANDOM);
     boolean lower = false;
     boolean upper = false;
@@ -29,7 +37,6 @@ public class CharSetTests {
 
   @Test
   public void charEvaluation() {
-    CharSet set = new CharSet();
     assertTrue("'a' should be in the set.", set.evaluate('a'));
     assertTrue("'A' should be in the set.", set.evaluate('A'));
     assertTrue("'-' should be in the set.", set.evaluate('-'));
@@ -38,7 +45,6 @@ public class CharSetTests {
 
   @Test
   public void reduceWithWhiteSpace() {
-    CharSet set = new CharSet();
     set.reduceBy(" \t");
     for (int i = 0 ; i < 1000 ; i++) {
       char c = set.next();
@@ -48,7 +54,6 @@ public class CharSetTests {
 
   @Test
   public void reduceWithXml() {
-    CharSet set = new CharSet();
     set.reduceBy("<>");
     for (int i = 0 ; i < 1000 ; i++) {
       char c = set.next();
@@ -58,7 +63,6 @@ public class CharSetTests {
 
   @Test
   public void invalidLoop() {
-    CharSet set = new CharSet();
     set.setStrategy(DataGenerationStrategy.ORDERED_LOOP_INVALID);
     Collection<Integer> expected = invalidExpected();
     for (int i = 0 ; i < 200 ; i++) {
@@ -70,7 +74,6 @@ public class CharSetTests {
 
   @Test
   public void invalidRandom() {
-    CharSet set = new CharSet();
     set.setStrategy(DataGenerationStrategy.RANDOM_INVALID);
     Collection<Integer> expected = invalidExpected();
     for (int i = 0 ; i < 2000 ; i++) {
@@ -93,7 +96,6 @@ public class CharSetTests {
 
   @Test
   public void loopingValid() {
-    CharSet set = new CharSet();
     set.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     set.asciiLettersAndNumbersOnly();
     assertEquals("First loop char", 'a', (char) set.next());
@@ -108,7 +110,6 @@ public class CharSetTests {
 
   @Test
   public void asciiInvalid() {
-    CharSet set = new CharSet();
     set.setStrategy(DataGenerationStrategy.ORDERED_LOOP_INVALID);
     set.asciiLettersAndNumbersOnly();
     Collection<Integer> expected = invalidExpected();
@@ -126,7 +127,6 @@ public class CharSetTests {
 
   @Test
   public void reduction() {
-    CharSet set = new CharSet();
     set.asciiLettersAndNumbersOnly();
     set.reduceBy("abcde");
     set.setStrategy(DataGenerationStrategy.ORDERED_LOOP);

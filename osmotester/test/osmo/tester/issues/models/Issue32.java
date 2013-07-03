@@ -70,11 +70,10 @@ public class Issue32 {
   }
 
   public static void main(String[] args) throws Exception {
-    OSMOConfiguration.setSeed(333);
     OSMOTester tester = new OSMOTester();
     tester.setAlgorithm(new WeightedBalancingAlgorithm());
     tester.addModelObject(new Issue32(System.out));
-    tester.generate();
+    tester.generate(333);
     TestSuite suite = tester.getSuite();
     FSM fsm = tester.getFsm();
     HTMLCoverageReporter reporter = new HTMLCoverageReporter(suite, fsm);

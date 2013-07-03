@@ -63,15 +63,17 @@ public class GreedyOptimizer {
   private final EndCondition endCondition;
   private int threshold = 1;
   private long timeout = -1;
+  private boolean failOnError = true;
+  private final long seed;
   private Collection<String> possiblePairs = new HashSet<>();
 
   /**
-   * Uses a default population size of 100.
+   * Uses a default population size of 1000.
    * 
    * @param configuration For scoring the search.
    */
-  public GreedyOptimizer(ScoreConfiguration configuration, EndCondition endCondition) {
-    this(configuration, 1000, endCondition);
+  public GreedyOptimizer(ScoreConfiguration configuration, EndCondition endCondition, long seed) {
+    this(configuration, 1000, endCondition, seed);
   }
 
   /**
@@ -80,11 +82,12 @@ public class GreedyOptimizer {
    * @param configuration For scoring the search.
    * @param populationSize How many tests to create in an iteration.
    */
-  public GreedyOptimizer(ScoreConfiguration configuration, int populationSize, EndCondition endCondition) {
+  public GreedyOptimizer(ScoreConfiguration configuration, int populationSize, EndCondition endCondition, long seed) {
     this.config = configuration;
     this.populationSize = populationSize;
     this.scoreCalculator = new ScoreCalculator(configuration);
     this.endCondition = endCondition;
+    this.seed = seed;
   }
 
   public void addModelClass(Class modelClass) {
@@ -118,7 +121,6 @@ public class GreedyOptimizer {
    */
   public List<TestCase> search() {
     OSMOTester tester = new OSMOTester();
-    long seed = OSMOConfiguration.getSeed();
     if (config.getLengthWeight() > 0) {
       log.warn("Length weight was defined as > 0, reset to 0.");
       //we do not use length weight as it would potentially go on for ever..
@@ -126,19 +128,21 @@ public class GreedyOptimizer {
     }
     if (factory != null) {
       log.debug("Using factory from configuration");
-      tester.setModelFactory(factory, OSMOConfiguration.getSeed());
+      tester.setModelFactory(factory);
     } else if (modelClasses.size() > 0) {
       log.debug("Creating factory for given model classes");
       SimpleModelFactory factory = new SimpleModelFactory(modelClasses.toArray(new Class[modelClasses.size()]));
-      tester.setModelFactory(factory, seed);
+      tester.setModelFactory(factory);
     } else {
       throw new IllegalStateException("No model factory found.");
     }
-    MainGenerator generator = tester.initGenerator();
+    tester.getConfig().setFailWhenError(failOnError);
+    MainGenerator generator = tester.initGenerator(seed);
     generator.initSuite();
 //    TestCoverage generatorCoverage = generator.getSuite().getCoverage();
-    tester.setTestEndCondition(endCondition);
     this.fsm = generator.getFsm();
+    endCondition.init(seed, fsm);
+    tester.setTestEndCondition(endCondition);
     config.validate(fsm);
     log.debug("greedy configuration validated");
 
@@ -156,7 +160,6 @@ public class GreedyOptimizer {
       //timeout is given in seconds so we multiple by 1000 to get milliseconds
       timeout = System.currentTimeMillis()+timeout*1000;
     }
-    //7, 20, 50
     while (gain >= threshold) {
       long iStart = System.currentTimeMillis();
       log.info(id + ":starting iteration " + iteration);
@@ -166,16 +169,13 @@ public class GreedyOptimizer {
         TestCase testCase = generator.nextTest();
         suite.add(testCase);
       }
-//      System.out.println(id+".1:"+(System.currentTimeMillis()-iStart));
       suite = sortAndPrune(suite);
-//      System.out.println(id+".2:"+(System.currentTimeMillis()-iStart));
       csv1 += csvForCoverage(suite);
       csv2 += csvForGain(suite);
       csv3 += csvNumberOfTests(suite);
       csv4 += csvTotalScores(suite);
       TestCoverage suiteCoverage = new TestCoverage(suite);
       int score = scoreCalculator.calculateScore(suiteCoverage);
-//      System.out.println(id+".3:"+(System.currentTimeMillis()-iStart));
       gain = score - previousScore;
       previousScore = score;
       if (timeout > 0 && timeout < System.currentTimeMillis()) {
@@ -217,7 +217,7 @@ public class GreedyOptimizer {
   }
 
   public void writeFile(String name, String content) {
-    TestUtils.write(content, "osmo-output/" + name);
+    TestUtils.write(content, "osmo-output-"+seed+"/" + name);
   }
 
   protected String csvForCoverage(Collection<TestCase> tests) {
@@ -334,5 +334,9 @@ public class GreedyOptimizer {
 
   public Collection<String> getPossiblePairs() {
     return possiblePairs;
+  }
+
+  public void setFailOnError(boolean failOnError) {
+    this.failOnError = failOnError;
   }
 }

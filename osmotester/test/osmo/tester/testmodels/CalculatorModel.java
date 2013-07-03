@@ -147,6 +147,6 @@ public class CalculatorModel {
     tester.setAlgorithm(new RandomAlgorithm());
     tester.setTestEndCondition(new Length(100));
     tester.setSuiteEndCondition(new Length(100));
-    tester.generate();
+    tester.generate(333);
   }
 }

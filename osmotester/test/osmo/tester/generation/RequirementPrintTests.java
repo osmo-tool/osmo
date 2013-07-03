@@ -29,7 +29,6 @@ public class RequirementPrintTests {
   @Before
   public void setup() {
     sout = System.out;
-    OSMOConfiguration.setSeed(111);
     out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
     System.setOut(ps);
@@ -133,15 +132,15 @@ public class RequirementPrintTests {
   }
 
   @Test
-  public void someAllCoverage() {
+  public void nothingCoverage() {
     OSMOTester tester = new OSMOTester();
     tester.addModelObject(new RandomValueModel2());
-    tester.generate();
+    tester.generate(111);
     String actual = out.toString();
     String expected = "generated 55 tests.\n" +
             "\n" +
             "Covered elements:\n" +
-            "Total steps: 530\n" +
+            "Total steps: 1705\n" +
             "Unique steps: 3 (of 3)\n" +
             "Unique step-pairs: 12 (of 12)\n" +
             "Unique requirements: 0\n" +
@@ -156,12 +155,12 @@ public class RequirementPrintTests {
   public void moreCoverage() {
     OSMOTester tester = new OSMOTester();
     tester.addModelObject(new StateDescriptionModel());
-    tester.generate();
+    tester.generate(111);
     String actual = out.toString();
     String expected = "generated 55 tests.\n" +
             "\n" +
             "Covered elements:\n" +
-            "Total steps: 530\n" +
+            "Total steps: 1705\n" +
             "Unique steps: 3 (of 3)\n" +
             "Unique step-pairs: 4 (of 4)\n" +
             "Unique requirements: 3\n" +
@@ -169,7 +168,7 @@ public class RequirementPrintTests {
             "Unique state-pairs: 4\n" +
             "\n" +
             "Requirements:[]\n" +
-            "Covered:[hello, world]\n" +
+            "Covered:[epix, hello, world]\n" +
             "Not covered:[]\n"+
             "\n";
     expected = unifyLineSeparators(expected, "\n");

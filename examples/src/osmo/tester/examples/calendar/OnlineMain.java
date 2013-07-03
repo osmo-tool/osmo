@@ -11,7 +11,6 @@ import osmo.tester.generator.endcondition.Length;
 /** @author Teemu Kanstren */
 public class OnlineMain {
   public static void main(String[] args) {
-    OSMOConfiguration.setSeed(111);
     OSMOTester osmo = new OSMOTester();
     osmo.setSuiteEndCondition(new Length(5));
     osmo.setTestEndCondition(new Length(5));
@@ -20,7 +19,7 @@ public class OnlineMain {
     osmo.addModelObject(new CalendarMeetingModel(state, scripter));
     OSMOConfiguration config = osmo.getConfig();
     config.setFailWhenError(false);
-    osmo.generate();
+    osmo.generate(111);
   }
 
 }

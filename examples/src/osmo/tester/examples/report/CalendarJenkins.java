@@ -39,6 +39,6 @@ public class CalendarJenkins {
     osmo.addModelObject(new CalendarParticipantModel(state, scripter));
     osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter));
     osmo.addModelObject(new CalendarFailureModel(state, scripter));
-    osmo.generate();
+    osmo.generate(2324);
   }
 }

@@ -1,5 +1,6 @@
 package osmo.tester.model.data;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -9,10 +10,16 @@ import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class ValueRangeSetTests {
+  private ValueRangeSet ni = null;
+
+  @Before
+  public void setUp() throws Exception {
+    ni = new ValueRangeSet();
+    ni.setSeed(333);
+  }
 
   @Test
   public void minMaxTest() {
-    ValueRangeSet ni = new ValueRangeSet();
     try {
       ni.addPartition(10d, 0d);
       fail("Wrong order of min/max should throw exception.");
@@ -23,7 +30,6 @@ public class ValueRangeSetTests {
 
   @Test
   public void separatePositivePartitionsWithLoop() {
-    ValueRangeSet ni = new ValueRangeSet();
     ni.addPartition(10d, 100d);
     ni.addPartition(150d, 200d);
     ni.addPartition(250d, 300d);
@@ -40,7 +46,6 @@ public class ValueRangeSetTests {
 
   @Test
   public void overlappingPositivePartitionsWithLoop() {
-    ValueRangeSet ni = new ValueRangeSet();
     ni.addPartition(10d, 100d);
     ni.addPartition(50d, 200d);
     ni.addPartition(150d, 300d);
@@ -57,7 +62,6 @@ public class ValueRangeSetTests {
 
   @Test
   public void overlappingNegativePartitionsWithLoop() {
-    ValueRangeSet ni = new ValueRangeSet();
     ni.addPartition(-10d, 100d);
     ni.addPartition(-200d, -50d);
     ni.addPartition(-150d, 0d);
@@ -75,7 +79,6 @@ public class ValueRangeSetTests {
 
   @Test
   public void randomInput() {
-    ValueRangeSet ni = new ValueRangeSet();
     ni.addPartition(-10d, 100d);
     ni.addPartition(-200d, -50d);
     ni.addPartition(-150d, 0d);
@@ -92,7 +95,6 @@ public class ValueRangeSetTests {
 
   @Test
   public void optimizedRandomInput() {
-    ValueRangeSet ni = new ValueRangeSet();
     ni.addPartition(10d, 100d);
     ni.addPartition(150d, 200d);
     ni.addPartition(250d, 300d);
@@ -127,7 +129,6 @@ public class ValueRangeSetTests {
 
   @Test
   public void addRemovePartitions() {
-    ValueRangeSet ni = new ValueRangeSet();
     ni.addPartition(10d, 100d);
     ni.addPartition(150d, 200d);
     ni.addPartition(250d, 300d);
@@ -155,7 +156,6 @@ public class ValueRangeSetTests {
 
   @Test
   public void zeroPartitions() {
-    ValueRangeSet ni = new ValueRangeSet();
     try {
       double d1 = ni.nextDouble();
       fail("Zero partitions should fail generation.");
@@ -166,7 +166,6 @@ public class ValueRangeSetTests {
 
   @Test
   public void intGenerationWithTwoValues() {
-    ValueRangeSet ni = new ValueRangeSet();
     ni.addPartition(1d, 2d);
     ni.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     boolean b1 = false;
@@ -187,26 +186,31 @@ public class ValueRangeSetTests {
   @Test
   public void generics() {
     ValueRangeSet<Integer> vrs1 = new ValueRangeSet<>();
+    vrs1.setSeed(333);
     vrs1.addPartition(1, 2);
     Integer o1 = vrs1.next();
     assertEquals("Integer value range should produce integers..", Integer.class, o1.getClass());
 
     ValueRangeSet<Long> vrs2 = new ValueRangeSet<>();
+    vrs2.setSeed(333);
     vrs2.addPartition(Long.class, 1, 2);
     Long o2 = vrs2.next();
     assertEquals("Long value range should produce longs..", Long.class, o2.getClass());
 
     ValueRangeSet<Long> vrs3 = new ValueRangeSet<>();
+    vrs3.setSeed(333);
     vrs3.addPartition(1l, 2l);
     Long o3 = vrs3.next();
     assertEquals("Long value range should produce longs..", Long.class, o3.getClass());
 
     ValueRangeSet<Double> vrs4 = new ValueRangeSet<>();
+    vrs4.setSeed(333);
     vrs4.addPartition(Double.class, 1, 2);
     Double o4 = vrs4.next();
     assertEquals("Double value range should produce doubles..", Double.class, o4.getClass());
 
     ValueRangeSet<Double> vrs5 = new ValueRangeSet<>();
+    vrs5.setSeed(333);
     vrs5.addPartition(1d, 2d);
     Double o5 = vrs5.next();
     assertEquals("Double value range should produce doubles..", Double.class, o5.getClass());
@@ -215,6 +219,7 @@ public class ValueRangeSetTests {
   @Test
   public void boundaryScanningInteger() {
     ValueRangeSet<Integer> vr = new ValueRangeSet<>();
+    vr.setSeed(333);
     vr.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     vr.setPartitionStrategy(DataGenerationStrategy.BOUNDARY_SCAN);
     vr.addPartition(0, 100);
@@ -232,6 +237,7 @@ public class ValueRangeSetTests {
   @Test
   public void boundaryScanningInvalidInteger() {
     ValueRangeSet<Integer> vr = new ValueRangeSet<>();
+    vr.setSeed(333);
     vr.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     vr.setPartitionStrategy(DataGenerationStrategy.BOUNDARY_SCAN_INVALID);
     vr.addPartition(0, 100);
@@ -249,6 +255,7 @@ public class ValueRangeSetTests {
   @Test
   public void boundaryScanningFloat() {
     ValueRangeSet<Double> vr = new ValueRangeSet<>();
+    vr.setSeed(333);
     vr.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     vr.setPartitionStrategy(DataGenerationStrategy.BOUNDARY_SCAN);
     vr.addPartition(0f, 100f);

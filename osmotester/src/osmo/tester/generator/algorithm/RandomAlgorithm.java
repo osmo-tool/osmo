@@ -16,14 +16,14 @@ import java.util.List;
  * @author Teemu Kanstren
  */
 public class RandomAlgorithm implements FSMTraversalAlgorithm {
-  private final Randomizer rand;
+  private Randomizer rand = null;
 
   public RandomAlgorithm() {
-    this.rand = new Randomizer(OSMOConfiguration.getSeed());
   }
 
   @Override
-  public void init(ParserResult parserResult) {
+  public void init(long seed, ParserResult parserResult) {
+    this.rand = new Randomizer(seed);
   }
 
   @Override

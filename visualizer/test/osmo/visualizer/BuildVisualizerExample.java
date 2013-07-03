@@ -9,6 +9,6 @@ public class BuildVisualizerExample {
     OSMOTester tester = new OSMOTester();
     tester.addModelObject(new CalculatorModel());
     tester.addListener(new FSMBuildVisualizer());
-    tester.generate();
+    tester.generate(333);
   }
 }

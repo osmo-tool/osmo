@@ -421,13 +421,12 @@ public class ECinema {
 //  }
 
   public static void main(String[] args) {
-    OSMOConfiguration.setSeed(44);
     OSMOTester tester = new OSMOTester();
     tester.setAlgorithm(new BalancingAlgorithm());
     tester.addListener(new TracePrinter());
     tester.addModelObject(new ECinema());
     tester.setSuiteEndCondition(new Length(200));
     tester.setTestEndCondition(new LengthProbability(10, 0.2d));
-    tester.generate();
+    tester.generate(44);
   }
 }

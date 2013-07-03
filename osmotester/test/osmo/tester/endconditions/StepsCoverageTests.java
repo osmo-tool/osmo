@@ -181,7 +181,7 @@ public class StepsCoverageTests {
     osmo.setTestEndCondition(sc);
     osmo.setSuiteEndCondition(length1);
     try {
-      osmo.generate();
+      osmo.generate(555);
       fail("Generation with coverage for non-existent test step (transition) should fail.");
     } catch (IllegalStateException e) {
       //Expected
@@ -203,7 +203,7 @@ public class StepsCoverageTests {
     TestSequenceListener listener = new TestSequenceListener(false);
     listener.addExpected("suite-start", "start", "t:first", "t:second", "t:third", "t:third", "end", "suite-end");
     osmo.addListener(listener);
-    osmo.generate();
+    osmo.generate(555);
     listener.validate("Step coverage with two 'third' steps required.");
   }
 

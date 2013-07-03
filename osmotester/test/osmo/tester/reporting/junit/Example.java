@@ -27,17 +27,9 @@ public class Example {
 
   @OSMOConfigurationProvider
   public static OSMOConfiguration giefConf() {
-    OSMOConfiguration.setSeed(333);
     OSMOConfiguration config = new OSMOConfiguration();
     config.addModelObject(new CalculatorModel(ps));
     config.setJUnitLength(5);
     return config;
-  }
-
-  @AfterClass
-  public static void afterEight() {
-//    System.out.println("all things:"+out.toString());
-    //it is not possible to assert here or JUnit will swallow any error
-//    assertEquals("", ps.toString());
   }
 }

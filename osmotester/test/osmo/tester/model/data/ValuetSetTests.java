@@ -14,6 +14,7 @@ public class ValuetSetTests {
   @Before
   public void setup() {
     set = new ValueSet<>();
+    set.setSeed(333);
     set.add("one");
     set.add("two");
     set.add("three");
@@ -86,6 +87,7 @@ public class ValuetSetTests {
     String v6 = null;
     boolean diff = false;
     set = new ValueSet<>();
+    set.setSeed(333);
     set.setStrategy(DataGenerationStrategy.BALANCING);
     set.add("one");
     set.add("two");

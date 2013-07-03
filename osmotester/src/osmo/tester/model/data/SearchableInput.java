@@ -1,5 +1,6 @@
 package osmo.tester.model.data;
 
+import osmo.common.Randomizer;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -18,13 +19,10 @@ public abstract class SearchableInput<T> implements Input<T>, VariableValue<T> {
   private static Logger log = new Logger(SearchableInput.class);
   /** Variable name. */
   private String name;
-  /** Does the variable support "all" values need to be covered mode. */
-  protected boolean allSupported = false;
   /** Provides values for this variable in playback mode. */
   private ScriptedValueProvider scripter = null;
   /** For providing values manually through a GUI. Enabled if non-null. */
   protected ValueGUI gui = null;
-  private ValueSet<String> slices = null;
   /** The latest value that was generated. */
   private T latestValue = null;
   protected boolean guiEnabled = false;
@@ -33,8 +31,14 @@ public abstract class SearchableInput<T> implements Input<T>, VariableValue<T> {
   private boolean checked = false;
   /** Should the values be tracked and stored in test steps? */
   private boolean stored = false;
+  /** Provides for instance specific randomization. */
+  protected Randomizer rand = null;
 
   protected SearchableInput() {
+  }
+
+  public void setSeed(long seed) {
+    rand = new Randomizer(seed);
   }
 
   public boolean isChecked() {
@@ -49,13 +53,6 @@ public abstract class SearchableInput<T> implements Input<T>, VariableValue<T> {
     this.checked = checked;
   }
 
-  public ValueSet<String> getSlices() {
-    if (slices == null) {
-      slices = OSMOConfiguration.getSlicesFor(getName());
-    }
-    return slices;
-  }
-
   public void setSuite(TestSuite suite) {
     this.suite = suite;
   }
@@ -67,10 +64,6 @@ public abstract class SearchableInput<T> implements Input<T>, VariableValue<T> {
 
   public T getLatestValue() {
     return latestValue;
-  }
-
-  public boolean isAllSupported() {
-    return allSupported;
   }
 
   public void setName(String name) {

@@ -28,10 +28,8 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
   private DataGenerationStrategy partitionStrategy = DataGenerationStrategy.RANDOM;
   /** The value used to increment value range in boundary scan. */
   private Number increment = 1;
-  private final Randomizer rand;
 
   public ValueRangeSet() {
-    this.rand = new Randomizer(OSMOConfiguration.getSeed());
   }
 
   /**
@@ -46,8 +44,13 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
     return this;
   }
 
+  @Override
   public void setSeed(long seed) {
-    rand.setSeed(seed);
+    super.setSeed(seed);
+    partitions.setSeed(seed);
+    for (ValueRange range : partitions.getOptions()) {
+      range.setSeed(seed);
+    }
   }
 
   /**
@@ -99,6 +102,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
     }
     range.setStrategy(partitionStrategy);
     range.setIncrement(increment);
+    range.setSeed(rand.getSeed());
     partitions.add(range);
   }
 
@@ -114,7 +118,9 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
   public void addPartition(Class<T> type, Number min, Number max) {
     log.debug("Adding partition min(" + min + ") max(" + max + ")");
     validateRange(min, max);
-    partitions.add(new ValueRange<>(type, min, max));
+    ValueRange<T> range = new ValueRange<>(type, min, max);
+    range.setSeed(rand.getSeed());
+    partitions.add(range);
   }
 
   private void validateRange(Number min, Number max) {
@@ -235,7 +241,6 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
   public Double nextDouble() {
     validate();
     ValueRange i = nextPartition();
-//    history.add(value);
     return i.nextDouble();
   }
 
@@ -247,7 +252,6 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
   public int nextInt() {
     validate();
     ValueRange i = nextPartition();
-//    history.add(value);
     return i.nextInt();
   }
 

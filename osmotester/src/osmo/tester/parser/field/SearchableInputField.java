@@ -6,7 +6,7 @@ import osmo.tester.model.data.SearchableInput;
 import java.lang.reflect.Field;
 
 /**
- * Represents a field for one of the OSMO dataflow modelling objects in the model.
+ * Represents a field for one of the OSMO data modelling objects in the model.
  *
  * @author Teemu Kanstren
  */
@@ -16,10 +16,12 @@ public class SearchableInputField {
   private final Object model;
   /** The field itself. */
   private final Field field;
+  private final long seed;
 
-  public SearchableInputField(Object model, Field field) {
+  public SearchableInputField(Object model, Field field, long seed) {
     this.model = model;
     this.field = field;
+    this.seed = seed;
   }
 
   /**
@@ -37,6 +39,7 @@ public class SearchableInputField {
     if (input.getName() == null) {
       input.setName(field.getName());
     }
+    input.setSeed(seed);
     return input;
   }
 

@@ -57,6 +57,6 @@ public class StateCoverage implements EndCondition {
   }
 
   @Override
-  public void init(FSM fsm) {
+  public void init(long seed, FSM fsm) {
   }
 }

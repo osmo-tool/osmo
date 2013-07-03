@@ -130,24 +130,22 @@ public class TraceGenerationTests {
 
   @Test
   public void traceFromGenerator() {
-    OSMOConfiguration.setSeed(5);
     OSMOTester tester = new OSMOTester();
     tester.addModelObject(new VariableModel2());
     tester.setTestEndCondition(new Length(5));
     tester.setSuiteEndCondition(new Length(3));
-    tester.generate();
+    tester.generate(5);
     TestSuite suite = tester.getSuite();
     assertTrace(suite, "expected-generator-trace.txt");
   }
 
   @Test
   public void failTraceFromGenerator() {
-    OSMOConfiguration.setSeed(5);
     OSMOTester tester = new OSMOTester();
     tester.addModelObject(new VariableModel2());
     tester.setTestEndCondition(new Length(5));
     tester.setSuiteEndCondition(new Length(3));
-    tester.generate();
+    tester.generate(5);
     TestSuite suite = tester.getSuite();
     suite.getAllTestCases().get(1).setFailed(true);
     assertTrace(suite, "expected-generator-fail-trace.txt");

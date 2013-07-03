@@ -47,7 +47,6 @@ public class CoverageWithStateTests {
 
   @Test
   public void combineWithCustomAndStateVariables() {
-    OSMOConfiguration.setSeed(55);
     ScoreConfiguration config = new ScoreConfiguration();
     config.setDefaultValueWeight(10);
     config.disableCheckingFor("teemu");
@@ -57,19 +56,19 @@ public class CoverageWithStateTests {
     config.setStepPairWeight(0);
     config.setRequirementWeight(0);
     config.setStepWeight(0);
-    GreedyOptimizer osmo = new GreedyOptimizer(config, new LengthProbability(1, 0.1d));
+    GreedyOptimizer osmo = new GreedyOptimizer(config, new LengthProbability(1, 0.1d), 55);
     osmo.addModelClass(RandomValueModel4.class);
     List<TestCase> tests = osmo.search();
     TestCoverage tc = new TestCoverage();
     for (TestCase test : tests) {
       tc.addTestCoverage(test);
     }
-    assertEquals("Number of generated tests", 5, tests.size());
+    assertEquals("Number of generated tests", 3, tests.size());
     Map<String, Collection<String>> variables = tc.getValues();
     //1 value = 10
     assertEquals("Variable coverage", "[on paras]", variables.get("teemu").toString());
     //4 values = 40
-    assertEquals("Variable coverage", "[null, many, zero, one]", variables.get("rangeRange").toString());
+    assertEquals("Variable coverage", "[many, null, zero, one]", variables.get("rangeRange").toString());
     //2 values = 20
     assertEquals("Variable coverage", "[null, many]", variables.get("range2Range").toString());
     //32 values = 320
@@ -87,7 +86,6 @@ public class CoverageWithStateTests {
 
   @Test
   public void userState() {
-    OSMOConfiguration.setSeed(155);
     ScoreConfiguration config = new ScoreConfiguration();
     config.setDefaultValueWeight(0);
     config.setStateWeight(10);
@@ -97,7 +95,7 @@ public class CoverageWithStateTests {
     config.setStepPairWeight(0);
     config.setRequirementWeight(0);
     config.setStepWeight(0);
-    GreedyOptimizer osmo = new GreedyOptimizer(config, new LengthProbability(1, 4, 0.1d));
+    GreedyOptimizer osmo = new GreedyOptimizer(config, new LengthProbability(1, 4, 0.1d), 155);
     osmo.addModelClass(StateDescriptionModel2.class);
     List<TestCase> tests = osmo.search();
     TestCoverage tc = new TestCoverage(tests);
@@ -116,8 +114,7 @@ public class CoverageWithStateTests {
   @Test
   public void wrongVariables() {
     ScoreConfiguration config = new ScoreConfiguration();
-    OSMOConfiguration.setSeed(55);
-    GreedyOptimizer greedy = new GreedyOptimizer(config, new LengthProbability(1, 0.2d));
+    GreedyOptimizer greedy = new GreedyOptimizer(config, new LengthProbability(1, 0.2d), 55);
     greedy.addModelClass(VariableModel1.class);
     try {
       List<TestCase> tests = greedy.search();
@@ -129,7 +126,6 @@ public class CoverageWithStateTests {
 
   @Test
   public void stepValues() {
-    OSMOConfiguration.setSeed(55);
     ScoreConfiguration config = new ScoreConfiguration();
     config.setDefaultValueWeight(10);
 
@@ -138,7 +134,7 @@ public class CoverageWithStateTests {
     config.setStepPairWeight(0);
     config.setRequirementWeight(0);
     config.setStepWeight(0);
-    GreedyOptimizer osmo = new GreedyOptimizer(config, 100, new LengthProbability(1, 0.1d));
+    GreedyOptimizer osmo = new GreedyOptimizer(config, 100, new LengthProbability(1, 0.1d), 55);
     osmo.addModelClass(RandomValueModel3.class);
     List<TestCase> tests = osmo.search();
 //    OSMOTester osmo = new OSMOTester(new RandomValueModel3());
@@ -149,6 +145,6 @@ public class CoverageWithStateTests {
     tc.addTestCoverage(tests.get(0));
     ScoreCalculator sc = new ScoreCalculator(config);
     assertEquals("Coverage score", 30, sc.calculateScore(tc));
-    assertEquals("Covered values", "[many, zero, one]", tc.getValues().get("rc2").toString());
+    assertEquals("Covered values", "[many, one, zero]", tc.getValues().get("rc2").toString());
   }
 }

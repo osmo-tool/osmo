@@ -34,7 +34,7 @@ public class GroupParserTests {
   @Test
   public void testValidModel() throws Exception {
     GroupModel1 model = new GroupModel1();
-    ParserResult result = parser.parse(conf(model), new TestSuite());
+    ParserResult result = parser.parse(1, conf(model), new TestSuite());
     FSM fsm = result.getFsm();
     assertEquals("Number of @Before methods", 0, fsm.getBefores().size());
     assertEquals("Number of @BeforeSuite methods", 0, fsm.getBeforeSuites().size());
@@ -63,7 +63,7 @@ public class GroupParserTests {
     PartialModel1 model1 = new PartialModel1(req);
     PartialModel2 model2 = new PartialModel2(req);
 
-    ParserResult result = parser.parse(conf(model1, model2), new TestSuite());
+    ParserResult result = parser.parse(1, conf(model1, model2), new TestSuite());
     FSM fsm = result.getFsm();
     FSMTransition hello = fsm.getTransition("hello");
     FSMTransition world = fsm.getTransition("world");
@@ -75,7 +75,7 @@ public class GroupParserTests {
     //turn the order around to check that class group name is reset as should be
     model1 = new PartialModel1(req);
     model2 = new PartialModel2(req);
-    result = parser.parse(conf(model2, model1), new TestSuite());
+    result = parser.parse(1, conf(model2, model1), new TestSuite());
     fsm = result.getFsm();
     hello = fsm.getTransition("hello");
     world = fsm.getTransition("world");
@@ -89,7 +89,7 @@ public class GroupParserTests {
   public void testInvalidModel() throws Exception {
     GroupModelInvalid model = new GroupModelInvalid();
     try {
-      ParserResult result = parser.parse(conf(model), new TestSuite());
+      ParserResult result = parser.parse(1, conf(model), new TestSuite());
     } catch (Exception e) {
       String expected = "Invalid FSM:\n" +
               "@Group must have name.\n" +

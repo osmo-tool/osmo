@@ -30,21 +30,10 @@ public class ValueSet<T> extends SearchableInput<T> {
   private int next = 0;
   /** The history of chosen input value objects for this invariant. */
   private Collection<T> history = new ArrayList<>();
-  /** Provides for instance specific randomization. */
-  private final Randomizer rand;
 
   /** Constructor for when no initial options are provided. Options need to be added later with addOption(). */
   public ValueSet() {
     init();
-    long seed = OSMOConfiguration.getSeed();
-//    long id = Thread.currentThread().getId();
-//    //REMOVE ME!!
-//    System.out.println(id+":VS:"+seed);
-    this.rand = new Randomizer(seed);
-  }
-
-  public void setSeed(long seed) {
-    rand.setSeed(seed);
   }
 
   /**
@@ -58,7 +47,6 @@ public class ValueSet<T> extends SearchableInput<T> {
       add(item);
     }
     init();
-    this.rand = new Randomizer(OSMOConfiguration.getSeed());
   }
 
   /**
@@ -69,11 +57,9 @@ public class ValueSet<T> extends SearchableInput<T> {
   public ValueSet(DataGenerationStrategy strategy) {
     this.strategy = strategy;
     init();
-    this.rand = new Randomizer(OSMOConfiguration.getSeed());
   }
 
   private void init() {
-    allSupported = true;
   }
 
   /**

@@ -17,12 +17,11 @@ import static junit.framework.Assert.*;
 public class StateCoverageTests {
   @Test
   public void testCaseState3() {
-    OSMOConfiguration.setSeed(55);
     StateDescriptionModel model = new StateDescriptionModel();
     OSMOTester tester = new OSMOTester(model);
     tester.setTestEndCondition(new StateCoverage("3"));
     tester.setSuiteEndCondition(new Length(1));
-    tester.generate();
+    tester.generate(55);
     List<TestCase> history = tester.getSuite().getFinishedTestCases();
     assertEquals("Number of tests generated", 1, history.size());
     TestCase test = history.get(0);
@@ -31,12 +30,11 @@ public class StateCoverageTests {
 
   @Test
   public void testCaseState2() {
-    OSMOConfiguration.setSeed(55);
     StateDescriptionModel model = new StateDescriptionModel();
     OSMOTester tester = new OSMOTester(model);
     tester.setTestEndCondition(new StateCoverage("2"));
     tester.setSuiteEndCondition(new Length(1));
-    tester.generate();
+    tester.generate(55);
     List<TestCase> history = tester.getSuite().getFinishedTestCases();
     assertEquals("Number of tests generated", 1, history.size());
     TestCase test = history.get(0);
@@ -45,12 +43,11 @@ public class StateCoverageTests {
 
   @Test
   public void testCaseState3twice() {
-    OSMOConfiguration.setSeed(55);
     StateDescriptionModel model = new StateDescriptionModel();
     OSMOTester tester = new OSMOTester(model);
     tester.setTestEndCondition(new StateCoverage("3", "3"));
     tester.setSuiteEndCondition(new Length(1));
-    tester.generate();
+    tester.generate(55);
     List<TestCase> history = tester.getSuite().getFinishedTestCases();
     assertEquals("Number of tests generated", 1, history.size());
     TestCase test = history.get(0);
@@ -59,13 +56,12 @@ public class StateCoverageTests {
 
   @Test
   public void suiteState() {
-    OSMOConfiguration.setSeed(55);
     StateDescriptionModel2 model = new StateDescriptionModel2();
     OSMOTester tester = new OSMOTester(model);
     tester.setTestEndCondition(new Length(1));
     //multiple repetitions of the same value are not counted for a suite so this should be equals to 1,2,3,4
     tester.setSuiteEndCondition(new StateCoverage("1", "2", "3", "4", "4", "4", "4", "4"));
-    tester.generate();
+    tester.generate(55);
     List<TestCase> history = tester.getSuite().getFinishedTestCases();
     assertEquals("Number of tests generated", 8, history.size());
     String expected = "[TestCase:[t2], TestCase:[t2], TestCase:[t3], TestCase:[t2], TestCase:[t1], TestCase:[t2], TestCase:[t2], TestCase:[t4]]";

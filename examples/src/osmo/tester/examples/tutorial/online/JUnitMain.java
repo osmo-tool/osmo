@@ -12,7 +12,6 @@ public class JUnitMain {
   @OSMOConfigurationProvider
   public static OSMOConfiguration configure() {
     OSMOConfiguration config = new OSMOConfiguration();
-    config.setSeed(52);
     config.addModelObject(new HelloModel3());
     config.setJUnitLength(2);
     config.setTestEndCondition(new Length(5));

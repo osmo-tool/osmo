@@ -44,9 +44,9 @@ public class And implements EndCondition {
   }
 
   @Override
-  public void init(FSM fsm) {
+  public void init(long seed, FSM fsm) {
     for (EndCondition condition : conditions) {
-      condition.init(fsm);
+      condition.init(seed, fsm);
     }
   }
 

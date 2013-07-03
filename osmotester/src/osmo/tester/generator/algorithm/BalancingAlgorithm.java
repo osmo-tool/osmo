@@ -31,14 +31,14 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
   /** The coverage for transitions pairs, key = source transition, value = {destination transition, coverage} */
   private Map<String, Map<FSMTransition, Integer>> tpCoverage = new LinkedHashMap<>();
   /** For randomization. Separate instances are used to allow multiple instances running concurrently. */
-  private final Randomizer rand;
+  private Randomizer rand = null;
 
   public BalancingAlgorithm() {
-    this.rand = new Randomizer(OSMOConfiguration.getSeed());
   }
 
   @Override
-  public void init(ParserResult parserResult) {
+  public void init(long seed, ParserResult parserResult) {
+    this.rand = new Randomizer(seed);
   }
 
   @Override

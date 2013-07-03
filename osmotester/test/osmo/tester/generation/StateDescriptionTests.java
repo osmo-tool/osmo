@@ -30,7 +30,6 @@ public class StateDescriptionTests {
 
   @Before
   public void testSetup() {
-    OSMOConfiguration.setSeed(111);
     osmo = new OSMOTester();
   }
 
@@ -42,7 +41,7 @@ public class StateDescriptionTests {
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
-    osmo.generate();
+    osmo.generate(111);
     TestSuite suite = osmo.getSuite();
     assertEquals("Sequence of steps", "[t2, t1, t1]", suite.getAllTestCases().get(0).getSteps().toString());
     assertEquals("State over generation with no state defined", ":null:-null-:null:-null-:null:-null-", model.getStates());
@@ -69,7 +68,7 @@ public class StateDescriptionTests {
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
-    osmo.generate();
+    osmo.generate(111);
     String expected = ":null:-hello-hello1-:null:-world-hello2-:null:-epixx-hello2-";
     assertEquals("State over generation with two states defined", expected, model1.getStates());
 
@@ -86,7 +85,7 @@ public class StateDescriptionTests {
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
-    osmo.generate();
+    osmo.generate(111);
     assertEquals("State over generation with no state defined", ":null:-1-:null:-2-:null:-3-", model.getStates());
     TestCase testCase = osmo.getSuite().getAllTestCases().get(0);
 
@@ -130,7 +129,7 @@ public class StateDescriptionTests {
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
-    osmo.generate();
+    osmo.generate(111);
 
     assertEquals("State over generation with no state defined", "-1--2--3-", model.getStates());
 
@@ -148,14 +147,13 @@ public class StateDescriptionTests {
 
   @Test
   public void oneStateSeveralValues() {
-    OSMOConfiguration.setSeed(222);
     StateDescriptionModel2 model = new StateDescriptionModel2();
     osmo.addModelObject(model);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
-    osmo.generate();
+    osmo.generate(222);
 
     assertEquals("State", ":null:-4-:null:-1-:null:-3-", model.getStates());
 
