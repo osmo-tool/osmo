@@ -33,9 +33,9 @@ public class GenerationListenerList implements GenerationListener {
   }
 
   @Override
-  public void init(FSM fsm, OSMOConfiguration config) {
+  public void init(long seed, FSM fsm, OSMOConfiguration config) {
     for (GenerationListener listener : listeners) {
-      listener.init(fsm, config);
+      listener.init(seed, fsm, config);
     }
   }
 

@@ -51,17 +51,12 @@ public class OSMOConfiguration implements ModelFactory {
   private int junitLength = -1;
   /** Should we try to throw original exception if model throws (remove OSMO Tester trace from the top)? */
   private boolean unwrapExceptions = true;
-  /** Seed to be used for test generation. */
-  private static Long seed = null;
-  private static Long baseSeed = null;
-  /** Serialized value options for defined variables. */
-  private static Map<String, ValueSet<String>> slices = new HashMap<>();
+  private Long baseSeed = null;
   /** Factory for creating model objects, alternative to adding them one by one. */
   private ModelFactory factory = null;
   private static boolean manual = false;
 
   public OSMOConfiguration() {
-
   }
 
   /**
@@ -84,10 +79,8 @@ public class OSMOConfiguration implements ModelFactory {
     modelObjects.add(new ModelObject(prefix, modelObject));
   }
 
-  public void setFactory(ModelFactory factory, long baseSeed) {
+  public void setFactory(ModelFactory factory) {
     this.factory = factory;
-    OSMOConfiguration.setSeed(baseSeed);
-    OSMOConfiguration.baseSeed = baseSeed;
   }
 
   public ModelFactory getFactory() {
@@ -206,16 +199,16 @@ public class OSMOConfiguration implements ModelFactory {
    *
    * @param parserResult The parsing results.
    */
-  public void check(ParserResult parserResult) {
+  public void check(long seed, ParserResult parserResult) {
     if (algorithm == null) {
       algorithm = new RandomAlgorithm();
     }
     FSM fsm = parserResult.getFsm();
     fsm.initSearchableInputs(this);
-    algorithm.init(parserResult);
-    suiteEndCondition.init(fsm);
+    algorithm.init(seed, parserResult);
+    suiteEndCondition.init(seed, fsm);
     //test end condition is initialized in generator between each test case
-    listeners.init(fsm, this);
+    listeners.init(seed, fsm, this);
   }
 
   public void setFailWhenError(boolean fail) {
@@ -252,40 +245,7 @@ public class OSMOConfiguration implements ModelFactory {
     this.unwrapExceptions = unwrapExceptions;
   }
 
-  public static long getSeed() {
-    if (seed == null) {
-      throw new IllegalStateException("No seed specified. Please set one with OSMOConfiguration.setSeed() before calling anything else.");
-    }
-    return seed;
-  }
-
-  public static synchronized void setSeed(long seed) {
-    OSMOConfiguration.seed = seed;
-  }
-
-  public static Long getBaseSeed() {
-    return baseSeed;
-  }
-
-  public static void setSlices(Map<String, ValueSet<String>> values) {
-    slices = values;
-  }
-
-  public static ValueSet<String> getSlicesFor(String name) {
-    return slices.get(name);
-  }
-
-  public static void addSlice(String name, String value) {
-    ValueSet<String> varSlices = slices.get(name);
-    if (varSlices == null) {
-      varSlices = new ValueSet<>();
-      slices.put(name, varSlices);
-    }
-    varSlices.add(value);
-  }
-
   public static void reset() {
-    slices = new HashMap<>();
     scripter = null;
   }
 
@@ -296,7 +256,6 @@ public class OSMOConfiguration implements ModelFactory {
     si.setChecked(true);
     if (manual == true) {
       si.enableGUI();
-      return;
     }
   }
 

@@ -33,6 +33,7 @@ public class ParserParameters {
   private String prefix = null;
   /** Test suite object for the model. */
   private TestSuite suite = null;
+  private Long seed = null;
 
   public Object getModel() {
     return model;
@@ -88,6 +89,14 @@ public class ParserParameters {
 
   public void setSuite(TestSuite suite) {
     this.suite = suite;
+  }
+
+  public Long getSeed() {
+    return seed;
+  }
+
+  public void setSeed(Long seed) {
+    this.seed = seed;
   }
 
   public void setFieldAnnotations(Annotation[] annotations) {

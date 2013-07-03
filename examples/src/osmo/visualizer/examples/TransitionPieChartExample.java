@@ -10,13 +10,12 @@ import osmo.visualizer.generator.TransitionsPieChart;
 /** @author Teemu Kanstren */
 public class TransitionPieChartExample {
   public static void main(String[] args) {
-    OSMOConfiguration.setSeed(55);
     TransitionsPieChart transitionsBarChart = new TransitionsPieChart();
     OSMOTester tester = new OSMOTester();
     tester.addListener(transitionsBarChart);
 //    tester.addListener(new TransitionsPieChart());
     tester.addModelObject(new CalculatorModel());
     tester.setAlgorithm(new ManualAlgorithm(tester));
-    tester.generate();
+    tester.generate(55);
   }
 }

@@ -16,7 +16,6 @@ public class WeightTests {
 
   @Before
   public void testSetup() {
-    OSMOConfiguration.setSeed(100);
     osmo = new OSMOTester();
     listener = new TestSequenceListener();
     osmo.addListener(listener);
@@ -35,7 +34,7 @@ public class WeightTests {
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
-    osmo.generate();
+    osmo.generate(100);
     listener.validate("Generated sequence for weighted model 1");
   }
 
@@ -49,7 +48,7 @@ public class WeightTests {
     Length length1 = new Length(2);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
-    osmo.generate();
+    osmo.generate(100);
     listener.validate("Generated sequence 2 for weighted model 1");
   }
 }

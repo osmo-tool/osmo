@@ -13,7 +13,7 @@ public class CalculatorMatrix {
     osmo.addModelObject(new CalculatorModel());
     osmo.setSuiteEndCondition(new Length(10));
     osmo.setTestEndCondition(new Length(5));
-    osmo.generate();
+    osmo.generate(2342);
     HTMLCoverageReporter reporter = new HTMLCoverageReporter(osmo.getSuite(), osmo.getFsm());
     String matrix = reporter.getTraceabilityMatrix();
     String file = "calculator-matrix.html";

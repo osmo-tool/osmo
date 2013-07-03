@@ -24,7 +24,6 @@ public class GreedyTests {
 
   @Before
   public void initTest() {
-    OSMOConfiguration.setSeed(234);
     gc = new ScoreConfiguration();
     gc.setStepWeight(0);
     gc.setLengthWeight(0);
@@ -63,7 +62,7 @@ public class GreedyTests {
     suite.endTest();
 
     gc.setRequirementWeight(1);
-    GreedyOptimizer optimizer = new GreedyOptimizer(gc, new LengthProbability(1, 10, 0.1d));
+    GreedyOptimizer optimizer = new GreedyOptimizer(gc, new LengthProbability(1, 10, 0.1d), 234);
     List<TestCase> tests = optimizer.sortAndPrune(suite.getFinishedTestCases());
     assertEquals("Number of tests should be reduced after pruning useless ones.", 2, tests.size());
     TestCase testCase1 = tests.get(0);
@@ -78,7 +77,7 @@ public class GreedyTests {
   @Test
   public void requirementOptimizer3TestsWithOverlap() {
     gc.setRequirementWeight(1);
-    GreedyOptimizer optimizer = new GreedyOptimizer(gc, new LengthProbability(1, 10, 0.2d));
+    GreedyOptimizer optimizer = new GreedyOptimizer(gc, new LengthProbability(1, 10, 0.2d), 234);
     TestSuite suite = createSuite1();
     List<TestCase> tests = optimizer.sortAndPrune(suite.getFinishedTestCases());
     assertEquals("Number of tests should be reduced after pruning useless ones.", 1, tests.size());
@@ -91,7 +90,7 @@ public class GreedyTests {
 
   @Test
   public void requirementOptimizer3TestsWithCunningOverlap() {
-    GreedyOptimizer optimizer = new GreedyOptimizer(gc, new LengthProbability(1, 10, 0.1d));
+    GreedyOptimizer optimizer = new GreedyOptimizer(gc, new LengthProbability(1, 10, 0.1d), 234);
     gc.setRequirementWeight(1);
     TestSuite suite = createSuite2();
     List<TestCase> tests = optimizer.sortAndPrune(suite.getFinishedTestCases());
@@ -163,7 +162,7 @@ public class GreedyTests {
   @Test
   public void transitionOptimizer3TestsNoOverlap() {
     TestSuite suite = createSuite1();
-    GreedyOptimizer optimizer = new GreedyOptimizer(gc, new LengthProbability(1, 10, 0.1d));
+    GreedyOptimizer optimizer = new GreedyOptimizer(gc, new LengthProbability(1, 10, 0.1d), 234);
     gc.setStepWeight(1);
     List<TestCase> tests = optimizer.sortAndPrune(suite.getFinishedTestCases());
     assertEquals("Number of tests after optimization should match that of before.", 3, tests.size());
@@ -182,7 +181,7 @@ public class GreedyTests {
   @Test
   public void transitionOptimizer3TestsWithOverlap() {
     TestSuite suite = createSuite2();
-    GreedyOptimizer optimizer = new GreedyOptimizer(gc, new LengthProbability(1, 10, 0.1d));
+    GreedyOptimizer optimizer = new GreedyOptimizer(gc, new LengthProbability(1, 10, 0.1d), 234);
     gc.setStepWeight(1);
     List<TestCase> tests = optimizer.sortAndPrune(suite.getFinishedTestCases());
     assertEquals("Number of tests should be reduced after pruning useless ones.", 1, tests.size());
@@ -195,7 +194,7 @@ public class GreedyTests {
   @Test
   public void ratOptimizer() {
     TestSuite suite = createSuite2();
-    GreedyOptimizer optimizer = new GreedyOptimizer(gc, new LengthProbability(1, 10, 0.1d));
+    GreedyOptimizer optimizer = new GreedyOptimizer(gc, new LengthProbability(1, 10, 0.1d), 234);
     gc.setStepWeight(1);
     gc.setRequirementWeight(4);
     List<TestCase> tests = optimizer.sortAndPrune(suite.getFinishedTestCases());
@@ -220,9 +219,8 @@ public class GreedyTests {
 
   @Test
   public void generation() {
-    OSMOConfiguration.setSeed(8);
     ScoreConfiguration config = new ScoreConfiguration();
-    GreedyOptimizer optimizer = new GreedyOptimizer(config, new LengthProbability(1, 5, 0.1d));
+    GreedyOptimizer optimizer = new GreedyOptimizer(config, new LengthProbability(1, 5, 0.1d), 8);
     optimizer.addModelClass(CalculatorModel.class);
     List<TestCase> tests = optimizer.search();
     assertEquals("Number of tests from greedy", 3, tests.size());
@@ -233,14 +231,13 @@ public class GreedyTests {
   
   @Test
   public void timeOut() {
-    OSMOConfiguration.setSeed(8);
     ScoreConfiguration gc = new ScoreConfiguration();
     gc.setStepWeight(0);
     gc.setStepPairWeight(0);
     gc.setDefaultValueWeight(1);
     gc.setVariableCountWeight(0);
     gc.setRequirementWeight(0);
-    GreedyOptimizer greedy = new GreedyOptimizer(gc, 100, new LengthProbability(10, 1d));
+    GreedyOptimizer greedy = new GreedyOptimizer(gc, 100, new LengthProbability(10, 1d), 8);
     greedy.setTimeout(1);
     greedy.addModelClass(RandomValueModel.class);
     long start = System.currentTimeMillis();

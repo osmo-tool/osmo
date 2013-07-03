@@ -129,7 +129,7 @@ public class VendingMachine2 {
   public static void main(String[] args) {
     VendingMachine2 vendingMachine2 = new VendingMachine2();
     OSMOTester tester = new OSMOTester(vendingMachine2);
-    tester.generate();
+    tester.generate(25);
 
     //Print coverage metric
     CSVCoverageReporter csv = new CSVCoverageReporter(tester.getSuite(), tester.getFsm());

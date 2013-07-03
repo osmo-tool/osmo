@@ -13,6 +13,7 @@ public class ValueRangeTests {
   @Test
   public void optimizedRandomValueRange() {
     ValueRange vr = new ValueRange(5, 7);
+    vr.setSeed(333);
     vr.setStrategy(DataGenerationStrategy.BALANCING);
     boolean b5 = false;
     boolean b6 = false;
@@ -49,26 +50,32 @@ public class ValueRangeTests {
   @Test
   public void generics() {
     ValueRange<Integer> vr = new ValueRange<>(1, 5);
+    vr.setSeed(333);
     Object o = vr.next();
     assertEquals("Integer value range should produce integers..", Integer.class, o.getClass());
 
     ValueRange<Long> vr2 = new ValueRange<>(1l, 5l);
+    vr2.setSeed(333);
     Object o2 = vr2.next();
     assertEquals("Long value range should produce longs..", Long.class, o2.getClass());
 
     ValueRange<Double> vr3 = new ValueRange<>(1d, 5d);
+    vr3.setSeed(333);
     Object o3 = vr3.next();
     assertEquals("Double value range should produce doubles..", Double.class, o3.getClass());
 
     ValueRange<Integer> vr4 = new ValueRange<>(Integer.class, 1, 5);
+    vr4.setSeed(333);
     Object o4 = vr4.next();
     assertEquals("Integer value range should produce integers..", Integer.class, o4.getClass());
 
     ValueRange<Long> vr5 = new ValueRange<>(Long.class, 1, 5);
+    vr5.setSeed(333);
     Object o5 = vr5.next();
     assertEquals("Long value range should produce longs..", Long.class, o5.getClass());
 
     ValueRange<Double> vr6 = new ValueRange<>(Double.class, 1, 5);
+    vr6.setSeed(333);
     Object o6 = vr6.next();
     assertEquals("Double value range should produce doubles..", Double.class, o6.getClass());
   }

@@ -44,7 +44,7 @@ public class TransitionsPieChart implements GenerationListener {
   }
 
   @Override
-  public void init(FSM fsm, OSMOConfiguration config) {
+  public void init(long seed, FSM fsm, OSMOConfiguration config) {
     Collection<FSMTransition> transitions = fsm.getTransitions();
     for (FSMTransition t : transitions) {
       values.put(t.getStringName(), 0);

@@ -63,8 +63,8 @@ public class OSMOTester {
     config.addModelObject(modelObject);
   }
   
-  public void setModelFactory(ModelFactory factory, long baseSeed) {
-    config.setFactory(factory, baseSeed);
+  public void setModelFactory(ModelFactory factory) {
+    config.setFactory(factory);
   }
 
   /**
@@ -79,9 +79,9 @@ public class OSMOTester {
   }
 
   /** Invoke this to perform actual test generation from the given model, with the given algorithms and strategies. */
-  public void generate() {
+  public void generate(long seed) {
     log.debug("generator starting up");
-    generator = initGenerator();
+    generator = initGenerator(seed);
     generator.generate();
     if (!printCoverage) return;
     TestSuite suite = generator.getSuite();
@@ -97,14 +97,10 @@ public class OSMOTester {
     }
   }
 
-  public MainGenerator initGenerator() {
-//    MainParser parser = new MainParser();
+  public MainGenerator initGenerator(long seed) {
     TestSuite suite = new TestSuite();
-//    ParserResult result = parser.parse(config, suite);
-//    fsm = result.getFsm();
-    MainGenerator generator = new MainGenerator(suite, config);
+    MainGenerator generator = new MainGenerator(seed, suite, config);
     fsm = generator.getFsm();
-//    config.check(result);
     return generator;
   }
 
@@ -114,7 +110,7 @@ public class OSMOTester {
 
   public FSM getFsm() {
     if (fsm == null) {
-      initGenerator();
+      initGenerator(0);
     }
     return fsm;
   }

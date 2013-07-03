@@ -33,7 +33,6 @@ public class BalancingTests {
 
   @Before
   public void testSetup() {
-    OSMOConfiguration.setSeed(100);
     osmo = new OSMOTester();
     listener = new TestSequenceListener();
     osmo.addListener(listener);
@@ -42,13 +41,12 @@ public class BalancingTests {
   @Test
   public void stepsOnly() {
     for (int i = 0 ; i < 1000 ; i++) {
-      OSMOConfiguration.setSeed(i);
       OSMOTester tester = new OSMOTester();
       tester.setAlgorithm(new BalancingAlgorithm());
       tester.addModelObject(new ValidTestModel6());
       tester.setTestEndCondition(new Length(4));
       tester.setSuiteEndCondition(new Length(1));
-      tester.generate();
+      tester.generate(i);
       assertStepsFound(tester.getSuite(), "t1", "t2", "t3", "t4");
     }
   }
@@ -64,13 +62,12 @@ public class BalancingTests {
   @Test
   public void statistics() {
     List<String> pairs = createPairList("t1", "t2", "t3", "t4");
-    OSMOConfiguration.setSeed(55);
     OSMOTester tester = new OSMOTester();
     tester.setAlgorithm(new BalancingAlgorithm());
     tester.addModelObject(new ValidTestModel6());
     tester.setTestEndCondition(new Length(2500));
     tester.setSuiteEndCondition(new Length(4));
-    tester.generate();
+    tester.generate(55);
 
     Map<String, Integer> counts = new HashMap<>();
     List<TestCase> tests = tester.getSuite().getAllTestCases();

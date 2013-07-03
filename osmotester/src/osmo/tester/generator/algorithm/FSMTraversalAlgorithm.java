@@ -28,9 +28,10 @@ public interface FSMTraversalAlgorithm {
    * This method is called once before test generation starts. It is given the results of parsing the given model
    * objects, including the FSM.
    *
+   * @param seed Randomization seed.
    * @param parserResult From parsing all given model objects.
    */
-  public void init(ParserResult parserResult);
+  public void init(long seed, ParserResult parserResult);
 
   /**
    * This is called before a new test is started.

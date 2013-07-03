@@ -43,16 +43,12 @@ public class Text extends SearchableInput<String> {
   private int invalidIndex = 0;
   /** Number of chars we create at index while in invalid loop mode. */
   private int invalidSize = 1;
-  private final Randomizer rand;
 
-  /** Constructor for default values (min=5, max=10). */
+  /** Constructor for default values. */
   public Text() {
-    this.rand = new Randomizer(OSMOConfiguration.getSeed());
   }
 
   /**
-   * Constructor for setting minimum and maximum char sequence size.
-   *
    * @param min The minimum length.
    * @param max The maximum length.
    */
@@ -60,12 +56,12 @@ public class Text extends SearchableInput<String> {
     this.min = min;
     this.max = max;
     evaluateMinMax(min, max);
-    this.rand = new Randomizer(OSMOConfiguration.getSeed());
   }
 
-  public Text setSeed(long seed) {
-    rand.setSeed(seed);
-    return this;
+  @Override
+  public void setSeed(long seed) {
+    super.setSeed(seed);
+    chars.setSeed(seed);
   }
 
   /**

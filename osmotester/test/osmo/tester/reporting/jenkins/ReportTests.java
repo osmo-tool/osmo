@@ -35,7 +35,6 @@ public class ReportTests {
     if (file.exists()) {
       file.delete();
     }
-    OSMOConfiguration.setSeed(333);
     tester = new OSMOTester();
     SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
     format.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -48,7 +47,7 @@ public class ReportTests {
     tester.addModelObject(calculator);
     JenkinsReportGenerator listener = new JenkinsReportGenerator(null, true);
     tester.addListener(listener);
-    tester.generate();
+    tester.generate(333);
     listener.getSuite().setStartTime(0);
     listener.getSuite().setEndTime(3234);
     String actual = listener.generateStepReport();
@@ -65,7 +64,7 @@ public class ReportTests {
     JenkinsReportGenerator listener = new JenkinsReportGenerator(null, true);
     listener.enableTestMode();
     tester.addListener(listener);
-    tester.generate();
+    tester.generate(333);
     listener.getSuite().setStartTime(1234);
     listener.getSuite().setEndTime(3234);
     String actual = listener.generateTestReport();
@@ -85,7 +84,7 @@ public class ReportTests {
     JenkinsReportGenerator listener = new JenkinsReportGenerator(null, false);
     listener.enableTestMode();
     tester.addListener(listener);
-    tester.generate();
+    tester.generate(333);
     listener.getSuite().setStartTime(1234);
     listener.getSuite().setEndTime(3234);
     String actual = listener.generateStepReport();
@@ -105,7 +104,7 @@ public class ReportTests {
     JenkinsReportGenerator listener = new JenkinsReportGenerator(null, false);
     listener.enableTestMode();
     tester.addListener(listener);
-    tester.generate();
+    tester.generate(333);
     listener.getSuite().setStartTime(1234);
     listener.getSuite().setEndTime(3234);
     String actual = listener.generateTestReport();
@@ -123,7 +122,7 @@ public class ReportTests {
     listener.getSuite().setStartTime(0);
     listener.getSuite().setEndTime(3234);
     tester.addListener(listener);
-    tester.generate();
+    tester.generate(333);
     String expected = getResource(ReportTests.class, "expected-step-report.txt");
     String actual = readFile(filename);
     expected = unifyLineSeparators(expected, "\n");
@@ -150,7 +149,7 @@ public class ReportTests {
     tester.addListener(listener);
     listener.getSuite().setStartTime(1234);
     listener.getSuite().setEndTime(3234);
-    tester.generate();
+    tester.generate(333);
     String expected = getResource(ReportTests.class, "expected-test-report.txt");
     expected = unifyLineSeparators(expected, "\n");
     String actual = readFile(filename);
@@ -166,7 +165,7 @@ public class ReportTests {
     listener.getSuite().setStartTime(1234);
     listener.getSuite().setEndTime(3234);
     try {
-      tester.generate();
+      tester.generate(333);
     } catch (Exception e) {
       //this should happen..
     }
@@ -182,7 +181,7 @@ public class ReportTests {
     tester.addModelObject(calculator);
     JenkinsReportGenerator listener = new JenkinsReportGenerator(filename, false);
     tester.addListener(listener);
-    tester.generate();
+    tester.generate(333);
     listener.getSuite().setStartTime(1234);
     listener.getSuite().setEndTime(3234);
     listener.writeTestReport();

@@ -15,6 +15,7 @@ import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.gui.manualdrive.ManualAlgorithm;
 import osmo.tester.model.Requirements;
+import osmo.tester.model.data.Text;
 
 import java.io.PrintStream;
 
@@ -109,9 +110,8 @@ public class CalculatorModel {
   }
 
   public static void main(String[] args) {
-    OSMOConfiguration.setSeed(4343);
     OSMOTester tester = new OSMOTester(new CalculatorModel());
     tester.setAlgorithm(new ManualAlgorithm(tester));
-    tester.generate();
+    tester.generate(4343);
   }
 }

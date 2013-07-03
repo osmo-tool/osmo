@@ -21,7 +21,6 @@ public class WeightedSequenceTests {
 
   @Before
   public void testSetup() {
-    OSMOConfiguration.setSeed(100);
     osmo = new OSMOTester();
     listener = new TestSequenceListener();
     osmo.addListener(listener);
@@ -36,7 +35,7 @@ public class WeightedSequenceTests {
     osmo.setTestEndCondition(length4);
     osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new WeightedRandomAlgorithm());
-    osmo.generate();
+    osmo.generate(100);
     listener.validate("Weighted random generator steps");
     Collection<String> optimized = listener.getSteps();
 
@@ -45,7 +44,7 @@ public class WeightedSequenceTests {
     osmo.setTestEndCondition(length4);
     osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new RandomAlgorithm());
-    osmo.generate();
+    osmo.generate(100);
     Collection<String> random = listener.getSteps();
     assertFalse("Weighted generator should be different from random", random.equals(optimized));
   }
@@ -59,7 +58,7 @@ public class WeightedSequenceTests {
     osmo.setTestEndCondition(length15);
     osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new WeightedRandomAlgorithm());
-    osmo.generate();
+    osmo.generate(100);
     listener.validate("Weighted random generator steps");
     Collection<String> optimized = listener.getSteps();
 
@@ -68,7 +67,7 @@ public class WeightedSequenceTests {
     osmo.setTestEndCondition(length15);
     osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new RandomAlgorithm());
-    osmo.generate();
+    osmo.generate(100);
     Collection<String> random = listener.getSteps();
     assertFalse("Weighted generator should be different from random", random.equals(optimized));
   }

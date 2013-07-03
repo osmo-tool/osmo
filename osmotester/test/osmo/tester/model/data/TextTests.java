@@ -8,7 +8,7 @@ import java.util.Set;
 import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
-public class WordsTests {
+public class TextTests {
 
   @Test
   public void generateNegativeSequence() {
@@ -43,6 +43,7 @@ public class WordsTests {
   @Test
   public void generateSequenceOf1() {
     Text text = new Text(1, 1);
+    text.setSeed(333);
     String word = text.next();
     assertEquals("Generated sequence length should match requested", 1, word.length());
   }
@@ -50,6 +51,7 @@ public class WordsTests {
   @Test
   public void generateSequenceOf2() {
     Text text = new Text(2, 2);
+    text.setSeed(333);
     String word = text.next();
     assertEquals("Generated sequence length should match requested", 2, word.length());
   }
@@ -57,6 +59,7 @@ public class WordsTests {
   @Test
   public void generateSequenceOf3To5() {
     Text text = new Text(3, 5);
+    text.setSeed(333);
     boolean three = false;
     boolean four = false;
     boolean five = false;
@@ -81,6 +84,7 @@ public class WordsTests {
 
   private void testLength(DataGenerationStrategy strategy) {
     Text text = new Text(10, 20);
+    text.setSeed(333);
     text.setStrategy(strategy);
     text.enableInvalidLength(true);
     Set<Integer> lengths = new HashSet<>();
@@ -101,6 +105,7 @@ public class WordsTests {
   @Test
   public void invalidRandom() {
     Text text = new Text(10, 20);
+    text.setSeed(333);
     text.setStrategy(DataGenerationStrategy.RANDOM_INVALID);
     text.asciiLettersAndNumbersOnly();
     String word = text.next();
@@ -113,13 +118,10 @@ public class WordsTests {
   private int countInvalidAsciiCharsIn(String word) {
     String expected = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     char[] chars = word.toCharArray();
-//    int valid = 0;
     int invalid = 0;
     for (char c : chars) {
       if (expected.indexOf(c) < 0) {
         invalid++;
-        //     } else {
-        //       valid++;
       }
     }
     return invalid;
@@ -128,12 +130,14 @@ public class WordsTests {
   @Test
   public void invalidZeroLength() {
     Text text = new Text(10, 20);
+    text.setSeed(333);
     text.enableZeroSize(true);
     String word = text.next();
     int length = word.length();
     assertTrue("Zero size enabled with invalid length disabled should produce no effect", length >= 10 && length <= 20);
 
     text = new Text(10, 20);
+    text.setSeed(333);
     text.enableZeroSize(true);
     text.enableInvalidLength(true);
     word = text.next();
@@ -149,6 +153,7 @@ public class WordsTests {
   @Test
   public void invalidLoop() {
     Text text = new Text(10, 10);
+    text.setSeed(333);
     text.setStrategy(DataGenerationStrategy.ORDERED_LOOP_INVALID);
     text.asciiLettersAndNumbersOnly();
     assertOneAndTwoInvalidChars(text);
@@ -181,6 +186,7 @@ public class WordsTests {
   @Test
   public void invalidConfig() {
     Text text = new Text(10, 20);
+    text.setSeed(333);
     try {
       text.setInvalidProbability(-1);
       fail("Negative values should not be allowed for invalid probability.");
@@ -209,6 +215,7 @@ public class WordsTests {
   @Test
   public void invalidProbabilityZero() {
     Text text = new Text(10, 10);
+    text.setSeed(333);
     text.asciiLettersAndNumbersOnly();
     text.setStrategy(DataGenerationStrategy.RANDOM_INVALID);
     text.setInvalidProbability(0);
@@ -220,6 +227,7 @@ public class WordsTests {
   @Test
   public void invalidProbabilityFull() {
     Text text = new Text(10, 10);
+    text.setSeed(333);
     text.asciiLettersAndNumbersOnly();
     text.setStrategy(DataGenerationStrategy.RANDOM_INVALID);
     text.setInvalidProbability(1);
@@ -231,6 +239,7 @@ public class WordsTests {
   @Test
   public void invalidLengthToNegative() {
     Text text = new Text(1, 2);
+    text.setSeed(333);
     text.asciiLettersAndNumbersOnly();
     text.setOffset(1, 5);
     text.enableInvalidLength(true);

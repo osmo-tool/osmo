@@ -18,7 +18,7 @@ public class Probability implements EndCondition {
   /** The stopping threshold. */
   private final double threshold;
   /** For random numbers. */
-  private final Randomizer rand;
+  private Randomizer rand = null;
 
   /** @param threshold The threshold value, if this is exceeded in evaluation, generation is stopped. */
   public Probability(double threshold) {
@@ -26,7 +26,6 @@ public class Probability implements EndCondition {
       throw new IllegalArgumentException(Probability.class.getSimpleName() + " threshold must be between 0 and 1. Was " + threshold + ".");
     }
     this.threshold = threshold;
-    this.rand = new Randomizer(OSMOConfiguration.getSeed());
   }
 
   public boolean endNow(TestSuite suite, FSM fsm) {
@@ -46,7 +45,8 @@ public class Probability implements EndCondition {
   }
 
   @Override
-  public void init(FSM fsm) {
+  public void init(long seed, FSM fsm) {
+    rand = new Randomizer(seed);
   }
 
   public double getThreshold() {

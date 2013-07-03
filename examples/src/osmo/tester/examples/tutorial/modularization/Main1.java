@@ -7,10 +7,9 @@ import osmo.tester.generator.endcondition.Length;
 /** @author Teemu Kanstren */
 public class Main1 {
   public static void main(String[] args) {
-    OSMOConfiguration.setSeed(52);
     OSMOTester tester = new OSMOTester(new HelloModularModel());
     tester.setTestEndCondition(new Length(5));
     tester.setSuiteEndCondition(new Length(2));
-    tester.generate();
+    tester.generate(52);
   }
 }

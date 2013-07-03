@@ -22,7 +22,6 @@ public class WeightedDistributionTests {
 
   @Before
   public void testSetup() {
-    OSMOConfiguration.setSeed(100);
     osmo = new OSMOTester();
     listener = new TestDistributionListener();
     osmo.addListener(listener);
@@ -40,7 +39,7 @@ public class WeightedDistributionTests {
     osmo.setTestEndCondition(length4);
     osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new WeightedRandomAlgorithm());
-    osmo.generate();
+    osmo.generate(100);
     listener.validate("Weighted random generator steps");
     Map<String, Integer> balanced = listener.getSteps();
 
@@ -49,7 +48,7 @@ public class WeightedDistributionTests {
     osmo.setTestEndCondition(length4);
     osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new RandomAlgorithm());
-    osmo.generate();
+    osmo.generate(100);
     Map<String, Integer> random = listener.getSteps();
     assertFalse("Weighted generator should be different from random", random.equals(balanced));
   }
@@ -65,9 +64,8 @@ public class WeightedDistributionTests {
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length4);
     osmo.setSuiteEndCondition(length1);
-//    osmo.setAlgorithm(new RandomAlgorithm());
     osmo.setAlgorithm(new WeightedBalancingAlgorithm());
-    osmo.generate();
+    osmo.generate(100);
     listener.validate("Weighted balancing generator steps");
     Map<String, Integer> balanced = listener.getSteps();
 
@@ -76,7 +74,7 @@ public class WeightedDistributionTests {
     osmo.setTestEndCondition(length4);
     osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new RandomAlgorithm());
-    osmo.generate();
+    osmo.generate(100);
     Map<String, Integer> random = listener.getSteps();
     assertFalse("Weighted balancing should be different from random", random.equals(balanced));
   }
@@ -93,7 +91,7 @@ public class WeightedDistributionTests {
     osmo.setTestEndCondition(length4);
     osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new WeightedRandomAlgorithm());
-    osmo.generate();
+    osmo.generate(100);
     listener.validate("Weighted balancing generator steps");
     Map<String, Integer> balanced = listener.getSteps();
 
@@ -102,7 +100,7 @@ public class WeightedDistributionTests {
     osmo.setTestEndCondition(length4);
     osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new RandomAlgorithm());
-    osmo.generate();
+    osmo.generate(100);
     Map<String, Integer> random = listener.getSteps();
     assertFalse("Weighted generator should be different from random", random.equals(balanced));
   }
@@ -119,7 +117,7 @@ public class WeightedDistributionTests {
     osmo.setTestEndCondition(length4);
     osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new WeightedBalancingAlgorithm());
-    osmo.generate();
+    osmo.generate(100);
     listener.validate("Weighted balancing generator steps");
     Map<String, Integer> balanced = listener.getSteps();
 
@@ -128,7 +126,7 @@ public class WeightedDistributionTests {
     osmo.setTestEndCondition(length4);
     osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new RandomAlgorithm());
-    osmo.generate();
+    osmo.generate(100);
     Map<String, Integer> random = listener.getSteps();
     assertFalse("Weighted generator should be different from random", random.equals(balanced));
   }

@@ -50,7 +50,7 @@ public class Time implements EndCondition {
   }
 
   @Override
-  public void init(FSM fsm) {
+  public void init(long seed, FSM fsm) {
     shouldEnd = false;
     ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
     Runnable end = new Runnable() {

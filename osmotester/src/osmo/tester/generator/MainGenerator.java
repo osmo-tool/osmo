@@ -46,13 +46,17 @@ public class MainGenerator {
   private static int testCount = 0;
   /** Set of possible pairs, key = source, value = targets. */
   private Collection<String> possiblePairs = new HashSet<>();
+  private final long baseSeed;
+  private Long seed = null;
 
   /**
    * Constructor.
    *
    * @param config The configuration for test generation parameters.
    */
-  public MainGenerator(TestSuite suite, OSMOConfiguration config) {
+  public MainGenerator(long seed, TestSuite suite, OSMOConfiguration config) {
+    this.baseSeed = seed;
+    this.seed = baseSeed;
     this.suite = suite;
     this.config = config;
     this.listeners = config.getListeners();
@@ -73,22 +77,18 @@ public class MainGenerator {
   private void createModelObjects() {
     if (config.getFactory() == null && fsm != null) return;
     if (config.getFactory() != null) {
-      long baseSeed = OSMOConfiguration.getBaseSeed();
       int salt = suite.getCoverage().getTransitions().size();
-      OSMOConfiguration.setSeed(baseSeed + salt);
+      seed = baseSeed + salt;
     }
     MainParser parser = new MainParser();
-    ParserResult result = parser.parse(config, suite);
-    config.check(result);
+    ParserResult result = parser.parse(seed, config, suite);
+    config.check(seed, result);
     fsm = result.getFsm();
     fsm.initSearchableInputs(config);
     invokeAll(fsm.getGenerationEnablers());
     this.reqs = result.getRequirements();
     //TODO: add test to see reqs are initialized
     suite.initRequirements(reqs);
-//    if (reqs != null) {
-//      reqs.setTestSuite(suite);
-//    }
   }
 
   /**
@@ -299,7 +299,7 @@ public class MainGenerator {
   public TestCase beforeTest() {
     testCount++;
     //re-initialize end conditions before new tests to remove previous test state
-    config.getTestCaseEndCondition().init(fsm);
+    config.getTestCaseEndCondition().init(seed, fsm);
     //update suite
     TestCase test = suite.startTest();
     listeners.testStarted(suite.getCurrentTest());
@@ -362,19 +362,6 @@ public class MainGenerator {
       }
       e = e.getCause();
     }
-//    Throwable cause = e.getCause();
-//    if (cause != null) {
-//      if (e.getClass().equals(OSMOException.class)) {
-//        if (cause.getClass().equals(InvocationTargetException.class)) {
-//          cause = cause.getCause();
-//          if (cause.getClass().equals(RuntimeException.class)) {
-//            return cause;
-//          }
-//          //hack to avoid Java reflection + compiler checking incompatibilities
-//          return new OSMOException(cause);
-//        }
-//      }
-//    }
     return e;
   }
 

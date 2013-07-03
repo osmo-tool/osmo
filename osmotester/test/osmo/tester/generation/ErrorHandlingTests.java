@@ -34,7 +34,6 @@ public class ErrorHandlingTests {
   @Before
   public void testSetup() {
 //    Logger.consoleLevel = Level.ALL;
-    OSMOConfiguration.setSeed(100);
     osmo = new OSMOTester();
     config = osmo.getConfig();
     listener = new TestSequenceListener();
@@ -49,7 +48,7 @@ public class ErrorHandlingTests {
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
     try {
-      osmo.generate();
+      osmo.generate(100);
       fail("Throwing an exception without trap should propagate.");
     } catch (RuntimeException e) {
       assertEquals("@BeforeTest fail", e.getCause().getCause().getMessage());
@@ -65,7 +64,7 @@ public class ErrorHandlingTests {
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
     try {
-      osmo.generate();
+      osmo.generate(100);
       fail("Trap should not catch @BeforeTest");
     } catch (RuntimeException e) {
       assertEquals("@BeforeTest fail", e.getCause().getCause().getMessage());
@@ -80,7 +79,7 @@ public class ErrorHandlingTests {
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
     try {
-      osmo.generate();
+      osmo.generate(100);
       fail("Throwing an exception without trap should propagate.");
     } catch (RuntimeException e) {
       assertEquals("@BeforeSuite fail", e.getCause().getCause().getMessage());
@@ -96,7 +95,7 @@ public class ErrorHandlingTests {
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
     try {
-      osmo.generate();
+      osmo.generate(100);
       fail("Trap should not catch @BeforeSuite");
     } catch (RuntimeException e) {
       assertEquals("@BeforeSuite fail", e.getCause().getCause().getMessage());
@@ -111,7 +110,7 @@ public class ErrorHandlingTests {
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
     try {
-      osmo.generate();
+      osmo.generate(100);
       fail("Throwing an exception without trap should propagate.");
     } catch (RuntimeException e) {
       assertEquals("@AfterTest fail", e.getCause().getCause().getMessage());
@@ -127,7 +126,7 @@ public class ErrorHandlingTests {
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
     try {
-      osmo.generate();
+      osmo.generate(100);
       fail("Trap should not catch @AfterTest");
     } catch (RuntimeException e) {
       assertEquals("@AfterTest fail", e.getCause().getCause().getMessage());
@@ -142,7 +141,7 @@ public class ErrorHandlingTests {
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
     try {
-      osmo.generate();
+      osmo.generate(100);
       fail("Throwing an exception without trap should propagate.");
     } catch (RuntimeException e) {
       assertEquals("@AfterSuite fail", e.getCause().getCause().getMessage());
@@ -158,7 +157,7 @@ public class ErrorHandlingTests {
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
     try {
-      osmo.generate();
+      osmo.generate(100);
       fail("Trap should not catch @AfterSuite");
     } catch (RuntimeException e) {
       assertEquals("@AfterSuite fail", e.getCause().getCause().getMessage());
@@ -173,7 +172,7 @@ public class ErrorHandlingTests {
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
     try {
-      osmo.generate();
+      osmo.generate(100);
       fail("Throwing an exception without trap should propagate.");
     } catch (RuntimeException e) {
       assertEquals("@Guard fail", e.getMessage());
@@ -190,7 +189,7 @@ public class ErrorHandlingTests {
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
     try {
-      osmo.generate();
+      osmo.generate(100);
       fail("Runtime exception with trap should propagate.");
     } catch (Exception e) {
       assertEquals("@Guard fail", e.getMessage());
@@ -206,7 +205,7 @@ public class ErrorHandlingTests {
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
     try {
-      osmo.generate();
+      osmo.generate(100);
       fail("Throwing an exception without trap should propagate.");
     } catch (RuntimeException e) {
       assertEquals("Error in test generation:@Transition assert fail", e.getMessage());
@@ -223,7 +222,7 @@ public class ErrorHandlingTests {
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
-    osmo.generate();
+    osmo.generate(100);
     listener.validate("@Transition with trap");
   }
 
@@ -235,7 +234,7 @@ public class ErrorHandlingTests {
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
     try {
-      osmo.generate();
+      osmo.generate(100);
       fail("Throwing an exception without trap should propagate.");
     } catch (RuntimeException e) {
       assertEquals("@Pre fail", e.getMessage());
@@ -253,7 +252,7 @@ public class ErrorHandlingTests {
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
     try {
-      osmo.generate();
+      osmo.generate(100);
       fail("Runtime exception with trap should propagate.");
     } catch (Exception e) {
       assertEquals("@Pre fail", e.getMessage());
@@ -269,7 +268,7 @@ public class ErrorHandlingTests {
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
     try {
-      osmo.generate();
+      osmo.generate(100);
       fail("Throwing an exception without trap should propagate.");
     } catch (RuntimeException e) {
       assertEquals("Error in test generation:@Post fail", e.getMessage());
@@ -286,7 +285,7 @@ public class ErrorHandlingTests {
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
-    osmo.generate();
+    osmo.generate(100);
     listener.validate("@Post with trap");
   }
 
@@ -298,7 +297,7 @@ public class ErrorHandlingTests {
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
     try {
-      osmo.generate();
+      osmo.generate(100);
       fail("Throwing an exception without trap should propagate.");
     } catch (RuntimeException e) {
       assertEquals("@EndCondition fail", e.getMessage());
@@ -316,7 +315,7 @@ public class ErrorHandlingTests {
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
     try {
-      osmo.generate();
+      osmo.generate(100);
       fail("Throwing an exception without trap should propagate.");
     } catch (Exception e) {
       assertEquals("@EndCondition fail", e.getMessage());
@@ -335,7 +334,7 @@ public class ErrorHandlingTests {
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
     try {
-      osmo.generate();
+      osmo.generate(100);
       fail("The final strict test step failure should stop the generator");
     } catch (RuntimeException e) {
       assertEquals("t2 fail", e.getMessage());

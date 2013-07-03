@@ -94,13 +94,14 @@ public class MainParser {
    * @param factory Factory to create the model objects to be parsed.
    * @return The FSM object created from the given model object that can be used for test generation.
    */
-  public ParserResult parse(ModelFactory factory, TestSuite suite) {
+  public ParserResult parse(long seed, ModelFactory factory, TestSuite suite) {
     log.debug("parsing");
     FSM fsm = new FSM();
     ParserResult result = new ParserResult(fsm);
     ParserParameters parameters = new ParserParameters();
     suite.init();
     parameters.setSuite(suite);
+    parameters.setSeed(seed);
     String errors = "";
     Collection<ModelObject> modelObjects = factory.createModelObjects();
     for (ModelObject mo : modelObjects) {

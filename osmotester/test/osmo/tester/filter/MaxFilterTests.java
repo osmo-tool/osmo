@@ -28,7 +28,6 @@ public class MaxFilterTests {
 
   @Before
   public void testSetup() {
-    OSMOConfiguration.setSeed(123);
     out = new ByteArrayOutputStream(1000);
     ps = new PrintStream(out);
     osmo = new OSMOTester();
@@ -44,7 +43,7 @@ public class MaxFilterTests {
     filter.setMax("no-such-transition", 1);
     osmo.addFilter(filter);
     try {
-      osmo.generate();
+      osmo.generate(123);
       fail("Generation with non-existing transition should fail.");
     } catch (IllegalArgumentException e) {
       assertEquals("Error for non-existing transition", "Specified transitions do not exist in the model:[no-such-transition]", e.getMessage());
@@ -58,7 +57,7 @@ public class MaxFilterTests {
     filter.setMax("world", 0);
     osmo.addFilter(filter);
     config.setFailWhenNoWayForward(false);
-    osmo.generate();
+    osmo.generate(123);
     assertTransitions(":hello");
   }
 
@@ -86,7 +85,7 @@ public class MaxFilterTests {
     osmo.addFilter(filter);
     osmo.setSuiteEndCondition(new Length(1));
     config.setFailWhenNoWayForward(false);
-    osmo.generate();
+    osmo.generate(123);
     assertTransitions(":hello:world:epixx_pre:epixx:epixx_oracle");
   }
 
@@ -103,7 +102,7 @@ public class MaxFilterTests {
     osmo.addFilter(filter);
     osmo.setTestEndCondition(new Length(20));
     osmo.setSuiteEndCondition(new Length(1));
-    osmo.generate();
+    osmo.generate(123);
     listener.addExpected("suite-start", "start", "t:t3", "t:t2", "t:t4", "t:t3", "t:t4", "t:t1", "t:t4", "t:t2", "t:t4",
             "t:t4", "t:t4", "t:t4", "t:t4", "t:t4", "t:t4", "t:t4", "t:t4", "t:t4", "t:t4", "t:t4", "end", "suite-end");
     listener.validate("1 allowed transition with alternatives");
@@ -117,7 +116,7 @@ public class MaxFilterTests {
     osmo.addFilter(filter);
     osmo.setSuiteEndCondition(new Length(1));
     config.setFailWhenNoWayForward(false);
-    osmo.generate();
+    osmo.generate(123);
     assertTransitions(":hello:world:epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle");
   }
 }

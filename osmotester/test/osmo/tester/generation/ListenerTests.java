@@ -34,7 +34,7 @@ public class ListenerTests {
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
     try {
-      osmo.generate();
+      osmo.generate(555);
       fail("Generation without available transitions should fail.");
     } catch (IllegalStateException e) {
       assertEquals("No transition available.", e.getMessage());
@@ -57,7 +57,7 @@ public class ListenerTests {
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
-    osmo.generate();
+    osmo.generate(555);
     listener.validate("Generated sequence for test model 2");
   }
 }

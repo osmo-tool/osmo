@@ -103,9 +103,7 @@ public class VendingExample {
   }
 
   public static void main(String[] args) {
-    OSMOConfiguration.setSeed(100);
     OSMOTester tester = new OSMOTester(new VendingExample());
-//    tester.setDebug(true);
-    tester.generate();
+    tester.generate(100);
   }
 }

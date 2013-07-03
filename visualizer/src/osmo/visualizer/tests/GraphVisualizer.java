@@ -38,7 +38,7 @@ public class GraphVisualizer extends JFrame implements GenerationListener {
   }
 
   @Override
-  public void init(FSM fsm, OSMOConfiguration config) {
+  public void init(long seed, FSM fsm, OSMOConfiguration config) {
   }
 
   @Override

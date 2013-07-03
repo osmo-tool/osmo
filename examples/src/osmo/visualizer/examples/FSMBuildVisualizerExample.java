@@ -9,12 +9,11 @@ import osmo.visualizer.fsmbuild.FSMBuildVisualizer;
 /** @author Teemu Kanstren */
 public class FSMBuildVisualizerExample {
   public static void main(String[] args) {
-    OSMOConfiguration.setSeed(55);
     FSMBuildVisualizer gv = new FSMBuildVisualizer();
     OSMOTester osmo = new OSMOTester(new CalculatorModel());
     osmo.setTestEndCondition(new Length(15));
     osmo.setSuiteEndCondition(new Length(5));
     osmo.addListener(gv);
-    osmo.generate();
+    osmo.generate(55);
   }
 }

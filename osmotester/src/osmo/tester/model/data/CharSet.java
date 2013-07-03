@@ -21,7 +21,6 @@ public class CharSet extends SearchableInput<Character> {
   private String invalidChars = "";
   /** Index when looped strategy is used. */
   private int loopIndex = 0;
-  private final Randomizer rand;
 
   public CharSet() {
     for (int i = 0 ; i <= 32 ; i++) {
@@ -30,7 +29,6 @@ public class CharSet extends SearchableInput<Character> {
     for (int i = 127 ; i <= 258 ; i++) {
       invalidChars += (char) i;
     }
-    this.rand = new Randomizer(OSMOConfiguration.getSeed());
   }
 
   @Override
@@ -48,10 +46,6 @@ public class CharSet extends SearchableInput<Character> {
         String msg = name + " only supports Random, Looping, and Invalid generation strategies. Given:" + strategy;
         throw new UnsupportedOperationException(msg);
     }
-  }
-
-  public void setSeed(long seed) {
-    rand.setSeed(seed);
   }
 
   /**

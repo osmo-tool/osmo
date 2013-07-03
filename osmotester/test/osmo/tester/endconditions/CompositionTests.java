@@ -17,11 +17,6 @@ import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class CompositionTests {
-  @Before
-  public void setSeed() {
-    OSMOConfiguration.setSeed(333);
-  }
-  
   @Test
   public void length2AndLength4() {
     Length length2 = new Length(2);
@@ -32,7 +27,7 @@ public class CompositionTests {
     OSMOTester tester = new OSMOTester(calculator);
     tester.setTestEndCondition(and);
     tester.setSuiteEndCondition(length2);
-    tester.generate();
+    tester.generate(333);
     TestSuite testLog = calculator.getHistory();
     List<TestCase> history = testLog.getFinishedTestCases();
     assertEquals("Number of tests generated", 2, history.size());
@@ -52,7 +47,7 @@ public class CompositionTests {
     OSMOTester tester = new OSMOTester(calculator);
     tester.setTestEndCondition(and);
     tester.setSuiteEndCondition(length2);
-    tester.generate();
+    tester.generate(333);
     TestSuite testLog = calculator.getHistory();
     List<TestCase> history = testLog.getFinishedTestCases();
     assertEquals("Number of tests generated", 2, history.size());
@@ -72,7 +67,7 @@ public class CompositionTests {
     OSMOTester tester = new OSMOTester(calculator);
     tester.setTestEndCondition(or);
     tester.setSuiteEndCondition(length2);
-    tester.generate();
+    tester.generate(333);
     TestSuite testLog = calculator.getHistory();
     List<TestCase> history = testLog.getFinishedTestCases();
     assertEquals("Number of tests generated", 2, history.size());
@@ -92,7 +87,7 @@ public class CompositionTests {
     OSMOTester tester = new OSMOTester(calculator);
     tester.setTestEndCondition(and);
     tester.setSuiteEndCondition(and);
-    tester.generate();
+    tester.generate(333);
     TestSuite testLog = calculator.getHistory();
     List<TestCase> history = testLog.getFinishedTestCases();
     assertEquals("Number of tests generated", 6, history.size());

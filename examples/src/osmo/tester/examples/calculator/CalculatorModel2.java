@@ -99,7 +99,7 @@ public class CalculatorModel2 {
 
   public static void main2(String[] args) {
     OSMOTester tester = new OSMOTester(new CalculatorModel2());
-    tester.generate();
+    tester.generate(55);
   }
 
   /**
@@ -113,6 +113,6 @@ public class CalculatorModel2 {
     tester.setDebug(true);
     tester.setSuiteEndCondition(new Length(10));
     tester.setTestEndCondition(new Length(10));
-    tester.generate();
+    tester.generate(55);
   }
 }

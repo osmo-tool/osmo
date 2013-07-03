@@ -24,11 +24,6 @@ public class ExampleTests {
   private static final String ln = System.getProperty("line.separator");
   private OSMOTester osmo = new OSMOTester();
 
-  @Before
-  public void setUp() {
-    OSMOConfiguration.setSeed(100);
-  }
-
   @Test
   public void testCalculatorModel1() {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
@@ -38,7 +33,7 @@ public class ExampleTests {
     Length length2 = new Length(2);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length2);
-    osmo.generate();
+    osmo.generate(100);
     String expected = "first" + ln +
             "Starting new test case 1" + ln +
             "S:0" + ln +
@@ -64,7 +59,7 @@ public class ExampleTests {
     Length length2 = new Length(2);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length2);
-    osmo.generate();
+    osmo.generate(100);
     String expected = "first" + ln +
             "Starting new test case 1" + ln +
             "S:0" + ln +
@@ -90,7 +85,7 @@ public class ExampleTests {
     Length length2 = new Length(2);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length2);
-    osmo.generate();
+    osmo.generate(100);
     String expected = "Starting test:1\n" +
             "INSERT 20\n" +
             "CHECK(bottles == 10)\n" +
@@ -125,7 +120,7 @@ public class ExampleTests {
     Length length2 = new Length(2);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length2);
-    osmo.generate();
+    osmo.generate(100);
     String expected = "Starting test:1\n" +
             "10c\n" +
             "CHECK(bottles == 10)\n" +

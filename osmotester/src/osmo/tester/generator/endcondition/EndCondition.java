@@ -30,8 +30,9 @@ public interface EndCondition {
   /**
    * called to initialize end condition before generation starts.
    *
+   * @param seed Randomization seed.
    * @param fsm Representation of the model.
    */
-  public void init(FSM fsm);
+  public void init(long seed, FSM fsm);
 }
 

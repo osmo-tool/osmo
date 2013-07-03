@@ -65,7 +65,7 @@ public class MaxTransitionFilter implements TransitionFilter {
   }
 
   @Override
-  public void init(FSM fsm, OSMOConfiguration config) {
+  public void init(long seed, FSM fsm, OSMOConfiguration config) {
     Collection<FSMTransition> transitions = fsm.getTransitions();
     Collection<String> shouldClear = new ArrayList<>();
     shouldClear.addAll(maximums.keySet());

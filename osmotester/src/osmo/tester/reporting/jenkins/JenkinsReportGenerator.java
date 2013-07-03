@@ -45,6 +45,7 @@ public class JenkinsReportGenerator implements GenerationListener {
   private final String filename;
   /** If true, steps are described in the report, if false, test cases are described. */
   private final boolean steps;
+  private Long seed = null;
 
   /**
    * @param filename The name of the report file.
@@ -60,7 +61,8 @@ public class JenkinsReportGenerator implements GenerationListener {
   }
 
   @Override
-  public void init(FSM fsm, OSMOConfiguration config) {
+  public void init(long seed, FSM fsm, OSMOConfiguration config) {
+    this.seed = seed;
     this.config = config;
   }
 
@@ -224,7 +226,7 @@ public class JenkinsReportGenerator implements GenerationListener {
         properties.add(new Property(MODEL_OBJECT, name));
       }
     }
-    properties.add(new Property(SEED, "" + config.getSeed()));
+    properties.add(new Property(SEED, "" + seed));
     EndCondition suiteEndCondition = config.getSuiteEndCondition();
     properties.add(new Property(SUITE_END_CONDITION, suiteEndCondition.toString()));
     EndCondition testEndCondition = config.getTestCaseEndCondition();

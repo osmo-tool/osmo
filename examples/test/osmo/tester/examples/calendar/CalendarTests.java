@@ -32,7 +32,6 @@ public class CalendarTests {
 
   @Before
   public void testSetup() {
-    OSMOConfiguration.setSeed(111);
     osmo = new OSMOTester();
     bos = new ByteArrayOutputStream();
     out = new PrintStream(bos);
@@ -62,7 +61,7 @@ public class CalendarTests {
   }
 
   private void generateAndAssertOutput(String expectedFile) {
-    osmo.generate();
+    osmo.generate(111);
     String expected = getResource(CalendarTests.class, expectedFile);
     expected = unifyLineSeparators(expected, "\n");
     String actual = bos.toString();
@@ -82,7 +81,7 @@ public class CalendarTests {
     osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter));
     osmo.addModelObject(new CalendarFailureModel(state, scripter));
     try {
-      osmo.generate();
+      osmo.generate(111);
       fail("FailureModel should fail assertions");
     } catch (Exception e) {
       Throwable cause = e.getCause();
@@ -102,7 +101,7 @@ public class CalendarTests {
   }
 
   private void generateAndAssertScript(OfflineScripter scripter, String expectedFile) {
-    osmo.generate();
+    osmo.generate(111);
     String actual = scripter.getScript();
     String expected = getResource(CalendarTests.class, expectedFile);
     expected = unifyLineSeparators(expected, "\n");

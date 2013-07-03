@@ -19,9 +19,8 @@ import static org.junit.Assert.*;
 public class MultiGreedyTests {
   @Test
   public void calculatorOptimization() {
-    OSMOConfiguration.setSeed(111);
     ScoreConfiguration config = new ScoreConfiguration();
-    MultiGreedy multiGreedy = new MultiGreedy(config, 1000, new LengthProbability(1, 5, 0.2d));
+    MultiGreedy multiGreedy = new MultiGreedy(config, 1000, new LengthProbability(1, 5, 0.2d), 111);
     multiGreedy.setFactory(new MyModelFactory());
     List<TestCase> tests = multiGreedy.search(5);
     assertEquals("Number of tests from MultiGreedy", 3, tests.size());
