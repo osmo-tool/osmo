@@ -37,7 +37,7 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
   }
 
   @Override
-  public void init(long seed, ParserResult parserResult) {
+  public void init(long seed, FSM fsm) {
     this.rand = new Randomizer(seed);
   }
 

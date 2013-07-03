@@ -424,8 +424,8 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
   }
 
   @Override
-  public void init(long seed, ParserResult parserResult) {
-    this.fsm = parserResult.getFsm();
+  public void init(long seed, FSM fsm) {
+    this.fsm = fsm;
     Collection<SearchableInput> inputs = fsm.getSearchableInputs();
     for (SearchableInput input : inputs) {
       input.enableGUI();

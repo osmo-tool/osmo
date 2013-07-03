@@ -1,6 +1,7 @@
 package osmo.tester.generator.algorithm;
 
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.parser.ParserResult;
 
@@ -29,9 +30,9 @@ public interface FSMTraversalAlgorithm {
    * objects, including the FSM.
    *
    * @param seed Randomization seed.
-   * @param parserResult From parsing all given model objects.
+   * @param fsm From parsing all given model objects.
    */
-  public void init(long seed, ParserResult parserResult);
+  public void init(long seed, FSM fsm);
 
   /**
    * This is called before a new test is started.

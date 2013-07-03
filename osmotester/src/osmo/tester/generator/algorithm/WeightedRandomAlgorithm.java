@@ -4,6 +4,7 @@ import osmo.common.Randomizer;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.parser.ParserResult;
 
@@ -27,7 +28,7 @@ public class WeightedRandomAlgorithm implements FSMTraversalAlgorithm {
   }
 
   @Override
-  public void init(long seed, ParserResult parserResult) {
+  public void init(long seed, FSM fsm) {
     this.rand = new Randomizer(seed);
   }
 

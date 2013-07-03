@@ -31,12 +31,13 @@ public class SearchableInputParser implements AnnotationParser {
     } catch (IllegalAccessException e) {
       throw new RuntimeException("Unable to parse SearchableInput object " + field.getName(), e);
     }
-    SearchableInputField inputField = new SearchableInputField(model, field, parameters.getSeed());
-    inputField.getInput().setSuite(parameters.getSuite());
+    SearchableInputField inputField = new SearchableInputField(model, field);
+    input.setSuite(parameters.getSuite());
+    input.setSeed(parameters.getSeed());
     Collection<Object> annotations = parameters.getFieldAnnotations();
     for (Object annotation : annotations) {
       if (annotation instanceof Variable) {
-        inputField.getInput().setStored(true);
+        input.setStored(true);
         Variable var = (Variable) annotation;
         if (var.value().length() > 0) {
           input.setName(var.value());
