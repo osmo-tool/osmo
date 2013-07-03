@@ -15,6 +15,7 @@ import java.util.List;
 
 /**
  * The JUnit runner that takes care of identifying the test cases for JUnit and generating them when requested.
+ * NOTE: this does not allow setting seed but uses the system clock.
  *
  * @author Teemu Kanstren
  */
@@ -88,7 +89,7 @@ public class OSMORunner extends BlockJUnit4ClassRunner {
     //now we configure the test generator according to the given configuration
     OSMOTester osmo = new OSMOTester();
     osmo.setConfig(config);
-    MainGenerator generator = osmo.initGenerator();
+    MainGenerator generator = osmo.initGenerator(System.currentTimeMillis());
     //handle initial setups
     generator.initSuite();
     //add the listener to take care of teardown after all tests have been generated
