@@ -18,7 +18,6 @@ import java.io.PrintStream;
 /** @author Teemu Kanstren */
 public class StateBuildVisualizerExample {
   public static void main(String[] args) {
-    OSMOConfiguration.setSeed(55);
     StateVisualizer gv = new StateVisualizer();
     OSMOTester tester = new OSMOTester();
 //    ManualEndCondition mec = new ManualEndCondition();
@@ -38,6 +37,6 @@ public class StateBuildVisualizerExample {
     tester.addModelObject(new CalendarOverlappingModel(state, scripter, out));
     tester.addModelObject(new CalendarParticipantModel(state, scripter, out));
     tester.addModelObject(new CalendarErrorHandlingModel(state, scripter, out));
-    tester.generate();
+    tester.generate(55);
   }
 }

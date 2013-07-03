@@ -17,7 +17,6 @@ import osmo.tester.examples.calendar.testmodel.ModelState;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.gui.slicing.SlicingGUI;
 import osmo.tester.model.FSM;
 import osmo.tester.reporting.coverage.HTMLCoverageReporter;
 
@@ -33,7 +32,6 @@ public class OfflineMain {
    * @param args command line arguments, ignored.
    */
   public static void main1(String[] args) {
-    OSMOConfiguration.setSeed(111);
     OSMOTester osmo = new OSMOTester();
 //    osmo.setSuiteEndCondition(new Length(2));
     ModelState state = new ModelState();
@@ -46,31 +44,10 @@ public class OfflineMain {
     osmo.addModelObject(new CalendarParticipantModel(state, scripter));
 //    osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter));
 //    osmo.addModelObject(new CalendarFailureModel(state, scripter));
-    osmo.generate();
-  }
-
-  public static void main2(String[] args) {
-    OSMOTester osmo = new OSMOTester();
-//    osmo.setSuiteEndCondition(new Length(2));
-    ModelState state = new ModelState();
-//    CalendarScripter scripter = new OnlineScripter();
-    CalendarScripter scripter = new OfflineScripter(state, "tests.html");
-    osmo.addModelObject(state);
-    osmo.addModelObject(new CalendarMeetingModel(state, scripter));
-    osmo.addModelObject(new CalendarOracleModel(state, scripter));
-    osmo.addModelObject(new CalendarTaskModel(state, scripter));
-    osmo.addModelObject(new CalendarOverlappingModel(state, scripter));
-    osmo.addModelObject(new CalendarParticipantModel(state, scripter));
-    osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter));
-    osmo.addModelObject(new CalendarFailureModel(state, scripter));
-    MainGenerator generator = osmo.initGenerator();
-    FSM fsm = osmo.getFsm();
-    SlicingGUI g = new SlicingGUI(fsm);
-    g.setVisible(true);
+    osmo.generate(111);
   }
 
   public static void main(String[] args) throws Exception {
-    OSMOConfiguration.setSeed(566);
     OSMOTester osmo = new OSMOTester();
     OSMOConfiguration config = new OSMOConfiguration();
     config.setUnwrapExceptions(true);
@@ -93,7 +70,7 @@ public class OfflineMain {
 //    osmo.addModelObject(new CalendarFailureModel(state, scripter));
 //    osmo.setAlgorithm(new ManualAlgorithm());
 //    osmo.setAlgorithm(new ManualAlgorithm());
-    osmo.generate();
+    osmo.generate(566);
     TestSuite suite = osmo.getSuite();
     FSM fsm = osmo.getFsm();
     HTMLCoverageReporter html = new HTMLCoverageReporter(suite, fsm);

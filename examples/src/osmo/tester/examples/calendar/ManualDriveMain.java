@@ -29,7 +29,6 @@ public class ManualDriveMain {
    * @param args command line arguments, ignored.
    */
   public static void main(String[] args) {
-    OSMOConfiguration.setSeed(111);
     OSMOTester osmo = new OSMOTester();
     osmo.setAlgorithm(new ManualAlgorithm(osmo));
 //    osmo.setSuiteEndCondition(new Length(2));
@@ -48,6 +47,6 @@ public class ManualDriveMain {
     osmo.addListener(new FSMBuildVisualizer());
 //    osmo.addModelObject(new CalendarFailureModel(state, scripter));
     //osmo.setValueScripter(new ScriptedValueProvider());
-    osmo.generate();
+    osmo.generate(111);
   }
 }

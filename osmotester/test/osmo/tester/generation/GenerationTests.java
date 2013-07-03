@@ -42,12 +42,7 @@ public class GenerationTests {
 
   @Before
   public void testSetup() {
-    OSMOConfiguration.setSeed(111);
     osmo = new OSMOTester();
-  }
-
-  @After
-  public void endAssertion() {
   }
 
   @Test
@@ -58,7 +53,7 @@ public class GenerationTests {
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
     try {
-      osmo.generate();
+      osmo.generate(111);
       fail("Generation without available transitions should fail.");
     } catch (IllegalStateException e) {
       assertEquals("No transition available.", e.getMessage());
@@ -74,7 +69,7 @@ public class GenerationTests {
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
-    osmo.generate();
+    osmo.generate(111);
     String expected = ":hello:world:epixx_pre:epixx:epixx_oracle";
     String actual = out.toString();
     assertEquals(expected, actual);
@@ -89,7 +84,7 @@ public class GenerationTests {
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
-    osmo.generate();
+    osmo.generate(111);
     String expected = ":hello:gen_oracle:world:gen_oracle:epixx_pre:epixx:epixx_oracle:gen_oracle";
     String actual = out.toString();
     assertEquals(expected, actual);
@@ -104,7 +99,7 @@ public class GenerationTests {
     Length length4 = new Length(4);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length4);
-    osmo.generate();
+    osmo.generate(111);
     String one = ":hello:gen_oracle:world:gen_oracle:epixx_pre:epixx:epixx_oracle:gen_oracle";
     String four = one;
     four += one;
@@ -123,7 +118,7 @@ public class GenerationTests {
     Length length2 = new Length(2);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length2);
-    osmo.generate();
+    osmo.generate(111);
     String one = ":hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle";
     String two = one;
     two += one;
@@ -140,7 +135,7 @@ public class GenerationTests {
     Length length2 = new Length(2);
     osmo.setTestEndCondition(length5);
     osmo.setSuiteEndCondition(length2);
-    osmo.generate();
+    osmo.generate(111);
     String one = ":hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle";
     String two = one;
     two += one;
@@ -155,7 +150,7 @@ public class GenerationTests {
     Length length3 = new Length(3);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length3);
-    osmo.generate();
+    osmo.generate(111);
     List<TestCase> tests = osmo.getSuite().getAllTestCases();
     TestCase test1 = tests.get(0);
     test1.getSteps();
@@ -177,7 +172,7 @@ public class GenerationTests {
     Length length2 = new Length(2);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length2);
-    osmo.generate();
+    osmo.generate(111);
     String one = ":hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:epixx:epixx_oracle:gen_oracle";
     String two = one;
     two += one;
@@ -192,7 +187,7 @@ public class GenerationTests {
     Length length5 = new Length(5);
     osmo.setTestEndCondition(length5);
     osmo.setSuiteEndCondition(length5);
-    osmo.generate();
+    osmo.generate(111);
     assertEquals("Number of times generic @Post performed", 10, model.checkCount);
     assertTrue("Should have performed generic @Post for first transition", model.firstChecked);
     assertTrue("Should have performed generic @Post for second transition", model.secondChecked);
@@ -207,14 +202,13 @@ public class GenerationTests {
     Or combo = new Or(endless, length);
     osmo.setTestEndCondition(combo);
     osmo.setSuiteEndCondition(combo);
-    osmo.generate();
+    osmo.generate(111);
     assertEquals("Number of tests", 100, osmo.getSuite().getFinishedTestCases().size());
     assertEquals("Test length", 100, osmo.getSuite().getFinishedTestCases().get(0).getSteps().size());
   }
 
   @Test
   public void flow() {
-    OSMOConfiguration.setSeed(145);
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
     ValidTestModel2 modelObject = new ValidTestModel2(new Requirements(), ps);
@@ -222,7 +216,7 @@ public class GenerationTests {
     osmo.addModelObject(modelObject);
     osmo.setTestEndCondition(new Length(3));
     osmo.setSuiteEndCondition(new Length(3));
-    osmo.generate();
+    osmo.generate(145);
     String actual = out.toString();
     assertEquals(":beforesuite::beforetest::hello:world:epixx_pre:epixx:epixx_oracle:aftertest::beforetest::epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:aftertest::beforetest::epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:aftertest::aftersuite:", actual);
   }
@@ -238,21 +232,20 @@ public class GenerationTests {
     osmo.addModelObject(mo);
     osmo.setTestEndCondition(new Length(3));
     osmo.setSuiteEndCondition(new Length(3));
-    osmo.generate();
+    osmo.generate(111);
     String actual = out.toString();
     assertEquals(":beforesuite::beforesuite::beforesuite::beforetest::beforetest::beforetest::hello:world:epixx_pre:epixx:epixx_oracle:aftertest::aftertest::aftertest::beforetest::beforetest::beforetest::epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:aftertest::aftertest::aftertest::beforetest::beforetest::beforetest::epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:aftertest::aftertest::aftertest::aftersuite::aftersuite::aftersuite:", actual);
   }
 
   @Test
   public void negatedGuard() {
-    OSMOConfiguration.setSeed(65);
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
     GuardianModel mo = new GuardianModel(ps);
     osmo.addModelObject(mo);
     osmo.setTestEndCondition(new Length(3));
     osmo.setSuiteEndCondition(new Length(3));
-    osmo.generate();
+    osmo.generate(65);
 
     String expected = getResource(getClass(), "expected-negated-guard.txt");
     expected = unifyLineSeparators(expected, "\n");
@@ -263,7 +256,6 @@ public class GenerationTests {
 
   @Test
   public void negatedGuardWithPrefix() {
-    OSMOConfiguration.setSeed(650);
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
     GuardianModel mo1 = new GuardianModel(ps, "m1");
@@ -274,7 +266,7 @@ public class GenerationTests {
     osmo.addModelObject("p3", mo3);
     osmo.setTestEndCondition(new Length(3));
     osmo.setSuiteEndCondition(new Length(3));
-    osmo.generate();
+    osmo.generate(650);
 
     String expected = getResource(getClass(), "expected-negated-guard-prefix.txt");
     expected = unifyLineSeparators(expected, "\n");
@@ -285,13 +277,12 @@ public class GenerationTests {
   
   @Test
   public void groups() {
-    OSMOConfiguration.setSeed(650);
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
     osmo.addModelObject(new GroupModel2(ps));
     osmo.setTestEndCondition(new Length(5));
     osmo.setSuiteEndCondition(new Length(15));
-    osmo.generate();
+    osmo.generate(650);
     String actual = out.toString();
     actual = unifyLineSeparators(actual, "\n");
     String expected = getResource(getClass(), "expected-group.txt");

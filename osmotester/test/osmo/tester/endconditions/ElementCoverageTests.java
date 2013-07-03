@@ -31,7 +31,6 @@ public class ElementCoverageTests {
 
   @Before
   public void setup() {
-    OSMOConfiguration.setSeed(444);
     fsm = new FSM();
     t1 = createTransition("t1", 1);
     t2 = createTransition("t2", 1);
@@ -219,7 +218,7 @@ public class ElementCoverageTests {
     osmo.setTestEndCondition(new ElementCoverage(5, 0, 0));
     osmo.setSuiteEndCondition(length1);
     try {
-      osmo.generate();
+      osmo.generate(444);
       fail("Generation with coverage for to many test steps (transitions) should fail.");
     } catch (IllegalArgumentException e) {
       //Expected
@@ -236,7 +235,7 @@ public class ElementCoverageTests {
     osmo.setTestEndCondition(new ElementCoverage(0, 11, 0));
     osmo.setSuiteEndCondition(length1);
     try {
-      osmo.generate();
+      osmo.generate(444);
       fail("Generation with coverage for too many test step pairs should fail.");
     } catch (IllegalArgumentException e) {
       //Expected
@@ -253,7 +252,7 @@ public class ElementCoverageTests {
     osmo.setTestEndCondition(new ElementCoverage(0, 0, 3));
     osmo.setSuiteEndCondition(length1);
     try {
-      osmo.generate();
+      osmo.generate(444);
       fail("Generation with coverage for too many test step pairs should fail.");
     } catch (IllegalArgumentException e) {
       //Expected
@@ -269,7 +268,7 @@ public class ElementCoverageTests {
     Length length1 = new Length(1);
     osmo.setTestEndCondition(new ElementCoverage(3, 3, 2));
     osmo.setSuiteEndCondition(length1);
-    osmo.generate();
+    osmo.generate(444);
     String expected = "[TestCase:[start, increase, increase, increase, increase, increase, decrease]]";
     String actual = osmo.getSuite().getAllTestCases().toString();
     assertEquals("Generated tests", expected, actual);
