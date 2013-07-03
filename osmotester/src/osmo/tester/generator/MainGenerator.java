@@ -66,6 +66,7 @@ public class MainGenerator {
   /** Invoked to start the test generation using the configured parameters. */
   public void generate() {
     log.debug("starting generation");
+    config.initializeGeneratorElements(seed, fsm);
     initSuite();
     while (!config.getSuiteEndCondition().endSuite(suite, fsm)) {
       nextTest();
@@ -82,7 +83,6 @@ public class MainGenerator {
     }
     MainParser parser = new MainParser();
     ParserResult result = parser.parse(seed, config, suite);
-    config.check(seed, result);
     fsm = result.getFsm();
     fsm.initSearchableInputs(config);
     invokeAll(fsm.getGenerationEnablers());

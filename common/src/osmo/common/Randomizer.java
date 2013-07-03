@@ -38,9 +38,9 @@ public class Randomizer {
     this.seed = seed;
     random = new Random(seed);
     //if we do not grab the initial set, it will always produce almost the same numbers for new instances first values..
-    random.nextDouble();
-    random.nextDouble();
-    random.nextDouble();
+    for (int i = 0 ; i < 3 ; i++) {
+      random.nextDouble();
+    }
   }
 
   /**
@@ -230,7 +230,8 @@ public class Randomizer {
    */
   public <T> T oneOf(Collection<T> array) {
     List<T> list = new ArrayList<>(array);
-    return list.get(nextInt(0, array.size() - 1));
+    int index = nextInt(0, array.size() - 1);
+    return list.get(index);
   }
 
   /**

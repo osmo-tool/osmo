@@ -197,15 +197,14 @@ public class OSMOConfiguration implements ModelFactory {
    * Initializes test generation configuration with the model to be used in test generation.
    * Includes initializing parameters for algorithms, end conditions, listeners, ..
    *
-   * @param parserResult The parsing results.
+   * @param fsm The parsing results.
    */
-  public void check(long seed, ParserResult parserResult) {
+  public void initializeGeneratorElements(long seed, FSM fsm) {
     if (algorithm == null) {
       algorithm = new RandomAlgorithm();
     }
-    FSM fsm = parserResult.getFsm();
     fsm.initSearchableInputs(this);
-    algorithm.init(seed, parserResult);
+    algorithm.init(seed, fsm);
     suiteEndCondition.init(seed, fsm);
     //test end condition is initialized in generator between each test case
     listeners.init(seed, fsm, this);

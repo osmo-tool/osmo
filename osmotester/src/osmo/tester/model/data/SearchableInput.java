@@ -8,6 +8,7 @@ import osmo.tester.gui.manualdrive.ValueGUI;
 import osmo.tester.model.ScriptedValueProvider;
 import osmo.tester.model.VariableValue;
 
+import java.security.spec.EllipticCurve;
 import java.util.Collection;
 
 /**
@@ -103,5 +104,9 @@ public abstract class SearchableInput<T> implements Input<T>, VariableValue<T> {
   public void disableGUI() {
     gui = null;
     guiEnabled = false;
+  }
+
+  public Randomizer getRandomizer() {
+    return rand;
   }
 }

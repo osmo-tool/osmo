@@ -56,19 +56,20 @@ public class CoverageWithStateTests {
     config.setStepPairWeight(0);
     config.setRequirementWeight(0);
     config.setStepWeight(0);
-    GreedyOptimizer osmo = new GreedyOptimizer(config, new LengthProbability(1, 0.1d), 55);
+    
+    GreedyOptimizer osmo = new GreedyOptimizer(config, 1000, new LengthProbability(1, 0.1d), 33);
     osmo.addModelClass(RandomValueModel4.class);
     List<TestCase> tests = osmo.search();
     TestCoverage tc = new TestCoverage();
     for (TestCase test : tests) {
       tc.addTestCoverage(test);
     }
-    assertEquals("Number of generated tests", 3, tests.size());
+    assertEquals("Number of generated tests", 5, tests.size());
     Map<String, Collection<String>> variables = tc.getValues();
     //1 value = 10
     assertEquals("Variable coverage", "[on paras]", variables.get("teemu").toString());
     //4 values = 40
-    assertEquals("Variable coverage", "[many, null, zero, one]", variables.get("rangeRange").toString());
+    assertEquals("Variable coverage", "[null, one, zero, many]", variables.get("rangeRange").toString());
     //2 values = 20
     assertEquals("Variable coverage", "[null, many]", variables.get("range2Range").toString());
     //32 values = 320

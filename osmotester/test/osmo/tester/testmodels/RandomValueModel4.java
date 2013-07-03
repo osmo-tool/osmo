@@ -34,12 +34,17 @@ public class RandomValueModel4 {
 
   @TestStep("Step2")
   public void step2() {
-    range2.next();
+    Integer next = range2.next();
   }
 
+  //NOTE:given the same seed value, the generator will take the third step (this) and the names the third value (keijo)
+  //->covers same stuff forever
   @TestStep("Step3")
   public void step3() {
-    names.next();
+    String next = names.next();
+//    if (suite.getCurrentTest().getSteps().size() == 1) {
+//      System.out.print(names.getRandomizer().getSeed()+", ");
+//    }
   }
   
   @AfterTest
