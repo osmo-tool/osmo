@@ -73,12 +73,12 @@ public class CoverageWithStateTests {
     //2 values = 20
     assertEquals("Variable coverage", "[null, many]", variables.get("range2Range").toString());
     //32 values = 320
-    assertEquals("Variable coverage", "[teemu&null&null, teemu&many&null, teemu&zero&null, keijo&zero&null, paavo&zero&null, paavo&zero&many, paavo&one&many, paavo&null&many, keijo&null&many, keijo&one&many, teemu&null&many, teemu&many&many, keijo&many&many, keijo&zero&many, teemu&zero&many, null&zero&null, null&null&null, null&many&null, null&many&many, paavo&many&many, teemu&one&many, null&one&null, keijo&one&null, teemu&one&null, paavo&one&null, paavo&many&null, null&one&many, null&null&many, null&zero&many, paavo&null&null, keijo&null&null, keijo&many&null]",
+    assertEquals("Variable coverage", "[keijo&null&null, paavo&null&null, teemu&null&null, teemu&null&many, teemu&one&many, teemu&zero&many, paavo&zero&many, paavo&null&many, keijo&null&many, paavo&many&many, paavo&one&many, keijo&one&many, keijo&many&many, keijo&zero&many, teemu&many&many, null&one&null, keijo&one&null, paavo&one&null, paavo&zero&null, keijo&zero&null, teemu&zero&null, teemu&many&null, null&many&null, null&zero&null, null&many&many, null&one&many, null&null&many, null&zero&many, null&null&null, keijo&many&null, paavo&many&null, teemu&one&null]",
             variables.get("combo").toString());
     //2 values = 100
     assertEquals("Covered states", "[state1, state2]", tc.getStates().toString());
     //6 values = 240
-    assertEquals("Covered state pairs", "[osmo.start.state->state1, state1->state1, state1->state2, state2->state1, state2->state2, osmo.start.state->state2]", tc.getStatePairs().toString());
+    assertEquals("Covered state pairs", "[osmo.start.state->state1, state1->state2, state2->state2, state2->state1, state1->state1, osmo.start.state->state2]", tc.getStatePairs().toString());
     
     ScoreCalculator sc = new ScoreCalculator(config);
     //10+40+20+320+100+240=70+320+340=70+660=730
@@ -146,6 +146,6 @@ public class CoverageWithStateTests {
     tc.addTestCoverage(tests.get(0));
     ScoreCalculator sc = new ScoreCalculator(config);
     assertEquals("Coverage score", 30, sc.calculateScore(tc));
-    assertEquals("Covered values", "[many, one, zero]", tc.getValues().get("rc2").toString());
+    assertEquals("Covered values", "[one, many, zero]", tc.getValues().get("rc2").toString());
   }
 }

@@ -89,7 +89,9 @@ public class OSMORunner extends BlockJUnit4ClassRunner {
     //now we configure the test generator according to the given configuration
     OSMOTester osmo = new OSMOTester();
     osmo.setConfig(config);
-    MainGenerator generator = osmo.initGenerator(System.currentTimeMillis());
+    long seed = System.currentTimeMillis();
+    MainGenerator generator = osmo.initGenerator(seed);
+    config.initializeGeneratorElements(seed, generator.getFsm());
     //handle initial setups
     generator.initSuite();
     //add the listener to take care of teardown after all tests have been generated
