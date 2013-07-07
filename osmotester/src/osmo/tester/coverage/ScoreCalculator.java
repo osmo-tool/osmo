@@ -26,7 +26,7 @@ public class ScoreCalculator {
    * @return The score for the set described in this object.
    */
   public int calculateScore(TestCoverage tc) {
-    int score = tc.getTransitions().size() * config.getLengthWeight();
+    int score = tc.getSteps().size() * config.getLengthWeight();
     score += tc.getSingles().size() * config.getStepWeight();
     score += tc.getStepPairs().size() * config.getStepPairWeight();
     score += tc.getStates().size() * config.getStateWeight();
@@ -42,15 +42,26 @@ public class ScoreCalculator {
     return score;
   }
 
+  /**
+   * How much score would adding the given test case add to the given test coverage set?
+   * Calculates for all steps in given test case.
+   * 
+   * @param tc The coverage so far.
+   * @param test The test to add to the coverage so far (the tc parameter).
+   * @return How much score would be added.
+   */
   public int addedScoreFor(TestCoverage tc, TestCase test) {
-    return addedScoreFor(tc, test, test.getAllTransitionNames().size());
+    return addedScoreFor(tc, test, test.getAllStepNames().size());
   }
 
   /**
    * Calculates how much the coverage score would raise if the given test case was added to this set.
    * Does not add anything to this set, so after this the set is the same as before.
+   * Calculates to the number of steps, ignoring any remaining steps beyond given number.
    *
+   * @param tc1 The coverage so far.
    * @param test The test to check added coverage for.
+   * @param steps The number of steps to take from the (beginning of) given test.
    * @return The new coverage score.
    */
   public int addedScoreFor(TestCoverage tc1, TestCase test, int steps) {

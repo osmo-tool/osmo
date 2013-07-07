@@ -1,12 +1,12 @@
 package osmo.tester.coverage;
 
 /**
- * Represents a range of values for a {@link IntegerRange} coverage metric.
+ * Represents a range of values for a {@link RangeCategory} coverage metric.
  *
  * @author Teemu Kanstren
  */
 public class IntegerRange {
-  /** Name for this range. For example, 1-1 = "one" or 2-N="many" */
+  /** Name for this range. For example, 1-1 = "one" or 2-N="many". Basically anything goes. */
   public final String name;
   /** The range minimum value. */
   public final int min;

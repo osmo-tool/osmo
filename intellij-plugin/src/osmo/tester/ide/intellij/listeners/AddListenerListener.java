@@ -1,23 +1,18 @@
 package osmo.tester.ide.intellij.listeners;
 
-import com.intellij.execution.ui.ConfigurationModuleSelector;
 import com.intellij.ide.util.TreeClassChooser;
 import com.intellij.ide.util.TreeClassChooserFactory;
-import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
 import osmo.tester.generator.GenerationListener;
-import osmo.tester.generator.filter.TransitionFilter;
 import osmo.tester.ide.intellij.OSMORunConfigEditor;
 import osmo.tester.ide.intellij.OSMORunParameters;
-import osmo.tester.ide.intellij.filters.ModelObjectFilter;
 
 import javax.swing.DefaultListModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Map;
 
 /** @author Teemu Kanstren */
 public class AddListenerListener implements ActionListener {

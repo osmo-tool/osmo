@@ -6,7 +6,7 @@ import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.endcondition.EndCondition;
-import osmo.tester.generator.filter.TransitionFilter;
+import osmo.tester.generator.filter.StepFilter;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -202,8 +202,8 @@ public class JenkinsReportGenerator implements GenerationListener {
     Collection<Property> properties = new ArrayList<>();
     String algorithm = config.getAlgorithm().getClass().getName();
     properties.add(new Property(ALGORITHM, algorithm));
-    Collection<TransitionFilter> filters = config.getFilters();
-    for (TransitionFilter filter : filters) {
+    Collection<StepFilter> filters = config.getFilters();
+    for (StepFilter filter : filters) {
       properties.add(new Property(FILTER, filter.getClass().getName()));
     }
     ScriptedValueProvider scripter = config.getScripter();

@@ -4,13 +4,11 @@ import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
-import osmo.tester.coverage.TestCoverage;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Returns coverage tables in ASCII format
@@ -109,7 +107,7 @@ public class ASCIICoverageReporter extends CoverageMetric {
     for (String t : all) {
       ret += t + getSpaces(max - t.length() + 2);
       for (TestCase tc : tests) {
-        Collection<String> temp = tc.getCoveredTransitions();
+        Collection<String> temp = tc.getCoveredSteps();
         if (temp.contains(t))
           ret += "|x";
         else

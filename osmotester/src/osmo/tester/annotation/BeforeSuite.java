@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation defines that the annotated method should be executed before test generation has been started
+ * Annotated method is executed before test generation has been started
  * (only once before the whole suite, not before each test case).
  * <p/>
  * The annotated method must have no parameters.

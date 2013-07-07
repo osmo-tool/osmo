@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * An end condition that defines a set of test steps (transitions) that need to be covered.
+ * An end condition that defines a set of test steps that need to be covered.
  * The given set of required coverage can include duplicates, meaning the same step needs to be covered as many
  * times as it appears in the given set.
  *
@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class StepCoverage implements EndCondition {
   private static Logger log = new Logger(StepCoverage.class);
-  /** The names of the steps (transitions) that need to be covered. */
+  /** The names of the steps that need to be covered. */
   private Collection<String> required = new ArrayList<>();
 
   /**

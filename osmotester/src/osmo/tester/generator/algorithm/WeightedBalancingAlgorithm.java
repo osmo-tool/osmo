@@ -22,14 +22,20 @@ import java.util.Set;
  * <p/>
  * For example, consider a model that has 2 steps A and B, and both have been visited twice.
  * Now if A has a weight of 2 and B a weight of 3, the algorithm favors B due to its combined weight and coverage values.
+ * <p/>
  * The formula is:
- * -for each possible choice: test step weight / number of times step covered
+ * -for each possible choice calculate: test step weight / number of times step covered
  * -multiply these values until you get a value over 10
- * -use the resulting values as the "weight" to pick one of the test steps
+ * -use the resulting values as the "score" to pick one of the test steps (as weighted random choice, score=weight)
+ * <p/>
+ * Thus steps with same coverage and same weight = same probability to be taken next.
+ * Steps with same coverage but different weight = one with higher weight has higher probability to be taken next.
+ * Steps with different coverage and different weight = which one gets higher score depends on how much bigger is
+ * the weight and how much bigger is the coverage on either of the choices.
  * <p/>
  * Note than in calculation, a step that is never visited has a visited value of 1 (and one that is visited once
- * has a value of 2 and so on) to allow for simplified calculation of test step scores (otherwise all
- * test steps would start with score of 0, and the choices of first step would be random without weight).
+ * has a value of 2 and so on) to allow for simplified calculation of test step scores. Otherwise all
+ * test steps would start with score of 0, and the choices of first step would be random without weight.
  *
  * @author Teemu Kanstren
  */
@@ -37,7 +43,7 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
   private static final Logger log = new Logger(WeightedBalancingAlgorithm.class);
   /** Keeps a list of how many times each transition has been covered. */
   private Map<FSMTransition, Integer> coverage;
-  /** For randomization. Specific instance to allow parallel executions inside single VM. */
+  /** Provides random values. */
   private Randomizer rand = null;
 
   public WeightedBalancingAlgorithm() {
@@ -55,7 +61,9 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
     //count weighted score for all transitions taken so far as well as any new choices
     Map<FSMTransition, Double> scoreMap = countScore(choices);
 
+    //list of all steps known
     List<FSMTransition> steps = new ArrayList<>();
+    //list of weights for the steps, in the same order so index for step is always the same
     double[] tempScores = new double[scoreMap.size()];
     int i = 0;
     for (Map.Entry<FSMTransition, Double> entry : scoreMap.entrySet()) {
@@ -74,12 +82,13 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
         }
       }
     }
-    //create a suitable argument list
+    //create a suitable argument list for rawWeightedRandomFrom
     List<Integer> scores = new ArrayList<>();
     for (double tempScore : tempScores) {
       scores.add((int) (Math.round(tempScore)));
     }
 
+    //find the choice
     int index = rand.rawWeightedRandomFrom(scores);
     FSMTransition transition = steps.get(index);
     updateCoverage(transition);
@@ -96,15 +105,15 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
   }
 
   /**
-   * Counts the "score" of a set of transition. The transition with the highest score should be taken first and the
+   * Counts the "score" of a set of steps. The step with the highest score should be taken first and the
    * one with the lowest last. See class header for formula description and notes on why visit values start with 1.
    * <p/>
-   * Note that this is typically recalculated between each transition since the one with
+   * Note that this is typically recalculated between each step taken since the one with
    * the highest score may be also the highest in the next round and we cannot simply take them in order from a single
    * calculation (even if the available set was the same).
    *
-   * @param available The set of available transitions (for which scores are calculated).
-   * @return A mapping of transitions to their scores.
+   * @param available The set of available steps (for which scores are calculated).
+   * @return A mapping of steps to their scores.
    */
   private Map<FSMTransition, Double> countScore(List<FSMTransition> available) {
     int min = Integer.MAX_VALUE;
@@ -114,12 +123,13 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
         coverage.put(transition, 1);
       }
       if (coverage.get(transition) < min) {
+        //find lowest coverage value
         min = coverage.get(transition);
       }
     }
     log.debug("coverage" + coverage);
     Map<FSMTransition, Double> scores = new LinkedHashMap<>();
-    //then we divide each score by the weight of the transition
+    //then we count step score by dividing its weight by its coverage value
     Set<FSMTransition> transitions = coverage.keySet();
     for (FSMTransition transition : transitions) {
       if (!available.contains(transition)) {

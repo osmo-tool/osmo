@@ -33,6 +33,7 @@ public class ParserParameters {
   private String prefix = null;
   /** Test suite object for the model. */
   private TestSuite suite = null;
+  /** Randomization seed. */
   private Long seed = null;
 
   public Object getModel() {

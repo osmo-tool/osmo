@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * Methods annotated will be called to enter the model into generation mode.
- * Only relevant when OSMO Explorer is used.
+ * Only relevant when OSMO Explorer (a specific online algorithm) is used.
  *
  * @author Teemu Kanstren
  */

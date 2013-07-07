@@ -2,27 +2,22 @@ package osmo.tester.algorithm;
 
 import org.junit.Before;
 import org.junit.Test;
-import osmo.common.log.Logger;
-import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generation.TestSequenceListener;
 import osmo.tester.generator.algorithm.BalancingAlgorithm;
-import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.testmodels.ValidTestModel6;
-import osmo.tester.testmodels.ValidTestModel7;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 
 import static junit.framework.Assert.*;
 
@@ -73,7 +68,7 @@ public class BalancingTests {
     List<TestCase> tests = tester.getSuite().getAllTestCases();
     List<String> starters = new ArrayList<>();
     for (TestCase test : tests) {
-      String previous = FSM.START_NAME;
+      String previous = FSM.START_STEP_NAME;
       starters.add(test.getSteps().get(0).getName());
       for (TestCaseStep step : test.getSteps()) {
         String name = step.getName();
@@ -94,7 +89,7 @@ public class BalancingTests {
       int min = avg - threshold;
       int max = avg + threshold;
       if (count < min || count > max) {
-        if (pair.startsWith(FSM.START_NAME)) {
+        if (pair.startsWith(FSM.START_STEP_NAME)) {
           assertEquals("Start pair count for "+pair, 1, count);
           continue;
         }
@@ -117,7 +112,7 @@ public class BalancingTests {
       }
     }
     for (String step : steps) {
-      list.add(FSM.START_NAME + "->" + step);
+      list.add(FSM.START_STEP_NAME + "->" + step);
     }
     return list;
   }

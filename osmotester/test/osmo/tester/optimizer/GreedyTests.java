@@ -2,7 +2,6 @@ package osmo.tester.optimizer;
 
 import org.junit.Before;
 import org.junit.Test;
-import osmo.tester.OSMOConfiguration;
 import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.coverage.ScoreConfiguration;
 import osmo.tester.coverage.TestCoverage;
@@ -42,7 +41,6 @@ public class GreedyTests {
   @Test
   public void requirementOptimizer3TestsNoOverlap() {
     TestSuite suite = new TestSuite();
-    suite.init();
     suite.startTest();
     suite.addStep(new FSMTransition("t1"));
     suite.covered("r1");
@@ -109,7 +107,6 @@ public class GreedyTests {
 
   private TestSuite createSuite1() {
     TestSuite suite = new TestSuite();
-    suite.init();
     suite.startTest();
     suite.addStep(new FSMTransition("t1"));
     suite.covered("r1");
@@ -133,7 +130,6 @@ public class GreedyTests {
 
   private TestSuite createSuite2() {
     TestSuite suite = new TestSuite();
-    suite.init();
     suite.startTest();
     suite.addStep(new FSMTransition("t1"));
     suite.covered("r5");
@@ -169,9 +165,9 @@ public class GreedyTests {
     TestCase testCase1 = tests.get(0);
     TestCase testCase2 = tests.get(1);
     TestCase testCase3 = tests.get(2);
-    Collection<String> transitions1 = testCase1.getCoveredTransitions();
-    Collection<String> transitions2 = testCase2.getCoveredTransitions();
-    Collection<String> transitions3 = testCase3.getCoveredTransitions();
+    Collection<String> transitions1 = testCase1.getCoveredSteps();
+    Collection<String> transitions2 = testCase2.getCoveredSteps();
+    Collection<String> transitions3 = testCase3.getCoveredSteps();
     assertEquals("Number of new transitions covered by test 1.", 4, transitions1.size());
     assertEquals("Number of new transitions covered by test 2.", 3, transitions2.size());
     assertEquals("Number of new transitions covered by test 3.", 1, transitions3.size());
@@ -186,7 +182,7 @@ public class GreedyTests {
     List<TestCase> tests = optimizer.sortAndPrune(suite.getFinishedTestCases());
     assertEquals("Number of tests should be reduced after pruning useless ones.", 1, tests.size());
     TestCase testCase1 = tests.get(0);
-    Collection<String> transitions1 = testCase1.getCoveredTransitions();
+    Collection<String> transitions1 = testCase1.getCoveredSteps();
     //the first one should cover all of the ones by the rest as well
     assertEquals("Number of new transitions covered by test 1.", 4, transitions1.size());
   }
@@ -202,9 +198,9 @@ public class GreedyTests {
     TestCase testCase1 = tests.get(0);
     TestCase testCase2 = tests.get(1);
     TestCase testCase3 = tests.get(2);
-    Collection<String> transitions1 = testCase1.getCoveredTransitions();
-    Collection<String> transitions2 = testCase2.getCoveredTransitions();
-    Collection<String> transitions3 = testCase3.getCoveredTransitions();
+    Collection<String> transitions1 = testCase1.getCoveredSteps();
+    Collection<String> transitions2 = testCase2.getCoveredSteps();
+    Collection<String> transitions3 = testCase3.getCoveredSteps();
     assertEquals("Number of new transitions covered by test 1.", 4, transitions1.size());
     assertEquals("Number of new transitions covered by test 2.", 1, transitions2.size());
     assertEquals("Number of new transitions covered by test 3.", 3, transitions3.size());
@@ -224,9 +220,9 @@ public class GreedyTests {
     optimizer.addModelClass(CalculatorModel.class);
     List<TestCase> tests = optimizer.search();
     assertEquals("Number of tests from greedy", 3, tests.size());
-    assertEquals("First test from greedy", "[start, increase, decrease, increase, increase]", tests.get(0).getAllTransitionNames().toString());
-    assertEquals("Second test from greedy", "[start, increase, increase, decrease, decrease]", tests.get(1).getAllTransitionNames().toString());
-    assertEquals("Third test from greedy", "[start, increase, increase, increase, increase]", tests.get(2).getAllTransitionNames().toString());
+    assertEquals("First test from greedy", "[start, increase, decrease, increase, increase]", tests.get(0).getAllStepNames().toString());
+    assertEquals("Second test from greedy", "[start, increase, increase, decrease, decrease]", tests.get(1).getAllStepNames().toString());
+    assertEquals("Third test from greedy", "[start, increase, increase, increase, increase]", tests.get(2).getAllStepNames().toString());
   }
   
   @Test

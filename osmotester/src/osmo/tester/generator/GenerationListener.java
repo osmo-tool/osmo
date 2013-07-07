@@ -13,12 +13,19 @@ import osmo.tester.model.FSMTransition;
  * @author Teemu Kanstren
  */
 public interface GenerationListener {
+  /**
+   * Called once before test generation.
+   * 
+   * @param seed   Test generation seed.
+   * @param fsm    The parsed model.
+   * @param config Provided configuration.
+   */
   public void init(long seed, FSM fsm, OSMOConfiguration config);
 
   /**
-   * A guard statement has been invoked for a transition.
+   * A guard statement has been invoked for a test step.
    *
-   * @param transition The associated transition.
+   * @param transition The transition associated to the test step.
    */
   public void guard(FSMTransition transition);
 
@@ -32,14 +39,14 @@ public interface GenerationListener {
   /**
    * A pre method has been invoked.
    *
-   * @param transition The associated transition.
+   * @param transition The transition associated to the test step.
    */
   public void pre(FSMTransition transition);
 
   /**
    * A post method has been invoked.
    *
-   * @param transition The associated transition.
+   * @param transition The transition associated to the test step.
    */
   public void post(FSMTransition transition);
 

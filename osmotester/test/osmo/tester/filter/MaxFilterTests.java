@@ -6,7 +6,7 @@ import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generation.TestSequenceListener;
 import osmo.tester.generator.endcondition.Length;
-import osmo.tester.generator.filter.MaxTransitionFilter;
+import osmo.tester.generator.filter.MaxStepFilter;
 import osmo.tester.model.Requirements;
 import osmo.tester.testmodels.ValidTestModel2;
 import osmo.tester.testmodels.ValidTestModel6;
@@ -39,7 +39,7 @@ public class MaxFilterTests {
   public void noSuchTransition() {
     VariableModel2 model = new VariableModel2();
     osmo.addModelObject(model);
-    MaxTransitionFilter filter = new MaxTransitionFilter();
+    MaxStepFilter filter = new MaxStepFilter();
     filter.setMax("no-such-transition", 1);
     osmo.addFilter(filter);
     try {
@@ -53,7 +53,7 @@ public class MaxFilterTests {
   @Test
   public void zero() {
     osmo.addModelObject(validTestModel2);
-    MaxTransitionFilter filter = new MaxTransitionFilter();
+    MaxStepFilter filter = new MaxStepFilter();
     filter.setMax("world", 0);
     osmo.addFilter(filter);
     config.setFailWhenNoWayForward(false);
@@ -68,19 +68,19 @@ public class MaxFilterTests {
 
   @Test
   public void negative() {
-    MaxTransitionFilter filter = new MaxTransitionFilter();
+    MaxStepFilter filter = new MaxStepFilter();
     try {
       filter.setMax("bob", -1);
       fail("Negative filter value should fail");
     } catch (IllegalArgumentException e) {
-      assertEquals("Error for negative filter value", "Transition max count is now allowed to be negative. Was -1 for 'bob'.", e.getMessage());
+      assertEquals("Error for negative filter value", "Step max count is now allowed to be negative. Was -1 for 'bob'.", e.getMessage());
     }
   }
 
   @Test
   public void onceWithNoAlternative() {
     osmo.addModelObject(validTestModel2);
-    MaxTransitionFilter filter = new MaxTransitionFilter();
+    MaxStepFilter filter = new MaxStepFilter();
     filter.setMax("epixx", 1);
     osmo.addFilter(filter);
     osmo.setSuiteEndCondition(new Length(1));
@@ -95,7 +95,7 @@ public class MaxFilterTests {
     osmo.addListener(listener);
     ValidTestModel6 model = new ValidTestModel6();
     osmo.addModelObject(model);
-    MaxTransitionFilter filter = new MaxTransitionFilter();
+    MaxStepFilter filter = new MaxStepFilter();
     filter.setMax("t1", 1);
     filter.setMax("t2", 2);
     filter.setMax("t3", 2);
@@ -111,7 +111,7 @@ public class MaxFilterTests {
   @Test
   public void twiceWithNoAlternative() {
     osmo.addModelObject(validTestModel2);
-    MaxTransitionFilter filter = new MaxTransitionFilter();
+    MaxStepFilter filter = new MaxStepFilter();
     filter.setMax("epixx", 2);
     osmo.addFilter(filter);
     osmo.setSuiteEndCondition(new Length(1));

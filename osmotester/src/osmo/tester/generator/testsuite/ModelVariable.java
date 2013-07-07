@@ -8,7 +8,7 @@ import java.util.Collection;
  * Defines the name of the variable and a set of values for the variable.
  * Used both to define target coverage values and also keep a list of the covered values.
  * The name of the variable typically refers to the name used for the variable in the source code
- * but can also be anything the field representation object reports.
+ * but can also be anything the field representation object reports (as set by user).
  *
  * @author Teemu Kanstren
  */
@@ -20,10 +20,15 @@ public class ModelVariable {
 
   public ModelVariable(String name) {
     this.name = name;
-//    values = new LinkedHashSet<>();
     values = new ArrayList<>();
   }
 
+  /**
+   * Adds given value to the list to cover/covered.
+   * 
+   * @param value The value to add.
+   * @param merge If true, no duplicates are added.
+   */
   public void addValue(Object value, boolean merge) {
     if (merge && values.contains(value)) {
       return;
@@ -39,14 +44,18 @@ public class ModelVariable {
     return values;
   }
 
+  /**
+   * @return The first item in the values list.
+   */
   public Object getValue() {
     return values.iterator().next();
   }
 
   /**
-   * Adds all values from the given variable
+   * Adds all values from the given variable to this variable.
    *
    * @param testVar The variable from which to add all values from.
+   * @param merge True if duplicates should be removed.
    */
   public void addAll(ModelVariable testVar, boolean merge) {
     for (Object value : testVar.values) {

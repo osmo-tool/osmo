@@ -7,6 +7,7 @@ import osmo.tester.coverage.TestCoverage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,20 +23,17 @@ public class TestSuite {
   /** The test cases generated so far, excluding the current test case. */
   private final List<TestCase> testCases = new ArrayList<>();
   /** List of covered transitions and number of how many times it exist in the test suite */
-  private Map<String, Integer> transitionCoverage = new HashMap<>();
+  private Map<String, Integer> stepCoverage = new HashMap<>();
   /** The list of requirements that needs to be covered. */
   private Requirements requirements;
   /** The coverage for this test suite. */
   private TestCoverage coverage = new TestCoverage();
 
-  public TestSuite() {
-  }
-
   public TestSuite(TestCoverage coverage) {
     this.coverage = coverage;
   }
 
-  public void init() {
+  public TestSuite() {
   }
 
   /** Start a new test case. */
@@ -52,7 +50,7 @@ public class TestSuite {
   public void reset() {
     current = null;
     testCases.clear();
-    transitionCoverage.clear();
+    stepCoverage.clear();
   }
 
   /** End the current test case and moves it to the suite "history". */
@@ -93,11 +91,11 @@ public class TestSuite {
    */
   public TestCaseStep addStep(FSMTransition transition) {
     TestCaseStep step = current.addStep(transition);
-    Integer count = transitionCoverage.get(transition.getStringName());
+    Integer count = stepCoverage.get(transition.getStringName());
     if (count == null) {
       count = 0;
     }
-    transitionCoverage.put(transition.getStringName(), count + 1);
+    stepCoverage.put(transition.getStringName(), count + 1);
     return step;
   }
 
@@ -169,8 +167,8 @@ public class TestSuite {
    *
    * @return The transitions with coverage number
    */
-  public Map<String, Integer> getTransitionCoverage() {
-    return transitionCoverage;
+  public Map<String, Integer> getStepCoverage() {
+    return stepCoverage;
   }
 
   /**
@@ -205,7 +203,7 @@ public class TestSuite {
   }
 
   /**
-   * Checks if the given test case contains the given transition.
+   * Checks if the given test case contains a step executing the given transition.
    *
    * @param testCase   The test case to check.
    * @param transition The transition to check.
@@ -222,30 +220,38 @@ public class TestSuite {
   }
 
   /**
-   * Coverage of variables and their values for all test cases in this test suite.
+   * Coverage of variables and their values in different states for this suite.
    *
-   * @return [variable name, variable coverage] mapping.
+   * @return [state name, [variable name, variable coverage]] mapping.
    */
-  public Map<String, ModelVariable> getStateVariables() {
-    Map<String, ModelVariable> variables = new HashMap<>();
+  public Map<String, Map<String, ModelVariable>> getStateVariables() {
+    Map<String, Map<String, ModelVariable>> result = new LinkedHashMap<>();
     List<TestCase> tests = getAllTestCases();
     for (TestCase test : tests) {
-      Map<String, ModelVariable> testVariables = test.getStateVariables();
-      for (ModelVariable testVar : testVariables.values()) {
-        String name = testVar.getName();
-        ModelVariable var = variables.get(name);
-        if (var == null) {
-          var = new ModelVariable(name);
-          variables.put(name, var);
+      Map<String, Map<String, ModelVariable>> testVariables = test.getStateVariables();
+      for (String state : testVariables.keySet()) {
+        Map<String, ModelVariable> map = testVariables.get(state);
+        for (String varName : map.keySet()) {
+          Map<String, ModelVariable> storedState = result.get(state);
+          if (storedState == null) {
+            storedState = new LinkedHashMap<>();
+            result.put(state, storedState);
+          }
+          ModelVariable storedValues = storedState.get(varName);
+          if (storedValues == null) {
+            storedValues = new ModelVariable(varName);
+            storedState.put(varName, storedValues);
+          }
+          storedValues.addAll(map.get(varName), false);
         }
-        var.addAll(testVar, false);
       }
     }
-    return variables;
+    return result;
   }
 
   /**
    * Coverage of variables and their values for all test cases in this test suite.
+   * Duplicates are removed to give a general overview of all tests coverage together.
    *
    * @return [variable name, variable coverage] mapping.
    */
@@ -267,6 +273,12 @@ public class TestSuite {
     return variables;
   }
 
+  /**
+   * Coverage of variables and their values for all test steps in this test suite.
+   * Duplicates are not removed.
+   *
+   * @return [variable name, variable coverage] mapping.
+   */
   public Map<String, ModelVariable> getStepVariables() {
     Map<String, ModelVariable> variables = new HashMap<>();
     List<TestCase> tests = getAllTestCases();
@@ -285,8 +297,15 @@ public class TestSuite {
     return variables;
   }
 
+  /**
+   * Create requirements object if user did not provide one, and initialize whichever one is used with required values.
+   * 
+   * @param requirements User provided requirements, if any.
+   */
   public void initRequirements(Requirements requirements) {
     if (requirements == null) {
+      //the requirements are initialized if an instance was found in the model objects
+      //otherwise we create a new one so functionality for requirements checks does not crash
       log.debug("No requirements object defined. Creating new.");
       requirements = new Requirements();
     }

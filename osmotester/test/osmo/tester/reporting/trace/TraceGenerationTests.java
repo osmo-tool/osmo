@@ -24,7 +24,6 @@ public class TraceGenerationTests {
   @Test
   public void testNoSteps() throws Exception {
     TestSuite suite = new TestSuite();
-    suite.init();
     suite.startTest();
     assertTrace(suite, "expected-no-steps.txt");
   }
@@ -41,7 +40,6 @@ public class TraceGenerationTests {
   @Test
   public void oneTestOneStepNoParams() throws Exception {
     TestSuite suite = new TestSuite();
-    suite.init();
     suite.startTest();
     FSMTransition login = new FSMTransition("Login");
     TestCaseStep loginStep = suite.addStep(login);
@@ -52,7 +50,6 @@ public class TraceGenerationTests {
   @Test
   public void oneTestOneStepWithParams() throws Exception {
     TestSuite suite = new TestSuite();
-    suite.init();
     suite.startTest();
     FSMTransition login = new FSMTransition("Login");
     TestCaseStep loginStep = suite.addStep(login);
@@ -68,7 +65,6 @@ public class TraceGenerationTests {
   @Test
   public void twoStepWithParams() throws Exception {
     TestSuite suite = new TestSuite();
-    suite.init();
     suite.startTest();
 
     FSMTransition login = new FSMTransition("Login");
@@ -92,12 +88,13 @@ public class TraceGenerationTests {
   @Test
   public void twoTestsWithParams() throws Exception {
     TestSuite suite = new TestSuite();
-    suite.init();
     suite.startTest();
 
     FSMTransition login = new FSMTransition("Login");
     TestCaseStep loginStep = suite.addStep(login);
     loginStep.addVariableValue("Username", "bob");
+    loginStep.addVariableValue("Password", "1nt3rn4l");
+    //duplicate for same step should be removed
     loginStep.addVariableValue("Password", "1nt3rn4l");
     loginStep.addVariableValue("Fancy Pants", "true");
     loginStep.addVariableValue("Funny", "not so");
@@ -105,6 +102,7 @@ public class TraceGenerationTests {
 
     FSMTransition buy = new FSMTransition("Buy Stuff");
     TestCaseStep buyStep = suite.addStep(buy);
+    buyStep.addVariableValue("Password", "1nt3rn4l");
     buyStep.addVariableValue("Stuff", "Lawnmover");
     buyStep.addVariableValue("Quantity", "3");
     buyStep.addVariableValue("Price", "$5");

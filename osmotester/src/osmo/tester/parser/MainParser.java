@@ -99,7 +99,6 @@ public class MainParser {
     FSM fsm = new FSM();
     ParserResult result = new ParserResult(fsm);
     ParserParameters parameters = new ParserParameters();
-    suite.init();
     parameters.setSuite(suite);
     parameters.setSeed(seed);
     String errors = "";

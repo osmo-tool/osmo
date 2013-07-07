@@ -15,7 +15,6 @@ import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.VariableField;
 import osmo.tester.model.data.SearchableInput;
-import osmo.tester.parser.ParserResult;
 
 import javax.swing.AbstractListModel;
 import javax.swing.DefaultComboBoxModel;
@@ -49,19 +48,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Provides a manual interface for controlling test generation. Works by attaching itself to OSMOTester as
- * a test generation algorithm. Shows always the set of available transitions that can be taken in the
- * current state and allows the user to choose which one to take. Also enables all SearchableInput elements
+ * Provides a manual interface for controlling test generation. Works by attaching itself to the generator as
+ * a test generation algorithm. Shows always the set of available steps that can be taken in the
+ * current state and allows the user to choose which one to take. Also enables some data elements
  * to be scripted.
  *
  * @author Olli-Pekka Puolitaival, Teemu Kanstrén
  */
 public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
-  /** Available transitions to choose from. */
-  private static JList availableTransitionsList;
-  /** History of taken transitions and variables. */
+  /** Available steps to choose from. */
+  private static JList availableStepsList;
+  /** History of taken steps and variables. */
   private static JTextPane testLogPane = new JTextPane();
-  /** Overall metrics for taken transitions. */
+  /** Overall metrics for taken steps. */
   private static JTextPane statePane = new JTextPane();
   /** Used to pass the list choice between inner classes. */
   private static String choiceFromList = null;
@@ -71,7 +70,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
   private static boolean lockAutoplay = false;
   /** Button for starting autoplay. */
   private static JButton autoPlayButton = new JButton("Start auto play");
-  /** The delay between taking transitions in autoplay. In milliseconds. */
+  /** The delay between taking steps in autoplay. In milliseconds. */
   private static JTextPane autoPlayDelayTextPane = new JTextPane();
   /** For choosing which algorithm to use. */
   private static JComboBox algorithmComboBox = new JComboBox();
@@ -79,15 +78,23 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
   private static boolean running = false;
   /** The suite of created test cases. */
   private static TestSuite suite = null;
+  /** Use this if user choosen "random" as algorithm in GUI. */
   private final RandomAlgorithm randomAlgorithm = new RandomAlgorithm();
+  /** Use this if user choosen "balancing" as algorithm in GUI. */
   private final BalancingAlgorithm balancingAlgorithm = new BalancingAlgorithm();
+  /** Use this if user choosen "weighted" as algorithm in GUI. */
   private final WeightedRandomAlgorithm weightedRandomAlgorithm = new WeightedRandomAlgorithm();
   /** The model we are using for generation. */
   private FSM fsm = null;
+  /** Used as locking object to synchronize between GUI elements. */
   private static Object lock = new Object();
+  /** Button to end test case after next step. */
   private static final JButton btnEndTest = new JButton("End Test");
+  /** Button to end test suite after next step. */
   private static final JButton btnEndSuite = new JButton("End Suite");
+  /** Button to write script to disk. */
   private static final JButton btnWriteScript = new JButton("Write Script");
+  /** This is given to generator as end condition to allow the end test/suite buttons to work. */
   private final ManualEndCondition mec = new ManualEndCondition();
 
   /** Create the frame. */
@@ -142,18 +149,18 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     statePane.setBackground(SystemColor.menu);
     statePane.setText("Test metrics");
 
-    availableTransitionsList = new JList();
-    availableTransitionsList.addMouseListener(new MouseAdapter() {
+    availableStepsList = new JList();
+    availableStepsList.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
         synchronized (lock) {
-          Object selectedValue = availableTransitionsList.getSelectedValue();
+          Object selectedValue = availableStepsList.getSelectedValue();
           choiceFromList = selectedValue.toString();
           lock.notifyAll();
         }
       }
     });
-    availableTransitionsList.setModel(new AbstractListModel() {
+    availableStepsList.setModel(new AbstractListModel() {
       private static final long serialVersionUID = 1L;
       String[] values = new String[]{"Empty!"};
 
@@ -165,7 +172,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
         return values[index];
       }
     });
-    availableTransitionsList.setAlignmentX(Component.RIGHT_ALIGNMENT);
+    availableStepsList.setAlignmentX(Component.RIGHT_ALIGNMENT);
     autoPlayDelayTextPane.addKeyListener(new KeyAdapter() {
       @Override
       public void keyPressed(KeyEvent e) {
@@ -216,7 +223,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
                                     .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
                                             .addComponent(scrollTestLog, GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
                                             .addComponent(lblNextStep)
-                                            .addComponent(availableTransitionsList, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addComponent(availableStepsList, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                     .addComponent(lblTestLog))
                             .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
                                     .addGroup(gl_contentPane.createSequentialGroup()
@@ -272,7 +279,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
                                             .addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
                                                     .addComponent(autoPlayButton)
                                                     .addComponent(btnEndSuite)))
-                                    .addComponent(availableTransitionsList, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(availableStepsList, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE))
                             .addContainerGap())
     );
 
@@ -359,7 +366,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
    * @return The text for metrics pane.
    */
   private String coverageText(TestSuite history) {
-    Map<String, Integer> a = history.getTransitionCoverage();
+    Map<String, Integer> a = history.getStepCoverage();
     String ret = "";
     for (String t : a.keySet()) {
       ret += t + getSpaces(30 - t.length()) + "\t" + a.get(t) + "\n";
@@ -444,7 +451,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
 //    statePane.setText(coverageText(history));
 
     //Set available transitions to the UI
-    availableTransitionsList.setModel(new ModelHelper(choices));
+    availableStepsList.setModel(new ModelHelper(choices));
 
     //Waiting for selection
     waitForSelection();
@@ -497,15 +504,15 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
   }
   
   public void testEnded() {
-    availableTransitionsList.setEnabled(false);
+    availableStepsList.setEnabled(false);
   }
   
   public void testStarted() {
-    availableTransitionsList.setEnabled(true);
+    availableStepsList.setEnabled(true);
   }
   
   public void suiteEnded() {
-    availableTransitionsList.setEnabled(false);
+    availableStepsList.setEnabled(false);
     autoPlayButton.setEnabled(false);
     btnEndTest.setEnabled(false);
     System.out.println("end test disabled");

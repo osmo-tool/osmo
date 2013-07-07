@@ -10,12 +10,13 @@ import java.util.Collections;
 
 /** 
  * Default factory used for creating simple model objects.
- * These are the ones that have a no-args constructor to use.
+ * These are the ones that have a no-args constructor to use and so can be created via reflection.
  * 
  * @author Teemu Kanstren 
  */
 public class SimpleModelFactory implements ModelFactory {
   private static Logger log = new Logger(MainGenerator.class);
+  /** List of classes to instantiate as the model objects. */
   private final Collection<Class> classes = new ArrayList<>();
 
   public SimpleModelFactory() {
@@ -36,7 +37,7 @@ public class SimpleModelFactory implements ModelFactory {
       try {
         result.add(new ModelObject(aClass.newInstance()));
       } catch (Exception e) {
-        log.error("Failed to create a model class. Exiting.", e);
+        log.error("Failed to create a model class instance. Exiting.", e);
         System.exit(1);
       }
     }

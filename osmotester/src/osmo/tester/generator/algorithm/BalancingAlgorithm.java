@@ -2,12 +2,10 @@ package osmo.tester.generator.algorithm;
 
 import osmo.common.Randomizer;
 import osmo.common.log.Logger;
-import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
-import osmo.tester.parser.ParserResult;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,7 +14,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * A test generation algorithm that is similar to the {@link RandomAlgorithm} but prefers to take
@@ -28,8 +25,8 @@ import java.util.Set;
  */
 public class BalancingAlgorithm implements FSMTraversalAlgorithm {
   private static Logger log = new Logger(BalancingAlgorithm.class);
-  /** The coverage for transitions pairs, key = source transition, value = {destination transition, coverage} */
-  private Map<String, Map<FSMTransition, Integer>> tpCoverage = new LinkedHashMap<>();
+  /** The coverage for step pairs, key = step 1 in pair, value = {step 2 in pair, coverage} */
+  private Map<String, Map<FSMTransition, Integer>> spCoverage = new LinkedHashMap<>();
   /** For randomization. Separate instances are used to allow multiple instances running concurrently. */
   private Randomizer rand = null;
 
@@ -38,6 +35,7 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
 
   @Override
   public void init(long seed, FSM fsm) {
+    //this needs to be here to use passed in seed value
     this.rand = new Randomizer(seed);
   }
 
@@ -48,31 +46,38 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
     if (ts != null) {
       previous = ts.getName();
     } else {
-      previous = FSM.START_NAME;
+      previous = FSM.START_STEP_NAME;
     }
-    initTPCoverage(previous, choices);
+    initSPCoverage(previous, choices);
 
-
-    FSMTransition choice = checkUncoveredSteps(suite, choices, previous);
+    FSMTransition choice = checkUncoveredSteps(suite, choices);
     if (choice != null) {
-      updateTPCoverage(previous, choice);
+      updateSPCoverage(previous, choice);
       return choice;
     }
 
-    choice = checkUncoveredTP(previous, choices);
+    choice = checkUncoveredSP(previous, choices);
     if (choice != null) {
-      updateTPCoverage(previous, choice);
+      updateSPCoverage(previous, choice);
       return choice;
     }
 
     choice = weightedChoice(previous, choices);
-    updateTPCoverage(previous, choice);
+    updateSPCoverage(previous, choice);
     
     return choice;
   }
 
+  /**
+   * Performs a weighted choice from available test steps, based on how often each of them
+   * has occurred after the step previously taken in current test case.
+   * 
+   * @param previous The name of step previously taken in this test case.
+   * @param choices The available steps in current model state.
+   * @return The chosen step to be taken next.
+   */
   private FSMTransition weightedChoice(String previous, List<FSMTransition> choices) {
-    Map<FSMTransition, Integer> map = tpCoverage.get(previous);
+    Map<FSMTransition, Integer> map = spCoverage.get(previous);
     int[] weights = new int[choices.size()];
     int i = 0;
     int max = 0;
@@ -84,8 +89,10 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
       }
     }
     //add one to not get zeroes
+    //->if we had zero values for weights, those steps would never be taken
     max++;
-    //invert the weights
+    //invert the weights, that is the more often a step is taken in proportion to the other available steps, 
+    //the smaller probability it should have to be taken next
     for (i = 0 ; i < weights.length ; i++) {
       weights[i] = max - weights[i];
     }
@@ -98,46 +105,53 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
     return choices.get(index);
   }
 
-  private FSMTransition checkUncoveredSteps(TestSuite suite, List<FSMTransition> choices, String previous) {
-    //how many times each transition has been taken so far
-    Map<String, Integer> tCoverage = suite.getTransitionCoverage();
-    //we use a hashset to avoid duplicates from different calculations
+  /**
+   * Check the given choices of test steps if any exist that have never been taken at all (regardless of previous step).
+   * If any are found, one of those is chosen randomly as the next one to take.
+   * 
+   * @param suite The test suite so far (all steps taken...).
+   * @param choices The available steps to choose from.
+   * @return The step to take. Null if no uncovered step is found.
+   */
+  private FSMTransition checkUncoveredSteps(TestSuite suite, List<FSMTransition> choices) {
+    //how many times each step has been taken so far
+    Map<String, Integer> coverage = suite.getStepCoverage();
     Collection<FSMTransition> options = new LinkedHashSet<>();
     options.addAll(choices);
     for (Iterator<FSMTransition> i = options.iterator() ; i.hasNext() ; ) {
       FSMTransition next = i.next();
-      if (tCoverage.containsKey(next.getStringName())) {
+      if (coverage.containsKey(next.getStringName())) {
+        //it was covered..
         i.remove();
       }
     }
     log.debug("uncovered options:" + options);
     //options now contains all previously uncovered transitions
     if (options.size() > 0) {
-      FSMTransition choice = rand.oneOf(options);
-      return choice;
+      return rand.oneOf(options);
     }
     return null;
   }
 
   /**
-   * Provides the transition pair coverage for the previously taken transition. That is, how many times other
-   * transitions have been taken after the previously taken transition.
-   * Also initializes the default value of 0 for any available transition that has not been taken, to make sure
+   * Provides the step pair coverage for the previously taken step. That is, how many times other
+   * steps have been taken after the one previously taken in current test case.
+   * Also initializes the default value of 0 for any available step that has not been taken, to make sure
    * that get() will always return something valid for the available choices.
    *
-   * @param previous The transition that was taken previously (pair source).
-   * @param choices  The choices for the next transition (pair destination).
+   * @param previous The step that was taken previously (first step in pair).
+   * @param choices  The choices for the next transition (second (latter) step in pair).
    */
-  private void initTPCoverage(String previous, List<FSMTransition> choices) {
+  private void initSPCoverage(String previous, List<FSMTransition> choices) {
     //this could be initialized once in init() but works so..
-    Map<FSMTransition, Integer> currentTPCoverage = tpCoverage.get(previous);
-    if (currentTPCoverage == null) {
-      currentTPCoverage = new LinkedHashMap<>();
-      tpCoverage.put(previous, currentTPCoverage);
+    Map<FSMTransition, Integer> currentSPCoverage = spCoverage.get(previous);
+    if (currentSPCoverage == null) {
+      currentSPCoverage = new LinkedHashMap<>();
+      spCoverage.put(previous, currentSPCoverage);
     }
     for (FSMTransition t : choices) {
-      if (currentTPCoverage.get(t) == null) {
-        currentTPCoverage.put(t, 0);
+      if (currentSPCoverage.get(t) == null) {
+        currentSPCoverage.put(t, 0);
       }
     }
   }
@@ -145,39 +159,38 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
   /**
    * Provides a list of all previously uncovered pairs.
    *
-   * @param previous Previously taken transition (pair source).
-   * @param choices  The possible choices for the next transition to be taken (pair destination).
+   * @param previous Previously taken step (first step in pair).
+   * @param choices  The possible choices for the next step to be taken (second (later) step in pair).
    */
-  private FSMTransition checkUncoveredTP(String previous, Collection<FSMTransition> choices) {
-    Collection<FSMTransition> uncoveredTP = new ArrayList<>();
-    uncoveredTP.addAll(choices);
-    Map<FSMTransition, Integer> map = tpCoverage.get(previous);
+  private FSMTransition checkUncoveredSP(String previous, Collection<FSMTransition> choices) {
+    Collection<FSMTransition> uncoveredSP = new ArrayList<>();
+    uncoveredSP.addAll(choices);
+    Map<FSMTransition, Integer> map = spCoverage.get(previous);
     for (FSMTransition t : map.keySet()) {
       if (map.get(t) > 0) {
-        uncoveredTP.remove(t);
+        uncoveredSP.remove(t);
       }
     }
-    log.debug("Uncovered TP:" + uncoveredTP);
-    if (uncoveredTP.size() > 0) {
-      return rand.oneOf(uncoveredTP);
+    log.debug("Uncovered SP:" + uncoveredSP);
+    if (uncoveredSP.size() > 0) {
+      return rand.oneOf(uncoveredSP);
     }
-    
     return null;
   }
 
   /**
-   * Updates the coverage table in memory based on the transition that has been chosen as the one to be taken.
+   * Updates the coverage table based on the step that has been chosen as the one to be taken.
    *
-   * @param previous The previously taken transition.
-   * @param choice   The choice of transition that will be taken next.
+   * @param previous The previously taken step.
+   * @param choice   The choice of step that will be taken next.
    */
-  private void updateTPCoverage(String previous, FSMTransition choice) {
+  private void updateSPCoverage(String previous, FSMTransition choice) {
     if (previous == null) {
       return;
     }
-    Map<FSMTransition, Integer> currentTpCoverage = tpCoverage.get(previous);
-    int count = currentTpCoverage.get(choice);
-    currentTpCoverage.put(choice, count + 1);
+    Map<FSMTransition, Integer> currentSpCoverage = spCoverage.get(previous);
+    int count = currentSpCoverage.get(choice);
+    currentSpCoverage.put(choice, count + 1);
   }
 
   @Override

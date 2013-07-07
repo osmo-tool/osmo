@@ -13,9 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Implements a simple weighted random algorithm.
- * That is, a transition is picked from the given set of options based on probability proportional to the weight of
- * each transition.
+ * The chosen step is based on probability proportional to the weight of each step.
  *
  * @author Teemu Kanstren
  */
@@ -35,6 +33,7 @@ public class WeightedRandomAlgorithm implements FSMTraversalAlgorithm {
   @Override
   public FSMTransition choose(TestSuite history, List<FSMTransition> choices) {
     log.debug("choosing from:" + choices);
+    //sort the list to have smallest weights first, to provide correct parameter list to rawWeightedRandomFrom()
     Collections.sort(choices, new WeightComparator());
     List<Integer> weights = new ArrayList<>();
     for (FSMTransition choice : choices) {

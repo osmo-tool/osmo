@@ -162,7 +162,7 @@ public class Randomizer {
 
   /**
    * Gives an index to the list with a weighted probability.
-   * For example, with a list of [1,2,2,3], the probability distribution is
+   * For example, with a list of [1,2,2,3], the probability distribution is (index in list = probability)
    * 0 = 12,5%, 1 = 25%, 2 = 25%, 3 = 37,5%.
    * This is as 0 is the index of 1 in the list, 1 is index of first 2, 2 is index of second 2, and
    * 3 is the index of 3 in the list. The probability distribution is calculated as in 1+2+2+3=8,
