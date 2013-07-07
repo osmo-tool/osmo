@@ -10,13 +10,12 @@ import osmo.tester.parser.ParserResult;
 import java.util.List;
 
 /**
- * A simple algorithm that randomly picks a transition from the given set.
- * Seed is the usual seed for OSMO Tester.
- * Typically configured through OSMOConfiguration.setSeed().
+ * A simple algorithm that randomly picks a step from the given set.
  *
  * @author Teemu Kanstren
  */
 public class RandomAlgorithm implements FSMTraversalAlgorithm {
+  /** Instance to provide deterministic random values. */
   private Randomizer rand = null;
 
   public RandomAlgorithm() {

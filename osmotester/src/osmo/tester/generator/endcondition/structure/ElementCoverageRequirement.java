@@ -48,14 +48,13 @@ public class ElementCoverageRequirement {
 
   /**
    * Initialize the information from the parsed model.
-   * If number of steps given by user is negative, the number of unique steps from the parsed set is used.
-   * If number of step-pairs given by user, a number is calculated as number of parsed steps time two + one.
-   * The "+one" part is due to the "start" step being counted as one step. This has the effect that if this
-   * is a coverage requirement for a test case, it should have the "+one" in it as the test case has only one
-   * starting point. On the other hand, if this is a coverage requirement for a test suite, this should actually
-   * before "+number of starting steps". At maximum there are as many possible starting pairs as there are possible 
-   * unique steps.
-   * Assuming that the starting steps are known..
+   * If number of steps given by user is negative, the number of unique steps from the parsed model is used.
+   * If number of step-pairs given by user is negative, a number is calculated as "number of steps in model" * 2 + 1.
+   * The +1 part is due to the "start" step being counted as one step. This has the effect that if this
+   * is a coverage requirement for a test case, it should have the +1 as the test case has only one
+   * starting point. On the other hand, if this is a coverage requirement for a test suite, this may actually
+   * be a larger number, up to the number of potential first steps in the model or the number of tests in the suite,
+   * whichever is the smaller value in practice.
    * 
    * @param fsm This is where the values are taken from.
    */
@@ -63,6 +62,7 @@ public class ElementCoverageRequirement {
     Collection<FSMTransition> transitions = fsm.getTransitions();
     int maxSteps = transitions.size();
     if (steps < 0) {
+      //user gave no max steps, so use the number of steps in the model model
       steps = maxSteps;
     }
     if (check && steps > maxSteps) {
@@ -74,6 +74,7 @@ public class ElementCoverageRequirement {
     }
     int maxPairs = names.size() * names.size() + 1;
     if (pairs < 0) {
+      //use gave no max pair value, so use above max step value for a test
       pairs = maxPairs;
     }
     if (check && pairs > maxPairs) {
@@ -81,6 +82,7 @@ public class ElementCoverageRequirement {
     }
     int fsmRequirements = fsm.getRequirements().getRequirements().size();
     if (requirements < 0) {
+      //user gave no number for requirements so use the number in model if available
       requirements = fsmRequirements;
     }
     if (check && requirements > 0 && requirements > fsmRequirements) {
@@ -111,8 +113,8 @@ public class ElementCoverageRequirement {
    */
   public boolean checkCoverage(TestCase test) {
     if (requirements > 0 && requirements > test.getUniqueRequirementCoverage().size()) return false;
-    if (steps > 0 && steps > test.getCoveredTransitions().size()) return false;
-    if (pairs > 0 && pairs > countPairs(test.getAllTransitionNames())) return false;
+    if (steps > 0 && steps > test.getCoveredSteps().size()) return false;
+    if (pairs > 0 && pairs > countPairs(test.getAllStepNames())) return false;
     return true;
   }
 

@@ -19,7 +19,6 @@ public class HistoryTests {
   @Test
   public void historyContainsByName() {
     TestSuite suite = new TestSuite();
-    suite.init();
     suite.startTest();
     suite.addStep(new FSMTransition("bob"));
     suite.addStep(new FSMTransition("alice"));
@@ -41,7 +40,6 @@ public class HistoryTests {
   @Test
   public void currentContainsByName() {
     TestSuite suite = new TestSuite();
-    suite.init();
     suite.startTest();
     suite.addStep(new FSMTransition("bob"));
     suite.addStep(new FSMTransition("alice"));

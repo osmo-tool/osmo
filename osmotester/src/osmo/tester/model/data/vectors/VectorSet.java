@@ -4,7 +4,11 @@ import osmo.tester.model.data.ValueSet;
 
 import static osmo.common.TestUtils.*;
 
-/** @author Teemu Kanstren */
+/** 
+ * Set of fuzz vectors for different types of data.
+ * 
+ * @author Teemu Kanstren 
+ */
 public class VectorSet extends ValueSet<String> {
   public static final String LDAP = "owasp/ldap";
   public static final String SQL_ACTIVE = "owasp/sql_active";
@@ -13,7 +17,7 @@ public class VectorSet extends ValueSet<String> {
   public static final String XPATH = "owasp/xpath";
   public static final String XSS = "owasp/xss";
 
-  private final String name;
+  public final String name;
 
   public VectorSet(String name) {
     this.name = name;

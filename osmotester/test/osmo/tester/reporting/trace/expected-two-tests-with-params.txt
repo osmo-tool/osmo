@@ -171,17 +171,17 @@
       </tr>
       <tr>
         <th class='testhead' rowspan='2'>1.2:Buy Stuff</th>
+        <th class='testhead'>Password</th>
         <th class='testhead'>Stuff</th>
         <th class='testhead'>Quantity</th>
         <th class='testhead'>Price</th>
         <th class='testhead'></th>
-        <th class='testhead'></th>
       </tr>
       <tr>
+        <td>1nt3rn4l</td>
         <td>Lawnmover</td>
         <td>3</td>
         <td>$5</td>
-        <td></td>
         <td></td>
       </tr>
     </tbody>

@@ -14,13 +14,18 @@ import java.util.List;
 /** 
  * An end condition that requires the given set of user defined state values to be covered.
  * A single state can be listed many times, meaning it must be covered several times.
+ * A state is observed several times if it is observed in several steps, regardless of what is in between.
  * 
  * @author Teemu Kanstren 
  */
 public class StateCoverage implements EndCondition {
+  /** List of required states to covered. */
   private Collection<String> required = new ArrayList<>();
+  /** States observed in suite so far. */
   private Collection<String> suiteStates = new LinkedHashSet<>();
+  /** Set of remaining states to cover for current test (when used at test level). */
   private List<String> remainingForTest = new ArrayList<>();
+  /** Number of tests in suite, used to reset coverage when end condition is used at test level. */
   private int testCount = 0;
 
   public StateCoverage(String... states) {
@@ -41,6 +46,7 @@ public class StateCoverage implements EndCondition {
   public boolean endTest(TestSuite suite, FSM fsm) {
     int suiteSize = suite.getAllTestCases().size();
     if (testCount != suiteSize) {
+      //test has changed, reset values
       remainingForTest.clear();
       remainingForTest.addAll(required);
       testCount = suiteSize;

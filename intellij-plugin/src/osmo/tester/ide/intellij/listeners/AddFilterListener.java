@@ -1,18 +1,14 @@
 package osmo.tester.ide.intellij.listeners;
 
-import com.intellij.execution.ui.ConfigurationModuleSelector;
 import com.intellij.ide.util.TreeClassChooser;
 import com.intellij.ide.util.TreeClassChooserFactory;
-import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
-import osmo.tester.generator.endcondition.EndCondition;
-import osmo.tester.generator.filter.TransitionFilter;
+import osmo.tester.generator.filter.StepFilter;
 import osmo.tester.ide.intellij.OSMORunConfigEditor;
 import osmo.tester.ide.intellij.OSMORunParameters;
-import osmo.tester.ide.intellij.filters.ModelObjectFilter;
 
 import javax.swing.DefaultListModel;
 import java.awt.event.ActionEvent;
@@ -34,7 +30,7 @@ public class AddFilterListener implements ActionListener {
   public void actionPerformed(ActionEvent e) {
     TreeClassChooserFactory factory = TreeClassChooserFactory.getInstance(project);
     GlobalSearchScope scope = GlobalSearchScope.allScope(project);
-    PsiClass filterClass = JavaPsiFacade.getInstance(project).findClass(TransitionFilter.class.getName(), scope);
+    PsiClass filterClass = JavaPsiFacade.getInstance(project).findClass(StepFilter.class.getName(), scope);
 
     TreeClassChooser chooser = factory.createInheritanceClassChooser("Choose Filter", scope, filterClass, null);
     chooser.showDialog();

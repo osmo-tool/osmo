@@ -36,9 +36,9 @@ public class GroupParserTests {
     GroupModel1 model = new GroupModel1();
     ParserResult result = parser.parse(1, conf(model), new TestSuite());
     FSM fsm = result.getFsm();
-    assertEquals("Number of @Before methods", 0, fsm.getBefores().size());
+    assertEquals("Number of @Before methods", 0, fsm.getBeforeTests().size());
     assertEquals("Number of @BeforeSuite methods", 0, fsm.getBeforeSuites().size());
-    assertEquals("Number of @After methods", 0, fsm.getAfters().size());
+    assertEquals("Number of @After methods", 0, fsm.getAfterTests().size());
     assertEquals("Number of @AfterSuite methods", 0, fsm.getAfterSuites().size());
     assertEquals("Number of end conditions", 0, fsm.getEndConditions().size());
     assertEquals("Number of exploration enablers", 0, fsm.getExplorationEnablers().size());

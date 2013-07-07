@@ -38,7 +38,6 @@ public class ElementCoverageTests {
     t4 = createTransition("t4", 1);
     t5 = createTransition("t5", 1);
     suite = new TestSuite();
-    suite.init();
     suite.startTest();
   }
 

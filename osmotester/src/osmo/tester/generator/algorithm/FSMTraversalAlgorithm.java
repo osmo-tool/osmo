@@ -14,23 +14,22 @@ import java.util.List;
  */
 public interface FSMTraversalAlgorithm {
   /**
-   * This method is called once for each test step to be generated from the given FSM test model (object).
-   * The algorithm should pick one of the given set of enabled transitions as the next test step.
-   * The given set of enabled transitions is the set of transitions for which no guard method returned the value
-   * {@code false}.
+   * This method is called once for each test step to be generated.
+   * The algorithm should pick one of the given set of enabled steps.
+   * The given set of enabled steps is the ones for which no guard method returned the value {@code false}.
    *
    * @param history The set of previously generated tests, the current test, their test steps, and other information.
-   * @param choices The set of enabled transitions, from which the algorithm should pick one.
-   * @return The transition that should be taken next.
+   * @param choices The set of enabled steps, from which the algorithm should pick one.
+   * @return The step that should be taken next.
    */
   public FSMTransition choose(TestSuite history, List<FSMTransition> choices);
 
   /**
-   * This method is called once before test generation starts. It is given the results of parsing the given model
-   * objects, including the FSM.
+   * This method is called once before test generation starts to allow the algorithm to initialize itself with
+   * any of the provided data.
    *
-   * @param seed Randomization seed.
-   * @param fsm From parsing all given model objects.
+   * @param seed Randomization seed to be used for test generation.
+   * @param fsm From parsing all given model objects, describes the test model structure.
    */
   public void init(long seed, FSM fsm);
 

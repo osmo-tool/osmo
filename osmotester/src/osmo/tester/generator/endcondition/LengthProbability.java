@@ -5,8 +5,18 @@ import osmo.tester.generator.endcondition.logical.Or;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 
-/** @author Teemu Kanstren */
+/** 
+ * Defines both a minimum length and optional maximum length for test/suite, and the probability to stop
+ * once this minimum length has been achieved.
+ * 
+ * In practice this creates a combined And/Or end condition which create combinations of different Length/Probability
+ * end conditions to set the minimum/maximum lengths and the probability to stop after minimum length.
+ * The point is simply to make it simple to create the otherwise complex combination.
+ * 
+ * @author Teemu Kanstren 
+ */
 public class LengthProbability implements EndCondition {
+  /** The combining And/Or end condition to which the parameters and requests are delegated. */
   private EndCondition delegate = null;
 
   public LengthProbability(int minLength, double probability) {
@@ -24,6 +34,7 @@ public class LengthProbability implements EndCondition {
                 "Must be the other way around.";
         throw new IllegalArgumentException(msg);
       }
+      //(length >= min && probability > threshold) || length == max)
       delegate = new Or(new And(new Length(minLength), new Probability(probability)), new Length(maxLength));
     } else {
       delegate = new And(new Length(minLength), new Probability(probability));

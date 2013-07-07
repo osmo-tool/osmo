@@ -69,11 +69,11 @@ public class CoverageWithStateTests {
     //1 value = 10
     assertEquals("Variable coverage", "[on paras]", variables.get("teemu").toString());
     //4 values = 40
-    assertEquals("Variable coverage", "[null, one, zero, many]", variables.get("rangeRange").toString());
+    assertEquals("Variable coverage", "[null, two, one, many]", variables.get("rangeRange").toString());
     //2 values = 20
     assertEquals("Variable coverage", "[null, many]", variables.get("range2Range").toString());
     //32 values = 320
-    assertEquals("Variable coverage", "[keijo&null&null, paavo&null&null, teemu&null&null, teemu&null&many, teemu&one&many, teemu&zero&many, paavo&zero&many, paavo&null&many, keijo&null&many, paavo&many&many, paavo&one&many, keijo&one&many, keijo&many&many, keijo&zero&many, teemu&many&many, null&one&null, keijo&one&null, paavo&one&null, paavo&zero&null, keijo&zero&null, teemu&zero&null, teemu&many&null, null&many&null, null&zero&null, null&many&many, null&one&many, null&null&many, null&zero&many, null&null&null, keijo&many&null, paavo&many&null, teemu&one&null]",
+    assertEquals("Variable coverage", "[keijo&null&null, paavo&null&null, teemu&null&null, teemu&null&many, teemu&two&many, teemu&one&many, paavo&one&many, paavo&null&many, keijo&null&many, paavo&many&many, paavo&two&many, keijo&two&many, keijo&many&many, keijo&one&many, teemu&many&many, null&two&null, keijo&two&null, paavo&two&null, paavo&one&null, keijo&one&null, teemu&one&null, teemu&many&null, null&many&null, null&one&null, null&many&many, null&two&many, null&null&many, null&one&many, null&null&null, keijo&many&null, paavo&many&null, teemu&two&null]",
             variables.get("combo").toString());
     //2 values = 100
     assertEquals("Covered states", "[state1, state2]", tc.getStates().toString());

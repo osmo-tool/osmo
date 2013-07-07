@@ -20,17 +20,17 @@ import java.util.Map;
  */
 public class ScoreConfiguration {
   private static final Logger log = new Logger(ScoreConfiguration.class);
-  /** Weight for length (number of non-unique transitions). */
+  /** Weight for length (number of steps). */
   protected int lengthWeight = 0;
-  /** Weight for number of variables. */
+  /** Weight for number of variables covered (any value(s)). */
   protected int variableCountWeight = 10;
-  /** Weight for number of unique values if no specific one defined for a variable. */
+  /** Weight for unique values if no specific one is defined for a variable. */
   protected int defaultValueWeight = 1;
   /** Weights for specific variables (each unique value scores this much). */
   protected Map<String, Integer> valueWeights = new LinkedHashMap<>();
-  /** Weight for number of unique transition pairs (subsequent transitions). */
+  /** Weight for number of unique step-pairs (two steps in a sequence in same test). */
   protected int stepPairWeight = 30;
-  /** Weight for number of unique steps. */
+  /** Weight for number of unique steps covered. */
   protected int stepWeight = 20;
   /** Weight for number of covered requirements. */
   protected int requirementWeight = 10;
@@ -57,7 +57,8 @@ public class ScoreConfiguration {
     log.debug("FSM variables for coverage:" + variableNames);
     Collection<String> notFound = new HashSet<>();
     for (String name : valueWeights.keySet()) {
-      if (!variableNames.contains(name) && !name.contains("&") && !ignoreList.contains(name)) {
+      if (!variableNames.contains(name) && !ignoreList.contains(name)) {
+        //a variable defined for score calculation does not exist in the code
         notFound.add(name);
       }
     }
@@ -161,23 +162,6 @@ public class ScoreConfiguration {
    */
   public void disableCheckingFor(String... names) {
     Collections.addAll(ignoreList, names);
-  }
-
-  /**
-   * Combines a list of given input variable names or values into a format used internally to represent their
-   * combinations.
-   * In practice they are concatenated with "&" in between.
-   *
-   * @param values The stuff we are combining.
-   * @return The combined string.
-   */
-  public static String combine(List<? extends Object> values) {
-    String combination = "";
-    for (Object value : values) {
-      combination += value + "&";
-    }
-    combination = combination.substring(0, combination.length() - 1);
-    return combination;
   }
 
   @Override

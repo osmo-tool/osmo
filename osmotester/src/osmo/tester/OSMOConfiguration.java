@@ -8,20 +8,15 @@ import osmo.tester.generator.endcondition.logical.And;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.Probability;
-import osmo.tester.generator.filter.TransitionFilter;
+import osmo.tester.generator.filter.StepFilter;
 import osmo.tester.model.FSM;
 import osmo.tester.model.ModelFactory;
 import osmo.tester.model.ScriptedValueProvider;
-import osmo.tester.model.data.DataGenerationStrategy;
 import osmo.tester.model.data.SearchableInput;
-import osmo.tester.model.data.ValueSet;
 import osmo.tester.parser.ModelObject;
-import osmo.tester.parser.ParserResult;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Defines configuration for test generation.
@@ -36,7 +31,7 @@ public class OSMOConfiguration implements ModelFactory {
   /** When do we stop generating individual tests and start a new one? */
   private EndCondition testCaseEndCondition = new And(new Length(1), new Probability(0.1d));
   /** Set of filters to define when given transitions should not be considered for execution. */
-  private Collection<TransitionFilter> filters = new ArrayList<>();
+  private Collection<StepFilter> filters = new ArrayList<>();
   /** The algorithm to traverse the test model to generate test steps. */
   private FSMTraversalAlgorithm algorithm;
   /** Should we fail then test generation if there is no enabled transition? Otherwise we just end the test. */
@@ -54,6 +49,7 @@ public class OSMOConfiguration implements ModelFactory {
   private Long baseSeed = null;
   /** Factory for creating model objects, alternative to adding them one by one. */
   private ModelFactory factory = null;
+  /** Is manual drive enabled? Used to enable manual GUI etc. */
   private static boolean manual = false;
 
   public OSMOConfiguration() {
@@ -139,7 +135,7 @@ public class OSMOConfiguration implements ModelFactory {
    *
    * @param filter The new filter.
    */
-  public void addFilter(TransitionFilter filter) {
+  public void addFilter(StepFilter filter) {
     filters.add(filter);
     listeners.addListener(filter);
   }
@@ -176,7 +172,7 @@ public class OSMOConfiguration implements ModelFactory {
     return failWhenNoWayForward;
   }
 
-  public Collection<TransitionFilter> getFilters() {
+  public Collection<StepFilter> getFilters() {
     return filters;
   }
 

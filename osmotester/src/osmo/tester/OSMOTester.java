@@ -6,14 +6,12 @@ import osmo.tester.generator.GenerationListener;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.endcondition.EndCondition;
-import osmo.tester.generator.filter.TransitionFilter;
+import osmo.tester.generator.filter.StepFilter;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.ModelFactory;
 import osmo.tester.model.Requirements;
 import osmo.tester.model.ScriptedValueProvider;
-import osmo.tester.parser.MainParser;
-import osmo.tester.parser.ParserResult;
 
 import java.util.logging.Level;
 
@@ -35,6 +33,7 @@ public class OSMOTester {
   private OSMOConfiguration config = new OSMOConfiguration();
   /** For generating the tests. */
   private MainGenerator generator = null;
+  /** Do we print model coverage in the end? */
   private boolean printCoverage = true;
 
   /**
@@ -156,7 +155,7 @@ public class OSMOTester {
     config.addListener(listener);
   }
 
-  public void addFilter(TransitionFilter filter) {
+  public void addFilter(StepFilter filter) {
     config.addFilter(filter);
   }
 

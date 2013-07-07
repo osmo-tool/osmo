@@ -49,10 +49,15 @@ public class MultiGreedy {
   private final int populationSize;
   /** Alternative to defining a factory for model objects is to give the classes that define the model objects. */
   private final Collection<Class> modelClasses = new ArrayList<>();
+  /** Factory for creating model objects for the optimizers. */
   private ModelFactory factory = null;
+  /** Test case end condition for generation. */
   private final EndCondition endCondition;
+  /** Optimizer timeout. See {@link GreedyOptimizer} for more info. */
   private int timeout = 1;
+  /** Randomization (base) seed for test generation. */
   private final long seed;
+  /** Attribute for test generator. */
   private boolean failOnError = true;
 
   public MultiGreedy(ScoreConfiguration optimizerConfig, int populationSize, EndCondition endCondition, long seed) {

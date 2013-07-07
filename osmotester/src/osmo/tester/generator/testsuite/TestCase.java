@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -60,19 +61,34 @@ public class TestCase {
     return id;
   }
 
+  /**
+   * This is the step currently being generated. Once the test step generation starts (before @Pre is invoked) this
+   * is already set to the step to be generated (that is, before the actual step code is executed).
+   * 
+   * @return Reference to current step information.
+   */
   public TestCaseStep getCurrentStep() {
     return currentStep;
   }
 
+  /**
+   * @return The max number of variable values observed in this test, meaning the biggest for any step. 
+   *         The variables values are those @Variable tagged in model.
+   */
   public int getParameterCount() {
-    int count = 0;
+    int max = 0;
     for (TestCaseStep step : steps) {
       int ps = step.getValues().size();
-      if (ps > count) count = ps;
+      if (ps > max) max = ps;
     }
-    return count;
+    return max;
   }
 
+  /**
+   * Time when test generator started executing code for this step.
+   * 
+   * @return Milliseconds.
+   */
   public long getStartTime() {
     return startTime;
   }
@@ -81,6 +97,11 @@ public class TestCase {
     this.startTime = startTime;
   }
 
+  /**
+   * Time when test generator finished executing code for this step.
+   *
+   * @return Milliseconds.
+   */
   public long getEndTime() {
     return endTime;
   }
@@ -89,6 +110,11 @@ public class TestCase {
     this.endTime = endTime;
   }
 
+  /**
+   * Time the test generator took to execute the code for this step (includes @Pre and @Post).
+   * 
+   * @return Milliseconds.
+   */
   public long getDuration() {
     return endTime - startTime;
   }
@@ -119,23 +145,23 @@ public class TestCase {
   /**
    * Get list of test steps generated (so far) for this test case.
    *
-   * @return List of test steps (transitions).
+   * @return List of test steps.
    */
   public List<TestCaseStep> getSteps() {
     return steps;
   }
 
   /**
-   * Get the list of covered transitions for this test case.
+   * Get the list of covered test steps for this test case.
    *
    * @return The list of covered transitions.
    */
-  public Collection<String> getCoveredTransitions() {
-    Collection<String> transitionCoverage = new LinkedHashSet<>();
-    for (TestCaseStep teststep : steps) {
-      transitionCoverage.add(teststep.getName());
+  public Collection<String> getCoveredSteps() {
+    Collection<String> stepCoverage = new LinkedHashSet<>();
+    for (TestCaseStep step : steps) {
+      stepCoverage.add(step.getName());
     }
-    return transitionCoverage;
+    return stepCoverage;
   }
 
   /**
@@ -145,8 +171,8 @@ public class TestCase {
    */
   public Collection<String> getUniqueRequirementCoverage() {
     Collection<String> requirementsCoverage = new LinkedHashSet<>();
-    for (TestCaseStep teststep : steps) {
-      requirementsCoverage.addAll(teststep.getCoveredRequirements());
+    for (TestCaseStep step : steps) {
+      requirementsCoverage.addAll(step.getCoveredRequirements());
     }
     return requirementsCoverage;
   }
@@ -159,12 +185,18 @@ public class TestCase {
    */
   public Collection<String> getFullRequirementCoverage() {
     Collection<String> requirementsCoverage = new ArrayList<>();
-    for (TestCaseStep teststep : steps) {
-      requirementsCoverage.addAll(teststep.getCoveredRequirements());
+    for (TestCaseStep step : steps) {
+      requirementsCoverage.addAll(step.getCoveredRequirements());
     }
     return requirementsCoverage;
   }
 
+  /**
+   * Add a value covered for a variable in this step.
+   * 
+   * @param name Name of variable.
+   * @param value Value covered.
+   */
   public void addVariableValue(String name, Object value) {
     addVariableValue(name, value, true);
   }
@@ -174,18 +206,25 @@ public class TestCase {
    *
    * @param name  Name of the variable.
    * @param value The value of the variable.
+   * @param merge If true, remove duplicate values.
    */
   public void addVariableValue(String name, Object value, boolean merge) {
 //    log.debug("Variable:" + name + " add value:" + value);
     currentStep.addVariableValue(name, value, merge);
   }
 
+  /**
+   * Returns list of values covered for different variables, with duplicate values removed.
+   * "Test" refers to collecting values for overall test from all steps, and removing duplicates.
+   * 
+   * @return Covered values for this test, no duplicates.
+   */
   public Map<String, ModelVariable> getTestVariables() {
     return getVariables(true);
   }
 
   /**
-   * The covered values for all variables.
+   * The covered values for all variables. Duplicates included.
    *
    * @return Coverage for all variables.
    */
@@ -193,39 +232,43 @@ public class TestCase {
     return getVariables(false);
   }
 
-  public Map<String, ModelVariable> getStateVariables() {
+  /**
+   * Collect variable values covered in different user defined states (@StateName).
+   * 
+   * @return Values covered per state for each variable, duplicates included.
+   */
+  public Map<String, Map<String, ModelVariable>> getStateVariables() {
     Map<String, Map<String, ModelVariable>> temp = new LinkedHashMap<>();
 
     for (TestCaseStep step : steps) {
+      //first make sure all states are present in the map we create, to collect values for all states
       Map<String, ModelVariable> stateMap = temp.get(step.getState());
       if (stateMap == null) {
         stateMap = new LinkedHashMap<>();
         temp.put(step.getState(), stateMap);
       }
+      //put all values for this step into the list for the state of the step
       Collection<ModelVariable> variables = step.getValues();
       for (ModelVariable variable : variables) {
         String name = variable.getName();
-        stateMap.put(name, variable);
-      }
-    }
-
-    Map<String, ModelVariable> result = new LinkedHashMap<>();
-    Collection<Map<String, ModelVariable>> maps = temp.values();
-    for (Map<String, ModelVariable> map : maps) {
-      for (ModelVariable mv : map.values()) {
-        String name = mv.getName();
-        ModelVariable stored = result.get(name);
-        if (stored == null) {
-          stored = new ModelVariable(name);
-          result.put(name, stored);
+        ModelVariable mv = stateMap.get(name);
+        if (mv == null) {
+          mv = new ModelVariable(name);
+          stateMap.put(name, mv);
         }
-        stored.addAll(mv, false);
+        mv.addAll(variable, false);
       }
     }
 
-    return result;
+    return temp;
   }
 
+  /**
+   * Get all variable values. User can define if duplicates should be removed or not.
+   * 
+   * @param merge If true, duplicates are removed.
+   * @return Key = variable name, value = variable values.
+   */
   public Map<String, ModelVariable> getVariables(boolean merge) {
     Map<String, ModelVariable> result = new LinkedHashMap<>();
 
@@ -265,18 +308,26 @@ public class TestCase {
   }
 
   /**
-   * Returns names of all transitions taken in this test case, in order. Duplicates are not removed.
+   * Returns names of all steps taken in this test case, in order. Duplicates are not removed.
    *
-   * @return The names of transitions.
+   * @return The names of steps.
    */
-  public List<String> getAllTransitionNames() {
+  public List<String> getAllStepNames() {
     List<String> names = new ArrayList<>();
-    for (TestCaseStep teststep : steps) {
-      names.add(teststep.getName());
+    for (TestCaseStep step : steps) {
+      names.add(step.getName());
     }
     return names;
   }
 
+  /**
+   * Allows setting the test case as failed.
+   * When the test throws, the generator sets this to true.
+   * User can also set this to reflect any custom oracles.
+   * The value is mainly used for some reporting functionality.
+   * 
+   * @param failed Fail or not.
+   */
   public void setFailed(boolean failed) {
     this.failed = failed;
   }

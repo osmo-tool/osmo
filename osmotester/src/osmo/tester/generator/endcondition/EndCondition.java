@@ -28,7 +28,7 @@ public interface EndCondition {
   public boolean endTest(TestSuite suite, FSM fsm);
 
   /**
-   * called to initialize end condition before generation starts.
+   * Called to initialize end condition before generation starts.
    *
    * @param seed Randomization seed.
    * @param fsm Representation of the model.

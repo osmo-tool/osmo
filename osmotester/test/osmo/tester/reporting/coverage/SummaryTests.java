@@ -28,7 +28,6 @@ public class SummaryTests {
   public void setup() {
     OSMOConfiguration.reset();
     suite = new TestSuite();
-    suite.init();
     suite.initRequirements(null);
 
     Requirements reqs = suite.getRequirements();

@@ -28,10 +28,9 @@ import java.util.Map;
 /**
  * Generates test cases and greedily optimizes the resulting test suite with regards to coverage criteria as
  * given in an {@link osmo.tester.coverage.ScoreConfiguration}.
- * Resulting suite is optimised so the first test in the given set has the highest overall fitness values,
- * the second one adds
- * most fitness to that one as evaluated in terms of single test cases, the third adds the most to these two,
- * and so on.
+ * Resulting suite is optimised so the first test in the given set has the highest overall coverage score values,
+ * the second one adds most score to that one as evaluated in terms of single test cases, the third adds the most 
+ * to these two, and so on.
  * New test cases are generated as long as the optimization of the suite in an iteration yields a higher value
  * than the previous iterations.
  * Best tests (ones that added anything to the suite score) are kept for the next round.
@@ -54,6 +53,7 @@ public class GreedyOptimizer {
   private final int populationSize;
   /** An alternative to providing a model object factory is to give the set of classes used to instanciate the objects. */
   private final Collection<Class> modelClasses = new ArrayList<>();
+  /** For creating model objects. */
   private ModelFactory factory = null;
   /** Identifier for next greedy optimizer if several are created. */
   private static int nextId = 1;
@@ -61,27 +61,35 @@ public class GreedyOptimizer {
   private int id = nextId++;
   /** Used to calculate coverage scores for different tests and suites. */
   private final ScoreCalculator scoreCalculator;
+  /** End condition for the test generator (for test cases only, not suite). */
   private final EndCondition endCondition;
+  /** How much does an iteration need to gain in score to go for another iteration? Defaults to 1. */
   private int threshold = 1;
+  /** Seconds until the search times out. Timeout is checked between iterations. */
   private long timeout = -1;
+  /** Passed to the generator. */
   private boolean failOnError = true;
+  /** Seed for the generator. */
   private final long seed;
+  /** For tracking all the path options encountered. */
   private Collection<String> possiblePairs = new HashSet<>();
 
   /**
    * Uses a default population size of 1000.
    * 
    * @param configuration For scoring the search.
+   * @param endCondition  Test end condition.
+   * @param seed          Randomization seed for generation.
    */
   public GreedyOptimizer(ScoreConfiguration configuration, EndCondition endCondition, long seed) {
     this(configuration, 1000, endCondition, seed);
   }
 
   /**
-   * Constructor.
-   * 
-   * @param configuration For scoring the search.
+   * @param configuration  For scoring the search.
    * @param populationSize How many tests to create in an iteration.
+   * @param endCondition   Test end condition.
+   * @param seed           Randomization seed for generation.
    */
   public GreedyOptimizer(ScoreConfiguration configuration, int populationSize, EndCondition endCondition, long seed) {
     this.config = configuration;
@@ -99,13 +107,18 @@ public class GreedyOptimizer {
     this.factory = factory;
   }
 
+  /**
+   * You can set any threshold you like. Zero or less means going on forever. Timeout is recommended in such case.
+   * 
+   * @param threshold Required added coverage score for iteration to continue with another iteration.
+   */
   public void setThreshold(int threshold) {
-    if (threshold < 1) {
-      throw new IllegalArgumentException("Threshold must be minimum of 1, was "+threshold);
-    }
     this.threshold = threshold;
   }
 
+  /**
+   * @param timeout Generation timeout in seconds.
+   */
   public void setTimeout(int timeout) {
     this.timeout = timeout;
   }
@@ -137,6 +150,9 @@ public class GreedyOptimizer {
     } else {
       throw new IllegalStateException("No model factory found.");
     }
+
+    if (threshold < 1) log.warn("Threshold is "+threshold+", which is impossible to reach. Are you sure?");
+
     OSMOConfiguration testerConfig = tester.getConfig();
     testerConfig.setFailWhenError(failOnError);
     MainGenerator generator = tester.initGenerator(seed);
@@ -217,10 +233,22 @@ public class GreedyOptimizer {
     return suite;
   }
 
+  /**
+   * Writes given data to a file. Filename has the generation seed added to it.
+   * 
+   * @param name    The filename. Ends up as "osmo-output-<seed>/name".
+   * @param content The data to write.
+   */
   public void writeFile(String name, String content) {
     TestUtils.write(content, "osmo-output-"+seed+"/" + name);
   }
 
+  /**
+   * CSV row of coverage for each test, to use in excel etc.
+   * 
+   * @param tests Create coverage CSV for these.
+   * @return The CSV text.
+   */
   protected String csvForCoverage(Collection<TestCase> tests) {
     String csv = "";
     TestCoverage tc = new TestCoverage();
@@ -231,7 +259,13 @@ public class GreedyOptimizer {
     csv += "\n";
     return csv;
   }
-  
+
+  /**
+   * CSV row with only the number of tests in it, to use in excel etc.
+   *
+   * @param tests Create test count for these.
+   * @return The CSV text.
+   */
   protected String csvNumberOfTests(Collection<TestCase> tests) {
     String csv = "";
     csv += tests.size();
@@ -239,6 +273,12 @@ public class GreedyOptimizer {
     return csv;
   }
 
+  /**
+   * CSV row with only the total suite score in it, to use in excel etc.
+   *
+   * @param tests Create suite score for these.
+   * @return The CSV text.
+   */
   protected String csvTotalScores(Collection<TestCase> tests) {
     String csv = "";
     TestCoverage tc = new TestCoverage();
@@ -250,6 +290,14 @@ public class GreedyOptimizer {
     return csv;
   }
 
+  /**
+   * CSV row of added coverage score for each test, to use in excel etc.
+   * The tests should be ordered so that the one with most coverage is first, the one that adds most to that is next,
+   * and so on. This is how this optimizer does it, anyway.
+   *
+   * @param tests Create coverage CSV for these.
+   * @return The CSV text.
+   */
   protected String csvForGain(Collection<TestCase> tests) {
     String csv = "";
     TestCoverage tc = new TestCoverage();
@@ -303,29 +351,6 @@ public class GreedyOptimizer {
       suite.add(best);
       previous = (TestCoverage) best.getAttribute(ATTR_NAME);
     }
-    
-
-
-//    TestCoverage suiteCoverage = new TestCoverage();
-//    int count = from.size();
-//    for (int i = 0 ; i < count ; i++) {
-//      int bestFitness = 0;
-//      TestCase best = null;
-//      for (TestCase test : from) {
-//        int fitness = scoreCalculator.addedScoreFor(suiteCoverage, test);
-//        if (fitness > bestFitness) {
-//          bestFitness = fitness;
-//          best = test;
-//        }
-//      }
-//      if (best == null) {
-//        //no more gains found in coverage
-//        break;
-//      }
-//      from.remove(best);
-//      suite.add(best);
-//      suiteCoverage.addTestCoverage(best);
-//    }
     return suite;
   }
 
@@ -348,10 +373,5 @@ public class GreedyOptimizer {
       names.setSeed(v);
       System.out.println(names.next());
     }
-//    for (int i = 0 ; i < 100 ; i++) {
-//      ValueSet<String> names = new ValueSet<>("teemu", "paavo", "keijo");
-//      names.setSeed(33+i);
-//      System.out.println(names.next());
-//    }
   }
 }

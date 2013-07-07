@@ -6,8 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation defines that the annotated method should be executed after each test case that has been
- * generated.
+ * Annotated method is executed after each test case that has been generated (before next).
  * <p/>
  * The annotated method must have no parameters.
  *

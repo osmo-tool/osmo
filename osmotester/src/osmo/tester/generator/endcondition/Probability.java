@@ -7,7 +7,7 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 
 /**
- * A simple end condition that takes a probability threshold for stopping test generation.
+ * Defines a probability threshold for stopping test generation.
  * The probability must be between 0..1 where 0 means the generation is never stopped
  * and 1 means the generation is always stopped.
  *

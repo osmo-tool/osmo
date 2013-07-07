@@ -19,15 +19,15 @@ import java.util.Map;
  * Difference to {@link osmo.tester.model.FSMTransition} is that this includes the runtime information 
  * such as covered requirements.
  * Model state variable values (annotated with {@link osmo.tester.annotation.Variable}) are stored at the end of
- * the executed transition function.
+ * the executed test step function.
  *
  * @author Teemu Kanstren
  */
 public class TestCaseStep {
   private static Logger log = new Logger(TestCaseStep.class);
-  /** The transition that was taken in this test step. */
+  /** The transition (step) that was taken in this test step. */
   private final String transitionName;
-  /** The model object from which the transition was executed. */
+  /** The model object from which the transition (step) was executed. */
   private final String modelObjectName;
   /** The set of requirements covered by this test step. */
   private Collection<String> coveredRequirements = null;
@@ -43,12 +43,13 @@ public class TestCaseStep {
   private long endTime = 0;
   /** Stores the user defined custom state string when this step was executed. */
   private String state;
+  /** If the execution of this step threw an exception. */
   private boolean failed;
+  /** Any custom attributes stored for this step. */
   private Map<String, Object> attributes = new HashMap<>();
 
   /**
-   * Constructor.
-   *
+   * @param parent     Test case under which this step was executed.
    * @param transition The transition that was taken in this test step.
    * @param id         The identifier for this step.
    */
@@ -68,6 +69,11 @@ public class TestCaseStep {
     return id;
   }
 
+  /**
+   * The step name practically equals the transition name executed in this step (including prefix).
+   * 
+   * @return Step/transition name.
+   */
   public String getName() {
     return transitionName;
   }
@@ -104,14 +110,14 @@ public class TestCaseStep {
   }
 
   /**
-   * Sets the start time.
+   * Sets the execution start time.
    */
   public void start() {
     startTime = System.currentTimeMillis();
   }
 
   /**
-   * Sets the end time.
+   * Sets the execution end time.
    */
   public void end() {
     endTime = System.currentTimeMillis();
@@ -119,7 +125,8 @@ public class TestCaseStep {
 
   /**
    * Stores the general step state. General state refers to the state in the model variables that the generator sees.
-   * Another state is the user defined state, which is queried from specifically annotated methods.
+   * Another state is the user defined state, which is queried from specifically annotated methods with
+   * {@link osmo.tester.annotation.StateName}.
    *
    * @param fsm This is where the state is copied from.
    */
@@ -128,6 +135,7 @@ public class TestCaseStep {
     for (VariableField variable : variables) {
       String name = variable.getName();
       Object value = variable.getValue();
+      //true to merge values to contain only unique values
       parent.addVariableValue(name, value, true);
     }
   }
@@ -140,6 +148,12 @@ public class TestCaseStep {
     return endTime;
   }
 
+  /**
+   * Adds an observed value for a model variable. Does not merge, keeping duplicates.
+   * 
+   * @param name  Variable name.
+   * @param value Variable value.
+   */
   public void addVariableValue(String name, Object value) {
     addVariableValue(name, value, false);
   }
@@ -149,6 +163,7 @@ public class TestCaseStep {
    *
    * @param name  Name of the variable.
    * @param value The value of the variable.
+   * @param merge If true, duplicates are removed.
    */
   public void addVariableValue(String name, Object value, boolean merge) {
 //    log.debug("Variable:" + name + " add value:" + value);
@@ -164,29 +179,40 @@ public class TestCaseStep {
     return values.values();
   }
 
+  /**
+   * Provides a list of parameters suitable for pretty printing in a HTML coverage matrix table.
+   * This means adding empty values to the list to make each row equally long.
+   * 
+   * @return The new variable list.
+   */
   public List<ModelVariable> getHtmlParameters() {
     List<ModelVariable> result = new ArrayList<>();
-    int count = 0;
+    //how many parameter values does this step have?
+    int parameterCount = 0;
     Map<String, Collection<Object>> all = new LinkedHashMap<>();
     for (ModelVariable value : values.values()) {
       for (Object o : value.getValues()) {
         String name = value.getName();
-        ModelVariable var = new ModelVariable(name);
         Collection<Object> added = all.get(name);
         if (added == null) {
           added = new LinkedHashSet<>();
           all.put(name, added);
         }
+        //only add each value once for a step
         if (added.contains(o)) {
           continue;
         }
+        //create new variable each time to show them in correct order
+        ModelVariable var = new ModelVariable(name);
         var.addValue(o, false);
-        added.add(o);
         result.add(var);
-        count++;
+        added.add(o);
+        parameterCount++;
       }
     }
-    int diff = parent.getParameterCount() - count;
+    //calculate how many parameters less than max for steps in this test we are
+    int diff = parent.getParameterCount() - parameterCount;
+    //fill the table to make it fit the table exactly with equal column count
     for (int i = 0 ; i < diff ; i++) {
       ModelVariable var = new ModelVariable("");
       var.addValue("", false);

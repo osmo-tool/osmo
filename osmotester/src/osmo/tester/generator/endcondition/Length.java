@@ -16,8 +16,6 @@ public class Length implements EndCondition {
   private final int length;
 
   /**
-   * Constructor.
-   *
    * @param length The number of steps/tests when to stop generation.
    */
   public Length(int length) {

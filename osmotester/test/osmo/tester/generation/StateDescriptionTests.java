@@ -46,17 +46,17 @@ public class StateDescriptionTests {
     assertEquals("Sequence of steps", "[t2, t1, t1]", suite.getAllTestCases().get(0).getSteps().toString());
     assertEquals("State over generation with no state defined", ":null:-null-:null:-null-:null:-null-", model.getStates());
 
-    Map<String,ModelVariable> testVariables = suite.getTestVariables();
+    Map<String, ModelVariable> testVariables = suite.getTestVariables();
     assertEquals("Number of test variables", 1, testVariables.size());
     ModelVariable mv = testVariables.values().iterator().next();
     assertEquals("Test variables", "[2, 1]", mv.getValues().toString());
 
-    Map<String,ModelVariable> stepVariables = suite.getStepVariables();
+    Map<String, ModelVariable> stepVariables = suite.getStepVariables();
     assertEquals("Number of step variables", 1, stepVariables.size());
     mv = stepVariables.values().iterator().next();
     assertEquals("Step variables", "[2, 1, 1]", mv.getValues().toString());
   }
-  
+
   @Test
   public void twoStatesNoVariables() {
     Requirements reqs = new Requirements();
@@ -73,7 +73,7 @@ public class StateDescriptionTests {
     assertEquals("State over generation with two states defined", expected, model1.getStates());
 
     TestSuite suite = osmo.getSuite();
-    Map<String,ModelVariable> testVariables = suite.getTestVariables();
+    Map<String, ModelVariable> testVariables = suite.getTestVariables();
     assertEquals("Number of test variables", 0, testVariables.size());
   }
 
@@ -110,12 +110,12 @@ public class StateDescriptionTests {
     assertEquals("Number of values in step", 2, values.size());
 
     TestSuite suite = osmo.getSuite();
-    Map<String,ModelVariable> testVariables = suite.getTestVariables();
+    Map<String, ModelVariable> testVariables = suite.getTestVariables();
     assertEquals("Number of test variables", 2, testVariables.size());
     String expected = "{your_item=your_item([foobar]), my_item=my_item([hello, world])}";
     assertEquals("Test variables", expected, testVariables.toString());
 
-    Map<String,ModelVariable> stepVariables = suite.getStepVariables();
+    Map<String, ModelVariable> stepVariables = suite.getStepVariables();
     assertEquals("Number of step variables", 2, stepVariables.size());
     expected = "{your_item=your_item([foobar, foobar]), my_item=my_item([hello, world, world])}";
     assertEquals("Step variables", expected, stepVariables.toString());
@@ -134,15 +134,20 @@ public class StateDescriptionTests {
     assertEquals("State over generation with no state defined", "-1--2--3-", model.getStates());
 
     TestSuite suite = osmo.getSuite();
-    Map<String,ModelVariable> testVariables = suite.getTestVariables();
+    Map<String, ModelVariable> testVariables = suite.getTestVariables();
     assertEquals("Number of test variables", 3, testVariables.size());
     String expected = "{lastName=lastName([world]), global=global([bad]), firstName=firstName([hello])}";
     assertEquals("Test variables", expected, testVariables.toString());
 
-    Map<String,ModelVariable> stepVariables = suite.getStepVariables();
+    Map<String, ModelVariable> stepVariables = suite.getStepVariables();
     assertEquals("Number of step variables", 3, stepVariables.size());
     expected = "{lastName=lastName([world, world, world]), global=global([bad]), firstName=firstName([hello, hello, hello])}";
     assertEquals("Step variables", expected, stepVariables.toString());
+
+    Map<String, Map<String, ModelVariable>> stateVariables = suite.getStateVariables();
+    assertEquals("Number of step variables", 3, stateVariables.size());
+    expected = "{1={firstName=firstName([hello]), lastName=lastName([world])}, 2={firstName=firstName([hello]), lastName=lastName([world])}, 3={global=global([bad]), firstName=firstName([hello]), lastName=lastName([world])}}";
+    assertEquals("Step variables", expected, stateVariables.toString());
   }
 
   @Test
@@ -158,19 +163,19 @@ public class StateDescriptionTests {
     assertEquals("State", ":null:-4-:null:-1-:null:-3-", model.getStates());
 
     TestSuite suite = osmo.getSuite();
-    Map<String,ModelVariable> testVariables = suite.getTestVariables();
+    Map<String, ModelVariable> testVariables = suite.getTestVariables();
     assertEquals("Number of test variables", 1, testVariables.size());
     String expected = "{range=range([1])}";
     assertEquals("Test variables", expected, testVariables.toString());
 
-    Map<String,ModelVariable> stepVariables = suite.getStepVariables();
+    Map<String, ModelVariable> stepVariables = suite.getStepVariables();
     assertEquals("Number of step variables", 1, stepVariables.size());
     expected = "{range=range([1])}";
     assertEquals("Step variables", expected, stepVariables.toString());
 
-    Map<String,ModelVariable> stateVariables = suite.getStateVariables();
+    Map<String, Map<String, ModelVariable>> stateVariables = suite.getStateVariables();
     assertEquals("Number of step variables", 1, stateVariables.size());
-    expected = "{range=range([1])}";
-    assertEquals("Step variables", expected, stateVariables.toString());
+    expected = "{3={range=range([1])}}";
+    assertEquals("State variables", expected, stateVariables.toString());
   }
 }

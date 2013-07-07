@@ -4,10 +4,8 @@ import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.FSM;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
 
@@ -61,8 +59,8 @@ public class SingleTestCoverage {
    * @param tc The test case for which to get the coverage.
    */
   private void countTransitions(TestCase tc) {
-    Collection<String> names = tc.getAllTransitionNames();
-    String previous = FSM.START_NAME;
+    Collection<String> names = tc.getAllStepNames();
+    String previous = FSM.START_STEP_NAME;
     for (String name : names) {
       incrementCountFor(transitionCount, name);
       String pair = previous + "->" + name;

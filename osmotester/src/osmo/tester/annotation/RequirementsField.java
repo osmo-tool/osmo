@@ -13,6 +13,7 @@ import java.lang.annotation.Target;
  * should aim to cover. If the field is null or of wrong type, an exception will be thrown and test generation
  * will not commence. For more information on defining the requirements, see the {@link osmo.tester.model.Requirements} class.
  *
+ * TODO: this should be removed and just use the field data type to infer the existence.
  * @author Teemu Kanstren
  * @see osmo.tester.model.Requirements
  */

@@ -11,8 +11,7 @@ import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiUtilCore;
-import osmo.tester.generator.endcondition.EndCondition;
-import osmo.tester.generator.filter.TransitionFilter;
+import osmo.tester.generator.filter.StepFilter;
 
 /** 
  * This is a filter to show only EndCondition instances in an IntelliJ dialog.
@@ -30,7 +29,7 @@ public class FilterFilter implements ClassFilter.ClassFilterWithScope {
     } else {
       scope = GlobalSearchScope.allScope(project);
     }
-    this.ecClass = JavaPsiFacade.getInstance(project).findClass(TransitionFilter.class.getName(), scope);
+    this.ecClass = JavaPsiFacade.getInstance(project).findClass(StepFilter.class.getName(), scope);
     this.project = project;
     this.module = module;
   }

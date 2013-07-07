@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,11 +23,11 @@ import java.util.Map;
  */
 public class TestCoverage {
   private static final Logger log = new Logger(TestCoverage.class);
-  /** The list of transitions covered, in order, including duplicates. */
-  private Collection<String> transitions = new ArrayList<>();
+  /** The list of test steps covered, in order, including duplicates. */
+  private Collection<String> steps = new ArrayList<>();
   /** The set of step pairs covered. */
   private Collection<String> stepPairs = new LinkedHashSet<>();
-  /** The unique set of transitions covered. */
+  /** The unique set of steps covered. */
   private Collection<String> singles = new LinkedHashSet<>();
   /** The set of covered requirements. */
   private Collection<String> reqs = new LinkedHashSet<>();
@@ -80,19 +79,18 @@ public class TestCoverage {
   }
   
   /**
-   * Gives all transitions in this test suite, including coverage number.
-   * Coverage number tells how many times transition is taken in this test suite
+   * Gives names of all steps in this test suite, and number of times each is covered.
    *
-   * @return The transitions with coverage number
+   * @return The test steps with coverage number.
    */
   public Map<String, Integer> getTransitionCoverage() {
     Map<String, Integer> result = new HashMap<>();
-    for (String transition : transitions) {
-      Integer count = result.get(transition);
+    for (String step : steps) {
+      Integer count = result.get(step);
       if (count == null) {
         count = 0;
       }
-      result.put(transition, count + 1);
+      result.put(step, count + 1);
     }
     return result;
   }
@@ -103,7 +101,7 @@ public class TestCoverage {
    * @param test The test to add.
    */
   public synchronized void addTestCoverage(TestCase test) {
-    addTestCoverage(test, test.getAllTransitionNames().size());
+    addTestCoverage(test, test.getAllStepNames().size());
   }
 
   /**
@@ -122,7 +120,7 @@ public class TestCoverage {
   /**
    * Add the coverage in the given test case up to a given number of steps in the test case.
    * Useful for calculating what would be the added coverage is different number of steps was added.
-   * Especially when comparing different paths to each other.
+   * Especially when comparing different explored paths to each other.
    *
    * @param test      The test containing the steps to add.
    * @param stepCount The number of steps to take from the test.
@@ -131,13 +129,14 @@ public class TestCoverage {
     Collection<String> names = new ArrayList<>();
 
     int count = 0;
-    String previousState = "osmo.start.state";
+    String previousState = FSM.START_STATE_NAME;
     for (TestCaseStep step : test.getSteps()) {
       String name = step.getName();
       names.add(name);
       String state = step.getState();
       if (state != null) {
         //we ignore null so if there is no state we do not mess calculations for coverage score
+        //that is we do not add transitions when no state is defined
         states.add(state);
         statePairs.add(previousState+"->"+state);
         previousState = state;
@@ -170,29 +169,28 @@ public class TestCoverage {
       for (Object value : variable.getValues()) {
         values.add("" + value);
       }
-
       this.values.put(name, values);
     }
   }
 
   /**
-   * Add the set of given transitions to the sets representing various aspects of covered transitions.
-   * That is transition list, unique single transitions, and transition pairs.
+   * Add the set of given test steps to the sets representing various aspects of covered test steps.
+   * That is all steps list, unique steps, and step pairs.
    *
-   * @param names The names of transitions to add.
+   * @param names The names of steps to add.
    */
   private synchronized void addSteps(Collection<String> names) {
-    transitions.addAll(names);
+    steps.addAll(names);
     singles.addAll(names);
-    String previous = FSM.START_NAME;
+    String previous = FSM.START_STEP_NAME;
     for (String name : names) {
       stepPairs.add(previous + "->" + name);
       previous = name;
     }
   }
 
-  public Collection<String> getTransitions() {
-    return transitions;
+  public Collection<String> getSteps() {
+    return steps;
   }
 
   public Collection<String> getStepPairs() {
@@ -224,7 +222,7 @@ public class TestCoverage {
   public synchronized TestCoverage cloneMe() {
     TestCoverage clone = new TestCoverage();
     clone.stepPairs.addAll(stepPairs);
-    clone.transitions.addAll(transitions);
+    clone.steps.addAll(steps);
     clone.reqs.addAll(reqs);
     clone.singles.addAll(singles);
     clone.states.addAll(states);
@@ -241,7 +239,7 @@ public class TestCoverage {
   @Override
   public String toString() {
     return "TestCoverage{" +
-            "transitions=" + transitions +
+            "steps=" + steps +
             ", stepPairs=" + stepPairs +
             ", singles=" + singles +
             ", requirements=" + reqs +
@@ -250,9 +248,19 @@ public class TestCoverage {
             '}';
   }
 
+  /**
+   * Produces a human-readable string to present coverage data.
+   * 
+   * @param fsm Our model.
+   * @param possibleStepPairs List of possible step-pairs (all that could be covered).
+   * @param possibleStates  List of possible states (all that could be covered).
+   * @param possibleStatePairs  List of possible state-pairs (all that could be covered).
+   * @param printAll If true, we print a list of names for missing coverage elements.
+   * @return The created string. Simple ASCII text on several lines.
+   */
   public String coverageString(FSM fsm, Collection<String> possibleStepPairs, Collection<String> possibleStates, Collection<String> possibleStatePairs, boolean printAll) {
     String result = "Covered elements:\n";
-    result += "Total steps: "+transitions.size();
+    result += "Total steps: "+steps.size();
     result += "\nUnique steps: "+singles.size();
     if (fsm != null) {
       Collection<FSMTransition> fsmTransitions = fsm.getTransitions();
@@ -302,8 +310,13 @@ public class TestCoverage {
     return result;
   }
 
+  /**
+   * Remove all coverage elements in the other set from this set.
+   * 
+   * @param in The items to remove from this set.
+   */
   public void removeAll(TestCoverage in) {
-    transitions.removeAll(in.transitions);
+    steps.removeAll(in.steps);
     singles.removeAll((in.singles));
     stepPairs.removeAll(in.stepPairs);
     states.removeAll(in.states);

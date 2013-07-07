@@ -6,7 +6,11 @@ import osmo.tester.parser.AnnotationParser;
 import osmo.tester.parser.ParserParameters;
 import osmo.tester.parser.ParserResult;
 
-/** @author Teemu Kanstren */
+/**
+ * Parses {@link osmo.tester.annotation.Group} annotations from the given model object.
+ *
+ * @author Teemu Kanstren 
+ */
 public class GroupParser implements AnnotationParser {
   private static Logger log = new Logger(GroupParser.class);
   

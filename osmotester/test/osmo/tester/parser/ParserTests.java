@@ -56,9 +56,9 @@ public class ParserTests {
     EmptyTestModel1 model = new EmptyTestModel1();
     ParserResult result = parser.parse(1, conf(model), new TestSuite());
     FSM fsm = result.getFsm();
-    assertEquals("Number of @Before methods", 2, fsm.getBefores().size());
+    assertEquals("Number of @Before methods", 2, fsm.getBeforeTests().size());
     assertEquals("Number of @BeforeSuite methods", 1, fsm.getBeforeSuites().size());
-    assertEquals("Number of @After methods", 1, fsm.getAfters().size());
+    assertEquals("Number of @After methods", 1, fsm.getAfterTests().size());
     assertEquals("Number of @AfterSuite methods", 1, fsm.getAfterSuites().size());
     //these also test for the correct number of guards
     assertTransitionPresent(fsm, "hello", 1, 2);
@@ -192,9 +192,9 @@ public class ParserTests {
     PartialModel2 model2 = new PartialModel2(req, null);
     ParserResult result = parser.parse(1, conf(model1, model2), new TestSuite());
     FSM fsm = result.getFsm();
-    assertEquals("Number of @Before methods", 2, fsm.getBefores().size());
+    assertEquals("Number of @Before methods", 2, fsm.getBeforeTests().size());
     assertEquals("Number of @BeforeSuite methods", 2, fsm.getBeforeSuites().size());
-    assertEquals("Number of @After methods", 2, fsm.getAfters().size());
+    assertEquals("Number of @After methods", 2, fsm.getAfterTests().size());
     assertEquals("Number of @AfterSuite methods", 1, fsm.getAfterSuites().size());
     assertEquals("Number of @ExplorationEnabler methods", 2, fsm.getExplorationEnablers().size());
     assertEquals("Number of @GenerationEnabler methods", 1, fsm.getGenerationEnablers().size());
@@ -305,9 +305,9 @@ public class ParserTests {
     assertTransitionPresent(fsm, "ip_world", 1, 2);
     assertTransitionPresent(fsm, "ap_epixx", 1, 3);
     assertTransitionPresent(fsm, "ip_epixx", 1, 3);
-    assertEquals("Number of @BeforeTest elements", 2, fsm.getBefores().size());
+    assertEquals("Number of @BeforeTest elements", 2, fsm.getBeforeTests().size());
     assertEquals("Number of @BeforeSuite elements", 2, fsm.getBeforeSuites().size());
-    assertEquals("Number of @AfterTest elements", 2, fsm.getAfters().size());
+    assertEquals("Number of @AfterTest elements", 2, fsm.getAfterTests().size());
     assertEquals("Number of @AfterSuite elements", 2, fsm.getAfterSuites().size());
   }
 
@@ -331,9 +331,9 @@ public class ParserTests {
     assertTransitionPresent(fsm, "epixx", 1, 4);
     assertTransitionPresent(fsm, "ap_epixx", 1, 4);
     assertTransitionPresent(fsm, "ip_epixx", 1, 4);
-    assertEquals("Number of @BeforeTest elements", 3, fsm.getBefores().size());
+    assertEquals("Number of @BeforeTest elements", 3, fsm.getBeforeTests().size());
     assertEquals("Number of @BeforeSuite elements", 3, fsm.getBeforeSuites().size());
-    assertEquals("Number of @AfterTest elements", 3, fsm.getAfters().size());
+    assertEquals("Number of @AfterTest elements", 3, fsm.getAfterTests().size());
     assertEquals("Number of @AfterSuite elements", 3, fsm.getAfterSuites().size());
   }
 
@@ -357,9 +357,9 @@ public class ParserTests {
     assertTransitionPresent(fsm, "epixx", 1, 4);
     assertTransitionPresent(fsm, "ap_epixx", 1, 4);
     assertTransitionPresent(fsm, "ip_epixx", 1, 4);
-    assertEquals("Number of @BeforeTest elements", 3, fsm.getBefores().size());
+    assertEquals("Number of @BeforeTest elements", 3, fsm.getBeforeTests().size());
     assertEquals("Number of @BeforeSuite elements", 3, fsm.getBeforeSuites().size());
-    assertEquals("Number of @AfterTest elements", 3, fsm.getAfters().size());
+    assertEquals("Number of @AfterTest elements", 3, fsm.getAfterTests().size());
     assertEquals("Number of @AfterSuite elements", 3, fsm.getAfterSuites().size());
   }
 
@@ -383,9 +383,9 @@ public class ParserTests {
     assertTransitionPresent(fsm, "epixx", 1, 4);
     assertTransitionPresent(fsm, "ap_epixx", 1, 4);
     assertTransitionPresent(fsm, "ip_epixx", 1, 4);
-    assertEquals("Number of @BeforeTest elements", 3, fsm.getBefores().size());
+    assertEquals("Number of @BeforeTest elements", 3, fsm.getBeforeTests().size());
     assertEquals("Number of @BeforeSuite elements", 3, fsm.getBeforeSuites().size());
-    assertEquals("Number of @AfterTest elements", 3, fsm.getAfters().size());
+    assertEquals("Number of @AfterTest elements", 3, fsm.getAfterTests().size());
     assertEquals("Number of @AfterSuite elements", 3, fsm.getAfterSuites().size());
   }
 
@@ -399,9 +399,9 @@ public class ParserTests {
     assertTransitionPresent(fsm, "a non-strict one", 1, 0);
     assertTransitionPresent(fsm, "a strict one", 1, 0);
     assertTransitionPresent(fsm, "default strictness", 1, 0);
-    assertEquals("Number of @BeforeTest elements", 0, fsm.getBefores().size());
+    assertEquals("Number of @BeforeTest elements", 0, fsm.getBeforeTests().size());
     assertEquals("Number of @BeforeSuite elements", 0, fsm.getBeforeSuites().size());
-    assertEquals("Number of @AfterTest elements", 0, fsm.getAfters().size());
+    assertEquals("Number of @AfterTest elements", 0, fsm.getAfterTests().size());
     assertEquals("Number of @AfterSuite elements", 0, fsm.getAfterSuites().size());
 
     FSMTransition t1 = fsm.getTransition("a non-strict one");

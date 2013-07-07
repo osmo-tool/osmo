@@ -8,7 +8,6 @@ import osmo.tester.parser.field.SearchableInputField;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,9 +37,9 @@ public class FSM {
   /** List of specific post-methods that apply to a specific transition or group.. */
   private List<FSMGuard> specificPost = new ArrayList<>();
   /** List of methods to be executed before each test case. */
-  private Collection<InvocationTarget> befores = new ArrayList<>();
+  private Collection<InvocationTarget> beforeTests = new ArrayList<>();
   /** List of methods to be executed after each test case. */
-  private Collection<InvocationTarget> afters = new ArrayList<>();
+  private Collection<InvocationTarget> afterTests = new ArrayList<>();
   /** List of methods to be executed before the overall test suite. */
   private Collection<InvocationTarget> beforeSuites = new ArrayList<>();
   /** List of methods to be executed after the overall test suite. */
@@ -61,9 +60,12 @@ public class FSM {
   private Collection<SearchableInputField> searchableInputFields = new ArrayList<>();
   /** User defined requirements. */
   private Requirements requirements = null;
+  /** The set of objects to call to get current state. Key = model object name, value=target method to get state value.*/
   private Map<String, InvocationTarget> stateNames = new HashMap<>();
   /** Name of the start step (before anything else). */
-  public static final String START_NAME = ".osmo.tester.init";
+  public static final String START_STEP_NAME = ".osmo.tester.init";
+  /** Name of the start state (before anything else). */
+  public static final String START_STATE_NAME = "osmo.start.state";
 
   /** Constructor. */
   public FSM() {
@@ -263,11 +265,11 @@ public class FSM {
   }
 
   public void addAfter(InvocationTarget target) {
-    afters.add(target);
+    afterTests.add(target);
   }
 
   public void addBefore(InvocationTarget target) {
-    befores.add(target);
+    beforeTests.add(target);
   }
 
   public void addAfterSuite(InvocationTarget target) {
@@ -278,12 +280,12 @@ public class FSM {
     beforeSuites.add(target);
   }
 
-  public Collection<InvocationTarget> getBefores() {
-    return befores;
+  public Collection<InvocationTarget> getBeforeTests() {
+    return beforeTests;
   }
 
-  public Collection<InvocationTarget> getAfters() {
-    return afters;
+  public Collection<InvocationTarget> getAfterTests() {
+    return afterTests;
   }
 
   public Collection<InvocationTarget> getBeforeSuites() {

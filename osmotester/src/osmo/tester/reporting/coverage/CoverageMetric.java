@@ -10,9 +10,6 @@ import osmo.tester.model.Requirements;
 import osmo.tester.scripter.robotframework.CSSHelper;
 import osmo.tester.coverage.TestCoverage;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -86,7 +83,7 @@ public abstract class CoverageMetric {
     Map<String, Integer> coverage = new HashMap<>();
 
     for (TestCase tc : tests) {
-      String previous = FSM.START_NAME;
+      String previous = FSM.START_STEP_NAME;
       for (TestCaseStep ts : tc.getSteps()) {
         String next = ts.getName();
         String key = previous + "->" + next;

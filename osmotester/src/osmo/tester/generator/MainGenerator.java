@@ -4,7 +4,7 @@ import osmo.common.OSMOException;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
-import osmo.tester.generator.filter.TransitionFilter;
+import osmo.tester.generator.filter.StepFilter;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -46,12 +46,14 @@ public class MainGenerator {
   private static int testCount = 0;
   /** Set of possible pairs, key = source, value = targets. */
   private Collection<String> possiblePairs = new HashSet<>();
+  /** The base seed to use for test generation. Each new test case gets a different seed based on this. */
   private final long baseSeed;
+  /** The seed for the current test case being generated. */
   private Long seed = null;
 
   /**
-   * Constructor.
-   *
+   * @param seed   The base seed to use for randomization during generation.
+   * @param suite  This is where the generated tests are stored.
    * @param config The configuration for test generation parameters.
    */
   public MainGenerator(long seed, TestSuite suite, OSMOConfiguration config) {
@@ -75,19 +77,27 @@ public class MainGenerator {
     endSuite();
   }
 
+  /**
+   * Creates all the model object instances as required. If a factory is defined, that is called.
+   * If a set of classes is given, a special factory is used to create objects using reflection.
+   * If no factory and no classes is given, it is assumed a set of object instances has been provided
+   * by the user and these will be re-used across the generation.
+   */
   private void createModelObjects() {
     if (config.getFactory() == null && fsm != null) return;
     if (config.getFactory() != null) {
-      int salt = suite.getCoverage().getTransitions().size();
+      int salt = suite.getCoverage().getSteps().size();
+      //create a new seed for the new test case
       seed = baseSeed + salt;
     }
+    //re-parse the model, which causes re-creation of the model objects and as such creates the new references
+    //to the new object instances. invocationtargets for guards, steps, etc. need updating and this is needed for that.
     MainParser parser = new MainParser();
     ParserResult result = parser.parse(seed, config, suite);
     fsm = result.getFsm();
     fsm.initSearchableInputs(config);
     invokeAll(fsm.getGenerationEnablers());
     this.reqs = result.getRequirements();
-    //TODO: add test to see reqs are initialized
     suite.initRequirements(reqs);
   }
 
@@ -141,6 +151,11 @@ public class MainGenerator {
     return test;
   }
 
+  /**
+   * Take the next step in the current test case.
+   * 
+   * @return True if this test should end now.
+   */
   private boolean nextStep() {
     List<FSMTransition> enabled = getEnabled();
     addOptionsFor(suite.getCurrentTest().getCurrentStep(), enabled);
@@ -164,7 +179,7 @@ public class MainGenerator {
   }
 
   /**
-   * Executes the given transition on the given model.
+   * Executes the given transition on the given model as a test step.
    *
    * @param transition The transition to be executed.
    */
@@ -203,9 +218,9 @@ public class MainGenerator {
   }
 
   /**
-   * Updates the state in the test suite and stores it into test step etc.
+   * Updates the user defined state (@StateName) in the test suite and stores it into test step etc.
    *
-   * @param step The step.
+   * @param step The step to store data into.
    */
   private void storeUserState(TestCaseStep step) {
     InvocationTarget stateName = fsm.getStateNameFor(step.getModelObjectName());
@@ -274,6 +289,9 @@ public class MainGenerator {
     return false;
   }
 
+  /**
+   * Initializes the test suite with valid values and invokes @BeforeSuite before test generation is started.
+   */
   public void initSuite() {
     if (suite == null) {
       log.debug("No suite object defined. Creating new.");
@@ -290,12 +308,20 @@ public class MainGenerator {
     invokeAll(befores);
   }
 
+  /**
+   * For @AfterSuite annotations.
+   */
   protected void afterSuite() {
     Collection<InvocationTarget> afters = fsm.getAfterSuites();
     invokeAll(afters);
     listeners.suiteEnded(suite);
   }
 
+  /**
+   * For @BeforeTest annotations.
+   * 
+   * @return The new test case.
+   */
   public TestCase beforeTest() {
     testCount++;
     //re-initialize end conditions before new tests to remove previous test state
@@ -303,13 +329,16 @@ public class MainGenerator {
     //update suite
     TestCase test = suite.startTest();
     listeners.testStarted(suite.getCurrentTest());
-    Collection<InvocationTarget> befores = fsm.getBefores();
+    Collection<InvocationTarget> befores = fsm.getBeforeTests();
     invokeAll(befores);
     return test;
   }
 
+  /**
+   * For @AfterTest annotations.
+   */
   public void afterTest() {
-    Collection<InvocationTarget> afters = fsm.getAfters();
+    Collection<InvocationTarget> afters = fsm.getAfterTests();
     invokeAll(afters);
     TestCase current = suite.getCurrentTest();
     //update history
@@ -323,9 +352,9 @@ public class MainGenerator {
   }
 
   /**
-   * Goes through all {@link osmo.tester.annotation.Transition} tagged methods in the given test model object,
-   * invokes all associated {@link osmo.tester.annotation.Guard} tagged methods matching those transitions,
-   * returning the set of {@link osmo.tester.annotation.Transition} methods that have no guards returning a value
+   * Goes through all {@link osmo.tester.annotation.TestStep} tagged methods in the given test model object,
+   * invokes all associated {@link osmo.tester.annotation.Guard} tagged methods matching those test steps,
+   * returning the set of {@link osmo.tester.annotation.TestStep} methods that have no guards returning a value
    * of {@code false}.
    *
    * @return The list of enabled {@link osmo.tester.annotation.Transition} methods.
@@ -334,7 +363,7 @@ public class MainGenerator {
     List<FSMTransition> enabled = new ArrayList<>();
     enabled.addAll(fsm.getTransitions());
     //filter out all non-wanted transitions
-    for (TransitionFilter filter : config.getFilters()) {
+    for (StepFilter filter : config.getFilters()) {
       filter.filter(enabled);
     }
     //sort the remaining ones to get deterministic test generation
@@ -382,8 +411,15 @@ public class MainGenerator {
     return fsm;
   }
 
+  /**
+   * Helps keep track of possible pairs of test steps encountered during test generation.
+   * This can be used in reporting to list what was covered and what was not.
+   * 
+   * @param step    The current executed step.
+   * @param enabled The set of enabled steps in this state (next steps from current "step").
+   */
   public void addOptionsFor(TestCaseStep step, List<FSMTransition> enabled) {
-    String stepName = FSM.START_NAME;
+    String stepName = FSM.START_STEP_NAME;
     if (step != null) {
       stepName = step.getName();
     }

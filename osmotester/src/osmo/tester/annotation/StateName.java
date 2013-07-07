@@ -6,11 +6,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /** 
- * A method annotated with this is considered to give a descriptive name for a state.
+ * Annotated method is expected to give a descriptive name for a state.
  * While state is practically a combination of all the variables in the model, this can be used to provide
  * more meaningful names for visualization, and also to group coverage values for a state if so desired.
- * You are expected to only have one of these in your overall model.
+ * You are expected to only have one of these in your overall model, or the generator will fail.
  * If a null value is returned by the method, it will not be taken into account as a state.
+ * 
+ * The annotated method must return a String value.
  * 
  * @author Teemu Kanstren 
  */

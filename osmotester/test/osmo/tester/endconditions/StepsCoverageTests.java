@@ -44,7 +44,6 @@ public class StepsCoverageTests {
     t9 = createTransition("t9", 1);
     t10 = createTransition("t10", 1);
     suite = new TestSuite();
-    suite.init();
     suite.startTest();
     stepCoverage = new StepCoverage();
   }
