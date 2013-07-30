@@ -95,5 +95,12 @@ v3.0.0 16/03/2013
 -Fixed bugs
 -Added group support to test steps, guards, and pre-post-elements
 -Added offline optimizer and associated test generation coverage mechanisms
-
-
+v3.1.0
+-seed is now parameter to generator, not a static value (for parallel runs)
+-optimized greedy optimizer to run final sort much faster
+-added check for multiple steps with same name
+-added more extensive coverage metric printing
+-some cleanup: removed file scripting, removed output interface
+-added group support at class level
+-changed coverage categories to model objects
+-added state-pairs to coverage options

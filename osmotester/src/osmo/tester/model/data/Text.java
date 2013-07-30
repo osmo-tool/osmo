@@ -192,10 +192,6 @@ public class Text extends SearchableInput<String> {
     return next;
   }
 
-  private String scriptedNext() {
-    return scriptNextSerialized();
-  }
-
   /**
    * Creates values that are different from expected, replacing chars with invalid ones using some heuristics and
    * random probability.

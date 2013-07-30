@@ -381,15 +381,6 @@ public class FSM {
   }
 
   /**
-   * These provide access to the {@link osmo.tester.model.data.SearchableInput} elements, to enable capturing changes between tests.
-   *
-   * @return The access codes for the searchable inputs.
-   */
-  public Collection<SearchableInputField> getSearchableInputFields() {
-    return searchableInputFields;
-  }
-
-  /**
    * Model variables extending the {@link osmo.tester.model.data.SearchableInput} class. Does not include @Variable annotated classes.
    *
    * @return Variables extending {@link osmo.tester.model.data.SearchableInput} classes.
@@ -437,45 +428,13 @@ public class FSM {
    * @param config This is where the scripter and value options are taken.
    */
   public void initSearchableInputs(OSMOConfiguration config) {
-    /* Scripter used for SearchableInput variables. */
-    ScriptedValueProvider scripter = config.getScripter();
     //initial capture to allow FSM to have names, etc. for algorithm initialization
-    captureSearchableInputs();
-
-    if (scripter != null) {
-      initScripts(scripter);
-    }
-  }
-
-  private void captureSearchableInputs() {
     Collection<SearchableInputField> inputs = new ArrayList<>();
     inputs.addAll(searchableInputFields);
     clearSearchableInputs();
     for (SearchableInputField input : inputs) {
       addSearchableInput(input.getInput());
     }
-  }
-
-  private Collection<String> initScripts(ScriptedValueProvider scripter) {
-    Map<String, ValueSet<String>> scripts = scripter.getScripts();
-    log.debug("scripts loaded:" + scripts);
-    Collection<String> errors = new ArrayList<>();
-    for (String variable : scripts.keySet()) {
-      boolean found = false;
-      for (SearchableInputField input : searchableInputFields) {
-        if (input.getName().equals(variable)) {
-          found = true;
-          break;
-        }
-      }
-      if (!found) {
-        errors.add(variable);
-      }
-    }
-    if (errors.size() > 0) {
-      throw new IllegalArgumentException("Scripted variable(s) not searchable in the model:" + errors);
-    }
-    return scripts.keySet();
   }
 
   public void addSpecificGuard(TransitionName name, InvocationTarget target) {

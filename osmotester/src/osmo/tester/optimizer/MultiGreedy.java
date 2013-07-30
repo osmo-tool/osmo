@@ -3,6 +3,7 @@ package osmo.tester.optimizer;
 import osmo.common.Randomizer;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
+import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.coverage.ScoreConfiguration;
 import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.endcondition.EndCondition;
@@ -147,10 +148,6 @@ public class MultiGreedy {
   }
 
   private void writeFinalReport(List<GreedyOptimizer> optimizers, List<TestCase> cases) {
-    String csv1 = "cumulative coverage per test\n";
-    String csv2 = "gained coverage per test\n";
-    String csv3 = "number of tests in suite\n";
-    String csv4 = "total score\n";
     String summary = "summary\n";
 
     Collection<String> possiblePairs = new HashSet<>();
@@ -158,22 +155,15 @@ public class MultiGreedy {
       possiblePairs.addAll(optimizer.getPossiblePairs());
     }
     
-    GreedyOptimizer optimizer = optimizers.get(0);
-    csv1 += optimizer.csvForCoverage(cases);
-    csv2 += optimizer.csvForGain(cases);
-    csv3 += optimizer.csvNumberOfTests(cases);
-    csv4 += optimizer.csvTotalScores(cases);
+    CSVReport report = new CSVReport(new ScoreCalculator(optimizerConfig));
+    report.process(cases);
 
     TestCoverage tc = new TestCoverage(cases);
     summary += tc.coverageString(fsm, possiblePairs, null, null, false);
 
-    String totalCsv = "";
-    totalCsv += csv1 + "\n";
-    totalCsv += csv2 + "\n";
-    totalCsv += csv3 + "\n";
-    totalCsv += csv4 + "\n";
+    String totalCsv = report.report();
     totalCsv += summary + "\n";
-    optimizer.writeFile("final-scores.csv", totalCsv);
+    optimizers.get(0).writeFile("final-scores.csv", totalCsv);
   }
 
   public FSM getFsm() {

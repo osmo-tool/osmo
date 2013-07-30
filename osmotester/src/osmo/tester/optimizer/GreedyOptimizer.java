@@ -51,7 +51,7 @@ public class GreedyOptimizer {
   private FSM fsm = null;
   /** The number of tests to generate in an iteration. */
   private final int populationSize;
-  /** An alternative to providing a model object factory is to give the set of classes used to instanciate the objects. */
+  /** An alternative to providing a model object factory is to give the set of classes used to instantiate the objects. */
   private final Collection<Class> modelClasses = new ArrayList<>();
   /** For creating model objects. */
   private ModelFactory factory = null;
@@ -169,10 +169,9 @@ public class GreedyOptimizer {
     int iteration = 0;
     int gain = Integer.MAX_VALUE;
     int previousScore = 0;
-    String csv1 = "cumulative coverage per test\n";
-    String csv2 = "gained coverage per test\n";
-    String csv3 = "number of tests in suite\n";
-    String csv4 = "total score\n";
+
+    CSVReport report = new CSVReport(scoreCalculator);
+
     if (timeout > 0) {
       //timeout is given in seconds so we multiple by 1000 to get milliseconds
       timeout = System.currentTimeMillis()+timeout*1000;
@@ -187,11 +186,9 @@ public class GreedyOptimizer {
         suite.add(testCase);
       }
       suite = sortAndPrune(suite);
-      csv1 += csvForCoverage(suite);
-      csv2 += csvForGain(suite);
-      csv3 += csvNumberOfTests(suite);
-      csv4 += csvTotalScores(suite);
+      report.process(suite);
       TestCoverage suiteCoverage = new TestCoverage(suite);
+     
       int score = scoreCalculator.calculateScore(suiteCoverage);
       gain = score - previousScore;
       previousScore = score;
@@ -208,13 +205,10 @@ public class GreedyOptimizer {
     TestCoverage suiteCoverage = new TestCoverage(suite);
 
     String summary = "summary\n";
+    //we do not have the set of possible states or state pairs as those would require executing the "states" which greedy does not do..
     summary += suiteCoverage.coverageString(fsm, possiblePairs, null, null, false);
     
-    String totalCsv = "";
-    totalCsv += csv1+"\n";
-    totalCsv += csv2+"\n";
-    totalCsv += csv3+"\n";
-    totalCsv += csv4+"\n";
+    String totalCsv = report.report();
     totalCsv += summary+"\n";
     writeFile(id+"-scores.csv", totalCsv);
     long end = System.currentTimeMillis();
@@ -241,75 +235,6 @@ public class GreedyOptimizer {
    */
   public void writeFile(String name, String content) {
     TestUtils.write(content, "osmo-output-"+seed+"/" + name);
-  }
-
-  /**
-   * CSV row of coverage for each test, to use in excel etc.
-   * 
-   * @param tests Create coverage CSV for these.
-   * @return The CSV text.
-   */
-  protected String csvForCoverage(Collection<TestCase> tests) {
-    String csv = "";
-    TestCoverage tc = new TestCoverage();
-    for (TestCase test : tests) {
-      tc.addTestCoverage(test);
-      csv += scoreCalculator.calculateScore(tc) + "; ";
-    }
-    csv += "\n";
-    return csv;
-  }
-
-  /**
-   * CSV row with only the number of tests in it, to use in excel etc.
-   *
-   * @param tests Create test count for these.
-   * @return The CSV text.
-   */
-  protected String csvNumberOfTests(Collection<TestCase> tests) {
-    String csv = "";
-    csv += tests.size();
-    csv += "\n";
-    return csv;
-  }
-
-  /**
-   * CSV row with only the total suite score in it, to use in excel etc.
-   *
-   * @param tests Create suite score for these.
-   * @return The CSV text.
-   */
-  protected String csvTotalScores(Collection<TestCase> tests) {
-    String csv = "";
-    TestCoverage tc = new TestCoverage();
-    for (TestCase test : tests) {
-      tc.addTestCoverage(test);
-    }
-    csv += scoreCalculator.calculateScore(tc);
-    csv += "\n";
-    return csv;
-  }
-
-  /**
-   * CSV row of added coverage score for each test, to use in excel etc.
-   * The tests should be ordered so that the one with most coverage is first, the one that adds most to that is next,
-   * and so on. This is how this optimizer does it, anyway.
-   *
-   * @param tests Create coverage CSV for these.
-   * @return The CSV text.
-   */
-  protected String csvForGain(Collection<TestCase> tests) {
-    String csv = "";
-    TestCoverage tc = new TestCoverage();
-    for (TestCase test : tests) {
-      int old = scoreCalculator.calculateScore(tc);
-      tc.addTestCoverage(test);
-      int now = scoreCalculator.calculateScore(tc);
-      int gain = now - old;
-      csv += gain + "; ";
-    }
-    csv += "\n";
-    return csv;
   }
 
   /**
