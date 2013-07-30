@@ -88,7 +88,6 @@ public class OSMOTester {
     TestCoverage tc = new TestCoverage(suite.getAllTestCases());
     String coverage = tc.coverageString(fsm, generator.getPossiblePairs(), null, null, false);
     System.out.println(coverage);
-    //TODO: using a model factory seems to break the requirements tracking
     Requirements requirements = suite.getRequirements();
     if (!requirements.isEmpty()) {
       System.out.println();
@@ -100,6 +99,7 @@ public class OSMOTester {
     TestSuite suite = new TestSuite();
     MainGenerator generator = new MainGenerator(seed, suite, config);
     fsm = generator.getFsm();
+    config.initializeGeneratorElements(seed, fsm);
     return generator;
   }
 
@@ -157,10 +157,6 @@ public class OSMOTester {
 
   public void addFilter(StepFilter filter) {
     config.addFilter(filter);
-  }
-
-  public void setValueScripter(ScriptedValueProvider scripter) {
-    config.setScripter(scripter);
   }
 
   public OSMOConfiguration getConfig() {

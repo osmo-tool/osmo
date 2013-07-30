@@ -88,13 +88,6 @@ public abstract class SearchableInput<T> implements Input<T>, VariableValue<T> {
     suite.getCurrentTest().addVariableValue(name, value, false);
   }
 
-  public String scriptNextSerialized() {
-    if (scripter == null) {
-      scripter = OSMOConfiguration.getScripter();
-    }
-    return scripter.next(name);
-  }
-
   public Collection<?> getOptions() {
     throw new UnsupportedOperationException("This variable type does not support defining options");
   }

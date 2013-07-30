@@ -206,12 +206,6 @@ public class JenkinsReportGenerator implements GenerationListener {
     for (StepFilter filter : filters) {
       properties.add(new Property(FILTER, filter.getClass().getName()));
     }
-    ScriptedValueProvider scripter = config.getScripter();
-    if (scripter == null) {
-      properties.add(new Property(SCRIPTER, NULL));
-    } else {
-      properties.add(new Property(SCRIPTER, scripter.getClass().getName()));
-    }
     Collection<GenerationListener> listeners = config.getListeners().getListeners();
     for (GenerationListener listener : listeners) {
       properties.add(new Property(LISTENER, listener.getClass().getName()));

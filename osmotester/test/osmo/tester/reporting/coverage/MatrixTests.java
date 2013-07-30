@@ -21,7 +21,6 @@ public class MatrixTests {
 
   @Before
   public void setup() {
-    OSMOConfiguration.reset();
     TestCase.reset();
     suite = new TestSuite();
     suite.initRequirements(null);

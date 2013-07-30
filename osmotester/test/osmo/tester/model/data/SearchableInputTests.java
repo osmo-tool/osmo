@@ -21,7 +21,6 @@ public class SearchableInputTests {
 
   @Before
   public void reset() {
-    OSMOConfiguration.reset();
     suite = new TestSuite();
     TestCase test = suite.startTest();
     test.addStep(new FSMTransition("test"));

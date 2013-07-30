@@ -40,13 +40,10 @@ public class OSMOConfiguration implements ModelFactory {
   private boolean failWhenError = true;
   /** Listeners to be notified about test generation events. */
   private GenerationListenerList listeners = new GenerationListenerList();
-  /** Provides scripted values for variables. */
-  private static ScriptedValueProvider scripter;
   /** Number of tests to generate when using over JUnit. */
   private int junitLength = -1;
   /** Should we try to throw original exception if model throws (remove OSMO Tester trace from the top)? */
   private boolean unwrapExceptions = true;
-  private Long baseSeed = null;
   /** Factory for creating model objects, alternative to adding them one by one. */
   private ModelFactory factory = null;
   /** Is manual drive enabled? Used to enable manual GUI etc. */
@@ -141,19 +138,6 @@ public class OSMOConfiguration implements ModelFactory {
   }
 
   /**
-   * Sets the scripter to be used for providing values, if any.
-   *
-   * @param scripter The new scripter.
-   */
-  public static void setScripter(ScriptedValueProvider scripter) {
-    OSMOConfiguration.scripter = scripter;
-  }
-
-  public static ScriptedValueProvider getScripter() {
-    return scripter;
-  }
-
-  /**
    * Defines if test generation should be completely stopped when the generation of a test throws an exception.
    *
    * @return True if we should stop test generation completely if the model execution throws.
@@ -199,7 +183,7 @@ public class OSMOConfiguration implements ModelFactory {
     if (algorithm == null) {
       algorithm = new RandomAlgorithm();
     }
-    fsm.initSearchableInputs(this);
+//    fsm.initSearchableInputs(this);
     algorithm.init(seed, fsm);
     suiteEndCondition.init(seed, fsm);
     //test end condition is initialized in generator between each test case
@@ -238,10 +222,6 @@ public class OSMOConfiguration implements ModelFactory {
 
   public void setUnwrapExceptions(boolean unwrapExceptions) {
     this.unwrapExceptions = unwrapExceptions;
-  }
-
-  public static void reset() {
-    scripter = null;
   }
 
   public static void check(SearchableInput si) {
