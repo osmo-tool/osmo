@@ -5,7 +5,6 @@ import osmo.tester.model.data.SearchableInput;
 import osmo.tester.parser.AnnotationParser;
 import osmo.tester.parser.ParserParameters;
 import osmo.tester.parser.ParserResult;
-import osmo.tester.parser.field.SearchableInputField;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -31,9 +30,12 @@ public class SearchableInputParser implements AnnotationParser {
     } catch (IllegalAccessException e) {
       throw new RuntimeException("Unable to parse SearchableInput object " + field.getName(), e);
     }
-    SearchableInputField inputField = new SearchableInputField(model, field);
     input.setSuite(parameters.getSuite());
     input.setSeed(parameters.getSeed());
+    if (input.getName() == null) {
+      input.setName(field.getName());
+    }
+
     Collection<Object> annotations = parameters.getFieldAnnotations();
     for (Object annotation : annotations) {
       if (annotation instanceof Variable) {
@@ -44,7 +46,6 @@ public class SearchableInputParser implements AnnotationParser {
         }
       }
     }
-    result.getFsm().addSearchableInputField(inputField);
     return errors;
   }
 }

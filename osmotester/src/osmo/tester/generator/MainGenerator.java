@@ -95,7 +95,6 @@ public class MainGenerator {
     MainParser parser = new MainParser();
     ParserResult result = parser.parse(seed, config, suite);
     fsm = result.getFsm();
-    fsm.initSearchableInputs(config);
     invokeAll(fsm.getGenerationEnablers());
     this.reqs = result.getRequirements();
     suite.initRequirements(reqs);

@@ -87,7 +87,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
   /** The model we are using for generation. */
   private FSM fsm = null;
   /** Used as locking object to synchronize between GUI elements. */
-  private static Object lock = new Object();
+  private static final Object lock = new Object();
   /** Button to end test case after next step. */
   private static final JButton btnEndTest = new JButton("End Test");
   /** Button to end test suite after next step. */
@@ -376,10 +376,6 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
 
   private String stateText() {
     String text = "";
-    Collection<SearchableInput> inputs = fsm.getSearchableInputs();
-    for (SearchableInput input : inputs) {
-      text += input.getName() + ": " + input.getLatestValue() + "\n";
-    }
     Collection<VariableField> variables = fsm.getStateVariables();
     for (VariableField variable : variables) {
       text += variable.getName() + ": " + variable.getValue() + "\n";
@@ -433,10 +429,14 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
   @Override
   public void init(long seed, FSM fsm) {
     this.fsm = fsm;
-    Collection<SearchableInput> inputs = fsm.getSearchableInputs();
-    for (SearchableInput input : inputs) {
-      input.enableGUI();
-      input.setChecked(true);
+    Collection<VariableField> variables = fsm.getStateVariables();
+    for (VariableField variable : variables) {
+      Object value = variable.getValue();
+      if (value instanceof SearchableInput) {
+        SearchableInput si = (SearchableInput) value;
+        si.enableGUI();
+        si.setChecked(true);
+      }
     }
   }
 

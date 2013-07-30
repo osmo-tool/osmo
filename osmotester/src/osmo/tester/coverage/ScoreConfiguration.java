@@ -49,7 +49,7 @@ public class ScoreConfiguration {
    */
   public void validate(FSM fsm) {
     log.debug("validating against:" + fsm);
-    Collection<VariableField> coverageVariables = fsm.getCoverageVariables();
+    Collection<VariableField> coverageVariables = fsm.getStateVariables();
     Collection<String> variableNames = new ArrayList<>();
     for (VariableField field : coverageVariables) {
       variableNames.add(field.getName());

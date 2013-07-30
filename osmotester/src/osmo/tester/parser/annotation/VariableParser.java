@@ -36,11 +36,7 @@ public class VariableParser implements AnnotationParser {
     } catch (IllegalAccessException e) {
       throw new RuntimeException("Failed to check variable type for " + field.getName(), e);
     }
-    if (!(o instanceof SearchableInput)) {
-      //we only add the non searchable-inputs there..
-      result.getFsm().addStateVariable(var);
-    }
-    result.getFsm().addCoverageVariable(var);
+    result.getFsm().addStateVariable(var);
     log.debug("Parsed variable:" + annotationName);
     return errors;
   }
