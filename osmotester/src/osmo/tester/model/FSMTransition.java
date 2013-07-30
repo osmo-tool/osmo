@@ -33,8 +33,6 @@ public class FSMTransition implements Comparable<FSMTransition> {
   private final List<InvocationTarget> pres = new ArrayList<>();
   /** The set of post-methods to be evaluated after this transition has been taken. */
   private final List<InvocationTarget> posts = new ArrayList<>();
-  /** This is to allow @Pre and @Post to store and share properties over this transition. */
-  private Map<String, Object> prePostParameter = new HashMap<>();
   /** The group this transition belongs to, null or "" are considered as no group. */
   private TransitionName groupName;
   /** A strict one stops the generator, throwing any exceptions. Non-strict will log the error but continue. */
@@ -53,10 +51,6 @@ public class FSMTransition implements Comparable<FSMTransition> {
     Collections.sort(pres);
     Collections.sort(posts);
     Collections.sort(guards);
-  }
-
-  public Map<String, Object> getPrePostParameter() {
-    return prePostParameter;
   }
 
   public void setGroupName(TransitionName groupName) {
@@ -147,28 +141,6 @@ public class FSMTransition implements Comparable<FSMTransition> {
             "name='" + name + '\'' +
             ", weight=" + weight +
             '}';
-  }
-
-  /** Clears the parameters between @Pre and @Post methods so old ones do not mess with new ones. */
-  public void reset() {
-    prePostParameter.clear();
-  }
-
-  /**
-   * Stores the state (@Variable tagged model variables) to the model state visible in the @Pre and @Post
-   * tagged methods.
-   * <p/>
-   * NOTE: this is not related to storing the generated data in the suite but just to
-   * sharing information between @Pre and @Post methods in models.
-   *
-   * @param fsm The model where this should be stored.
-   */
-  public void updatePrePostMap(FSM fsm) {
-    Collection<VariableField> variables = fsm.getStateVariables();
-    log.debug("Storing variables:" + variables);
-    for (VariableField var : variables) {
-      prePostParameter.put(var.getName(), var.getValue());
-    }
   }
 
   public String getStringName() {

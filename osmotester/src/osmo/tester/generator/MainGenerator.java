@@ -183,14 +183,11 @@ public class MainGenerator {
    * @param transition The transition to be executed.
    */
   public void execute(FSMTransition transition) {
-    transition.reset();
     //we have to add this first or it will produce failures..
     TestCaseStep step = suite.addStep(transition);
-    //store state variable values for pre-methods
-    transition.updatePrePostMap(fsm);
     //store into test step the current state
     step.start();
-    invokeAll(transition.getPreMethods(), transition.getPrePostParameter(), "pre", transition);
+    invokeAll(transition.getPreMethods(), "pre", transition);
     //this is the actual transition/test step being executed
     InvocationTarget target = transition.getTransition();
     if (transition.isStrict()) {
@@ -206,12 +203,10 @@ public class MainGenerator {
     //we store the "custom" state returned by @StateName tagged methods
     //we do it here to allow any post-processing of state value for a step
     storeUserState(step);
-    //re-store state into transition to update parameters for post-methods
-    transition.updatePrePostMap(fsm);
     //store into test step the current state, do it here to allow the post methods and listeners to see step state
     step.storeGeneralState(fsm);
     listeners.step(step);
-    invokeAll(transition.getPostMethods(), transition.getPrePostParameter(), "post", transition);
+    invokeAll(transition.getPostMethods(), "post", transition);
     //set end time
     step.end();
   }
@@ -255,11 +250,10 @@ public class MainGenerator {
    * Invokes the given set of methods on the target test object.
    *
    * @param targets    The methods to be invoked.
-   * @param arg        Argument to methods invoked.
    * @param element    Type of model element (pre or post)
    * @param transition Transition to which the invocations are related.
    */
-  protected void invokeAll(Collection<InvocationTarget> targets, Object arg, String element, FSMTransition transition) {
+  protected void invokeAll(Collection<InvocationTarget> targets, String element, FSMTransition transition) {
     for (InvocationTarget target : targets) {
       if (element.equals("pre")) {
         listeners.pre(transition);
@@ -267,7 +261,7 @@ public class MainGenerator {
       if (element.equals("post")) {
         listeners.post(transition);
       }
-      target.invoke(arg);
+      target.invoke();
     }
   }
 

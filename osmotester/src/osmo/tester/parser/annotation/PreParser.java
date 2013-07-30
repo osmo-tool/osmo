@@ -30,14 +30,8 @@ public class PreParser implements AnnotationParser {
     String errors = "";
     Class<?>[] parameterTypes = method.getParameterTypes();
     //return types are not checked because the make no difference for invocation
-    if (parameterTypes.length > 1) {
-      errors += "Pre-methods are allowed to have only one parameter of type Map<String, Object>: \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n";
-    }
-    if (parameterTypes.length == 1) {
-      Class<?> parameterType = parameterTypes[0];
-      if (parameterType != Map.class) {
-        errors += "Pre-methods are allowed to have only one parameter of type Map<String, Object>: \"" + method.getName() + "()\" has one of type " + parameterType + ".\n";
-      }
+    if (parameterTypes.length > 0) {
+      errors += "Pre-methods are not allowed to have parameters: \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n";
     }
 
     InvocationTarget target = new InvocationTarget(parameters, Pre.class);

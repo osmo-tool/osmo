@@ -86,9 +86,8 @@ public class ValidTestModel4 {
   }
 
   @Post
-  public void stateCheck(Map<String, Object> p) {
+  public void stateCheck() {
     out.print(":gen_oracle");
-    assertEquals("Post should have no parameters without one defined in pre.", 0, p.size());
   }
 
   @Post({"hello", "world"})

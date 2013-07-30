@@ -189,8 +189,6 @@ public class GenerationTests {
     osmo.setSuiteEndCondition(length5);
     osmo.generate(111);
     assertEquals("Number of times generic @Post performed", 10, model.checkCount);
-    assertTrue("Should have performed generic @Post for first transition", model.firstChecked);
-    assertTrue("Should have performed generic @Post for second transition", model.secondChecked);
   }
 
   @Test

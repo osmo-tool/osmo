@@ -107,11 +107,11 @@ public class EmptyTestModel1 {
   }
 
   @Pre({"hello", "epixx"})
-  public void commonPre(Map<String, Object> p) {
+  public void commonPre() {
   }
 
   @Post({"hello", "epixx"})
-  public void commonOracle(Map<String, Object> p) {
+  public void commonOracle() {
   }
 
   @EndCondition

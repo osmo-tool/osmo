@@ -43,12 +43,13 @@ public class ModelVisualizer {
   //exploration enablers
   //generation enablers
   //requirements
-  public void show() {
+  public void write() {
+    String report = "";
     MainGenerator generator = new MainGenerator(0, new TestSuite(), config);
     FSM fsm = generator.getFsm();
     Collection<FSMTransition> transitions = fsm.getTransitions();
-    for (FSMTransition transition : transitions) {
-//      transition.ge
+    for (FSMTransition t : transitions) {
+      
     }
   }
 }

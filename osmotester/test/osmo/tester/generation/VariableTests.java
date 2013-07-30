@@ -20,13 +20,10 @@ import static junit.framework.Assert.*;
 /** @author Teemu Kanstren */
 public class VariableTests {
   private OSMOTester osmo = null;
-  private VariableTestListener listener;
 
   @Before
   public void testSetup() {
     osmo = new OSMOTester();
-    listener = new VariableTestListener();
-    osmo.addListener(listener);
   }
 
   @Test

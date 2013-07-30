@@ -104,7 +104,7 @@ public class ParserTests {
               "Invalid return type for @GenerationEnabler (\"enableGeneration()\"):int.\n" +
               "Invalid return type for @StateName in (\"badArgument()\"):void. Should be String.\n"+
               "Invalid return type for guard (\"hello()\"):class java.lang.String.\n" +
-              "Post-methods are allowed to have only one parameter of type Map<String, Object>: \"wrong()\" has one of type class java.lang.String.\n" +
+              "Post-methods are not allowed to have any parameters: \"wrong()\" has 1.\n" +
               "StateName methods must have 1 parameter (TestStep): \"badArgument()\" has 2 parameters.\n" +
               "StateName parameter must be of type class osmo.tester.generator.testsuite.TestCaseStep: \"badArgument()\" has type class java.lang.String\n"+
               "Transition name must be unique. 'foo' given several times.\n"+
@@ -258,35 +258,25 @@ public class ParserTests {
     fail("Variable " + name + " should be present in the model.");
   }
 
+  private void assertVariableNotPresent(Collection<VariableField> variables, String name) {
+    for (VariableField variable : variables) {
+      if (variable.getName().equals(name)) {
+        fail("Variable " + name + " should not be present in the model.");
+      }
+    }
+  }
+
   @Test
   public void searchableInputParsing() {
     VariableModel2 model = new VariableModel2();
     OSMOConfiguration config = conf(model);
     ParserResult result = parser.parse(1, config, new TestSuite());
     FSM fsm = result.getFsm();
-    fsm.initSearchableInputs(config);
-    Collection<SearchableInput> inputs = fsm.getSearchableInputs();
-    assertEquals("Number of inputs", 2, inputs.size());
-    assertSearchableInputPresent(inputs, "range");
-    assertSearchableInputPresent(inputs, "named-set");
-    assertSearchableInputNotPresent(inputs, "set");
-  }
-
-  private void assertSearchableInputPresent(Collection<SearchableInput> inputs, String name) {
-    for (SearchableInput input : inputs) {
-      if (input.getName().equals(name)) {
-        return;
-      }
-    }
-    fail("SearchableInput " + name + " should be present in the model.");
-  }
-
-  private void assertSearchableInputNotPresent(Collection<SearchableInput> inputs, String name) {
-    for (SearchableInput input : inputs) {
-      if (input.getName().equals(name)) {
-        fail("SearchableInput " + name + " should not be present in the model.");
-      }
-    }
+    Collection<VariableField> variables = fsm.getStateVariables();
+    assertEquals("Number of inputs", 5, variables.size());
+    assertVariablePresent(variables, "range");
+    assertVariablePresent(variables, "named-set");
+    assertVariableNotPresent(variables, "set");
   }
 
   @Test
