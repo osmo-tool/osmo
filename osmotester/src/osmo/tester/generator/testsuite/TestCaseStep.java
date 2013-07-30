@@ -4,6 +4,7 @@ import osmo.common.log.Logger;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.VariableField;
+import osmo.tester.model.data.SearchableInput;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -135,8 +136,10 @@ public class TestCaseStep {
     for (VariableField variable : variables) {
       String name = variable.getName();
       Object value = variable.getValue();
-      //true to merge values to contain only unique values
-      parent.addVariableValue(name, value, true);
+      if (!variable.isSearchableInput()) {
+        //true to merge values to contain only unique values
+        parent.addVariableValue(name, value, true);
+      }
     }
   }
 

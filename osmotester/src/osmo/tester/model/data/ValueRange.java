@@ -183,19 +183,6 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
     return value;
   }
 
-  private Number convert(String text) {
-    switch (type) {
-      case INT:
-        return Integer.parseInt(text);
-      case LONG:
-        return Long.parseLong(text);
-      case DOUBLE:
-        return Double.parseDouble(text);
-      default:
-        throw new IllegalArgumentException("Enum type:" + type + " unsupported.");
-    }
-  }
-
   /**
    * Create next value for the ordered loop algorithm.
    *

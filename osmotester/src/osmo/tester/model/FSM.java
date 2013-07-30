@@ -1,10 +1,6 @@
 package osmo.tester.model;
 
 import osmo.common.log.Logger;
-import osmo.tester.OSMOConfiguration;
-import osmo.tester.model.data.SearchableInput;
-import osmo.tester.model.data.ValueSet;
-import osmo.tester.parser.field.SearchableInputField;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,12 +48,6 @@ public class FSM {
   private Collection<InvocationTarget> generationEnablers = new ArrayList<>();
   /** List of state variables to store for each test step. */
   private Collection<VariableField> stateVariables = new ArrayList<>();
-  /** List of variables that can be used for coverage calculations. */
-  private Collection<VariableField> coverageVariables = new ArrayList<>();
-  /** The list of {@link osmo.tester.model.data.SearchableInput} elements parsed from model objects. */
-  private Collection<SearchableInput> searchableInputs = new ArrayList<>();
-  /** We read the {@link osmo.tester.model.data.SearchableInput} values from these when tests start. */
-  private Collection<SearchableInputField> searchableInputFields = new ArrayList<>();
   /** User defined requirements. */
   private Requirements requirements = null;
   /** The set of objects to call to get current state. Key = model object name, value=target method to get state value.*/
@@ -363,53 +353,13 @@ public class FSM {
     stateVariables.add(var);
   }
 
-  public void addCoverageVariable(VariableField var) {
-    coverageVariables.add(var);
-  }
-
   /**
-   * State variables as tagged by @Variable annotations. Does not include {@link osmo.tester.model.data.SearchableInput} classes.
+   * State variables as tagged by @Variable annotations.
    *
    * @return variables tagged @Variable.
    */
   public Collection<VariableField> getStateVariables() {
     return stateVariables;
-  }
-
-  public Collection<VariableField> getCoverageVariables() {
-    return coverageVariables;
-  }
-
-  /**
-   * Model variables extending the {@link osmo.tester.model.data.SearchableInput} class. Does not include @Variable annotated classes.
-   *
-   * @return Variables extending {@link osmo.tester.model.data.SearchableInput} classes.
-   */
-  public Collection<SearchableInput> getSearchableInputs() {
-    return searchableInputs;
-  }
-
-  /** Resets the stored fields for new test. */
-  public void clearSearchableInputs() {
-    searchableInputs.clear();
-  }
-
-  /**
-   * Add a new access method for a {@link osmo.tester.model.data.SearchableInput} to the model.
-   *
-   * @param field to add.
-   */
-  public void addSearchableInputField(SearchableInputField field) {
-    searchableInputFields.add(field);
-  }
-
-  /**
-   * Add a new variable of type {@link osmo.tester.model.data.SearchableInput} to the model.
-   *
-   * @param input to add.
-   */
-  public void addSearchableInput(SearchableInput input) {
-    searchableInputs.add(input);
   }
 
   public Requirements getRequirements() {
@@ -419,24 +369,7 @@ public class FSM {
   public void setRequirements(Requirements requirements) {
     this.requirements = requirements;
   }
-
-  /**
-   * Initialize the test suite, adding observers to capture data from all registered 
-   * {@link osmo.tester.model.data.SearchableInput} variables.
-   * Also sets the scripted value options for data if defined.
-   *
-   * @param config This is where the scripter and value options are taken.
-   */
-  public void initSearchableInputs(OSMOConfiguration config) {
-    //initial capture to allow FSM to have names, etc. for algorithm initialization
-    Collection<SearchableInputField> inputs = new ArrayList<>();
-    inputs.addAll(searchableInputFields);
-    clearSearchableInputs();
-    for (SearchableInputField input : inputs) {
-      addSearchableInput(input.getInput());
-    }
-  }
-
+  
   public void addSpecificGuard(TransitionName name, InvocationTarget target) {
     FSMGuard sg = new FSMGuard(name, target);
     specificGuards.add(sg);

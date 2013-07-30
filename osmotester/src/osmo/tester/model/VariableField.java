@@ -1,6 +1,7 @@
 package osmo.tester.model;
 
 import osmo.common.log.Logger;
+import osmo.tester.model.data.SearchableInput;
 
 import java.lang.reflect.Field;
 
@@ -70,7 +71,7 @@ public class VariableField {
 
   /**
    * Gives the value of this field as relevant for the model state persistence.
-   * If the field implements the {@VariableValue} interface, the value() method in this
+   * If the field implements the {@link VariableValue} interface, the value() method in this
    * interface is called to read the value to store.
    * Otherwise the value of the object/primitive is given as such.
    *
@@ -82,6 +83,14 @@ public class VariableField {
     }
     try {
       return field.get(modelObject);
+    } catch (IllegalAccessException e) {
+      throw new RuntimeException("Failed to read state variable value for field:" + field, e);
+    }
+  }
+  
+  public boolean isSearchableInput() {
+    try {
+      return (field.get(modelObject) instanceof SearchableInput);
     } catch (IllegalAccessException e) {
       throw new RuntimeException("Failed to read state variable value for field:" + field, e);
     }
