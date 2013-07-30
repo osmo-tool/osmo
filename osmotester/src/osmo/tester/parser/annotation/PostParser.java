@@ -30,11 +30,8 @@ public class PostParser implements AnnotationParser {
     Method method = parameters.getMethod();
     String errors = "";
     Class<?>[] parameterTypes = method.getParameterTypes();
-    if (parameterTypes.length == 1) {
-      Class<?> parameterType = parameterTypes[0];
-      if (parameterType != Map.class) {
-        errors += "Post-methods are allowed to have only one parameter of type Map<String, Object>: \"" + method.getName() + "()\" has one of type " + parameterType + ".\n";
-      }
+    if (parameterTypes.length > 0) {
+      errors += "Post-methods are not allowed to have any parameters: \"" + method.getName() + "()\" has " +parameterTypes.length+ ".\n";
     }
 
     InvocationTarget target = new InvocationTarget(parameters, Post.class);

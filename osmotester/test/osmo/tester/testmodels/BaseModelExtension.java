@@ -18,8 +18,6 @@ public class BaseModelExtension extends BaseModel {
   private boolean second = false;
   private static int count = -1;
   public int checkCount = 0;
-  public boolean firstChecked = false;
-  public boolean secondChecked = false;
 
   @BeforeTest
   public void initialization() {
@@ -31,8 +29,6 @@ public class BaseModelExtension extends BaseModel {
     }
     first = false;
     second = false;
-    firstChecked = false;
-    secondChecked = false;
   }
 
   @Guard("first")
@@ -52,9 +48,7 @@ public class BaseModelExtension extends BaseModel {
   }
 
   @Pre("second")
-  public void beforeSecond(Map<String, Object> p) {
-    assertEquals("Parameters should be empty in (first) @Pre.", 0, p.size());
-    p.put("seconded", true);
+  public void beforeSecond() {
   }
 
   @Transition("second")
@@ -66,14 +60,8 @@ public class BaseModelExtension extends BaseModel {
   }
 
   @Post
-  public void checkMe(Map<String, Object> p) {
+  public void checkMe() {
     checkCount++;
-    if (p.size() == 0) {
-      firstChecked = true;
-    } else {
-      //note, this may throw nullpointer if p.get() gives null (due to autoboxing)
-      secondChecked = (Boolean) p.get("seconded");
-    }
   }
 
   @EndCondition

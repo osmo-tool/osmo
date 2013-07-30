@@ -72,10 +72,8 @@ public class ValidTestModel3 {
   }
 
   @Pre("epixx")
-  public void epixxPre(Map<String, Object> p) {
+  public void epixxPre() {
     out.print(":epixx_pre");
-    assertEquals("First pre-method should have no parameters.", 0, p.size());
-    p.put("test", "hello post");
   }
 
   @Transition("epixx")
@@ -85,10 +83,8 @@ public class ValidTestModel3 {
   }
 
   @Post("epixx")
-  public void epixxO(Map<String, Object> p) {
+  public void epixxO() {
     out.print(":epixx_oracle");
-    assertEquals("Post should maintain pre-parameters.", 1, p.size());
-    assertEquals("Content of parameter should remain from pre- to post.", "hello post", p.get("test"));
   }
 
   @Post
