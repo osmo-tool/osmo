@@ -67,7 +67,7 @@ public class ParserTests {
     assertEquals("Number of end conditions", 2, fsm.getEndConditions().size());
     assertEquals("Number of generation enablers", 1, fsm.getGenerationEnablers().size());
     assertEquals("Number of exploration enablers", 1, fsm.getExplorationEnablers().size());
-    assertNotNull("Should have TestLog set", model.getHistory());
+    assertNotNull("Should have TestSuite set", model.getHistory());
   }
 
   @Test
@@ -94,6 +94,10 @@ public class ParserTests {
       String msg = e.getMessage();
       msg = sortErrors(msg);
       String expected = "Invalid FSM:\n" +
+              "@AfterSuite methods are not allowed to have parameters: \"badAS()\" has 1 parameters.\n" +
+              "@AfterTest methods are not allowed to have parameters: \"badAT()\" has 1 parameters.\n" +
+              "@BeforeSuite methods are not allowed to have parameters: \"badBS()\" has 1 parameters.\n" +
+              "@BeforeTest methods are not allowed to have parameters: \"badBT()\" has 1 parameters.\n"+
               "@ExplorationEnabler methods are not allowed to have parameters: \"enableExploration()\" has 1 parameters.\n" +
               "@GenerationEnabler methods are not allowed to have parameters: \"enableGeneration()\" has 1 parameters.\n" +
               "@RequirementsField class must be of type osmo.tester.model.Requirements. Was java.lang.String.\n" +

@@ -1,5 +1,9 @@
 package osmo.tester.testmodels;
 
+import osmo.tester.annotation.AfterSuite;
+import osmo.tester.annotation.AfterTest;
+import osmo.tester.annotation.BeforeSuite;
+import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.ExplorationEnabler;
 import osmo.tester.annotation.GenerationEnabler;
@@ -59,5 +63,21 @@ public class EmptyTestModel3 {
 
   @GenerationEnabler
   public void enableGeneration(int x) {
+  }
+  
+  @BeforeSuite
+  public void badBS(String hello) {
+  }
+
+  @AfterSuite
+  public void badAS(String hello) {
+  }
+
+  @BeforeTest
+  public void badBT(String hello) {
+  }
+
+  @AfterTest
+  public void badAT(String hello) {
   }
 }
