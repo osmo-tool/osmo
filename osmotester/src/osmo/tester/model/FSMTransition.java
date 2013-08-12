@@ -37,6 +37,8 @@ public class FSMTransition implements Comparable<FSMTransition> {
   private TransitionName groupName;
   /** A strict one stops the generator, throwing any exceptions. Non-strict will log the error but continue. */
   private boolean strict = true; //again, the true default value is in the annotation
+  /** This index is used by explorer algorithm when picking one of several equals using a fallback algorithm. */
+  private int explorerIndex = -1;
 
   public FSMTransition(String name) {
     this.name = new TransitionName("", name);
@@ -44,6 +46,14 @@ public class FSMTransition implements Comparable<FSMTransition> {
 
   public FSMTransition(TransitionName name) {
     this.name = name;
+  }
+
+  public int getExplorerIndex() {
+    return explorerIndex;
+  }
+
+  public void setExplorerIndex(int explorerIndex) {
+    this.explorerIndex = explorerIndex;
   }
 
   /** Sort all the elements to get more deterministic test generation. */

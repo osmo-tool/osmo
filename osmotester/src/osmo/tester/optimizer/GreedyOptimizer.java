@@ -172,9 +172,10 @@ public class GreedyOptimizer {
 
     CSVReport report = new CSVReport(scoreCalculator);
 
+    long endTime = -1;
     if (timeout > 0) {
       //timeout is given in seconds so we multiple by 1000 to get milliseconds
-      timeout = System.currentTimeMillis()+timeout*1000;
+      endTime = System.currentTimeMillis()+timeout*1000;
     }
     while (gain >= threshold) {
       long iStart = System.currentTimeMillis();
@@ -192,7 +193,7 @@ public class GreedyOptimizer {
       int score = scoreCalculator.calculateScore(suiteCoverage);
       gain = score - previousScore;
       previousScore = score;
-      if (timeout > 0 && timeout < System.currentTimeMillis()) {
+      if (endTime > 0 && endTime < System.currentTimeMillis()) {
         log.info("Generation timed out");
         break;
       }
