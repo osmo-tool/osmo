@@ -175,7 +175,7 @@ public class ValuetSetTests {
   }
   
   @Test
-  public void bookRandom() {
+  public void bookRandomAndFree() {
     String booked = set.bookRandom();
     assertEquals("Random booked", "three", booked);
     int[] freqs = frequencyCount();
@@ -183,5 +183,47 @@ public class ValuetSetTests {
     assertEquals("Number of 'twos' generated", 306, freqs[2]);
     assertEquals("Number of 'threes' generated", 0, freqs[3]);
     assertEquals("Number of 'fours' generated", 0, freqs[4]);
+    set.free("three");
+    freqs = frequencyCount();
+    assertEquals("Number of 'ones' generated", 204, freqs[1]);
+    assertEquals("Number of 'twos' generated", 191, freqs[2]);
+    assertEquals("Number of 'threes' generated", 205, freqs[3]);
+    assertEquals("Number of 'fours' generated", 0, freqs[4]);
+  }
+
+  @Test
+  public void remove() {
+    set.remove("three");
+    int[] freqs = frequencyCount();
+    assertEquals("Number of 'ones' generated", 293, freqs[1]);
+    assertEquals("Number of 'twos' generated", 307, freqs[2]);
+    assertEquals("Number of 'threes' generated", 0, freqs[3]);
+    assertEquals("Number of 'fours' generated", 0, freqs[4]);
+    try {
+      set.free("three");
+      fail("Trying to free removed item should throw exception");
+    } catch (IllegalArgumentException iae) {
+      assertEquals("Error for freeing nonexistent element", "Given option to free that was not booked:three", iae.getMessage());
+    }
+  }
+
+  @Test
+  public void removeRandom() {
+    String removed = set.removeRandom();
+    assertEquals("Randomly removed item", "three", removed);
+    int[] freqs = frequencyCount();
+    assertEquals("Number of 'ones' generated", 294, freqs[1]);
+    assertEquals("Number of 'twos' generated", 306, freqs[2]);
+    assertEquals("Number of 'threes' generated", 0, freqs[3]);
+    assertEquals("Number of 'fours' generated", 0, freqs[4]);
+
+    set.add("four");
+    String removed2 = set.removeRandom();
+    assertEquals("Randomly removed item", "two", removed2);
+    freqs = frequencyCount();
+    assertEquals("Number of 'ones' generated", 301, freqs[1]);
+    assertEquals("Number of 'twos' generated", 0, freqs[2]);
+    assertEquals("Number of 'threes' generated", 0, freqs[3]);
+    assertEquals("Number of 'fours' generated", 299, freqs[4]);
   }
 }

@@ -1,9 +1,9 @@
 package osmo.tester.parser.annotation;
 
 import osmo.common.log.Logger;
-import osmo.tester.annotation.StateName;
+import osmo.tester.annotation.CoverageValue;
 import osmo.tester.generator.testsuite.TestCaseStep;
-import osmo.tester.model.FSMTransition;
+import osmo.tester.model.CoverageMethod;
 import osmo.tester.model.InvocationTarget;
 import osmo.tester.parser.AnnotationParser;
 import osmo.tester.parser.ParserParameters;
@@ -12,21 +12,21 @@ import osmo.tester.parser.ParserResult;
 import java.lang.reflect.Method;
 
 /**
- * Parses {@link osmo.tester.annotation.StateName} annotations from the given model object.
+ * Parses {@link osmo.tester.annotation.CoverageValue} annotations from the given model object.
  *
  * @author Teemu Kanstren
  */
-public class StateNameParser implements AnnotationParser {
-  private static Logger log = new Logger(StateNameParser.class);
+public class CoverageValueParser implements AnnotationParser {
+  private static Logger log = new Logger(CoverageValueParser.class);
 
   @Override
   public String parse(ParserResult result, ParserParameters parameters) {
-    StateName state = (StateName) parameters.getAnnotation();
+    CoverageValue cv = (CoverageValue) parameters.getAnnotation();
 
     Method method = parameters.getMethod();
     String errors = "";
     Class<?> returnType = method.getReturnType();
-    String name = StateName.class.getSimpleName();
+    String name = CoverageValue.class.getSimpleName();
     if (returnType != String.class) {
       errors += "Invalid return type for @"+name+" in (\"" + method.getName() + "()\"):" + returnType + ". Should be String.\n";
     }
@@ -38,9 +38,19 @@ public class StateNameParser implements AnnotationParser {
     if (parameterTypes.length > 0 && parameterTypes[0] != TestCaseStep.class) {
       errors += name +" parameter must be of type "+TestCaseStep.class+": \"" + method.getName() + "()\" has type " + parameterTypes[0]+"\n";
     }
+    
+    String variableName = cv.value();
+    if (variableName.equals("")) {
+      variableName = method.getName();
+    }
 
-    String modelObjectName = FSMTransition.createModelObjectName(parameters.getPrefix(), parameters.getModelClass());
-    result.getFsm().addStateNameFor(modelObjectName, new InvocationTarget(parameters, StateName.class));
+    String prefix = parameters.getPrefix();
+    if (prefix != null && prefix.length() > 0) {
+      variableName = prefix+"-"+variableName;
+    }
+
+    CoverageMethod cm = new CoverageMethod(variableName, new InvocationTarget(parameters, CoverageValue.class));
+    result.getFsm().addCoverageMethod(cm);
     return errors;
   }
 }

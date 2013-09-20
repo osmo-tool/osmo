@@ -29,8 +29,7 @@ public class DebuggingSim {
       long seed = 45345+i*345; 
       System.out.println(i+":exploring with seed:"+seed);
       ExplorationConfiguration config = new ExplorationConfiguration(factory, 2, seed);
-      config.setStateWeight(5);
-      config.setStatePairWeight(1);
+      config.setVariableWeight("my-state", 5);
       config.setStepWeight(30);
       config.setStepPairWeight(20);
       config.setRequirementWeight(10);

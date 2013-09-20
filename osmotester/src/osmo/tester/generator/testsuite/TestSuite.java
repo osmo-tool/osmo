@@ -220,36 +220,6 @@ public class TestSuite {
   }
 
   /**
-   * Coverage of variables and their values in different states for this suite.
-   *
-   * @return [state name, [variable name, variable coverage]] mapping.
-   */
-  public Map<String, Map<String, ModelVariable>> getStateVariables() {
-    Map<String, Map<String, ModelVariable>> result = new LinkedHashMap<>();
-    List<TestCase> tests = getAllTestCases();
-    for (TestCase test : tests) {
-      Map<String, Map<String, ModelVariable>> testVariables = test.getStateVariables();
-      for (String state : testVariables.keySet()) {
-        Map<String, ModelVariable> map = testVariables.get(state);
-        for (String varName : map.keySet()) {
-          Map<String, ModelVariable> storedState = result.get(state);
-          if (storedState == null) {
-            storedState = new LinkedHashMap<>();
-            result.put(state, storedState);
-          }
-          ModelVariable storedValues = storedState.get(varName);
-          if (storedValues == null) {
-            storedValues = new ModelVariable(varName);
-            storedState.put(varName, storedValues);
-          }
-          storedValues.addAll(map.get(varName), false);
-        }
-      }
-    }
-    return result;
-  }
-
-  /**
    * Coverage of variables and their values for all test cases in this test suite.
    * Duplicates are removed to give a general overview of all tests coverage together.
    *

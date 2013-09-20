@@ -4,13 +4,13 @@ import osmo.tester.annotation.AfterSuite;
 import osmo.tester.annotation.AfterTest;
 import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
+import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.ExplorationEnabler;
 import osmo.tester.annotation.Group;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.RequirementsField;
-import osmo.tester.annotation.StateName;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.generator.testsuite.TestCaseStep;
@@ -90,7 +90,7 @@ public class PartialModel2 {
   public void enabler1() {
   }
 
-  @StateName
+  @CoverageValue
   public String state2(TestCaseStep step) {
     return step.getName()+"-hello2";
   }

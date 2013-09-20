@@ -29,9 +29,9 @@ public class ScoreCalculator {
     int score = tc.getSteps().size() * config.getLengthWeight();
     score += tc.getSingles().size() * config.getStepWeight();
     score += tc.getStepPairs().size() * config.getStepPairWeight();
-    score += tc.getStates().size() * config.getStateWeight();
-    score += tc.getStatePairs().size() * config.getStatePairWeight();
     score += tc.getVariables().size() * config.getVariableCountWeight();
+    score += tc.getStateCount() * config.getStateWeight();
+    score += tc.getStatePairCount() * config.getStatePairWeight();
     Map<String,Collection<String>> values = tc.getValues();
     for (String name : values.keySet()) {
       Collection<String> varValues = values.get(name);

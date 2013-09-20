@@ -3,7 +3,6 @@ package osmo.tester.generation;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.common.NullPrintStream;
-import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.ModelVariable;
@@ -11,10 +10,10 @@ import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
+import osmo.tester.testmodels.CoverageValueModel1;
+import osmo.tester.testmodels.CoverageValueModel2;
 import osmo.tester.testmodels.PartialModel1;
 import osmo.tester.testmodels.PartialModel2;
-import osmo.tester.testmodels.StateDescriptionModel;
-import osmo.tester.testmodels.StateDescriptionModel2;
 import osmo.tester.testmodels.ValidTestModel4;
 import osmo.tester.testmodels.ValidTestModel6;
 
@@ -25,7 +24,7 @@ import java.util.Map;
 import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
-public class StateDescriptionTests {
+public class CoverageValueMethodTests {
   private OSMOTester osmo = null;
 
   @Before
@@ -69,7 +68,7 @@ public class StateDescriptionTests {
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
     osmo.generate(111);
-    String expected = ":null:-hello-hello1-:null:-world-hello2-:null:-epixx-hello2-";
+    String expected = ":null::null::state1([hello-hello1])::state2([hello-hello2])::null::null::state1([world-hello1])::state2([world-hello2])::null::null::state1([epixx-hello1])::state2([epixx-hello2]):";
     assertEquals("State over generation with two states defined", expected, model1.getStates());
 
     TestSuite suite = osmo.getSuite();
@@ -86,27 +85,27 @@ public class StateDescriptionTests {
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
     osmo.generate(111);
-    assertEquals("State over generation with no state defined", ":null:-1-:null:-2-:null:-3-", model.getStates());
+    assertEquals("State over generation with no state defined", ":null:-my-state([1])-:null:-my-state([2])-:null:-my-state([3])-", model.getStates());
     TestCase testCase = osmo.getSuite().getAllTestCases().get(0);
 
     List<TestCaseStep> steps = testCase.getSteps();
 
     TestCaseStep step = steps.get(0);
     assertEquals("Step name", "hello", step.getName());
-    assertEquals("State in step", "1", step.getState());
+    assertEquals("State in step", "my-state([1])", step.getStatesFor("my-state").toString());
     Collection<ModelVariable> values = step.getValues();
     assertEquals("Number of values in step", 1, values.size());
 
     step = steps.get(1);
     values = step.getValues();
     assertEquals("Step name", "world", step.getName());
-    assertEquals("State in step", "2", step.getState());
+    assertEquals("State in step", "my-state([2])", step.getStatesFor("my-state").toString());
     assertEquals("Number of values in step", 2, values.size());
 
     step = steps.get(2);
     values = step.getValues();
     assertEquals("Step name", "epixx", step.getName());
-    assertEquals("State in step", "3", step.getState());
+    assertEquals("State in step", "my-state([3])", step.getStatesFor("my-state").toString());
     assertEquals("Number of values in step", 2, values.size());
 
     TestSuite suite = osmo.getSuite();
@@ -123,7 +122,7 @@ public class StateDescriptionTests {
 
   @Test
   public void multipleStatesAndVariables() {
-    StateDescriptionModel model = new StateDescriptionModel();
+    CoverageValueModel1 model = new CoverageValueModel1();
     osmo.addModelObject(model);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
@@ -131,7 +130,7 @@ public class StateDescriptionTests {
     osmo.setSuiteEndCondition(length1);
     osmo.generate(111);
 
-    assertEquals("State over generation with no state defined", "-1--2--3-", model.getStates());
+    assertEquals("State over generation with no state defined", "-my-state([1])--my-state([2])--my-state([3])-", model.getStates());
 
     TestSuite suite = osmo.getSuite();
     Map<String, ModelVariable> testVariables = suite.getTestVariables();
@@ -143,16 +142,11 @@ public class StateDescriptionTests {
     assertEquals("Number of step variables", 3, stepVariables.size());
     expected = "{lastName=lastName([world, world, world]), global=global([bad]), firstName=firstName([hello, hello, hello])}";
     assertEquals("Step variables", expected, stepVariables.toString());
-
-    Map<String, Map<String, ModelVariable>> stateVariables = suite.getStateVariables();
-    assertEquals("Number of step variables", 3, stateVariables.size());
-    expected = "{1={firstName=firstName([hello]), lastName=lastName([world])}, 2={firstName=firstName([hello]), lastName=lastName([world])}, 3={global=global([bad]), firstName=firstName([hello]), lastName=lastName([world])}}";
-    assertEquals("Step variables", expected, stateVariables.toString());
   }
 
   @Test
   public void oneStateSeveralValues() {
-    StateDescriptionModel2 model = new StateDescriptionModel2();
+    CoverageValueModel2 model = new CoverageValueModel2();
     osmo.addModelObject(model);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
@@ -160,7 +154,7 @@ public class StateDescriptionTests {
     osmo.setSuiteEndCondition(length1);
     osmo.generate(222);
 
-    assertEquals("State", ":null:-4-:null:-1-:null:-3-", model.getStates());
+    assertEquals("State", ":null:-my-state([4])-:null:-my-state([1])-:null:-my-state([3])-", model.getStates());
 
     TestSuite suite = osmo.getSuite();
     Map<String, ModelVariable> testVariables = suite.getTestVariables();
@@ -172,10 +166,5 @@ public class StateDescriptionTests {
     assertEquals("Number of step variables", 1, stepVariables.size());
     expected = "{range=range([1])}";
     assertEquals("Step variables", expected, stepVariables.toString());
-
-    Map<String, Map<String, ModelVariable>> stateVariables = suite.getStateVariables();
-    assertEquals("Number of step variables", 1, stateVariables.size());
-    expected = "{3={range=range([1])}}";
-    assertEquals("State variables", expected, stateVariables.toString());
   }
 }

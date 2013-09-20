@@ -11,7 +11,6 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.ModelFactory;
 import osmo.tester.model.Requirements;
-import osmo.tester.model.ScriptedValueProvider;
 
 import java.util.logging.Level;
 
@@ -86,7 +85,7 @@ public class OSMOTester {
     TestSuite suite = generator.getSuite();
     System.out.println("generated " + suite.getFinishedTestCases().size() + " tests.\n");
     TestCoverage tc = new TestCoverage(suite.getAllTestCases());
-    String coverage = tc.coverageString(fsm, generator.getPossiblePairs(), null, null, false);
+    String coverage = tc.coverageString(fsm, generator.getPossibleStepPairs(), null, null, null, false);
     System.out.println(coverage);
     Requirements requirements = suite.getRequirements();
     if (!requirements.isEmpty()) {

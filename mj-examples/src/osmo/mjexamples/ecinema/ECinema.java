@@ -1,12 +1,11 @@
 package osmo.mjexamples.ecinema;
 
-import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.annotation.BeforeTest;
+import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.RequirementsField;
-import osmo.tester.annotation.StateName;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.generator.TracePrinter;
 import osmo.tester.generator.algorithm.BalancingAlgorithm;
@@ -14,7 +13,6 @@ import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.LengthProbability;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.model.Requirements;
-import osmo.tester.model.data.ValueSet;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -54,7 +52,7 @@ public class ECinema {
   @RequirementsField
   private Requirements req = new Requirements();
 
-  @StateName
+  @CoverageValue
   public String getState(TestCaseStep step) {
     return state.toString() + ((currentUser == null) ? "" : "_" + currentUser.name);
   }

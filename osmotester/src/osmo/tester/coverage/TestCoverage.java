@@ -36,9 +36,9 @@ public class TestCoverage {
   /** Set of values covered for different model data variables. */
   private Map<String, Collection<String>> values = new LinkedHashMap<>();
   /** Set of covered states. */
-  private Collection<String> states = new LinkedHashSet<>();
+  private Map<String, Collection<String>> states = new LinkedHashMap<>();
   /** Set of covered transitions between states. */
-  private Collection<String> statePairs = new LinkedHashSet<>();
+  private Map<String, Collection<String>> statePairs = new LinkedHashMap<>();
 
   /**
    * Start with an empty set.
@@ -55,18 +55,6 @@ public class TestCoverage {
     for (TestCase test : tests) {
       addTestCoverage(test);
     }
-  }
-
-  public Collection<String> getStates() {
-    Collection<String> clone = new ArrayList<>();
-    clone.addAll(states);
-    return clone;
-  }
-
-  public Collection<String> getStatePairs() {
-    Collection<String> clone = new ArrayList<>();
-    clone.addAll(statePairs);
-    return clone;
   }
 
   /**
@@ -129,18 +117,10 @@ public class TestCoverage {
     Collection<String> names = new ArrayList<>();
 
     int count = 0;
-    String previousState = FSM.START_STATE_NAME;
     for (TestCaseStep step : test.getSteps()) {
       String name = step.getName();
       names.add(name);
-      String state = step.getState();
-      if (state != null) {
-        //we ignore null so if there is no state we do not mess calculations for coverage score
-        //that is we do not add transitions when no state is defined
-        states.add(state);
-        statePairs.add(previousState+"->"+state);
-        previousState = state;
-      }
+      addStates(step);
       addValues(step);
       reqs.addAll(step.getCoveredRequirements());
       count++;
@@ -170,6 +150,34 @@ public class TestCoverage {
         values.add("" + value);
       }
       this.values.put(name, values);
+    }
+  }
+  
+  private synchronized void addStates(TestCaseStep step) {
+    Collection<ModelVariable> toAdd = step.getStatesList();
+    for (ModelVariable variable : toAdd) {
+      String name = variable.getName();
+      Collection<String> values = this.states.get(name);
+      if (values == null) {
+        values = new LinkedHashSet<>();
+        this.states.put(name, values);
+      }
+      for (Object value : variable.getValues()) {
+        values.add("" + value);
+      }
+    }
+
+    toAdd = step.getStatePairsList();
+    for (ModelVariable variable : toAdd) {
+      String name = variable.getName();
+      Collection<String> values = this.statePairs.get(name);
+      if (values == null) {
+        values = new LinkedHashSet<>();
+        this.statePairs.put(name, values);
+      }
+      for (Object value : variable.getValues()) {
+        values.add("" + value);
+      }
     }
   }
 
@@ -213,6 +221,38 @@ public class TestCoverage {
     return values;
   }
 
+  public int getValueCount() {
+    int count = 0;
+    for (Collection<String> strings : values.values()) {
+      count += strings.size();
+    }
+    return count;
+  }
+
+  public Map<String, Collection<String>> getStates() {
+    return states;
+  }
+
+  public int getStateCount() {
+    int count = 0;
+    for (Collection<String> strings : states.values()) {
+      count += strings.size();
+    }
+    return count;
+  }
+
+  public Map<String, Collection<String>> getStatePairs() {
+    return statePairs;
+  }
+
+  public int getStatePairCount() {
+    int count = 0;
+    for (Collection<String> strings : statePairs.values()) {
+      count += strings.size();
+    }
+    return count;
+  }
+
   /**
    * Creates a clone of this coverage set.
    * The clone can then be modified without affecting the original set (no reference to same internal lists etc.).
@@ -225,13 +265,21 @@ public class TestCoverage {
     clone.steps.addAll(steps);
     clone.reqs.addAll(reqs);
     clone.singles.addAll(singles);
-    clone.states.addAll(states);
-    clone.statePairs.addAll(statePairs);
     clone.variables.addAll(variables);
     for (String key : values.keySet()) {
       Collection<String> values = new LinkedHashSet<>();
       values.addAll(this.values.get(key));
       clone.values.put(key, values);
+    }
+    for (String key : states.keySet()) {
+      Collection<String> values = new LinkedHashSet<>();
+      values.addAll(this.states.get(key));
+      clone.states.put(key, values);
+    }
+    for (String key : statePairs.keySet()) {
+      Collection<String> values = new LinkedHashSet<>();
+      values.addAll(this.statePairs.get(key));
+      clone.statePairs.put(key, values);
     }
     return clone;
   }
@@ -243,8 +291,6 @@ public class TestCoverage {
             ", stepPairs=" + stepPairs +
             ", singles=" + singles +
             ", requirements=" + reqs +
-            ", states=" + states +
-            ", statePairs=" + statePairs +
             '}';
   }
 
@@ -253,12 +299,13 @@ public class TestCoverage {
    * 
    * @param fsm Our model.
    * @param possibleStepPairs List of possible step-pairs (all that could be covered).
-   * @param possibleStates  List of possible states (all that could be covered).
-   * @param possibleStatePairs  List of possible state-pairs (all that could be covered).
+   * @param possibleValues List of possible variable values.
    * @param printAll If true, we print a list of names for missing coverage elements.
    * @return The created string. Simple ASCII text on several lines.
    */
-  public String coverageString(FSM fsm, Collection<String> possibleStepPairs, Collection<String> possibleStates, Collection<String> possibleStatePairs, boolean printAll) {
+  public String coverageString(FSM fsm, Collection<String> possibleStepPairs, Map<String, Collection<String>> possibleValues,
+                               Map<String, Collection<String>> possibleStates, Map<String, Collection<String>> possibleStatePairs, 
+                               boolean printAll) {
     String result = "Covered elements:\n";
     result += "Total steps: "+steps.size();
     result += "\nUnique steps: "+singles.size();
@@ -285,28 +332,41 @@ public class TestCoverage {
         result += " missing:"+all;
       }
     }
-    
+
     result += "\nUnique requirements: "+reqs.size();
-    result += "\nUnique states: "+states.size();
+    
+    int valueCount = 0;
+    for (Collection<String> strings : values.values()) {
+      valueCount += strings.size();
+    }
+    result += "\nVariable values: "+valueCount;
+
+    if (possibleValues != null) {
+      int possibleValueCount = 0;
+      for (Collection<String> strings : possibleValues.values()) {
+        possibleValueCount += strings.size();
+      }
+      result += " (of "+possibleValueCount+")";
+    }
+    
+    result += "\nUnique states: "+getStateCount();
     if (possibleStates != null) {
-      Collection<String> all = new HashSet<>();
-      all.addAll(possibleStates);
-      all.removeAll(states);
-      result += " (of "+possibleStates.size()+")";
-      if (printAll || all.size() > 0 && all.size() < 5) {
-        result += " missing:"+all;
+      int possibleCount = 0;
+      for (Collection<String> strings : possibleStates.values()) {
+        possibleCount += strings.size();
       }
+      result += " (of "+possibleCount+")";
     }
-    result += "\nUnique state-pairs: "+statePairs.size();
+    
+    result += "\nUnique state-pairs: "+getStatePairCount();
     if (possibleStatePairs != null) {
-      Collection<String> all = new HashSet<>();
-      all.addAll(possibleStatePairs);
-      all.removeAll(statePairs);
-      result += " (of "+possibleStatePairs.size()+")";
-      if (printAll || (all.size() > 0 && all.size() < 5)) {
-        result += " missing:"+all;
+      int possibleCount = 0;
+      for (Collection<String> strings : possibleStatePairs.values()) {
+        possibleCount += strings.size();
       }
+      result += " (of "+possibleCount+")";
     }
+    
     return result;
   }
 
@@ -319,14 +379,24 @@ public class TestCoverage {
     steps.removeAll(in.steps);
     singles.removeAll((in.singles));
     stepPairs.removeAll(in.stepPairs);
-    states.removeAll(in.states);
-    statePairs.removeAll(in.statePairs);
     reqs.removeAll(in.reqs);
     variables.removeAll(in.variables);
     for (String var : values.keySet()) {
       Collection<String> yourValues = in.values.get(var);
       if (yourValues == null) continue;
       Collection<String> myValues = values.get(var);
+      myValues.removeAll(yourValues);
+    }
+    for (String var : states.keySet()) {
+      Collection<String> yourValues = in.states.get(var);
+      if (yourValues == null) continue;
+      Collection<String> myValues = states.get(var);
+      myValues.removeAll(yourValues);
+    }
+    for (String var : statePairs.keySet()) {
+      Collection<String> yourValues = in.statePairs.get(var);
+      if (yourValues == null) continue;
+      Collection<String> myValues = statePairs.get(var);
       myValues.removeAll(yourValues);
     }
   }

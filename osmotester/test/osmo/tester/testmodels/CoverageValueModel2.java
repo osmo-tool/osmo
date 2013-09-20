@@ -1,8 +1,8 @@
 package osmo.tester.testmodels;
 
+import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
-import osmo.tester.annotation.StateName;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
@@ -11,7 +11,7 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.data.ValueRange;
 
 /** @author Teemu Kanstren */
-public class StateDescriptionModel2 {
+public class CoverageValueModel2 {
   @TestSuiteField
   private TestSuite history = null;
   private String states = "";
@@ -43,19 +43,19 @@ public class StateDescriptionModel2 {
 //    range.next();
   }
 
-  @StateName
+  @CoverageValue("my-state")
   public String state(TestCaseStep step) {
     return state;
   }
 
   @Pre
   public void savePreState() {
-    states += ":"+history.getCurrentTest().getCurrentStep().getState()+":";
+    states += ":"+history.getCurrentTest().getCurrentStep().getStatesFor("my-state")+":";
   }
 
   @Post
   public void savePostState() {
-    states += "-"+history.getCurrentTest().getCurrentStep().getState()+"-";
+    states += "-"+history.getCurrentTest().getCurrentStep().getStatesFor("my-state")+"-";
   }
 
   public String getStates() {

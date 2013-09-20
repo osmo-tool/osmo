@@ -10,21 +10,17 @@ import java.util.logging.Level;
 
 import osmo.common.NullPrintStream;
 import osmo.common.log.Logger;
-import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.annotation.BeforeTest;
+import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.ExplorationEnabler;
 import osmo.tester.annotation.GenerationEnabler;
 import osmo.tester.annotation.RequirementsField;
-import osmo.tester.annotation.StateName;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.coverage.ScoreConfiguration;
 import osmo.tester.coverage.TestCoverage;
-import osmo.tester.generator.algorithm.BalancingAlgorithm;
-import osmo.tester.generator.algorithm.WeightedBalancingAlgorithm;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.LengthProbability;
-import osmo.tester.generator.endcondition.Time;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -174,7 +170,7 @@ public class SimCard {
     files.put(F_Name.EF_UK, ef_uk);
   }
 
-  @StateName
+  @CoverageValue
   public String getState(TestCaseStep step) {
     return DF.name.toString()
             + "," + (EF == null ? "null" : EF.name.toString())
@@ -626,7 +622,7 @@ public class SimCard {
       greedy.setTimeout(timeout);
       List<TestCase> tests = greedy.search(cores);
       TestCoverage tc = new TestCoverage(tests);
-      System.out.println(tc.coverageString(greedy.getFsm(), null, null, null, false));
+      System.out.println(tc.coverageString(greedy.getFsm(), null, null, null, null, false));
     }
   }
 

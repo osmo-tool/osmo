@@ -159,7 +159,7 @@ public class MultiGreedy {
     report.process(cases);
 
     TestCoverage tc = new TestCoverage(cases);
-    summary += tc.coverageString(fsm, possiblePairs, null, null, false);
+    summary += tc.coverageString(fsm, possiblePairs, null, null, null, false);
 
     String totalCsv = report.report();
     totalCsv += summary + "\n";

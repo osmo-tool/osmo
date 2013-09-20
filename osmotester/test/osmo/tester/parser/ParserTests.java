@@ -9,7 +9,6 @@ import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
 import osmo.tester.model.VariableField;
-import osmo.tester.model.data.SearchableInput;
 import osmo.tester.testmodels.EmptyTestModel1;
 import osmo.tester.testmodels.EmptyTestModel2;
 import osmo.tester.testmodels.EmptyTestModel3;
@@ -97,20 +96,20 @@ public class ParserTests {
               "@AfterSuite methods are not allowed to have parameters: \"badAS()\" has 1 parameters.\n" +
               "@AfterTest methods are not allowed to have parameters: \"badAT()\" has 1 parameters.\n" +
               "@BeforeSuite methods are not allowed to have parameters: \"badBS()\" has 1 parameters.\n" +
-              "@BeforeTest methods are not allowed to have parameters: \"badBT()\" has 1 parameters.\n"+
+              "@BeforeTest methods are not allowed to have parameters: \"badBT()\" has 1 parameters.\n" +
               "@ExplorationEnabler methods are not allowed to have parameters: \"enableExploration()\" has 1 parameters.\n" +
               "@GenerationEnabler methods are not allowed to have parameters: \"enableGeneration()\" has 1 parameters.\n" +
               "@RequirementsField class must be of type osmo.tester.model.Requirements. Was java.lang.String.\n" +
               "@TestSuiteField class must be of type osmo.tester.generator.testsuite.TestSuite. Was java.lang.String.\n" +
+              "CoverageValue methods must have 1 parameter (TestStep): \"badArgument()\" has 2 parameters.\n" +
+              "CoverageValue parameter must be of type class osmo.tester.generator.testsuite.TestCaseStep: \"badArgument()\" has type class java.lang.String\n" +
+              "Invalid return type for @CoverageValue in (\"badArgument()\"):void. Should be String.\n" +
               "Invalid return type for @EndCondition (\"end()\"):void. Should be boolean.\n" +
               "Invalid return type for @ExplorationEnabler (\"enableExploration()\"):class java.lang.String.\n" +
               "Invalid return type for @ExplorationEnabler (\"enableExploration()\"):int.\n" +
               "Invalid return type for @GenerationEnabler (\"enableGeneration()\"):int.\n" +
-              "Invalid return type for @StateName in (\"badArgument()\"):void. Should be String.\n"+
               "Invalid return type for guard (\"hello()\"):class java.lang.String.\n" +
               "Post-methods are not allowed to have any parameters: \"wrong()\" has 1.\n" +
-              "StateName methods must have 1 parameter (TestStep): \"badArgument()\" has 2 parameters.\n" +
-              "StateName parameter must be of type class osmo.tester.generator.testsuite.TestCaseStep: \"badArgument()\" has type class java.lang.String\n"+
               "Transition name must be unique. 'foo' given several times.\n"+
               "";
       assertEquals(expected, msg);
@@ -151,8 +150,8 @@ public class ParserTests {
       String expected = "Invalid FSM:\n" +
               "@EndCondition methods are not allowed to have parameters: \"ending()\" has 1 parameters.\n" +
               "@RequirementsField value was null, which is not allowed.\n" +
-              "Guard methods are not allowed to have parameters: \"hello()\" has 1 parameters.\n" +
-              "StateName methods must have 1 parameter (TestStep): \"noArgument()\" has 0 parameters.\n"+
+              "CoverageValue methods must have 1 parameter (TestStep): \"noArgument()\" has 0 parameters.\n" +
+              "Guard methods are not allowed to have parameters: \"hello()\" has 1 parameters.\n"+
               "";
       assertEquals(expected, msg);
     }
@@ -202,7 +201,7 @@ public class ParserTests {
     assertEquals("Number of @AfterSuite methods", 1, fsm.getAfterSuites().size());
     assertEquals("Number of @ExplorationEnabler methods", 2, fsm.getExplorationEnablers().size());
     assertEquals("Number of @GenerationEnabler methods", 1, fsm.getGenerationEnablers().size());
-    assertNotNull("@StateDescription method", fsm.getStateNames());
+    assertNotNull("@StateDescription method", fsm.getCoverageMethods());
     //these also test for the correct number of guards
     assertTransitionPresent(fsm, "hello", 1, 3);
     assertTransitionPresent(fsm, "world", 3, 3);

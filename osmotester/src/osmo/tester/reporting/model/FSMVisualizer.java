@@ -3,6 +3,7 @@ package osmo.tester.reporting.model;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.CoverageMethod;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
@@ -12,7 +13,6 @@ import osmo.tester.model.VariableField;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.Map;
 
 /** 
  * Provides means to print the structure of the test model built from the given model objects.
@@ -65,7 +65,17 @@ public class FSMVisualizer {
     report += "Model EndConditions: "+targetsToString(fsm.getEndConditions());
     report += "Exploration Enablers: "+targetsToString(fsm.getExplorationEnablers());
     report += "Generation Enablers: "+targetsToString(fsm.getGenerationEnablers());
-    report += "StateNames: " + targetsToString(fsm.getStateNames().values());
+
+    report += "Coverage Value Methods: ";
+    Collection<CoverageMethod> coverageMethods = fsm.getCoverageMethods();
+    for (CoverageMethod cm : coverageMethods) {
+      report += cm.getVariableName();
+      Method method = cm.getInvocationTarget().getMethod();
+      String[] split = method.toGenericString().split(" ");
+      String target = split[2];
+      report+="["+target+"], ";
+    }
+    report += "\n";
 
     Requirements requirements = fsm.getRequirements();
     report += "Requirements: "+ requirements;

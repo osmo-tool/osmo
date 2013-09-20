@@ -1,9 +1,9 @@
 package osmo.tester.testmodels;
 
+import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.RequirementsField;
-import osmo.tester.annotation.StateName;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -30,7 +30,7 @@ public class EmptyTestModel4 {
     return false;
   }
 
-  @StateName
+  @CoverageValue("my-state")
   public String noArgument() {
     return "";
   }

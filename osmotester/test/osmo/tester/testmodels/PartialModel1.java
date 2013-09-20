@@ -3,6 +3,7 @@ package osmo.tester.testmodels;
 import osmo.tester.annotation.AfterTest;
 import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
+import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.ExplorationEnabler;
 import osmo.tester.annotation.GenerationEnabler;
@@ -10,7 +11,6 @@ import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.RequirementsField;
-import osmo.tester.annotation.StateName;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.generator.testsuite.TestCaseStep;
@@ -109,7 +109,7 @@ public class PartialModel1 {
   public void enabler2() {
   }
   
-  @StateName
+  @CoverageValue
   public String state1(TestCaseStep step) {
     return step.getName()+"-hello1";
   }
@@ -117,12 +117,14 @@ public class PartialModel1 {
   @Pre
   public void savePreState() {
     //pre-state is always null as we are starting a new step
-    states += ":"+history.getCurrentTest().getCurrentStep().getState()+":";
+    states += ":"+history.getCurrentTest().getCurrentStep().getStatesFor("state1")+":";
+    states += ":"+history.getCurrentTest().getCurrentStep().getStatesFor("state2")+":";
   }
 
   @Post
   public void savePostState() {
-    states += "-"+history.getCurrentTest().getCurrentStep().getState()+"-";
+    states += ":"+history.getCurrentTest().getCurrentStep().getStatesFor("state1")+":";
+    states += ":"+history.getCurrentTest().getCurrentStep().getStatesFor("state2")+":";
   }
 
   public String getStates() {

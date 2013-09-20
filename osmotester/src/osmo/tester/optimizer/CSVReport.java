@@ -16,8 +16,7 @@ public class CSVReport {
   private String totalScore = "total score\n";
   private String steps = "number of steps\n";
   private String stepPairs = "number of step pairs\n";
-  private String states = "number of states\n";
-  private String statePairs = "number of state pairs\n";
+  private String values = "number of values\n";
   private String reqs = "number of requirements\n";
   private String length = "length\n";
 
@@ -33,8 +32,7 @@ public class CSVReport {
     report += totalScore;
     report += steps;
     report += stepPairs;
-    report += states;
-    report += statePairs;
+    report += values;
     report += reqs;
     report += length;
     return report;
@@ -59,8 +57,7 @@ public class CSVReport {
       length += tc.getSteps().size() + "; ";
       steps += tc.getSingles().size() + "; ";
       stepPairs += tc.getStepPairs().size() + "; ";
-      states += tc.getStates().size() + "; ";
-      statePairs += tc.getStatePairs().size() + "; ";
+      values += tc.getValueCount()+"; ";
     }
     this.gain += "\n";
     coverage += "\n";
@@ -68,8 +65,7 @@ public class CSVReport {
     length += "\n";
     steps += "\n";
     stepPairs += "\n";
-    states += "\n";
-    statePairs += "\n";
+    values += "\n";
 
     testCount += tests.size();
     testCount += "\n";

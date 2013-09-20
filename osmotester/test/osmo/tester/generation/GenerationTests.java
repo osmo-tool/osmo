@@ -1,23 +1,19 @@
 package osmo.tester.generation;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.Endless;
 import osmo.tester.generator.endcondition.Length;
-import osmo.tester.generator.endcondition.logical.And;
 import osmo.tester.generator.endcondition.logical.Or;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.Requirements;
 import osmo.tester.testmodels.BaseModelExtension;
+import osmo.tester.testmodels.CoverageValueModel1;
 import osmo.tester.testmodels.GroupModel2;
 import osmo.tester.testmodels.GuardianModel;
 import osmo.tester.testmodels.PartialModel1;
 import osmo.tester.testmodels.PartialModel2;
-import osmo.tester.testmodels.StateDescriptionModel;
-import osmo.tester.testmodels.TestStepModel;
 import osmo.tester.testmodels.ValidTestModel1;
 import osmo.tester.testmodels.ValidTestModel2;
 import osmo.tester.testmodels.ValidTestModel3;
@@ -145,7 +141,7 @@ public class GenerationTests {
 
   @Test
   public void generateWithStateDescription() {
-    StateDescriptionModel model = new StateDescriptionModel();
+    CoverageValueModel1 model = new CoverageValueModel1();
     osmo.addModelObject(model);
     Length length3 = new Length(3);
     osmo.setTestEndCondition(length3);

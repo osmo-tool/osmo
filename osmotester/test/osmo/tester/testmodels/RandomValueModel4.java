@@ -1,7 +1,7 @@
 package osmo.tester.testmodels;
 
 import osmo.tester.annotation.AfterTest;
-import osmo.tester.annotation.StateName;
+import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Variable;
@@ -52,7 +52,7 @@ public class RandomValueModel4 {
     suite.addValue("teemu", "on paras");
   }
   
-  @StateName
+  @CoverageValue
   public String stateName(TestCaseStep step) {
     return state.next();
   }
