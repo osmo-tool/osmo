@@ -12,7 +12,7 @@ public class ValueRangeTests {
 
   @Test
   public void optimizedRandomValueRange() {
-    ValueRange vr = new ValueRange(5, 7);
+    ValueRange<Integer> vr = new ValueRange<>(5, 7);
     vr.setSeed(333);
     vr.setStrategy(DataGenerationStrategy.BALANCING);
     boolean b5 = false;
@@ -20,7 +20,7 @@ public class ValueRangeTests {
     boolean b7 = false;
     for (int a = 0 ; a < 10 ; a++) {
       for (int i = 0 ; i < 3 ; i++) {
-        int n = vr.nextInt();
+        int n = vr.balanced();
         if (n == 5) {
           b5 = true;
         }
@@ -39,12 +39,11 @@ public class ValueRangeTests {
 
   @Test
   public void orderedLoopValueRange() {
-    ValueRange vr = new ValueRange(5, 7);
-    vr.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
-    assertEquals("First item", 5, vr.nextInt());
-    assertEquals("Second item", 6, vr.nextInt());
-    assertEquals("Third item", 7, vr.nextInt());
-    assertEquals("Fourth item", 5, vr.nextInt());
+    ValueRange<Integer> vr = new ValueRange<>(5, 7);
+    assertEquals("First item", 5, vr.ordered().intValue());
+    assertEquals("Second item", 6, vr.ordered().intValue());
+    assertEquals("Third item", 7, vr.ordered().intValue());
+    assertEquals("Fourth item", 5, vr.ordered().intValue());
   }
 
   @Test

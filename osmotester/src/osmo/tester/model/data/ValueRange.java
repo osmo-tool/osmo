@@ -1,6 +1,5 @@
 package osmo.tester.model.data;
 
-import osmo.common.Randomizer;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.gui.manualdrive.ValueRangeGUI;
@@ -54,6 +53,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
   private DataType type;
   /** Handles boundary scan data generation strategy. */
   private Boundary boundary;
+  private Number choice = null;
 
   /**
    * Constructor that takes an explicit type argument for generation.
@@ -134,166 +134,162 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
     return history;
   }
 
+  /**
+   * 
+   * @param algorithm The new algorithm.
+   * @return
+   * @deprecated Will be removed in next version.
+   */
   @Override
   public ValueRange<T> setStrategy(DataGenerationStrategy algorithm) {
     this.algorithm = algorithm;
-    if (algorithm == DataGenerationStrategy.BOUNDARY_SCAN_INVALID) {
-      boundary.setInvalid(true);
-    } else {
-      boundary.setInvalid(false);
-    }
     return this;
   }
 
+  /**
+   * 
+   * @return
+   * @deprecated will remove next release
+   */
   @Override
   public T next() {
-    if (gui != null) {
-      return (T) gui.next();
-    }
-    return (T) next(type);
-  }
-
-  /**
-   * Generates a new numeric value of given type in this value range.
-   *
-   * @param type The datatype to be generated.
-   * @return Generated input value.
-   */
-  public Number next(DataType type) {
-    OSMOConfiguration.check(this);
-    Number value = 0;
     switch (algorithm) {
       case ORDERED_LOOP:
-        value = nextOrderedLoop(type);
-        break;
+        return ordered();
       case BALANCING:
-        value = nextOptimizedRandom(type);
-        break;
+        return balanced();
       case BOUNDARY_SCAN:
+        return boundaryIn();
       case BOUNDARY_SCAN_INVALID:
-        value = nextBoundaryScan();
-        break;
+        return boundaryOut();
       default:
-        value = nextRandom(type);
-        break;
+        return random();
     }
-    history.add(value);
-    observe((T) value);
-    log.debug("Value:" + value);
-    return value;
+  }
+  
+  private void pre() {
+    choice = null;
+    OSMOConfiguration.check(this);
+    if (gui != null) {
+      choice = (T) gui.next();
+    }
+  }
+  
+  private void post() {
+    history.add(choice);
+    observe((T) choice);
+    log.debug("Value:" + choice);
   }
 
   /**
-   * Create next value for the ordered loop algorithm.
+   * Create next value for the ordered loop.
    *
-   * @param type The datatype to be created.
-   * @return A new value in this range.
+   * @return Chosen value.
    */
-  private Number nextOrderedLoop(DataType type) {
-    Number last = min;
-    Number value = null;
-    if (!history.isEmpty()) {
-      //get the previous value
-      last = history.get(history.size() - 1);
-    } else {
-      return min;
-    }
-    switch (type) {
-      case INT:
-        value = last.intValue() + increment.intValue();
-        break;
-      case LONG:
-        value = last.longValue() + increment.longValue();
-        break;
-      case DOUBLE:
-        value = last.doubleValue() + increment.doubleValue();
-        break;
-      default:
-        throw new IllegalArgumentException("Enum type:" + type + " unsupported.");
-    }
-    if (value.doubleValue() > max.doubleValue()) {
-      value = min;
-    }
-    return value;
-  }
-
-  /**
-   * Create next value for the optimized random algorithm.
-   *
-   * @param type The datatype to be created.
-   * @return A new value in this range.
-   */
-  private Number nextOptimizedRandom(DataType type) {
-    Number value = null;
-    do {
+  public T ordered() {
+    pre();
+    if (choice == null) {
+      Number last = min;
+      if (!history.isEmpty()) {
+        //get the previous value
+        last = history.get(history.size() - 1);
+      } else {
+        choice = min;
+        post();
+        return (T)choice;
+      }
       switch (type) {
         case INT:
-          value = rand.nextInt(min.intValue(), max.intValue());
+          choice = last.intValue() + increment.intValue();
           break;
         case LONG:
-          value = rand.nextLong(min.longValue(), max.longValue());
+          choice = last.longValue() + increment.longValue();
           break;
         case DOUBLE:
-          value = rand.nextDouble(min.doubleValue(), max.doubleValue());
+          choice = last.doubleValue() + increment.doubleValue();
           break;
         default:
           throw new IllegalArgumentException("Enum type:" + type + " unsupported.");
       }
-    } while (optimizerHistory.contains(value));
-    optimizerHistory.add(value);
-    if (optimizerHistory.size() == (max.intValue() - min.intValue()) + 1) {
-      optimizerHistory.clear();
+      if (choice.doubleValue() > max.doubleValue()) {
+        choice = min;
+      }
     }
-    return value;
+    post();
+    return (T)choice;
   }
 
-  private Number nextRandom(DataType type) {
-    Number value = null;
-    switch (type) {
-      case INT:
-        value = rand.nextInt(min().intValue(), max().intValue());
-        break;
-      case LONG:
-        value = rand.nextLong(min().longValue(), max().longValue());
-        break;
-      case DOUBLE:
-        value = rand.nextDouble(min().doubleValue(), max().doubleValue());
-        break;
-      default:
-        throw new IllegalArgumentException("Enum type:" + type + " unsupported.");
+  /**
+   * Create next value for the balancing algorithm. Note that this can hang if it runs out of options, and also it
+   * becomes slower and slower the less options it has. Generally avoid this unless you have few options or
+   * need only a few values, until someone redoes the implementation..
+   *
+   * @return A new value in this range.
+   */
+  public T balanced() {
+    pre();
+    if (choice == null) {
+      do {
+        switch (type) {
+          case INT:
+            choice = rand.nextInt(min.intValue(), max.intValue());
+            break;
+          case LONG:
+            choice = rand.nextLong(min.longValue(), max.longValue());
+            break;
+          case DOUBLE:
+            choice = rand.nextDouble(min.doubleValue(), max.doubleValue());
+            break;
+          default:
+            throw new IllegalArgumentException("Enum type:" + type + " unsupported.");
+        }
+      } while (optimizerHistory.contains(choice));
+      optimizerHistory.add(choice);
+      if (optimizerHistory.size() == (max.intValue() - min.intValue()) + 1) {
+        optimizerHistory.clear();
+      }
     }
-    return value;
+    post();
+    return (T)choice;
   }
 
-  private Number nextBoundaryScan() {
-    return boundary.next();
+  public T random() {
+    pre();
+    if (choice == null) {
+      switch (type) {
+        case INT:
+          choice = rand.nextInt(min().intValue(), max().intValue());
+          break;
+        case LONG:
+          choice = rand.nextLong(min().longValue(), max().longValue());
+          break;
+        case DOUBLE:
+          choice = rand.nextDouble(min().doubleValue(), max().doubleValue());
+          break;
+        default:
+          throw new IllegalArgumentException("Enum type:" + type + " unsupported.");
+      }
+    }
+    post();
+    return (T)choice;
   }
 
-  /**
-   * Generates a new double value in this value range.
-   *
-   * @return Generated input value.
-   */
-  public double nextDouble() {
-    return next(DataType.DOUBLE).doubleValue();
+  public T boundaryIn() {
+    pre();
+    if (choice == null) {
+      choice = boundary.in();
+    }
+    post();
+    return (T)choice;
   }
 
-  /**
-   * Generates a new long value in this value range.
-   *
-   * @return Generated input value.
-   */
-  public int nextInt() {
-    return next(DataType.INT).intValue();
-  }
-
-  /**
-   * Generates a new long value in this value range.
-   *
-   * @return Generated input value.
-   */
-  public long nextLong() {
-    return next(DataType.LONG).longValue();
+  public T boundaryOut() {
+    pre();
+    if (choice == null) {
+      choice = boundary.out();
+    }
+    post();
+    return (T)choice;
   }
 
   @Override

@@ -15,9 +15,9 @@ import java.util.List;
  */
 public class Boundary {
   /** The set of values to be provided, initialized and startup on call to init() */
-  private ValueSet<Number> validValues = new ValueSet<>(DataGenerationStrategy.ORDERED_LOOP);
+  private ValueSet<Number> validValues = new ValueSet<>();
   /** The set of values to be provided, initialized and startup on call to init() */
-  private ValueSet<Number> invalidValues = new ValueSet<>(DataGenerationStrategy.ORDERED_LOOP);
+  private ValueSet<Number> invalidValues = new ValueSet<>();
   /** How many values will be generated for each boundary. */
   private int count = 5;
   /** The value by which the boundary is incremented / decremented in the scan. */
@@ -28,8 +28,6 @@ public class Boundary {
   private final Number min;
   /** Upper bound. */
   private final Number max;
-  /** Create values in or out of bounds? */
-  private boolean invalid = false;
 
   public Boundary(DataType type, Number min, Number max) {
     this.type = type;
@@ -56,16 +54,26 @@ public class Boundary {
     this.increment = increment;
   }
 
-  public void setInvalid(boolean invalid) {
-    this.invalid = invalid;
-  }
-
   private void init() {
     Number addReduce = increment;
-    //first we add the minimum bound to test set
-    validValues.add(min);
-    //and the upper bound
-    validValues.add(max);
+    switch (type) {
+      case DOUBLE:
+        //first we add the minimum bound to test set
+        validValues.add(min.doubleValue());
+        //and the upper bound
+        validValues.add(max.doubleValue());
+        break;
+      default:
+        //first we add the minimum bound to test set
+        validValues.add(min);
+        //and the upper bound
+        validValues.add(max);
+        break;
+    }
+//    //first we add the minimum bound to test set
+//    validValues.add(min);
+//    //and the upper bound
+//    validValues.add(max);
     for (int i = 0 ; i < count ; i++) {
       switch (type) {
         case INT:
@@ -98,23 +106,28 @@ public class Boundary {
     }
   }
 
-  public List<Number> getOptions() {
-    if (invalid) {
+  public List<Number> getOptions(boolean in) {
+    if (!in) {
       return invalidValues.getOptions();
     }
     return validValues.getOptions();
   }
 
   /** @return The next boundary value. */
-  public Number next() {
+  public Number in() {
     //we assume that there can at least one valid value, the boundary itself..
     if (validValues.size() == 0) {
       init();
     }
-    if (invalid) {
-      return invalidValues.next();
-    } else {
-      return validValues.next();
+    return validValues.ordered();
+  }
+
+  /** @return The next boundary value. */
+  public Number out() {
+    //we assume that there can at least one valid value, the boundary itself..
+    if (validValues.size() == 0) {
+      init();
     }
+    return invalidValues.ordered();
   }
 }

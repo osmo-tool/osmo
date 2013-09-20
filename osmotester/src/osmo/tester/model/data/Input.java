@@ -17,6 +17,7 @@ public interface Input<T> {
    * Set data generation algorithm
    *
    * @param algorithm The new algorithm.
+   * @deprecated Will be removed in next version.
    */
   public Input<T> setStrategy(DataGenerationStrategy algorithm);
 

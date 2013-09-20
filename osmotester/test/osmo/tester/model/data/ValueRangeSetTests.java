@@ -10,11 +10,11 @@ import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class ValueRangeSetTests {
-  private ValueRangeSet ni = null;
+  private ValueRangeSet<Double> ni = null;
 
   @Before
   public void setUp() throws Exception {
-    ni = new ValueRangeSet();
+    ni = new ValueRangeSet<>();
     ni.setSeed(333);
   }
 
@@ -30,14 +30,14 @@ public class ValueRangeSetTests {
 
   @Test
   public void separatePositivePartitionsWithLoop() {
+    ni.setStrategy(ValueRangeSet.LOOP);
     ni.addPartition(10d, 100d);
     ni.addPartition(150d, 200d);
     ni.addPartition(250d, 300d);
-    ni.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
-    double d1 = ni.nextDouble();
-    double d2 = ni.nextDouble();
-    double d3 = ni.nextDouble();
-    double d4 = ni.nextDouble();
+    double d1 = ni.random();
+    double d2 = ni.random();
+    double d3 = ni.random();
+    double d4 = ni.random();
     assertTrue("Generated value 1 should be in partition 1 (10-100) was " + d1, d1 >= 10 && d1 <= 100);
     assertTrue("Generated value 2 should be in partition 2 (150-200) was " + d2, d2 >= 150 && d2 <= 200);
     assertTrue("Generated value 3 should be in partition 3 (250-300) was " + d3, d3 >= 250 && d3 <= 300);
@@ -46,14 +46,14 @@ public class ValueRangeSetTests {
 
   @Test
   public void overlappingPositivePartitionsWithLoop() {
+    ni.setStrategy(ValueRangeSet.LOOP);
     ni.addPartition(10d, 100d);
     ni.addPartition(50d, 200d);
     ni.addPartition(150d, 300d);
-    ni.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
-    double d1 = ni.nextDouble();
-    double d2 = ni.nextDouble();
-    double d3 = ni.nextDouble();
-    double d4 = ni.nextDouble();
+    double d1 = ni.random();
+    double d2 = ni.random();
+    double d3 = ni.random();
+    double d4 = ni.random();
     assertTrue("Generated value 1 should be in partition 1 (10-100) was " + d1, d1 >= 10 && d1 <= 100);
     assertTrue("Generated value 2 should be in partition 2 (150-200) was " + d2, d2 >= 50 && d2 <= 200);
     assertTrue("Generated value 3 should be in partition 3 (250-300) was " + d3, d3 >= 150 && d3 <= 300);
@@ -62,14 +62,14 @@ public class ValueRangeSetTests {
 
   @Test
   public void overlappingNegativePartitionsWithLoop() {
+    ni.setStrategy(ValueRangeSet.LOOP);
     ni.addPartition(-10d, 100d);
     ni.addPartition(-200d, -50d);
     ni.addPartition(-150d, 0d);
-    ni.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
-    double d1 = ni.nextDouble();
-    double d2 = ni.nextDouble();
-    double d3 = ni.nextDouble();
-    double d4 = ni.nextDouble();
+    double d1 = ni.random();
+    double d2 = ni.random();
+    double d3 = ni.random();
+    double d4 = ni.random();
     assertTrue("Generated value 1 should be in partition 1 (-10-100) was " + d1, d1 >= -10 && d1 <= 100);
     assertTrue("Generated value 2 should be in partition 2 (-200-(-50)) was " + d2, d2 <= -50 && d2 >= -200);
     assertTrue("Generated value 3 should be in partition 3 (-150-0) was " + d3, d3 >= -150 && d3 <= 0);
@@ -82,11 +82,10 @@ public class ValueRangeSetTests {
     ni.addPartition(-10d, 100d);
     ni.addPartition(-200d, -50d);
     ni.addPartition(-150d, 0d);
-    ni.setStrategy(DataGenerationStrategy.RANDOM);
-    double d1 = ni.nextDouble();
-    double d2 = ni.nextDouble();
-    double d3 = ni.nextDouble();
-    double d4 = ni.nextDouble();
+    double d1 = ni.random();
+    double d2 = ni.random();
+    double d3 = ni.random();
+    double d4 = ni.random();
     assertTrue("Generated value 1 should be in partitions 1-3 (-10-100, -50-(-200) was " + d1, (d1 >= -10 && d1 <= 100) || (d1 <= 0 && d1 >= -200));
     assertTrue("Generated value 2 should be in partitions 1-3 (-10-100, -50-(-200) was " + d2, (d2 >= -10 && d2 <= 100) || (d2 <= 0 && d2 >= -200));
     assertTrue("Generated value 3 should be in partitions 1-3 (-10-100, -50-(-200) was " + d3, (d3 >= -10 && d3 <= 100) || (d3 <= 0 && d3 >= -200));
@@ -95,14 +94,14 @@ public class ValueRangeSetTests {
 
   @Test
   public void optimizedRandomInput() {
+    ni.setStrategy(ValueRangeSet.BALANCED);
     ni.addPartition(10d, 100d);
     ni.addPartition(150d, 200d);
     ni.addPartition(250d, 300d);
-    ni.setStrategy(DataGenerationStrategy.BALANCING);
-    double d1 = ni.nextDouble();
-    double d2 = ni.nextDouble();
-    double d3 = ni.nextDouble();
-    double d4 = ni.nextDouble();
+    double d1 = ni.balanced();
+    double d2 = ni.balanced();
+    double d3 = ni.balanced();
+    double d4 = ni.balanced();
     int p1 = findInPartitions(d1, 10d, 100d, 150d, 200d, 250d, 300d);
     int p2 = findInPartitions(d2, 10d, 100d, 150d, 200d, 250d, 300d);
     int p3 = findInPartitions(d3, 10d, 100d, 150d, 200d, 250d, 300d);
@@ -129,25 +128,25 @@ public class ValueRangeSetTests {
 
   @Test
   public void addRemovePartitions() {
+    ni.setStrategy(ValueRangeSet.LOOP);
     ni.addPartition(10d, 100d);
     ni.addPartition(150d, 200d);
     ni.addPartition(250d, 300d);
     ni.addPartition(101d, 120d);
-    ni.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
-    double d1 = ni.nextDouble();
-    double d2 = ni.nextDouble();
-    double d3 = ni.nextDouble();
-    double d4 = ni.nextDouble();
+    double d1 = ni.ordered();
+    double d2 = ni.ordered();
+    double d3 = ni.ordered();
+    double d4 = ni.ordered();
     assertTrue("Generated value 1 should be in partition 1 (10-100) was " + d1, d1 >= 10 && d1 <= 100);
     assertTrue("Generated value 2 should be in partition 2 (150-200) was " + d2, d2 >= 150 && d2 <= 200);
     assertTrue("Generated value 3 should be in partition 3 (250-300) was " + d3, d3 >= 250 && d3 <= 300);
     assertTrue("Generated value 4 should be in partition 4 (101-120) was " + d4, d4 >= 101 && d4 <= 120);
     ni.removePartition(101d, 120d);
 
-    d1 = ni.nextDouble();
-    d2 = ni.nextDouble();
-    d3 = ni.nextDouble();
-    d4 = ni.nextDouble();
+    d1 = ni.ordered();
+    d2 = ni.ordered();
+    d3 = ni.ordered();
+    d4 = ni.ordered();
     assertTrue("Generated value 1 should be in partition 1 (10-100) was " + d1, d1 >= 10 && d1 <= 100);
     assertTrue("Generated value 2 should be in partition 2 (150-200) was " + d2, d2 >= 150 && d2 <= 200);
     assertTrue("Generated value 3 should be in partition 3 (250-300) was " + d3, d3 >= 250 && d3 <= 300);
@@ -157,7 +156,7 @@ public class ValueRangeSetTests {
   @Test
   public void zeroPartitions() {
     try {
-      double d1 = ni.nextDouble();
+      double d1 = ni.random();
       fail("Zero partitions should fail generation.");
     } catch (IllegalStateException e) {
       assertTrue("Zero partitions should fail generation.", e.getMessage().startsWith("No partitions defined"));
@@ -166,12 +165,13 @@ public class ValueRangeSetTests {
 
   @Test
   public void intGenerationWithTwoValues() {
-    ni.addPartition(1d, 2d);
-    ni.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
+    ValueRangeSet<Integer> ni = new ValueRangeSet<>();
+    ni.setSeed(333);
+    ni.addPartition(1, 2);
     boolean b1 = false;
     boolean b2 = false;
     for (int i = 0 ; i < 100 ; i++) {
-      int n = ni.nextInt();
+      int n = (int)ni.ordered();
       if (n == 1) {
         b1 = true;
       }
@@ -220,15 +220,14 @@ public class ValueRangeSetTests {
   public void boundaryScanningInteger() {
     ValueRangeSet<Integer> vr = new ValueRangeSet<>();
     vr.setSeed(333);
-    vr.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
-    vr.setPartitionStrategy(DataGenerationStrategy.BOUNDARY_SCAN);
+    vr.setStrategy(ValueRangeSet.LOOP);
     vr.addPartition(0, 100);
     vr.addPartition(-100, -50);
     vr.addPartition(200, 300);
     vr.addPartition(-300, -200);
     Collection<Integer> actual = new ArrayList<>();
     for (int i = 0 ; i < 30 ; i++) {
-      actual.add(vr.next());
+      actual.add(vr.boundaryIn());
     }
     String expected = "[0, -100, 200, -300, 100, -50, 300, -200, 1, -99, 201, -299, 99, -51, 299, -201, 2, -98, 202, -298, 98, -52, 298, -202, 3, -97, 203, -297, 97, -53]";
     assertEquals("Generated integers for value range with boundary scan", expected, actual.toString());
@@ -238,15 +237,14 @@ public class ValueRangeSetTests {
   public void boundaryScanningInvalidInteger() {
     ValueRangeSet<Integer> vr = new ValueRangeSet<>();
     vr.setSeed(333);
-    vr.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
-    vr.setPartitionStrategy(DataGenerationStrategy.BOUNDARY_SCAN_INVALID);
+    vr.setStrategy(ValueRangeSet.LOOP);
     vr.addPartition(0, 100);
     vr.addPartition(-100, -50);
     vr.addPartition(200, 300);
     vr.addPartition(-300, -200);
     Collection<Integer> actual = new ArrayList<>();
     for (int i = 0 ; i < 30 ; i++) {
-      actual.add(vr.next());
+      actual.add(vr.boundaryOut());
     }
     String expected = "[101, -49, 301, -199, -1, -101, 199, -301, 102, -48, 302, -198, -2, -102, 198, -302, 103, -47, 303, -197, -3, -103, 197, -303, 104, -46, 304, -196, -4, -104]";
     assertEquals("Generated integers for value range with boundary scan", expected, actual.toString());
@@ -256,8 +254,7 @@ public class ValueRangeSetTests {
   public void boundaryScanningFloat() {
     ValueRangeSet<Double> vr = new ValueRangeSet<>();
     vr.setSeed(333);
-    vr.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
-    vr.setPartitionStrategy(DataGenerationStrategy.BOUNDARY_SCAN);
+    vr.setStrategy(ValueRangeSet.LOOP);
     vr.addPartition(0f, 100f);
     vr.addPartition(-100f, -50f);
     vr.addPartition(200f, 300f);
@@ -266,7 +263,8 @@ public class ValueRangeSetTests {
     //the valuerangeset actually converts float to double
     double[] expected = new double[]{0, -100, 200, -300, 100, -50, 300, -200, 0.1, -99.9, 200.1, -299.9, 99.9, -50.1, 299.9, -200.1, 0.2, -99.8, 200.2, -299.8, 99.8, -50.2, 299.8, -200.2, 0.3, -99.7, 200.3, -299.7, 99.7, -50.3};
     for (int i = 0 ; i < 30 ; i++) {
-      assertEquals("Generated integers for value range with boundary scan (index " + i + ")", expected[i], vr.next(), 0.01d);
+      Double actual = vr.boundaryIn();
+      assertEquals("Generated integers for value range with boundary scan (index " + i + ")", expected[i], actual, 0.01d);
     }
   }
 
