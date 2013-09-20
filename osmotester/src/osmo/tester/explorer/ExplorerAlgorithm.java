@@ -33,15 +33,16 @@ public class ExplorerAlgorithm implements FSMTraversalAlgorithm {
   /** Used to write a graphical trace for all explored tests and their steps. */
   private DOTWriter dot = new DOTWriter(1);
   private MainExplorer currentExplorer = null;
-  private final Collection<String> possibleStepPairs = new LinkedHashSet<>();
+  private static final Collection<String> possibleStepPairs = new LinkedHashSet<>();
   /** For collecting possible coverage metrics. */
-  private final Map<String, Collection<String>> possibleValues = new LinkedHashMap<>();
+  private static final Map<String, Collection<String>> possibleValues = new LinkedHashMap<>();
   /** For collecting possible coverage metrics. */
-  private final Map<String, Collection<String>> possibleStates = new LinkedHashMap<>();
+  private static final Map<String, Collection<String>> possibleStates = new LinkedHashMap<>();
   /** For collecting possible coverage metrics. */
-  private final Map<String, Collection<String>> possibleStatePairs = new LinkedHashMap<>();
+  private static final Map<String, Collection<String>> possibleStatePairs = new LinkedHashMap<>();
   private FSM fsm = null;
   private Collection<TimeTrace> traces = new ArrayList<>();
+  public static boolean trackCoverage = false;
 
   public ExplorerAlgorithm(ExplorationConfiguration config) {
     this.config = config;
@@ -114,37 +115,39 @@ public class ExplorerAlgorithm implements FSMTraversalAlgorithm {
     TimeTrace trace = new TimeTrace(test, step, result, currentExplorer.getDuration());
     traces.add(trace);
 
-    Map<String, Collection<String>> observed = currentExplorer.getPossibleValues();
-    for (String key : observed.keySet()) {
-      Collection<String> possibles = possibleValues.get(key);
-      if (possibles == null) {
-        possibles = new LinkedHashSet<>();
-        possibleValues.put(key, possibles);
+    if (trackCoverage) {
+      Map<String, Collection<String>> observed = currentExplorer.getPossibleValues();
+      for (String key : observed.keySet()) {
+        Collection<String> possibles = possibleValues.get(key);
+        if (possibles == null) {
+          possibles = new LinkedHashSet<>();
+          possibleValues.put(key, possibles);
+        }
+        possibles.addAll(observed.get(key));
       }
-      possibles.addAll(observed.get(key));
-    }
 
-    observed = currentExplorer.getPossibleStates();
-    for (String key : observed.keySet()) {
-      Collection<String> possibles = possibleStates.get(key);
-      if (possibles == null) {
-        possibles = new LinkedHashSet<>();
-        possibleStates.put(key, possibles);
+      observed = currentExplorer.getPossibleStates();
+      for (String key : observed.keySet()) {
+        Collection<String> possibles = possibleStates.get(key);
+        if (possibles == null) {
+          possibles = new LinkedHashSet<>();
+          possibleStates.put(key, possibles);
+        }
+        possibles.addAll(observed.get(key));
       }
-      possibles.addAll(observed.get(key));
-    }
 
-    observed = currentExplorer.getPossibleStatePairs();
-    for (String key : observed.keySet()) {
-      Collection<String> possibles = possibleStatePairs.get(key);
-      if (possibles == null) {
-        possibles = new LinkedHashSet<>();
-        possibleStatePairs.put(key, possibles);
+      observed = currentExplorer.getPossibleStatePairs();
+      for (String key : observed.keySet()) {
+        Collection<String> possibles = possibleStatePairs.get(key);
+        if (possibles == null) {
+          possibles = new LinkedHashSet<>();
+          possibleStatePairs.put(key, possibles);
+        }
+        possibles.addAll(observed.get(key));
       }
-      possibles.addAll(observed.get(key));
-    }
 
-    possibleStepPairs.addAll(currentExplorer.getPossibleStepPairs());
+      possibleStepPairs.addAll(currentExplorer.getPossibleStepPairs());
+    }
 
     //we have to keep track of exploration in the endcondition to be able to tell when to stop test generation
     //that is, to be able to identify a plateau

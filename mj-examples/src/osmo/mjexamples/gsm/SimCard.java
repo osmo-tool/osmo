@@ -19,6 +19,9 @@ import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.coverage.ScoreConfiguration;
 import osmo.tester.coverage.TestCoverage;
+import osmo.tester.explorer.ExplorationConfiguration;
+import osmo.tester.explorer.ExplorerAlgorithm;
+import osmo.tester.explorer.OSMOExplorer;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.LengthProbability;
 import osmo.tester.generator.testsuite.TestCase;
@@ -607,7 +610,7 @@ public class SimCard {
     tester.generate(44);
   }
 
-  public static void main(String[] args) {
+  public static void mainG(String[] args) {
     long seed = Long.parseLong(args[0]);
     int cores = Integer.parseInt(args[1]);
     int population = Integer.parseInt(args[2]);
@@ -624,6 +627,19 @@ public class SimCard {
       TestCoverage tc = new TestCoverage(tests);
       System.out.println(tc.coverageString(greedy.getFsm(), null, null, null, null, false));
     }
+  }
+
+  public static void main(String[] args) {
+    ExplorerAlgorithm.trackCoverage = true;
+    long seed = Long.parseLong(args[0]);
+    int cores = Integer.parseInt(args[1]);
+    int population = Integer.parseInt(args[2]);
+    int timeout = Integer.parseInt(args[3]);
+    OSMOExplorer explorer = new OSMOExplorer();
+    ExplorationConfiguration config = new ExplorationConfiguration(new GSMModelFactory(System.out), 3, 111);
+    config.setMinTestLength(20);
+    config.setMinSuiteLength(20);
+    explorer.explore(config);
   }
 
   private static class GSMModelFactory implements ModelFactory {
