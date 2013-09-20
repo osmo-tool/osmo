@@ -1,6 +1,5 @@
 package osmo.tester.model.data;
 
-import osmo.common.Randomizer;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.gui.manualdrive.ValueRangeSetGUI;
@@ -21,13 +20,15 @@ import java.util.Collection;
 public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
   private static final Logger log = new Logger(ValueRangeSet.class);
   /** The different partitions in the domain. */
-  private ValueSet<ValueRange> partitions = new ValueSet<>();
+  private ValueSet<ValueRange<T>> partitions = new ValueSet<>();
   /** The strategy for selecting a partition. */
-  private DataGenerationStrategy strategy = DataGenerationStrategy.RANDOM;
-  /** The strategy for input data generation from the partitions. */
-  private DataGenerationStrategy partitionStrategy = DataGenerationStrategy.RANDOM;
+  private int strategy = RANDOM;
   /** The value used to increment value range in boundary scan. */
   private Number increment = 1;
+  private T choice = null;
+  public static final int RANDOM = 1;
+  public static final int BALANCED = 2;
+  public static final int LOOP = 3;
 
   public ValueRangeSet() {
   }
@@ -36,10 +37,10 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
    * Sets the input generation strategy.
    *
    * @param strategy The new strategy.
+   * @deprecated Will be removed next release.
    */
   @Override
   public ValueRangeSet<T> setStrategy(DataGenerationStrategy strategy) {
-    this.strategy = strategy;
     partitions.setStrategy(strategy);
     return this;
   }
@@ -57,13 +58,23 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
    * Set the data generation strategy for the composing partitions.
    *
    * @param strategy The new strategy.
+   * @deprecated Will be removed next release.
    */
   public void setPartitionStrategy(DataGenerationStrategy strategy) {
-    this.partitionStrategy = strategy;
-    Collection<ValueRange> all = partitions.getOptions();
-    for (ValueRange range : all) {
-      range.setStrategy(partitionStrategy);
+    switch (strategy) {
+      case BALANCING:
+        this.strategy = BALANCED;
+        return;
+      case ORDERED_LOOP:
+        this.strategy = LOOP;
+        return;
+      default:
+        this.strategy = RANDOM;
     }
+  }
+
+  public void setStrategy(int strategy) {
+    this.strategy = strategy;
   }
 
   public ValueRange getPartition(int i) {
@@ -76,7 +87,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
    * @param increment Increment for value range partitions.
    */
   public void setIncrement(Number increment) {
-    Collection<ValueRange> all = partitions.getOptions();
+    Collection<ValueRange<T>> all = partitions.getOptions();
     for (ValueRange range : all) {
       range.setIncrement(increment);
     }
@@ -100,7 +111,6 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
     } else {
       range = new ValueRange<>(Double.class, min, max);
     }
-    range.setStrategy(partitionStrategy);
     range.setIncrement(increment);
     range.setSeed(rand.getSeed());
     partitions.add(range);
@@ -147,49 +157,15 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
    * @return The partition to generate data from.
    */
   public ValueRange nextPartition() {
-    //we use ValueSet for partitions so we only need to handle optimized random here as the valueset handles random and ordered loops
-    if (strategy != DataGenerationStrategy.BALANCING) {
-      ValueRange partition = partitions.next();
-      log.debug("Next interval " + partition);
-      return partition;
+    //we use ValueSet for partitions so we only need to handle balancing here as the valueset handles random and ordered loops
+    switch (strategy) {
+      case BALANCED:
+        return partitions.balanced();
+      case LOOP:
+        return partitions.ordered();
+      default:
+        return partitions.random();
     }
-    return optimizedRandomPartition();
-  }
-
-  /**
-   * Chooses a partition based on the OPTIMIZED_RANDOM input strategy.
-   *
-   * @return The chosen partition.
-   */
-  private ValueRange optimizedRandomPartition() {
-    log.debug("Optimized random partition choice start");
-    Collection<ValueRange> options = partitions.getOptions();
-    if (options.size() == 1) {
-      ValueRange partition = options.iterator().next();
-      log.debug("Single partition found, returning it:" + partition);
-      return partition;
-    }
-    //first we find the minimum coverage in the set
-    int min = Integer.MAX_VALUE;
-    for (ValueRange option : options) {
-      int count = option.getHistory().size();
-      log.debug("Coverage for " + option + ":" + count);
-      if (count < min) {
-        min = count;
-      }
-    }
-    log.debug("Min coverage:" + min);
-    //then we find all that have coverage equal to smallest
-    Collection<ValueRange> currentOptions = new ArrayList<>();
-    for (ValueRange option : options) {
-      int count = option.getHistory().size();
-      log.debug("Coverage for current option " + option + ":" + count);
-      if (count == min) {
-        currentOptions.add(option);
-      }
-    }
-    //finally we pick one from the set of smallest coverage
-    return rand.oneOf(currentOptions);
   }
 
   /** Validates that this range makes sense (has partitions defined etc.). */
@@ -199,72 +175,85 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
     }
   }
 
+  /**
+   * 
+   * @return
+   * @deprecated will remove next release
+   */
   @Override
   public T next() {
+    switch (strategy) {
+      case LOOP:
+        return ordered();
+      case BALANCED:
+        return balanced();
+      default:
+        return random();
+    }
+  }
+  
+  private void pre() {
+    choice = null;
     if (gui != null) {
-      return (T) gui.next();
+      choice = (T) gui.next();
+      return;
     }
     OSMOConfiguration.check(this);
     validate();
-    T next;
-    ValueRange vr = nextPartition();
-    if (vr.getType() == DataType.INT) {
-      next = (T) new Integer(vr.nextInt());
-    } else if (vr.getType() == DataType.LONG) {
-      next = (T) new Long(vr.nextLong());
-    } else {
-      next = (T) new Double(vr.nextDouble());
+  }
+  
+  private void post() {
+    observe(choice);
+  }
+  
+  public T random() {
+    pre();
+    if (choice == null) {
+      ValueRange vr = nextPartition();
+      choice = (T) vr.random();
     }
-    observe(next);
-    return next;
+    post();
+    return choice;
   }
 
-  private Number convert(String text) {
-    ValueRange range = partitions.getOptions().get(0);
-    switch (range.getType()) {
-      case INT:
-        return Integer.parseInt(text);
-      case LONG:
-        return Long.parseLong(text);
-      case DOUBLE:
-        return Double.parseDouble(text);
-      default:
-        throw new IllegalArgumentException("Enum type:" + range.getType() + " unsupported.");
+  public T ordered() {
+    pre();
+    if (choice == null) {
+      ValueRange vr = nextPartition();
+      choice = (T) vr.ordered();
     }
+    post();
+    return choice;
   }
 
-  /**
-   * Generates a new double value from the next partition in line.
-   *
-   * @return Generated input value.
-   */
-  public Double nextDouble() {
-    validate();
-    ValueRange i = nextPartition();
-    return i.nextDouble();
+  public T balanced() {
+    pre();
+    if (choice == null) {
+      ValueRange vr = nextPartition();
+      choice = (T) vr.balanced();
+    }
+    post();
+    return choice;
   }
 
-  /**
-   * Generates a new integer value from the next partition in line.
-   *
-   * @return Generated input value.
-   */
-  public int nextInt() {
-    validate();
-    ValueRange i = nextPartition();
-    return i.nextInt();
+  public T boundaryIn() {
+    pre();
+    if (choice == null) {
+      ValueRange vr = nextPartition();
+      choice = (T) vr.boundaryIn();
+    }
+    post();
+    return choice;
   }
 
-  /**
-   * Generates a new long value from the next partition in line.
-   *
-   * @return Generated input value.
-   */
-  public long nextLong() {
-    validate();
-    ValueRange i = nextPartition();
-//    history.add(value);
-    return i.nextLong();
+  public T boundaryOut() {
+    pre();
+    if (choice == null) {
+      ValueRange vr = nextPartition();
+      choice = (T) vr.boundaryOut();
+    }
+    post();
+    return choice;
   }
 
   @Override
