@@ -4,13 +4,13 @@ import osmo.tester.annotation.AfterSuite;
 import osmo.tester.annotation.AfterTest;
 import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
+import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.ExplorationEnabler;
 import osmo.tester.annotation.GenerationEnabler;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.RequirementsField;
-import osmo.tester.annotation.StateName;
 import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 
@@ -38,7 +38,7 @@ public class EmptyTestModel3 {
   public void end() {
   }
 
-  @StateName
+  @CoverageValue("my-state")
   public void badArgument(String s1, String s2) {
   }
 

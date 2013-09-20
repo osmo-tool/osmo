@@ -8,6 +8,7 @@ import osmo.tester.generator.filter.StepFilter;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.CoverageMethod;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
@@ -40,6 +41,7 @@ public class MainGenerator {
   private GenerationListenerList listeners;
   /** Test generation history. */
   private TestSuite suite;
+  private TestCaseStep previousStep = null;
   /** Requirements for model objects. */
   private Requirements reqs;
   /** Keeps track of overall number of tests generated. */
@@ -106,6 +108,7 @@ public class MainGenerator {
    * @return The generated test case.
    */
   public TestCase nextTest() {
+    previousStep = null;
     createModelObjects();
     FSMTraversalAlgorithm algorithm = config.getAlgorithm();
     algorithm.initTest();
@@ -126,7 +129,7 @@ public class MainGenerator {
           test.getCurrentStep().setFailed(true);
         }
         Throwable unwrap = unwrap(e);
-        String errorMsg = "Error in test generation:"+unwrap.getMessage();
+        String errorMsg = "Error in test generation:" + unwrap.getMessage();
         log.error(errorMsg, e);
         listeners.testError(test, unwrap);
         if (!(unwrap instanceof AssertionError) || config.shouldFailWhenError()) {
@@ -152,7 +155,7 @@ public class MainGenerator {
 
   /**
    * Take the next step in the current test case.
-   * 
+   *
    * @return True if this test should end now.
    */
   private boolean nextStep() {
@@ -202,13 +205,14 @@ public class MainGenerator {
     }
     //we store the "custom" state returned by @StateName tagged methods
     //we do it here to allow any post-processing of state value for a step
-    storeUserState(step);
+    storeUserCoverageValues(step);
     //store into test step the current state, do it here to allow the post methods and listeners to see step state
     step.storeGeneralState(fsm);
     listeners.step(step);
     invokeAll(transition.getPostMethods(), "post", transition);
     //set end time
     step.end();
+    previousStep = step;
   }
 
   /**
@@ -216,17 +220,18 @@ public class MainGenerator {
    *
    * @param step The step to store data into.
    */
-  private void storeUserState(TestCaseStep step) {
-    InvocationTarget stateName = fsm.getStateNameFor(step.getModelObjectName());
-    if (stateName != null) {
-      String state = (String) stateName.invoke(step);
-      if (state == null) {
-        throw new NullPointerException("Model state is null. Now allowed.");
+  private void storeUserCoverageValues(TestCaseStep step) {
+    Collection<CoverageMethod> coverages = fsm.getCoverageMethods();
+    for (CoverageMethod coverage : coverages) {
+      String value = coverage.invoke(step);
+      String name = coverage.getVariableName();
+      step.addUserCoverage(name, value);
+      log.debug("new coverage: " + name + "=" + value);
+      if (previousStep != null) {
+        Object value1 = previousStep.getStatesFor(name).getValue();
+        step.addUserCoveragePair(coverage.getPairName(), value1 +"->"+value);
       }
-      step.setUserState(state);
-      log.debug("new state:" + state);
     }
-
   }
 
   /** Handles suite shutdown. Should be called after all tests have been generated. */
@@ -282,9 +287,7 @@ public class MainGenerator {
     return false;
   }
 
-  /**
-   * Initializes the test suite with valid values and invokes @BeforeSuite before test generation is started.
-   */
+  /** Initializes the test suite with valid values and invokes @BeforeSuite before test generation is started. */
   public void initSuite() {
     if (suite == null) {
       log.debug("No suite object defined. Creating new.");
@@ -301,9 +304,7 @@ public class MainGenerator {
     invokeAll(befores);
   }
 
-  /**
-   * For @AfterSuite annotations.
-   */
+  /** For @AfterSuite annotations. */
   protected void afterSuite() {
     Collection<InvocationTarget> afters = fsm.getAfterSuites();
     invokeAll(afters);
@@ -312,7 +313,7 @@ public class MainGenerator {
 
   /**
    * For @BeforeTest annotations.
-   * 
+   *
    * @return The new test case.
    */
   public TestCase beforeTest() {
@@ -327,9 +328,7 @@ public class MainGenerator {
     return test;
   }
 
-  /**
-   * For @AfterTest annotations.
-   */
+  /** For @AfterTest annotations. */
   public void afterTest() {
     Collection<InvocationTarget> afters = fsm.getAfterTests();
     invokeAll(afters);
@@ -407,7 +406,7 @@ public class MainGenerator {
   /**
    * Helps keep track of possible pairs of test steps encountered during test generation.
    * This can be used in reporting to list what was covered and what was not.
-   * 
+   *
    * @param step    The current executed step.
    * @param enabled The set of enabled steps in this state (next steps from current "step").
    */
@@ -421,7 +420,7 @@ public class MainGenerator {
     }
   }
 
-  public Collection<String> getPossiblePairs() {
+  public Collection<String> getPossibleStepPairs() {
     return possiblePairs;
   }
 }

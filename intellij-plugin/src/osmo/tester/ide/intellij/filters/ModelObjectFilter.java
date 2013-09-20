@@ -5,27 +5,22 @@ import com.intellij.compiler.CompilerConfiguration;
 import com.intellij.execution.configurations.ConfigurationUtil;
 import com.intellij.ide.util.ClassFilter;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Computable;
-import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiModifierList;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiUtilCore;
 import osmo.tester.annotation.AfterSuite;
 import osmo.tester.annotation.AfterTest;
 import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
+import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
-import osmo.tester.annotation.StateName;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Transition;
-import osmo.tester.annotation.Variable;
-import osmo.tester.generator.endcondition.EndCondition;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -49,7 +44,7 @@ public class ModelObjectFilter implements ClassFilter.ClassFilterWithScope {
     annotations.add(BeforeTest.class.getName());
     annotations.add(AfterSuite.class.getName());
     annotations.add(AfterTest.class.getName());
-    annotations.add(StateName.class.getName());
+    annotations.add(CoverageValue.class.getName());
     
 //    annotations.add(Variable.class.getName());
   }

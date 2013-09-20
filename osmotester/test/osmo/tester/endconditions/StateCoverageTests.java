@@ -1,13 +1,12 @@
 package osmo.tester.endconditions;
 
 import org.junit.Test;
-import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.StateCoverage;
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.testmodels.StateDescriptionModel;
-import osmo.tester.testmodels.StateDescriptionModel2;
+import osmo.tester.testmodels.CoverageValueModel1;
+import osmo.tester.testmodels.CoverageValueModel2;
 
 import java.util.List;
 
@@ -17,9 +16,9 @@ import static junit.framework.Assert.*;
 public class StateCoverageTests {
   @Test
   public void testCaseState3() {
-    StateDescriptionModel model = new StateDescriptionModel();
+    CoverageValueModel1 model = new CoverageValueModel1();
     OSMOTester tester = new OSMOTester(model);
-    tester.setTestEndCondition(new StateCoverage("3"));
+    tester.setTestEndCondition(new StateCoverage("my-state", "3"));
     tester.setSuiteEndCondition(new Length(1));
     tester.generate(55);
     List<TestCase> history = tester.getSuite().getFinishedTestCases();
@@ -30,9 +29,9 @@ public class StateCoverageTests {
 
   @Test
   public void testCaseState2() {
-    StateDescriptionModel model = new StateDescriptionModel();
+    CoverageValueModel1 model = new CoverageValueModel1();
     OSMOTester tester = new OSMOTester(model);
-    tester.setTestEndCondition(new StateCoverage("2"));
+    tester.setTestEndCondition(new StateCoverage("my-state", "2"));
     tester.setSuiteEndCondition(new Length(1));
     tester.generate(55);
     List<TestCase> history = tester.getSuite().getFinishedTestCases();
@@ -43,9 +42,9 @@ public class StateCoverageTests {
 
   @Test
   public void testCaseState3twice() {
-    StateDescriptionModel model = new StateDescriptionModel();
+    CoverageValueModel1 model = new CoverageValueModel1();
     OSMOTester tester = new OSMOTester(model);
-    tester.setTestEndCondition(new StateCoverage("3", "3"));
+    tester.setTestEndCondition(new StateCoverage("my-state", "3", "3"));
     tester.setSuiteEndCondition(new Length(1));
     tester.generate(55);
     List<TestCase> history = tester.getSuite().getFinishedTestCases();
@@ -56,11 +55,11 @@ public class StateCoverageTests {
 
   @Test
   public void suiteState() {
-    StateDescriptionModel2 model = new StateDescriptionModel2();
+    CoverageValueModel2 model = new CoverageValueModel2();
     OSMOTester tester = new OSMOTester(model);
     tester.setTestEndCondition(new Length(1));
     //multiple repetitions of the same value are not counted for a suite so this should be equals to 1,2,3,4
-    tester.setSuiteEndCondition(new StateCoverage("1", "2", "3", "4", "4", "4", "4", "4"));
+    tester.setSuiteEndCondition(new StateCoverage("my-state", "1", "2", "3", "4", "4", "4", "4", "4"));
     tester.generate(55);
     List<TestCase> history = tester.getSuite().getFinishedTestCases();
     assertEquals("Number of tests generated", 8, history.size());

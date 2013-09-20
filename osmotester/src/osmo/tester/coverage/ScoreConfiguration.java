@@ -1,6 +1,7 @@
 package osmo.tester.coverage;
 
 import osmo.common.log.Logger;
+import osmo.tester.model.CoverageMethod;
 import osmo.tester.model.FSM;
 import osmo.tester.model.VariableField;
 
@@ -34,12 +35,10 @@ public class ScoreConfiguration {
   protected int stepWeight = 20;
   /** Weight for number of covered requirements. */
   protected int requirementWeight = 10;
-  /** Weight for covered user defined states. */
-  private int stateWeight = 50;
-  /** Weight for covered pairs of user defined states (transitions between them). */
-  private int statePairWeight = 40;
   /** Names of variables that should not be validated, e.g. custom user variables. */
   protected Collection<String> ignoreList = new LinkedHashSet<>();
+  private int stateWeight = 50;
+  private int statePairWeight = 40;
 
   /**
    * Validates the coverage criteria defined in this configuration against the given model.
@@ -53,6 +52,11 @@ public class ScoreConfiguration {
     Collection<String> variableNames = new ArrayList<>();
     for (VariableField field : coverageVariables) {
       variableNames.add(field.getName());
+    }
+    Collection<CoverageMethod> coverageMethods = fsm.getCoverageMethods();
+    for (CoverageMethod method : coverageMethods) {
+      variableNames.add(method.getVariableName());
+      variableNames.add(method.getPairName());
     }
     log.debug("FSM variables for coverage:" + variableNames);
     Collection<String> notFound = new HashSet<>();
@@ -102,28 +106,12 @@ public class ScoreConfiguration {
     return weight;
   }
 
-  public int getStateWeight() {
-    return stateWeight;
-  }
-
-  public void setStateWeight(int stateWeight) {
-    this.stateWeight = stateWeight;
-  }
-
   public int getStepPairWeight() {
     return stepPairWeight;
   }
 
   public void setStepPairWeight(int pairsWeight) {
     this.stepPairWeight = pairsWeight;
-  }
-
-  public int getStatePairWeight() {
-    return statePairWeight;
-  }
-
-  public void setStatePairWeight(int statePairWeight) {
-    this.statePairWeight = statePairWeight;
   }
 
   public int getStepWeight() {
@@ -173,8 +161,22 @@ public class ScoreConfiguration {
             ", stepPairWeight=" + stepPairWeight +
             ", stepWeight=" + stepWeight +
             ", requirementWeight=" + requirementWeight +
-            ", stateWeight=" + stateWeight +
-            ", statePairWeight=" + statePairWeight +
             '}';
+  }
+
+  public int getStateWeight() {
+    return stateWeight;
+  }
+
+  public void setStateWeight(int stateWeight) {
+    this.stateWeight = stateWeight;
+  }
+
+  public int getStatePairWeight() {
+    return statePairWeight;
+  }
+
+  public void setStatePairWeight(int statePairWeight) {
+    this.statePairWeight = statePairWeight;
   }
 }

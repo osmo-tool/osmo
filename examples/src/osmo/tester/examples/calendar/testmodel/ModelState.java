@@ -1,6 +1,6 @@
 package osmo.tester.examples.calendar.testmodel;
 
-import osmo.tester.annotation.StateName;
+import osmo.tester.annotation.CoverageValue;
 import osmo.tester.model.data.DataGenerationStrategy;
 import osmo.tester.model.data.Text;
 import osmo.tester.model.data.ValueRange;
@@ -177,7 +177,7 @@ public class ModelState {
     return oneOf(getEventsWithSpace());
   }
   
-  @StateName
+  @CoverageValue
   public String state() {
     if (hasEvents() && hasTasks()) {
       return "events & tasks";

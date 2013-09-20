@@ -15,15 +15,12 @@ import osmo.tester.model.FSM;
 import osmo.tester.model.ModelFactory;
 import osmo.tester.model.Requirements;
 import osmo.tester.model.data.ValueSet;
-import osmo.tester.reporting.coverage.CoverageMetric;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Generates test cases and greedily optimizes the resulting test suite with regards to coverage criteria as
@@ -202,12 +199,12 @@ public class GreedyOptimizer {
     }
     
     generator.endSuite();
-    this.possiblePairs = generator.getPossiblePairs();
+    this.possiblePairs = generator.getPossibleStepPairs();
     TestCoverage suiteCoverage = new TestCoverage(suite);
 
     String summary = "summary\n";
     //we do not have the set of possible states or state pairs as those would require executing the "states" which greedy does not do..
-    summary += suiteCoverage.coverageString(fsm, possiblePairs, null, null, false);
+    summary += suiteCoverage.coverageString(fsm, possiblePairs, null, null, null, false);
     
     String totalCsv = report.report();
     totalCsv += summary+"\n";

@@ -112,7 +112,7 @@ public class ValueSet<T> extends SearchableInput<T> {
       unbooked.add(option);
     }
   }
-
+  
   /**
    * Removes a value from the set of potential values.
    * If the object does not exist, nothing is done.
@@ -216,6 +216,7 @@ public class ValueSet<T> extends SearchableInput<T> {
   public void free(T option) {
     boolean ok = booked.remove(option);
     if (!ok) throw new IllegalArgumentException("Given option to free that was not booked:"+option);
+    unbooked.add(option);
   }
 
   /**

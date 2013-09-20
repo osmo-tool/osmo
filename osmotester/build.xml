@@ -11,7 +11,7 @@
   <property name="coverage-dir" value="${main-output}/coverage"/>
   <property name="javadoc-dir" value="${main-output}/docs/api"/>
   <property name="clover.home" value="${env.CLOVER_HOME}"/>
-  <property name="build.version" value="3.1.0"/>
+  <property name="build.version" value="3.2.0"/>
   <property name="osmo-common-output" value="../common/ant-out/production"/>
   <property name="jar.file" value="osmo-tester-v${build.version}.jar"/>
   <property name="zip.file" value="osmo-tester-v${build.version}.zip"/>

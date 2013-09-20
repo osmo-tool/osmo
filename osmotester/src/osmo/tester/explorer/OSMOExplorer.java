@@ -9,6 +9,7 @@ import osmo.tester.generator.testsuite.TestSuite;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * The main class for using OSMO Explorer. OSMO Explorer is the tool that simultaneously runs a set of paths
@@ -70,10 +71,11 @@ public class OSMOExplorer {
     
     TestCoverage tc = new TestCoverage(getSuite().getFinishedTestCases());
     boolean printAll = config.isPrintAll();
-    Collection<String> possibleStatePairs = algorithm.getPossibleStatePairs();
-    Collection<String> possibleStates = algorithm.getPossibleStates();
+    Map<String,Collection<String>> possibleValues = algorithm.getPossibleValues();
     Collection<String> possibleStepPairs = algorithm.getPossibleStepPairs();
-    String summary = tc.coverageString(osmo.getFsm(), possibleStepPairs, possibleStates, possibleStatePairs, printAll);
+    Map<String,Collection<String>> possibleStatePairs = algorithm.getPossibleStatePairs();
+    Map<String,Collection<String>> possibleStates = algorithm.getPossibleStates();
+    String summary = tc.coverageString(osmo.getFsm(), possibleStepPairs, possibleValues, possibleStates, possibleStatePairs, printAll);
     System.out.println(summary);
     long end = System.currentTimeMillis();
     long diff = end -start;

@@ -233,37 +233,6 @@ public class TestCase {
   }
 
   /**
-   * Collect variable values covered in different user defined states (@StateName).
-   * 
-   * @return Values covered per state for each variable, duplicates included.
-   */
-  public Map<String, Map<String, ModelVariable>> getStateVariables() {
-    Map<String, Map<String, ModelVariable>> temp = new LinkedHashMap<>();
-
-    for (TestCaseStep step : steps) {
-      //first make sure all states are present in the map we create, to collect values for all states
-      Map<String, ModelVariable> stateMap = temp.get(step.getState());
-      if (stateMap == null) {
-        stateMap = new LinkedHashMap<>();
-        temp.put(step.getState(), stateMap);
-      }
-      //put all values for this step into the list for the state of the step
-      Collection<ModelVariable> variables = step.getValues();
-      for (ModelVariable variable : variables) {
-        String name = variable.getName();
-        ModelVariable mv = stateMap.get(name);
-        if (mv == null) {
-          mv = new ModelVariable(name);
-          stateMap.put(name, mv);
-        }
-        mv.addAll(variable, false);
-      }
-    }
-
-    return temp;
-  }
-
-  /**
    * Get all variable values. User can define if duplicates should be removed or not.
    * 
    * @param merge If true, duplicates are removed.

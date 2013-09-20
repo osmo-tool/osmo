@@ -26,7 +26,7 @@ public class TextReportTests {
             "Model EndConditions: \n" +
             "Exploration Enablers: \n" +
             "Generation Enablers: \n" +
-            "StateNames: \n" +
+            "Coverage Value Methods: \n" +
             "Requirements: null\n" +
             "Variables: \n" +
             "\n" +
@@ -57,7 +57,7 @@ public class TextReportTests {
             "Model EndConditions: \n" +
             "Exploration Enablers: \n" +
             "Generation Enablers: \n" +
-            "StateNames: \n" +
+            "Coverage Value Methods: \n" +
             "Requirements: null\n" +
             "Variables: \n" +
             "\n" +
@@ -94,7 +94,7 @@ public class TextReportTests {
             "Model EndConditions: \n" +
             "Exploration Enablers: \n" +
             "Generation Enablers: \n" +
-            "StateNames: \n" +
+            "Coverage Value Methods: \n" +
             "Requirements: null\n" +
             "Variables: \n" +
             "\n" +
@@ -131,7 +131,7 @@ public class TextReportTests {
             "Model EndConditions: \n" +
             "Exploration Enablers: \n" +
             "Generation Enablers: \n" +
-            "StateNames: osmo.tester.testmodels.ValidTestModel4.state1(osmo.tester.generator.testsuite.TestCaseStep), \n" +
+            "Coverage Value Methods: my-state[osmo.tester.testmodels.ValidTestModel4.state1(osmo.tester.generator.testsuite.TestCaseStep)], \n" +
             "Requirements: null\n" +
             "Variables: \n" +
             "\n" +
@@ -168,7 +168,7 @@ public class TextReportTests {
             "Model EndConditions: osmo.tester.testmodels.ValidTestModel5.end(), \n" +
             "Exploration Enablers: \n" +
             "Generation Enablers: \n" +
-            "StateNames: \n" +
+            "Coverage Value Methods: \n" +
             "Requirements: null\n" +
             "Variables: \n" +
             "\n" +
@@ -205,7 +205,7 @@ public class TextReportTests {
             "Model EndConditions: \n" +
             "Exploration Enablers: \n" +
             "Generation Enablers: \n" +
-            "StateNames: \n" +
+            "Coverage Value Methods: \n" +
             "Requirements: null\n" +
             "Variables: index, \n" +
             "\n" +

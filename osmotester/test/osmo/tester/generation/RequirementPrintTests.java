@@ -3,15 +3,9 @@ package osmo.tester.generation;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
-import osmo.tester.annotation.AfterTest;
-import osmo.tester.annotation.BeforeTest;
-import osmo.tester.generator.endcondition.Length;
-import osmo.tester.model.Requirements;
+import osmo.tester.testmodels.CoverageValueModel1;
 import osmo.tester.testmodels.RandomValueModel2;
-import osmo.tester.testmodels.StateDescriptionModel;
-import osmo.tester.testmodels.ValidTestModel2;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
@@ -49,6 +43,7 @@ public class RequirementPrintTests {
             "Unique steps: 3 (of 3)\n" +
             "Unique step-pairs: 3 (of 3)\n" +
             "Unique requirements: 3\n" +
+            "Variable values: 0\n" +
             "Unique states: 0\n" +
             "Unique state-pairs: 0\n" +
             "\n" +
@@ -72,6 +67,7 @@ public class RequirementPrintTests {
             "Unique steps: 3 (of 3)\n" +
             "Unique step-pairs: 4 (of 4)\n" +
             "Unique requirements: 3\n" +
+            "Variable values: 0\n" +
             "Unique states: 0\n" +
             "Unique state-pairs: 0\n" +
             "\n" +
@@ -95,6 +91,7 @@ public class RequirementPrintTests {
             "Unique steps: 3 (of 3)\n" +
             "Unique step-pairs: 3 (of 3)\n" +
             "Unique requirements: 3\n" +
+            "Variable values: 0\n" +
             "Unique states: 0\n" +
             "Unique state-pairs: 0\n" +
             "\n" +
@@ -118,6 +115,7 @@ public class RequirementPrintTests {
             "Unique steps: 3 (of 3)\n" +
             "Unique step-pairs: 3 (of 3)\n" +
             "Unique requirements: 3\n" +
+            "Variable values: 0\n" +
             "Unique states: 0\n" +
             "Unique state-pairs: 0\n" +
             "\n" +
@@ -144,6 +142,7 @@ public class RequirementPrintTests {
             "Unique steps: 3 (of 3)\n" +
             "Unique step-pairs: 12 (of 12)\n" +
             "Unique requirements: 0\n" +
+            "Variable values: 567\n" +
             "Unique states: 0\n" +
             "Unique state-pairs: 0\n";
     expected = unifyLineSeparators(expected, "\n");
@@ -154,7 +153,7 @@ public class RequirementPrintTests {
   @Test
   public void moreCoverage() {
     OSMOTester tester = new OSMOTester();
-    tester.addModelObject(new StateDescriptionModel());
+    tester.addModelObject(new CoverageValueModel1());
     tester.generate(111);
     String actual = out.toString();
     String expected = "generated 55 tests.\n" +
@@ -164,8 +163,9 @@ public class RequirementPrintTests {
             "Unique steps: 3 (of 3)\n" +
             "Unique step-pairs: 4 (of 4)\n" +
             "Unique requirements: 3\n" +
+            "Variable values: 3\n" +
             "Unique states: 3\n" +
-            "Unique state-pairs: 4\n" +
+            "Unique state-pairs: 3\n" +
             "\n" +
             "Requirements:[]\n" +
             "Covered:[epix, hello, world]\n" +

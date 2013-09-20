@@ -4,7 +4,6 @@ import osmo.common.log.Logger;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.VariableField;
-import osmo.tester.model.data.SearchableInput;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,6 +33,10 @@ public class TestCaseStep {
   private Collection<String> coveredRequirements = null;
   /** The data variables and the values covered for each in this test case. */
   private Map<String, ModelVariable> values = new LinkedHashMap<>();
+  /** The user defined coverage values covered for each in this test case. */
+  private Map<String, ModelVariable> states = new LinkedHashMap<>();
+  /** The pairs of user defined coverage values covered for each in this test case. */
+  private Map<String, ModelVariable> statePairs = new LinkedHashMap<>();
   /** Step identifier. */
   private final int id;
   /** The parent test case to which this step belongs. */
@@ -42,8 +45,6 @@ public class TestCaseStep {
   private long startTime = 0;
   /** When did the step execution end? */
   private long endTime = 0;
-  /** Stores the user defined custom state string when this step was executed. */
-  private String state;
   /** If the execution of this step threw an exception. */
   private boolean failed;
   /** Any custom attributes stored for this step. */
@@ -127,7 +128,7 @@ public class TestCaseStep {
   /**
    * Stores the general step state. General state refers to the state in the model variables that the generator sees.
    * Another state is the user defined state, which is queried from specifically annotated methods with
-   * {@link osmo.tester.annotation.StateName}.
+   * {@link osmo.tester.annotation.CoverageValue}.
    *
    * @param fsm This is where the state is copied from.
    */
@@ -182,6 +183,10 @@ public class TestCaseStep {
     return values.values();
   }
 
+  public ModelVariable getValuesFor(String name) {
+    return values.get(name);
+  }
+
   /**
    * Provides a list of parameters suitable for pretty printing in a HTML coverage matrix table.
    * This means adding empty values to the list to make each row equally long.
@@ -228,12 +233,22 @@ public class TestCaseStep {
     return modelObjectName;
   }
 
-  public String getState() {
-    return state;
+  public void addUserCoverage(String name, String value) {
+    ModelVariable mv = states.get(name);
+    if (mv == null) {
+      mv = new ModelVariable(name);
+      states.put(name, mv);
+    }
+    mv.addValue(value, false);
   }
 
-  public void setUserState(String state) {
-    this.state = state;
+  public void addUserCoveragePair(String pairName, String value) {
+    ModelVariable mv = statePairs.get(pairName);
+    if (mv == null) {
+      mv = new ModelVariable(pairName);
+      statePairs.put(pairName, mv);
+    }
+    mv.addValue(value, false);
   }
 
   public TestCase getParent() {
@@ -254,5 +269,17 @@ public class TestCaseStep {
   
   public Object getAttribute(String name) {
     return attributes.get(name);
+  }
+
+  public Collection<ModelVariable> getStatesList() {
+    return states.values();
+  }
+
+  public Collection<ModelVariable> getStatePairsList() {
+    return statePairs.values();
+  }
+
+  public ModelVariable getStatesFor(String name) {
+    return states.get(name);
   }
 }

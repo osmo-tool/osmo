@@ -18,5 +18,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface StateName {
+public @interface CoverageValue {
+  /** The name of the variable. Must be specified. */
+  String value() default "";
 }

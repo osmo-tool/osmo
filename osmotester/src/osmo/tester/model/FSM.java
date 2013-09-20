@@ -51,7 +51,7 @@ public class FSM {
   /** User defined requirements. */
   private Requirements requirements = null;
   /** The set of objects to call to get current state. Key = model object name, value=target method to get state value.*/
-  private Map<String, InvocationTarget> stateNames = new HashMap<>();
+  private Collection<CoverageMethod> coverageValues = new ArrayList<>();
   /** Name of the start step (before anything else). */
   public static final String START_STEP_NAME = ".osmo.tester.init";
   /** Name of the start state (before anything else). */
@@ -396,15 +396,11 @@ public class FSM {
     return generationEnablers;
   }
 
-  public InvocationTarget getStateNameFor(String modelObjectName) {
-    return stateNames.get(modelObjectName);
+  public void addCoverageMethod(CoverageMethod coverageMethod) {
+    this.coverageValues.add(coverageMethod);
   }
 
-  public void addStateNameFor(String modelObjectName, InvocationTarget stateName) {
-    this.stateNames.put(modelObjectName, stateName);
-  }
-
-  public Map<String, InvocationTarget> getStateNames() {
-    return stateNames;
+  public Collection<CoverageMethod> getCoverageMethods() {
+    return coverageValues;
   }
 }

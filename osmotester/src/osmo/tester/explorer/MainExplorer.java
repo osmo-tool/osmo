@@ -13,8 +13,10 @@ import osmo.tester.model.FSMTransition;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
@@ -52,9 +54,11 @@ public class MainExplorer implements Runnable {
   /** For collecting possible coverage metrics. */
   private final Collection<String> possibleStepPairs = new LinkedHashSet<>();
   /** For collecting possible coverage metrics. */
-  private final Collection<String> possibleStates = new LinkedHashSet<>();
+  private final Map<String, Collection<String>> possibleValues = new LinkedHashMap<>();
   /** For collecting possible coverage metrics. */
-  private final Collection<String> possibleStatePairs = new LinkedHashSet<>();
+  private final Map<String, Collection<String>> possibleStates = new LinkedHashMap<>();
+  /** For collecting possible coverage metrics. */
+  private final Map<String, Collection<String>> possibleStatePairs = new LinkedHashMap<>();
   /** To measure exploration time. */
   private long starttime = 0;
   /** To measure exploration time. */
@@ -195,8 +199,38 @@ public class MainExplorer implements Runnable {
    */
   private void collectMetrics(List<TestCase> from) {
     TestCoverage tc = new TestCoverage(from);
-    possibleStates.addAll(tc.getStates());
-    possibleStatePairs.addAll(tc.getStatePairs());
+
+    Map<String, Collection<String>> observed = tc.getValues();
+    for (String key : observed.keySet()) {
+      Collection<String> possibles = possibleValues.get(key);
+      if (possibles == null) {
+        possibles = new LinkedHashSet<>();
+        possibleValues.put(key, possibles);
+      }
+      possibles.addAll(observed.get(key));
+    }
+
+    //todo: change these to provide numbers only
+    observed = tc.getStates();
+    for (String key : observed.keySet()) {
+      Collection<String> possibles = possibleStates.get(key);
+      if (possibles == null) {
+        possibles = new LinkedHashSet<>();
+        possibleStates.put(key, possibles);
+      }
+      possibles.addAll(observed.get(key));
+    }
+
+    observed = tc.getStatePairs();
+    for (String key : observed.keySet()) {
+      Collection<String> possibles = possibleStatePairs.get(key);
+      if (possibles == null) {
+        possibles = new LinkedHashSet<>();
+        possibleStatePairs.put(key, possibles);
+      }
+      possibles.addAll(observed.get(key));
+    }
+
     possibleStepPairs.addAll(tc.getStepPairs());
   }
 
@@ -301,11 +335,15 @@ public class MainExplorer implements Runnable {
     return possibleStepPairs;
   }
 
-  public Collection<String> getPossibleStates() {
+  public Map<String, Collection<String>> getPossibleValues() {
+    return possibleValues;
+  }
+
+  public Map<String, Collection<String>> getPossibleStates() {
     return possibleStates;
   }
 
-  public Collection<String> getPossibleStatePairs() {
+  public Map<String, Collection<String>> getPossibleStatePairs() {
     return possibleStatePairs;
   }
 
