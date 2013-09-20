@@ -45,11 +45,31 @@ public class ExplorationConfiguration extends ScoreConfiguration {
   private final long seed;
   /** Fallback algorithm for step selection. */
   private FSMTraversalAlgorithm fallback;
+  /** If true, we print all uncovered optiosn (if known). Can lead to huge prints if state/step-space is large. */
+  private boolean printAll = false;
+  /** Number of parallel threads to use for exploration, defaults to the number of processors on host. */
+  private int parallelism = Runtime.getRuntime().availableProcessors();
 
   public ExplorationConfiguration(ModelFactory factory, int depth, long seed) {
     this.factory = factory;
     this.depth = depth;
     this.seed = seed;
+  }
+
+  public boolean isPrintAll() {
+    return printAll;
+  }
+
+  public void setPrintAll(boolean printAll) {
+    this.printAll = printAll;
+  }
+
+  public int getParallelism() {
+    return parallelism;
+  }
+
+  public void setParallelism(int parallelism) {
+    this.parallelism = parallelism;
   }
 
   public long getSeed() {

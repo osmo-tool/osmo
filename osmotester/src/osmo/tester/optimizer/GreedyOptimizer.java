@@ -65,7 +65,7 @@ public class GreedyOptimizer {
   private final EndCondition endCondition;
   /** How much does an iteration need to gain in score to go for another iteration? Defaults to 1. */
   private int threshold = 1;
-  /** Seconds until the search times out. Timeout is checked between iterations. */
+  /** Seconds until the search times out. Timeout is checked between iterations and refers to how long overall generation progresses. */
   private long timeout = -1;
   /** Passed to the generator. */
   private boolean failOnError = true;

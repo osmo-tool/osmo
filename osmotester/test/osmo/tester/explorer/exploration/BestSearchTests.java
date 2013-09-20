@@ -54,11 +54,11 @@ public class BestSearchTests {
     script.add("increase");
     script.add("increase");
     script.add("increase");
-    MainExplorer explorer = new MainExplorer(null, config.getExplorationEndCondition());
+    MainExplorer explorer = new MainExplorer(null);
     FSM fsm = generator.getFsm();
 
     ExplorationState state = new ExplorationState(config, suiteCoverage);
-    explorer.init(fsm, generator.getSuite(), state, script);
+    explorer.init(fsm, generator.getSuite(), state, script, 4);
 
     config.getFallback().init(seed, fsm);
 
@@ -97,9 +97,9 @@ public class BestSearchTests {
     script.add("increase");
     ExplorationState state = new ExplorationState(config, suiteCoverage);
 
-    MainExplorer explorer = new MainExplorer(null, config.getExplorationEndCondition());
+    MainExplorer explorer = new MainExplorer(null);
     FSM fsm = generator.getFsm();
-    explorer.init(fsm, generator.getSuite(), state, script);
+    explorer.init(fsm, generator.getSuite(), state, script, 4);
     config.getFallback().init(seed, fsm);
     
     List<TestCase> tests = createTests(50);

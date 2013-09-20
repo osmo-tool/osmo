@@ -65,11 +65,15 @@ public class OSMOExplorer {
     osmo.setConfig(osmoConfig);
     algorithm = new ExplorerAlgorithm(config);
     osmo.setAlgorithm(algorithm);
-    System.out.println("Starting exploration with "+Runtime.getRuntime().availableProcessors()+" parallel processes.");
+    System.out.println("Starting exploration with "+config.getParallelism()+" parallel processes.");
     osmo.generate(config.getSeed());
     
     TestCoverage tc = new TestCoverage(getSuite().getFinishedTestCases());
-    String summary = tc.coverageString(osmo.getFsm(), algorithm.getPossibleStepPairs(), algorithm.getPossibleStates(), algorithm.getPossibleStatePairs(), true);
+    boolean printAll = config.isPrintAll();
+    Collection<String> possibleStatePairs = algorithm.getPossibleStatePairs();
+    Collection<String> possibleStates = algorithm.getPossibleStates();
+    Collection<String> possibleStepPairs = algorithm.getPossibleStepPairs();
+    String summary = tc.coverageString(osmo.getFsm(), possibleStepPairs, possibleStates, possibleStatePairs, printAll);
     System.out.println(summary);
     long end = System.currentTimeMillis();
     long diff = end -start;
