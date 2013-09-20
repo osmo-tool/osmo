@@ -96,8 +96,8 @@ public class ExplorerAlgorithm implements FSMTraversalAlgorithm {
 
   private String exploreLocal(TestSuite suite, ExplorationState state, List<String> script, TraceNode root) {
     if (currentExplorer == null) {
-      currentExplorer = new MainExplorer(root, config.getExplorationEndCondition());
-      currentExplorer.init(fsm, suite, state, script);
+      currentExplorer = new MainExplorer(root);
+      currentExplorer.init(fsm, suite, state, script, config.getParallelism());
       currentExplorer.explore();
     }
     //and get the choice of next step based on best exploration score
@@ -125,8 +125,8 @@ public class ExplorerAlgorithm implements FSMTraversalAlgorithm {
       List<String> newScript = new ArrayList<>();
       newScript.addAll(script);
       newScript.add(result);
-      currentExplorer = new MainExplorer(root, config.getExplorationEndCondition());
-      currentExplorer.init(fsm, suite, state, newScript);
+      currentExplorer = new MainExplorer(root);
+      currentExplorer.init(fsm, suite, state, newScript, config.getParallelism());
       currentExplorer.explore();
     }
 

@@ -293,7 +293,7 @@ public class TestCoverage {
       all.addAll(possibleStates);
       all.removeAll(states);
       result += " (of "+possibleStates.size()+")";
-      if (all.size() > 0 && all.size() < 5) {
+      if (printAll || all.size() > 0 && all.size() < 5) {
         result += " missing:"+all;
       }
     }

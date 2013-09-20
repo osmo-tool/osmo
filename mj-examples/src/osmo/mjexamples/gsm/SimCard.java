@@ -82,7 +82,7 @@ public class SimCard {
   protected Status_Word result;
   @RequirementsField
   private Requirements req = new Requirements();
-  private PrintStream out = System.out;
+  public PrintStream out = System.out;
 
   // These variables model what a SimCard knows about Files.
   protected File DF;  // the current directory (never null)

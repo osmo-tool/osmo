@@ -40,7 +40,7 @@ public class MainExplorer implements Runnable {
   private static final ExecutorService coveragePool = 
           Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(), new DaemonThreadFactory());
   /** The thread pool used for exploration. */
-  private static ForkJoinPool explorationPool = new ForkJoinPool();
+  private static ForkJoinPool explorationPool;
   /** The chosen step (name). */
   private String result = null;
   /** The test suite being generated. */
@@ -61,14 +61,12 @@ public class MainExplorer implements Runnable {
   private long endtime = 0;
   /** Longest test length in current exploration. */
   private int longest = 0;
-  private final ExplorationEndCondition endCondition;
 
   /**
    * @param trace  For storing the test generation trace.
    */
-  public MainExplorer(TraceNode trace, ExplorationEndCondition endCondition) {
+  public MainExplorer(TraceNode trace) {
     this.trace = trace;
-    this.endCondition = endCondition;
   }
 
   public long getDuration() {
@@ -79,7 +77,8 @@ public class MainExplorer implements Runnable {
     return winner;
   }
 
-  public void init(FSM fsm, TestSuite suite, ExplorationState state, List<String> script) {
+  public void init(FSM fsm, TestSuite suite, ExplorationState state, List<String> script, int parallelism) {
+    if (explorationPool == null) explorationPool = new ForkJoinPool(parallelism);
     this.fsm = fsm;
     this.suite = suite;
     this.state = state;
