@@ -248,4 +248,18 @@ public class UtilTests {
       //expected
     }
   }
+  
+  @Test
+  public void listFilesNameOnly() {
+    List<String> files = listFiles(".", "txt", false);
+    assertEquals("Files", "[osmo-tests.txt]", files.toString());
+  }
+
+  @Test
+  public void listFilesFullPath() {
+    List<String> files = listFiles(".", "txt", true);
+    String filename = files.get(0);
+    assertTrue("File should have full path", filename.length() > "osmo-tests.txt".length());
+    assertTrue("File path should end with file name", filename.endsWith("osmo-tests.txt"));
+  }
 }

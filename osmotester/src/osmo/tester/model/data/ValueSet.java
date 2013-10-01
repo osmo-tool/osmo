@@ -23,7 +23,8 @@ public class ValueSet<T> extends SearchableInput<T> {
   private List<T> options = new ArrayList<>();
   /** Options that have been booked. These will not be returned by bookXX() methods. */
   private List<T> booked = new ArrayList<>();
-  private List<T> unbooked = new ArrayList();
+  /** Options still available for booking. */
+  private List<T> unbooked = new ArrayList<>();
   /** The input strategy to choose an object. */
   private DataGenerationStrategy strategy = DataGenerationStrategy.RANDOM;
   /** Index for ordered loop. Using this instead of iterator to allow modification of options in runtime. */
@@ -73,7 +74,6 @@ public class ValueSet<T> extends SearchableInput<T> {
   public ValueSet<T> setStrategy(DataGenerationStrategy strategy) {
     this.strategy = strategy;
     return this;
-    //otherwise we just ignore it since we are running in scripted mode
   }
 
   /**
@@ -93,6 +93,7 @@ public class ValueSet<T> extends SearchableInput<T> {
    */
   public void addAll(Collection<T> options) {
     this.options.addAll(options);
+    unbooked.addAll(options);
   }
 
   /**
@@ -130,6 +131,7 @@ public class ValueSet<T> extends SearchableInput<T> {
     }
     options.remove(option);
     unbooked.remove(option);
+    booked.remove(option);
   }
 
   /**
@@ -147,7 +149,7 @@ public class ValueSet<T> extends SearchableInput<T> {
       case BALANCING:
         return balanced();
       case RANDOM:
-        return random();
+        return randomFree();
       default:
         throw new IllegalArgumentException("Unsupported strategy (" + strategy.name() + ") for " + ValueSet.class.getSimpleName());
     }
@@ -160,7 +162,7 @@ public class ValueSet<T> extends SearchableInput<T> {
       return;
     }
     OSMOConfiguration.check(this);
-    if (unbooked.size() == 0) {
+    if (options.isEmpty()) {
       throw new IllegalStateException("No value to provide (add some options).");
     }
   }
@@ -172,20 +174,61 @@ public class ValueSet<T> extends SearchableInput<T> {
   }
 
   /**
-   * Randomly picks one of the options.
+   * Randomly picks one of the unbooked options.
    * 
    * @return The chosen one.
    */
-  public T random() {
-    //TODO: refactor all these when moving to JDK8
+  public T randomFree() {
     pre();
     if (choice == null) {
+      if (unbooked.isEmpty()) throw new IllegalStateException("No unbooked to choose from.");
       choice = rand.oneOf(unbooked);
     }
     post();
     return choice;
   }
 
+  /**
+   * Randomly picks one of the options regardless of booking status.
+   *
+   * @return The chosen one.
+   */
+  public T random() {
+    pre();
+    if (choice == null) {
+      choice = rand.oneOf(options);
+    }
+    post();
+    return choice;
+  }
+
+  /**
+   * Randomly picks one of the booked ones.
+   * 
+   * @return The chosen one.
+   */
+  public T randomBooked() {
+    pre();
+    if (choice == null) {
+      if (booked.isEmpty()) throw new IllegalStateException("No booked to choose from.");
+      choice = rand.oneOf(booked);
+    }
+    post();
+    return choice;
+  }
+
+  /**
+   * Books the given option.
+   * 
+   * @param t Option to book.
+   */
+  public void book(T t) {
+    if (!options.contains(t)) throw new IllegalArgumentException("Tried to book non-existing option:"+t);
+    if (!unbooked.contains(t)) throw new IllegalArgumentException("Tried to book something that is not free:"+t);
+    booked.add(t);
+    unbooked.remove(t);
+  }
+  
   /**
    * Pick an option at random and book it.
    * 
@@ -195,14 +238,19 @@ public class ValueSet<T> extends SearchableInput<T> {
     pre();
     if (choice == null) {
       if (unbooked.isEmpty()) throw new IllegalStateException("Nothing left to book.");
-      choice = random();
+      choice = rand.oneOf(unbooked);
       booked.add(choice);
       unbooked.remove(choice);
     }
     post();
     return choice;
   }
-  
+
+  /**
+   * Picks an option from all options (ignoring booked status) and removes it.
+   * 
+   * @return The removed option.
+   */
   public T removeRandom() {
     pre();
     if (choice == null) choice = rand.oneOf(options);
@@ -212,11 +260,35 @@ public class ValueSet<T> extends SearchableInput<T> {
     post();
     return choice;
   }
-  
+
+  /**
+   * Makes a previously booked option available again.
+   * 
+   * @param option The option to free.
+   */
   public void free(T option) {
     boolean ok = booked.remove(option);
     if (!ok) throw new IllegalArgumentException("Given option to free that was not booked:"+option);
     unbooked.add(option);
+  }
+
+  /**
+   * Gives the number of available options.
+   * 
+   * @return Number of available options.
+   */
+  public int available() {
+    return unbooked.size();
+  }
+
+  /**
+   * Checks if the given option is part of this set (booked or not).
+   * 
+   * @param option To check.
+   * @return True if found.
+   */
+  public boolean contains(T option) {
+    return options.contains(option);
   }
 
   /**
@@ -292,6 +364,14 @@ public class ValueSet<T> extends SearchableInput<T> {
    */
   public List<T> getOptions() {
     return options;
+  }
+
+  public List<T> getFreeOptions() {
+    return unbooked;
+  }
+  
+  public List<T> getBookedOptions() {
+    return booked;
   }
 
   @Override
