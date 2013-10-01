@@ -4,7 +4,6 @@ import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.gui.manualdrive.ValueRangeSetGUI;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -164,7 +163,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
       case LOOP:
         return partitions.ordered();
       default:
-        return partitions.random();
+        return partitions.randomFree();
     }
   }
 

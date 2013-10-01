@@ -323,7 +323,7 @@ public class TestCoverage {
       }
     }
     result += "\nUnique step-pairs: "+stepPairs.size();
-    if (possibleStepPairs != null) {
+    if (possibleStepPairs != null && possibleStepPairs.size() > 0) {
       Collection<String> all = new HashSet<>();
       all.addAll(possibleStepPairs);
       all.removeAll(stepPairs);
@@ -341,7 +341,7 @@ public class TestCoverage {
     }
     result += "\nVariable values: "+valueCount;
 
-    if (possibleValues != null) {
+    if (possibleValues != null && possibleValues.size() > 0) {
       int possibleValueCount = 0;
       for (Collection<String> strings : possibleValues.values()) {
         possibleValueCount += strings.size();
@@ -350,7 +350,7 @@ public class TestCoverage {
     }
     
     result += "\nUnique states: "+getStateCount();
-    if (possibleStates != null) {
+    if (possibleStates != null && possibleStates.size() > 0) {
       int possibleCount = 0;
       for (Collection<String> strings : possibleStates.values()) {
         possibleCount += strings.size();
@@ -359,7 +359,7 @@ public class TestCoverage {
     }
     
     result += "\nUnique state-pairs: "+getStatePairCount();
-    if (possibleStatePairs != null) {
+    if (possibleStatePairs != null && possibleStatePairs.size() > 0) {
       int possibleCount = 0;
       for (Collection<String> strings : possibleStatePairs.values()) {
         possibleCount += strings.size();

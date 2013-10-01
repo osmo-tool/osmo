@@ -34,6 +34,7 @@ import java.io.StringWriter;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
@@ -347,5 +348,35 @@ public class TestUtils {
     } catch (IOException e) {
       throw new RuntimeException("Failed to write to file:"+fileName, e);
     }
+  }
+
+  /**
+   * Provide a list of all files of given type in given directory.
+   * Type is identified by suffix. For example type "png" gives list of files ending with ".png".
+   * 
+   * @param dir  The directory where to look for the files.
+   * @param type The type of files to look for.
+   * @return The list of files found.
+   */
+  public static List<String> listFiles(String dir, String type, boolean fullPath) {
+    File folder = new File(dir);
+    File[] directoryList = folder.listFiles();
+    List<String> files = new ArrayList<>();
+
+    for (File file : directoryList) {
+      if (file.isFile()) {
+        String name = file.getName();
+        if (name.endsWith(type)) {
+          if (fullPath) {
+            files.add(file.getAbsolutePath());
+          } else {
+            files.add(name);
+          }
+        }
+      } else if (file.isDirectory()) {
+        //we ignore directories
+      }
+    }
+    return files;
   }
 }

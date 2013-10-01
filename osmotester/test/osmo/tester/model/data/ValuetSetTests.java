@@ -3,6 +3,8 @@ package osmo.tester.model.data;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import static junit.framework.Assert.*;
@@ -10,11 +12,12 @@ import static junit.framework.Assert.*;
 /** @author Teemu Kanstren */
 public class ValuetSetTests {
   private ValueSet<String> set = null;
+  private int seed = 333;
 
   @Before
   public void setup() {
     set = new ValueSet<>();
-    set.setSeed(333);
+    set.setSeed(seed);
     set.add("one");
     set.add("two");
     set.add("three");
@@ -35,17 +38,17 @@ public class ValuetSetTests {
 
   @Test
   public void randomizedTest() {
-    String v1 = set.random();
-    String v2 = set.random();
-    String v3 = set.random();
+    String v1 = set.randomFree();
+    String v2 = set.randomFree();
+    String v3 = set.randomFree();
     assertTrue(v1.equals("one") || v1.equals("two") || v1.equals("three"));
     assertTrue(v2.equals("one") || v2.equals("two") || v2.equals("three"));
     assertTrue(v3.equals("one") || v3.equals("two") || v3.equals("three"));
     boolean fail = true;
     for (int i = 0 ; i < 10 ; i++) {
-      String v1_2 = set.random();
-      String v2_2 = set.random();
-      String v3_2 = set.random();
+      String v1_2 = set.randomFree();
+      String v2_2 = set.randomFree();
+      String v3_2 = set.randomFree();
       if (!v1_2.equals(v1) || !v2_2.equals(v2) || !v3_2.equals(v3)) {
         fail = false;
         break;
@@ -141,7 +144,7 @@ public class ValuetSetTests {
   private int[] frequencyCount() {
     int[] result = new int[5];
     for (int i = 0 ; i < 600 ; i++) {
-      String next = set.random();
+      String next = set.randomFree();
       switch (next) {
         case "one":
           result[1]++;
@@ -225,5 +228,68 @@ public class ValuetSetTests {
     assertEquals("Number of 'twos' generated", 0, freqs[2]);
     assertEquals("Number of 'threes' generated", 0, freqs[3]);
     assertEquals("Number of 'fours' generated", 299, freqs[4]);
+  }
+  
+  @Test
+  public void bookTooMany() {
+    for (int i = 0 ; i < 100 ; i++) {
+      setup();
+      set.bookRandom();
+      set.bookRandom();
+      set.bookRandom();
+      try {
+        set.bookRandom();
+        fail("Trying to overbook should throw exception");
+      } catch (Exception e) {
+        assertEquals("Error msg for too many bookings", "Nothing left to book.", e.getMessage());
+      }
+      seed += 100;
+    }
+  }
+  
+  @Test
+  public void bookAndRemoveRandom() {
+    set.bookRandom();
+    set.bookRandom();
+    set.bookRandom();
+    //this randomAny() should pass as it should not care about bookings
+    set.random();
+    set.removeRandom();
+    set.removeRandom();
+    set.removeRandom();
+    try {
+      set.free("one");
+      fail("freeing after removing all should throw exception");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Message for freeing wrong item", "Given option to free that was not booked:one", e.getMessage());
+    }
+  }
+
+  @Test
+  public void bookAndRemove() {
+    set.bookRandom();
+    set.bookRandom();
+    set.bookRandom();
+    set.remove("one");
+    set.remove("two");
+    set.remove("three");
+    try {
+      set.free("one");
+      fail("freeing after removing all should throw exception");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Message for freeing wrong item", "Given option to free that was not booked:one", e.getMessage());
+    }
+  }
+  
+  @Test
+  public void addOption() {
+    set.add("four");
+    List<String> options = set.getFreeOptions();
+    assertEquals("Adding an option should add it to free options", 4, options.size());
+    List<String> news = new ArrayList<>();
+    news.add("five");
+    news.add("six");
+    set.addAll(news);
+    assertEquals("Adding options should add them to free options", 6, options.size());
   }
 }

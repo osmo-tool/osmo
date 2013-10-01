@@ -32,7 +32,9 @@ public class ExplorerAlgorithm implements FSMTraversalAlgorithm {
   private final ExplorationEndCondition explorationEndCondition;
   /** Used to write a graphical trace for all explored tests and their steps. */
   private DOTWriter dot = new DOTWriter(1);
+  /** Currently running explorer instance, possibly started at end of last iteration. */
   private MainExplorer currentExplorer = null;
+  /** For collecting possible coverage metrics. */
   private static final Collection<String> possibleStepPairs = new LinkedHashSet<>();
   /** For collecting possible coverage metrics. */
   private static final Map<String, Collection<String>> possibleValues = new LinkedHashMap<>();
@@ -41,7 +43,9 @@ public class ExplorerAlgorithm implements FSMTraversalAlgorithm {
   /** For collecting possible coverage metrics. */
   private static final Map<String, Collection<String>> possibleStatePairs = new LinkedHashMap<>();
   private FSM fsm = null;
+  /** Tracks how much time each step took to explore, which step it was and what was chosen as next candidate. */
   private Collection<TimeTrace> traces = new ArrayList<>();
+  /** If true, information on possible to reach coverage is maintained. */
   public static boolean trackCoverage = false;
 
   public ExplorerAlgorithm(ExplorationConfiguration config) {
@@ -116,6 +120,7 @@ public class ExplorerAlgorithm implements FSMTraversalAlgorithm {
     traces.add(trace);
 
     if (trackCoverage) {
+      //grab all possible values from the explorer and add to list of unique
       Map<String, Collection<String>> observed = currentExplorer.getPossibleValues();
       for (String key : observed.keySet()) {
         Collection<String> possibles = possibleValues.get(key);
@@ -126,6 +131,7 @@ public class ExplorerAlgorithm implements FSMTraversalAlgorithm {
         possibles.addAll(observed.get(key));
       }
 
+      //grab all possible states from the explorer and add to list of unique
       observed = currentExplorer.getPossibleStates();
       for (String key : observed.keySet()) {
         Collection<String> possibles = possibleStates.get(key);
@@ -136,6 +142,7 @@ public class ExplorerAlgorithm implements FSMTraversalAlgorithm {
         possibles.addAll(observed.get(key));
       }
 
+      //grab all possible state pairs from the explorer and add to list of unique
       observed = currentExplorer.getPossibleStatePairs();
       for (String key : observed.keySet()) {
         Collection<String> possibles = possibleStatePairs.get(key);
