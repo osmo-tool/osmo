@@ -5,6 +5,7 @@ import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.filter.StepFilter;
+import osmo.tester.generator.listener.GenerationListenerList;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -41,6 +42,7 @@ public class MainGenerator {
   private GenerationListenerList listeners;
   /** Test generation history. */
   private TestSuite suite;
+  /** Keeps track of previous taken step when available. Used for coverage calculations, create state-pairs etc. */
   private TestCaseStep previousStep = null;
   /** Requirements for model objects. */
   private Requirements reqs;
@@ -70,7 +72,7 @@ public class MainGenerator {
   /** Invoked to start the test generation using the configured parameters. */
   public void generate() {
     log.debug("starting generation");
-    config.initializeGeneratorElements(seed, fsm);
+    config.initialize(seed, fsm);
     initSuite();
     while (!config.getSuiteEndCondition().endSuite(suite, fsm)) {
       nextTest();
@@ -86,12 +88,11 @@ public class MainGenerator {
    * by the user and these will be re-used across the generation.
    */
   private void createModelObjects() {
+    //we need +1 since someone might actually generate an empty test with no steps = no salt ever
+    int salt = suite.getCoverage().getSteps().size();
+    //create a new seed for the new test case
+    seed = baseSeed + salt;
     if (config.getFactory() == null && fsm != null) return;
-    if (config.getFactory() != null) {
-      int salt = suite.getCoverage().getSteps().size();
-      //create a new seed for the new test case
-      seed = baseSeed + salt;
-    }
     //re-parse the model, which causes re-creation of the model objects and as such creates the new references
     //to the new object instances. invocationtargets for guards, steps, etc. need updating and this is needed for that.
     MainParser parser = new MainParser();
@@ -160,6 +161,7 @@ public class MainGenerator {
    */
   private boolean nextStep() {
     List<FSMTransition> enabled = getEnabled();
+    //collect all potential steps for coverage
     addOptionsFor(suite.getCurrentTest().getCurrentStep(), enabled);
     if (enabled.size() == 0) {
       if (config.shouldFailWhenNoWayForward()) {

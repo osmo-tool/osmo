@@ -1,6 +1,6 @@
 package osmo.tester.generator.filter;
 
-import osmo.tester.generator.GenerationListener;
+import osmo.tester.generator.listener.GenerationListener;
 import osmo.tester.model.FSMTransition;
 
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package osmo.tester.generator;
+package osmo.tester.generator.listener;
 
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestCase;

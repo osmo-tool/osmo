@@ -4,7 +4,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
-import osmo.tester.generator.GenerationListener;
+import osmo.tester.generator.listener.GenerationListener;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.filter.StepFilter;
 import osmo.tester.generator.testsuite.TestCase;
@@ -12,7 +12,6 @@ import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
-import osmo.tester.model.ScriptedValueProvider;
 import osmo.tester.parser.ModelObject;
 
 import java.io.FileOutputStream;

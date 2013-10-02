@@ -46,7 +46,7 @@ public class MaxFilterTests {
       osmo.generate(123);
       fail("Generation with non-existing transition should fail.");
     } catch (IllegalArgumentException e) {
-      assertEquals("Error for non-existing transition", "Specified transitions do not exist in the model:[no-such-transition]", e.getMessage());
+      assertEquals("Error for non-existing transition", "Specified steps do not exist in the model:[no-such-transition]", e.getMessage());
     }
   }
 

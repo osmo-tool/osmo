@@ -3,12 +3,17 @@ package osmo.tester.generation;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOTester;
+import osmo.tester.generator.endcondition.logical.And;
+import osmo.tester.generator.listener.AbstractListener;
+import osmo.tester.generator.listener.GenerationListener;
 import osmo.tester.generator.endcondition.Endless;
 import osmo.tester.generator.endcondition.Length;
+import osmo.tester.generator.endcondition.Probability;
 import osmo.tester.generator.endcondition.logical.Or;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.Requirements;
 import osmo.tester.testmodels.BaseModelExtension;
+import osmo.tester.testmodels.CalculatorModel;
 import osmo.tester.testmodels.CoverageValueModel1;
 import osmo.tester.testmodels.GroupModel2;
 import osmo.tester.testmodels.GuardianModel;
@@ -282,6 +287,27 @@ public class GenerationTests {
     String expected = getResource(getClass(), "expected-group.txt");
     expected = unifyLineSeparators(expected, "\n");
     assertEquals("Generation with groups", expected, actual);
+  }
+  
+  @Test
+  public void seedUpdates() {
+    osmo.addModelObject(new CalculatorModel());
+    final Probability probability = new Probability(0.1);
+    And ec = new And(new Length(1), probability);
+    osmo.setTestEndCondition(ec);
+    osmo.setSuiteEndCondition(new Length(2));
+    osmo.addListener(new AbstractListener() {
+      private long previous = 0;
+      
+      @Override
+      public void testStarted(TestCase test) {
+        long seed = probability.getRandomizer().getSeed();
+        System.out.println("seed:"+seed);
+        assertTrue("Seed should change with test", previous != seed);
+        previous = seed;
+      }
+    });
+    osmo.generate(444);
   }
 }
 

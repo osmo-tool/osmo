@@ -1,42 +1,47 @@
-package osmo.tester.generator.filter;
+package osmo.tester.scenario;
 
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
+import osmo.tester.generator.filter.StepFilter;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
- * A filter that removes test steps from available sets after the step is taken given number of times.
+ * A filter that removes test steps from available sets according to scenario slice definition.
+ * Only applied after possible startup slice is done.
  *
  * @author Teemu Kanstren
  */
-public class MaxStepFilter implements StepFilter {
-  private static Logger log = new Logger(MaxStepFilter.class);
+public class SliceFilter implements StepFilter {
+  private static Logger log = new Logger(SliceFilter.class);
+  private Collection<String> allowed = new HashSet<>();
   /** Maximum allowed step count. Key = step name, value = maximum number of times to take. */
   private Map<String, Integer> maximums = new HashMap<>();
   /** The actual count of step has been taken. Key = step name, value = number of times taken. */
   private Map<String, Integer> taken = new HashMap<>();
+  private final Scenario scenario;
+  private final StartupFilter startup;
 
-  /**
-   * Define the maximum number of times a step is allowed to be taken.
-   *
-   * @param stepName The name of step.
-   * @param max      The maximum times it can be taken.
-   */
-  public void setMax(String stepName, int max) {
-    if (max < 0) {
-      throw new IllegalArgumentException("Step max count is now allowed to be negative. Was " + max + " for '" + stepName + "'.");
+  public SliceFilter(Scenario scenario, StartupFilter startup) {
+    this.scenario = scenario;
+    this.startup = startup;
+    List<Slice> slices = scenario.getSlices();
+    for (Slice slice : slices) {
+      if (scenario.isStrict()) allowed.add(slice.getStepName());
+      if (slice.getMax() > 0) {
+        maximums.put(slice.getStepName(), slice.getMax());
+      }
     }
-    maximums.put(stepName, max);
   }
 
   /**
@@ -46,16 +51,21 @@ public class MaxStepFilter implements StepFilter {
    */
   @Override
   public void filter(Collection<FSMTransition> steps) {
+    if (!startup.isDone()) return;
     for (Iterator<FSMTransition> i = steps.iterator() ; i.hasNext() ; ) {
       FSMTransition transition = i.next();
       String name = transition.getStringName();
-      Integer count = taken.get(name);
-      if (count == null) {
-        count = 0;
+      if (allowed.size() > 0 && !allowed.contains(name)) {
+        i.remove();
+        continue;
       }
       Integer max = maximums.get(name);
       if (max == null) {
         continue;
+      }
+      Integer count = taken.get(name);
+      if (count == null) {
+        count = 0;
       }
       if (count >= max) {
         log.debug("Removing transition '" + name + "' due to filtering.");
@@ -66,16 +76,7 @@ public class MaxStepFilter implements StepFilter {
 
   @Override
   public void init(long seed, FSM fsm, OSMOConfiguration config) {
-    Collection<FSMTransition> transitions = fsm.getTransitions();
-    Collection<String> shouldClear = new ArrayList<>();
-    shouldClear.addAll(maximums.keySet());
-    for (FSMTransition transition : transitions) {
-      String name = transition.getStringName();
-      shouldClear.remove(name);
-    }
-    if (shouldClear.size() > 0) {
-      throw new IllegalArgumentException("Specified steps do not exist in the model:" + shouldClear);
-    }
+    //do not check feasibility here as the scenario should already handle it
   }
 
   @Override
@@ -84,6 +85,8 @@ public class MaxStepFilter implements StepFilter {
 
   @Override
   public void step(TestCaseStep step) {
+    if (step.getParent().getSteps().size() <= scenario.getStartup().size()) return;
+    //TODO: how does exploration affect this? how does this affect exploration (as it should)?
     String name = step.getName();
     Integer count = taken.get(name);
     if (count == null) {
