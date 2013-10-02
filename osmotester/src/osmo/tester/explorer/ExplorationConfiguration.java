@@ -6,6 +6,7 @@ import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.model.FSM;
 import osmo.tester.model.ModelFactory;
+import osmo.tester.scenario.Scenario;
 
 /**
  * Defines a configuration for OSMO Explorer.
@@ -49,6 +50,7 @@ public class ExplorationConfiguration extends ScoreConfiguration {
   private boolean printAll = false;
   /** Number of parallel threads to use for exploration, defaults to the number of processors on host. */
   private int parallelism = Runtime.getRuntime().availableProcessors();
+  private Scenario scenario;
 
   public ExplorationConfiguration(ModelFactory factory, int depth, long seed) {
     this.factory = factory;
@@ -111,6 +113,7 @@ public class ExplorationConfiguration extends ScoreConfiguration {
     config.setSuiteEndCondition(endCondition);
     config.setTestEndCondition(endCondition);
     config.setFactory(factory);
+    config.setScenario(scenario);
   }
 
   public int getMinTestLength() {
@@ -261,5 +264,13 @@ public class ExplorationConfiguration extends ScoreConfiguration {
             ",\n endCondition=" + endCondition +
             ",\n timeout=" + timeout +
             "}\n " + super.toString();
+  }
+
+  public void setScenario(Scenario scenario) {
+    this.scenario = scenario;
+  }
+
+  public Scenario getScenario() {
+    return scenario;
   }
 }

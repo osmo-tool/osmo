@@ -85,6 +85,8 @@ public class SliceFilter implements StepFilter {
 
   @Override
   public void step(TestCaseStep step) {
+    //this checks that the startup sequence is done before starting slicing
+    //must be this way to prevent ordering of filters from messing this up
     if (step.getParent().getSteps().size() <= scenario.getStartup().size()) return;
     //TODO: how does exploration affect this? how does this affect exploration (as it should)?
     String name = step.getName();

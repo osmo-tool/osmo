@@ -66,6 +66,9 @@ public class ExplorerAlgorithm implements FSMTraversalAlgorithm {
 
   @Override
   public FSMTransition choose(TestSuite suite, List<FSMTransition> choices) {
+    //this handles the scenario startup, where there is always just one choice
+    if (choices.size() == 1) return choices.get(0);
+    
     int testIndex = suite.getAllTestCases().size();
     log.debug("Exploring for test number " + testIndex);
     if (dot.getTestIndex() != testIndex) {

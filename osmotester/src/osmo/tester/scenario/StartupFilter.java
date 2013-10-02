@@ -16,13 +16,16 @@ import java.util.List;
 
 /**
  * Attempts to force test generation to start with a given set of steps.
- * If a given step is not available at a given point, an exception is thrown.
+ * If a given step is not available at a given point (a guard is false), an exception is thrown.
  * 
  * @author Teemu Kanstren 
  */
 public class StartupFilter implements StepFilter {
+  /** The sequence of steps to take. */
   private List<String> steps = new ArrayList<>();
+  /** Current index in the list of steps. */
   private int index = 0;
+  /** When finished. */
   private boolean done = false;
 
   public StartupFilter(Scenario scenario) {
@@ -40,6 +43,7 @@ public class StartupFilter implements StepFilter {
     for (Iterator<FSMTransition> i = transitions.iterator() ; i.hasNext() ; ) {
       FSMTransition transition = i.next();
       String name = transition.getStringName();
+      //remove all but the one at the current index, forcing the selection of the only one remaining
       if (!name.equals(step)) i.remove();
     }
   }
@@ -68,8 +72,10 @@ public class StartupFilter implements StepFilter {
 
   @Override
   public void testStarted(TestCase test) {
+    //reset the filter for a new test case
     index = 0;
     done = false;
+    //except if there is no startup sequence given
     if (steps.size() == 0) done = true;
   }
 

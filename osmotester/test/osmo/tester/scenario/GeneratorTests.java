@@ -109,9 +109,9 @@ public class GeneratorTests {
   @Test
   public void startupStrictSlice() {
     scenario = new Scenario(true);
+    scenario.addStartup("start", "increase", "increase", "increase", "increase");
     config.setScenario(scenario);
     config.setTestEndCondition(new Length(20));
-    scenario.addSlice("start", 0, 1);
     scenario.addSlice("increase", 2, 0);
     tester.generate(444);
     TestSuite suite = tester.getSuite();
@@ -130,20 +130,43 @@ public class GeneratorTests {
       assertTrue("Increase step should be found in test", increase);
     }
   }
-  
+
+  @Test
+  public void startupMinimumIncrease() {
+    config.setTestEndCondition(new Length(5));
+    scenario.addSlice("increase", 2, 0);
+    tester.generate(444);
+    TestSuite suite = tester.getSuite();
+    List<TestCase> tests = suite.getAllTestCases();
+
+    int count = 0;
+    for (TestCase test : tests) {
+      List<TestCaseStep> steps = test.getSteps();
+      for (TestCaseStep step : steps) {
+        String name = step.getName();
+        if (name.equals("increase")) count++;
+      }
+      assertTrue("Number of increases should be >= 6", count >= 6);
+    }
+  }
+
   @Test
   public void startupSequenceWithLimitedIncreaseSlice() {
     scenario.addSlice("increase", 0, 2);
-    config.setTestEndCondition(new Length(13));
+    config.setTestEndCondition(new Length(10));
     tester.generate(444);
     TestSuite suite = tester.getSuite();
     List<TestCase> tests = suite.getAllTestCases();
     assertStartSequences();
-    assertSliceAfterStart(tests.get(0), "increase", 2);
-    assertSliceAfterStart(tests.get(1), "increase", 2);
-    assertSliceAfterStart(tests.get(2), "increase", 2);
-    assertSliceAfterStart(tests.get(3), "increase", 2);
-    assertSliceAfterStart(tests.get(4), "increase", 2);
+    int count = 0;
+    for (TestCase test : tests) {
+      List<TestCaseStep> steps = test.getSteps();
+      for (TestCaseStep step : steps) {
+        String name = step.getName();
+        if (name.equals("increase")) count++;
+      }
+      assertTrue("Number of increases should be >= 6", count >= 6);
+    }
   }
   
   @Test
@@ -154,11 +177,23 @@ public class GeneratorTests {
     TestSuite suite = tester.getSuite();
     List<TestCase> tests = suite.getAllTestCases();
     assertStartSequences();
-    assertSliceAfterStart(tests.get(0), "decrease", 2);
-    assertSliceAfterStart(tests.get(1), "decrease", 2);
-    assertSliceAfterStart(tests.get(2), "decrease", 2);
-    assertSliceAfterStart(tests.get(3), "decrease", 2);
-    assertSliceAfterStart(tests.get(4), "decrease", 2);
+    int index = 0;
+    for (TestCase test : tests) {
+      int count = 0;
+      List<TestCaseStep> steps = test.getSteps();
+      boolean decrease = false;
+      boolean increase = false;
+      for (int i = 5 ; i < steps.size() ; i++) {
+        String name = steps.get(i).getName();
+        if (name.equals("decrease")) decrease = true;
+        if (name.equals("increase")) increase = true;
+        if (name.equals("decrease")) count++;
+      }
+      assertTrue("Decrease step should be found in test", decrease);
+      assertTrue("Increase step should be found in test", increase);
+      assertEquals("Number of decrease steps in test "+index, 2, count);
+      index++;
+    }
   }
 
   @Test
@@ -181,6 +216,18 @@ public class GeneratorTests {
       }
       assertTrue("Number of increase steps should be <= 4 was "+increaseCount, increaseCount <= 4);
       assertTrue("Number of decrease steps should be >= 3 was " + increaseCount, decreaseCount >= 3);
+    }
+  }
+  
+  @Test
+  public void minHigherThanMax() {
+    scenario.addSlice("decrease", 3, 1);
+    scenario.addSlice("increase", 2, 4);
+    try {
+      tester.generate(444);
+      fail("Invalid slice definition should throw exception");
+    } catch (OSMOException e) {
+      assertEquals("Message for invalid slice min/max", "Minimum must be lower or equal to maximum in slice:decrease", e.getMessage());
     }
   }
 
@@ -208,11 +255,9 @@ public class GeneratorTests {
   private void assertStartSequences() {
     TestSuite suite = tester.getSuite();
     List<TestCase> tests = suite.getAllTestCases();
-    assertStartSequence(tests.get(0));
-    assertStartSequence(tests.get(1));
-    assertStartSequence(tests.get(2));
-    assertStartSequence(tests.get(3));
-    assertStartSequence(tests.get(4));
+    for (TestCase test : tests) {
+      assertStartSequence(test);
+    }
   }
   
   private void assertStartSequence(TestCase test) {
@@ -222,21 +267,5 @@ public class GeneratorTests {
     assertEquals("Step name at index 2", "increase", steps.get(2).getName());
     assertEquals("Step name at index 3", "increase", steps.get(3).getName());
     assertEquals("Step name at index 4", "increase", steps.get(4).getName());
-  }
-  
-  private void assertSliceAfterStart(TestCase test, String step, int expectedCount) {
-    int count = 0;
-    List<TestCaseStep> steps = test.getSteps();
-    boolean decrease = false;
-    boolean increase = false;
-    for (int i = 5 ; i < 13 ; i++) {
-      String name = steps.get(i).getName();
-      if (name.equals("decrease")) decrease = true;
-      if (name.equals("increase")) increase = true;
-      if (name.equals(step)) count++;
-    }
-    assertTrue("Decrease step should be found in test", decrease);
-    assertTrue("Increase step should be found in test", increase);
-    assertEquals("Number of steps:"+step, expectedCount, count);
   }
 }
