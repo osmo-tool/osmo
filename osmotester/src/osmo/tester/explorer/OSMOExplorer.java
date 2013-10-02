@@ -28,7 +28,9 @@ public class OSMOExplorer {
   private ExplorerAlgorithm algorithm;
   /** Classes to create model objects if a factory is not provided. */
   private Collection<Class> classes = new ArrayList<>();
+  /** Listeners for the exploration, only called for actual generation not explored paths. */
   private Collection<GenerationListener> listeners = new ArrayList<>();
+  /** Underlying OSMO Configuration for the actual generator. */
   private OSMOConfiguration osmoConfig = new OSMOConfiguration();
   
   public void addModelClass(Class modelClass) {
