@@ -6,7 +6,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
-import osmo.tester.generator.GenerationListener;
+import osmo.tester.generator.listener.GenerationListener;
 import osmo.tester.ide.intellij.OSMORunConfigEditor;
 import osmo.tester.ide.intellij.OSMORunParameters;
 

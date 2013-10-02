@@ -1,19 +1,21 @@
 package osmo.tester;
 
-import osmo.tester.generator.GenerationListener;
-import osmo.tester.generator.GenerationListenerList;
+import osmo.tester.generator.listener.GenerationListener;
+import osmo.tester.generator.listener.GenerationListenerList;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.endcondition.logical.And;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.Probability;
+import osmo.tester.scenario.SliceFilter;
+import osmo.tester.scenario.StartupFilter;
 import osmo.tester.generator.filter.StepFilter;
 import osmo.tester.model.FSM;
 import osmo.tester.model.ModelFactory;
-import osmo.tester.model.ScriptedValueProvider;
 import osmo.tester.model.data.SearchableInput;
 import osmo.tester.parser.ModelObject;
+import osmo.tester.scenario.Scenario;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,8 +50,14 @@ public class OSMOConfiguration implements ModelFactory {
   private ModelFactory factory = null;
   /** Is manual drive enabled? Used to enable manual GUI etc. */
   private static boolean manual = false;
+  /** Model slicing scenario. */
+  private Scenario scenario = null;
 
   public OSMOConfiguration() {
+  }
+
+  public void setScenario(Scenario scenario) {
+    this.scenario = scenario;
   }
 
   /**
@@ -177,15 +185,22 @@ public class OSMOConfiguration implements ModelFactory {
    * Initializes test generation configuration with the model to be used in test generation.
    * Includes initializing parameters for algorithms, end conditions, listeners, ..
    *
+   * @param seed Test generation seed.
    * @param fsm The parsing results.
    */
-  public void initializeGeneratorElements(long seed, FSM fsm) {
+  public void initialize(long seed, FSM fsm) {
     if (algorithm == null) {
       algorithm = new RandomAlgorithm();
     }
-//    fsm.initSearchableInputs(this);
     algorithm.init(seed, fsm);
     suiteEndCondition.init(seed, fsm);
+    if (scenario != null) {
+      scenario.validate(fsm);
+      StartupFilter startupFilter = new StartupFilter(scenario);
+      addFilter(startupFilter);
+      addFilter(new SliceFilter(scenario, startupFilter));
+      setTestEndCondition(scenario.createEndCondition(testCaseEndCondition));
+    }
     //test end condition is initialized in generator between each test case
     listeners.init(seed, fsm, this);
   }

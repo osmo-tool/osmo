@@ -1,6 +1,7 @@
-package osmo.tester.generator;
+package osmo.tester.generator.listener;
 
 import osmo.tester.OSMOConfiguration;
+import osmo.tester.generator.listener.GenerationListener;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Maintains a list of {@link GenerationListener} implementations to be called, and calls each one when requested.
+ * Maintains a list of {@link osmo.tester.generator.listener.GenerationListener} implementations to be called, and calls each one when requested.
  *
  * @author Teemu Kanstren
  */

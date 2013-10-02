@@ -33,6 +33,7 @@ public class BestSearchTests {
     model = new CalculatorModel();
     tester.addModelObject(model);
     generator = tester.initGenerator(111);
+    tester.getConfig().initialize(111, tester.getFsm());
     generator.initSuite();
 //    factory = new PaperModelFactory();
     config = new ExplorationConfiguration(null, 3, 111);

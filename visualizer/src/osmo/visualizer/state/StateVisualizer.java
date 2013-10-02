@@ -11,7 +11,7 @@ import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 import edu.uci.ics.jung.visualization.renderers.VertexLabelAsShapeRenderer;
 import osmo.tester.OSMOConfiguration;
-import osmo.tester.generator.GenerationListener;
+import osmo.tester.generator.listener.GenerationListener;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;

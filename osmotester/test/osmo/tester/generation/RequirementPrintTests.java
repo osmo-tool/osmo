@@ -138,11 +138,11 @@ public class RequirementPrintTests {
     String expected = "generated 55 tests.\n" +
             "\n" +
             "Covered elements:\n" +
-            "Total steps: 1705\n" +
+            "Total steps: 451\n" +
             "Unique steps: 3 (of 3)\n" +
             "Unique step-pairs: 12 (of 12)\n" +
             "Unique requirements: 0\n" +
-            "Variable values: 567\n" +
+            "Variable values: 166\n" +
             "Unique states: 0\n" +
             "Unique state-pairs: 0\n";
     expected = unifyLineSeparators(expected, "\n");
@@ -159,7 +159,7 @@ public class RequirementPrintTests {
     String expected = "generated 55 tests.\n" +
             "\n" +
             "Covered elements:\n" +
-            "Total steps: 1705\n" +
+            "Total steps: 451\n" +
             "Unique steps: 3 (of 3)\n" +
             "Unique step-pairs: 4 (of 4)\n" +
             "Unique requirements: 3\n" +
@@ -168,7 +168,9 @@ public class RequirementPrintTests {
             "Unique state-pairs: 3\n" +
             "\n" +
             "Requirements:[]\n" +
-            "Covered:[epix, hello, world]\n" +
+            //reason why we do not cover "epixx" requirement is because the model resets this between tests
+            //dont ask me why, someday it must've seemed clever for this model.
+            "Covered:[hello, world]\n" +
             "Not covered:[]\n"+
             "\n";
     expected = unifyLineSeparators(expected, "\n");

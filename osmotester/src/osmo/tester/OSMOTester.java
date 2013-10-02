@@ -2,7 +2,7 @@ package osmo.tester;
 
 import osmo.common.log.Logger;
 import osmo.tester.coverage.TestCoverage;
-import osmo.tester.generator.GenerationListener;
+import osmo.tester.generator.listener.GenerationListener;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.endcondition.EndCondition;
@@ -98,7 +98,7 @@ public class OSMOTester {
     TestSuite suite = new TestSuite();
     MainGenerator generator = new MainGenerator(seed, suite, config);
     fsm = generator.getFsm();
-    config.initializeGeneratorElements(seed, fsm);
+//    config.initialize(seed, fsm);
     return generator;
   }
 

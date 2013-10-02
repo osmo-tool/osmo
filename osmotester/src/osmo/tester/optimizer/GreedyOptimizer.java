@@ -153,7 +153,7 @@ public class GreedyOptimizer {
     OSMOConfiguration testerConfig = tester.getConfig();
     testerConfig.setFailWhenError(failOnError);
     MainGenerator generator = tester.initGenerator(seed);
-    testerConfig.initializeGeneratorElements(seed, tester.getFsm());
+    testerConfig.initialize(seed, tester.getFsm());
     generator.initSuite();
     this.fsm = generator.getFsm();
     endCondition.init(seed, fsm);

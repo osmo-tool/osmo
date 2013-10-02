@@ -1,5 +1,6 @@
 package osmo.tester.generator.endcondition;
 
+import com.sun.glass.ui.mac.MacPasteboard;
 import osmo.common.Randomizer;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
@@ -58,5 +59,9 @@ public class Probability implements EndCondition {
     return "Probability{" +
             "threshold=" + threshold +
             '}';
+  }
+
+  public Randomizer getRandomizer() {
+    return rand;
   }
 }

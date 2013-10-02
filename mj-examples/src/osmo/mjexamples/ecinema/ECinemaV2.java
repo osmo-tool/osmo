@@ -6,7 +6,7 @@ import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.TestStep;
-import osmo.tester.generator.TracePrinter;
+import osmo.tester.generator.listener.TracePrinter;
 import osmo.tester.generator.algorithm.BalancingAlgorithm;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.LengthProbability;
