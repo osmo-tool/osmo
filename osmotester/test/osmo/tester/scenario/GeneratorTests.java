@@ -151,6 +151,25 @@ public class GeneratorTests {
   }
 
   @Test
+  public void forbidDecrease() {
+    config.setTestEndCondition(new Length(20));
+    scenario.forbid("decrease");
+    tester.generate(444);
+    TestSuite suite = tester.getSuite();
+    List<TestCase> tests = suite.getAllTestCases();
+
+    boolean decrease = false;
+    for (TestCase test : tests) {
+      List<TestCaseStep> steps = test.getSteps();
+      for (TestCaseStep step : steps) {
+        String name = step.getName();
+        if (name.equals("decrease")) decrease = true;
+      }
+    }
+    assertFalse("Decrease step should not be found in test", decrease);
+  }
+
+  @Test
   public void startupSequenceWithLimitedIncreaseSlice() {
     scenario.addSlice("increase", 0, 2);
     config.setTestEndCondition(new Length(10));

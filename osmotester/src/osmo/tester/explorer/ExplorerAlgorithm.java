@@ -5,6 +5,7 @@ import osmo.tester.explorer.trace.DOTWriter;
 import osmo.tester.explorer.trace.TimeTrace;
 import osmo.tester.explorer.trace.TraceNode;
 import osmo.tester.coverage.TestCoverage;
+import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -66,9 +67,6 @@ public class ExplorerAlgorithm implements FSMTraversalAlgorithm {
 
   @Override
   public FSMTransition choose(TestSuite suite, List<FSMTransition> choices) {
-    //this handles the scenario startup, where there is always just one choice
-    if (choices.size() == 1) return choices.get(0);
-    
     int testIndex = suite.getAllTestCases().size();
     log.debug("Exploring for test number " + testIndex);
     if (dot.getTestIndex() != testIndex) {
@@ -81,8 +79,17 @@ public class ExplorerAlgorithm implements FSMTraversalAlgorithm {
     //create trace if DOT graph is wanted
     TraceNode[] trace = initTrace(script);
     ExplorationState state = new ExplorationState(config, suiteCoverage);
-    //initiate exploration of the possible paths
-    String choice = exploreLocal(suite, state, script, trace[1]);
+    String choice = null;
+    if (choices.size() == 1) {
+      //this handles the scenario startup, where there is always just one choice (and other similar scenarios)
+      choice = choices.get(0).getStringName();
+      script.add(choice);
+      MainGenerator generator = ExplorationHelper.initPath(state, script);
+      explorationEndCondition.setExploredTest(generator.getCurrentTest());
+    } else {
+      //initiate exploration of the possible paths
+      choice = exploreLocal(suite, state, script, trace[1]);
+    }
     String top = "root";
     if (script.size() > 0) {
       top = script.get(script.size() - 1);

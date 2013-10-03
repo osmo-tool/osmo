@@ -30,6 +30,8 @@ public class CounterModel {
   private static final String REQ_INCREASE = "increase";
   private static final String REQ_DECREASE = "decrease";
   private String script = "";
+  public static int decreases = 0;
+  public static int increases = 0;
 
   public CounterModel() {
     req.add(REQ_INCREASE);
@@ -84,6 +86,7 @@ public class CounterModel {
     req.covered(REQ_DECREASE);
     counter--;
     script += "- " + counter;
+    decreases++;
   }
 
   @Guard("increase")
@@ -96,5 +99,6 @@ public class CounterModel {
     req.covered(REQ_INCREASE);
     counter++;
     script += "+ " + counter;
+    increases++;
   }
 }
