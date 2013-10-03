@@ -125,8 +125,7 @@ public class MainExplorer implements Runnable {
     List<FSMTransition> enabled = generator.getEnabled();
     ExplorationConfiguration config = state.getConfig();
     PathExplorer explorer = new PathExplorer(state, config.getDepth()-1, trace, enabled, script, explorationPool);
-    List<TestCase> testCases = null;
-    testCases = explorationPool.invoke(explorer);
+    List<TestCase> testCases = explorationPool.invoke(explorer);
     if (shouldStop || testCases == null) {
       log.debug("Exploration has stopped on the fly.");
       return;

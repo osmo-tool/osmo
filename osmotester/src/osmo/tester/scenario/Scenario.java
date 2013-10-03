@@ -25,6 +25,10 @@ import java.util.Map;
  * ever executed (after startup). In non-strict mode, any unsliced steps can be executed as many times as desired.
  * Notice that the steps taken have to be allowed by the model. Thus if some guards forbid a sequence given as a
  * startup sequence, the generator will fail and given an error stating the transition is not available.
+ * 
+ * NOTE: another option to implement filtering would be to use guards that the scenario would attach to all steps.
+ * However, the filtering seems to work well enough for now for generation and for exploration it would be difficult
+ * to track everything across all the paths so there it is done specifically in PathExplorer.
  *
  * @author Teemu Kanstren
  */
@@ -33,6 +37,8 @@ public class Scenario {
   private List<String> startup = new ArrayList<>();
   /** The slices for the different steps. */
   private List<Slice> slices = new ArrayList<>();
+  /** The forbidden steps in this scenario. */
+  private Collection<String> forbidden = new LinkedHashSet<>();
   /** Are non-sliced steps allowed? */
   private final boolean strict;
   /** Any errors in parsing the defined scenario. */
@@ -50,6 +56,10 @@ public class Scenario {
    */
   public void addStartup(String... steps) {
     startup.addAll(Arrays.asList(steps));
+  }
+  
+  public void forbid(String step) {
+    forbidden.add(step);
   }
 
   /**
@@ -101,12 +111,12 @@ public class Scenario {
     if (!toClear.isEmpty()) error("Scenario startup script contains steps not found in model:" + toClear);
     toClear.clear();
 
-    List<String> all = new ArrayList<>();
+    List<String> allSliced = new ArrayList<>();
     for (Slice slice : slices) {
       String name = slice.getStepName();
       toClear.add(name);
-      if (all.contains(name)) error("Duplicate slices not allowed:" + name);
-      all.add(name);
+      if (allSliced.contains(name)) error("Duplicate slices not allowed:" + name);
+      allSliced.add(name);
       int min = slice.getMin();
       int max = slice.getMax();
       //zero means it is undefined
@@ -116,6 +126,21 @@ public class Scenario {
     toClear.removeAll(names);
     //what remains are steps in slices that do not exist
     if (!toClear.isEmpty()) error("Scenario slices contains steps not found in model:" + toClear);
+
+    toClear.clear();
+    toClear.addAll(forbidden);
+    toClear.retainAll(allSliced);
+    if (!toClear.isEmpty()) {
+      error("Cannot forbid items in slice:"+toClear);
+    }
+    
+    if (strict) {
+      List<String> temp = new ArrayList<>();
+      temp.addAll(names);
+      temp.removeAll(allSliced);
+      forbidden.addAll(temp);
+    }
+    
     if (errors.length() > 0) {
       throw new OSMOException(errors);
     }
@@ -176,7 +201,13 @@ public class Scenario {
     //if no requirement exists, there is no need to modify the original end condition
     if (reqs.isEmpty()) return testCaseEndCondition;
     StepCoverage coverage = new StepCoverage(reqs.toArray(new String[reqs.size()]));
+    //when exploring, this is the case..
+    if (testCaseEndCondition == null) return coverage;
     //we combine the original with the new using the And operator
     return new And(coverage, testCaseEndCondition);
+  }
+
+  public Collection<String> getForbidden() {
+    return forbidden;
   }
 }

@@ -2,18 +2,15 @@ package osmo.tester.scenario;
 
 import org.junit.Before;
 import org.junit.Test;
-import osmo.common.NullPrintStream;
 import osmo.common.OSMOException;
-import osmo.tester.OSMOConfiguration;
-import osmo.tester.OSMOTester;
 import osmo.tester.explorer.ExplorationConfiguration;
 import osmo.tester.explorer.OSMOExplorer;
 import osmo.tester.explorer.testmodels.CounterFactory;
+import osmo.tester.explorer.testmodels.CounterModel;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.testmodels.CalculatorModel;
 
 import java.util.List;
 
@@ -84,6 +81,7 @@ public class ExplorerTests {
   public void startupSequenceWithAllSlices() {
     scenario.addSlice("decrease", 3, 0);
     scenario.addSlice("increase", 0, 4);
+    config.setFailWhenNoWayForward(false);
     explorer.explore(config);
     TestSuite suite = explorer.getSuite();
     List<TestCase> tests = suite.getAllTestCases();
@@ -100,6 +98,28 @@ public class ExplorerTests {
       assertTrue("Number of increase steps should be <= 4 was "+increaseCount, increaseCount <= 4);
       assertTrue("Number of decrease steps should be >= 3 was " + increaseCount, decreaseCount >= 3);
     }
+  }
+
+  @Test
+  public void forbidDecrease() {
+    CounterModel.increases = 0;
+    CounterModel.decreases = 0;
+    config.setMinTestLength(20);
+    scenario.forbid("decrease");
+    explorer.explore(config);
+    TestSuite suite = explorer.getSuite();
+    List<TestCase> tests = suite.getAllTestCases();
+
+    boolean decrease = false;
+    for (TestCase test : tests) {
+      List<TestCaseStep> steps = test.getSteps();
+      for (TestCaseStep step : steps) {
+        String name = step.getName();
+        if (name.equals("decrease")) decrease = true;
+      }
+    }
+    assertFalse("Decrease step should not be found in test", decrease);
+    assertEquals("Exploration should not explore forbidden steps (decrease)", 0, CounterModel.decreases);
   }
 
   private void assertStartSequences() {

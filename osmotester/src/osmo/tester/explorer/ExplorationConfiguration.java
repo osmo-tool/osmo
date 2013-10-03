@@ -51,6 +51,7 @@ public class ExplorationConfiguration extends ScoreConfiguration {
   /** Number of parallel threads to use for exploration, defaults to the number of processors on host. */
   private int parallelism = Runtime.getRuntime().availableProcessors();
   private Scenario scenario;
+  private boolean failWhenNoWayForward;
 
   public ExplorationConfiguration(ModelFactory factory, int depth, long seed) {
     this.factory = factory;
@@ -114,6 +115,7 @@ public class ExplorationConfiguration extends ScoreConfiguration {
     config.setTestEndCondition(endCondition);
     config.setFactory(factory);
     config.setScenario(scenario);
+    config.setFailWhenNoWayForward(failWhenNoWayForward);
   }
 
   public int getMinTestLength() {
@@ -272,5 +274,13 @@ public class ExplorationConfiguration extends ScoreConfiguration {
 
   public Scenario getScenario() {
     return scenario;
+  }
+
+  public void setFailWhenNoWayForward(boolean failWhenNoWayForward) {
+    this.failWhenNoWayForward = failWhenNoWayForward;
+  }
+
+  public boolean isFailWhenNoWayForward() {
+    return failWhenNoWayForward;
   }
 }

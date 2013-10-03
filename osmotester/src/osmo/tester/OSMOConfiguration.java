@@ -8,8 +8,6 @@ import osmo.tester.generator.endcondition.logical.And;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.Probability;
-import osmo.tester.scenario.SliceFilter;
-import osmo.tester.scenario.StartupFilter;
 import osmo.tester.generator.filter.StepFilter;
 import osmo.tester.model.FSM;
 import osmo.tester.model.ModelFactory;
@@ -58,6 +56,10 @@ public class OSMOConfiguration implements ModelFactory {
 
   public void setScenario(Scenario scenario) {
     this.scenario = scenario;
+  }
+
+  public Scenario getScenario() {
+    return scenario;
   }
 
   /**
@@ -196,9 +198,6 @@ public class OSMOConfiguration implements ModelFactory {
     suiteEndCondition.init(seed, fsm);
     if (scenario != null) {
       scenario.validate(fsm);
-      StartupFilter startupFilter = new StartupFilter(scenario);
-      addFilter(startupFilter);
-      addFilter(new SliceFilter(scenario, startupFilter));
       setTestEndCondition(scenario.createEndCondition(testCaseEndCondition));
     }
     //test end condition is initialized in generator between each test case

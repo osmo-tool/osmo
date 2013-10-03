@@ -8,6 +8,7 @@ import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
+import osmo.tester.scenario.Scenario;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,13 +41,10 @@ public class ExplorationEndCondition implements EndCondition {
   private TestCoverage suiteCoverage;
   /** Useful for debugging, if you need to print something only when concrete execution is going on. */
   private final boolean exploring;
+  private final EndCondition scenarioEndCondition;
 
   public ExplorationEndCondition(ExplorationConfiguration config) {
-    this.config = config;
-    this.scoreCalculator = new ScoreCalculator(config);
-    this.fallbackProbability = config.getFallbackProbability();
-    this.startTime = System.currentTimeMillis();
-    this.exploring = false;
+    this(config, null, false);
   }
 
   /**
@@ -62,6 +60,12 @@ public class ExplorationEndCondition implements EndCondition {
     this.startTime = System.currentTimeMillis();
     this.suiteCoverage = suiteCoverage;
     this.exploring = exploring;
+    Scenario scenario = config.getScenario();
+    if (scenario != null) {
+      this.scenarioEndCondition = scenario.createEndCondition(null);
+    } else {
+      this.scenarioEndCondition = null;
+    }
   }
 
   @Override
@@ -113,6 +117,10 @@ public class ExplorationEndCondition implements EndCondition {
 
   @Override
   public boolean endTest(TestSuite suite, FSM fsm) {
+    if (scenarioEndCondition != null) {
+      //if scenario is not yet done, we do not end no matter what
+      if (!scenarioEndCondition.endTest(suite, fsm)) return false;
+    }
     if (isTimedOut()) {
       log.debug("Exploration timeout");
       return true;
@@ -199,8 +207,6 @@ public class ExplorationEndCondition implements EndCondition {
    * @return True if plateau is reached. False otherwise.
    */
   private boolean isSuitePlateau(List<TestCase> suite, TestCoverage suiteCoverage, int size) {
-    //TODO: add option to exploration configuration to give the number of tests to wait until plateau is declared
-    //TODO: this would be an argument for the size parameter above
     if (suite.size() < size) {
       //if we have less than 2 tests finished, we cannot check for plateau
       return false;

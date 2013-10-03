@@ -16,6 +16,7 @@ import osmo.tester.model.InvocationTarget;
 import osmo.tester.model.Requirements;
 import osmo.tester.parser.MainParser;
 import osmo.tester.parser.ParserResult;
+import osmo.tester.scenario.ScenarioFilter;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ public class MainGenerator {
   private final long baseSeed;
   /** The seed for the current test case being generated. */
   private Long seed = null;
+  private final ScenarioFilter explorationGuard;
 
   /**
    * @param seed   The base seed to use for randomization during generation.
@@ -66,6 +68,7 @@ public class MainGenerator {
     this.suite = suite;
     this.config = config;
     this.listeners = config.getListeners();
+    this.explorationGuard = new ScenarioFilter(config.getScenario());
     createModelObjects();
   }
 
@@ -360,6 +363,7 @@ public class MainGenerator {
     for (StepFilter filter : config.getFilters()) {
       filter.filter(enabled);
     }
+    explorationGuard.filter(enabled, getCurrentTest().getAllStepNames());
     //sort the remaining ones to get deterministic test generation
     Collections.sort(enabled);
     //then check which of the remaining are allowed by their guard statements

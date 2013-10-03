@@ -154,9 +154,9 @@ public class ExplorationTests {
     assertTestCount(5);
     assertTestSequence(0, "[increase, increase, decrease, increase, increase, increase, increase, increase, increase, increase, increase]");
     assertTestSequence(1, "[increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase]");
-    assertTestSequence(2, "[increase, increase, increase, decrease, decrease, increase, increase, decrease, increase, decrease, increase, decrease, increase, decrease, decrease, increase, decrease, increase, decrease]");
-    assertTestSequence(3, "[increase, increase, decrease, increase, decrease, increase, decrease, increase, decrease]");
-    assertTestSequence(4, "[increase, increase, increase, decrease]");
+    assertTestSequence(2, "[increase, increase, increase, decrease, decrease, increase, increase, decrease, increase, increase, decrease, decrease, increase, increase, decrease, decrease, increase, decrease, increase]");
+    assertTestSequence(3, "[increase, increase, increase, increase, decrease, increase, decrease, decrease, decrease]");
+    assertTestSequence(4, "[increase, increase, decrease, increase, increase]");
     long end = System.currentTimeMillis();
 //    assertSuiteScore(1400);
 //    assertTestCount(4);
@@ -222,9 +222,9 @@ public class ExplorationTests {
     assertTestCount(5);
     assertTestSequence(0, "[increase, increase, decrease, increase, increase, increase, increase, increase, increase, increase, increase]");
     assertTestSequence(1, "[increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase]");
-    assertTestSequence(2, "[increase, increase, increase, decrease, decrease, increase, increase, decrease, increase, decrease, increase, decrease, increase, decrease, decrease, increase, decrease, increase, decrease]");
-    assertTestSequence(3, "[increase, increase, decrease, increase, decrease, increase, decrease, increase, decrease]");
-    assertTestSequence(4, "[increase, increase, increase, decrease, decrease]");
+    assertTestSequence(2, "[increase, increase, increase, decrease, decrease, increase, increase, decrease, increase, increase, decrease, decrease, increase, increase, decrease, decrease, increase, decrease, increase]");
+    assertTestSequence(3, "[increase, increase, increase, increase, decrease, increase, decrease, decrease, decrease]");
+    assertTestSequence(4, "[increase, increase, decrease, increase, increase]");
   }
 
   @Test
@@ -244,9 +244,9 @@ public class ExplorationTests {
     osmo.explore(config);
     long end = System.currentTimeMillis();
     long diff = end - start;
-    assertTrue("Timeout should be 1-2s was "+diff+" ms", diff > 1000 && diff < 2000);
+    assertTrue("Timeout should be 1-2s was " + diff + " ms", diff > 1000 && diff < 2000);
   }
-  
+
   @Test
   public void exploredVariablesMatchGenerated() {
     config = new ExplorationConfiguration(new ValueModelFactory(), 8, 8);
@@ -283,18 +283,18 @@ public class ExplorationTests {
     osmo.explore(config);
     List<TestCase> tests = osmo.getSuite().getAllTestCases();
     assertEquals("Suite size", 5, tests.size());
-    String expected = 
-                    "Starting new test case 1\n" +
+    String expected =
+            "Starting new test case 1\n" +
                     "+++++Starting new test case 2\n" +
-                    "+++++Starting new test case 3\n" +
-                    "++++-Starting new test case 4\n" +
-                    "+++--Starting new test case 5\n" +
-                    "+++--";
+                    "++-++Starting new test case 3\n" +
+                    "+++-+Starting new test case 4\n" +
+                    "++++-Starting new test case 5\n" +
+                    "++-++";
     String actual = out.toString();
     actual = TestUtils.unifyLineSeparators(actual, "\n");
     assertEquals("Exploration output", expected, actual);
   }
-  
+
   //this resulted in depth >1 -> depth >0 change... which is why it was included
   @Test
   public void counterModelWithMaxLength10() {
@@ -313,7 +313,7 @@ public class ExplorationTests {
     osmo.explore(config);
     List<TestCase> cases = osmo.getSuite().getFinishedTestCases();
     String actual = cases.toString();
-    String expected = "[TestCase:[start, increase, increase, increase, increase, increase, increase, decrease, decrease, increase], TestCase:[start, increase, decrease, increase, decrease, increase, increase, increase, increase, decrease], TestCase:[start, increase, increase, increase, increase, increase, increase, increase, increase, increase]]";
+    String expected = "[TestCase:[start, increase, increase, increase, increase, increase, increase, decrease, decrease, increase], TestCase:[start, increase, decrease, increase, increase, decrease, increase, increase, decrease, increase], TestCase:[start, increase, decrease, increase, increase, increase, increase, increase, increase, increase]]";
     assertEquals("Explored counter tests", expected, actual);
   }
 }
