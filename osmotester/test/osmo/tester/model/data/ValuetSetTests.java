@@ -38,17 +38,17 @@ public class ValuetSetTests {
 
   @Test
   public void randomizedTest() {
-    String v1 = set.randomFree();
-    String v2 = set.randomFree();
-    String v3 = set.randomFree();
+    String v1 = set.random();
+    String v2 = set.random();
+    String v3 = set.random();
     assertTrue(v1.equals("one") || v1.equals("two") || v1.equals("three"));
     assertTrue(v2.equals("one") || v2.equals("two") || v2.equals("three"));
     assertTrue(v3.equals("one") || v3.equals("two") || v3.equals("three"));
     boolean fail = true;
     for (int i = 0 ; i < 10 ; i++) {
-      String v1_2 = set.randomFree();
-      String v2_2 = set.randomFree();
-      String v3_2 = set.randomFree();
+      String v1_2 = set.random();
+      String v2_2 = set.random();
+      String v3_2 = set.random();
       if (!v1_2.equals(v1) || !v2_2.equals(v2) || !v3_2.equals(v3)) {
         fail = false;
         break;
@@ -144,7 +144,7 @@ public class ValuetSetTests {
   private int[] frequencyCount() {
     int[] result = new int[5];
     for (int i = 0 ; i < 600 ; i++) {
-      String next = set.randomFree();
+      String next = set.random();
       switch (next) {
         case "one":
           result[1]++;
@@ -179,7 +179,7 @@ public class ValuetSetTests {
   
   @Test
   public void bookRandomAndFree() {
-    String booked = set.bookRandom();
+    String booked = set.reserve();
     assertEquals("Random booked", "three", booked);
     int[] freqs = frequencyCount();
     assertEquals("Number of 'ones' generated", 294, freqs[1]);
@@ -234,11 +234,11 @@ public class ValuetSetTests {
   public void bookTooMany() {
     for (int i = 0 ; i < 100 ; i++) {
       setup();
-      set.bookRandom();
-      set.bookRandom();
-      set.bookRandom();
+      set.reserve();
+      set.reserve();
+      set.reserve();
       try {
-        set.bookRandom();
+        set.reserve();
         fail("Trying to overbook should throw exception");
       } catch (Exception e) {
         assertEquals("Error msg for too many bookings", "Nothing left to book.", e.getMessage());
@@ -249,9 +249,9 @@ public class ValuetSetTests {
   
   @Test
   public void bookAndRemoveRandom() {
-    set.bookRandom();
-    set.bookRandom();
-    set.bookRandom();
+    set.reserve();
+    set.reserve();
+    set.reserve();
     //this randomAny() should pass as it should not care about bookings
     set.random();
     set.removeRandom();
@@ -267,9 +267,9 @@ public class ValuetSetTests {
 
   @Test
   public void bookAndRemove() {
-    set.bookRandom();
-    set.bookRandom();
-    set.bookRandom();
+    set.reserve();
+    set.reserve();
+    set.reserve();
     set.remove("one");
     set.remove("two");
     set.remove("three");

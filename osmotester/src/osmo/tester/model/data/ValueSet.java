@@ -149,7 +149,7 @@ public class ValueSet<T> extends SearchableInput<T> {
       case BALANCING:
         return balanced();
       case RANDOM:
-        return randomFree();
+        return random();
       default:
         throw new IllegalArgumentException("Unsupported strategy (" + strategy.name() + ") for " + ValueSet.class.getSimpleName());
     }
@@ -178,7 +178,7 @@ public class ValueSet<T> extends SearchableInput<T> {
    * 
    * @return The chosen one.
    */
-  public T randomFree() {
+  public T random() {
     pre();
     if (choice == null) {
       if (unbooked.isEmpty()) throw new IllegalStateException("No unbooked to choose from.");
@@ -193,7 +193,7 @@ public class ValueSet<T> extends SearchableInput<T> {
    *
    * @return The chosen one.
    */
-  public T random() {
+  public T randomAny() {
     pre();
     if (choice == null) {
       choice = rand.oneOf(options);
@@ -207,7 +207,7 @@ public class ValueSet<T> extends SearchableInput<T> {
    * 
    * @return The chosen one.
    */
-  public T randomBooked() {
+  public T randomReserved() {
     pre();
     if (choice == null) {
       if (booked.isEmpty()) throw new IllegalStateException("No booked to choose from.");
@@ -222,7 +222,7 @@ public class ValueSet<T> extends SearchableInput<T> {
    * 
    * @param t Option to book.
    */
-  public void book(T t) {
+  public void reserve(T t) {
     if (!options.contains(t)) throw new IllegalArgumentException("Tried to book non-existing option:"+t);
     if (!unbooked.contains(t)) throw new IllegalArgumentException("Tried to book something that is not free:"+t);
     booked.add(t);
@@ -234,7 +234,7 @@ public class ValueSet<T> extends SearchableInput<T> {
    * 
    * @return The chosen one. If all are booked, throws an IllegalStateException.
    */
-  public T bookRandom() {
+  public T reserve() {
     pre();
     if (choice == null) {
       if (unbooked.isEmpty()) throw new IllegalStateException("Nothing left to book.");
@@ -370,7 +370,7 @@ public class ValueSet<T> extends SearchableInput<T> {
     return unbooked;
   }
   
-  public List<T> getBookedOptions() {
+  public List<T> getReservedOptions() {
     return booked;
   }
 
