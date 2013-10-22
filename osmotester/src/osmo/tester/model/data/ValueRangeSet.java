@@ -163,7 +163,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
       case LOOP:
         return partitions.ordered();
       default:
-        return partitions.randomFree();
+        return partitions.random();
     }
   }
 

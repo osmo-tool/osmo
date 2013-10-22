@@ -51,8 +51,7 @@
   <target name="compile" depends="init">
     <ant dir="../common" antfile="build.xml" target="jar" inheritall="false"/>
     <echo message="Compiling production..."/>
-    <javac source="7" target="7" debug="true" classpathref="class.path" srcdir="${prod-src}"
-           destdir="${prod-dest}"/>
+    <javac source="7" target="7" debug="true" classpathref="class.path" srcdir="${prod-src}" destdir="${prod-dest}"/>
     <echo message="Compiling tests..."/>
     <javac source="7" target="7" classpathref="class.path" srcdir="${test-src}" destdir="${test-dest}"/>
   </target>

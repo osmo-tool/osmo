@@ -1,6 +1,5 @@
 package osmo.tester.model.data;
 
-import osmo.common.Randomizer;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.gui.manualdrive.TextGUI;
@@ -123,12 +122,11 @@ public class Text extends SearchableInput<String> {
   public Text setStrategy(DataGenerationStrategy algorithm) {
     switch (algorithm) {
       case RANDOM:
-      case ORDERED_LOOP_INVALID:
       case RANDOM_INVALID:
         this.strategy = algorithm;
         return this;
       default:
-        throw new UnsupportedOperationException(Text.class.getSimpleName() + " supports only Scripted, Random and Invalid data generation strategy, given: " + algorithm.name() + ".");
+        throw new UnsupportedOperationException(Text.class.getSimpleName() + " supports only Random data generation strategy, given: " + algorithm.name() + ".");
     }
   }
 
@@ -145,11 +143,9 @@ public class Text extends SearchableInput<String> {
     OSMOConfiguration.check(this);
     switch (strategy) {
       case RANDOM:
-        return randomNext();
+        return random();
       case RANDOM_INVALID:
-        return invalidRandomNext();
-      case ORDERED_LOOP_INVALID:
-        return invalidLoopNext();
+        return randomInvalid();
       default:
         throw new IllegalStateException("Unsupported data generation strategy for " + Text.class.getName() + " (random and scripted only supported): " + strategy.getClass().getName());
     }
@@ -180,7 +176,7 @@ public class Text extends SearchableInput<String> {
     return length;
   }
 
-  private String randomNext() {
+  public String random() {
     int length = length();
     char[] c = new char[length];
     for (int i = 0 ; i < length ; i++) {
@@ -199,7 +195,7 @@ public class Text extends SearchableInput<String> {
    *
    * @return the next generated value.
    */
-  private String invalidRandomNext() {
+  public String randomInvalid() {
     int length = length();
     char[] c = new char[length];
     for (int i = 0 ; i < length ; i++) {
@@ -214,40 +210,6 @@ public class Text extends SearchableInput<String> {
     history.add(next);
     observe(next);
     return next;
-  }
-
-  /**
-   * Creates values that are different from expected, replacing with invalid ones using some heuristics and by looping
-   * through the chars in the word one at a time.
-   * Relates to data, length is controlled with the invalid variable.
-   *
-   * @return the next generated value.
-   */
-  private String invalidLoopNext() {
-    int length = length();
-    log.debug("Invalid loop length:" + length);
-    char[] c = new char[length];
-    for (int i = 0 ; i < length ; i++) {
-      if (i >= invalidIndex && i < invalidIndex + invalidSize) {
-        c[i] = chars.nextInvalidLoop();
-      } else {
-        c[i] = chars.next();
-      }
-    }
-    invalidIndex++;
-    //rotate loop and size of change until it overflows and restart from beginning
-    if (invalidIndex + invalidSize > length) {
-      invalidIndex = 0;
-      invalidSize++;
-      if (invalidIndex + invalidSize > length) {
-        invalidSize = 1;
-      }
-    }
-    String next = new String(c);
-    history.add(next);
-    observe(next);
-    return next;
-    // illegal characters: for ascii, base64, xml, json, url-encoded, custom
   }
 
   /** Set to only generate XML compliant characters. */

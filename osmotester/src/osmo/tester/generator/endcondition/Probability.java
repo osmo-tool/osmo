@@ -1,6 +1,5 @@
 package osmo.tester.generator.endcondition;
 
-import com.sun.glass.ui.mac.MacPasteboard;
 import osmo.common.Randomizer;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;

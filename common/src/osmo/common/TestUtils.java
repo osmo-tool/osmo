@@ -34,6 +34,9 @@ import java.io.StringWriter;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -311,6 +314,13 @@ public class TestUtils {
     return sb.toString();
   }
 
+  /**
+   * Takes given XML and indents everything with 2 spaces.
+   * 
+   * @param xml The XML to format in text format.
+   * @return Same XML but formatted with indents of 2 spaces.
+   * @throws TransformerException If it all breaks up.
+   */
   //TODO: add tests
   public static String formatXml(String xml) throws TransformerException {
     try {
@@ -378,5 +388,43 @@ public class TestUtils {
       }
     }
     return files;
+  }
+
+  public static void recursiveDelete(String path) {
+    recursiveDelete(new File(path));
+  }
+
+  public static void recursiveDelete(File file) {
+    if (!file.exists()) return;
+    if (file.isDirectory()) {
+      for (File f : file.listFiles()) {
+        recursiveDelete(f);
+      }
+    }
+    file.delete();
+  }
+  
+  public static void copyFiles(String from, String to) throws IOException {
+    File src = new File(from);
+    if (!src.exists()) throw new IllegalArgumentException("File/Dir to copy does not exists:"+from);
+    File dest = new File(to);
+    if (dest.exists() && !dest.isDirectory()) throw new IllegalArgumentException("Cannot copy to '"+to+"', target exists and is not a directory.");
+    recursiveCopy(src, dest);
+  }
+  
+  private static void recursiveCopy(File src, File dest) throws IOException {
+    dest.mkdirs();
+    if (src.isFile()) {
+      Files.copy(Paths.get(src.getAbsolutePath()), Paths.get(dest.getAbsolutePath()));
+      return;
+    }
+    if (src.isDirectory()) {
+      String name = src.getName();
+      Path p = Paths.get(dest.getAbsolutePath(), name);
+      File newDest = new File(p.toString());
+      for (File f : src.listFiles()) {
+        recursiveCopy(f, newDest);
+      }
+    }
   }
 }
