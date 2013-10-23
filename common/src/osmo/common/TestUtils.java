@@ -390,10 +390,20 @@ public class TestUtils {
     return files;
   }
 
+  /**
+   * Recursively deletes the given path (file or directory).
+   * 
+   * @param path The root folder to delete.
+   */
   public static void recursiveDelete(String path) {
     recursiveDelete(new File(path));
   }
 
+  /**
+   * Recursively deletes the given path (file or directory).
+   * 
+   * @param file The root folder to delete.
+   */
   public static void recursiveDelete(File file) {
     if (!file.exists()) return;
     if (file.isDirectory()) {
@@ -403,19 +413,41 @@ public class TestUtils {
     }
     file.delete();
   }
-  
+
+  /**
+   * Copies given files to the given target directory.
+   * If source is a file, only that file is copied.
+   * If source is a directory, all files and subdirectories are copied recursively.
+   * 
+   * @param from The source to copy from.
+   * @param to Destination directory. If it does not exist, it is created. If it is a file, throws IllegalArgumentException.
+   * @throws IOException In case of IO problems.. eh
+   */
   public static void copyFiles(String from, String to) throws IOException {
     File src = new File(from);
     if (!src.exists()) throw new IllegalArgumentException("File/Dir to copy does not exists:"+from);
     File dest = new File(to);
     if (dest.exists() && !dest.isDirectory()) throw new IllegalArgumentException("Cannot copy to '"+to+"', target exists and is not a directory.");
-    recursiveCopy(src, dest);
+    if (src.isFile()) recursiveCopy(src, dest);
+    if (src.isDirectory()) {
+      for (File f : src.listFiles()) {
+        recursiveCopy(f, dest);
+      }
+    }
   }
-  
+
+  /**
+   * Internally handles recursion for file copy.
+   * 
+   * @param src The source directory.
+   * @param dest Where we are copying to.
+   * @throws IOException In case of IO problems.. eh
+   */
   private static void recursiveCopy(File src, File dest) throws IOException {
     dest.mkdirs();
     if (src.isFile()) {
-      Files.copy(Paths.get(src.getAbsolutePath()), Paths.get(dest.getAbsolutePath()));
+      String path = dest.getAbsolutePath();
+      Files.copy(Paths.get(src.getAbsolutePath()), Paths.get(path, src.getName()));
       return;
     }
     if (src.isDirectory()) {

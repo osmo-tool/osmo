@@ -206,7 +206,7 @@ public class ValuetSetTests {
       set.free("three");
       fail("Trying to free removed item should throw exception");
     } catch (IllegalArgumentException iae) {
-      assertEquals("Error for freeing nonexistent element", "Given option to free that was not booked:three", iae.getMessage());
+      assertEquals("Error for freeing nonexistent element", "Given option to free that was not reserved:three", iae.getMessage());
     }
   }
 
@@ -241,7 +241,7 @@ public class ValuetSetTests {
         set.reserve();
         fail("Trying to overbook should throw exception");
       } catch (Exception e) {
-        assertEquals("Error msg for too many bookings", "Nothing left to book.", e.getMessage());
+        assertEquals("Error msg for too many bookings", "Nothing left to reserve.", e.getMessage());
       }
       seed += 100;
     }
@@ -253,7 +253,7 @@ public class ValuetSetTests {
     set.reserve();
     set.reserve();
     //this randomAny() should pass as it should not care about bookings
-    set.random();
+    set.randomAny();
     set.removeRandom();
     set.removeRandom();
     set.removeRandom();
@@ -261,7 +261,7 @@ public class ValuetSetTests {
       set.free("one");
       fail("freeing after removing all should throw exception");
     } catch (IllegalArgumentException e) {
-      assertEquals("Message for freeing wrong item", "Given option to free that was not booked:one", e.getMessage());
+      assertEquals("Message for freeing wrong item", "Given option to free that was not reserved:one", e.getMessage());
     }
   }
 
@@ -277,7 +277,7 @@ public class ValuetSetTests {
       set.free("one");
       fail("freeing after removing all should throw exception");
     } catch (IllegalArgumentException e) {
-      assertEquals("Message for freeing wrong item", "Given option to free that was not booked:one", e.getMessage());
+      assertEquals("Message for freeing wrong item", "Given option to free that was not reserved:one", e.getMessage());
     }
   }
   

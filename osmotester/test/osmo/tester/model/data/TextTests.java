@@ -77,7 +77,6 @@ public class TextTests {
   }
   @Test
   public void invalidLength() {
-    testLength(DataGenerationStrategy.ORDERED_LOOP_INVALID);
     testLength(DataGenerationStrategy.RANDOM_INVALID);
     testLength(DataGenerationStrategy.RANDOM);
   }
@@ -148,39 +147,6 @@ public class TextTests {
     word = text.next();
     length = word.length();
     assertTrue("Zero size enabled with invalid length enabled should produce <min size as second item.", length < 10);
-  }
-
-  @Test
-  public void invalidLoop() {
-    Text text = new Text(10, 10);
-    text.setSeed(333);
-    text.setStrategy(DataGenerationStrategy.ORDERED_LOOP_INVALID);
-    text.asciiLettersAndNumbersOnly();
-    assertOneAndTwoInvalidChars(text);
-    //roll over until the full string should be invalid
-    for (int i = 0 ; i < 8 + 7 + 6 + 5 + 4 + 3 + 2 ; i++) {
-      String word = text.next();
-    }
-    String word = text.next();
-    assertInvalidCharsAt(word, 0, 10);
-    //we have now rolled through it all so we expect a restart...
-    assertOneAndTwoInvalidChars(text);
-  }
-
-  private void assertOneAndTwoInvalidChars(Text text) {
-    for (int i = 0 ; i < 10 ; i++) {
-      String word = text.next();
-      assertInvalidCharsAt(word, i, 1);
-    }
-    for (int i = 0 ; i < 9 ; i++) {
-      String word = text.next();
-      assertInvalidCharsAt(word, i, 2);
-    }
-  }
-
-  private void assertInvalidCharsAt(String word, int index, int count) {
-    int invalids = countInvalidAsciiCharsIn(word);
-    assertEquals("Expected number of invalid chars (index the check: " + index + ") in generated word", count, invalids);
   }
 
   @Test
