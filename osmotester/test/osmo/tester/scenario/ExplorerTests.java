@@ -101,7 +101,9 @@ public class ExplorerTests {
   }
 
   @Test
-  public void forbidDecrease() {
+  public void forbidDecrease() throws Exception {
+    //needed to have previous tests finish parallel execution of last paths before starting this and static counters..
+    Thread.sleep(1000);
     CounterModel.increases = 0;
     CounterModel.decreases = 0;
     config.setMinTestLength(20);

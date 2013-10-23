@@ -21,10 +21,10 @@ public class ValueSet<T> extends SearchableInput<T> {
   private static final Logger log = new Logger(ValueSet.class);
   /** The options for data generation and evaluation. */
   private List<T> options = new ArrayList<>();
-  /** Options that have been booked. These will not be returned by bookXX() methods. */
-  private List<T> booked = new ArrayList<>();
-  /** Options still available for booking. */
-  private List<T> unbooked = new ArrayList<>();
+  /** Options that have been reserved. These will not be returned by reserveXX() methods. */
+  private List<T> reserved = new ArrayList<>();
+  /** Options still available for reserving. */
+  private List<T> free = new ArrayList<>();
   /** The input strategy to choose an object. */
   private DataGenerationStrategy strategy = DataGenerationStrategy.RANDOM;
   /** Index for ordered loop. Using this instead of iterator to allow modification of options in runtime. */
@@ -83,7 +83,7 @@ public class ValueSet<T> extends SearchableInput<T> {
    */
   public void add(T option) {
     options.add(option);
-    unbooked.add(option);
+    free.add(option);
   }
 
   /**
@@ -93,7 +93,7 @@ public class ValueSet<T> extends SearchableInput<T> {
    */
   public void addAll(Collection<T> options) {
     this.options.addAll(options);
-    unbooked.addAll(options);
+    free.addAll(options);
   }
 
   /**
@@ -102,7 +102,7 @@ public class ValueSet<T> extends SearchableInput<T> {
    * ones added with the non-weighted add() method only have one instance. For example, add("teemu");add("bob",6)
    * results in "teemu" being provided once and "bob" six times with looping strategy. With random strategy,
    * "bob" will just have 6 times higher probability to appear. Just as if add("bob") had been called six times.
-   * NOTE: this can mess up the booking system as it books only one of these values.
+   * NOTE: this can mess up the reservation system as it reserves only one of these values.
    *
    * @param option The object to be added.
    * @param weight The weight of the option, resulting in this many calls to add().
@@ -110,7 +110,7 @@ public class ValueSet<T> extends SearchableInput<T> {
   public void add(T option, int weight) {
     for (int i = 0 ; i < weight ; i++) {
       options.add(option);
-      unbooked.add(option);
+      free.add(option);
     }
   }
   
@@ -130,8 +130,8 @@ public class ValueSet<T> extends SearchableInput<T> {
       next--;
     }
     options.remove(option);
-    unbooked.remove(option);
-    booked.remove(option);
+    free.remove(option);
+    reserved.remove(option);
   }
 
   /**
@@ -174,22 +174,22 @@ public class ValueSet<T> extends SearchableInput<T> {
   }
 
   /**
-   * Randomly picks one of the unbooked options.
+   * Randomly picks one of the free options.
    * 
    * @return The chosen one.
    */
   public T random() {
     pre();
     if (choice == null) {
-      if (unbooked.isEmpty()) throw new IllegalStateException("No unbooked to choose from.");
-      choice = rand.oneOf(unbooked);
+      if (free.isEmpty()) throw new IllegalStateException("No free to choose from.");
+      choice = rand.oneOf(free);
     }
     post();
     return choice;
   }
 
   /**
-   * Randomly picks one of the options regardless of booking status.
+   * Randomly picks one of the options regardless of reserved status.
    *
    * @return The chosen one.
    */
@@ -203,51 +203,51 @@ public class ValueSet<T> extends SearchableInput<T> {
   }
 
   /**
-   * Randomly picks one of the booked ones.
+   * Randomly picks one of the reserved ones.
    * 
    * @return The chosen one.
    */
   public T randomReserved() {
     pre();
     if (choice == null) {
-      if (booked.isEmpty()) throw new IllegalStateException("No booked to choose from.");
-      choice = rand.oneOf(booked);
+      if (reserved.isEmpty()) throw new IllegalStateException("No reserved to choose from.");
+      choice = rand.oneOf(reserved);
     }
     post();
     return choice;
   }
 
   /**
-   * Books the given option.
+   * Reserves the given option.
    * 
-   * @param t Option to book.
+   * @param t Option to reserve.
    */
   public void reserve(T t) {
-    if (!options.contains(t)) throw new IllegalArgumentException("Tried to book non-existing option:"+t);
-    if (!unbooked.contains(t)) throw new IllegalArgumentException("Tried to book something that is not free:"+t);
-    booked.add(t);
-    unbooked.remove(t);
+    if (!options.contains(t)) throw new IllegalArgumentException("Tried to reserve non-existing option:"+t);
+    if (!free.contains(t)) throw new IllegalArgumentException("Tried to reserve something that is not free:"+t);
+    reserved.add(t);
+    free.remove(t);
   }
   
   /**
-   * Pick an option at random and book it.
+   * Pick an option at random and reserves it.
    * 
-   * @return The chosen one. If all are booked, throws an IllegalStateException.
+   * @return The chosen one. If all are reserved, throws an IllegalStateException.
    */
   public T reserve() {
     pre();
     if (choice == null) {
-      if (unbooked.isEmpty()) throw new IllegalStateException("Nothing left to book.");
-      choice = rand.oneOf(unbooked);
-      booked.add(choice);
-      unbooked.remove(choice);
+      if (free.isEmpty()) throw new IllegalStateException("Nothing left to reserve.");
+      choice = rand.oneOf(free);
+      reserved.add(choice);
+      free.remove(choice);
     }
     post();
     return choice;
   }
 
   /**
-   * Picks an option from all options (ignoring booked status) and removes it.
+   * Picks an option from all options (ignoring reserved status) and removes it.
    * 
    * @return The removed option.
    */
@@ -255,21 +255,21 @@ public class ValueSet<T> extends SearchableInput<T> {
     pre();
     if (choice == null) choice = rand.oneOf(options);
     options.remove(choice);
-    unbooked.remove(choice);
-    booked.remove(choice);
+    free.remove(choice);
+    reserved.remove(choice);
     post();
     return choice;
   }
 
   /**
-   * Makes a previously booked option available again.
+   * Makes a previously reserved option available again.
    * 
    * @param option The option to free.
    */
   public void free(T option) {
-    boolean ok = booked.remove(option);
-    if (!ok) throw new IllegalArgumentException("Given option to free that was not booked:"+option);
-    unbooked.add(option);
+    boolean ok = reserved.remove(option);
+    if (!ok) throw new IllegalArgumentException("Given option to free that was not reserved:"+option);
+    free.add(option);
   }
 
   /**
@@ -278,11 +278,11 @@ public class ValueSet<T> extends SearchableInput<T> {
    * @return Number of available options.
    */
   public int available() {
-    return unbooked.size();
+    return free.size();
   }
 
   /**
-   * Checks if the given option is part of this set (booked or not).
+   * Checks if the given option is part of this set (reserved or not).
    * 
    * @param option To check.
    * @return True if found.
@@ -300,7 +300,7 @@ public class ValueSet<T> extends SearchableInput<T> {
     pre();
     if (choice == null) {
       Collection<T> choices = new LinkedHashSet<>();
-      choices.addAll(unbooked);
+      choices.addAll(free);
       choices.removeAll(history);
       //choices now has all items that have never been covered
 
@@ -338,7 +338,7 @@ public class ValueSet<T> extends SearchableInput<T> {
     pre();
     if (choice == null) {
       List<T> currentOptions = new ArrayList<>();
-      currentOptions.addAll(unbooked);
+      currentOptions.addAll(free);
       if (next >= currentOptions.size()) {
         next = 0;
       }
@@ -367,11 +367,11 @@ public class ValueSet<T> extends SearchableInput<T> {
   }
 
   public List<T> getFreeOptions() {
-    return unbooked;
+    return free;
   }
   
   public List<T> getReservedOptions() {
-    return booked;
+    return reserved;
   }
 
   @Override
@@ -389,22 +389,22 @@ public class ValueSet<T> extends SearchableInput<T> {
   }
 
   /**
-   * Sets the set of options to pick from, clearing all history and bookings.
+   * Sets the set of options to pick from, clearing all history and reservations.
    *
    * @param newOptions The new set of options to use.
    */
   public void setOptions(Collection<T> newOptions) {
     history.clear();
     options.clear();
-    unbooked.clear();
-    booked.clear();
+    free.clear();
+    reserved.clear();
     options.addAll(newOptions);
-    unbooked.addAll(newOptions);
+    free.addAll(newOptions);
   }
 
   public void clear() {
     options.clear();
-    unbooked.clear();
-    booked.clear();
+    free.clear();
+    reserved.clear();
   }
 }
