@@ -3,7 +3,6 @@ package osmo.tester.testmodels;
 import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
-import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestCaseStep;
@@ -12,7 +11,6 @@ import osmo.tester.model.data.ValueRange;
 
 /** @author Teemu Kanstren */
 public class CoverageValueModel2 {
-  @TestSuiteField
   private TestSuite history = null;
   private String states = "";
   private String state = "start";

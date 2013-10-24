@@ -35,6 +35,8 @@ public class ParserParameters {
   private TestSuite suite = null;
   /** Randomization seed. */
   private Long seed = null;
+  /** Do model annotations require names? */
+  private boolean nameRequired = true;
 
   public Object getModel() {
     return model;
@@ -98,6 +100,14 @@ public class ParserParameters {
 
   public void setSeed(Long seed) {
     this.seed = seed;
+  }
+
+  public boolean isNameRequired() {
+    return nameRequired;
+  }
+
+  public void setNameRequired(boolean nameRequired) {
+    this.nameRequired = nameRequired;
   }
 
   public void setFieldAnnotations(Annotation[] annotations) {

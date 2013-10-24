@@ -2,7 +2,6 @@ package osmo.tester.testmodels;
 
 import osmo.tester.annotation.AfterTest;
 import osmo.tester.annotation.TestStep;
-import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.data.ValueRange;
@@ -16,7 +15,6 @@ public class RandomValueModel2 {
   private ValueRange<Integer> range2 = new ValueRange<>(1, Integer.MAX_VALUE);
   @Variable
   private ValueSet<String> names = new ValueSet<>("teemu", "paavo", "keijo");
-  @TestSuiteField
   private TestSuite suite = null;
 
   @TestStep("Step1")

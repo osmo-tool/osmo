@@ -77,7 +77,7 @@ public class ParserTests {
     } catch (Exception e) {
       String msg = e.getMessage();
       String expected = "Invalid FSM:\n" +
-              "Only one @RequirementsField instance allowed in the model.\n" +
+              "Only one Requirements object instance allowed in the model.\n" +
               "No transitions found in given model object. Model cannot be processed.\n" +
               "Guard without matching transition:foo.\n";
       assertEquals(expected, msg);
@@ -99,8 +99,6 @@ public class ParserTests {
               "@BeforeTest methods are not allowed to have parameters: \"badBT()\" has 1 parameters.\n" +
               "@ExplorationEnabler methods are not allowed to have parameters: \"enableExploration()\" has 1 parameters.\n" +
               "@GenerationEnabler methods are not allowed to have parameters: \"enableGeneration()\" has 1 parameters.\n" +
-              "@RequirementsField class must be of type osmo.tester.model.Requirements. Was java.lang.String.\n" +
-              "@TestSuiteField class must be of type osmo.tester.generator.testsuite.TestSuite. Was java.lang.String.\n" +
               "CoverageValue methods must have 1 parameter (TestStep): \"badArgument()\" has 2 parameters.\n" +
               "CoverageValue parameter must be of type class osmo.tester.generator.testsuite.TestCaseStep: \"badArgument()\" has type class java.lang.String\n" +
               "Invalid return type for @CoverageValue in (\"badArgument()\"):void. Should be String.\n" +
@@ -149,9 +147,9 @@ public class ParserTests {
       msg = sortErrors(msg);
       String expected = "Invalid FSM:\n" +
               "@EndCondition methods are not allowed to have parameters: \"ending()\" has 1 parameters.\n" +
-              "@RequirementsField value was null, which is not allowed.\n" +
               "CoverageValue methods must have 1 parameter (TestStep): \"noArgument()\" has 0 parameters.\n" +
               "Guard methods are not allowed to have parameters: \"hello()\" has 1 parameters.\n"+
+              "Requirements object was null, which is not allowed.\n" +
               "";
       assertEquals(expected, msg);
     }
@@ -404,4 +402,5 @@ public class ParserTests {
     FSMTransition t3 = fsm.getTransition("default strictness");
     assertTrue("Detaulf strictness should be true", t3.isStrict());
   }
+
 }

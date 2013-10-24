@@ -6,7 +6,6 @@ import osmo.tester.annotation.AfterTest;
 import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
-import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.endcondition.Length;
@@ -24,9 +23,7 @@ import java.io.PrintStream;
  * @author Teemu Kanstren
  */
 public class CalculatorModel {
-  @RequirementsField
   private Requirements req = new Requirements();
-  @RequirementsField
   private TestSuite history = null;
   @Variable
   private int counter = 0;

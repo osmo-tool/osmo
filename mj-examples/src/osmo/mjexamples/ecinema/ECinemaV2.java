@@ -4,7 +4,6 @@ import osmo.tester.OSMOTester;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.Guard;
-import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.generator.listener.TracePrinter;
 import osmo.tester.generator.algorithm.BalancingAlgorithm;
@@ -47,7 +46,6 @@ public class ECinemaV2 {
   //  private ValueSet<User> users = new ValueSet<>();
 //  private ValueSet<String> invalidUsers = new ValueSet<>("", "bob");
 //  private ValueSet<String> invalidPasswords = new ValueSet<>("", "bad");
-  @RequirementsField
   private Requirements req = new Requirements();
 
   @CoverageValue

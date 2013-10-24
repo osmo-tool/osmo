@@ -4,8 +4,6 @@ import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
-import osmo.tester.annotation.RequirementsField;
-import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestCaseStep;
@@ -14,7 +12,6 @@ import osmo.tester.model.Requirements;
 
 /** @author Teemu Kanstren */
 public class CoverageValueModel1 {
-  @RequirementsField
   private final Requirements req = new Requirements();
   public static final String TAG_HELLO = "hello";
   public static final String TAG_WORLD = "world";
@@ -23,7 +20,6 @@ public class CoverageValueModel1 {
   public String firstName = "";
   @Variable
   public String lastName = "";
-  @TestSuiteField
   private TestSuite suite = null;
   private String states = "";
 

@@ -8,7 +8,6 @@ import osmo.tester.annotation.ExplorationEnabler;
 import osmo.tester.annotation.GenerationEnabler;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
-import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestSuite;
 
@@ -25,7 +24,6 @@ public class PaperModel1 {
   private static int steps = 0;
   @Variable
   private int counter = 0;
-  @TestSuiteField
   private TestSuite suite = null;
   private PrintStream out = null;
   private final PrintStream real;

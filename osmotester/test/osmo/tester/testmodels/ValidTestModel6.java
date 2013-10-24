@@ -2,14 +2,12 @@ package osmo.tester.testmodels;
 
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
-import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestSuite;
 
 /** @author Teemu Kanstren */
 public class ValidTestModel6 {
-  @TestSuiteField
   private TestSuite history = null;
   private String states = "";
   @Variable

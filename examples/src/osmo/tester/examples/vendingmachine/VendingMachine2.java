@@ -6,8 +6,6 @@ import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
-import osmo.tester.annotation.RequirementsField;
-import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
@@ -33,9 +31,7 @@ public class VendingMachine2 {
   public final PrintStream out;
   private int coins = 0;
   private int bottles = 10;
-  @TestSuiteField
   private TestSuite testSuite = null;
-  @RequirementsField
   private final Requirements req = new Requirements();
   private static final String C10 = "10cents";
   private static final String C20 = "20cents";
