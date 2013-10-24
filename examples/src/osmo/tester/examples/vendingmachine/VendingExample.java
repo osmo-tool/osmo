@@ -8,7 +8,6 @@ import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
-import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.data.Input;
@@ -35,7 +34,6 @@ public class VendingExample {
   private int bottles = 10;
   private final int PRICE = 100;
   private final Input<Integer> coins = new ValueSet<>(10, 20, 50);
-  @TestSuiteField
   private TestSuite testSuite = null;
 
   public VendingExample() {

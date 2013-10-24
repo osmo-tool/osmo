@@ -2,8 +2,6 @@ package osmo.tester.model;
 
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Post;
-import osmo.tester.annotation.RequirementsField;
-import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -25,10 +23,8 @@ public class BaseModel {
   /** Current test case being generated. */
   protected TestCase test = null;
   /** The suite being generated. */
-  @TestSuiteField
   public TestSuite suite = null;
   /** For defining requirements. */
-  @RequirementsField
   protected Requirements req = new Requirements();
   /** Previous generated test case. */
   protected TestCaseStep previous = null;

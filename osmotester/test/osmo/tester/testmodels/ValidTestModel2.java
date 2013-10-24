@@ -8,7 +8,6 @@ import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
-import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.model.Requirements;
 
@@ -20,7 +19,6 @@ import java.io.PrintStream;
  * @author Teemu Kanstren
  */
 public class ValidTestModel2 {
-  @RequirementsField
   private final Requirements reqs;
   public static final String REQ_HELLO = "hello";
   public static final String REQ_WORLD = "world";

@@ -7,7 +7,6 @@ import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
-import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.model.Requirements;
 
@@ -22,7 +21,6 @@ import static junit.framework.Assert.*;
  * @author Teemu Kanstren
  */
 public class ValidTestModel3 {
-  @RequirementsField
   private final Requirements req = new Requirements();
   public static final String TAG_HELLO = "hello";
   public static final String TAG_WORLD = "world";

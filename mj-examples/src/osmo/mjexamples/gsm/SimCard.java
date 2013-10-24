@@ -15,7 +15,6 @@ import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.ExplorationEnabler;
 import osmo.tester.annotation.GenerationEnabler;
-import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.coverage.ScoreConfiguration;
 import osmo.tester.coverage.TestCoverage;
@@ -79,7 +78,6 @@ public class SimCard {
   public static final int Max_Puk_Try = 10;
   protected String read_data;
   protected Status_Word result;
-  @RequirementsField
   private Requirements req = new Requirements();
   public PrintStream out = System.out;
 

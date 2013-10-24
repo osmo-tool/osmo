@@ -13,14 +13,13 @@ import osmo.tester.annotation.GenerationEnabler;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
-import osmo.tester.annotation.RequirementsField;
 import osmo.tester.annotation.TestStep;
-import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.ModelFactory;
+import osmo.tester.model.Requirements;
 import osmo.tester.model.data.SearchableInput;
 import osmo.tester.parser.annotation.AfterSuiteParser;
 import osmo.tester.parser.annotation.AfterTestParser;
@@ -34,8 +33,9 @@ import osmo.tester.parser.annotation.GenerationEnablerParser;
 import osmo.tester.parser.annotation.GuardParser;
 import osmo.tester.parser.annotation.PostParser;
 import osmo.tester.parser.annotation.PreParser;
+import osmo.tester.parser.annotation.RequirementsParser;
 import osmo.tester.parser.annotation.SearchableInputParser;
-import osmo.tester.parser.annotation.TestSuiteFieldParser;
+import osmo.tester.parser.annotation.TestSuiteParser;
 import osmo.tester.parser.annotation.TransitionParser;
 import osmo.tester.parser.annotation.VariableParser;
 
@@ -73,8 +73,6 @@ public class MainParser {
     annotationParsers.put(BeforeTest.class, new BeforeTestParser());
     annotationParsers.put(AfterSuite.class, new AfterSuiteParser());
     annotationParsers.put(BeforeSuite.class, new BeforeSuiteParser());
-    annotationParsers.put(TestSuiteField.class, new TestSuiteFieldParser());
-    annotationParsers.put(RequirementsField.class, new osmo.tester.parser.annotation.RequirementsFieldParser());
     annotationParsers.put(Pre.class, new PreParser());
     annotationParsers.put(Post.class, new PostParser());
     annotationParsers.put(EndCondition.class, new EndConditionParser());
@@ -85,6 +83,8 @@ public class MainParser {
     annotationParsers.put(Group.class, new GroupParser());
     
     fieldParsers.put(SearchableInput.class, new SearchableInputParser());
+    fieldParsers.put(Requirements.class, new RequirementsParser());
+    fieldParsers.put(TestSuite.class, new TestSuiteParser());
   }
 
   /**
@@ -121,7 +121,6 @@ public class MainParser {
     return result;
   }
 
-  //TODO: these are the same for class, field, method, ->refactor..
   private String parseClass(ParserResult result, ParserParameters parameters) {
     Class clazz = parameters.getModelClass();
     Annotation[] annotations = clazz.getAnnotations();

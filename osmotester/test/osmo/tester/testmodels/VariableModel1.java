@@ -3,7 +3,6 @@ package osmo.tester.testmodels;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
-import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generation.TestVariable;
@@ -35,7 +34,6 @@ public class VariableModel1 {
   private TestVariable testVariable = new TestVariable("VariableModel1 test variable");
   @Variable
   private String stringVariable = "String variable";
-  @TestSuiteField
   private TestSuite suite = null;
 
   @Pre("first")

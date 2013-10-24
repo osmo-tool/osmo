@@ -3,7 +3,6 @@ package osmo.tester.parser.annotation;
 import osmo.common.log.Logger;
 import osmo.tester.annotation.Guard;
 import osmo.tester.model.FSM;
-import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
 import osmo.tester.model.TransitionName;
 import osmo.tester.parser.AnnotationParser;
@@ -41,6 +40,15 @@ public class GuardParser implements AnnotationParser {
     for (String givenName : transitionNames) {
       FSM fsm = result.getFsm();
       InvocationTarget target = new InvocationTarget(parameters, Guard.class);
+      if (givenName.equals(Guard.DEFAULT)) {
+        if (parameters.isNameRequired()) {
+          givenName = "all";
+        } else {
+          String methodName = parameters.getMethod().getName();
+          String name = findNameFrom(methodName);
+          if (name.length() == 0) errors += "Method name must be of format xX when using method based naming: "+methodName;
+        }
+      }
       if (givenName.equals("all")) {
         //generic guards should not have their own transition or it will fail the FSM check since it is a guard
         //without a transition
@@ -66,5 +74,15 @@ public class GuardParser implements AnnotationParser {
       fsm.addSpecificGuard(name, target);
     }
     return errors;
+  }
+  
+  public static String findNameFrom(String methodName) {
+    char[] chars = methodName.toCharArray();
+    int i = 0;
+    for (char c : chars) {
+      if (Character.isUpperCase(c)) break;
+      i++;
+    }
+    return methodName.substring(i);
   }
 }

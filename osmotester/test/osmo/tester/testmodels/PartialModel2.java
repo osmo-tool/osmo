@@ -10,8 +10,6 @@ import osmo.tester.annotation.ExplorationEnabler;
 import osmo.tester.annotation.Group;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
-import osmo.tester.annotation.RequirementsField;
-import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -22,9 +20,7 @@ import java.io.PrintStream;
 /** @author Teemu Kanstren */
 @Group("part2-group")
 public class PartialModel2 {
-  @RequirementsField
   private final Requirements req;
-  @TestSuiteField
   private TestSuite history;
   public static final String TAG_HELLO = "hello";
   public static final String TAG_WORLD = "world";

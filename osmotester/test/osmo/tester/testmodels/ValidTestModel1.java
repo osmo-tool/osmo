@@ -1,7 +1,6 @@
 package osmo.tester.testmodels;
 
 import osmo.tester.annotation.Guard;
-import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.generator.testsuite.TestSuite;
 
@@ -11,7 +10,6 @@ import osmo.tester.generator.testsuite.TestSuite;
  * @author Teemu Kanstren
  */
 public class ValidTestModel1 {
-  @TestSuiteField
   private TestSuite history = null;
 
   public TestSuite getHistory() {

@@ -10,8 +10,6 @@ import osmo.tester.annotation.GenerationEnabler;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
-import osmo.tester.annotation.RequirementsField;
-import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
@@ -20,9 +18,7 @@ import java.util.Map;
 
 /** @author Teemu Kanstren */
 public class EmptyTestModel1 {
-  @RequirementsField
   private Requirements req = new Requirements();
-  @TestSuiteField
   private TestSuite history = null;
 
   public TestSuite getHistory() {

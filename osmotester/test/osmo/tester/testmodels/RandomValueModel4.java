@@ -3,7 +3,6 @@ package osmo.tester.testmodels;
 import osmo.tester.annotation.AfterTest;
 import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.TestStep;
-import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Variable;
 import osmo.tester.coverage.CombinationCoverage;
 import osmo.tester.coverage.RangeCategory;
@@ -18,7 +17,6 @@ public class RandomValueModel4 {
   private ValueRange<Integer> range2 = new ValueRange<>(1, Integer.MAX_VALUE);
   private ValueSet<String> names = new ValueSet<>("teemu", "paavo", "keijo");
   private ValueSet<String> state = new ValueSet<>("state1", "state2");
-  @TestSuiteField
   private TestSuite suite = null;
   @Variable
   private RangeCategory rangeRange = new RangeCategory(range).oneTwoMany();

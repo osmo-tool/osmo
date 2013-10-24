@@ -44,5 +44,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Guard {
-  String[] value() default "all";
+  public static final String DEFAULT = "osmo.tester.annotations.DEFAULT_VALUE";
+  String[] value() default DEFAULT;
 }

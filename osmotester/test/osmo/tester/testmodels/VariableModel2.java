@@ -3,7 +3,6 @@ package osmo.tester.testmodels;
 import osmo.common.NullPrintStream;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
-import osmo.tester.annotation.TestSuiteField;
 import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -21,7 +20,6 @@ public class VariableModel2 {
   private boolean first = false;
   @Variable
   private boolean second = false;
-  @TestSuiteField
   private TestSuite suite = null;
   @Variable
   private ValueRange<Integer> range = new ValueRange<>(1, 5);
