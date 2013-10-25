@@ -35,8 +35,8 @@ public class TransitionName {
     //special check to avoid unnamed groups for transitions
     if (name.length() == 0) return false;
     
-    if (name != null ? !name.equals(that.name) : that.name != null) return false;
-    if (prefix != null ? !prefix.equals(that.prefix) : that.prefix != null) return false;
+    if (name != null ? !name.equalsIgnoreCase(that.name) : that.name != null) return false;
+    if (prefix != null ? !prefix.equalsIgnoreCase(that.prefix) : that.prefix != null) return false;
 
     return true;
   }
@@ -49,14 +49,14 @@ public class TransitionName {
   }
 
   public boolean shouldNegationApply(TransitionName negationName) {
-    if (!prefix.equals(negationName.prefix)) {
+    if (!prefix.equalsIgnoreCase(negationName.prefix)) {
       //wrong prefix
       return false;
     }
     //special check to avoid unnamed groups for transitions
     if (name.length() == 0) return false;
 
-    return !negationName.name.equals(name);
+    return !negationName.name.equalsIgnoreCase(name);
   }
 
   public String getPrefix() {

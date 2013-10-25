@@ -73,7 +73,7 @@ public class CoverageValueModel1 {
   public void epixxO() {
   }
 
-  @Post
+  @Post("all")
   public void stateCheck() {
     states += "-"+suite.getCurrentTest().getCurrentStep().getStatesFor("my-state")+"-";
   }

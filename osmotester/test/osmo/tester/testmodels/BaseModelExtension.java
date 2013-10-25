@@ -59,7 +59,7 @@ public class BaseModelExtension extends BaseModel {
     second = true;
   }
 
-  @Post
+  @Post("all")
   public void checkMe() {
     checkCount++;
   }

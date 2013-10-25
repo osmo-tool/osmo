@@ -30,7 +30,7 @@ public class GroupModelInvalid {
 
   }
   
-  @Guard
+  @Guard("all")
   public boolean allGuard() {
     return false;
   }
@@ -48,6 +48,14 @@ public class GroupModelInvalid {
   @Post("group1")
   public boolean group1Post() {
     return false;
+  }
+  
+  @Pre("all")
+  public void ohnoes() {
+  }
+
+  @Post("all")
+  public void ohnoes2() {
   }
 
   @Guard("step3")

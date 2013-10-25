@@ -38,7 +38,7 @@ public class EmptyTestModel3 {
   public void badArgument(String s1, String s2) {
   }
 
-  @Post
+  @Post("all")
   public void wrong(String p1) {
   }
 

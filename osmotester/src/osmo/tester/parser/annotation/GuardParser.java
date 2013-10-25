@@ -41,13 +41,9 @@ public class GuardParser implements AnnotationParser {
       FSM fsm = result.getFsm();
       InvocationTarget target = new InvocationTarget(parameters, Guard.class);
       if (givenName.equals(Guard.DEFAULT)) {
-        if (parameters.isNameRequired()) {
-          givenName = "all";
-        } else {
-          String methodName = parameters.getMethod().getName();
-          String name = findNameFrom(methodName);
-          if (name.length() == 0) errors += "Method name must be of format xX when using method based naming: "+methodName;
-        }
+        String methodName = parameters.getMethod().getName();
+        givenName = findNameFrom(methodName);
+        if (givenName.length() == 0) errors += "Guard method name must be of format xX when using method based naming: "+methodName;
       }
       if (givenName.equals("all")) {
         //generic guards should not have their own transition or it will fail the FSM check since it is a guard
@@ -75,7 +71,7 @@ public class GuardParser implements AnnotationParser {
     }
     return errors;
   }
-  
+
   public static String findNameFrom(String methodName) {
     char[] chars = methodName.toCharArray();
     int i = 0;

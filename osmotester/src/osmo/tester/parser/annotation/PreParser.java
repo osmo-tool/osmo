@@ -2,6 +2,7 @@ package osmo.tester.parser.annotation;
 
 import osmo.common.log.Logger;
 import osmo.tester.annotation.Group;
+import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Pre;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
@@ -38,14 +39,18 @@ public class PreParser implements AnnotationParser {
     FSM fsm = result.getFsm();
     String[] transitionNames = pre.value();
     String prefix = parameters.getPrefix();
-    //TODO: add tests for partial model with class level groups with steps and post- pre-
     String group = parameters.getClassAnnotation(Group.class);
     for (String name : transitionNames) {
       log.debug("Parsing pre-method '" + name + "'");
-      //todo: add test for transition named "all" in a test model
-      //TODO: move "all" to a constant..
-      if (name.equals("all") && group.length() > 0) {
-        name = group;
+      if (name.equals(Guard.DEFAULT)) {
+        //If no name is given to pre/post but a group is defined for their class, we use that as our target
+        if (group.length() > 0) {
+          name = group;
+        } else {
+          String methodName = parameters.getMethod().getName();
+          name = GuardParser.findNameFrom(methodName);
+          if (name.length() == 0) errors += "Pre method name must be of format xX when using method based naming: "+methodName;
+        }
       }
       if (name.equals("all")) {
         fsm.addGenericPre(target);

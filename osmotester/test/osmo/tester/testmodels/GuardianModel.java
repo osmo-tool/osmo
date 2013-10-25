@@ -76,7 +76,7 @@ public class GuardianModel {
     out.print(pre + ":epixx_oracle\n");
   }
 
-  @Post
+  @Post("all")
   public void stateCheck() {
     out.print(pre + ":gen_oracle\n");
   }

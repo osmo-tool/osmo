@@ -68,7 +68,7 @@ public class CoverageValueMethodTests {
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
     osmo.generate(111);
-    String expected = ":null::null::state1([hello-hello1])::state2([hello-hello2])::null::null::state1([world-hello1])::state2([world-hello2])::null::null::state1([epixx-hello1])::state2([epixx-hello2]):";
+    String expected = ":null::null::state1([Hello-hello1])::state2([Hello-hello2])::null::null::state1([world-hello1])::state2([world-hello2])::null::null::state1([epixx-hello1])::state2([epixx-hello2]):";
     assertEquals("State over generation with two states defined", expected, model1.getStates());
 
     TestSuite suite = osmo.getSuite();

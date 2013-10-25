@@ -78,7 +78,7 @@ public class ValidTestModel4 {
     out.print(":epixx_oracle");
   }
 
-  @Post
+  @Post("all")
   public void stateCheck() {
     out.print(":gen_oracle");
   }
@@ -93,12 +93,12 @@ public class ValidTestModel4 {
     return ""+req.getUniqueCoverage().size();
   }
 
-  @Pre
+  @Pre("all")
   public void savePreState() {
     states += ":"+history.getCurrentTest().getCurrentStep().getStatesFor("my-state")+":";
   }
 
-  @Post
+  @Post("all")
   public void savePostState() {
     states += "-"+history.getCurrentTest().getCurrentStep().getStatesFor("my-state")+"-";
   }

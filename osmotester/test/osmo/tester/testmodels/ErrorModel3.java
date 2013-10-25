@@ -38,11 +38,11 @@ public class ErrorModel3 {
     return true;
   }
 
-  @Post
+  @Post("all")
   public void stateOracle() {
   }
 
-  @Pre
+  @Pre("all")
   public void beforeEpixx() {
   }
 

@@ -2,6 +2,8 @@ package osmo.tester.testmodels;
 
 import osmo.tester.annotation.Group;
 import osmo.tester.annotation.Guard;
+import osmo.tester.annotation.Post;
+import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Transition;
 
@@ -28,7 +30,7 @@ public class GroupModel1 {
 
   }
   
-  @Guard
+  @Guard("all")
   public boolean allGuard() {
     return false;
   }
@@ -51,5 +53,13 @@ public class GroupModel1 {
   @Guard("big-group")
   public boolean classGuard() {
     return false;
+  }
+
+  @Pre
+  public void ohnoes() {
+  }
+
+  @Post
+  public void ohnoes2() {
   }
 }
