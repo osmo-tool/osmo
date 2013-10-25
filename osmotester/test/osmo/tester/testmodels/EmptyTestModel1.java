@@ -65,13 +65,13 @@ public class EmptyTestModel1 {
 
   }
 
-  @Guard("world")
-  public boolean listCheck() {
+  @Guard
+  public boolean gWorld() {
     return false;
   }
 
-  @Guard("world")
-  public boolean listCheck2() {
+  @Guard
+  public boolean g2World() {
     return false;
   }
 
@@ -90,7 +90,7 @@ public class EmptyTestModel1 {
     return false;
   }
 
-  @Post
+  @Post("all")
   public void stateOracle() {
   }
 

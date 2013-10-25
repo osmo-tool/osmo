@@ -56,13 +56,13 @@ public class PartialModel1 {
   public void end1() {
   }
 
-  @Guard("hello")
-  public boolean helloCheck() {
+  @Guard
+  public boolean checkHello() {
     return !req.isCovered(REQ_HELLO) && !req.isCovered(REQ_WORLD) && !req.isCovered(REQ_EPIX);
   }
 
-  @Transition("hello")
-  public void transition1() {
+  @Transition
+  public void hello() {
     req.covered(REQ_HELLO);
     out.print(":hello");
   }
@@ -87,7 +87,7 @@ public class PartialModel1 {
     out.print(":epixx_oracle");
   }
 
-  @Post
+  @Post("all")
   public void stateCheck() {
     out.print(":gen_oracle");
   }
@@ -110,14 +110,14 @@ public class PartialModel1 {
     return step.getName()+"-hello1";
   }
 
-  @Pre
+  @Pre("all")
   public void savePreState() {
     //pre-state is always null as we are starting a new step
     states += ":"+history.getCurrentTest().getCurrentStep().getStatesFor("state1")+":";
     states += ":"+history.getCurrentTest().getCurrentStep().getStatesFor("state2")+":";
   }
 
-  @Post
+  @Post("all")
   public void savePostState() {
     states += ":"+history.getCurrentTest().getCurrentStep().getStatesFor("state1")+":";
     states += ":"+history.getCurrentTest().getCurrentStep().getStatesFor("state2")+":";

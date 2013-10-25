@@ -8,7 +8,7 @@
     <property name="Suite End Condition" value="And{conditions=[Length{length=1}, Probability{threshold=0.05}]}"/>
     <property name="Test Case End Condition" value="And{conditions=[Length{length=1}, Probability{threshold=0.1}]}"/>
   </properties>
-  <testcase name="Test1_step_1_hello" classname="osmo.tester.testmodels.PartialModel1" time="0.00">
+  <testcase name="Test1_step_1_Hello" classname="osmo.tester.testmodels.PartialModel1" time="0.00">
   </testcase>
   <testcase name="Test1_step_2_world" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
   </testcase>
@@ -18,13 +18,13 @@
   </testcase>
   <testcase name="Test1_step_5_epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
   </testcase>
-  <testcase name="Test2_step_1_hello" classname="osmo.tester.testmodels.PartialModel1" time="0.00">
+  <testcase name="Test2_step_1_Hello" classname="osmo.tester.testmodels.PartialModel1" time="0.00">
   </testcase>
   <testcase name="Test2_step_2_world" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
   </testcase>
   <testcase name="Test2_step_3_epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
   </testcase>
-  <testcase name="Test3_step_1_hello" classname="osmo.tester.testmodels.PartialModel1" time="0.00">
+  <testcase name="Test3_step_1_Hello" classname="osmo.tester.testmodels.PartialModel1" time="0.00">
   </testcase>
   <testcase name="Test3_step_2_world" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
   </testcase>
@@ -36,13 +36,13 @@
   </testcase>
   <testcase name="Test3_step_6_epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
   </testcase>
-  <testcase name="Test4_step_1_hello" classname="osmo.tester.testmodels.PartialModel1" time="0.00">
+  <testcase name="Test4_step_1_Hello" classname="osmo.tester.testmodels.PartialModel1" time="0.00">
   </testcase>
   <testcase name="Test4_step_2_world" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
   </testcase>
   <testcase name="Test4_step_3_epixx" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
   </testcase>
-  <testcase name="Test5_step_1_hello" classname="osmo.tester.testmodels.PartialModel1" time="0.00">
+  <testcase name="Test5_step_1_Hello" classname="osmo.tester.testmodels.PartialModel1" time="0.00">
   </testcase>
   <testcase name="Test5_step_2_world" classname="osmo.tester.testmodels.PartialModel2" time="0.00">
   </testcase>

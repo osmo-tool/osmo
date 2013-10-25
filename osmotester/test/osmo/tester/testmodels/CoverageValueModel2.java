@@ -46,12 +46,12 @@ public class CoverageValueModel2 {
     return state;
   }
 
-  @Pre
+  @Pre("all")
   public void savePreState() {
     states += ":"+history.getCurrentTest().getCurrentStep().getStatesFor("my-state")+":";
   }
 
-  @Post
+  @Post("all")
   public void savePostState() {
     states += "-"+history.getCurrentTest().getCurrentStep().getStatesFor("my-state")+"-";
   }

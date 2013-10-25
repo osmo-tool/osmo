@@ -166,6 +166,7 @@ public class ReportTests {
     listener.getSuite().setEndTime(3234);
     try {
       tester.generate(333);
+      fail("Expected failure not observed.");
     } catch (Exception e) {
       //this should happen..
     }

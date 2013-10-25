@@ -22,5 +22,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Post {
-  String[] value() default "all";
+  String[] value() default Guard.DEFAULT;
 }

@@ -201,7 +201,7 @@ public class ParserTests {
     assertEquals("Number of @GenerationEnabler methods", 1, fsm.getGenerationEnablers().size());
     assertNotNull("@StateDescription method", fsm.getCoverageMethods());
     //these also test for the correct number of guards
-    assertTransitionPresent(fsm, "hello", 1, 3);
+    assertTransitionPresent(fsm, "Hello", 1, 3);
     assertTransitionPresent(fsm, "world", 3, 3);
     assertTransitionPresent(fsm, "epixx", 2, 3);
     assertEquals("Number of end conditions", 2, fsm.getEndConditions().size());

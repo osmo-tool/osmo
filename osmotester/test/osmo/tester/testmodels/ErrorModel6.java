@@ -37,11 +37,11 @@ public class ErrorModel6 {
     throw new RuntimeException("@Guard fail");
   }
 
-  @Post
+  @Post("all")
   public void stateOracle() {
   }
 
-  @Pre
+  @Pre("all")
   public void beforeEpixx() {
   }
 

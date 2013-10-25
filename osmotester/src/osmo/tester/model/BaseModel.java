@@ -46,7 +46,7 @@ public class BaseModel {
    * Initializes the previous field to reflect the correct status.
    * Note that due to initialization here, other @Post annotations cannot rely on the previous field.
    */
-  @Post
+  @Post("all")
   public void afterTransition() {
     List<TestCaseStep> steps = test.getSteps();
     int size = steps.size();

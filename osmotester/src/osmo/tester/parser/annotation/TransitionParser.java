@@ -62,6 +62,10 @@ public class TransitionParser implements AnnotationParser {
       type = TestStep.class.getSimpleName();
       strict = ts.strict();
     }
+    //if no name given, use method name
+    if (name.length() == 0) {
+      name = parseName(parameters.getMethod().getName());
+    }
     TransitionName tName = checkName(name, result, parameters);
     TransitionName groupName = new TransitionName(parameters.getPrefix(), group);
     if (tName == null) {
@@ -104,6 +108,12 @@ public class TransitionParser implements AnnotationParser {
     transition.setTransition(new InvocationTarget(parameters, Transition.class));
     transition.setGroupName(group);
     transition.setStrict(strict);
+  }
+
+  public static String parseName(String name) {
+    //TODO: test with method name of 1 char
+    name = Character.toUpperCase(name.charAt(0))+name.substring(1);
+    return name;
   }
 }
 

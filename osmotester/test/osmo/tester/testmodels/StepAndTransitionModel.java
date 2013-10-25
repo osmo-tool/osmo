@@ -87,7 +87,7 @@ public class StepAndTransitionModel {
     out.print(":epixx_oracle");
   }
 
-  @Post
+  @Post("all")
   public void stateCheck() {
     out.print(":gen_oracle");
   }

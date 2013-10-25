@@ -37,11 +37,11 @@ public class ErrorModel8 {
     return true;
   }
 
-  @Post
+  @Post("all")
   public void stateOracle() {
   }
 
-  @Pre
+  @Pre("all")
   public void beforeEpixx() {
     throw new RuntimeException("@Pre fail");
   }

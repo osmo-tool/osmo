@@ -37,12 +37,12 @@ public class ErrorModel7 {
     return true;
   }
 
-  @Post
+  @Post("all")
   public void stateOracle() {
     throw new AssertionError("@Post fail");
   }
 
-  @Pre
+  @Pre("all")
   public void beforeEpixx() {
   }
 

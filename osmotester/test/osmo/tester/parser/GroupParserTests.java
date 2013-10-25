@@ -44,12 +44,20 @@ public class GroupParserTests {
     assertEquals("Number of exploration enablers", 0, fsm.getExplorationEnablers().size());
     FSMTransition step1 = fsm.getTransition("step1");
     assertEquals("Number of guards", 2, step1.getGuards().size());
+    assertEquals("Number of pre's", 0, step1.getPreMethods().size());
+    assertEquals("Number of post's", 0, step1.getPostMethods().size());
     FSMTransition step2 = fsm.getTransition("step2");
     assertEquals("Number of guards", 2, step2.getGuards().size());
+    assertEquals("Number of pre's", 0, step2.getPreMethods().size());
+    assertEquals("Number of post's", 0, step2.getPostMethods().size());
     FSMTransition step3 = fsm.getTransition("step3");
     assertEquals("Number of guards", 3, step3.getGuards().size());
+    assertEquals("Number of pre's", 0, step3.getPreMethods().size());
+    assertEquals("Number of post's", 0, step3.getPostMethods().size());
     FSMTransition step4 = fsm.getTransition("step4");
     assertEquals("Number of guards", 3, step4.getGuards().size());
+    assertEquals("Number of pre's", 1, step4.getPreMethods().size());
+    assertEquals("Number of post's", 1, step4.getPostMethods().size());
 
     assertEquals("Group name", "group1", step1.getGroupName().toString());
     assertEquals("Group name", "group1", step2.getGroupName().toString());
@@ -65,7 +73,7 @@ public class GroupParserTests {
 
     ParserResult result = parser.parse(1, conf(model1, model2), new TestSuite());
     FSM fsm = result.getFsm();
-    FSMTransition hello = fsm.getTransition("hello");
+    FSMTransition hello = fsm.getTransition("Hello");
     FSMTransition world = fsm.getTransition("world");
     FSMTransition epixx = fsm.getTransition("epixx");
     assertEquals("Group name", "", hello.getGroupName().toString());
@@ -77,7 +85,7 @@ public class GroupParserTests {
     model2 = new PartialModel2(req);
     result = parser.parse(1, conf(model2, model1), new TestSuite());
     fsm = result.getFsm();
-    hello = fsm.getTransition("hello");
+    hello = fsm.getTransition("Hello");
     world = fsm.getTransition("world");
     epixx = fsm.getTransition("epixx");
     assertEquals("Group name", "", hello.getGroupName().toString());
