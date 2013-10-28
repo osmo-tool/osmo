@@ -1,7 +1,6 @@
 package osmo.tester.parser.annotation;
 
 import osmo.common.log.Logger;
-import osmo.tester.annotation.AfterTest;
 import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.model.InvocationTarget;
 import osmo.tester.parser.AnnotationParser;

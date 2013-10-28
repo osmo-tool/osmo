@@ -3,7 +3,6 @@ package osmo.tester.reporting.coverage;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
-import osmo.tester.coverage.TestCoverage;
 
 import java.util.Collection;
 
@@ -21,13 +20,13 @@ public class CSVCoverageReporter extends CoverageMetric {
     this(ts.getFinishedTestCases(), fsm);
   }
 
-  public String getTransitionCounts() {
+  public String getStepCounts() {
     //note: for this to work, you need to have the IDE or build script copy the .csv files to the same location on the output dir (alongside the java classes)
-    return super.getTransitionCounts("osmo/tester/reporting/coverage/templates/transition-coverage.csv");
+    return super.getStepCounts("osmo/tester/reporting/coverage/templates/step-coverage.csv");
   }
 
-  public String getTransitionPairCounts() {
-    return super.getTransitionPairCounts("osmo/tester/reporting/coverage/templates/transitionpair-coverage.csv");
+  public String getStepPairCounts() {
+    return super.getStepPairCounts("osmo/tester/reporting/coverage/templates/steppair-coverage.csv");
   }
 
   public String getRequirementCounts() {

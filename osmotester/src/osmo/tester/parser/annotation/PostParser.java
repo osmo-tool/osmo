@@ -5,8 +5,6 @@ import osmo.tester.annotation.Group;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.model.FSM;
-import osmo.tester.model.FSMGuard;
-import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
 import osmo.tester.model.TransitionName;
 import osmo.tester.parser.AnnotationParser;
@@ -14,7 +12,6 @@ import osmo.tester.parser.ParserParameters;
 import osmo.tester.parser.ParserResult;
 
 import java.lang.reflect.Method;
-import java.util.Map;
 
 /**
  * Parses {@link osmo.tester.annotation.Post} annotations from the given model object.

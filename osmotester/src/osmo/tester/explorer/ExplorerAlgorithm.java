@@ -1,10 +1,10 @@
 package osmo.tester.explorer;
 
 import osmo.common.log.Logger;
+import osmo.tester.coverage.TestCoverage;
 import osmo.tester.explorer.trace.DOTWriter;
 import osmo.tester.explorer.trace.TimeTrace;
 import osmo.tester.explorer.trace.TraceNode;
-import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.testsuite.TestCase;

@@ -1,13 +1,12 @@
 package osmo.tester.generator.testsuite;
 
 import osmo.common.log.Logger;
+import osmo.tester.coverage.TestCoverage;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
-import osmo.tester.coverage.TestCoverage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 

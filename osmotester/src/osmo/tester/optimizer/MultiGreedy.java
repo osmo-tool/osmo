@@ -2,7 +2,6 @@ package osmo.tester.optimizer;
 
 import osmo.common.Randomizer;
 import osmo.common.log.Logger;
-import osmo.tester.OSMOConfiguration;
 import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.coverage.ScoreConfiguration;
 import osmo.tester.coverage.TestCoverage;
@@ -14,10 +13,8 @@ import osmo.tester.model.Requirements;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;

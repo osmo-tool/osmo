@@ -20,7 +20,7 @@ import java.util.Collection;
  * associated with them.
  * 
  * @author Teemu Kanstren */
-public class FSMVisualizer {
+public class ModelPrinter {
   /** Configuration for test generation, used for parsing model for visualization so most attributes are ignored. */
   private OSMOConfiguration config = new OSMOConfiguration();
 

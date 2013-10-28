@@ -5,7 +5,6 @@ import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.testsuite.TestCase;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * For creating a coverage report in comma separated value format.

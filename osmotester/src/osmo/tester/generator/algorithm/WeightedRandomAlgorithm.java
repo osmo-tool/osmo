@@ -2,11 +2,9 @@ package osmo.tester.generator.algorithm;
 
 import osmo.common.Randomizer;
 import osmo.common.log.Logger;
-import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
-import osmo.tester.parser.ParserResult;
 
 import java.util.ArrayList;
 import java.util.Collections;

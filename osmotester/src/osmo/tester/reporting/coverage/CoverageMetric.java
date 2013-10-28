@@ -2,13 +2,13 @@ package osmo.tester.reporting.coverage;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
 import osmo.tester.scripter.robotframework.CSSHelper;
-import osmo.tester.coverage.TestCoverage;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public abstract class CoverageMetric {
    *
    * @return the counts.
    */
-  protected List<ValueCount> countTransitions() {
+  protected List<ValueCount> countSteps() {
     Map<String, Integer> covered = suiteCoverage.getTransitionCoverage();
     List<ValueCount> counts = new ArrayList<>();
 
@@ -167,8 +167,8 @@ public abstract class CoverageMetric {
    * @param templateName The name of Velocity template to format the results.
    * @return Transition coverage formatted with given template.
    */
-  public String getTransitionCounts(String templateName) {
-    List<ValueCount> counts = countTransitions();
+  public String getStepCounts(String templateName) {
+    List<ValueCount> counts = countSteps();
 
     vc.put("transitions", counts);
 
@@ -184,7 +184,7 @@ public abstract class CoverageMetric {
    * @param templateName The name of Velocity template to format the results.
    * @return Transition pair coverage formatted with given template.
    */
-  public String getTransitionPairCounts(String templateName) {
+  public String getStepPairCounts(String templateName) {
     List<ValueCount> tpc = countTransitionPairs();
     Collections.sort(tpc);
 
