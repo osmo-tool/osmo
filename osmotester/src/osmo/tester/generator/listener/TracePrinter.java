@@ -1,7 +1,6 @@
 package osmo.tester.generator.listener;
 
 import osmo.tester.OSMOConfiguration;
-import osmo.tester.generator.listener.GenerationListener;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;

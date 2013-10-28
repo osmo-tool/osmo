@@ -2,7 +2,6 @@ package osmo.tester.parser.annotation;
 
 import osmo.common.log.Logger;
 import osmo.tester.annotation.AfterSuite;
-import osmo.tester.annotation.EndCondition;
 import osmo.tester.model.InvocationTarget;
 import osmo.tester.parser.AnnotationParser;
 import osmo.tester.parser.ParserParameters;

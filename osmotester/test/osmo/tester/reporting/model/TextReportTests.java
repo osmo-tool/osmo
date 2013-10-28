@@ -16,7 +16,7 @@ import static junit.framework.Assert.*;
 public class TextReportTests {
   @Test
   public void validModel1() {
-    FSMVisualizer mv = new FSMVisualizer();
+    ModelPrinter mv = new ModelPrinter();
     mv.addModelObject(new ValidTestModel1());
     String actual = mv.write();
     String expected = "BeforeSuites: \n" +
@@ -47,7 +47,7 @@ public class TextReportTests {
 
   @Test
   public void validModel2() {
-    FSMVisualizer mv = new FSMVisualizer();
+    ModelPrinter mv = new ModelPrinter();
     mv.addModelObject(new ValidTestModel2(new Requirements(), NullPrintStream.stream));
     String actual = mv.write();
     String expected = "BeforeSuites: osmo.tester.testmodels.ValidTestModel2.firstOfAll(), \n" +
@@ -84,7 +84,7 @@ public class TextReportTests {
 
   @Test
   public void validModel3() {
-    FSMVisualizer mv = new FSMVisualizer();
+    ModelPrinter mv = new ModelPrinter();
     mv.addModelObject(new ValidTestModel3(NullPrintStream.stream));
     String actual = mv.write();
     String expected = "BeforeSuites: osmo.tester.testmodels.ValidTestModel3.empty(), \n" +
@@ -121,7 +121,7 @@ public class TextReportTests {
 
   @Test
   public void validModel4() {
-    FSMVisualizer mv = new FSMVisualizer();
+    ModelPrinter mv = new ModelPrinter();
     mv.addModelObject(new ValidTestModel4(NullPrintStream.stream));
     String actual = mv.write();
     String expected = "BeforeSuites: \n" +
@@ -158,7 +158,7 @@ public class TextReportTests {
 
   @Test
   public void validModel5() {
-    FSMVisualizer mv = new FSMVisualizer();
+    ModelPrinter mv = new ModelPrinter();
     mv.addModelObject(new ValidTestModel5(NullPrintStream.stream));
     String actual = mv.write();
     String expected = "BeforeSuites: \n" +
@@ -195,7 +195,7 @@ public class TextReportTests {
 
   @Test
   public void validModel6() {
-    FSMVisualizer mv = new FSMVisualizer();
+    ModelPrinter mv = new ModelPrinter();
     mv.addModelObject(new ValidTestModel6());
     String actual = mv.write();
     String expected = "BeforeSuites: \n" +

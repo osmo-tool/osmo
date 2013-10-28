@@ -1,8 +1,8 @@
 package osmo.tester.reporting.coverage;
 
 /**
- * Information for how many times a transition pair has been taken in test generation.
- * A transition pair consists of two transition taken in a sequence in a single test case.
+ * Information for how many times a step pair has been taken in test generation.
+ * A step pair consists of two steps taken in a sequence in a single test case.
  *
  * @author Teemu Kanstren
  */

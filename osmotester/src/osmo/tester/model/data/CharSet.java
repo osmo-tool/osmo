@@ -1,8 +1,5 @@
 package osmo.tester.model.data;
 
-import osmo.common.Randomizer;
-import osmo.tester.OSMOConfiguration;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

@@ -2,19 +2,11 @@ package osmo.tester.reporting.coverage;
 
 import org.junit.Before;
 import org.junit.Test;
-import osmo.tester.OSMOConfiguration;
-import osmo.tester.OSMOTester;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
 import osmo.tester.model.TransitionName;
-import osmo.tester.testmodels.RandomValueModel2;
-import osmo.tester.testmodels.ValidTestModel1;
-
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
 
 import static junit.framework.Assert.*;
 import static osmo.common.TestUtils.*;
@@ -78,7 +70,7 @@ public class SummaryTests {
     String expected = getResource(getClass(), "expected-transitions.csv");
     expected = unifyLineSeparators(expected, "\n");
     CSVCoverageReporter csv = new CSVCoverageReporter(suite, fsm);
-    String actual = csv.getTransitionCounts();
+    String actual = csv.getStepCounts();
     actual = unifyLineSeparators(actual, "\n");
 /*    System.out.println("----------------");
     System.out.println("expected:\n"+expected);
@@ -93,7 +85,7 @@ public class SummaryTests {
     String expected = getResource(getClass(), "expected-transitionpairs.csv");
     expected = unifyLineSeparators(expected, "\n");
     CSVCoverageReporter csv = new CSVCoverageReporter(suite, fsm);
-    String actual = csv.getTransitionPairCounts();
+    String actual = csv.getStepPairCounts();
     actual = unifyLineSeparators(actual, "\n");
     assertEquals("Generated CSV report for transition coverage", expected, actual);
   }
@@ -113,7 +105,7 @@ public class SummaryTests {
     String expected = getResource(getClass(), "expected-transitions.txt");
     expected = unifyLineSeparators(expected, "\n");
     HTMLCoverageReporter html = new HTMLCoverageReporter(suite, fsm);
-    String actual = html.getTransitionCounts();
+    String actual = html.getStepCounts();
     actual = unifyLineSeparators(actual, "\n");
 /*    System.out.println("----------------");
     System.out.println("expected:\n"+expected);
@@ -128,7 +120,7 @@ public class SummaryTests {
     String expected = getResource(getClass(), "expected-transitionpairs.txt");
     expected = unifyLineSeparators(expected, "\n");
     HTMLCoverageReporter html = new HTMLCoverageReporter(suite, fsm);
-    String actual = html.getTransitionPairCounts();
+    String actual = html.getStepPairCounts();
     actual = unifyLineSeparators(actual, "\n");
 /*    System.out.println("----------------");
     System.out.println("expected:\n"+expected);
@@ -153,7 +145,7 @@ public class SummaryTests {
     String expected = getResource(getClass(), "expected-transitions-ascii.txt");
     expected = unifyLineSeparators(expected, "\n");
     ASCIICoverageReporter ascii = new ASCIICoverageReporter(suite, fsm);
-    String actual = ascii.getTransitionCounts();
+    String actual = ascii.getStepCounts();
     actual = unifyLineSeparators(actual, "\n");
     assertEquals("Generated ASCII report for transition coverage", expected, actual);
   }
@@ -163,7 +155,7 @@ public class SummaryTests {
     String expected = getResource(getClass(), "expected-transitionpairs-ascii.txt");
     expected = unifyLineSeparators(expected, "\n");
     ASCIICoverageReporter ascii = new ASCIICoverageReporter(suite, fsm);
-    String actual = ascii.getTransitionPairCounts();
+    String actual = ascii.getStepPairCounts();
     actual = unifyLineSeparators(actual, "\n");
     assertEquals("Generated ASCII report for transition coverage", expected, actual);
   }

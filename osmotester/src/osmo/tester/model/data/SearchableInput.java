@@ -2,13 +2,10 @@ package osmo.tester.model.data;
 
 import osmo.common.Randomizer;
 import osmo.common.log.Logger;
-import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.gui.manualdrive.ValueGUI;
-import osmo.tester.model.ScriptedValueProvider;
 import osmo.tester.model.VariableValue;
 
-import java.security.spec.EllipticCurve;
 import java.util.Collection;
 
 /**
@@ -20,8 +17,6 @@ public abstract class SearchableInput<T> implements Input<T>, VariableValue<T> {
   private static Logger log = new Logger(SearchableInput.class);
   /** Variable name. */
   private String name;
-  /** Provides values for this variable in playback mode. */
-  private ScriptedValueProvider scripter = null;
   /** For providing values manually through a GUI. Enabled if non-null. */
   protected ValueGUI gui = null;
   /** The latest value that was generated. */

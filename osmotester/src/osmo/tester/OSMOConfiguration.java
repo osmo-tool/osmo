@@ -1,14 +1,14 @@
 package osmo.tester;
 
-import osmo.tester.generator.listener.GenerationListener;
-import osmo.tester.generator.listener.GenerationListenerList;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
-import osmo.tester.generator.endcondition.logical.And;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.Probability;
+import osmo.tester.generator.endcondition.logical.And;
 import osmo.tester.generator.filter.StepFilter;
+import osmo.tester.generator.listener.GenerationListener;
+import osmo.tester.generator.listener.GenerationListenerList;
 import osmo.tester.model.FSM;
 import osmo.tester.model.ModelFactory;
 import osmo.tester.model.data.SearchableInput;

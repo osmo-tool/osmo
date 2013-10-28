@@ -3,8 +3,8 @@ package osmo.tester.explorer;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.coverage.TestCoverage;
-import osmo.tester.generator.listener.GenerationListener;
 import osmo.tester.generator.SimpleModelFactory;
+import osmo.tester.generator.listener.GenerationListener;
 import osmo.tester.generator.testsuite.TestSuite;
 
 import java.util.ArrayList;

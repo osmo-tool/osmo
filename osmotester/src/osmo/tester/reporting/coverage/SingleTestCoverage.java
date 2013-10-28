@@ -36,7 +36,7 @@ public class SingleTestCoverage {
   public SingleTestCoverage(TestCase tc) {
     this.name = "Test" + tc.getId();
     countRequirements(tc);
-    countTransitions(tc);
+    countSteps(tc);
     collectVariableValues(tc);
   }
 
@@ -53,12 +53,12 @@ public class SingleTestCoverage {
   }
 
   /**
-   * Count the number of times each transition and transition pair has been covered in a given test case.
-   * If coverage is 0, nothing is given for that transition/pair.
+   * Count the number of times each step and step pair has been covered in a given test case.
+   * If coverage is 0, nothing is given for that step/pair.
    *
    * @param tc The test case for which to get the coverage.
    */
-  private void countTransitions(TestCase tc) {
+  private void countSteps(TestCase tc) {
     Collection<String> names = tc.getAllStepNames();
     String previous = FSM.START_STEP_NAME;
     for (String name : names) {

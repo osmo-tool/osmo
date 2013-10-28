@@ -1,15 +1,7 @@
 package osmo.tester.scenario;
 
-import osmo.tester.OSMOConfiguration;
-import osmo.tester.generator.listener.GenerationListener;
-import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.generator.testsuite.TestCaseStep;
-import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;

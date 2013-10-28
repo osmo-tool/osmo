@@ -3,7 +3,6 @@ package osmo.tester.parser.annotation;
 import osmo.common.log.Logger;
 import osmo.tester.annotation.Variable;
 import osmo.tester.model.VariableField;
-import osmo.tester.model.data.SearchableInput;
 import osmo.tester.parser.AnnotationParser;
 import osmo.tester.parser.ParserParameters;
 import osmo.tester.parser.ParserResult;

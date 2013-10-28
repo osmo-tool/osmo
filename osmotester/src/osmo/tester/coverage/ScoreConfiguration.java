@@ -37,7 +37,9 @@ public class ScoreConfiguration {
   protected int requirementWeight = 10;
   /** Names of variables that should not be validated, e.g. custom user variables. */
   protected Collection<String> ignoreList = new LinkedHashSet<>();
+  /** Weight for custom state, the ones tagged with @CoverageValue. */
   private int stateWeight = 50;
+  /** Weight for pairs of custom state, the ones tagged with @CoverageValue. */
   private int statePairWeight = 40;
 
   /**

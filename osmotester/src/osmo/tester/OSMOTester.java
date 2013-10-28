@@ -2,11 +2,11 @@ package osmo.tester;
 
 import osmo.common.log.Logger;
 import osmo.tester.coverage.TestCoverage;
-import osmo.tester.generator.listener.GenerationListener;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.filter.StepFilter;
+import osmo.tester.generator.listener.GenerationListener;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.ModelFactory;

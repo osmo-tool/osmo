@@ -24,8 +24,8 @@ public class ASCIICoverageReporter extends CoverageMetric {
     this(ts.getFinishedTestCases(), fsm);
   }
 
-  public String getTransitionCounts() {
-    List<ValueCount> coverage = countTransitions();
+  public String getStepCounts() {
+    List<ValueCount> coverage = countSteps();
     int longest = 0;
     for (ValueCount tc : coverage) {
       if (tc.getValue().length() > longest) {
@@ -52,10 +52,10 @@ public class ASCIICoverageReporter extends CoverageMetric {
 
   /**
    * Output something like this
-   * transition1   transition2  2
-   * transition2   transition3  0
+   * step1   step2  2
+   * step2   step3  0
    */
-  public String getTransitionPairCounts() {
+  public String getStepPairCounts() {
     List<ValueCount> tpc = countTransitionPairs();
     Collections.sort(tpc);
 
