@@ -627,17 +627,40 @@ public class SimCard {
     }
   }
 
-  public static void main(String[] args) {
+  public static void mainE(String[] args) {
     ExplorerAlgorithm.trackCoverage = true;
     long seed = Long.parseLong(args[0]);
     int cores = Integer.parseInt(args[1]);
     int population = Integer.parseInt(args[2]);
     int timeout = Integer.parseInt(args[3]);
     OSMOExplorer explorer = new OSMOExplorer();
-    ExplorationConfiguration config = new ExplorationConfiguration(new GSMModelFactory(System.out), 3, 111);
-    config.setMinTestLength(20);
-    config.setMinSuiteLength(20);
+    ExplorationConfiguration config = new ExplorationConfiguration(new GSMModelFactory(System.out), 3, seed);
+    config.setMinTestLength(1);
+    config.setMinSuiteLength(1);
+    config.setParallelism(cores);
+    config.setTestPlateauThreshold(1);
+    config.setSuitePlateauThreshold(1);
+    config.setTimeout(timeout);
     explorer.explore(config);
+  }
+
+  public static void main(String[] args) {
+    ExplorerAlgorithm.trackCoverage = true;
+    long seed = Long.parseLong(args[0]);
+    int cores = Integer.parseInt(args[1]);
+    int population = Integer.parseInt(args[2]);
+    int timeout = Integer.parseInt(args[3]);
+    for (int i = 0 ; i < 100 ; i++) {
+      OSMOExplorer explorer = new OSMOExplorer();
+      ExplorationConfiguration config = new ExplorationConfiguration(new GSMModelFactory(NullPrintStream.stream), 3, seed);
+      config.setMinTestLength(1);
+      config.setMinSuiteLength(1);
+      config.setParallelism(cores);
+      config.setTestPlateauThreshold(1);
+      config.setSuitePlateauThreshold(1);
+      config.setTimeout(timeout);
+      explorer.explore(config);
+    }
   }
 
   private static class GSMModelFactory implements ModelFactory {

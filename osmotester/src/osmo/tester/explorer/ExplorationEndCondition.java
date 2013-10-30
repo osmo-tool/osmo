@@ -41,7 +41,9 @@ public class ExplorationEndCondition implements EndCondition {
   private TestCoverage suiteCoverage;
   /** Useful for debugging, if you need to print something only when concrete execution is going on. */
   private final boolean exploring;
+  /** Used to check scenario is done before starting to check if exploration is done. */
   private final EndCondition scenarioEndCondition;
+  
 
   public ExplorationEndCondition(ExplorationConfiguration config) {
     this(config, null, false);
@@ -144,7 +146,7 @@ public class ExplorationEndCondition implements EndCondition {
     //plateau should take precedence over score limit otherwise it never happens. thus the ordering with this here
     int plateauThreshold = config.getTestPlateauThreshold();
     if (plateauThreshold > 0) {
-      if (isTestPlateau(suite)) {
+      if (isTestPlateau(suite, config.getTestPlateauLength())) {
         log.debug("test has plateaued");
         return checkProbability(mySeed);
       }
@@ -204,6 +206,7 @@ public class ExplorationEndCondition implements EndCondition {
    * the coverage score above the plateau threshold defined in the exploration configuration.
    *
    * @param suite The suite to check for plateau.
+   * @param size How many tests to use for testing the plateau.
    * @return True if plateau is reached. False otherwise.
    */
   private boolean isSuitePlateau(List<TestCase> suite, TestCoverage suiteCoverage, int size) {
@@ -219,13 +222,6 @@ public class ExplorationEndCondition implements EndCondition {
     }
     TestSuite clone = new TestSuite();
     clone.addTestCases(suiteClone);
-
-    //create a clone of suite with two less tests to compare against
-//    List<TestCase> newTests = new ArrayList<>();
-//    newTests.addAll(suite);
-//    while (newTests.size() > size) {
-//      newTests.remove(0);
-//    }
     
     //calculate how much the last N tests have added coverage
     TestCoverage cloneTC = clone.getCoverage();
@@ -244,13 +240,15 @@ public class ExplorationEndCondition implements EndCondition {
    * The plateau threshold is defined in the exploration configuration.
    *
    * @param suite The suite where we grab the current test from to check for plateau.
+   * @param steps How many steps to check for the plateau.
    * @return True if plateau is reached. False otherwise.
    */
-  private boolean isTestPlateau(TestSuite suite) {
+  private boolean isTestPlateau(TestSuite suite, int steps) {
+    TestCase currentTest = suite.getCurrentTest();
     if (exploredTest == null) {
       return false;
     }
-    TestCase currentTest = suite.getCurrentTest();
+//    TestCase currentTest = suite.getCurrentTest();
     if (currentTest.getSteps().size() == exploredTest.getSteps().size()) {
       //not possible to check the plateau in this case as we did not explore any further
       return false;

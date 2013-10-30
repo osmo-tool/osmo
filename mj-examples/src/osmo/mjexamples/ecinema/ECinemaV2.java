@@ -1,21 +1,38 @@
 package osmo.mjexamples.ecinema;
 
+import osmo.common.NullPrintStream;
+import osmo.common.log.Logger;
+import osmo.mjexamples.gsm.SimCardAdaptor;
 import osmo.tester.OSMOTester;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
+import osmo.tester.coverage.ScoreConfiguration;
+import osmo.tester.coverage.TestCoverage;
+import osmo.tester.explorer.ExplorationConfiguration;
+import osmo.tester.explorer.ExplorerAlgorithm;
+import osmo.tester.explorer.OSMOExplorer;
 import osmo.tester.generator.listener.TracePrinter;
 import osmo.tester.generator.algorithm.BalancingAlgorithm;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.LengthProbability;
+import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
+import osmo.tester.model.ModelFactory;
 import osmo.tester.model.Requirements;
+import osmo.tester.optimizer.MultiGreedy;
+import osmo.tester.parser.ModelObject;
 
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 
 /**
  * A model of a simple eCinema. Ported from ModelJUnit examples.
@@ -24,6 +41,8 @@ import java.util.Set;
  * For simplicity, Movie objects and Ticket objects are just
  * modelled as strings.  Note that missing usernames and passwords
  * are modelled as empty strings ("").
+ * 
+ * This version allows restarting the sequence by doing another login after all tickets are sold.
  *
  * @author marku, ported by teemu kanstren
  */
@@ -48,7 +67,7 @@ public class ECinemaV2 {
 //  private ValueSet<String> invalidPasswords = new ValueSet<>("", "bad");
   private Requirements req = new Requirements();
 
-  @CoverageValue
+  @CoverageValue("Cinema State")
   public String getState(TestCaseStep step) {
     return state.toString() + ((currentUser == null) ? "" : "_" + currentUser.name);
   }
@@ -408,7 +427,7 @@ public class ECinemaV2 {
 //    tester.printCoverage();
 //  }
 
-  public static void main(String[] args) {
+  public static void mainR(String[] args) {
     OSMOTester tester = new OSMOTester();
     tester.setAlgorithm(new BalancingAlgorithm());
     tester.addListener(new TracePrinter());
@@ -416,5 +435,60 @@ public class ECinemaV2 {
     tester.setSuiteEndCondition(new Length(200));
     tester.setTestEndCondition(new LengthProbability(10, 0.2d));
     tester.generate(44);
+  }
+
+  public static void main(String[] args) {
+    ExplorerAlgorithm.trackCoverage = true;
+    long seed = Long.parseLong(args[0]);
+    int cores = Integer.parseInt(args[1]);
+    int population = Integer.parseInt(args[2]);
+    int timeout = Integer.parseInt(args[3]);
+    for (int i = 0 ; i < 1 ; i++) {
+      OSMOExplorer explorer = new OSMOExplorer();
+      ExplorationConfiguration config = new ExplorationConfiguration(new ECinemaV2ModelFactory(NullPrintStream.stream), 3, seed);
+      config.setMinTestLength(1);
+      config.setMinSuiteLength(1);
+      config.setParallelism(cores);
+      config.setTestPlateauThreshold(1);
+      config.setTestPlateauLength(5);
+      config.setSuitePlateauThreshold(1);
+      config.setTimeout(timeout);
+      explorer.explore(config);
+    }
+  }
+
+  public static void mainG(String[] args) {
+    Logger.consoleLevel = Level.INFO;
+    long seed = Long.parseLong(args[0]);
+    int cores = Integer.parseInt(args[1]);
+    int population = Integer.parseInt(args[2]);
+    int timeout = Integer.parseInt(args[3]);
+    for (int i = 0 ; i < 100 ; i++) {
+      seed += 100;
+      System.out.println("seed:"+seed+" cores:"+cores+" pop:"+population+" time:"+timeout);
+      MultiGreedy greedy = new MultiGreedy(new ScoreConfiguration(), cores, population, new LengthProbability(50, 0.2d), seed);
+      greedy.setFailOnError(false);
+      greedy.setFactory(new ECinemaV2ModelFactory(NullPrintStream.stream));
+      greedy.setTimeout(timeout);
+      List<TestCase> tests = greedy.search(cores);
+      TestCoverage tc = new TestCoverage(tests);
+      System.out.println(tc.coverageString(greedy.getFsm(), null, null, null, null, false));
+    }
+  }
+
+  private static class ECinemaV2ModelFactory implements ModelFactory {
+    private final PrintStream out;
+
+    private ECinemaV2ModelFactory(PrintStream out) {
+      this.out = out;
+    }
+
+    @Override
+    public Collection<ModelObject> createModelObjects() {
+      Collection<ModelObject> models = new ArrayList<>();
+      ECinemaV2 v2 = new ECinemaV2();
+      models.add(new ModelObject(v2));
+      return models;
+    }
   }
 }

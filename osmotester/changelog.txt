@@ -95,7 +95,7 @@ v3.0.0 16/03/2013
 -Fixed bugs
 -Added group support to test steps, guards, and pre-post-elements
 -Added offline optimizer and associated test generation coverage mechanisms
-v3.1.0
+v3.1.0 29/08/2013
 -seed is now parameter to generator, not a static value (for parallel runs)
 -optimized greedy optimizer to run final sort much faster
 -added check for multiple steps with same name
@@ -104,3 +104,11 @@ v3.1.0
 -added group support at class level
 -changed coverage categories to model objects
 -added state-pairs to coverage options
+v3.2.0 27/10/2013
+-removed TestSuiteField -> recognized from field type
+-moreved RequirementsField -> recognized from field type
+-added support to read step names from method names
+-added support for scenarios: startup sequence + slices
+-changed data generators to use explicit methods instead of next()
+-changed name comparison to ignore case
+-StateName -> CoverageValue
