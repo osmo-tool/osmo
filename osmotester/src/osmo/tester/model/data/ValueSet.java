@@ -228,6 +228,15 @@ public class ValueSet<T> extends SearchableInput<T> {
     reserved.add(t);
     free.remove(t);
   }
+
+  /**
+   * Gives the number of items reserved currently in this ValueSet.
+   * 
+   * @return The number of reserved items.
+   */
+  public int reserved() {
+    return reserved.size();
+  }
   
   /**
    * Pick an option at random and reserves it.

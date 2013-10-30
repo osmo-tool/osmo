@@ -195,8 +195,9 @@ public class GreedyOptimizer {
         break;
       }
       long diff = System.currentTimeMillis()-iStart;
-      log.info(id+":iteration time:("+iteration+")"+diff);
+      log.info(id+":iteration time:("+iteration+")"+diff+" gain:"+gain);
     }
+    if (gain < threshold) log.info("gain under threshold ("+gain+" vs "+threshold+")");
     
     generator.endSuite();
     this.possiblePairs = generator.getPossibleStepPairs();

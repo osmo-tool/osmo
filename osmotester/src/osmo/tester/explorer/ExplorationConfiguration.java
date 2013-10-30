@@ -34,6 +34,8 @@ public class ExplorationConfiguration extends ScoreConfiguration {
   protected int minSuiteScore = 0;
   /** The threshold to stop test generation if no gain is observed over test. */
   protected int testPlateauThreshold = 0;
+  /** How many steps with minimum score together before we consider to have hit a plateau? */
+  protected int testPlateauLength = 1;
   /** The threshold to stop test generation if no gain is observed over suite. */
   protected int suitePlateauThreshold = 0;
   /** The probability to stop after minimum values are reached. Defaults to 0.2 (1=immediate stop,0=no stop). */
@@ -176,6 +178,14 @@ public class ExplorationConfiguration extends ScoreConfiguration {
 
   public void setTestPlateauThreshold(int testPlateauThreshold) {
     this.testPlateauThreshold = testPlateauThreshold;
+  }
+
+  public int getTestPlateauLength() {
+    return testPlateauLength;
+  }
+
+  public void setTestPlateauLength(int testPlateauLength) {
+    this.testPlateauLength = testPlateauLength;
   }
 
   public int getSuitePlateauThreshold() {
