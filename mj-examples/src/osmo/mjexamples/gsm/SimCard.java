@@ -645,21 +645,29 @@ public class SimCard {
   }
 
   public static void main(String[] args) {
+    Logger.consoleLevel = Level.INFO;
     ExplorerAlgorithm.trackCoverage = true;
     long seed = Long.parseLong(args[0]);
     int cores = Integer.parseInt(args[1]);
     int population = Integer.parseInt(args[2]);
     int timeout = Integer.parseInt(args[3]);
     for (int i = 0 ; i < 100 ; i++) {
-      OSMOExplorer explorer = new OSMOExplorer();
-      ExplorationConfiguration config = new ExplorationConfiguration(new GSMModelFactory(NullPrintStream.stream), 3, seed);
-      config.setMinTestLength(1);
-      config.setMinSuiteLength(1);
-      config.setParallelism(cores);
-      config.setTestPlateauThreshold(1);
-      config.setSuitePlateauThreshold(1);
-      config.setTimeout(timeout);
-      explorer.explore(config);
+      seed += 100;
+      for (int d = 1 ; d <= 3 ; d++) {
+        OSMOExplorer explorer = new OSMOExplorer();
+        ExplorationConfiguration config = new ExplorationConfiguration(new GSMModelFactory(NullPrintStream.stream), d, seed);
+        config.setMinTestLength(1);
+        config.setMinSuiteLength(1);
+        config.setMinTestScore(500);
+        config.setMinSuiteScore(Integer.MAX_VALUE);
+        config.setTestPlateauLength(5);
+        config.setParallelism(cores);
+        config.setTestPlateauThreshold(1);
+        config.setTestPlateauLength(5);
+        config.setSuitePlateauThreshold(1);
+        config.setTimeout(timeout);
+        explorer.explore(config);
+      }
     }
   }
 

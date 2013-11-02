@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import osmo.common.TestUtils;
+import osmo.common.log.Logger;
 import osmo.tester.explorer.ExplorationConfiguration;
 import osmo.tester.explorer.OSMOExplorer;
 import osmo.tester.explorer.testmodels.CounterFactory;
@@ -18,6 +19,7 @@ import osmo.tester.model.ModelFactory;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.List;
+import java.util.logging.Level;
 
 import static junit.framework.Assert.*;
 
@@ -146,6 +148,7 @@ public class ExplorationTests {
     config.setStepWeight(20);
     config.setDefaultValueWeight(50);
     config.setTestPlateauThreshold(20);
+    config.setTestPlateauLength(9);
     config.setSuitePlateauThreshold(20);
     config.setMaxSuiteLength(10);
     config.setFallbackProbability(0.2);
@@ -156,7 +159,7 @@ public class ExplorationTests {
     assertTestSequence(1, "[increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase]");
     assertTestSequence(2, "[increase, increase, increase, decrease, decrease, increase, increase, decrease, increase, increase, decrease, decrease, increase, increase, decrease, decrease, increase, decrease, increase]");
     assertTestSequence(3, "[increase, increase, increase, increase, decrease, increase, decrease, decrease, decrease]");
-    assertTestSequence(4, "[increase, increase, decrease, increase, increase]");
+    assertTestSequence(4, "[increase, increase, decrease, increase, increase, decrease, decrease, increase, increase]");
     long end = System.currentTimeMillis();
 //    assertSuiteScore(1400);
 //    assertTestCount(4);
@@ -215,6 +218,7 @@ public class ExplorationTests {
     config.setStepWeight(20);
     config.setDefaultValueWeight(50);
     config.setTestPlateauThreshold(20);
+    config.setTestPlateauLength(9);
     config.setSuitePlateauThreshold(20);
     config.setMaxSuiteLength(10);
     osmo.explore(config);
@@ -224,7 +228,7 @@ public class ExplorationTests {
     assertTestSequence(1, "[increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase]");
     assertTestSequence(2, "[increase, increase, increase, decrease, decrease, increase, increase, decrease, increase, increase, decrease, decrease, increase, increase, decrease, decrease, increase, decrease, increase]");
     assertTestSequence(3, "[increase, increase, increase, increase, decrease, increase, decrease, decrease, decrease]");
-    assertTestSequence(4, "[increase, increase, decrease, increase, increase]");
+    assertTestSequence(4, "[increase, increase, decrease, increase, increase, decrease, decrease, increase, increase]");
   }
 
   @Test

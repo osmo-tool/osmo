@@ -2,10 +2,12 @@ package osmo.tester.optimizer;
 
 import osmo.common.Randomizer;
 import osmo.common.log.Logger;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.coverage.ScoreConfiguration;
 import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.endcondition.EndCondition;
+import osmo.tester.generator.listener.GenerationListener;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.FSM;
 import osmo.tester.model.ModelFactory;
@@ -57,6 +59,8 @@ public class MultiGreedy {
   private final long seed;
   /** Attribute for test generator. */
   private boolean failOnError = true;
+  /** For configuring the test generator. */
+  private OSMOConfiguration osmoConfig = new OSMOConfiguration();
 
   public MultiGreedy(ScoreConfiguration optimizerConfig, int populationSize, EndCondition endCondition, long seed) {
     this(optimizerConfig, Runtime.getRuntime().availableProcessors(), populationSize, endCondition, seed);
@@ -69,6 +73,10 @@ public class MultiGreedy {
     rand = new Randomizer(seed);
     this.populationSize = populationSize;
     this.endCondition = endCondition;
+  }
+  
+  public OSMOConfiguration getOSMOConfig() {
+    return osmoConfig;
   }
 
   public void addModelClass(Class modelClass) {
@@ -92,6 +100,7 @@ public class MultiGreedy {
     List<GreedyOptimizer> optimizers = new ArrayList<>();
     for (int i = 0 ; i < optimizerCount ; i++) {
       GreedyOptimizer optimizer = new GreedyOptimizer(optimizerConfig, populationSize, endCondition, seed);
+      optimizer.setOSMOConfiguration(osmoConfig);
       optimizer.setTimeout(timeout);
       optimizer.setFailOnError(failOnError);
       for (Class modelClass : modelClasses) {
@@ -177,5 +186,9 @@ public class MultiGreedy {
 
   public void setFailOnError(boolean failOnError) {
     this.failOnError = failOnError;
+  }
+  
+  public void addListener(GenerationListener listener) {
+    
   }
 }

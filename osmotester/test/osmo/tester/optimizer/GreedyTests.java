@@ -230,7 +230,7 @@ public class GreedyTests {
     ScoreConfiguration gc = new ScoreConfiguration();
     gc.setStepWeight(0);
     gc.setStepPairWeight(0);
-    gc.setDefaultValueWeight(1);
+    gc.setDefaultValueWeight(10);
     gc.setVariableCountWeight(0);
     gc.setRequirementWeight(0);
     GreedyOptimizer greedy = new GreedyOptimizer(gc, 100, new LengthProbability(10, 1d), 8);
