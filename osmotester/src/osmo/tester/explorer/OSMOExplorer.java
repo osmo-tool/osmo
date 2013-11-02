@@ -1,14 +1,20 @@
 package osmo.tester.explorer;
 
+import osmo.common.TestUtils;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
+import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.SimpleModelFactory;
 import osmo.tester.generator.listener.GenerationListener;
+import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.FSM;
+import osmo.tester.optimizer.CSVReport;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,7 +38,13 @@ public class OSMOExplorer {
   private Collection<GenerationListener> listeners = new ArrayList<>();
   /** Underlying OSMO Configuration for the actual generator. */
   private OSMOConfiguration osmoConfig = new OSMOConfiguration();
-  
+  /** Configuration of exporation.. */
+  private ExplorationConfiguration config = null;
+  /** Identifier for next greedy optimizer if several are created. */
+  private static int nextId = 1;
+  /** The identifier for this optimizer. */
+  private int id = nextId++;
+
   public void addModelClass(Class modelClass) {
     this.classes.add(modelClass);
   }
@@ -51,6 +63,7 @@ public class OSMOExplorer {
    * @param config The configuration to use.
    */
   public void explore(ExplorationConfiguration config) {
+    this.config = config;
     osmo.setPrintCoverage(false);
     long start = System.currentTimeMillis();
     if (classes.size() > 0) {
@@ -64,27 +77,38 @@ public class OSMOExplorer {
     for (GenerationListener listener : listeners) {
       osmoConfig.addListener(listener);
     }
-    
+
     osmo.setConfig(osmoConfig);
     algorithm = new ExplorerAlgorithm(config);
     osmo.setAlgorithm(algorithm);
-    System.out.println("Starting exploration with "+config.getParallelism()+" parallel processes.");
+    System.out.println("Starting exploration with " + config.getParallelism() + " parallel processes.");
     osmo.generate(config.getSeed());
-    
-    TestCoverage tc = new TestCoverage(getSuite().getFinishedTestCases());
+
     boolean printAll = config.isPrintAll();
-    Map<String,Collection<String>> possibleValues = algorithm.getPossibleValues();
+    Map<String, Collection<String>> possibleValues = algorithm.getPossibleValues();
     Collection<String> possibleStepPairs = algorithm.getPossibleStepPairs();
-    Map<String,Collection<String>> possibleStatePairs = algorithm.getPossibleStatePairs();
-    Map<String,Collection<String>> possibleStates = algorithm.getPossibleStates();
-    String summary = tc.coverageString(osmo.getFsm(), possibleStepPairs, possibleValues, possibleStates, possibleStatePairs, printAll);
+    Map<String, Collection<String>> possibleStatePairs = algorithm.getPossibleStatePairs();
+    Map<String, Collection<String>> possibleStates = algorithm.getPossibleStates();
+    List<TestCase> allTests = osmo.getSuite().getAllTestCases();
+    TestCoverage tc = new TestCoverage(getSuite().getFinishedTestCases());
+    ScoreCalculator sc = new ScoreCalculator(config);
+    System.out.println("Generated " + allTests.size() + " tests. Achieved score " + sc.calculateScore(tc));
+
+    CSVReport report = new CSVReport(sc);
+    String summary = "summary\n";
+    summary += tc.coverageString(osmo.getFsm(), possibleStepPairs, possibleValues, possibleStates, possibleStatePairs, printAll);
     System.out.println(summary);
+    report.process(allTests);
+    String totalCsv = report.report();
+    totalCsv += summary + "\n";
+    writeFile(id + "-scores.csv", totalCsv);
+
     long end = System.currentTimeMillis();
-    long diff = end -start;
+    long diff = end - start;
     double seconds = diff / 1000;
-    System.out.println("Generation time: "+seconds+"s.");
+    System.out.println("Generation time: " + seconds + "s.");
   }
-  
+
   //TODO: explorationissa tarttee näköjään rajoitteen ettei beforesuite alusta mitään instanssikohtaista
   public ExplorerAlgorithm getAlgorithm() {
     return algorithm;
@@ -92,5 +116,15 @@ public class OSMOExplorer {
 
   public TestSuite getSuite() {
     return osmo.getSuite();
+  }
+
+  /**
+   * Writes given data to a file. Filename has the generation seed added to it.
+   *
+   * @param name    The filename. Ends up as "osmo-output-<seed>/name".
+   * @param content The data to write.
+   */
+  public void writeFile(String name, String content) {
+    TestUtils.write(content, "osmo-output-" + config.getSeed() + "-" + config.getDepth() + "/" + name);
   }
 }

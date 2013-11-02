@@ -105,7 +105,7 @@ public class ExplorationEndCondition implements EndCondition {
     }
     //do we have minimum score yet?
     int minScore = config.getMinSuiteScore();
-    if (minScore >= 0) {
+    if (minScore > 0) {
       if (scoreCalculator.calculateScore(tc) < minScore) {
         return false;
       }
@@ -151,6 +151,7 @@ public class ExplorationEndCondition implements EndCondition {
         return checkProbability(mySeed);
       }
     }
+
     //have we achieved minimum defined added test coverage yet?
     int minScore = config.getMinTestScore();
     if (minScore > 0) {
@@ -244,19 +245,21 @@ public class ExplorationEndCondition implements EndCondition {
    * @return True if plateau is reached. False otherwise.
    */
   private boolean isTestPlateau(TestSuite suite, int steps) {
-    TestCase currentTest = suite.getCurrentTest();
+    //this check means that the exploration algorithm is doing a depth check.
+    //TODO: remove "exploredTest" and change it to boolean variable
     if (exploredTest == null) {
       return false;
     }
-//    TestCase currentTest = suite.getCurrentTest();
-    if (currentTest.getSteps().size() == exploredTest.getSteps().size()) {
-      //not possible to check the plateau in this case as we did not explore any further
+    TestCase currentTest = suite.getCurrentTest();
+    int length = currentTest.getSteps().size();
+    if (length < steps) {
+      //not possible to check the plateau if test is not long enough
       return false;
     }
     TestCoverage coverage = suite.getCoverage();
-    int actual = scoreCalculator.addedScoreFor(coverage, currentTest);
-    int explored = scoreCalculator.addedScoreFor(coverage, exploredTest);
-    int diff = explored - actual;
+    int now = scoreCalculator.addedScoreFor(coverage, currentTest);
+    int before = scoreCalculator.addedScoreFor(coverage, currentTest, length-steps);
+    int diff = now - before;
     //is the added value more than the given threshold?
     return diff < config.getTestPlateauThreshold();
   }

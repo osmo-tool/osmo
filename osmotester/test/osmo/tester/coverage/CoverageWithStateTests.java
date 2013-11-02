@@ -65,26 +65,26 @@ public class CoverageWithStateTests {
     for (TestCase test : tests) {
       tc.addTestCoverage(test);
     }
-    assertEquals("Number of generated tests", 5, tests.size());
+    assertEquals("Number of generated tests", 4, tests.size());
     Map<String, Collection<String>> variables = tc.getValues();
     //1 value = 10
     assertEquals("Variable coverage", "[on paras]", variables.get("teemu").toString());
     //4 values = 40
-    assertEquals("Variable coverage", "[null, two, one, many]", variables.get("rangeRange").toString());
+    assertEquals("Variable coverage", "[null, many, two, one]", variables.get("rangeRange").toString());
     //2 values = 20
     assertEquals("Variable coverage", "[null, many]", variables.get("range2Range").toString());
     //32 values = 320
-    assertEquals("Variable coverage", "[keijo&null&null, paavo&null&null, teemu&null&null, teemu&null&many, teemu&two&many, teemu&one&many, paavo&one&many, paavo&null&many, keijo&null&many, paavo&many&many, paavo&two&many, keijo&two&many, keijo&many&many, keijo&one&many, teemu&many&many, null&two&null, keijo&two&null, paavo&two&null, paavo&one&null, keijo&one&null, teemu&one&null, teemu&many&null, null&many&null, null&one&null, null&many&many, null&two&many, null&null&many, null&one&many, null&null&null, keijo&many&null, paavo&many&null, teemu&two&null]",
+    assertEquals("Variable coverage", "[paavo&null&null, paavo&many&null, keijo&many&null, keijo&null&null, keijo&two&null, keijo&one&null, teemu&one&null, teemu&many&null, teemu&many&many, keijo&many&many, paavo&many&many, paavo&two&many, teemu&two&many, keijo&two&many, keijo&one&many, teemu&one&many, teemu&null&many, paavo&null&many, keijo&null&many, null&many&null, null&one&null, null&many&many, null&two&many, null&null&many, null&one&many, paavo&one&many, null&null&null, teemu&null&null, teemu&two&null, null&two&null, paavo&two&null, paavo&one&null]",
             variables.get("combo").toString());
     //2 values = 100
-    assertEquals("Covered states", "{stateName=[state1, state2]}", tc.getStates().toString());
+    assertEquals("Covered states", "{stateName=[state2, state1]}", tc.getStates().toString());
     //4 values = 160
-    assertEquals("Covered state pairs", "{stateName-pair=[state1->state2, state2->state2, state2->state1, state1->state1]}", tc.getStatePairs().toString());
+    assertEquals("Covered state pairs", "{stateName-pair=[state2->state1, state1->state1, state1->state2, state2->state2]}", tc.getStatePairs().toString());
     
     ScoreCalculator sc = new ScoreCalculator(config);
     //se comments above for values
-    //10+40+20+320+100+160=70+320+260=70+580=650
-    assertEquals("Coverage score", 650, sc.calculateScore(tc));
+    //10+40+20+320+100+160=70+320+260=70+580=650-98 (steps) = 552
+    assertEquals("Coverage score", 552, sc.calculateScore(tc));
   }
 
   @Test
@@ -108,7 +108,7 @@ public class CoverageWithStateTests {
     assertEquals("Test steps", "TestCase:[t1, t2, t3, t4]", tests.get(0).toString());
     assertEquals("Values covered", "{range=[4, 3, 5]}", tc.getValues().toString());
     //there are 16 state-pairs and 4 states, so it is a total of 24*10
-    assertEquals("Coverage score", 200, scorer.calculateScore(tc));
+    assertEquals("Coverage score", 176, scorer.calculateScore(tc));
   }
 
   @Test
@@ -144,7 +144,7 @@ public class CoverageWithStateTests {
     TestCoverage tc = new TestCoverage();
     tc.addTestCoverage(tests.get(0));
     ScoreCalculator sc = new ScoreCalculator(config);
-    assertEquals("Coverage score", 30, sc.calculateScore(tc));
-    assertEquals("Covered values", "[one, many, zero]", tc.getValues().get("rc2").toString());
+    assertEquals("Coverage score", 27, sc.calculateScore(tc));
+    assertEquals("Covered values", "[many, one, zero]", tc.getValues().get("rc2").toString());
   }
 }
