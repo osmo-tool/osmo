@@ -9,6 +9,7 @@ import osmo.tester.generator.listener.GenerationListenerList;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.gui.manualdrive.ManualAlgorithm;
 import osmo.tester.model.CoverageMethod;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
@@ -176,6 +177,10 @@ public class MainGenerator {
     }
     FSMTraversalAlgorithm algorithm = config.getAlgorithm();
     FSMTransition next = algorithm.choose(suite, enabled);
+
+    //not the best of hacks but.. manual drive ends by returning null
+    if (algorithm instanceof ManualAlgorithm && next == null) return false;
+    
     log.debug("Taking transition " + next.getName());
     execute(next);
     if (checkModelEndConditions()) {

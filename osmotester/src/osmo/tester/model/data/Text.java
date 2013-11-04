@@ -38,10 +38,6 @@ public class Text extends SearchableInput<String> {
   private boolean zeroDone = false;
   /** The probability that we will provide an invalid character in the generated string (between 0-1). */
   private float invalidProbability = 0.5f;
-  /** Index in result for invalid loop. */
-  private int invalidIndex = 0;
-  /** Number of chars we create at index while in invalid loop mode. */
-  private int invalidSize = 1;
 
   /** Constructor for default values. */
   public Text() {

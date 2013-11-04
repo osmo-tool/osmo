@@ -32,7 +32,7 @@ public class CoverageValueParser implements AnnotationParser {
     }
     Class<?>[] parameterTypes = method.getParameterTypes();
     if (parameterTypes.length != 1) {
-      errors += name +" methods must have 1 parameter (TestStep): \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n";
+      errors += name +" methods must have 1 parameter ("+TestCaseStep.class+"): \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n";
     }
       
     if (parameterTypes.length > 0 && parameterTypes[0] != TestCaseStep.class) {

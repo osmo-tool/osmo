@@ -218,7 +218,7 @@ public class ValueSet<T> extends SearchableInput<T> {
   }
 
   /**
-   * Reserves the given option.
+   * Reserves the given option. TODO: tests for all uncovered.
    * 
    * @param t Option to reserve.
    */

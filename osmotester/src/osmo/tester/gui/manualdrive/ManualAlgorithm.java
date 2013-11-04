@@ -15,6 +15,7 @@ import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.VariableField;
 import osmo.tester.model.data.SearchableInput;
+import osmo.tester.reporting.trace.TraceReportWriter;
 
 import javax.swing.AbstractListModel;
 import javax.swing.DefaultComboBoxModel;
@@ -155,6 +156,8 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
       public void mouseClicked(MouseEvent e) {
         synchronized (lock) {
           Object selectedValue = availableStepsList.getSelectedValue();
+          //user may click outside possible selections
+          if (selectedValue == null) return;
           choiceFromList = selectedValue.toString();
           lock.notifyAll();
         }
@@ -196,7 +199,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
       @Override
       public void actionPerformed(ActionEvent e) {
         System.out.println("end test pressed");
-        mec.setEndSuite(true);
+        mec.setEndTest(true);
       }
 
     });
@@ -428,6 +431,9 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
 
   @Override
   public void init(long seed, FSM fsm) {
+    this.randomAlgorithm.init(seed, fsm);
+    this.balancingAlgorithm.init(seed, fsm);
+    this.weightedRandomAlgorithm.init(seed, fsm);
     this.fsm = fsm;
     Collection<VariableField> variables = fsm.getStateVariables();
     for (VariableField variable : variables) {
@@ -441,11 +447,11 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
   }
 
   @Override
-  public FSMTransition choose(TestSuite history, List<FSMTransition> choices) {
-    run(history);
+  public FSMTransition choose(TestSuite suite, List<FSMTransition> choices) {
+    run(suite);
 
     //Make some updates
-    testLogPane.setText(historyText(history));
+    testLogPane.setText(historyText(suite));
     testLogPane.setCaretPosition(testLogPane.getText().length());
     statePane.setText(stateText());
 //    statePane.setText(coverageText(history));
@@ -461,7 +467,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
 
     //Make selection
     for (FSMTransition t : choices) {
-      if (t.getName().equals(choiceFromList)) {
+      if (t.getName().toString().equals(choiceFromList)) {
         choiceFromList = null;
         return t;
       }
@@ -470,11 +476,11 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     //Autorun mode
     switch (algorithmComboBox.getSelectedIndex()) {
       case 0:
-        return randomAlgorithm.choose(history, choices);
+        return randomAlgorithm.choose(suite, choices);
       case 1:
-        return balancingAlgorithm.choose(history, choices);
+        return balancingAlgorithm.choose(suite, choices);
       case 2:
-        return weightedRandomAlgorithm.choose(history, choices);
+        return weightedRandomAlgorithm.choose(suite, choices);
       default:
         throw new RuntimeException("Error in algorithm handler. The index was: " + algorithmComboBox.getSelectedIndex());
     }
@@ -494,17 +500,25 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     }
   }
 
-  /** Writes the defined script to file in format scriptable by OSMOTester. */
+  /** Writes the defined script to file in HTML format. */
   public void writeScript() {
-    ManualScriptWriter writer = new ManualScriptWriter();
-    writer.write(suite);
-    String separator = System.getProperty("file.separator");
-    String filename = System.getProperty("user.dir")+separator+ManualScriptWriter.FILENAME;
-    JOptionPane.showMessageDialog(this, "Wrote file to:"+filename);
+    TraceReportWriter reporter = new TraceReportWriter();
+    String filename = "osmo-output/manual-tests.html";
+    try {
+      reporter.write(suite, filename);
+      JOptionPane.showMessageDialog(this, "Wrote file to:" + filename);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+//    ManualScriptWriter writer = new ManualScriptWriter();
+//    writer.write(suite);
+//    String separator = System.getProperty("file.separator");
+//    String filename = System.getProperty("user.dir")+separator+ManualScriptWriter.FILENAME;
   }
   
   public void testEnded() {
     availableStepsList.setEnabled(false);
+    mec.setEndTest(false);
   }
   
   public void testStarted() {

@@ -2,6 +2,7 @@ package osmo.tester.reporting.trace;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import osmo.common.TestUtils;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
@@ -9,7 +10,12 @@ import osmo.tester.model.FSMTransition;
 import java.io.FileOutputStream;
 import java.io.StringWriter;
 
-/** @author Teemu Kanstren */
+/** 
+ * Writes a report for a test suite. Includes steps taken, as well as any observed parameters in those steps.
+ * Also marks failed tests as red. The output is HTML formatted.
+ * 
+ * @author Teemu Kanstren 
+ */
 public class TraceReportWriter {
   /** For template->report generation. */
   private VelocityEngine velocity = new VelocityEngine();
@@ -18,8 +24,18 @@ public class TraceReportWriter {
 
   public void write(TestSuite suite, String filename) throws Exception {
     String report = createReport(suite);
-    FileOutputStream out = new FileOutputStream(filename);
-    out.write(report.getBytes());
+    TestUtils.write(report, filename);
+  }
+
+  public String createReport(TestSuite suite) {
+    velocity.setProperty("resource.loader", "class");
+    velocity.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+    //TODO: Test with no parameters, with parameters, ...
+    vc.put("tests", suite.getAllTestCases());
+
+    StringWriter sw = new StringWriter();
+    velocity.mergeTemplate("osmo/tester/reporting/trace/trace-template.txt", "UTF8", vc, sw);
+    return sw.toString();
   }
 
   public static void main(String[] args) throws Exception {
@@ -54,16 +70,5 @@ public class TraceReportWriter {
     buyStep2.addVariableValue("Price", "$5");
     suite.getCurrentTest().setFailed(true);
     new TraceReportWriter().write(suite, "teemu-testaa.html");
-  }
-
-  public String createReport(TestSuite suite) {
-    velocity.setProperty("resource.loader", "class");
-    velocity.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
-    //TODO: Test with no parameters, with parameters, ...
-    vc.put("tests", suite.getAllTestCases());
-
-    StringWriter sw = new StringWriter();
-    velocity.mergeTemplate("osmo/tester/reporting/trace/trace-template.txt", "UTF8", vc, sw);
-    return sw.toString();
   }
 }

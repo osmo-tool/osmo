@@ -4,6 +4,7 @@ import org.junit.Test;
 import osmo.common.TestUtils;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.endcondition.Length;
+import osmo.tester.generator.multi.MOSMOConfiguration;
 import osmo.tester.generator.multi.MultiOSMO;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.ModelFactory;
@@ -26,12 +27,11 @@ public class MultiOSMOTests {
     TestUtils.recursiveDelete("osmo-output");
     MultiOSMO mosmo = new MultiOSMO(4, 444);
     OSMOConfiguration config = mosmo.getConfig();
-    config.addModelObject(new ValidTestModel1());
     try {
-      List<TestCase> tests = mosmo.generate();
+      config.addModelObject(new ValidTestModel1());
       fail("Trying to generate using MOSMO with no factory should fail.");
     } catch (Exception e) {
-      assertEquals("Error msg for no factory", "", e.getMessage());
+      assertEquals("Error msg for no factory", MOSMOConfiguration.ERROR_MSG, e.getMessage());
     }
   }
 
@@ -45,8 +45,10 @@ public class MultiOSMOTests {
     config.setSuiteEndCondition(new Length(5));
     List<TestCase> tests = mosmo.generate();
     assertEquals("Number of tests for 4 generators with 5 in suite", 20, tests.size());
-    List<String> files = TestUtils.listFiles("osmo-output", ".csv", false);
-    assertEquals("Number of reports generated", 5, files.size());
+    List<String> reports = TestUtils.listFiles("osmo-output", ".csv", false);
+    assertEquals("Number of reports generated", 5, reports.size());
+    List<String> traces = TestUtils.listFiles("osmo-output", ".html", false);
+    assertEquals("Number of traces generated", 4, traces.size());
   }
   
   private static class MyModelFactory implements ModelFactory {

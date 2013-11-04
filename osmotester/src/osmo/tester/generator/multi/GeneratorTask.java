@@ -6,7 +6,9 @@ import osmo.tester.OSMOTester;
 import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.coverage.ScoreConfiguration;
 import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.optimizer.CSVReport;
+import osmo.tester.reporting.trace.TraceReportWriter;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -26,7 +28,8 @@ public class GeneratorTask implements Callable<List<TestCase>> {
     OSMOTester tester = new OSMOTester();
     tester.setConfig(config);
     tester.generate(seed);
-    List<TestCase> tests = tester.getSuite().getAllTestCases();
+    TestSuite suite = tester.getSuite();
+    List<TestCase> tests = suite.getAllTestCases();
 
     String summary = "summary\n";
     CSVReport report = new CSVReport(new ScoreCalculator(new ScoreConfiguration()));
@@ -34,7 +37,10 @@ public class GeneratorTask implements Callable<List<TestCase>> {
 
     String totalCsv = report.report();
     totalCsv += summary + "\n";
-    TestUtils.write(totalCsv, "osmo-output/osmo-"+seed+".csv");
+    String filename = "osmo-output/osmo-" + seed;
+    TestUtils.write(totalCsv, filename + ".csv");
+    TraceReportWriter trace = new TraceReportWriter();
+    trace.write(suite, filename+".html");
 
     return tests;
   }
