@@ -366,6 +366,7 @@ public class TestUtils {
    * 
    * @param dir  The directory where to look for the files.
    * @param type The type of files to look for.
+   * @param fullPath If true, returns full path of files. Otherwise just the file name.
    * @return The list of files found.
    */
   public static List<String> listFiles(String dir, String type, boolean fullPath) {
