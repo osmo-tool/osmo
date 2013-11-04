@@ -1,6 +1,9 @@
 package osmo.tester.examples.calendar.testmodel;
 
+import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.CoverageValue;
+import osmo.tester.annotation.Variable;
+import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.model.data.DataGenerationStrategy;
 import osmo.tester.model.data.Text;
 import osmo.tester.model.data.ValueRange;
@@ -24,19 +27,25 @@ public class ModelState {
   private ValueRange<Integer> userCount = new ValueRange<>(1, 10);
   /** Users with calendars. */
   private ValueSet<String> users = new ValueSet<>();
+  /** For creating names for users. */
+  private Text names = new Text(4,7);
+  @Variable
   /** Tasks for all users. */
   private ValueSet<ModelTask> tasks = new ValueSet<>();
+  @Variable
   /** Events for all users. */
   private ValueSet<ModelEvent> events = new ValueSet<>();
+  @Variable
   /** For creating random duration between 1 seconds to 4 hours. */
   private ValueRange<Integer> duration = new ValueRange<>(1000, 1000*60*60*4);
+  @Variable
   /** Used to generate start times between January 2000 and December 2010. */
   private ValueRange<Long> startTime = new ValueRange<>(0, 0);
   private int eventCount = 1;
   private int taskCount = 1;
 
   public ModelState() {
-    users = new ValueSet<>();
+    names.setName("name");
     Calendar start = Calendar.getInstance();
     start.setTime(new Date(0));
     start.set(2000, Calendar.JANUARY, 1, 0, 0, 0);
@@ -45,25 +54,21 @@ public class ModelState {
     end.set(2010, Calendar.DECEMBER, 31, 23, 59, 59);
     startTime = new ValueRange<>(start.getTimeInMillis(), end.getTimeInMillis());
 
-    userCount.setStrategy(DataGenerationStrategy.RANDOM);
-    users = new ValueSet<>(DataGenerationStrategy.RANDOM);
-    int n = userCount.next();
-    Text names = new Text(4,7);
-    names.setName("name");
+  }
+  
+  /** Used to reset the state between test generation. */
+  public void reset() {
+    int n = userCount.random();
     for (int i = 1; i <= n; i++) {
 //      this.users.add("user" + i);
       this.users.add(names.next());
     }
-  }
-
-  /** Used to reset the state between test generation. */
-  public void reset() {
-    tasks = new ValueSet<>();
-    events = new ValueSet<>();
+    tasks.clear();
+    events.clear();
   }
 
   public String randomUID() {
-    return users.next();
+    return users.random();
   }
 
   public boolean hasTasks() {
@@ -71,7 +76,7 @@ public class ModelState {
   }
 
   public ModelTask getAndRemoveRandomTask() {
-    ModelTask task = tasks.next();
+    ModelTask task = tasks.random();
     tasks.remove(task);
     return task;
   }
@@ -110,7 +115,7 @@ public class ModelState {
   }
 
   public ModelEvent getAndRemoveOwnerEvent() {
-    ModelEvent ownerEvent = events.next();
+    ModelEvent ownerEvent = events.random();
     events.remove(ownerEvent);
     return ownerEvent;
   }
@@ -136,11 +141,11 @@ public class ModelState {
   }
 
   public ModelEvent getRandomExistingEvent() {
-    return events.next();
+    return events.random();
   }
 
   public ModelTask getRandomExistingTask() {
-    return tasks.next();
+    return tasks.random();
   }
 
   public boolean hasParticipants() {
@@ -148,11 +153,11 @@ public class ModelState {
   }
 
   public Date randomStartTime() {
-    return new Date(startTime.next());
+    return new Date(startTime.random());
   }
 
   public Date randomEndTime(Date start) {
-    return new Date(start.getTime()+duration.next());
+    return new Date(start.getTime()+duration.random());
   }
 
   @Override
@@ -178,7 +183,7 @@ public class ModelState {
   }
   
   @CoverageValue
-  public String state() {
+  public String state(TestCaseStep step) {
     if (hasEvents() && hasTasks()) {
       return "events & tasks";
     }

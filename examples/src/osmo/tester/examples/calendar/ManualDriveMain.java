@@ -42,8 +42,6 @@ public class ManualDriveMain {
     osmo.addModelObject(new CalendarParticipantModel(state, scripter));
 //    osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter));
     osmo.addModelObject(state);
-    osmo.setTestEndCondition(new Endless());
-    osmo.setSuiteEndCondition(new Endless());
     osmo.addListener(new FSMBuildVisualizer());
 //    osmo.addModelObject(new CalendarFailureModel(state, scripter));
     //osmo.setValueScripter(new ScriptedValueProvider());

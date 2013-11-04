@@ -36,7 +36,7 @@ public class CalendarOracleModel {
     this.out = out;
   }
 
-  @Post
+  @Post("all")
   public void genericOracle() {
     Collection<String> users = state.getUsers();
     Map<String, Collection<ModelTask>> tasks = new HashMap<>();
