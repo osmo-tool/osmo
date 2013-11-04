@@ -92,6 +92,8 @@ public class OSMOTester {
       System.out.println();
       System.out.println(requirements.printCoverage());
     }
+    //TODO: move writing the trace and summary data here. remove from mosmo
+//    writeTrace();
   }
 
   public MainGenerator initGenerator(long seed) {

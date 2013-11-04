@@ -29,7 +29,8 @@ public class ManualScriptWriter {
       fw.newLine();
       List<TestCase> tests = suite.getAllTestCases();
       for (TestCase test : tests) {
-        fw.write("new test,,\n");
+        fw.write("new test,,");
+        fw.newLine();
         List<TestCaseStep> steps = test.getSteps();
         for (TestCaseStep step : steps) {
           fw.write("step,");
