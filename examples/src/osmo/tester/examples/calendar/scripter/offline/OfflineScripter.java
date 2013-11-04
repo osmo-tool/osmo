@@ -48,6 +48,7 @@ public class OfflineScripter implements CalendarScripter {
     this.state = state;
     this.fileName = fileName;
     scripter.setTestLibrary(CalendarLibrary.class.getName());
+//    text.setSeed();
   }
 
   /**
@@ -69,11 +70,8 @@ public class OfflineScripter implements CalendarScripter {
    * @return The complete test script.
    */
   public String createScript() {
-    //create users with random family name length 3-5 characters
-    Text text = new Text(3, 5);
-    text.asciiLettersAndNumbersOnly();
     for (String user : state.getUsers()) {
-      scripter.addVariable(user, StringUtils.capitalizeFirstLetter(user) + " " + text.next());
+      scripter.addVariable(user, StringUtils.capitalizeFirstLetter(user));
     }
     script = scripter.createScript();
     return script;
