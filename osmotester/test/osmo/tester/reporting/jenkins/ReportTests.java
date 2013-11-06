@@ -5,6 +5,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
+import osmo.tester.generator.ReflectiveModelFactory;
+import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
 import osmo.tester.testmodels.CalculatorModel;
@@ -43,8 +45,7 @@ public class ReportTests {
 
   @Test
   public void calculatorSteps() {
-    CalculatorModel calculator = new CalculatorModel();
-    tester.addModelObject(calculator);
+    tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
     JenkinsReportGenerator listener = new JenkinsReportGenerator(null, true);
     tester.addListener(listener);
     tester.generate(333);
@@ -59,8 +60,7 @@ public class ReportTests {
 
   @Test
   public void calculatorTests() {
-    CalculatorModel calculator = new CalculatorModel();
-    tester.addModelObject(calculator);
+    tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
     JenkinsReportGenerator listener = new JenkinsReportGenerator(null, true);
     listener.enableTestMode();
     tester.addListener(listener);
@@ -79,8 +79,10 @@ public class ReportTests {
     Requirements req = new Requirements();
     PartialModel1 p1 = new PartialModel1(req);
     PartialModel2 p2 = new PartialModel2(req);
-    tester.addModelObject(p1);
-    tester.addModelObject(p2);
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(p1);
+    factory.add(p2);
+    tester.setModelFactory(factory);
     JenkinsReportGenerator listener = new JenkinsReportGenerator(null, false);
     listener.enableTestMode();
     tester.addListener(listener);
@@ -99,8 +101,10 @@ public class ReportTests {
     Requirements req = new Requirements();
     PartialModel1 p1 = new PartialModel1(req);
     PartialModel2 p2 = new PartialModel2(req);
-    tester.addModelObject(p1);
-    tester.addModelObject(p2);
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(p1);
+    factory.add(p2);
+    tester.setModelFactory(factory);
     JenkinsReportGenerator listener = new JenkinsReportGenerator(null, false);
     listener.enableTestMode();
     tester.addListener(listener);
@@ -116,8 +120,7 @@ public class ReportTests {
 
   @Test
   public void writeSteps() throws Exception {
-    CalculatorModel calculator = new CalculatorModel();
-    tester.addModelObject(calculator);
+    tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
     JenkinsReportGenerator listener = new JenkinsReportGenerator(filename, true);
     listener.getSuite().setStartTime(0);
     listener.getSuite().setEndTime(3234);
@@ -142,8 +145,7 @@ public class ReportTests {
 
   @Test
   public void writeTests() throws Exception {
-    CalculatorModel calculator = new CalculatorModel();
-    tester.addModelObject(calculator);
+    tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
     JenkinsReportGenerator listener = new JenkinsReportGenerator(filename, false);
     listener.enableTestMode();
     tester.addListener(listener);
@@ -158,8 +160,7 @@ public class ReportTests {
 
   @Test
   public void error5Tests() throws Exception {
-    ErrorModel5 error = new ErrorModel5();
-    tester.addModelObject(error);
+    tester.setModelFactory(new ReflectiveModelFactory(ErrorModel5.class));
     JenkinsReportGenerator listener = new JenkinsReportGenerator(filename, false);
     tester.addListener(listener);
     listener.getSuite().setStartTime(1234);
@@ -178,8 +179,7 @@ public class ReportTests {
 
   @Ignore
   public void errorTests() throws Exception {
-    CalculatorModel calculator = new CalculatorModel();
-    tester.addModelObject(calculator);
+    tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
     JenkinsReportGenerator listener = new JenkinsReportGenerator(filename, false);
     tester.addListener(listener);
     tester.generate(333);

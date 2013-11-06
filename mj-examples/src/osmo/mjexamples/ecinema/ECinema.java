@@ -6,6 +6,7 @@ import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
+import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.listener.TracePrinter;
 import osmo.tester.generator.algorithm.BalancingAlgorithm;
 import osmo.tester.generator.endcondition.Length;
@@ -420,7 +421,7 @@ public class ECinema {
     OSMOTester tester = new OSMOTester();
     tester.setAlgorithm(new BalancingAlgorithm());
     tester.addListener(new TracePrinter());
-    tester.addModelObject(new ECinema());
+    tester.setModelFactory(new ReflectiveModelFactory(ECinema.class));
     tester.setSuiteEndCondition(new Length(200));
     tester.setTestEndCondition(new LengthProbability(10, 0.2d));
     tester.generate(44);

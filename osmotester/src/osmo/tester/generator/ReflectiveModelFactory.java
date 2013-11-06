@@ -2,7 +2,7 @@ package osmo.tester.generator;
 
 import osmo.common.log.Logger;
 import osmo.tester.model.ModelFactory;
-import osmo.tester.parser.ModelObject;
+import osmo.tester.model.TestModels;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,15 +14,15 @@ import java.util.Collections;
  * 
  * @author Teemu Kanstren 
  */
-public class SimpleModelFactory implements ModelFactory {
+public class ReflectiveModelFactory implements ModelFactory {
   private static Logger log = new Logger(MainGenerator.class);
   /** List of classes to instantiate as the model objects. */
   private final Collection<Class> classes = new ArrayList<>();
 
-  public SimpleModelFactory() {
+  public ReflectiveModelFactory() {
   }
 
-  public SimpleModelFactory(Class... classes) {
+  public ReflectiveModelFactory(Class... classes) {
     Collections.addAll(this.classes, classes);
   }
   
@@ -31,14 +31,15 @@ public class SimpleModelFactory implements ModelFactory {
   }
 
   @Override
-  public Collection<ModelObject> createModelObjects() {
-    Collection<ModelObject> result = new ArrayList<>();
+  public TestModels createModelObjects() {
+    TestModels result = new TestModels();
     for (Class aClass : classes) {
       try {
-        result.add(new ModelObject(aClass.newInstance()));
+        result.add(aClass.newInstance());
       } catch (Exception e) {
         log.error("Failed to create a model class instance. Exiting.", e);
-        System.exit(1);
+        e.printStackTrace();
+        throw new RuntimeException(e);
       }
     }
     return result;

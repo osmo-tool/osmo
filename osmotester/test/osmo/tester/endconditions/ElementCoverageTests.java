@@ -2,16 +2,15 @@ package osmo.tester.endconditions;
 
 import org.junit.Before;
 import org.junit.Test;
-import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
-import osmo.tester.generation.TestSequenceListener;
+import osmo.tester.generator.ReflectiveModelFactory;
+import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.structure.ElementCoverage;
-import osmo.tester.generator.endcondition.structure.ElementCoverageRequirement;
-import osmo.tester.generator.endcondition.structure.StepCoverage;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
+import osmo.tester.model.Requirements;
 import osmo.tester.model.TransitionName;
 import osmo.tester.testmodels.CalculatorModel;
 import osmo.tester.testmodels.VariableModel2;
@@ -210,9 +209,8 @@ public class ElementCoverageTests {
 
   @Test
   public void tooManySteps() {
-    VariableModel2 model = new VariableModel2();
     OSMOTester osmo = new OSMOTester();
-    osmo.addModelObject(model);
+    osmo.setModelFactory(new ReflectiveModelFactory(VariableModel2.class));
     Length length1 = new Length(1);
     osmo.setTestEndCondition(new ElementCoverage(5, 0, 0));
     osmo.setSuiteEndCondition(length1);
@@ -227,9 +225,8 @@ public class ElementCoverageTests {
 
   @Test
   public void tooManyPairs() {
-    VariableModel2 model = new VariableModel2();
     OSMOTester osmo = new OSMOTester();
-    osmo.addModelObject(model);
+    osmo.setModelFactory(new ReflectiveModelFactory(VariableModel2.class));
     Length length1 = new Length(1);
     osmo.setTestEndCondition(new ElementCoverage(0, 11, 0));
     osmo.setSuiteEndCondition(length1);
@@ -244,9 +241,10 @@ public class ElementCoverageTests {
 
   @Test
   public void tooManyRequirements() {
-    CalculatorModel model = new CalculatorModel();
     OSMOTester osmo = new OSMOTester();
-    osmo.addModelObject(model);
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(new CalculatorModel());
+    osmo.setModelFactory(factory);
     Length length1 = new Length(1);
     osmo.setTestEndCondition(new ElementCoverage(0, 0, 3));
     osmo.setSuiteEndCondition(length1);
@@ -261,9 +259,8 @@ public class ElementCoverageTests {
 
   @Test
   public void allWithGeneration() {
-    CalculatorModel model = new CalculatorModel();
     OSMOTester osmo = new OSMOTester();
-    osmo.addModelObject(model);
+    osmo.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
     Length length1 = new Length(1);
     osmo.setTestEndCondition(new ElementCoverage(3, 3, 2));
     osmo.setSuiteEndCondition(length1);

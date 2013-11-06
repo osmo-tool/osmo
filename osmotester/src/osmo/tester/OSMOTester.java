@@ -1,17 +1,25 @@
 package osmo.tester;
 
+import osmo.common.TestUtils;
 import osmo.common.log.Logger;
+import osmo.tester.coverage.ScoreCalculator;
+import osmo.tester.coverage.ScoreConfiguration;
 import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.filter.StepFilter;
 import osmo.tester.generator.listener.GenerationListener;
+import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.ModelFactory;
 import osmo.tester.model.Requirements;
+import osmo.tester.optimizer.CSVReport;
+import osmo.tester.reporting.jenkins.JenkinsReportGenerator;
+import osmo.tester.reporting.trace.TraceReportWriter;
 
+import java.util.List;
 import java.util.logging.Level;
 
 /**
@@ -35,15 +43,6 @@ public class OSMOTester {
   /** Do we print model coverage in the end? */
   private boolean printCoverage = true;
 
-  /**
-   * Create the tester with the initialized test model object.
-   *
-   * @param modelObject The model object defined using the OSMOTester annotations.
-   */
-  public OSMOTester(Object modelObject) {
-    addModelObject(modelObject);
-  }
-
   /** A constructor for use with addModelObject() method. */
   public OSMOTester() {
   }
@@ -52,22 +51,28 @@ public class OSMOTester {
     this.printCoverage = printCoverage;
   }
 
-  /**
-   * Adds a new model object, to be composed by OSMO to a single internal model along with other model objects.
-   *
-   * @param modelObject The model object (with OSMO annotations) to be added.
-   */
-  public void addModelObject(Object modelObject) {
-    config.addModelObject(modelObject);
-  }
-  
   public void setModelFactory(ModelFactory factory) {
     config.setFactory(factory);
   }
 
   /**
+   * Adds a new model object, to be composed by OSMO to a single internal model along with other model objects.
+   * 
+   * When using this method, the object will be used as is, as opposed to the factory which re-creates them always.
+   * Note that with optimizers, explorer and multi-osmo the factory is the only supported option.
+   *
+   * @param modelObject The model object (with OSMO annotations) to be added.
+   */
+  public void addModelObject(Object modelObject) {
+    config.addModelObject(modelObject);
+  }  
+
+  /**
    * Adds a model object with a given prefix, allowing the same object class to be re-used with different configuration
-   * where the names of transitions (test steps), guards and other elements is preceded by the given prefix.
+   * where the names of test steps, guards and other elements is preceded by the given prefix.
+   * 
+   * When using this method, the object will be used as is, as opposed to the factory which re-creates them always.
+   * Note that with optimizers, explorer and multi-osmo the factory is the only supported option.
    *
    * @param prefix      The model prefix.
    * @param modelObject The model object itself.
@@ -83,8 +88,9 @@ public class OSMOTester {
     generator.generate();
     if (!printCoverage) return;
     TestSuite suite = generator.getSuite();
-    System.out.println("generated " + suite.getFinishedTestCases().size() + " tests.\n");
-    TestCoverage tc = new TestCoverage(suite.getAllTestCases());
+    List<TestCase> tests = suite.getAllTestCases();
+    System.out.println("generated " + tests.size() + " tests.\n");
+    TestCoverage tc = new TestCoverage(tests);
     String coverage = tc.coverageString(fsm, generator.getPossibleStepPairs(), null, null, null, false);
     System.out.println(coverage);
     Requirements requirements = suite.getRequirements();
@@ -92,8 +98,45 @@ public class OSMOTester {
       System.out.println();
       System.out.println(requirements.printCoverage());
     }
-    //TODO: move writing the trace and summary data here. remove from mosmo
-//    writeTrace();
+    if (config.isTraceRequested()) {
+      String filename = "osmo-output/osmo-" + seed;
+      writeTrace(filename, tests, seed, config);
+    }
+  }
+  
+  public static void writeTrace(String filename, List<TestCase> tests, long seed, OSMOConfiguration config) {
+    createHtmlTrace(filename, tests);
+    createJenkinsReport(filename, tests, seed, config);
+  }
+
+
+  private static void createHtmlTrace(String filename, List<TestCase> tests) {
+    String summary = "summary\n";
+    CSVReport report = new CSVReport(new ScoreCalculator(new ScoreConfiguration()));
+    report.process(tests);
+
+    String totalCsv = report.report();
+    totalCsv += summary + "\n";
+    TestUtils.write(totalCsv, filename + ".csv");
+    TraceReportWriter trace = new TraceReportWriter();
+    try {
+      trace.write(tests, filename+".html");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  private static void createJenkinsReport(String filename, List<TestCase> tests, long seed, OSMOConfiguration config) {
+    JenkinsReportGenerator jenkins = new JenkinsReportGenerator(null, false);
+    jenkins.init(seed, null, config);
+    jenkins.suiteStarted(null);
+    for (TestCase test : tests) {
+      jenkins.testEnded(test);
+    }
+    jenkins.suiteEnded(null);
+    String report = jenkins.generateTestReport();
+    TestUtils.write(report, filename + ".xml");
+    
   }
 
   public MainGenerator initGenerator(long seed) {

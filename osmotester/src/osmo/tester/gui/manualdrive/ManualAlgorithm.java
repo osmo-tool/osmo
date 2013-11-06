@@ -505,7 +505,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     TraceReportWriter reporter = new TraceReportWriter();
     String filename = "osmo-output/manual-tests.html";
     try {
-      reporter.write(suite, filename);
+      reporter.write(suite.getAllTestCases(), filename);
       JOptionPane.showMessageDialog(this, "Wrote file to:" + filename);
     } catch (Exception e) {
       e.printStackTrace();

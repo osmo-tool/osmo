@@ -7,6 +7,7 @@ import osmo.tester.OSMOConfiguration;
 import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.coverage.ScoreConfiguration;
 import osmo.tester.coverage.TestCoverage;
+import osmo.tester.generator.endcondition.Time;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.optimizer.CSVReport;
 
@@ -19,7 +20,7 @@ import java.util.concurrent.Future;
 
 /**
  * Runs several generators in parallel, not optimizing the set but just splitting generation/execution over multiple
- * processors/cores at the same time.
+ * processors/cores at the same time. Useful for online testing.
  * A convenience class, same results could be achieved by just starting several separate generators at the same time
  * with different seeds.
  * 
@@ -27,7 +28,7 @@ import java.util.concurrent.Future;
  */
 public class MultiOSMO {
   private static Logger log = new Logger(MultiOSMO.class);
-  private OSMOConfiguration config = new MOSMOConfiguration();
+  private OSMOConfiguration config = new OSMOConfiguration();
   private final int parallelism;
   /** The thread pool for running the generator tasks. */
   private final ExecutorService pool;
@@ -49,32 +50,31 @@ public class MultiOSMO {
     return config;
   }
 
-  public List<TestCase> generate() {
-    Collection<Future<List<TestCase>>> futures = new ArrayList<>();
+  public void generate(Time time) {
+    config.setTraceRequested(false);
+    Collection<Future> futures = new ArrayList<>();
     Randomizer rand = new Randomizer(seed);
     for (int i = 0 ; i < parallelism ; i++) {
-      GeneratorTask task = new GeneratorTask(config, rand.nextLong());
-      Future<List<TestCase>> future = pool.submit(task);
+      GeneratorTask task = new GeneratorTask(config, time, rand.nextLong());
+      Future future = pool.submit(task);
       log.debug("task submitted to pool");
       futures.add(future);
     }
-    List<TestCase> allTests = new ArrayList<>();
-    for (Future<List<TestCase>> future : futures) {
+    for (Future future : futures) {
       try {
-        allTests.addAll(future.get());
+        future.get();
       } catch (Exception e) {
         throw new RuntimeException("Failed to run a (Multi) OSMOTester", e);
       }
     }
     pool.shutdown();
 
-    String summary = "summary\n";
-    CSVReport report = new CSVReport(new ScoreCalculator(new ScoreConfiguration()));
-    report.process(allTests);
-
-    String totalCsv = report.report();
-    totalCsv += summary + "\n";
-    TestUtils.write(totalCsv, "osmo-output/summary.csv");
-    return allTests;
+//    String summary = "summary\n";
+//    CSVReport report = new CSVReport(new ScoreCalculator(new ScoreConfiguration()));
+//    report.process(allTests);
+//
+//    String totalCsv = report.report();
+//    totalCsv += summary + "\n";
+//    TestUtils.write(totalCsv, "osmo-output/mosmo-summary.csv");
   }
 }

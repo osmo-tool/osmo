@@ -40,7 +40,7 @@ import java.util.Set;
 public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
   private static final Logger log = new Logger(WeightedBalancingAlgorithm.class);
   /** Keeps a list of how many times each transition has been covered. */
-  private Map<FSMTransition, Integer> coverage;
+  private Map<String, Integer> coverage;
   /** Provides random values. */
   private Randomizer rand = null;
 
@@ -94,12 +94,12 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
   }
 
   private void updateCoverage(FSMTransition transition) {
-    Integer count = coverage.get(transition);
+    Integer count = coverage.get(transition.getStringName());
     if (count == null) {
       //we use 1 as the starting value since 0 divided by any weight would be 0 and mess up the model initialization
       count = 1;
     }
-    coverage.put(transition, count + 1);
+    coverage.put(transition.getStringName(), count + 1);
   }
 
   /**
@@ -117,24 +117,32 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
     int min = Integer.MAX_VALUE;
     //if one was never covered, we set it to default start value of 1 to get correct values overall
     for (FSMTransition transition : available) {
-      if (coverage.get(transition) == null) {
-        coverage.put(transition, 1);
+      String name = transition.getStringName();
+      if (coverage.get(name) == null) {
+        coverage.put(name, 1);
       }
-      if (coverage.get(transition) < min) {
+      if (coverage.get(name) < min) {
         //find lowest coverage value
-        min = coverage.get(transition);
+        min = coverage.get(name);
       }
     }
     log.debug("coverage" + coverage);
     Map<FSMTransition, Double> scores = new LinkedHashMap<>();
     //then we count step score by dividing its weight by its coverage value
-    Set<FSMTransition> transitions = coverage.keySet();
-    for (FSMTransition transition : transitions) {
-      if (!available.contains(transition)) {
+    Set<String> transitions = coverage.keySet();
+    for (String name : transitions) {
+      FSMTransition transition = null;
+      for (FSMTransition a : available) {
+        if (a.getStringName().equals(name)) {
+          transition = a;
+          break;
+        }
+      }
+      if (transition == null) {
         continue;
       }
       double score = transition.getWeight();
-      score /= coverage.get(transition);
+      score /= coverage.get(transition.getStringName());
       scores.put(transition, score);
     }
     log.debug("weighted scores:" + scores);

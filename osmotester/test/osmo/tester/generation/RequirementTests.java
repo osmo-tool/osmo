@@ -4,9 +4,11 @@ import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
+import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.model.Requirements;
 import osmo.tester.testmodels.ValidTestModel2;
+import osmo.tester.testmodels.ValidTestModel3;
 
 import static junit.framework.Assert.*;
 
@@ -18,7 +20,10 @@ public class RequirementTests {
     reqs.add(ValidTestModel2.REQ_EPIX);
     reqs.add(ValidTestModel2.REQ_HELLO);
     reqs.add(ValidTestModel2.REQ_WORLD);
-    OSMOTester osmo = new OSMOTester(new ValidTestModel2(reqs));
+    OSMOTester osmo = new OSMOTester();
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(new ValidTestModel2(reqs));
+    osmo.setModelFactory(factory);
     osmo.setTestEndCondition(new Length(3));
     osmo.setSuiteEndCondition(new Length(1));
     osmo.generate(333);
@@ -31,7 +36,10 @@ public class RequirementTests {
   public void excessCoverage() {
     Requirements reqs = new Requirements();
     reqs.add(ValidTestModel2.REQ_HELLO);
-    OSMOTester osmo = new OSMOTester(new ValidTestModel2(reqs));
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    OSMOTester osmo = new OSMOTester();
+    factory.add(new ValidTestModel2(reqs));
+    osmo.setModelFactory(factory);
     osmo.setTestEndCondition(new Length(10));
     osmo.setSuiteEndCondition(new Length(1));
     osmo.generate(333);
@@ -43,7 +51,10 @@ public class RequirementTests {
   @Test
   public void fullExcessCoverage() {
     Requirements reqs = new Requirements();
-    OSMOTester osmo = new OSMOTester(new ValidTestModel2(reqs));
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    OSMOTester osmo = new OSMOTester();
+    factory.add(new ValidTestModel2(reqs));
+    osmo.setModelFactory(factory);
     osmo.setTestEndCondition(new Length(3));
     osmo.setSuiteEndCondition(new Length(1));
     osmo.generate(333);
@@ -59,7 +70,10 @@ public class RequirementTests {
     reqs.add(ValidTestModel2.REQ_HELLO);
     reqs.add(ValidTestModel2.REQ_WORLD);
     reqs.add("undefined");
-    OSMOTester osmo = new OSMOTester(new ValidTestModel2(reqs));
+    OSMOTester osmo = new OSMOTester();
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(new ValidTestModel2(reqs));
+    osmo.setModelFactory(factory);
     osmo.setTestEndCondition(new Length(3));
     osmo.setSuiteEndCondition(new Length(1));
     osmo.generate(333);

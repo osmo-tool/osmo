@@ -1,10 +1,13 @@
 package osmo.tester.testmodels;
 
+import osmo.tester.annotation.LastStep;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestSuite;
+
+import static junit.framework.Assert.assertEquals;
 
 /** @author Teemu Kanstren */
 public class ValidTestModel6 {
@@ -12,6 +15,15 @@ public class ValidTestModel6 {
   private String states = "";
   @Variable
   private int index = 0;
+  private final String expectedState;
+
+  public ValidTestModel6() {
+    this.expectedState = null;
+  }
+
+  public ValidTestModel6(String expectedState) {
+    this.expectedState = expectedState;
+  }
 
   @Transition("t1")
   public void one() {
@@ -45,5 +57,10 @@ public class ValidTestModel6 {
 
   public String getStates() {
     return states;
+  }
+  
+  @LastStep
+  public void check() {
+    assertEquals("Expected result", expectedState, states);
   }
 }

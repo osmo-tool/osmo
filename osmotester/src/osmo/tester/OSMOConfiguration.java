@@ -1,5 +1,6 @@
 package osmo.tester;
 
+import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.endcondition.EndCondition;
@@ -11,6 +12,7 @@ import osmo.tester.generator.listener.GenerationListener;
 import osmo.tester.generator.listener.GenerationListenerList;
 import osmo.tester.model.FSM;
 import osmo.tester.model.ModelFactory;
+import osmo.tester.model.TestModels;
 import osmo.tester.model.data.SearchableInput;
 import osmo.tester.parser.ModelObject;
 import osmo.tester.scenario.Scenario;
@@ -24,8 +26,6 @@ import java.util.Collection;
  * @author Teemu Kanstren
  */
 public class OSMOConfiguration implements ModelFactory {
-  /** The set of test model objects, given by the user. */
-  private final Collection<ModelObject> modelObjects = new ArrayList<>();
   /** When do we stop generating the overall test suite? (stopping all test generation). Ignored if junitLength is set. */
   private EndCondition suiteEndCondition = new And(new Length(1), new Probability(0.05d));
   /** When do we stop generating individual tests and start a new one? */
@@ -46,10 +46,14 @@ public class OSMOConfiguration implements ModelFactory {
   private boolean unwrapExceptions = true;
   /** Factory for creating model objects, alternative to adding them one by one. */
   private ModelFactory factory = null;
+  /** We default to this if user does not specify a factory. This is where any addModelObject() calls go. */
+  private SingleInstanceModelFactory defaultFactory = new SingleInstanceModelFactory();
   /** Is manual drive enabled? Used to enable manual GUI etc. */
   private static boolean manual = false;
   /** Model slicing scenario. */
   private Scenario scenario = null;
+  /** If true, the tool will write a HTML test generation trace showing taken steps and observed values. */
+  private boolean traceRequested = false;
 
   public OSMOConfiguration() {
   }
@@ -62,26 +66,6 @@ public class OSMOConfiguration implements ModelFactory {
     return scenario;
   }
 
-  /**
-   * Adds a new model object, to be composed by OSMO to a single internal model along with other model objects.
-   *
-   * @param modelObject The model object (with OSMO annotations) to be added.
-   */
-  public void addModelObject(Object modelObject) {
-    modelObjects.add(new ModelObject(modelObject));
-  }
-
-  /**
-   * Adds a model object with a given prefix, allowing the same object class to be re-used with different configuration
-   * where the names of transitions (test steps), guards and other elements is preceded by the given prefix.
-   *
-   * @param prefix      The model prefix.
-   * @param modelObject The model object itself.
-   */
-  public void addModelObject(String prefix, Object modelObject) {
-    modelObjects.add(new ModelObject(prefix, modelObject));
-  }
-
   public void setFactory(ModelFactory factory) {
     this.factory = factory;
   }
@@ -90,11 +74,17 @@ public class OSMOConfiguration implements ModelFactory {
     return factory;
   }
 
-  public Collection<ModelObject> createModelObjects() {
-    if (factory != null) {
-      return factory.createModelObjects();
-    }
-    return modelObjects;
+  public void addModelObject(String prefix, Object o) {
+    defaultFactory.add(prefix, o);
+  }
+
+  public void addModelObject(Object o) {
+    defaultFactory.add(o);
+  }
+
+  public TestModels createModelObjects() {
+    if (factory == null) factory = defaultFactory;
+    return factory.createModelObjects();
   }
 
   public void setAlgorithm(FSMTraversalAlgorithm algorithm) {
@@ -250,5 +240,13 @@ public class OSMOConfiguration implements ModelFactory {
 
   public void setManual(boolean manual) {
     this.manual = manual;
+  }
+
+  public boolean isTraceRequested() {
+    return traceRequested;
+  }
+
+  public void setTraceRequested(boolean traceRequested) {
+    this.traceRequested = traceRequested;
   }
 }

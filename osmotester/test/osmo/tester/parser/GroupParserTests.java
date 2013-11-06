@@ -3,6 +3,7 @@ package osmo.tester.parser;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOConfiguration;
+import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
@@ -25,8 +26,10 @@ public class GroupParserTests {
 
   private OSMOConfiguration conf(Object... modelObjects) {
     OSMOConfiguration config = new OSMOConfiguration();
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    config.setFactory(factory);
     for (Object mo : modelObjects) {
-      config.addModelObject(mo);
+      factory.add(mo);
     }
     return config;
   }
@@ -101,9 +104,9 @@ public class GroupParserTests {
     } catch (Exception e) {
       String expected = "Invalid FSM:\n" +
               "@Group must have name.\n" +
-              "Guard without matching transition:group1.\n" +
-              "Pre without matching transition:group1.\n" +
-              "Post without matching transition:group1.\n" +
+              "Guard without matching step:group1.\n" +
+              "Pre without matching step:group1.\n" +
+              "Post without matching step:group1.\n" +
               "Groupname same as a step name (step3). Must be different.\n";
       assertEquals("Errors for parsing invalid group model", expected, e.getMessage());
     }

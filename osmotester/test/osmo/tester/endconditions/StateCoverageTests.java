@@ -2,6 +2,7 @@ package osmo.tester.endconditions;
 
 import org.junit.Test;
 import osmo.tester.OSMOTester;
+import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.StateCoverage;
 import osmo.tester.generator.testsuite.TestCase;
@@ -16,8 +17,8 @@ import static junit.framework.Assert.*;
 public class StateCoverageTests {
   @Test
   public void testCaseState3() {
-    CoverageValueModel1 model = new CoverageValueModel1();
-    OSMOTester tester = new OSMOTester(model);
+    OSMOTester tester = new OSMOTester();
+    tester.setModelFactory(new ReflectiveModelFactory(CoverageValueModel1.class));
     tester.setTestEndCondition(new StateCoverage("my-state", "3"));
     tester.setSuiteEndCondition(new Length(1));
     tester.generate(55);
@@ -29,8 +30,8 @@ public class StateCoverageTests {
 
   @Test
   public void testCaseState2() {
-    CoverageValueModel1 model = new CoverageValueModel1();
-    OSMOTester tester = new OSMOTester(model);
+    OSMOTester tester = new OSMOTester();
+    tester.setModelFactory(new ReflectiveModelFactory(CoverageValueModel1.class));
     tester.setTestEndCondition(new StateCoverage("my-state", "2"));
     tester.setSuiteEndCondition(new Length(1));
     tester.generate(55);
@@ -42,8 +43,8 @@ public class StateCoverageTests {
 
   @Test
   public void testCaseState3twice() {
-    CoverageValueModel1 model = new CoverageValueModel1();
-    OSMOTester tester = new OSMOTester(model);
+    OSMOTester tester = new OSMOTester();
+    tester.setModelFactory(new ReflectiveModelFactory(CoverageValueModel1.class));
     tester.setTestEndCondition(new StateCoverage("my-state", "3", "3"));
     tester.setSuiteEndCondition(new Length(1));
     tester.generate(55);
@@ -55,8 +56,8 @@ public class StateCoverageTests {
 
   @Test
   public void suiteState() {
-    CoverageValueModel2 model = new CoverageValueModel2();
-    OSMOTester tester = new OSMOTester(model);
+    OSMOTester tester = new OSMOTester();
+    tester.setModelFactory(new ReflectiveModelFactory(CoverageValueModel2.class));
     tester.setTestEndCondition(new Length(1));
     //multiple repetitions of the same value are not counted for a suite so this should be equals to 1,2,3,4
     tester.setSuiteEndCondition(new StateCoverage("my-state", "1", "2", "3", "4", "4", "4", "4", "4"));

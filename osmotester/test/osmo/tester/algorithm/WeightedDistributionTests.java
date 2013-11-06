@@ -2,9 +2,9 @@ package osmo.tester.algorithm;
 
 import org.junit.Before;
 import org.junit.Test;
-import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generation.TestDistributionListener;
+import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.algorithm.WeightedBalancingAlgorithm;
 import osmo.tester.generator.algorithm.WeightedRandomAlgorithm;
@@ -33,7 +33,7 @@ public class WeightedDistributionTests {
     listener.setExpected("bob2", 191);
     listener.setExpected("bob3", 298);
     listener.setExpected("bob4", 403);
-    osmo.addModelObject(new WeightedModel1());
+    osmo.setModelFactory(new ReflectiveModelFactory(WeightedModel1.class));
     Length length4 = new Length(1000);
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length4);
@@ -44,7 +44,7 @@ public class WeightedDistributionTests {
     Map<String, Integer> balanced = listener.getSteps();
 
     testSetup();
-    osmo.addModelObject(new WeightedModel1());
+    osmo.setModelFactory(new ReflectiveModelFactory(WeightedModel1.class));
     osmo.setTestEndCondition(length4);
     osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new RandomAlgorithm());
@@ -59,7 +59,7 @@ public class WeightedDistributionTests {
     listener.setExpected("bob2", 2301);
     listener.setExpected("bob3", 2858);
     listener.setExpected("bob4", 3208);
-    osmo.addModelObject(new WeightedModel1());
+    osmo.setModelFactory(new ReflectiveModelFactory(WeightedModel1.class));
     Length length4 = new Length(10000);
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length4);
@@ -70,7 +70,7 @@ public class WeightedDistributionTests {
     Map<String, Integer> balanced = listener.getSteps();
 
     testSetup();
-    osmo.addModelObject(new WeightedModel1());
+    osmo.setModelFactory(new ReflectiveModelFactory(WeightedModel1.class));
     osmo.setTestEndCondition(length4);
     osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new RandomAlgorithm());
@@ -85,7 +85,7 @@ public class WeightedDistributionTests {
     listener.setExpected("bob2", 237);
     listener.setExpected("bob3", 358);
     listener.setExpected("bob4", 480);
-    osmo.addModelObject(new WeightedModel1());
+    osmo.setModelFactory(new ReflectiveModelFactory(WeightedModel1.class));
     Length length4 = new Length(200);
     Length length1 = new Length(6);
     osmo.setTestEndCondition(length4);
@@ -96,7 +96,7 @@ public class WeightedDistributionTests {
     Map<String, Integer> balanced = listener.getSteps();
 
     testSetup();
-    osmo.addModelObject(new WeightedModel1());
+    osmo.setModelFactory(new ReflectiveModelFactory(WeightedModel1.class));
     osmo.setTestEndCondition(length4);
     osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new RandomAlgorithm());
@@ -111,7 +111,7 @@ public class WeightedDistributionTests {
     listener.setExpected("bob2", 274);
     listener.setExpected("bob3", 348);
     listener.setExpected("bob4", 386);
-    osmo.addModelObject(new WeightedModel1());
+    osmo.setModelFactory(new ReflectiveModelFactory(WeightedModel1.class));
     Length length4 = new Length(200);
     Length length1 = new Length(6);
     osmo.setTestEndCondition(length4);
@@ -122,7 +122,7 @@ public class WeightedDistributionTests {
     Map<String, Integer> balanced = listener.getSteps();
 
     testSetup();
-    osmo.addModelObject(new WeightedModel1());
+    osmo.setModelFactory(new ReflectiveModelFactory(WeightedModel1.class));
     osmo.setTestEndCondition(length4);
     osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new RandomAlgorithm());

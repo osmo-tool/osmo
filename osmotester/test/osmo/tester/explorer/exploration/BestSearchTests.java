@@ -7,7 +7,9 @@ import osmo.tester.explorer.ExplorationState;
 import osmo.tester.explorer.MainExplorer;
 import osmo.tester.OSMOTester;
 import osmo.tester.coverage.TestCoverage;
+import osmo.tester.explorer.testmodels.CalculatorModelNoPrints;
 import osmo.tester.generator.MainGenerator;
+import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.FSM;
@@ -21,20 +23,10 @@ import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class BestSearchTests {
-  private MainGenerator generator = null;
   private ExplorationConfiguration config;
-  private CalculatorModel model;
 
   @Before
   public void startUp() {
-    OSMOTester tester = new OSMOTester();
-    tester.setTestEndCondition(new Length(20));
-    tester.setSuiteEndCondition(new Length(6));
-    model = new CalculatorModel();
-    tester.addModelObject(model);
-    generator = tester.initGenerator(111);
-    tester.getConfig().initialize(111, tester.getFsm());
-    generator.initSuite();
 //    factory = new PaperModelFactory();
     config = new ExplorationConfiguration(null, 3, 111);
     config.setMinSuiteLength(1);
@@ -46,6 +38,14 @@ public class BestSearchTests {
 
   @Test
   public void emptySuite4Increase() {
+    OSMOTester tester = new OSMOTester();
+    tester.setTestEndCondition(new Length(20));
+    tester.setSuiteEndCondition(new Length(6));
+    tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
+    MainGenerator generator = tester.initGenerator(111);
+    tester.getConfig().initialize(111, tester.getFsm());
+    generator.initSuite();
+
     long seed = System.currentTimeMillis();
     TestCoverage suiteCoverage = generator.getSuite().getCoverage();
 
@@ -86,6 +86,14 @@ public class BestSearchTests {
 
   @Test
   public void timeToFindBest() {
+    OSMOTester tester = new OSMOTester();
+    tester.setTestEndCondition(new Length(20));
+    tester.setSuiteEndCondition(new Length(6));
+    tester.setModelFactory(new ReflectiveModelFactory(CalculatorModelNoPrints.class));
+    MainGenerator generator = tester.initGenerator(111);
+    tester.getConfig().initialize(111, tester.getFsm());
+    generator.initSuite();
+
     long start = System.currentTimeMillis();
     int seed = 55;
     TestCoverage suiteCoverage = generator.getSuite().getCoverage();
@@ -103,29 +111,14 @@ public class BestSearchTests {
     explorer.init(fsm, generator.getSuite(), state, script, 4);
     config.getFallback().init(seed, fsm);
     
-    List<TestCase> tests = createTests(50);
+    List<TestCase> tests = new ArrayList<>();
+    for (int i = 0 ; i < 50 ; i++) {
+      tests.add(generator.nextTest());
+    }
     String best = explorer.findBestFrom(tests, 0);
     long end = System.currentTimeMillis();
     long diff = end - start;
     assertTrue("Time to find best from small set should be <500, was "+diff, diff < 500);
   }
   //5067
-
-  private List<List<String>> scriptsFor(List<TestCase> tests) {
-    List<List<String>> scripts = new ArrayList<>();
-    for (TestCase test : tests) {
-      scripts.add(test.getAllStepNames());
-    }
-    return scripts;
-  }
-
-  private List<TestCase> createTests(int count) {
-    model.enableExploration();
-    List<TestCase> tests = new ArrayList<>();
-    for (int i = 0 ; i < count ; i++) {
-      tests.add(generator.nextTest());
-    }
-    model.enableGeneration();
-    return tests;
-  }
 }

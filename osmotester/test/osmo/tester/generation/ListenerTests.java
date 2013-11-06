@@ -3,10 +3,13 @@ package osmo.tester.generation;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOTester;
+import osmo.tester.generator.ReflectiveModelFactory;
+import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.model.Requirements;
 import osmo.tester.testmodels.ValidTestModel1;
 import osmo.tester.testmodels.ValidTestModel2;
+import osmo.tester.testmodels.ValidTestModel3;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -28,7 +31,7 @@ public class ListenerTests {
   @Test
   public void noEnabledTransition() {
     listener.addExpected("suite-start", "start", "g:epixx", "g:world", "end", "suite-end");
-    osmo.addModelObject(new ValidTestModel1());
+    osmo.setModelFactory(new ReflectiveModelFactory(ValidTestModel1.class));
     Length length3 = new Length(3);
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
@@ -52,7 +55,9 @@ public class ListenerTests {
     listener.addExpected("suite-end");
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
-    osmo.addModelObject(new ValidTestModel2(new Requirements(), ps));
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(new ValidTestModel2(new Requirements(), ps));
+    osmo.setModelFactory(factory);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);

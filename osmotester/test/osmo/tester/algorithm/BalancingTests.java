@@ -5,6 +5,7 @@ import org.junit.Test;
 import osmo.tester.OSMOTester;
 import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generation.TestSequenceListener;
+import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.algorithm.BalancingAlgorithm;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
@@ -38,7 +39,7 @@ public class BalancingTests {
     for (int i = 0 ; i < 1000 ; i++) {
       OSMOTester tester = new OSMOTester();
       tester.setAlgorithm(new BalancingAlgorithm());
-      tester.addModelObject(new ValidTestModel6());
+      tester.setModelFactory(new ReflectiveModelFactory(ValidTestModel6.class));
       tester.setTestEndCondition(new Length(4));
       tester.setSuiteEndCondition(new Length(1));
       tester.generate(i);
@@ -59,7 +60,7 @@ public class BalancingTests {
     List<String> pairs = createPairList("t1", "t2", "t3", "t4");
     OSMOTester tester = new OSMOTester();
     tester.setAlgorithm(new BalancingAlgorithm());
-    tester.addModelObject(new ValidTestModel6());
+    tester.setModelFactory(new ReflectiveModelFactory(ValidTestModel6.class));
     tester.setTestEndCondition(new Length(2500));
     tester.setSuiteEndCondition(new Length(4));
     tester.generate(55);

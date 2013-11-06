@@ -7,6 +7,7 @@ import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Transition;
+import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.endcondition.Length;
 
@@ -98,7 +99,8 @@ public class CalculatorModel2 {
   }
 
   public static void main2(String[] args) {
-    OSMOTester tester = new OSMOTester(new CalculatorModel2());
+    OSMOTester tester = new OSMOTester();
+    tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel2.class));
     tester.generate(55);
   }
 
@@ -108,7 +110,8 @@ public class CalculatorModel2 {
    * @param args not used.
    */
   public static void main(String[] args) {
-    OSMOTester tester = new OSMOTester(new CalculatorModel2());
+    OSMOTester tester = new OSMOTester();
+    tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel2.class));
     tester.setAlgorithm(new RandomAlgorithm());
     tester.setDebug(true);
     tester.setSuiteEndCondition(new Length(10));

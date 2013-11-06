@@ -12,5 +12,5 @@ import java.util.Collection;
  * 
  * @author Teemu Kanstren */
 public interface ModelFactory {
-  public Collection<ModelObject> createModelObjects();
+  public TestModels createModelObjects();
 }

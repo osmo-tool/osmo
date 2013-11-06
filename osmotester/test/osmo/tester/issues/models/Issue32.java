@@ -69,18 +69,6 @@ public class Issue32 {
     out.println("Step4");
   }
 
-  public static void main(String[] args) throws Exception {
-    OSMOTester tester = new OSMOTester();
-    tester.setAlgorithm(new WeightedBalancingAlgorithm());
-    tester.addModelObject(new Issue32(System.out));
-    tester.generate(333);
-    TestSuite suite = tester.getSuite();
-    FSM fsm = tester.getFsm();
-    HTMLCoverageReporter reporter = new HTMLCoverageReporter(suite, fsm);
-    String matrix = reporter.getTraceabilityMatrix();
-    TestUtils.write(matrix, "osmo-report.html");
-  }
-
   private static class TestUser implements VariableValue {
     private final String name;
 

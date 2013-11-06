@@ -27,22 +27,8 @@ public class ModelPrinter {
   /**
    * @see osmo.tester.OSMOTester
    */
-  public void addModelObject(Object modelObject) {
-    config.addModelObject(modelObject);
-  }
-
-  /**
-   * @see osmo.tester.OSMOTester
-   */
   public void setModelFactory(ModelFactory factory) {
     config.setFactory(factory);
-  }
-
-  /**
-   * @see osmo.tester.OSMOTester
-   */
-  public void addModelObject(String prefix, Object modelObject) {
-    config.addModelObject(prefix, modelObject);
   }
 
   //step+guards+pre+post+group+weight

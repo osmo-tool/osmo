@@ -2,6 +2,7 @@ package osmo.tester.endconditions;
 
 import org.junit.Test;
 import osmo.tester.OSMOTester;
+import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -19,14 +20,14 @@ public class LengthTests {
   }
 
   private void testWithLength(int expectedLength) {
-    CalculatorModel calculator = new CalculatorModel();
-    OSMOTester tester = new OSMOTester(calculator);
+    OSMOTester tester = new OSMOTester();
+    tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
     Length testStrategy = new Length(expectedLength);
     tester.setTestEndCondition(testStrategy);
     tester.setSuiteEndCondition(testStrategy);
     tester.generate(111);
-    TestSuite testLog = calculator.getHistory();
-    List<TestCase> history = testLog.getFinishedTestCases();
+    TestSuite suite = tester.getSuite();
+    List<TestCase> history = suite.getFinishedTestCases();
     assertEquals("Number of tests generated", expectedLength, history.size());
     for (TestCase test : history) {
       assertEquals("Number of steps in a test case", expectedLength, test.getSteps().size());

@@ -176,4 +176,11 @@ public class Requirements {
   public boolean isEmpty() {
     return (reqs.size() == 0 && covered.size() == 0);
   }
+
+  @Override
+  public String toString() {
+    return "Requirements{" +
+            "reqs=" + reqs +
+            '}';
+  }
 }

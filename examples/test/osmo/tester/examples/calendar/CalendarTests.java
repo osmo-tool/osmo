@@ -16,6 +16,7 @@ import osmo.tester.examples.calendar.testmodel.CalendarOverlappingModel;
 import osmo.tester.examples.calendar.testmodel.CalendarParticipantModel;
 import osmo.tester.examples.calendar.testmodel.CalendarTaskModel;
 import osmo.tester.examples.calendar.testmodel.ModelState;
+import osmo.tester.generator.SingleInstanceModelFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -41,7 +42,9 @@ public class CalendarTests {
   public void baseModelOnline() {
     ModelState state = new ModelState();
     CalendarScripter scripter = new OnlineScripter();
-    osmo.addModelObject(new CalendarMeetingModel(state, scripter, out));
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    osmo.setModelFactory(factory);
+    factory.add(new CalendarMeetingModel(state, scripter, out));
     generateAndAssertOutput("expected-base-online.txt");
     scripter.write();
   }
@@ -50,12 +53,14 @@ public class CalendarTests {
   public void fullModelOnline() {
     ModelState state = new ModelState();
     CalendarScripter scripter = new OnlineScripter();
-    osmo.addModelObject(new CalendarMeetingModel(state, scripter, out));
-    osmo.addModelObject(new CalendarOracleModel(state, scripter, out));
-    osmo.addModelObject(new CalendarTaskModel(state, scripter, out));
-    osmo.addModelObject(new CalendarOverlappingModel(state, scripter, out));
-    osmo.addModelObject(new CalendarParticipantModel(state, scripter, out));
-    osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter, out));
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    osmo.setModelFactory(factory);
+    factory.add(new CalendarMeetingModel(state, scripter, out));
+    factory.add(new CalendarOracleModel(state, scripter, out));
+    factory.add(new CalendarTaskModel(state, scripter, out));
+    factory.add(new CalendarOverlappingModel(state, scripter, out));
+    factory.add(new CalendarParticipantModel(state, scripter, out));
+    factory.add(new CalendarErrorHandlingModel(state, scripter, out));
     generateAndAssertOutput("expected-full-online.txt");
     scripter.write();
   }
@@ -73,13 +78,15 @@ public class CalendarTests {
   public void failureModelOnline() {
     ModelState state = new ModelState();
     CalendarScripter scripter = new OnlineScripter();
-    osmo.addModelObject(new CalendarMeetingModel(state, scripter));
-    osmo.addModelObject(new CalendarOracleModel(state, scripter));
-    osmo.addModelObject(new CalendarTaskModel(state, scripter));
-    osmo.addModelObject(new CalendarOverlappingModel(state, scripter));
-    osmo.addModelObject(new CalendarParticipantModel(state, scripter));
-    osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter));
-    osmo.addModelObject(new CalendarFailureModel(state, scripter));
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    osmo.setModelFactory(factory);
+    factory.add(new CalendarMeetingModel(state, scripter));
+    factory.add(new CalendarOracleModel(state, scripter));
+    factory.add(new CalendarTaskModel(state, scripter));
+    factory.add(new CalendarOverlappingModel(state, scripter));
+    factory.add(new CalendarParticipantModel(state, scripter));
+    factory.add(new CalendarErrorHandlingModel(state, scripter));
+    factory.add(new CalendarFailureModel(state, scripter));
     try {
       osmo.generate(111);
       fail("FailureModel should fail assertions");
@@ -96,7 +103,9 @@ public class CalendarTests {
   public void baseModel() {
     ModelState state = new ModelState();
     OfflineScripter scripter = new OfflineScripter(state, "tests.html");
-    osmo.addModelObject(new CalendarMeetingModel(state, scripter));
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    osmo.setModelFactory(factory);
+    factory.add(new CalendarMeetingModel(state, scripter));
     generateAndAssertScript(scripter, "expected-base-offline.txt");
   }
 
@@ -113,13 +122,15 @@ public class CalendarTests {
   public void fullModel() {
     ModelState state = new ModelState();
     OfflineScripter scripter = new OfflineScripter(state, "tests.html");
-    osmo.addModelObject(new CalendarMeetingModel(state, scripter));
-    osmo.addModelObject(new CalendarOracleModel(state, scripter));
-    osmo.addModelObject(new CalendarTaskModel(state, scripter));
-    osmo.addModelObject(new CalendarOverlappingModel(state, scripter));
-    osmo.addModelObject(new CalendarParticipantModel(state, scripter));
-    osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter));
-    osmo.addModelObject(new CalendarFailureModel(state, scripter));
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    osmo.setModelFactory(factory);
+    factory.add(new CalendarMeetingModel(state, scripter));
+    factory.add(new CalendarOracleModel(state, scripter));
+    factory.add(new CalendarTaskModel(state, scripter));
+    factory.add(new CalendarOverlappingModel(state, scripter));
+    factory.add(new CalendarParticipantModel(state, scripter));
+    factory.add(new CalendarErrorHandlingModel(state, scripter));
+    factory.add(new CalendarFailureModel(state, scripter));
     generateAndAssertScript(scripter, "expected-full-offline.txt");
   }
 }

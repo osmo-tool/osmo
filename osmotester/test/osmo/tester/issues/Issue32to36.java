@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import osmo.common.NullPrintStream;
 import osmo.common.TestUtils;
-import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.algorithm.WeightedBalancingAlgorithm;
 import osmo.tester.generator.endcondition.EndCondition;
@@ -15,6 +14,8 @@ import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.issues.models.Issue32;
 import osmo.tester.model.FSM;
+import osmo.tester.model.ModelFactory;
+import osmo.tester.model.TestModels;
 import osmo.tester.reporting.coverage.HTMLCoverageReporter;
 import osmo.tester.reporting.trace.TraceReportWriter;
 
@@ -40,7 +41,7 @@ public class Issue32to36 {
     tester.setAlgorithm(new WeightedBalancingAlgorithm());
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
     PrintStream ps = new PrintStream(bos);
-    tester.addModelObject(new Issue32(ps));
+    tester.setModelFactory(new MyModelFactory(ps));
     tester.generate(333);
     String expected = TestUtils.getResource(Issue32to36.class, "expected/issue32.txt");
     String actual = bos.toString();
@@ -55,7 +56,7 @@ public class Issue32to36 {
     tester.setTestEndCondition(new Length(5));
     tester.setSuiteEndCondition(new Length(5));
     tester.setAlgorithm(new WeightedBalancingAlgorithm());
-    tester.addModelObject(new Issue32(NullPrintStream.stream));
+    tester.setModelFactory(new MyModelFactory(NullPrintStream.stream));
     tester.generate(333);
     TestSuite suite = tester.getSuite();
     FSM fsm = tester.getFsm();
@@ -73,11 +74,11 @@ public class Issue32to36 {
     tester.setTestEndCondition(new Length(5));
     tester.setSuiteEndCondition(new Length(5));
     tester.setAlgorithm(new WeightedBalancingAlgorithm());
-    tester.addModelObject(new Issue32(NullPrintStream.stream));
+    tester.setModelFactory(new MyModelFactory(NullPrintStream.stream));
     tester.generate(333);
     TestSuite suite = tester.getSuite();
     TraceReportWriter tracer = new TraceReportWriter();
-    String report = tracer.createReport(suite);
+    String report = tracer.createReport(suite.getAllTestCases());
     String expected = TestUtils.getResource(Issue32to36.class, "expected/issue34.txt");
     report = unifyLineSeparators(report, "\n");
     expected = unifyLineSeparators(expected, "\n");
@@ -92,7 +93,7 @@ public class Issue32to36 {
     tester.setTestEndCondition(new And(new Length(5), new Length(3), testCustom));
     tester.setSuiteEndCondition(new Or(new Length(5), new Length(3), suiteCustom));
     tester.setAlgorithm(new WeightedBalancingAlgorithm());
-    tester.addModelObject(new Issue32(NullPrintStream.stream));
+    tester.setModelFactory(new MyModelFactory(NullPrintStream.stream));
     tester.generate(333);
     assertTrue("And should initialize end conditions", testCustom.isInitialized());
     assertTrue("Or should initialize end conditions", suiteCustom.isInitialized());
@@ -118,6 +119,21 @@ public class Issue32to36 {
     @Override
     public void init(long seed, FSM fsm) {
       initialized = true;
+    }
+  }
+  
+  private static class MyModelFactory implements ModelFactory {
+    private final PrintStream ps;
+
+    private MyModelFactory(PrintStream ps) {
+      this.ps = ps;
+    }
+
+    @Override
+    public TestModels createModelObjects() {
+      TestModels models = new TestModels();
+      models.add(new Issue32(ps));
+      return models;
     }
   }
 }

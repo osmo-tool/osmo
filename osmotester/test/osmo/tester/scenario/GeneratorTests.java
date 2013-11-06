@@ -6,10 +6,12 @@ import osmo.common.NullPrintStream;
 import osmo.common.OSMOException;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
+import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.Requirements;
 import osmo.tester.testmodels.CalculatorModel;
 
 import java.util.List;
@@ -28,7 +30,9 @@ public class GeneratorTests {
     config = tester.getConfig();
     scenario = new Scenario(false);
     scenario.addStartup("start", "increase", "increase", "increase", "increase");
-    config.addModelObject(new CalculatorModel(NullPrintStream.stream));
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(new CalculatorModel(NullPrintStream.stream));
+    tester.setModelFactory(factory);
     config.setScenario(scenario);
     config.setSuiteEndCondition(new Length(5));
   }

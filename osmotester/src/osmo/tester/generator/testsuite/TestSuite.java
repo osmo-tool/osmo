@@ -35,6 +35,15 @@ public class TestSuite {
   public TestSuite() {
   }
 
+  /**
+   * Gives the number of the test case currently being generated.
+   * 
+   * @return Number of previous tests in suite + 1;
+   */
+  public int currentTestNumber() {
+    return testCases.size()+1;
+  }
+
   /** Start a new test case. */
   public TestCase startTest() {
     current = new TestCase(this);

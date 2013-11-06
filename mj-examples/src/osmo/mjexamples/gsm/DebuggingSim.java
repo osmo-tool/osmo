@@ -9,6 +9,7 @@ import osmo.tester.explorer.OSMOExplorer;
 import osmo.tester.generator.endcondition.LengthProbability;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.ModelFactory;
+import osmo.tester.model.TestModels;
 import osmo.tester.optimizer.MultiGreedy;
 import osmo.tester.parser.ModelObject;
 
@@ -48,11 +49,11 @@ public class DebuggingSim {
     }
 
     @Override
-    public Collection<ModelObject> createModelObjects() {
-      Collection<ModelObject> models = new ArrayList<>();
+    public TestModels createModelObjects() {
+      TestModels models = new TestModels();
       SimCard sim = new SimCard(new SimCardAdaptor());
       sim.out = out;
-      models.add(new ModelObject(sim));
+      models.add(sim);
       return models;
     }
   }
