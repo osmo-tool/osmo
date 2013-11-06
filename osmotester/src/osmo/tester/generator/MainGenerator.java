@@ -96,15 +96,18 @@ public class MainGenerator {
     int salt = suite.getCoverage().getSteps().size();
     //create a new seed for the new test case
     seed = baseSeed + salt;
-    if (config.getFactory() == null && fsm != null) return;
+    //we cannot re-parse the single instance or it will fail as it is already parsed and initialized
+    if (config.getFactory() instanceof SingleInstanceModelFactory && fsm != null) return;
     //re-parse the model, which causes re-creation of the model objects and as such creates the new references
     //to the new object instances. invocationtargets for guards, steps, etc. need updating and this is needed for that.
+    //also, we need to recreate the parser to avoid complaints about overlapping requirements definitions etc.
     MainParser parser = new MainParser();
     ParserResult result = parser.parse(seed, config, suite);
     fsm = result.getFsm();
     invokeAll(fsm.getGenerationEnablers());
     this.reqs = result.getRequirements();
     suite.initRequirements(reqs);
+    fsm.setRequirements(reqs);
   }
 
   /**
@@ -125,37 +128,49 @@ public class MainGenerator {
         boolean shouldContinue = nextStep();
         if (!shouldContinue) {
           log.debug("Ending test case");
+          lastSteps();
           break;
         }
       } catch (RuntimeException | AssertionError e) {
-        test.setFailed(true);
-        TestCaseStep step = suite.getCurrentTest().getCurrentStep();
-        if (step != null) {
-          test.getCurrentStep().setFailed(true);
-        }
-        Throwable unwrap = unwrap(e);
-        String errorMsg = "Error in test generation:" + unwrap.getMessage();
-        log.error(errorMsg, e);
-        listeners.testError(test, unwrap);
-        if (!(unwrap instanceof AssertionError) || config.shouldFailWhenError()) {
-          if (step != null) {
-            step.storeGeneralState(fsm);
-          }
-          afterTest();
-          afterSuite();
-          if (unwrap instanceof RuntimeException) {
-            throw (RuntimeException) unwrap;
-          }
-          throw new OSMOException(errorMsg, unwrap);
-        } else {
-          unwrap.printStackTrace();
-        }
-        log.debug("Skipped test error due to settings (no fail when error)", e);
+        handleError(test, e);
       }
     }
     afterTest();
     log.debug("Finished new test generation");
     return test;
+  }
+  
+  private void lastSteps() {
+    Collection<InvocationTarget> lastSteps = fsm.getLastSteps();
+    for (InvocationTarget lastStep : lastSteps) {
+      lastStep.invoke();
+    }
+  }
+
+  private void handleError(TestCase test, Throwable e) {
+    test.setFailed(true);
+    TestCaseStep step = suite.getCurrentTest().getCurrentStep();
+    if (step != null) {
+      test.getCurrentStep().setFailed(true);
+    }
+    Throwable unwrap = unwrap(e);
+    String errorMsg = "Error in test generation:" + unwrap.getMessage();
+    log.error(errorMsg, e);
+    listeners.testError(test, unwrap);
+    if (!(unwrap instanceof AssertionError) || config.shouldFailWhenError()) {
+      if (step != null) {
+        step.storeGeneralState(fsm);
+      }
+      afterTest();
+      afterSuite();
+      if (unwrap instanceof RuntimeException) {
+        throw (RuntimeException) unwrap;
+      }
+      throw new OSMOException(errorMsg, unwrap);
+    } else {
+      unwrap.printStackTrace();
+    }
+    log.debug("Skipped test error due to settings (no fail when error)", e);
   }
 
   /**

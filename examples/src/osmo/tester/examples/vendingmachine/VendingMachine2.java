@@ -7,6 +7,7 @@ import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Transition;
+import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
 import osmo.tester.reporting.coverage.CSVCoverageReporter;
@@ -123,8 +124,8 @@ public class VendingMachine2 {
   }
 
   public static void main(String[] args) {
-    VendingMachine2 vendingMachine2 = new VendingMachine2();
-    OSMOTester tester = new OSMOTester(vendingMachine2);
+    OSMOTester tester = new OSMOTester();
+    tester.setModelFactory(new ReflectiveModelFactory(VendingMachine2.class));
     tester.generate(25);
 
     //Print coverage metric

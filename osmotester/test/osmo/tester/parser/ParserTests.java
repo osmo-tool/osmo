@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.annotation.Variable;
+import osmo.tester.generator.ReflectiveModelFactory;
+import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
@@ -44,8 +46,10 @@ public class ParserTests {
 
   private OSMOConfiguration conf(Object... modelObjects) {
     OSMOConfiguration config = new OSMOConfiguration();
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    config.setFactory(factory);
     for (Object mo : modelObjects) {
-      config.addModelObject(mo);
+      factory.add(mo);
     }
     return config;
   }
@@ -79,7 +83,7 @@ public class ParserTests {
       String expected = "Invalid FSM:\n" +
               "Only one Requirements object instance allowed in the model.\n" +
               "No transitions found in given model object. Model cannot be processed.\n" +
-              "Guard without matching transition:foo.\n";
+              "Guard without matching step:foo.\n";
       assertEquals(expected, msg);
     }
   }
@@ -99,7 +103,7 @@ public class ParserTests {
               "@BeforeTest methods are not allowed to have parameters: \"badBT()\" has 1 parameters.\n" +
               "@ExplorationEnabler methods are not allowed to have parameters: \"enableExploration()\" has 1 parameters.\n" +
               "@GenerationEnabler methods are not allowed to have parameters: \"enableGeneration()\" has 1 parameters.\n" +
-              "CoverageValue methods must have 1 parameter (TestStep): \"badArgument()\" has 2 parameters.\n" +
+              "CoverageValue methods must have 1 parameter (class osmo.tester.generator.testsuite.TestCaseStep): \"badArgument()\" has 2 parameters.\n" +
               "CoverageValue parameter must be of type class osmo.tester.generator.testsuite.TestCaseStep: \"badArgument()\" has type class java.lang.String\n" +
               "Invalid return type for @CoverageValue in (\"badArgument()\"):void. Should be String.\n" +
               "Invalid return type for @EndCondition (\"end()\"):void. Should be boolean.\n" +
@@ -147,7 +151,7 @@ public class ParserTests {
       msg = sortErrors(msg);
       String expected = "Invalid FSM:\n" +
               "@EndCondition methods are not allowed to have parameters: \"ending()\" has 1 parameters.\n" +
-              "CoverageValue methods must have 1 parameter (TestStep): \"noArgument()\" has 0 parameters.\n" +
+              "CoverageValue methods must have 1 parameter (class osmo.tester.generator.testsuite.TestCaseStep): \"noArgument()\" has 0 parameters.\n" +
               "Guard methods are not allowed to have parameters: \"hello()\" has 1 parameters.\n"+
               "Requirements object was null, which is not allowed.\n" +
               "";
@@ -181,7 +185,7 @@ public class ParserTests {
               "@Transition methods are not allowed to have parameters: \"epix()\" has 1 parameters.\n" +
               "Invalid return type for guard (\"listCheck()\"):class java.lang.String.\n" +
               "@Transition methods are not allowed to have parameters: \"transition1()\" has 1 parameters.\n" +
-              "Guard without matching transition:world.\n";
+              "Guard without matching step:world.\n";
       assertEquals(expected, msg);
     }
   }
@@ -286,8 +290,10 @@ public class ParserTests {
     PrintStream ps = new PrintStream(out);
     ValidTestModel3 model = new ValidTestModel3(ps);
     OSMOConfiguration config = new OSMOConfiguration();
-    config.addModelObject("ap_", model);
-    config.addModelObject("ip_", model);
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add("ap_", model);
+    factory.add("ip_", model);
+    config.setFactory(factory);
     ParserResult result = parser.parse(1, config, new TestSuite());
     FSM fsm = result.getFsm();
     assertTransitionPresent(fsm, "ap_hello", 1, 2);
@@ -308,9 +314,11 @@ public class ParserTests {
     PrintStream ps = new PrintStream(out);
     ValidTestModel3 model = new ValidTestModel3(ps);
     OSMOConfiguration config = new OSMOConfiguration();
-    config.addModelObject("ap_", model);
-    config.addModelObject("ip_", model);
-    config.addModelObject(model);
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add("ap_", model);
+    factory.add("ip_", model);
+    factory.add(model);
+    config.setFactory(factory);
     ParserResult result = parser.parse(1, config, new TestSuite());
     FSM fsm = result.getFsm();
     assertTransitionPresent(fsm, "hello", 1, 3);
@@ -334,9 +342,11 @@ public class ParserTests {
     PrintStream ps = new PrintStream(out);
     TestStepModel model = new TestStepModel(ps);
     OSMOConfiguration config = new OSMOConfiguration();
-    config.addModelObject("ap_", model);
-    config.addModelObject("ip_", model);
-    config.addModelObject(model);
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add("ap_", model);
+    factory.add("ip_", model);
+    factory.add(model);
+    config.setFactory(factory);
     ParserResult result = parser.parse(1, config, new TestSuite());
     FSM fsm = result.getFsm();
     assertTransitionPresent(fsm, "hello", 1, 3);
@@ -360,9 +370,11 @@ public class ParserTests {
     PrintStream ps = new PrintStream(out);
     StepAndTransitionModel model = new StepAndTransitionModel(ps);
     OSMOConfiguration config = new OSMOConfiguration();
-    config.addModelObject("ap_", model);
-    config.addModelObject("ip_", model);
-    config.addModelObject(model);
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add("ap_", model);
+    factory.add("ip_", model);
+    factory.add(model);
+    config.setFactory(factory);
     ParserResult result = parser.parse(1, config, new TestSuite());
     FSM fsm = result.getFsm();
     assertTransitionPresent(fsm, "hello", 1, 3);
@@ -382,9 +394,8 @@ public class ParserTests {
 
   @Test
   public void strictOrNot() {
-    StrictTestModel model = new StrictTestModel();
     OSMOConfiguration config = new OSMOConfiguration();
-    config.addModelObject(model);
+    config.setFactory(new ReflectiveModelFactory(StrictTestModel.class));
     ParserResult result = parser.parse(1, config, new TestSuite());
     FSM fsm = result.getFsm();
     assertTransitionPresent(fsm, "a non-strict one", 1, 0);

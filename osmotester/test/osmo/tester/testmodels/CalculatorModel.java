@@ -11,6 +11,7 @@ import osmo.tester.annotation.GenerationEnabler;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
+import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -26,11 +27,10 @@ import java.io.PrintStream;
  * @author Teemu Kanstren
  */
 public class CalculatorModel {
-  private Requirements req = new Requirements();
+  private final Requirements req = new Requirements();
   private TestSuite history = null;
   @Variable
   private int counter = 0;
-  private int testCount = 1;
   private static final String REQ_INCREASE = "increase";
   private static final String REQ_DECREASE = "decrease";
   private PrintStream out;
@@ -84,8 +84,7 @@ public class CalculatorModel {
   @BeforeTest
   public void start() {
     counter = 0;
-    out.println("Starting new test case " + testCount);
-    testCount++;
+    out.println("Starting new test case " + (history.getAllTestCases().size()));
   }
 
   @AfterTest
@@ -139,7 +138,8 @@ public class CalculatorModel {
   }
 
   public static void main(String[] args) {
-    OSMOTester tester = new OSMOTester(new CalculatorModel());
+    OSMOTester tester = new OSMOTester();
+    tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
     tester.setAlgorithm(new RandomAlgorithm());
     tester.setTestEndCondition(new Length(100));
     tester.setSuiteEndCondition(new Length(100));

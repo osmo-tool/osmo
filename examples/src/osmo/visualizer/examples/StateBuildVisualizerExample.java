@@ -10,6 +10,7 @@ import osmo.tester.examples.calendar.testmodel.CalendarOverlappingModel;
 import osmo.tester.examples.calendar.testmodel.CalendarParticipantModel;
 import osmo.tester.examples.calendar.testmodel.CalendarTaskModel;
 import osmo.tester.examples.calendar.testmodel.ModelState;
+import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.endcondition.Length;
 import osmo.visualizer.state.StateVisualizer;
 
@@ -30,13 +31,15 @@ public class StateBuildVisualizerExample {
 //    PrintStream out = new OfflineScripter("tbc.html");
     PrintStream out = System.out;
 //    PrintStream out = NullPrintStream.stream;
-    tester.addModelObject(state);
-    tester.addModelObject(new CalendarMeetingModel(state, scripter, out));
-    tester.addModelObject(new CalendarOracleModel(state, scripter, out));
-    tester.addModelObject(new CalendarTaskModel(state, scripter, out));
-    tester.addModelObject(new CalendarOverlappingModel(state, scripter, out));
-    tester.addModelObject(new CalendarParticipantModel(state, scripter, out));
-    tester.addModelObject(new CalendarErrorHandlingModel(state, scripter, out));
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    tester.setModelFactory(factory);
+    factory.add(state);
+    factory.add(new CalendarMeetingModel(state, scripter, out));
+    factory.add(new CalendarOracleModel(state, scripter, out));
+    factory.add(new CalendarTaskModel(state, scripter, out));
+    factory.add(new CalendarOverlappingModel(state, scripter, out));
+    factory.add(new CalendarParticipantModel(state, scripter, out));
+    factory.add(new CalendarErrorHandlingModel(state, scripter, out));
     tester.generate(55);
   }
 }

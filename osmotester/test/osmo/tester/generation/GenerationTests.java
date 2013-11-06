@@ -3,9 +3,10 @@ package osmo.tester.generation;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOTester;
+import osmo.tester.generator.ReflectiveModelFactory;
+import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.endcondition.logical.And;
 import osmo.tester.generator.listener.AbstractListener;
-import osmo.tester.generator.listener.GenerationListener;
 import osmo.tester.generator.endcondition.Endless;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.Probability;
@@ -48,7 +49,7 @@ public class GenerationTests {
 
   @Test
   public void noEnabledTransition() {
-    osmo.addModelObject(new ValidTestModel1());
+    osmo.setModelFactory(new ReflectiveModelFactory(ValidTestModel1.class));
     Length length3 = new Length(3);
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
@@ -65,7 +66,7 @@ public class GenerationTests {
   public void generateTestModel2() {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
-    osmo.addModelObject(new ValidTestModel2(new Requirements(), ps));
+    osmo.setModelFactory(new ValidTestModel2.MyModelFactory(new Requirements(), ps));
     Length length3 = new Length(3);
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
@@ -80,7 +81,9 @@ public class GenerationTests {
   public void generateTestModel3() {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
-    osmo.addModelObject(new ValidTestModel3(ps));
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(new ValidTestModel3(ps));
+    osmo.setModelFactory(factory);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
@@ -95,7 +98,9 @@ public class GenerationTests {
   public void generateTestModel3Times4() {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
-    osmo.addModelObject(new ValidTestModel3(ps));
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(new ValidTestModel3(ps));
+    osmo.setModelFactory(factory);
     Length length3 = new Length(3);
     Length length4 = new Length(4);
     osmo.setTestEndCondition(length3);
@@ -114,7 +119,9 @@ public class GenerationTests {
   public void generateTestModel4Times2() {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
-    osmo.addModelObject(new ValidTestModel4(ps));
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(new ValidTestModel4(ps));
+    osmo.setModelFactory(factory);
     Length length3 = new Length(3);
     Length length2 = new Length(2);
     osmo.setTestEndCondition(length3);
@@ -131,7 +138,9 @@ public class GenerationTests {
   public void generateTestModel5Times2() {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
-    osmo.addModelObject(new ValidTestModel5(ps));
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(new ValidTestModel5(ps));
+    osmo.setModelFactory(factory);
     Length length5 = new Length(5);
     Length length2 = new Length(2);
     osmo.setTestEndCondition(length5);
@@ -147,7 +156,9 @@ public class GenerationTests {
   @Test
   public void generateWithStateDescription() {
     CoverageValueModel1 model = new CoverageValueModel1();
-    osmo.addModelObject(model);
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(model);
+    osmo.setModelFactory(factory);
     Length length3 = new Length(3);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length3);
@@ -167,8 +178,10 @@ public class GenerationTests {
     PrintStream ps = new PrintStream(out);
     PartialModel1 model1 = new PartialModel1(reqs, ps);
     PartialModel2 model2 = new PartialModel2(reqs, ps);
-    osmo.addModelObject(model1);
-    osmo.addModelObject(model2);
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(model1);
+    factory.add(model2);
+    osmo.setModelFactory(factory);
     Length length3 = new Length(3);
     Length length2 = new Length(2);
     osmo.setTestEndCondition(length3);
@@ -184,7 +197,9 @@ public class GenerationTests {
   @Test
   public void generateBaseModelExtension() {
     BaseModelExtension model = new BaseModelExtension();
-    osmo.addModelObject(model);
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(model);
+    osmo.setModelFactory(factory);
     Length length5 = new Length(5);
     osmo.setTestEndCondition(length5);
     osmo.setSuiteEndCondition(length5);
@@ -195,7 +210,9 @@ public class GenerationTests {
   @Test
   public void thresholdBreak() {
     VariableModel2 model = new VariableModel2();
-    osmo.addModelObject(model);
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(model);
+    osmo.setModelFactory(factory);
     Endless endless = new Endless();
     Length length = new Length(100);
     Or combo = new Or(endless, length);
@@ -212,7 +229,9 @@ public class GenerationTests {
     PrintStream ps = new PrintStream(out);
     ValidTestModel2 modelObject = new ValidTestModel2(new Requirements(), ps);
     modelObject.setPrintFlow(true);
-    osmo.addModelObject(modelObject);
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(modelObject);
+    osmo.setModelFactory(factory);
     osmo.setTestEndCondition(new Length(3));
     osmo.setSuiteEndCondition(new Length(3));
     osmo.generate(145);
@@ -226,9 +245,11 @@ public class GenerationTests {
     PrintStream ps = new PrintStream(out);
     ValidTestModel2 mo = new ValidTestModel2(new Requirements(), ps);
     mo.setPrintFlow(true);
-    osmo.addModelObject("p1", mo);
-    osmo.addModelObject("p2", mo);
-    osmo.addModelObject(mo);
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add("p1", mo);
+    factory.add("p2", mo);
+    factory.add(mo);
+    osmo.setModelFactory(factory);
     osmo.setTestEndCondition(new Length(3));
     osmo.setSuiteEndCondition(new Length(3));
     osmo.generate(111);
@@ -241,7 +262,9 @@ public class GenerationTests {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
     GuardianModel mo = new GuardianModel(ps);
-    osmo.addModelObject(mo);
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(mo);
+    osmo.setModelFactory(factory);
     osmo.setTestEndCondition(new Length(3));
     osmo.setSuiteEndCondition(new Length(3));
     osmo.generate(65);
@@ -260,9 +283,11 @@ public class GenerationTests {
     GuardianModel mo1 = new GuardianModel(ps, "m1");
     GuardianModel mo2 = new GuardianModel(ps, "m2");
     GuardianModel mo3 = new GuardianModel(ps, "m3");
-    osmo.addModelObject(mo1);
-    osmo.addModelObject("p2", mo2);
-    osmo.addModelObject("p3", mo3);
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(mo1);
+    factory.add("p2", mo2);
+    factory.add("p3", mo3);
+    osmo.setModelFactory(factory);
     osmo.setTestEndCondition(new Length(3));
     osmo.setSuiteEndCondition(new Length(3));
     osmo.generate(650);
@@ -278,7 +303,9 @@ public class GenerationTests {
   public void groups() {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
-    osmo.addModelObject(new GroupModel2(ps));
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(new GroupModel2(ps));
+    osmo.setModelFactory(factory);
     osmo.setTestEndCondition(new Length(5));
     osmo.setSuiteEndCondition(new Length(15));
     osmo.generate(650);
@@ -291,7 +318,9 @@ public class GenerationTests {
   
   @Test
   public void seedUpdates() {
-    osmo.addModelObject(new CalculatorModel());
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(new CalculatorModel());
+    osmo.setModelFactory(factory);
     final Probability probability = new Probability(0.1);
     And ec = new And(new Length(1), probability);
     osmo.setTestEndCondition(ec);

@@ -3,6 +3,7 @@ package osmo.visualizer.examples;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.examples.calculator.CalculatorModel;
+import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.endcondition.Endless;
 import osmo.tester.gui.manualdrive.ManualAlgorithm;
 import osmo.visualizer.generator.TransitionsPieChart;
@@ -14,7 +15,7 @@ public class TransitionPieChartExample {
     OSMOTester tester = new OSMOTester();
     tester.addListener(transitionsBarChart);
 //    tester.addListener(new TransitionsPieChart());
-    tester.addModelObject(new CalculatorModel());
+    tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
     tester.setAlgorithm(new ManualAlgorithm(tester));
     tester.generate(55);
   }

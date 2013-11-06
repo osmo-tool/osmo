@@ -1,6 +1,7 @@
 package osmo.tester.explorer.testmodels;
 
 import osmo.tester.model.ModelFactory;
+import osmo.tester.model.TestModels;
 import osmo.tester.parser.ModelObject;
 
 import java.io.PrintStream;
@@ -20,9 +21,9 @@ public class PaperModel1Factory implements ModelFactory {
   }
 
   @Override
-  public Collection<ModelObject> createModelObjects() {
-    Collection<ModelObject> result = new ArrayList<>();
-    result.add(new ModelObject(new PaperModel1(ps)));
+  public TestModels createModelObjects() {
+    TestModels result = new TestModels();
+    result.add(new PaperModel1(ps));
     return result;
   }
 }

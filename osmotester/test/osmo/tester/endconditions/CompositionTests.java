@@ -1,14 +1,15 @@
 package osmo.tester.endconditions;
 
-import org.junit.Before;
 import org.junit.Test;
-import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
+import osmo.tester.generator.ReflectiveModelFactory;
+import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.endcondition.logical.And;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.logical.Or;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.Requirements;
 import osmo.tester.testmodels.CalculatorModel;
 
 import java.util.List;
@@ -23,13 +24,13 @@ public class CompositionTests {
     Length length4 = new Length(4);
     And and = new And(length2, length4);
 
-    CalculatorModel calculator = new CalculatorModel();
-    OSMOTester tester = new OSMOTester(calculator);
+    OSMOTester tester = new OSMOTester();
+    tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
     tester.setTestEndCondition(and);
     tester.setSuiteEndCondition(length2);
     tester.generate(333);
-    TestSuite testLog = calculator.getHistory();
-    List<TestCase> history = testLog.getFinishedTestCases();
+    TestSuite suite = tester.getSuite();
+    List<TestCase> history = suite.getFinishedTestCases();
     assertEquals("Number of tests generated", 2, history.size());
     for (TestCase test : history) {
       assertEquals("Number of steps in a test case", 4, test.getSteps().size());
@@ -43,13 +44,13 @@ public class CompositionTests {
     Length length6 = new Length(6);
     And and = new And(length2, length4, length6);
 
-    CalculatorModel calculator = new CalculatorModel();
-    OSMOTester tester = new OSMOTester(calculator);
+    OSMOTester tester = new OSMOTester();
+    tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
     tester.setTestEndCondition(and);
     tester.setSuiteEndCondition(length2);
     tester.generate(333);
-    TestSuite testLog = calculator.getHistory();
-    List<TestCase> history = testLog.getFinishedTestCases();
+    TestSuite suite = tester.getSuite();
+    List<TestCase> history = suite.getFinishedTestCases();
     assertEquals("Number of tests generated", 2, history.size());
     for (TestCase test : history) {
       assertEquals("Number of steps in a test case", 6, test.getSteps().size());
@@ -63,13 +64,15 @@ public class CompositionTests {
     Length length6 = new Length(6);
     Or or = new Or(length2, length4, length6);
 
-    CalculatorModel calculator = new CalculatorModel();
-    OSMOTester tester = new OSMOTester(calculator);
+    OSMOTester tester = new OSMOTester();
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(new CalculatorModel());
+    tester.setModelFactory(factory);
     tester.setTestEndCondition(or);
     tester.setSuiteEndCondition(length2);
     tester.generate(333);
-    TestSuite testLog = calculator.getHistory();
-    List<TestCase> history = testLog.getFinishedTestCases();
+    TestSuite suite = tester.getSuite();
+    List<TestCase> history = suite.getFinishedTestCases();
     assertEquals("Number of tests generated", 2, history.size());
     for (TestCase test : history) {
       assertEquals("Number of steps in a test case", 2, test.getSteps().size());
@@ -83,13 +86,13 @@ public class CompositionTests {
     Length length6 = new Length(6);
     And and = new And(length2, length4, length6);
 
-    CalculatorModel calculator = new CalculatorModel();
-    OSMOTester tester = new OSMOTester(calculator);
+    OSMOTester tester = new OSMOTester();
+    tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
     tester.setTestEndCondition(and);
     tester.setSuiteEndCondition(and);
     tester.generate(333);
-    TestSuite testLog = calculator.getHistory();
-    List<TestCase> history = testLog.getFinishedTestCases();
+    TestSuite suite = tester.getSuite();
+    List<TestCase> history = suite.getFinishedTestCases();
     assertEquals("Number of tests generated", 6, history.size());
     for (TestCase test : history) {
       assertEquals("Number of steps in a test case", 6, test.getSteps().size());

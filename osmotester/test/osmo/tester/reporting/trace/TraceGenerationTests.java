@@ -2,8 +2,9 @@ package osmo.tester.reporting.trace;
 
 import org.junit.Before;
 import org.junit.Test;
-import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
+import osmo.tester.generator.ReflectiveModelFactory;
+import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
@@ -30,7 +31,7 @@ public class TraceGenerationTests {
 
   private void assertTrace(TestSuite suite, String filename) {
     TraceReportWriter writer = new TraceReportWriter();
-    String actual = writer.createReport(suite);
+    String actual = writer.createReport(suite.getAllTestCases());
     String expected = getResource(TraceGenerationTests.class, filename);
     expected = unifyLineSeparators(expected, "\n");
     actual = unifyLineSeparators(actual, "\n");

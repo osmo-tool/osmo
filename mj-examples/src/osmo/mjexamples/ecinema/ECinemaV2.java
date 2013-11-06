@@ -13,6 +13,7 @@ import osmo.tester.coverage.TestCoverage;
 import osmo.tester.explorer.ExplorationConfiguration;
 import osmo.tester.explorer.ExplorerAlgorithm;
 import osmo.tester.explorer.OSMOExplorer;
+import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.listener.TracePrinter;
 import osmo.tester.generator.algorithm.BalancingAlgorithm;
 import osmo.tester.generator.endcondition.Length;
@@ -21,6 +22,7 @@ import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.model.ModelFactory;
 import osmo.tester.model.Requirements;
+import osmo.tester.model.TestModels;
 import osmo.tester.optimizer.MultiGreedy;
 import osmo.tester.parser.ModelObject;
 
@@ -431,7 +433,7 @@ public class ECinemaV2 {
     OSMOTester tester = new OSMOTester();
     tester.setAlgorithm(new BalancingAlgorithm());
     tester.addListener(new TracePrinter());
-    tester.addModelObject(new ECinemaV2());
+    tester.setModelFactory(new ReflectiveModelFactory(ECinemaV2.class));
     tester.setSuiteEndCondition(new Length(200));
     tester.setTestEndCondition(new LengthProbability(10, 0.2d));
     tester.generate(44);
@@ -491,8 +493,8 @@ public class ECinemaV2 {
     }
 
     @Override
-    public Collection<ModelObject> createModelObjects() {
-      Collection<ModelObject> models = new ArrayList<>();
+    public TestModels createModelObjects() {
+      TestModels models = new TestModels();
       ECinemaV2 v2 = new ECinemaV2();
       models.add(new ModelObject(v2));
       return models;

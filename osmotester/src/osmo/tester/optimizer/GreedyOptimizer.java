@@ -8,7 +8,7 @@ import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.coverage.ScoreConfiguration;
 import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.MainGenerator;
-import osmo.tester.generator.SimpleModelFactory;
+import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.FSM;
@@ -152,7 +152,7 @@ public class GreedyOptimizer {
       tester.setModelFactory(factory);
     } else if (modelClasses.size() > 0) {
       log.debug("Creating factory for given model classes");
-      SimpleModelFactory factory = new SimpleModelFactory(modelClasses.toArray(new Class[modelClasses.size()]));
+      ReflectiveModelFactory factory = new ReflectiveModelFactory(modelClasses.toArray(new Class[modelClasses.size()]));
       tester.setModelFactory(factory);
     } else {
       throw new IllegalStateException("No model factory found.");
@@ -246,7 +246,7 @@ public class GreedyOptimizer {
    * @param content The data to write.
    */
   public void writeFile(String name, String content) {
-    TestUtils.write(content, "osmo-output-" + seed + "/" + name);
+    TestUtils.write(content, "osmo-output/greedy-" + seed + "/" + name);
   }
 
   /**

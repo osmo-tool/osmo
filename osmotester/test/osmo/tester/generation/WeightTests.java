@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
+import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.algorithm.WeightedBalancingAlgorithm;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.testmodels.WeightedModel1;
@@ -28,7 +29,7 @@ public class WeightTests {
   @Test
   public void weightedModel1SuiteSize1() {
     listener.addExpected("suite-start", "start", "t:bob3", "t:bob3", "t:bob4", "t:bob4", "t:bob2", "t:bob3", "t:bob2", "t:bob1", "t:bob1", "t:bob3", "t:bob2", "end", "suite-end");
-    osmo.addModelObject(new WeightedModel1());
+    osmo.setModelFactory(new ReflectiveModelFactory(WeightedModel1.class));
     osmo.setAlgorithm(new WeightedBalancingAlgorithm());
     Length length3 = new Length(11);
     Length length1 = new Length(1);
@@ -42,7 +43,7 @@ public class WeightTests {
   public void weightedModel1SuiteSize2() {
     listener.addExpected("suite-start", "start", "t:bob3", "t:bob3", "t:bob4", "t:bob4", "t:bob2", "t:bob3", "end");
     listener.addExpected("start", "t:bob2", "t:bob1", "t:bob1", "t:bob3", "t:bob2", "t:bob4", "end", "suite-end");
-    osmo.addModelObject(new WeightedModel1());
+    osmo.setModelFactory(new ReflectiveModelFactory(WeightedModel1.class));
     osmo.setAlgorithm(new WeightedBalancingAlgorithm());
     Length length3 = new Length(6);
     Length length1 = new Length(2);

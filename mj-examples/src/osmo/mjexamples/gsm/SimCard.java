@@ -21,6 +21,7 @@ import osmo.tester.coverage.TestCoverage;
 import osmo.tester.explorer.ExplorationConfiguration;
 import osmo.tester.explorer.ExplorerAlgorithm;
 import osmo.tester.explorer.OSMOExplorer;
+import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.LengthProbability;
 import osmo.tester.generator.testsuite.TestCase;
@@ -29,6 +30,7 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.gui.manualdrive.ManualAlgorithm;
 import osmo.tester.model.ModelFactory;
 import osmo.tester.model.Requirements;
+import osmo.tester.model.TestModels;
 import osmo.tester.optimizer.MultiGreedy;
 import osmo.tester.parser.ModelObject;
 
@@ -601,7 +603,9 @@ public class SimCard {
     tester.setAlgorithm(new ManualAlgorithm(tester));
 //    tester.setAlgorithm(new BalancingAlgorithm());
 //    tester.addListener(new TracePrinter());
-    tester.addModelObject(new SimCard(new SimCardAdaptor()));
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(new SimCard(new SimCardAdaptor()));
+    tester.setModelFactory(factory);
     tester.setSuiteEndCondition(new Length(200));
 //    tester.setSuiteEndCondition(new Time(345));
     tester.setTestEndCondition(new LengthProbability(50, 0.2d));
@@ -679,11 +683,11 @@ public class SimCard {
     }
 
     @Override
-    public Collection<ModelObject> createModelObjects() {
-      Collection<ModelObject> models = new ArrayList<>();
+    public TestModels createModelObjects() {
+      TestModels models = new TestModels();
       SimCard sim = new SimCard(new SimCardAdaptor());
       sim.out = out;
-      models.add(new ModelObject(sim));
+      models.add(sim);
       return models;
     }
   }

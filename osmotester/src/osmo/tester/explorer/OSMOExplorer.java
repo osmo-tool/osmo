@@ -5,11 +5,10 @@ import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.coverage.TestCoverage;
-import osmo.tester.generator.SimpleModelFactory;
+import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.listener.GenerationListener;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.model.FSM;
 import osmo.tester.optimizer.CSVReport;
 
 import java.util.ArrayList;
@@ -63,27 +62,28 @@ public class OSMOExplorer {
    * @param config The configuration to use.
    */
   public void explore(ExplorationConfiguration config) {
-    this.config = config;
-    osmo.setPrintCoverage(false);
     long start = System.currentTimeMillis();
-    if (classes.size() > 0) {
-      SimpleModelFactory factory = new SimpleModelFactory();
-      for (Class modelClass : classes) {
-        factory.addModelClass(modelClass);
-      }
-      config.setFactory(factory);
-    }
-    config.fillOSMOConfiguration(osmoConfig);
-    for (GenerationListener listener : listeners) {
-      osmoConfig.addListener(listener);
-    }
+    configureWith(config);
 
-    osmo.setConfig(osmoConfig);
-    algorithm = new ExplorerAlgorithm(config);
-    osmo.setAlgorithm(algorithm);
     System.out.println("Starting exploration with " + config.getParallelism() + " parallel processes.");
     osmo.generate(config.getSeed());
 
+    String path = "osmo-output/expl-" + config.getSeed() + "-" + config.getDepth() + "/";
+    createScoreReport(path, config);
+    //here we write the trace report..
+    OSMOTester.writeTrace(path+"exploration", osmo.getSuite().getAllTestCases(), config.getSeed(), osmoConfig);
+
+    double seconds = calculateTime(start);
+    System.out.println("Generation time: " + seconds + "s.");
+  }
+
+  private double calculateTime(long start) {
+    long end = System.currentTimeMillis();
+    long diff = end - start;
+    return (double) (diff / 1000);
+  }
+
+  private void createScoreReport(String path, ExplorationConfiguration config) {
     boolean printAll = config.isPrintAll();
     Map<String, Collection<String>> possibleValues = algorithm.getPossibleValues();
     Collection<String> possibleStepPairs = algorithm.getPossibleStepPairs();
@@ -101,30 +101,33 @@ public class OSMOExplorer {
     report.process(allTests);
     String totalCsv = report.report();
     totalCsv += summary + "\n";
-    writeFile(id + "-scores.csv", totalCsv);
-
-    long end = System.currentTimeMillis();
-    long diff = end - start;
-    double seconds = diff / 1000;
-    System.out.println("Generation time: " + seconds + "s.");
+    TestUtils.write(totalCsv, path + id + "-scores.csv");
   }
 
-  //TODO: explorationissa tarttee näköjään rajoitteen ettei beforesuite alusta mitään instanssikohtaista
+  private void configureWith(ExplorationConfiguration config) {
+    this.config = config;
+    osmo.setPrintCoverage(false);
+    if (classes.size() > 0) {
+      ReflectiveModelFactory factory = new ReflectiveModelFactory();
+      for (Class modelClass : classes) {
+        factory.addModelClass(modelClass);
+      }
+      config.setFactory(factory);
+    }
+    config.fillOSMOConfiguration(osmoConfig);
+    for (GenerationListener listener : listeners) {
+      osmoConfig.addListener(listener);
+    }
+    osmo.setConfig(osmoConfig);
+    algorithm = new ExplorerAlgorithm(config);
+    osmo.setAlgorithm(algorithm);
+  }
+
   public ExplorerAlgorithm getAlgorithm() {
     return algorithm;
   }
 
   public TestSuite getSuite() {
     return osmo.getSuite();
-  }
-
-  /**
-   * Writes given data to a file. Filename has the generation seed added to it.
-   *
-   * @param name    The filename. Ends up as "osmo-output-<seed>/name".
-   * @param content The data to write.
-   */
-  public void writeFile(String name, String content) {
-    TestUtils.write(content, "osmo-output-" + config.getSeed() + "-" + config.getDepth() + "/" + name);
   }
 }

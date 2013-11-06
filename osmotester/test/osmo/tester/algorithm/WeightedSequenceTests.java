@@ -2,9 +2,9 @@ package osmo.tester.algorithm;
 
 import org.junit.Before;
 import org.junit.Test;
-import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generation.TestSequenceListener;
+import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.algorithm.WeightedRandomAlgorithm;
 import osmo.tester.generator.endcondition.Length;
@@ -29,7 +29,7 @@ public class WeightedSequenceTests {
   @Test
   public void length4() {
     listener.addExpected("suite-start", "start", "t:bob4", "t:bob4", "t:bob3", "t:bob3", "end", "suite-end");
-    osmo.addModelObject(new WeightedModel1());
+    osmo.setModelFactory(new ReflectiveModelFactory(WeightedModel1.class));
     Length length4 = new Length(4);
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length4);
@@ -40,7 +40,7 @@ public class WeightedSequenceTests {
     Collection<String> optimized = listener.getSteps();
 
     testSetup();
-    osmo.addModelObject(new WeightedModel1());
+    osmo.setModelFactory(new ReflectiveModelFactory(WeightedModel1.class));
     osmo.setTestEndCondition(length4);
     osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new RandomAlgorithm());
@@ -52,7 +52,7 @@ public class WeightedSequenceTests {
   @Test
   public void length20() {
     listener.addExpected("suite-start", "start", "t:bob4", "t:bob4", "t:bob3", "t:bob3", "t:bob2", "t:bob4", "t:bob4", "t:bob4", "t:bob2", "t:bob4", "t:bob1", "t:bob4", "t:bob3", "t:bob4", "t:bob3", "t:bob4", "t:bob3", "t:bob2", "t:bob4", "t:bob2", "end", "suite-end");
-    osmo.addModelObject(new WeightedModel1());
+    osmo.setModelFactory(new ReflectiveModelFactory(WeightedModel1.class));
     Length length15 = new Length(20);
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length15);
@@ -63,7 +63,7 @@ public class WeightedSequenceTests {
     Collection<String> optimized = listener.getSteps();
 
     testSetup();
-    osmo.addModelObject(new WeightedModel1());
+    osmo.setModelFactory(new ReflectiveModelFactory(WeightedModel1.class));
     osmo.setTestEndCondition(length15);
     osmo.setSuiteEndCondition(length1);
     osmo.setAlgorithm(new RandomAlgorithm());

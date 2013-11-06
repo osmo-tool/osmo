@@ -12,6 +12,7 @@ import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
+import osmo.tester.model.TestModels;
 import osmo.tester.parser.ModelObject;
 
 import java.io.FileOutputStream;
@@ -26,7 +27,7 @@ import java.util.Collection;
  * Listens to OSMO Tester test generation and builds a test report suitable for the Jenkins JUnit reporting task.
  * To use, add this as a listener to OSMO Tester and once generation is finished, call methods writeStepReport()
  * or writeTestReport() to produce a suitable report. The step report reports each test step as a different test case
- * in Jenkins. The test report reports test cases as Jenkins tests.
+ * in Jenkins. The test report reports test cases as JUnit tests.
  *
  * @author Teemu Kanstren
  */
@@ -209,8 +210,8 @@ public class JenkinsReportGenerator implements GenerationListener {
     for (GenerationListener listener : listeners) {
       properties.add(new Property(LISTENER, listener.getClass().getName()));
     }
-    Collection<ModelObject> modelObjects = config.createModelObjects();
-    for (ModelObject mo : modelObjects) {
+    TestModels testModels = config.createModelObjects();
+    for (ModelObject mo : testModels.getModels()) {
       String prefix = mo.getPrefix();
       String name = mo.getObject().getClass().getName();
       if (prefix.length() > 0) {

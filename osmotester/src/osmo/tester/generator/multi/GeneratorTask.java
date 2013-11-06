@@ -5,6 +5,7 @@ import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.coverage.ScoreConfiguration;
+import osmo.tester.generator.endcondition.Time;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.optimizer.CSVReport;
@@ -14,34 +15,32 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 /** @author Teemu Kanstren */
-public class GeneratorTask implements Callable<List<TestCase>> {
+public class GeneratorTask implements Runnable {
   private final OSMOConfiguration config;
-  private final long seed;
+  private long seed;
+  private final Time time;
+  private final int id;
+  private static volatile int nextId = 1;
 
-  public GeneratorTask(OSMOConfiguration config, long seed) {
+  public GeneratorTask(OSMOConfiguration config, Time time, long seed) {
     this.config = config;
     this.seed = seed;
+    this.time = time;
+    this.id = nextId++;
   }
 
   @Override
-  public List<TestCase> call() throws Exception {
-    OSMOTester tester = new OSMOTester();
-    tester.setConfig(config);
-    tester.generate(seed);
-    TestSuite suite = tester.getSuite();
-    List<TestCase> tests = suite.getAllTestCases();
-
-    String summary = "summary\n";
-    CSVReport report = new CSVReport(new ScoreCalculator(new ScoreConfiguration()));
-    report.process(tests);
-
-    String totalCsv = report.report();
-    totalCsv += summary + "\n";
-    String filename = "osmo-output/osmo-" + seed;
-    TestUtils.write(totalCsv, filename + ".csv");
-    TraceReportWriter trace = new TraceReportWriter();
-    trace.write(suite, filename+".html");
-
-    return tests;
+  public void run() {
+    time.init(0, null);
+    int i = 1;
+    while (!time.endTest(null, null)) {
+      seed += 100;
+      OSMOTester tester = new OSMOTester();
+      tester.setConfig(config);
+      tester.generate(seed);
+      TestSuite suite = tester.getSuite();
+      OSMOTester.writeTrace("osmo-output/mosmo-task-"+id+"-i-"+i, suite.getAllTestCases(), seed, config);
+      i++;
+    }
   }
 }

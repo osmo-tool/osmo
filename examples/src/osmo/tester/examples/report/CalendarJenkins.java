@@ -12,6 +12,7 @@ import osmo.tester.examples.calendar.testmodel.CalendarOverlappingModel;
 import osmo.tester.examples.calendar.testmodel.CalendarParticipantModel;
 import osmo.tester.examples.calendar.testmodel.CalendarTaskModel;
 import osmo.tester.examples.calendar.testmodel.ModelState;
+import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.reporting.jenkins.JenkinsReportGenerator;
 
@@ -31,14 +32,16 @@ public class CalendarJenkins {
     osmo.setSuiteEndCondition(new Length(20));
     ModelState state = new ModelState();
     CalendarScripter scripter = new OfflineScripter(state, "tests.html");
-    osmo.addModelObject(state);
-    osmo.addModelObject(new CalendarMeetingModel(state, scripter));
-    osmo.addModelObject(new CalendarOracleModel(state, scripter));
-    osmo.addModelObject(new CalendarTaskModel(state, scripter));
-    osmo.addModelObject(new CalendarOverlappingModel(state, scripter));
-    osmo.addModelObject(new CalendarParticipantModel(state, scripter));
-    osmo.addModelObject(new CalendarErrorHandlingModel(state, scripter));
-    osmo.addModelObject(new CalendarFailureModel(state, scripter));
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    osmo.setModelFactory(factory);
+    factory.add(state);
+    factory.add(new CalendarMeetingModel(state, scripter));
+    factory.add(new CalendarOracleModel(state, scripter));
+    factory.add(new CalendarTaskModel(state, scripter));
+    factory.add(new CalendarOverlappingModel(state, scripter));
+    factory.add(new CalendarParticipantModel(state, scripter));
+    factory.add(new CalendarErrorHandlingModel(state, scripter));
+    factory.add(new CalendarFailureModel(state, scripter));
     osmo.generate(2324);
   }
 }

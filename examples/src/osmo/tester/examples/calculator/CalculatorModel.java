@@ -9,6 +9,7 @@ import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
+import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.gui.manualdrive.ManualAlgorithm;
@@ -106,7 +107,8 @@ public class CalculatorModel {
   }
 
   public static void main(String[] args) {
-    OSMOTester tester = new OSMOTester(new CalculatorModel());
+    OSMOTester tester = new OSMOTester();
+    tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
     tester.setAlgorithm(new ManualAlgorithm(tester));
     tester.generate(4343);
   }

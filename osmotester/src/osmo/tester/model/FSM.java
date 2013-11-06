@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class FSM {
   private static final Logger log = new Logger(FSM.class);
-  /** Key = transition name (from @Transition("name")), Value = transition object */
+  /** Key = transition name (from @TestStep("name")), Value = transition object */
   private Map<TransitionName, FSMTransition> transitions = new HashMap<>();
   /** List of specific guards, associated to groups or transitions. */
   private List<FSMGuard> specificGuards = new ArrayList<>();
@@ -36,6 +36,8 @@ public class FSM {
   private Collection<InvocationTarget> beforeTests = new ArrayList<>();
   /** List of methods to be executed after each test case. */
   private Collection<InvocationTarget> afterTests = new ArrayList<>();
+  /** List of methods to be executed as last (final) steps of any test case. */
+  private Collection<InvocationTarget> lastSteps = new ArrayList<>();
   /** List of methods to be executed before the overall test suite. */
   private Collection<InvocationTarget> beforeSuites = new ArrayList<>();
   /** List of methods to be executed after the overall test suite. */
@@ -57,7 +59,7 @@ public class FSM {
   /** Name of the start state (before anything else). */
   public static final String START_STATE_NAME = "osmo.start.state";
 
-  /** Constructor. */
+  /** Constructor. And a useful comment. */
   public FSM() {
   }
 
@@ -139,29 +141,29 @@ public class FSM {
   private String checkGuards(List<FSMGuard> guards, String errors, String errorMsg) {
     for (FSMGuard guard : guards) {
       if (guard.getCount() == 0) {
-        errors += errorMsg+" without matching transition:" + guard.getName()+".\n";
+        errors += errorMsg+" without matching step:" + guard.getName()+".\n";
       }
     }
     return errors;
   }
 
   /**
-   * Add generic guards and oracles to all transitions.
+   * Add generic guards and pre- post- methods to all test steps.
    *
-   * @param transition The transition to check.
+   * @param step       The test step to check.
    * @param errors     The current error message string.
    * @return The error msg string given with possible new errors appended.
    */
-  private String addGenericElements(FSMTransition transition, String errors) {
+  private String addGenericElements(FSMTransition step, String errors) {
     //we add all generic guards to the set of guards for this transition. doing it here includes them in the checks
     for (InvocationTarget guard : genericGuards) {
-      transition.addGuard(guard);
+      step.addGuard(guard);
     }
     for (InvocationTarget pre : genericPre) {
-      transition.addPre(pre);
+      step.addPre(pre);
     }
     for (InvocationTarget post : genericPost) {
-      transition.addPost(post);
+      step.addPost(post);
     }
     return errors;
   }
@@ -351,6 +353,14 @@ public class FSM {
    */
   public void addStateVariable(VariableField var) {
     stateVariables.add(var);
+  }
+
+  public void addLastStep(InvocationTarget lastStep) {
+    lastSteps.add(lastStep);
+  }
+
+  public Collection<InvocationTarget> getLastSteps() {
+    return lastSteps;
   }
 
   /**

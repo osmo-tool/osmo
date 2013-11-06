@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOTester;
 import osmo.tester.generation.TestSequenceListener;
+import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.structure.StepCoverage;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -171,9 +172,8 @@ public class StepsCoverageTests {
 
   @Test
   public void nonExistentStep() {
-    VariableModel2 model = new VariableModel2();
     OSMOTester osmo = new OSMOTester();
-    osmo.addModelObject(model);
+    osmo.setModelFactory(new ReflectiveModelFactory(VariableModel2.class));
     StepCoverage sc = new StepCoverage();
     sc.addRequiredStep("non-existent");
     Length length1 = new Length(1);
@@ -190,9 +190,8 @@ public class StepsCoverageTests {
 
   @Test
   public void stepSeveralTimesWithGeneration() {
-    VariableModel2 model = new VariableModel2();
     OSMOTester osmo = new OSMOTester();
-    osmo.addModelObject(model);
+    osmo.setModelFactory(new ReflectiveModelFactory(VariableModel2.class));
     StepCoverage sc = new StepCoverage();
     sc.addRequiredStep("third");
     sc.addRequiredStep("third");

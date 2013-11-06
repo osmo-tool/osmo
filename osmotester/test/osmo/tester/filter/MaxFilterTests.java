@@ -5,6 +5,8 @@ import org.junit.Test;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generation.TestSequenceListener;
+import osmo.tester.generator.ReflectiveModelFactory;
+import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.filter.MaxStepFilter;
 import osmo.tester.model.Requirements;
@@ -37,8 +39,7 @@ public class MaxFilterTests {
 
   @Test
   public void noSuchTransition() {
-    VariableModel2 model = new VariableModel2();
-    osmo.addModelObject(model);
+    osmo.setModelFactory(new ReflectiveModelFactory(VariableModel2.class));
     MaxStepFilter filter = new MaxStepFilter();
     filter.setMax("no-such-transition", 1);
     osmo.addFilter(filter);
@@ -52,7 +53,9 @@ public class MaxFilterTests {
 
   @Test
   public void zero() {
-    osmo.addModelObject(validTestModel2);
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(validTestModel2);
+    osmo.setModelFactory(factory);
     MaxStepFilter filter = new MaxStepFilter();
     filter.setMax("world", 0);
     osmo.addFilter(filter);
@@ -79,7 +82,9 @@ public class MaxFilterTests {
 
   @Test
   public void onceWithNoAlternative() {
-    osmo.addModelObject(validTestModel2);
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(validTestModel2);
+    osmo.setModelFactory(factory);
     MaxStepFilter filter = new MaxStepFilter();
     filter.setMax("epixx", 1);
     osmo.addFilter(filter);
@@ -93,8 +98,7 @@ public class MaxFilterTests {
   public void onceWithAlternative() {
     TestSequenceListener listener = new TestSequenceListener();
     osmo.addListener(listener);
-    ValidTestModel6 model = new ValidTestModel6();
-    osmo.addModelObject(model);
+    osmo.setModelFactory(new ReflectiveModelFactory(ValidTestModel6.class));
     MaxStepFilter filter = new MaxStepFilter();
     filter.setMax("t1", 1);
     filter.setMax("t2", 2);
@@ -110,7 +114,9 @@ public class MaxFilterTests {
 
   @Test
   public void twiceWithNoAlternative() {
-    osmo.addModelObject(validTestModel2);
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(validTestModel2);
+    osmo.setModelFactory(factory);
     MaxStepFilter filter = new MaxStepFilter();
     filter.setMax("epixx", 2);
     osmo.addFilter(filter);

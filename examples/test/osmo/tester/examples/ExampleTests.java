@@ -8,6 +8,7 @@ import osmo.tester.examples.calculator.CalculatorModel;
 import osmo.tester.examples.calculator.CalculatorModel2;
 import osmo.tester.examples.vendingmachine.VendingExample;
 import osmo.tester.examples.vendingmachine.VendingMachine2;
+import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.endcondition.Length;
 
 import java.io.ByteArrayOutputStream;
@@ -28,7 +29,9 @@ public class ExampleTests {
   public void testCalculatorModel1() {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
-    osmo.addModelObject(new CalculatorModel(ps));
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(new CalculatorModel(ps));
+    osmo.setModelFactory(factory);
     Length length3 = new Length(3);
     Length length2 = new Length(2);
     osmo.setTestEndCondition(length3);
@@ -54,7 +57,9 @@ public class ExampleTests {
   public void testCalculatorModel2() {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
-    osmo.addModelObject(new CalculatorModel2(ps));
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(new CalculatorModel2(ps));
+    osmo.setModelFactory(factory);
     Length length3 = new Length(3);
     Length length2 = new Length(2);
     osmo.setTestEndCondition(length3);
@@ -80,7 +85,9 @@ public class ExampleTests {
   public void testVendingExample() {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
-    osmo.addModelObject(new VendingExample(ps));
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(new VendingExample(ps));
+    osmo.setModelFactory(factory);
     Length length3 = new Length(3);
     Length length2 = new Length(2);
     osmo.setTestEndCondition(length3);
@@ -115,7 +122,9 @@ public class ExampleTests {
   public void testVendingMachine2() {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
-    osmo.addModelObject(new VendingMachine2(ps));
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(new VendingMachine2(ps));
+    osmo.setModelFactory(factory);
     Length length3 = new Length(15);
     Length length2 = new Length(2);
     osmo.setTestEndCondition(length3);

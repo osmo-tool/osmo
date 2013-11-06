@@ -4,11 +4,14 @@ import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
+import osmo.tester.generator.ReflectiveModelFactory;
+import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.testmodels.ValidTestModel3;
 import osmo.tester.testmodels.VariableModel1;
 import osmo.tester.testmodels.VariableModel2;
 
@@ -28,8 +31,10 @@ public class VariableTests {
 
   @Test
   public void variableModel2SingleTest() {
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
     VariableModel2 model = new VariableModel2();
-    osmo.addModelObject(model);
+    factory.add(model);
+    osmo.setModelFactory(factory);
     Length length10 = new Length(10);
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length10);
@@ -45,14 +50,13 @@ public class VariableTests {
 
   @Test
   public void variableModel2TwoTests() {
-    VariableModel2 model = new VariableModel2();
-    osmo.addModelObject(model);
+    osmo.addModelObject(new VariableModel2());
     Length length9 = new Length(9);
     Length length2 = new Length(2);
     osmo.setTestEndCondition(length9);
     osmo.setSuiteEndCondition(length2);
     osmo.generate(123);
-    TestSuite suite = model.getSuite();
+    TestSuite suite = osmo.getSuite();
     List<TestCase> tests = suite.getFinishedTestCases();
     TestCase test = tests.get(0);
     String expectedSet = "[v1, v2, v3, v2, v3, v1, v3]";
@@ -76,8 +80,7 @@ public class VariableTests {
 
   @Test
   public void collectionCounter() {
-    VariableModel2 model = new VariableModel2();
-    osmo.addModelObject(model);
+    osmo.setModelFactory(new ReflectiveModelFactory(VariableModel2.class));
     Length length9 = new Length(9);
     Length length2 = new Length(2);
     osmo.setTestEndCondition(length9);

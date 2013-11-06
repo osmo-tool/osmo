@@ -4,8 +4,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOTester;
+import osmo.tester.generator.ReflectiveModelFactory;
+import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.testmodels.CoverageValueModel1;
 import osmo.tester.testmodels.RandomValueModel2;
+import osmo.tester.testmodels.ValidTestModel3;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
@@ -132,7 +135,9 @@ public class RequirementPrintTests {
   @Test
   public void nothingCoverage() {
     OSMOTester tester = new OSMOTester();
-    tester.addModelObject(new RandomValueModel2());
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(new RandomValueModel2());
+    tester.setModelFactory(factory);
     tester.generate(111);
     String actual = out.toString();
     String expected = "generated 55 tests.\n" +
@@ -153,7 +158,7 @@ public class RequirementPrintTests {
   @Test
   public void moreCoverage() {
     OSMOTester tester = new OSMOTester();
-    tester.addModelObject(new CoverageValueModel1());
+    tester.setModelFactory(new ReflectiveModelFactory(CoverageValueModel1.class));
     tester.generate(111);
     String actual = out.toString();
     String expected = "generated 55 tests.\n" +

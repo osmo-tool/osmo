@@ -9,7 +9,9 @@ import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.Transition;
+import osmo.tester.model.ModelFactory;
 import osmo.tester.model.Requirements;
+import osmo.tester.model.TestModels;
 
 import java.io.PrintStream;
 
@@ -110,5 +112,26 @@ public class ValidTestModel2 {
 
   public void setPrintFlow(boolean printFlow) {
     this.printFlow = printFlow;
+  }
+  
+  public static class MyModelFactory implements ModelFactory {
+    private Requirements reqs = null;
+    private PrintStream ps = null;
+
+    public MyModelFactory(Requirements reqs, PrintStream ps) {
+      this.reqs = reqs;
+      this.ps = ps;
+    }
+
+    @Override
+    public TestModels createModelObjects() {
+      TestModels models = new TestModels();
+      if (ps != null) {
+        models.add(new ValidTestModel2(reqs, ps));
+      } else {
+        models.add(new ValidTestModel2(reqs));
+      }
+      return models;
+    }
   }
 }

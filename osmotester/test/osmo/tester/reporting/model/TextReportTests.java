@@ -2,6 +2,8 @@ package osmo.tester.reporting.model;
 
 import org.junit.Test;
 import osmo.common.NullPrintStream;
+import osmo.tester.generator.ReflectiveModelFactory;
+import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.model.Requirements;
 import osmo.tester.testmodels.ValidTestModel1;
 import osmo.tester.testmodels.ValidTestModel2;
@@ -17,7 +19,7 @@ public class TextReportTests {
   @Test
   public void validModel1() {
     ModelPrinter mv = new ModelPrinter();
-    mv.addModelObject(new ValidTestModel1());
+    mv.setModelFactory(new ReflectiveModelFactory(ValidTestModel1.class));
     String actual = mv.write();
     String expected = "BeforeSuites: \n" +
             "AfterSuites: \n" +
@@ -48,7 +50,9 @@ public class TextReportTests {
   @Test
   public void validModel2() {
     ModelPrinter mv = new ModelPrinter();
-    mv.addModelObject(new ValidTestModel2(new Requirements(), NullPrintStream.stream));
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(new ValidTestModel2(new Requirements(), NullPrintStream.stream));
+    mv.setModelFactory(factory);
     String actual = mv.write();
     String expected = "BeforeSuites: osmo.tester.testmodels.ValidTestModel2.firstOfAll(), \n" +
             "AfterSuites: osmo.tester.testmodels.ValidTestModel2.lastOfAll(), \n" +
@@ -58,7 +62,7 @@ public class TextReportTests {
             "Exploration Enablers: \n" +
             "Generation Enablers: \n" +
             "Coverage Value Methods: \n" +
-            "Requirements: null\n" +
+            "Requirements: Requirements{reqs=[]} ([])\n" +
             "Variables: \n" +
             "\n" +
             "STEP: hello, WEIGHT=10\n" +
@@ -85,7 +89,9 @@ public class TextReportTests {
   @Test
   public void validModel3() {
     ModelPrinter mv = new ModelPrinter();
-    mv.addModelObject(new ValidTestModel3(NullPrintStream.stream));
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(new ValidTestModel3(NullPrintStream.stream));
+    mv.setModelFactory(factory);
     String actual = mv.write();
     String expected = "BeforeSuites: osmo.tester.testmodels.ValidTestModel3.empty(), \n" +
             "AfterSuites: osmo.tester.testmodels.ValidTestModel3.empty(), \n" +
@@ -95,7 +101,7 @@ public class TextReportTests {
             "Exploration Enablers: \n" +
             "Generation Enablers: \n" +
             "Coverage Value Methods: \n" +
-            "Requirements: null\n" +
+            "Requirements: Requirements{reqs=[]} ([])\n" +
             "Variables: \n" +
             "\n" +
             "STEP: hello, WEIGHT=10\n" +
@@ -122,7 +128,9 @@ public class TextReportTests {
   @Test
   public void validModel4() {
     ModelPrinter mv = new ModelPrinter();
-    mv.addModelObject(new ValidTestModel4(NullPrintStream.stream));
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(new ValidTestModel4(NullPrintStream.stream));
+    mv.setModelFactory(factory);
     String actual = mv.write();
     String expected = "BeforeSuites: \n" +
             "AfterSuites: \n" +
@@ -132,7 +140,7 @@ public class TextReportTests {
             "Exploration Enablers: \n" +
             "Generation Enablers: \n" +
             "Coverage Value Methods: my-state[osmo.tester.testmodels.ValidTestModel4.state1(osmo.tester.generator.testsuite.TestCaseStep)], \n" +
-            "Requirements: null\n" +
+            "Requirements: Requirements{reqs=[]} ([])\n" +
             "Variables: \n" +
             "\n" +
             "STEP: hello, WEIGHT=10\n" +
@@ -159,7 +167,9 @@ public class TextReportTests {
   @Test
   public void validModel5() {
     ModelPrinter mv = new ModelPrinter();
-    mv.addModelObject(new ValidTestModel5(NullPrintStream.stream));
+    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
+    factory.add(new ValidTestModel5(NullPrintStream.stream));
+    mv.setModelFactory(factory);
     String actual = mv.write();
     String expected = "BeforeSuites: \n" +
             "AfterSuites: \n" +
@@ -169,7 +179,7 @@ public class TextReportTests {
             "Exploration Enablers: \n" +
             "Generation Enablers: \n" +
             "Coverage Value Methods: \n" +
-            "Requirements: null\n" +
+            "Requirements: Requirements{reqs=[]} ([])\n" +
             "Variables: \n" +
             "\n" +
             "STEP: hello, WEIGHT=10\n" +
@@ -196,7 +206,7 @@ public class TextReportTests {
   @Test
   public void validModel6() {
     ModelPrinter mv = new ModelPrinter();
-    mv.addModelObject(new ValidTestModel6());
+    mv.setModelFactory(new ReflectiveModelFactory(ValidTestModel6.class));
     String actual = mv.write();
     String expected = "BeforeSuites: \n" +
             "AfterSuites: \n" +
