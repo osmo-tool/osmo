@@ -1,5 +1,6 @@
 package osmo.tester.generation;
 
+import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
 import osmo.common.TestUtils;
@@ -18,6 +19,26 @@ import static org.junit.Assert.*;
 
 /** @author Teemu Kanstren */
 public class MultiOSMOTests {
+  @After
+  public void restore() {
+    TestUtils.endOutputCapture();
+  }
+  
+  @Test
+  public void defaultFactory() {
+    TestUtils.recursiveDelete("osmo-output");
+    MultiOSMO mosmo = new MultiOSMO(4, 444);
+    TestUtils.startOutputCapture();
+    try {
+      mosmo.generate(new Time(1));
+      fail("Generation without any model objects should fail.");
+    } catch (Exception e) {
+      //expected
+    }
+    String output = TestUtils.getOutput();
+    assertEquals("Message for default factory", MultiOSMO.ERROR_MSG+System.getProperty("line.separator"), output);
+  }
+
   @Test
   public void generate4() {
     TestUtils.recursiveDelete("osmo-output");

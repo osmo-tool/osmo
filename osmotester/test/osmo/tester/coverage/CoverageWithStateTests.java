@@ -2,6 +2,8 @@ package osmo.tester.coverage;
 
 import org.junit.Test;
 import osmo.common.log.Logger;
+import osmo.tester.OSMOConfiguration;
+import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.endcondition.LengthProbability;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.data.ValueSet;
@@ -57,10 +59,12 @@ public class CoverageWithStateTests {
     config.setStepPairWeight(0);
     config.setRequirementWeight(0);
     config.setStepWeight(0);
-    
-    GreedyOptimizer osmo = new GreedyOptimizer(config, 1000, new LengthProbability(1, 0.1d), 33);
-    osmo.addModelClass(RandomValueModel4.class);
-    List<TestCase> tests = osmo.search();
+
+    OSMOConfiguration oc = new OSMOConfiguration();
+    oc.setFactory(new ReflectiveModelFactory(RandomValueModel4.class));
+    oc.setTestEndCondition(new LengthProbability(1, 0.1d));
+    GreedyOptimizer osmo = new GreedyOptimizer(oc, config);
+    List<TestCase> tests = osmo.search(1000, 33);
     TestCoverage tc = new TestCoverage();
     for (TestCase test : tests) {
       tc.addTestCoverage(test);
@@ -99,9 +103,11 @@ public class CoverageWithStateTests {
     config.setStepPairWeight(0);
     config.setRequirementWeight(0);
     config.setStepWeight(0);
-    GreedyOptimizer osmo = new GreedyOptimizer(config, new LengthProbability(1, 4, 0.1d), 155);
-    osmo.addModelClass(CoverageValueModel2.class);
-    List<TestCase> tests = osmo.search();
+    OSMOConfiguration oc = new OSMOConfiguration();
+    oc.setFactory(new ReflectiveModelFactory(CoverageValueModel2.class));
+    oc.setTestEndCondition(new LengthProbability(1, 4, 0.1d));
+    GreedyOptimizer osmo = new GreedyOptimizer(oc, config);
+    List<TestCase> tests = osmo.search(155);
     TestCoverage tc = new TestCoverage(tests);
     ScoreCalculator scorer = new ScoreCalculator(config);
     assertEquals("Number of tests", 6, tests.size());
@@ -114,10 +120,12 @@ public class CoverageWithStateTests {
   @Test
   public void wrongVariables() {
     ScoreConfiguration config = new ScoreConfiguration();
-    GreedyOptimizer greedy = new GreedyOptimizer(config, new LengthProbability(1, 0.2d), 55);
-    greedy.addModelClass(VariableModel1.class);
+    OSMOConfiguration oc = new OSMOConfiguration();
+    oc.setFactory(new ReflectiveModelFactory(VariableModel1.class));
+    oc.setTestEndCondition( new LengthProbability(1, 0.2d));
+    GreedyOptimizer greedy = new GreedyOptimizer(oc, config);
     try {
-      List<TestCase> tests = greedy.search();
+      List<TestCase> tests = greedy.search(55);
     } catch (IllegalArgumentException e) {
       String expected = "Following coverage variables not found in the model:[j7, q8]";
       assertEquals("Error message for unknown variable names", expected, e.getMessage());
@@ -134,12 +142,11 @@ public class CoverageWithStateTests {
     config.setStepPairWeight(0);
     config.setRequirementWeight(0);
     config.setStepWeight(0);
-    GreedyOptimizer osmo = new GreedyOptimizer(config, 100, new LengthProbability(1, 0.1d), 55);
-    osmo.addModelClass(RandomValueModel3.class);
-    List<TestCase> tests = osmo.search();
-//    OSMOTester osmo = new OSMOTester(new RandomValueModel3());
-//    osmo.generate();
-//    List<TestCase> tests = osmo.getSuite().getAllTestCases();
+    OSMOConfiguration oc = new OSMOConfiguration();
+    oc.setFactory(new ReflectiveModelFactory(RandomValueModel3.class));
+    oc.setTestEndCondition( new LengthProbability(1, 0.1d));
+    GreedyOptimizer osmo = new GreedyOptimizer(oc, config);
+    List<TestCase> tests = osmo.search(100, 55);
     assertEquals("Number of generated tests", 1, tests.size());
     TestCoverage tc = new TestCoverage();
     tc.addTestCoverage(tests.get(0));

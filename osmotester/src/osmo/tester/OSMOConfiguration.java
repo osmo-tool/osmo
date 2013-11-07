@@ -14,7 +14,6 @@ import osmo.tester.model.FSM;
 import osmo.tester.model.ModelFactory;
 import osmo.tester.model.TestModels;
 import osmo.tester.model.data.SearchableInput;
-import osmo.tester.parser.ModelObject;
 import osmo.tester.scenario.Scenario;
 
 import java.util.ArrayList;
@@ -71,6 +70,7 @@ public class OSMOConfiguration implements ModelFactory {
   }
 
   public ModelFactory getFactory() {
+    if (factory == null) factory = defaultFactory;
     return factory;
   }
 
@@ -83,7 +83,8 @@ public class OSMOConfiguration implements ModelFactory {
   }
 
   public TestModels createModelObjects() {
-    if (factory == null) factory = defaultFactory;
+    //force swap to default if not set
+    factory = getFactory();
     return factory.createModelObjects();
   }
 

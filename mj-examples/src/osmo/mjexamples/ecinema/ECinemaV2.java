@@ -3,6 +3,7 @@ package osmo.mjexamples.ecinema;
 import osmo.common.NullPrintStream;
 import osmo.common.log.Logger;
 import osmo.mjexamples.gsm.SimCardAdaptor;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.CoverageValue;
@@ -475,11 +476,13 @@ public class ECinemaV2 {
     for (int i = 0 ; i < 100 ; i++) {
       seed += 100;
       System.out.println("seed:"+seed+" cores:"+cores+" pop:"+population+" time:"+timeout);
-      MultiGreedy greedy = new MultiGreedy(new ScoreConfiguration(), cores, population, new LengthProbability(50, 0.2d), seed);
-      greedy.setFailOnError(false);
-      greedy.setFactory(new ECinemaV2ModelFactory(NullPrintStream.stream));
+      OSMOConfiguration oc = new OSMOConfiguration();
+      oc.setTestEndCondition(new LengthProbability(50, 0.2d));
+      oc.setFailWhenError(false);
+      oc.setFactory(new ECinemaV2ModelFactory(NullPrintStream.stream));
+      MultiGreedy greedy = new MultiGreedy(oc, new ScoreConfiguration(), cores);
       greedy.setTimeout(timeout);
-      List<TestCase> tests = greedy.search(cores);
+      List<TestCase> tests = greedy.search(cores, seed);
       TestCoverage tc = new TestCoverage(tests);
       System.out.println(tc.coverageString(greedy.getFsm(), null, null, null, null, false));
     }
