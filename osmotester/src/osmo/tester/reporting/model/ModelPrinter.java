@@ -48,6 +48,7 @@ public class ModelPrinter {
     report += "AfterSuites: "+targetsToString(fsm.getAfterSuites());
     report += "BeforeTests: "+targetsToString(fsm.getBeforeTests());
     report += "AfterTests: "+targetsToString(fsm.getAfterTests());
+    report += "Last Steps: "+targetsToString(fsm.getLastSteps());
     report += "Model EndConditions: "+targetsToString(fsm.getEndConditions());
     report += "Exploration Enablers: "+targetsToString(fsm.getExplorationEnablers());
     report += "Generation Enablers: "+targetsToString(fsm.getGenerationEnablers());

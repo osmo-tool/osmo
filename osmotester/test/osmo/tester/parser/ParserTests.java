@@ -151,6 +151,7 @@ public class ParserTests {
       msg = sortErrors(msg);
       String expected = "Invalid FSM:\n" +
               "@EndCondition methods are not allowed to have parameters: \"ending()\" has 1 parameters.\n" +
+              "@LastStep methods are not allowed to have parameters: \"last()\" has 1 parameters.\n"+
               "CoverageValue methods must have 1 parameter (class osmo.tester.generator.testsuite.TestCaseStep): \"noArgument()\" has 0 parameters.\n" +
               "Guard methods are not allowed to have parameters: \"hello()\" has 1 parameters.\n"+
               "Requirements object was null, which is not allowed.\n" +
