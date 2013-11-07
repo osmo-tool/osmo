@@ -1,38 +1,45 @@
 package osmo.tester.generator.multi;
 
 import osmo.common.Randomizer;
-import osmo.common.TestUtils;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
-import osmo.tester.coverage.ScoreCalculator;
-import osmo.tester.coverage.ScoreConfiguration;
-import osmo.tester.coverage.TestCoverage;
+import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.endcondition.Time;
-import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.optimizer.CSVReport;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
  * Runs several generators in parallel, not optimizing the set but just splitting generation/execution over multiple
- * processors/cores at the same time. Useful for online testing.
- * A convenience class, same results could be achieved by just starting several separate generators at the same time
+ * processors/cores at the same time. Mainly useful for online testing.
+ * 
+ * A convenience class, mainly same results could be achieved by just starting several separate generators at the same time
  * with different seeds.
+ * 
+ * Also intended to run the generator in iterations if intended to run very long online test sessions.
+ * Works as follows:
+ * -start the given number of threads to generate tests in parallel.
+ * -runs each generator until it stops (suite end condition is met)
+ * -if timeout for iterations is not met, re-starts the generator with another seed, iterates until time done
+ * 
+ * Configure by setting properties in the configuration object, instantiate generation via generate().
  * 
  * @author Teemu Kanstren 
  */
 public class MultiOSMO {
   private static Logger log = new Logger(MultiOSMO.class);
+  /** Shared configuration for all generators, only the seed will be different. */
   private OSMOConfiguration config = new OSMOConfiguration();
+  /** How many generators to run in parallel? */
   private final int parallelism;
   /** The thread pool for running the generator tasks. */
   private final ExecutorService pool;
+  /** The seed for creating more random seeds for the generators. */
   private final long seed;
+  public static final String ERROR_MSG = "WARNING: Using factory of type " + SingleInstanceModelFactory.class + ", which means all parallel tasks share the object instances.";
 
   public MultiOSMO(long seed) {
     parallelism = Runtime.getRuntime().availableProcessors();
@@ -50,7 +57,13 @@ public class MultiOSMO {
     return config;
   }
 
+  /**
+   * Starts generation using the given generation configuration and given number of parallel threads.
+   * 
+   * @param time The minimum time to run iterations.
+   */
   public void generate(Time time) {
+    check();
     config.setTraceRequested(false);
     Collection<Future> futures = new ArrayList<>();
     Randomizer rand = new Randomizer(seed);
@@ -68,13 +81,13 @@ public class MultiOSMO {
       }
     }
     pool.shutdown();
-
-//    String summary = "summary\n";
-//    CSVReport report = new CSVReport(new ScoreCalculator(new ScoreConfiguration()));
-//    report.process(allTests);
-//
-//    String totalCsv = report.report();
-//    totalCsv += summary + "\n";
-//    TestUtils.write(totalCsv, "osmo-output/mosmo-summary.csv");
+    //here it would be interesting to write a summary but it is currently not feasible as we cannot expect to keep
+    //all test cases in memory for full duration
+  }
+  
+  private void check() {
+    if (config.getFactory() instanceof SingleInstanceModelFactory) {
+      System.out.println(ERROR_MSG);
+    }
   }
 }

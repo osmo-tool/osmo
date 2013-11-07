@@ -8,7 +8,6 @@ import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
 
-import java.io.FileOutputStream;
 import java.io.StringWriter;
 import java.util.List;
 

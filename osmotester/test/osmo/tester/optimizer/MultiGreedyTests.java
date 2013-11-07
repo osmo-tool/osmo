@@ -21,10 +21,12 @@ import static org.junit.Assert.*;
 public class MultiGreedyTests {
   @Test
   public void calculatorOptimization() {
+    OSMOConfiguration oc = new OSMOConfiguration();
+    oc.setTestEndCondition(new LengthProbability(1, 5, 0.2d));
+    oc.setFactory(new MyModelFactory());
     ScoreConfiguration config = new ScoreConfiguration();
-    MultiGreedy multiGreedy = new MultiGreedy(config, 1000, new LengthProbability(1, 5, 0.2d), 111);
-    multiGreedy.setFactory(new MyModelFactory());
-    List<TestCase> tests = multiGreedy.search(5);
+    MultiGreedy multiGreedy = new MultiGreedy(oc, config);
+    List<TestCase> tests = multiGreedy.search(5, 111);
     assertEquals("Number of tests from MultiGreedy", 3, tests.size());
     assertEquals("MultiGreedy test1", "TestCase:[start, increase, decrease, increase, increase]", tests.get(0).toString());
     assertEquals("MultiGreedy test2", "TestCase:[start, increase, increase, decrease, decrease]", tests.get(1).toString());

@@ -10,6 +10,7 @@ import java.util.logging.Level;
 
 import osmo.common.NullPrintStream;
 import osmo.common.log.Logger;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.CoverageValue;
@@ -621,11 +622,13 @@ public class SimCard {
       seed += 100;
       System.out.println("seed:"+seed+" cores:"+cores+" pop:"+population+" time:"+timeout);
       Logger.consoleLevel = Level.INFO;
-      MultiGreedy greedy = new MultiGreedy(new ScoreConfiguration(), cores, population, new LengthProbability(50, 0.2d), seed);
-      greedy.setFailOnError(false);
-      greedy.setFactory(new GSMModelFactory(NullPrintStream.stream));
+      OSMOConfiguration oc = new OSMOConfiguration();
+      oc.setTestEndCondition(new LengthProbability(50, 0.2d));
+      oc.setFailWhenError(false);
+      oc.setFactory(new GSMModelFactory(NullPrintStream.stream));
+      MultiGreedy greedy = new MultiGreedy(oc, new ScoreConfiguration(), cores);
       greedy.setTimeout(timeout);
-      List<TestCase> tests = greedy.search(cores);
+      List<TestCase> tests = greedy.search(cores, seed);
       TestCoverage tc = new TestCoverage(tests);
       System.out.println(tc.coverageString(greedy.getFsm(), null, null, null, null, false));
     }

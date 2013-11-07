@@ -25,10 +25,13 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.lang.management.ManagementFactory;
@@ -459,5 +462,23 @@ public class TestUtils {
         recursiveCopy(f, newDest);
       }
     }
+  }
+
+  private static OutputStream out = null;
+  private static PrintStream sout = null;
+
+  public static void startOutputCapture() {
+    sout = System.out;
+    out = new ByteArrayOutputStream(1000);
+    PrintStream ps = new PrintStream(out);
+    System.setOut(ps);
+  }
+  
+  public static String getOutput() {
+    return out.toString();
+  }
+  
+  public static void endOutputCapture() {
+    if (sout != null) System.setOut(sout);
   }
 }
