@@ -61,7 +61,7 @@ public class MaxFilterTests {
     osmo.addFilter(filter);
     config.setFailWhenNoWayForward(false);
     osmo.generate(123);
-    assertTransitions(":hello");
+    assertTransitions(":hello:last:last:last:last:last:last:last:last:last:last:last:last:last:last:last:last:last:last:last:last:last:last:last:last:last");
   }
 
   private void assertTransitions(String expected) {
@@ -91,7 +91,7 @@ public class MaxFilterTests {
     osmo.setSuiteEndCondition(new Length(1));
     config.setFailWhenNoWayForward(false);
     osmo.generate(123);
-    assertTransitions(":hello:world:epixx_pre:epixx:epixx_oracle");
+    assertTransitions(":hello:world:epixx_pre:epixx:epixx_oracle:last");
   }
 
   @Test
@@ -123,6 +123,6 @@ public class MaxFilterTests {
     osmo.setSuiteEndCondition(new Length(1));
     config.setFailWhenNoWayForward(false);
     osmo.generate(123);
-    assertTransitions(":hello:world:epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle");
+    assertTransitions(":hello:world:epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:last");
   }
 }

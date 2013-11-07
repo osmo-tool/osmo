@@ -25,6 +25,7 @@ public class TextReportTests {
             "AfterSuites: \n" +
             "BeforeTests: \n" +
             "AfterTests: \n" +
+            "Last Steps: \n" +
             "Model EndConditions: \n" +
             "Exploration Enablers: \n" +
             "Generation Enablers: \n" +
@@ -58,6 +59,7 @@ public class TextReportTests {
             "AfterSuites: osmo.tester.testmodels.ValidTestModel2.lastOfAll(), \n" +
             "BeforeTests: osmo.tester.testmodels.ValidTestModel2.setup(), \n" +
             "AfterTests: osmo.tester.testmodels.ValidTestModel2.bob(), \n" +
+            "Last Steps: osmo.tester.testmodels.ValidTestModel2.last(), \n" +
             "Model EndConditions: \n" +
             "Exploration Enablers: \n" +
             "Generation Enablers: \n" +
@@ -97,6 +99,7 @@ public class TextReportTests {
             "AfterSuites: osmo.tester.testmodels.ValidTestModel3.empty(), \n" +
             "BeforeTests: osmo.tester.testmodels.ValidTestModel3.reset(), \n" +
             "AfterTests: osmo.tester.testmodels.ValidTestModel3.empty(), \n" +
+            "Last Steps: \n" +
             "Model EndConditions: \n" +
             "Exploration Enablers: \n" +
             "Generation Enablers: \n" +
@@ -136,6 +139,7 @@ public class TextReportTests {
             "AfterSuites: \n" +
             "BeforeTests: osmo.tester.testmodels.ValidTestModel4.reset(), \n" +
             "AfterTests: \n" +
+            "Last Steps: \n"+
             "Model EndConditions: \n" +
             "Exploration Enablers: \n" +
             "Generation Enablers: \n" +
@@ -175,6 +179,7 @@ public class TextReportTests {
             "AfterSuites: \n" +
             "BeforeTests: osmo.tester.testmodels.ValidTestModel5.reset(), \n" +
             "AfterTests: \n" +
+            "Last Steps: \n" +
             "Model EndConditions: osmo.tester.testmodels.ValidTestModel5.end(), \n" +
             "Exploration Enablers: \n" +
             "Generation Enablers: \n" +
@@ -212,6 +217,7 @@ public class TextReportTests {
             "AfterSuites: \n" +
             "BeforeTests: \n" +
             "AfterTests: \n" +
+            "Last Steps: osmo.tester.testmodels.ValidTestModel6.check(), \n" +
             "Model EndConditions: \n" +
             "Exploration Enablers: \n" +
             "Generation Enablers: \n" +

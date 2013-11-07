@@ -3,6 +3,7 @@ package osmo.tester.testmodels;
 import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
+import osmo.tester.annotation.LastStep;
 import osmo.tester.annotation.Transition;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
@@ -30,4 +31,10 @@ public class EmptyTestModel4 {
   public String noArgument() {
     return "";
   }
+
+  @LastStep
+  public boolean last(String noargs) {
+    return false;
+  }
+
 }

@@ -6,8 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This is the same as {@link Transition} but with a more academic name (a reminder of the early days).
+ * This is the same as {@link TestStep} but with a more academic name (a reminder of the early days).
  * 
+ * @deprecated Use {@link TestStep)}
  * @author Teemu Kanstren
  * @see Guard
  */
