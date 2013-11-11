@@ -1,4 +1,4 @@
 Name,Count
-#foreach ($t in $transitions)
+#foreach ($t in $steps)
 $t.value,$t.count
 #end

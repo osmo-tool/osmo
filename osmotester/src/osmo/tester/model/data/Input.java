@@ -3,7 +3,7 @@ package osmo.tester.model.data;
 /**
  * Interface for input data generation objects.
  *
- * @deprecated Just use the actual objects directly.
+ * @deprecated To be removed in the next version. Just use the actual objects directly.
  * @author Teemu Kanstren
  */
 public interface Input<T> {

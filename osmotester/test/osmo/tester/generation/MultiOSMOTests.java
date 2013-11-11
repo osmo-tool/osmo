@@ -76,10 +76,8 @@ public class MultiOSMOTests {
 
   private static class MyModelFactory implements ModelFactory {
     @Override
-    public TestModels createModelObjects() {
-      TestModels result = new TestModels();
-      result.add(new ValidTestModel2(new Requirements()));
-      return result;
+    public void createModelObjects(TestModels addHere) {
+      addHere.add(new ValidTestModel2(new Requirements()));
     }
   }
 }

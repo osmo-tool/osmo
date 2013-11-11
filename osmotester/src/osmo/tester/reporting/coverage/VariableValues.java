@@ -7,7 +7,8 @@ import java.util.List;
 /** 
  * Used internally to represent values for a variable in coverage reports.
  * 
- * @author Teemu Kanstren */
+ * @author Teemu Kanstren 
+ */
 public class VariableValues {
   /** Variable name. */
   private final String name;

@@ -26,9 +26,9 @@ public class CoverageValueParser implements AnnotationParser {
     Method method = parameters.getMethod();
     String errors = "";
     Class<?> returnType = method.getReturnType();
-    String name = CoverageValue.class.getSimpleName();
+    String name = "@"+CoverageValue.class.getSimpleName();
     if (returnType != String.class) {
-      errors += "Invalid return type for @"+name+" in (\"" + method.getName() + "()\"):" + returnType + ". Should be String.\n";
+      errors += "Invalid return type for "+name+" in (\"" + method.getName() + "()\"):" + returnType + ". Should be String.\n";
     }
     Class<?>[] parameterTypes = method.getParameterTypes();
     if (parameterTypes.length != 1) {

@@ -22,7 +22,7 @@ public class SingleTestCoverage {
   /** Key=requirement name, value=times covered in this test. */
   private final Map<String, Integer> reqCount = new HashMap<>();
   /** Key=transition name, value=times covered in this test. */
-  private final Map<String, Integer> transitionCount = new HashMap<>();
+  private final Map<String, Integer> stepCount = new HashMap<>();
   /** Key=transition pair name ("T1->T2"), value=times covered in this test. */
   private final Map<String, Integer> pairCount = new HashMap<>();
   /** Key=variable name, value=values covered in this test. */
@@ -62,7 +62,7 @@ public class SingleTestCoverage {
     Collection<String> names = tc.getAllStepNames();
     String previous = FSM.START_STEP_NAME;
     for (String name : names) {
-      incrementCountFor(transitionCount, name);
+      incrementCountFor(stepCount, name);
       String pair = previous + "->" + name;
       incrementCountFor(pairCount, pair);
       previous = name;
@@ -134,20 +134,20 @@ public class SingleTestCoverage {
 
   /**
    * Used in reporting via Velocity templates.
-   * Gives the number of times the given transition was covered in this test case.
+   * Gives the number of times the given step was covered in this test case.
    *
-   * @param transition The name of the transition to get the count for.
+   * @param step The name of the step to get the count for.
    * @return The times covered in this test case.
    */
-  public int transitionCount(String transition) {
-    return countFor(transitionCount, transition);
+  public int stepCount(String step) {
+    return countFor(stepCount, step);
   }
 
   /**
    * Used in reporting via Velocity templates.
-   * Gives the number of times the given transition pair was covered in this test case.
+   * Gives the number of times the given step pair was covered in this test case.
    *
-   * @param pair The name of the transition pair to get the count for.
+   * @param pair The name of the step pair to get the count for.
    * @return The times covered in this test case.
    */
   public int pairCount(String pair) {

@@ -31,14 +31,6 @@ public class ModelPrinter {
     config.setFactory(factory);
   }
 
-  //step+guards+pre+post+group+weight
-  //state names
-  //before suite, after suite, before test, after test
-  //coverage variables
-  //end conditions
-  //exploration enablers
-  //generation enablers
-  //requirements
   public String write() {
     String report = "";
     MainGenerator generator = new MainGenerator(0, new TestSuite(), config);
@@ -71,7 +63,7 @@ public class ModelPrinter {
     }
     report += "\n";
 
-    Collection<VariableField> variables = fsm.getStateVariables();
+    Collection<VariableField> variables = fsm.getModelVariables();
     report += "Variables: ";
     for (VariableField variable : variables) {
       report += variable.getName()+", ";

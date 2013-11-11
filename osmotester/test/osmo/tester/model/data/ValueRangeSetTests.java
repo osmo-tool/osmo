@@ -93,7 +93,7 @@ public class ValueRangeSetTests {
   }
 
   @Test
-  public void optimizedRandomInput() {
+  public void balancingInput() {
     ni.setStrategy(ValueRangeSet.BALANCED);
     ni.addPartition(10d, 100d);
     ni.addPartition(150d, 200d);

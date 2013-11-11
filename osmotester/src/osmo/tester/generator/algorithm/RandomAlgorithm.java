@@ -25,7 +25,7 @@ public class RandomAlgorithm implements FSMTraversalAlgorithm {
   }
 
   @Override
-  public FSMTransition choose(TestSuite history, List<FSMTransition> choices) {
+  public FSMTransition choose(TestSuite suite, List<FSMTransition> choices) {
     return rand.oneOf(choices);
   }
 

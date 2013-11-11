@@ -45,6 +45,7 @@ public class JenkinsReportGenerator implements GenerationListener {
   private final String filename;
   /** If true, steps are described in the report, if false, test cases are described. */
   private final boolean steps;
+  /** Seed used in test generation. */
   private Long seed = null;
 
   /**
@@ -210,7 +211,8 @@ public class JenkinsReportGenerator implements GenerationListener {
     for (GenerationListener listener : listeners) {
       properties.add(new Property(LISTENER, listener.getClass().getName()));
     }
-    TestModels testModels = config.createModelObjects();
+    TestModels testModels = new TestModels();
+    config.createModelObjects(testModels);
     for (ModelObject mo : testModels.getModels()) {
       String prefix = mo.getPrefix();
       String name = mo.getObject().getClass().getName();

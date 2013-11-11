@@ -102,12 +102,12 @@ public class GroupParserTests {
     try {
       ParserResult result = parser.parse(1, conf(model), new TestSuite());
     } catch (Exception e) {
-      String expected = "Invalid FSM:\n" +
+      String expected = "Invalid test model:\n" +
               "@Group must have name.\n" +
               "Guard without matching step:group1.\n" +
               "Pre without matching step:group1.\n" +
               "Post without matching step:group1.\n" +
-              "Groupname same as a step name (step3). Must be different.\n";
+              "Group name same as a step name (step3). Must be different.\n";
       assertEquals("Errors for parsing invalid group model", expected, e.getMessage());
     }
   }

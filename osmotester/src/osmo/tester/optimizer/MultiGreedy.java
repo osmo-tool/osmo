@@ -7,15 +7,9 @@ import osmo.tester.OSMOConfiguration;
 import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.coverage.ScoreConfiguration;
 import osmo.tester.coverage.TestCoverage;
-import osmo.tester.generator.endcondition.EndCondition;
-import osmo.tester.generator.listener.GenerationListener;
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
-import osmo.tester.model.ModelFactory;
 import osmo.tester.model.Requirements;
-import osmo.tester.parser.MainParser;
-import osmo.tester.parser.ParserResult;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,12 +20,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
- * Runs multiple GreedyOptimizers in parallel to produce test variations, and in the end runs a single overall
- * optimization on the resulting set to produce the final test suite.
- * User needs to provide a factory to create configurations for the optimizer, as each one needs a different copy
- * with different model object instances, which are stored in the configuration, and a different seed for each
- * optimizer.
- * User also needs to provide a model factory for creating the model objects to be stored in the new configuration.
+ * Runs multiple {@link GreedyOptimizer} instances in parallel to produce test variations. 
+ * Finally runs a single overall optimization on the resulting test set to produce the final test suite.
+ * User needs to provide a model factory to create model objects as each optimizer needs a different copy
+ * of the model objects to run in parallel.
  * Note that with parallel executions, different executions might generate different test instances in different order.
  * The final optimized set can then contain different instances of test cases that add the same coverage criteria
  * to the test suite.
@@ -48,22 +40,46 @@ public class MultiGreedy {
   /** The test model. */
   private FSM fsm = null;
   /** Optimizer timeout. See {@link GreedyOptimizer} for more info. */
-  private int timeout = 1;
+  private int timeout = -1;
   /** For configuring the test generator. */
   private final OSMOConfiguration osmoConfig;
+  /** How many tests should each optimizer generate in an iteration? */
   private int populationSize = 1000;
+  /** Set of possible pairs of steps observed during generation. */
   private Collection<String> possiblePairs = new HashSet<>();
+  /** For calculating coverage scores. */
   private final ScoreCalculator calculator;
+  /** For randomization. */
+  private final Randomizer rand;
+  /** Number of optimizers to create. Defaults to number of processors on system. */
+  private int optimizerCount = Runtime.getRuntime().availableProcessors();
+  /** List of created optimizers. */
+  private final List<GreedyOptimizer> optimizers = new ArrayList<>();
 
-  public MultiGreedy(OSMOConfiguration osmoConfig, ScoreConfiguration optimizerConfig) {
-    this(osmoConfig, optimizerConfig, Runtime.getRuntime().availableProcessors());
+  /**
+   * Uses number of processors on system as default for number of threads in the thread pool.
+   * That is, as the value for the parallelism parameter in the other constructor.
+   * 
+   * @param osmoConfig  Configuration for the generator.
+   * @param scoreConfig Configuration for coverage score calculations.
+   * @param seed The initial seed used to seed the randomizer used to seed the optimizers.
+   */
+  public MultiGreedy(OSMOConfiguration osmoConfig, ScoreConfiguration scoreConfig, long seed) {
+    this(osmoConfig, scoreConfig, seed, Runtime.getRuntime().availableProcessors());
   }
 
-  public MultiGreedy(OSMOConfiguration osmoConfig, ScoreConfiguration optimizerConfig, int parallelism) {
+  /**
+   * @param osmoConfig  Configuration for the generator.
+   * @param scoreConfig Configuration for coverage score calculations.
+   * @param seed The initial seed used to seed the randomizer used to seed the optimizers.
+   * @param parallelism How many threads to create in the thread pool.
+   */
+  public MultiGreedy(OSMOConfiguration osmoConfig, ScoreConfiguration scoreConfig, long seed, int parallelism) {
     this.osmoConfig = osmoConfig;
-    this.optimizerConfig = optimizerConfig;
-    calculator = new ScoreCalculator(optimizerConfig);
+    this.optimizerConfig = scoreConfig;
+    calculator = new ScoreCalculator(scoreConfig);
     greedyPool = Executors.newFixedThreadPool(parallelism);
+    rand = new Randomizer(seed);
   }
 
   public int getPopulationSize() {
@@ -77,18 +93,18 @@ public class MultiGreedy {
   /**
    * Initializes a set of {@link GreedyOptimizer} instances to search for an optimal set of tests (test suite).
    *
-   * @param optimizerCount The number of optimizers to instantiate.
    * @return The optimized set of tests.
    */
-  public List<TestCase> search(int optimizerCount, long seed) {
+  public List<TestCase> search() {
     long start = System.currentTimeMillis();
-    List<TestCase> tests = generate(optimizerCount, seed);
+    List<TestCase> tests = generate();
 
     log.info("sorting set from all optimizers");
+    //this does the final round of optimization for the set received from all optimizers..
     tests = GreedyOptimizer.sortAndPrune(tests, calculator);
 
-    writeFinalReport(tests, seed);
-    updateRequirements(tests, seed);
+    writeFinalReport(tests, rand.getSeed());
+    updateRequirements(tests);
 
     log.info("search done");
     long end = System.currentTimeMillis();
@@ -96,12 +112,31 @@ public class MultiGreedy {
     System.out.println("duration of search: "+seconds+"s.");
     return tests;
   }
-  
-  private List<TestCase> generate(int optimizerCount, long seed) {
+
+  /**
+   * Runs all the optimizers, collects the tests.
+   * 
+   * @return Combined set of all generated tests from all optimizers.
+   */
+  private List<TestCase> generate() {
     log.info("Starting search with " + optimizerCount + " optimizers");
     Collection<Future<List<TestCase>>> futures = new ArrayList<>();
-    List<GreedyOptimizer> optimizers = new ArrayList<>();
-    Randomizer rand = new Randomizer(seed);
+
+    runOptimizers(futures);
+    List<TestCase> allTests = collectAllTests(futures);
+
+    log.info("optimizers done");
+    greedyPool.shutdown();
+    collectReportData();
+    return allTests;
+  }
+
+  /**
+   * Starts all optimizers runnning in the thread pool.
+   * 
+   * @param futures    Collects here all the {@link Future} objects for the running {@link GreedyTask} instances.
+   */
+  private void runOptimizers(Collection<Future<List<TestCase>>> futures) {
     for (int i = 0 ; i < optimizerCount ; i++) {
       GreedyOptimizer optimizer = new GreedyOptimizer(osmoConfig, optimizerConfig);
       optimizer.setTimeout(timeout);
@@ -111,6 +146,15 @@ public class MultiGreedy {
       futures.add(future);
       optimizers.add(optimizer);
     }
+  }
+
+  /**
+   * Waits for the thread pool to finish running all the optimizers and collects tests once they are done.
+   * 
+   * @param futures  Access to the tasks in the pool to wait for their completion and access results.
+   * @return The combined set, not yet optimized in itself.
+   */
+  private List<TestCase> collectAllTests(Collection<Future<List<TestCase>>> futures) {
     List<TestCase> allTests = new ArrayList<>();
     for (Future<List<TestCase>> future : futures) {
       try {
@@ -119,16 +163,28 @@ public class MultiGreedy {
         throw new RuntimeException("Failed to run a (Multi) GreedyOptimizer", e);
       }
     }
-    log.info("optimizers done");
-    greedyPool.shutdown();
-    for (GreedyOptimizer optimizer : optimizers) {
-      fsm = optimizer.getFsm();
-      possiblePairs.addAll(optimizer.getPossiblePairs());
-    }
     return allTests;
   }
 
-  private void updateRequirements(List<TestCase> cases, long seed) {
+  /**
+   * Collects data used to write the overall report for the optimizers.
+   * Note that this may contain stuff that will not eventually be given to user.
+   */
+  private void collectReportData() {
+    for (GreedyOptimizer optimizer : optimizers) {
+      //we just need on instance of test model structure for reporting, does not matter which one
+      fsm = optimizer.getFsm();
+      //and collect all possible step pairs observed for report as well
+      possiblePairs.addAll(optimizer.getPossiblePairs());
+    }
+  }
+
+  /**
+   * Updates the list of covered requirements to match the actual covered set.
+   * 
+   * @param cases The final set of generated tests that will be given to user. Should be fully optimized now.
+   */
+  private void updateRequirements(List<TestCase> cases) {
     //finally, we need to update the coverage in the FSM to reflect the final pruned suite
     //the coverage in fsm is used by coverage reporters which is why we need this
     Requirements reqs = fsm.getRequirements();
@@ -140,10 +196,17 @@ public class MultiGreedy {
     }
   }
 
+  /**
+   * Write the final report for the overall optimized test set.
+   * Goes into "osmo-output/greedy-<seed>/final-scores.csv" file.
+   * 
+   * @param cases The final set of generated tests.
+   * @param seed The seed used in configuring all the optimizers. Shown in report.
+   */
   private void writeFinalReport(List<TestCase> cases, long seed) {
     String summary = "summary\n";
     
-    CSVReport report = new CSVReport(calculator);
+    CSVCoverageReport report = new CSVCoverageReport(calculator);
     report.process(cases);
 
     TestCoverage tc = new TestCoverage(cases);

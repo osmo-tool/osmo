@@ -10,6 +10,7 @@ import osmo.tester.annotation.ExplorationEnabler;
 import osmo.tester.annotation.GenerationEnabler;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
+import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Transition;
 
 /** @author Teemu Kanstren */
@@ -22,11 +23,11 @@ public class EmptyTestModel3 {
     return "";
   }
 
-  @Transition("foo")
+  @TestStep("foo")
   public void epixx() {
   }
 
-  @Transition("foo")
+  @TestStep("foo")
   public void epixxx() {
   }
 

@@ -20,6 +20,7 @@ public class CharSet extends SearchableInput<Character> {
   private int loopIndex = 0;
 
   public CharSet() {
+    //we fill assumed set of ASCII invalid characters
     for (int i = 0 ; i <= 32 ; i++) {
       invalidChars += (char) i;
     }
@@ -74,31 +75,31 @@ public class CharSet extends SearchableInput<Character> {
     invalidChars += removed;
   }
 
-  /** @return A human readable character. */
+  /** @return Next generated character. */
   public Character next() {
     switch (strategy) {
       case RANDOM:
-        return nextRandom();
+        return random();
       case ORDERED_LOOP:
-        return nextLoop();
+        return loop();
       case RANDOM_INVALID:
-        return nextInvalidRandom();
+        return invalidRandom();
       case ORDERED_LOOP_INVALID:
-        return nextInvalidLoop();
+        return invalidLoop();
       default:
         String name = CharSet.class.getSimpleName();
         throw new IllegalArgumentException("DataGenerationStrategy " + strategy + " not supported by " + name + ".");
     }
   }
 
-  private Character nextRandom() {
+  public Character random() {
     int min = 0;
     int max = validChars.length() - 1;
     int index = rand.nextInt(min, max);
     return validChars.charAt(index);
   }
 
-  private Character nextLoop() {
+  public Character loop() {
     char c = validChars.charAt(loopIndex);
     loopIndex++;
     if (loopIndex >= validChars.length()) {
@@ -107,14 +108,14 @@ public class CharSet extends SearchableInput<Character> {
     return c;
   }
 
-  public Character nextInvalidRandom() {
+  public Character invalidRandom() {
     int min = 0;
     int max = invalidChars.length() - 1;
     int index = rand.nextInt(min, max);
     return invalidChars.charAt(index);
   }
 
-  public Character nextInvalidLoop() {
+  public Character invalidLoop() {
     loopIndex++;
     if (loopIndex >= invalidChars.length()) {
       loopIndex = 0;
@@ -124,7 +125,7 @@ public class CharSet extends SearchableInput<Character> {
 
   /**
    * @param c Character to test.
-   * @return True if given character is in the set defined as human readable.
+   * @return True if given character is in the set defined in this set.
    */
   public boolean evaluate(char c) {
     return validChars.indexOf(c) >= 0;
@@ -133,6 +134,7 @@ public class CharSet extends SearchableInput<Character> {
   /**
    * Removes the XML tag start and end characters from generation ("<" and ">") to allow for the
    * generation of data that can be embedded in XML files.
+   * Note that it can still produce some invalid options, so be careful out there..
    */
   public void enableXml() {
     reduceBy("<>");

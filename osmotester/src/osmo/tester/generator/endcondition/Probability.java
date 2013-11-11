@@ -9,6 +9,8 @@ import osmo.tester.model.FSM;
  * Defines a probability threshold for stopping test generation.
  * The probability must be between 0..1 where 0 means the generation is never stopped
  * and 1 means the generation is always stopped.
+ * As an example, value 0.2 means the probability is 20%, that is the value from the random number generator must
+ * be below 0.2 to signal stop.
  *
  * @author Teemu Kanstren
  */

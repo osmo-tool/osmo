@@ -626,9 +626,9 @@ public class SimCard {
       oc.setTestEndCondition(new LengthProbability(50, 0.2d));
       oc.setFailWhenError(false);
       oc.setFactory(new GSMModelFactory(NullPrintStream.stream));
-      MultiGreedy greedy = new MultiGreedy(oc, new ScoreConfiguration(), cores);
+      MultiGreedy greedy = new MultiGreedy(oc, new ScoreConfiguration(), seed, cores);
       greedy.setTimeout(timeout);
-      List<TestCase> tests = greedy.search(cores, seed);
+      List<TestCase> tests = greedy.search();
       TestCoverage tc = new TestCoverage(tests);
       System.out.println(tc.coverageString(greedy.getFsm(), null, null, null, null, false));
     }
@@ -686,12 +686,10 @@ public class SimCard {
     }
 
     @Override
-    public TestModels createModelObjects() {
-      TestModels models = new TestModels();
+    public void createModelObjects(TestModels addHere) {
       SimCard sim = new SimCard(new SimCardAdaptor());
       sim.out = out;
-      models.add(sim);
-      return models;
+      addHere.add(sim);
     }
   }
 }

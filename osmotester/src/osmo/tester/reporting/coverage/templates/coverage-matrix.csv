@@ -1,7 +1,7 @@
-The number of times a given test case includes a given transition:
-Test ID,#foreach ($tn in $transition_names)$tn,#end
+The number of times a given test case includes a given step:
+Test ID,#foreach ($tn in $step_names)$tn,#end
 
-#foreach ($t in $tests)$t.name,#foreach ($tn in $transition_names)$t.transitionCount($tn),#end
+#foreach ($t in $tests)$t.name,#foreach ($tn in $step_names)$t.stepCount($tn),#end
 
 #end
 
@@ -12,10 +12,10 @@ Test ID,#foreach ($rn in $req_names)$rn,#end
 
 #end
 
-The number of times a given test case includes a given transition pair (T1->T2, T2 occurred after T1):
-Test ID,#foreach ($tpn in $transition_pair_names)$tpn,#end
+The number of times a given test case includes a given step pair (T1->T2, T2 occurred after T1):
+Test ID,#foreach ($tpn in $step_pair_names)$tpn,#end
 
-#foreach ($t in $tests)$t.name,#foreach ($tpn in $transition_pair_names)$t.pairCount($tpn),#end
+#foreach ($t in $tests)$t.name,#foreach ($tpn in $step_pair_names)$t.pairCount($tpn),#end
 
 #end
 

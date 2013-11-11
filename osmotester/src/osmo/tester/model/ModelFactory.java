@@ -1,12 +1,20 @@
 package osmo.tester.model;
 
 /**
- * One could add parameter "boolean exploration" for the createModelObjects() method to allow for customized state cloning.
- * However, this would still not solve everything as it would also require cloning all the executed test steps, the values
- * in those steps, and all other attributes for them.
- * So, currently one must still expect that between the tests the state of the SUT can be reset and repeats are done.
+ * This represents a factory to create model objects.
+ * Used by the versions that run several generators in parallel, such as 
+ * {@link osmo.tester.optimizer.GreedyOptimizer},
+ * {@link osmo.tester.optimizer.MultiGreedy},
+ * {@link osmo.tester.generator.multi.MultiOSMO},
+ * {@link osmo.tester.explorer.OSMOExplorer}.
  * 
- * @author Teemu Kanstren */
+ * @author Teemu Kanstren 
+ */
 public interface ModelFactory {
-  public TestModels createModelObjects();
+  /**
+   * This should create the set of model objects and pass them to the generator through the given reference.
+   * 
+   * @param  addThemHere Add the model objects here.
+   */
+  public void createModelObjects(TestModels addThemHere);
 }

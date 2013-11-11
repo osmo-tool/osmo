@@ -18,14 +18,15 @@ public class GroupParser implements AnnotationParser {
   public String parse(ParserResult result, ParserParameters parameters) {
     Group cg = (Group) parameters.getAnnotation();
     String value = cg.value();
-    String annotationName = Group.class.getSimpleName();
+    //this name is also used to store/access the annotation by class type elsewhere so we cannot add @ to it
+    String name = Group.class.getSimpleName();
     if (value == null) {
-      return "@"+annotationName + " value cannot be null.\n";
+      return "@"+name + " value cannot be null.\n";
     }
     if (value.length() == 0) {
-      return "@"+annotationName + " must have name.\n";
+      return "@"+name + " must have name.\n";
     }
-    parameters.addClassAnnotation(annotationName, value); 
+    parameters.addClassAnnotation(name, value); 
     return "";
   }
 }

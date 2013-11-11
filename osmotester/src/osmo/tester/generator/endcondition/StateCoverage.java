@@ -8,13 +8,12 @@ import osmo.tester.model.FSM;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.List;
 
 /** 
- * An end condition that requires the given set of variable values to be covered.
- * A variable can be listed many times, meaning it must be covered several times.
- * A variable is observed several times if it is observed in several steps, regardless of what is in between.
+ * An end condition that requires the given set of {@link osmo.tester.annotation.CoverageValue} values to be covered.
+ * A value can be listed many times, meaning it must be covered several times.
+ * A value is observed several times if it is recorded in several steps, regardless of what is in between.
  * 
  * @author Teemu Kanstren 
  */
@@ -23,8 +22,6 @@ public class StateCoverage implements EndCondition {
   private final String name;
   /** List of required values to covered. */
   private Collection<String> required = new ArrayList<>();
-  /** Values observed in suite so far. */
-  private Collection<String> suiteValues = new LinkedHashSet<>();
   /** Set of remaining values to cover for current test (when used at test level). */
   private List<String> remainingForTest = new ArrayList<>();
   /** Number of tests in suite, used to reset coverage when end condition is used at test level. */
@@ -50,7 +47,7 @@ public class StateCoverage implements EndCondition {
   public boolean endTest(TestSuite suite, FSM fsm) {
     int suiteSize = suite.getAllTestCases().size();
     if (testCount != suiteSize) {
-      //test has changed, reset values
+      //new test has been started, reset values
       remainingForTest.clear();
       remainingForTest.addAll(required);
       testCount = suiteSize;
@@ -60,12 +57,9 @@ public class StateCoverage implements EndCondition {
     //step is null if we are just starting the test case
     if (currentStep == null) return false;
     Collection<Object> objects = currentStep.getStatesFor(name).getValues();
-    Collection<String> values = new ArrayList<>();
     for (Object object : objects) {
       String value = "" + object;
-      values.add(value);
       remainingForTest.remove(value);
-      suiteValues.add(value);
     }
     //did we cover all? if so the size is 0
     return remainingForTest.size() == 0;

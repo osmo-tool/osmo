@@ -74,14 +74,14 @@
 </head>
 <body>
   <table class="osmo-table" border="1">
-    <caption>The number of times a given test case includes a given transition:</caption>
+    <caption>The number of times a given test case includes a given step:</caption>
     <thead>
       <tr>
         <th class='corner' scope='col' rowspan='2'>Test ID</th>
-        <th scope='col' colspan='$transition_names.size()'>Transition coverage</th>
+        <th scope='col' colspan='$step_names.size()'>Step coverage</th>
       </tr>
       <tr>
-#foreach ($tn in $transition_names)
+#foreach ($tn in $step_names)
         <th class='colhead' scope='col'>$tn</th>
 #end
       </tr>
@@ -90,8 +90,8 @@
 #foreach ($t in $tests)
       <tr$alt>
         <th class='testhead' scope='row'>$t.name</th>
-#foreach ($tn in $transition_names)
-        <td>$t.transitionCount($tn)</td>
+#foreach ($tn in $step_names)
+        <td>$t.stepCount($tn)</td>
 #end
       </tr>
 #end
@@ -124,14 +124,14 @@
   </table>
 
   <table class="osmo-table" border="1">
-    <caption>The number of times a given test case includes a given transition pair (T1->T2, T2 occurred after T1):</caption>
+    <caption>The number of times a given test case includes a given step pair (T1->T2, T2 occurred after T1):</caption>
     <thead>
       <tr>
         <th class='corner' scope='col' rowspan='2'>Test ID</th>
-        <th scope='col' colspan='$transition_pair_names.size()'>Transition-pair coverage</th>
+        <th scope='col' colspan='$step_pair_names.size()'>Step-pair coverage</th>
       </tr>
       <tr>
-#foreach ($tpn in $transition_pair_names)
+#foreach ($tpn in $step_pair_names)
         <th class='colhead' scope='col'>$tpn</th>
 #end
       </tr>
@@ -140,7 +140,7 @@
 #foreach ($t in $tests)
       <tr$alt>
         <th class='testhead' scope='row'>$t.name</th>
-#foreach ($tpn in $transition_pair_names)
+#foreach ($tpn in $step_pair_names)
         <td>$t.pairCount($tpn)</td>
 #end
       </tr>

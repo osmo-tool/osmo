@@ -56,7 +56,7 @@ public class ASCIICoverageReporter extends CoverageMetric {
    * step2   step3  0
    */
   public String getStepPairCounts() {
-    List<ValueCount> tpc = countTransitionPairs();
+    List<ValueCount> tpc = countStepPairs();
     Collections.sort(tpc);
 
     //Find longest

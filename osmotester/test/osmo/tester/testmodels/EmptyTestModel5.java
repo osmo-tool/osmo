@@ -2,6 +2,7 @@ package osmo.tester.testmodels;
 
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
+import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Transition;
 
 /** @author Teemu Kanstren */
@@ -11,7 +12,7 @@ public class EmptyTestModel5 {
     return false;
   }
 
-  @Transition("foo")
+  @TestStep("foo")
   public void epixx(String bar) {
   }
 

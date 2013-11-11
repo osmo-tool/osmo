@@ -7,6 +7,7 @@ import java.util.Map;
 
 /**
  * Used to maintain a trace of test generation.
+ * Represents one node in a graphviz visualization.
  *
  * @author Teemu Kanstren
  */

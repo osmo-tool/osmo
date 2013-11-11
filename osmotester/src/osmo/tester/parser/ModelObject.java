@@ -6,9 +6,9 @@ package osmo.tester.parser;
  * @author Teemu Kanstren
  */
 public class ModelObject {
-  /** Prefix of the model object, added to names of all parsed transitions, guards, etc. */
+  /** Prefix of the model object, added to names of all parsed test steps, guards, etc. */
   private final String prefix;
-  /** The model object, which implements a set of given transitions, guards, etc. to be invoked. */
+  /** The model object, which implements a set of given test steps, guards, etc. to be invoked. */
   private final Object object;
 
   public ModelObject(String prefix, Object object) {

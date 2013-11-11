@@ -202,8 +202,9 @@ public class Randomizer {
     int choice = Collections.binarySearch(summedTotals, target);
     if (choice < 0) {
       //Java binary search returns negative index values if there is no direct match, with additional -1 added on top
+      //that is, if the result would be 4 but it is not a direct match, we get -5. trick below corrects it.
       choice = choice * -1; //make it positive again
-      choice = choice -1; //remove the -1 (with after previous line is +1)
+      choice = choice -1; //remove the -1 (which after previous line is +1)
     }
     return choice;
   }

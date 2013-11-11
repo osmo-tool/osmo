@@ -10,30 +10,28 @@ import java.util.List;
 
 /**
  * Defines a value range with a minimum and maximum values. Generates input from this range, including min and max.
- * Evaluates given values if they fit in the range.
- * Support subclasses of {@link Number}, specifically {@link Integer}, {@link Long}, and {@link Double}.
+ * Supports subclasses of {@link Number}, specifically {@link Integer}, {@link Long}, and {@link Double}.
  * Notice that due to limitations of the Java generics type system, you have to either provide the type
  * as an explicit argument to the constructor or otherwise the type to be generated will be based on the
  * type of object passed as the "min" value of the range.
  * <p/>
  * To get integers do either
- * new ValueRange<Integer>(1,2); or
- * new ValueRange<Integer>(Integer.class, 1, 2);
+ * {@code new ValueRange<Integer>(1,2);} or
+ * {@code new ValueRange<Integer>(Integer.class, 1, 2);}
  * <p/>
  * to get long values do either
- * new ValueRange<Long>(1l,2l); or
- * new ValueRange<Long>(Long.class, 1, 2);
+ * {@code new ValueRange<Long>(1l,2l);} or
+ * {@code new ValueRange<Long>(Long.class, 1, 2);}
  * <p/>
  * to get double values do either
- * new ValueRange<Double>(1d,2d); or
- * new ValueRange<Double>(Double.class, 1, 2);
+ * {@code new ValueRange<Double>(1d,2d);} or
+ * {@code new ValueRange<Double>(Double.class, 1, 2);}
  * <p/>
  * Omitting the type information will result in generation of integers.
  * It is also possible to use any of the specific functions such as nextInt(), nextLong() and nextDouble()
  * regardless of configured type.
  *
  * @author Teemu Kanstren
- * @see Input
  */
 public class ValueRange<T extends Number> extends SearchableInput<T> {
   private static final Logger log = new Logger(ValueRange.class);
@@ -45,8 +43,8 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
   private Number increment = 1;
   /** Keeps a history of all the data values created as input from this value range. */
   protected List<Number> history = new ArrayList<>();
-  /** History of generated values in case an optimized data generation strategy is used. */
-  protected List<Number> optimizerHistory = new ArrayList<>();
+  /** Balancing strategy selection set. */
+  protected ValueSet<T> balancingChoices = new ValueSet<>();
   /** The strategy for data generation. */
   private DataGenerationStrategy algorithm = DataGenerationStrategy.RANDOM;
   /** The actual type of data to be generated. */
@@ -93,6 +91,12 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
       setType(DataType.DOUBLE);
     }
     boundary = new Boundary(this.type, min, max);
+  }
+
+  @Override
+  public void setSeed(long seed) {
+    super.setSeed(seed);
+    balancingChoices.setSeed(seed);
   }
 
   private void setType(DataType type) {
@@ -155,7 +159,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
   public T next() {
     switch (algorithm) {
       case ORDERED_LOOP:
-        return ordered();
+        return loop();
       case BALANCING:
         return balanced();
       case BOUNDARY_SCAN:
@@ -177,7 +181,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
   
   private void post() {
     history.add(choice);
-    observe((T) choice);
+    record((T) choice);
     log.debug("Value:" + choice);
   }
 
@@ -186,7 +190,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
    *
    * @return Chosen value.
    */
-  public T ordered() {
+  public T loop() {
     pre();
     if (choice == null) {
       Number last = min;
@@ -220,34 +224,16 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
   }
 
   /**
-   * Create next value for the balancing algorithm. Note that this can hang if it runs out of options, and also it
-   * becomes slower and slower the less options it has. Generally avoid this unless you have few options or
-   * need only a few values, until someone redoes the implementation..
+   * Create next value for the balancing strategy. Note that this creates a list of all options so really large
+   * sets on possible input will eat big memory.
    *
    * @return A new value in this range.
    */
   public T balanced() {
     pre();
     if (choice == null) {
-      do {
-        switch (type) {
-          case INT:
-            choice = rand.nextInt(min.intValue(), max.intValue());
-            break;
-          case LONG:
-            choice = rand.nextLong(min.longValue(), max.longValue());
-            break;
-          case DOUBLE:
-            choice = rand.nextDouble(min.doubleValue(), max.doubleValue());
-            break;
-          default:
-            throw new IllegalArgumentException("Enum type:" + type + " unsupported.");
-        }
-      } while (optimizerHistory.contains(choice));
-      optimizerHistory.add(choice);
-      if (optimizerHistory.size() == (max.intValue() - min.intValue()) + 1) {
-        optimizerHistory.clear();
-      }
+      if (balancingChoices.size() == 0) balancingChoices.addAll(getOptions());
+      choice = balancingChoices.removeRandom();
     }
     post();
     return (T)choice;
@@ -349,8 +335,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
 
   @Override
   public void enableGUI() {
-    if (guiEnabled) return;
-    guiEnabled = true;
+    if (gui != null) return;
     gui = new ValueRangeGUI(this);
   }
 

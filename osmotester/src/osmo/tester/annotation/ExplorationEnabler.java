@@ -8,6 +8,8 @@ import java.lang.annotation.Target;
 /**
  * Methods annotated will be called to enter the model into exploration mode.
  * Only relevant when OSMO Explorer (a specific online algorithm) is used.
+ * 
+ * Annotated Method must have no parameters.
  *
  * @author Teemu Kanstren
  */

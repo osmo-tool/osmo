@@ -6,7 +6,7 @@
       <td>Pair</td>
       <td>Count</td>
     </tr>
-#foreach ($tp in $pairs)
+#foreach ($tp in $step-pairs)
     <tr>
       <td>$tp.value</td>
       <td>$tp.count</td>

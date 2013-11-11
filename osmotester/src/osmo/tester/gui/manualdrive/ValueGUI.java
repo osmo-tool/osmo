@@ -127,7 +127,7 @@ public abstract class ValueGUI extends JDialog {
 //      }
 //    }
     if (!observed) {
-      input.observe(value);
+      input.record(value);
     }
     return value;
   }

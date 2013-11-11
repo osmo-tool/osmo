@@ -58,7 +58,7 @@ public class GenerationTests {
       osmo.generate(111);
       fail("Generation without available transitions should fail.");
     } catch (IllegalStateException e) {
-      assertEquals("No transition available.", e.getMessage());
+      assertEquals("No test step available.", e.getMessage());
     }
   }
 

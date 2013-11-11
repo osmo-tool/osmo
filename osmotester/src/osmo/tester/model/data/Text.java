@@ -8,25 +8,25 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * For generating words, meaning strings of characters matching the given specification.
+ * For generating strings of characters matching the given specification.
  *
  * @author Teemu Kanstren
  */
 public class Text extends SearchableInput<String> {
   private static final Logger log = new Logger(Text.class);
-  /** Minimum length of generated word. */
+  /** Minimum length of generated text. */
   private int min = 5;
-  /** Maximum length of generated word. */
+  /** Maximum length of generated text. */
   private int max = 10;
-  /** Used to create valid characters for words. */
+  /** Used to create valid characters for text. */
   private final CharSet chars = new CharSet();
-  /** History of generated words. */
+  /** History of generated text for this object. */
   private Collection<String> history = new ArrayList<>();
   /** How are the characters generated? */
   private DataGenerationStrategy strategy = DataGenerationStrategy.RANDOM;
   /** Produce words of invalid length? Invalid is what we call length outside configured bounds.. */
   private boolean invalid = false;
-  /** Was it below or above min/max length when invalid length is applied? */
+  /** Length of previously generated value. Used to track upper/lower bounds violations when generating invalid data. */
   private int previousLength = -1;
   /** Min number to go over size if invalid length is applied. */
   private int minOffset = 1;
@@ -36,7 +36,8 @@ public class Text extends SearchableInput<String> {
   private boolean zeroSize = false;
   /** Did we already provide zero size? */
   private boolean zeroDone = false;
-  /** The probability that we will provide an invalid character in the generated string (between 0-1). */
+  /** Probability for invalid characters to appear in the generated string if using the invalidX generation methods. 
+   * Between 0-1. Default 0.5 (half are invalid). */
   private float invalidProbability = 0.5f;
 
   /** Constructor for default values. */
@@ -50,7 +51,7 @@ public class Text extends SearchableInput<String> {
   public Text(int min, int max) {
     this.min = min;
     this.max = max;
-    evaluateMinMax(min, max);
+    checkMinMax(min, max);
   }
 
   @Override
@@ -83,7 +84,7 @@ public class Text extends SearchableInput<String> {
     return this;
   }
 
-  private void evaluateMinMax(int min, int max) {
+  private void checkMinMax(int min, int max) {
     if (min < 0 || max < 0) {
       throw new IllegalArgumentException("Minimum and maximum length are not allowed to be negative (was " + min + ", " + max + ")");
     }
@@ -106,13 +107,11 @@ public class Text extends SearchableInput<String> {
   public void setOffset(int min, int max) {
     this.minOffset = min;
     this.maxOffset = max;
-    evaluateMinMax(min, max);
+    checkMinMax(min, max);
   }
 
   /**
    * Not supported by this class.
-   *
-   * @param algorithm The new algorithm.
    */
   @Override
   public Text setStrategy(DataGenerationStrategy algorithm) {
@@ -127,7 +126,7 @@ public class Text extends SearchableInput<String> {
   }
 
   /**
-   * Generates a sequence of readable characters, in length between the configured min and max values.
+   * Generates a sequence of characters, in length between the configured min and max values.
    *
    * @return The generated character sequence.
    */
@@ -147,6 +146,11 @@ public class Text extends SearchableInput<String> {
     }
   }
 
+  /**
+   * Calculate length of text to generate next.
+   * 
+   * @return Length defined.
+   */
   private int length() {
     int length = -1;
     if (!invalid) {
@@ -172,22 +176,27 @@ public class Text extends SearchableInput<String> {
     return length;
   }
 
+  /**
+   * Generate random valid characters.
+   * 
+   * @return Generated data.
+   */
   public String random() {
     int length = length();
     char[] c = new char[length];
     for (int i = 0 ; i < length ; i++) {
-      c[i] = chars.next();
+      c[i] = chars.random();
     }
     String next = new String(c);
     history.add(next);
-    observe(next);
+    record(next);
     return next;
   }
 
   /**
    * Creates values that are different from expected, replacing chars with invalid ones using some heuristics and
    * random probability.
-   * Relates to data, length is controlled with the invalid variable.
+   * Relates to generated charactgers, length is controlled with the "invalid" variable.
    *
    * @return the next generated value.
    */
@@ -199,12 +208,12 @@ public class Text extends SearchableInput<String> {
       if (f > invalidProbability) {
         c[i] = chars.next();
       } else {
-        c[i] = chars.nextInvalidRandom();
+        c[i] = chars.invalidRandom();
       }
     }
     String next = new String(c);
     history.add(next);
-    observe(next);
+    record(next);
     return next;
   }
 
@@ -229,17 +238,28 @@ public class Text extends SearchableInput<String> {
     chars.reduceBy(charsToRemove);
     return this;
   }
+
+  /**
+   * Gives the list of previously generated texts.
+   * 
+   * @return The generation history.
+   */
   public Collection<String> getHistory() {
     return history;
   }
 
   @Override
   public void enableGUI() {
-    if (guiEnabled) return;
-    guiEnabled = true;
+    if (gui != null) return;
     gui = new TextGUI(this);
   }
 
+  /**
+   * Enables generation of text of invalid length.
+   * 
+   * @param invalid To enable it or not..
+   * @return self for chaining.
+   */
   public Text enableInvalidLength(boolean invalid) {
     this.invalid = invalid;
     return this;

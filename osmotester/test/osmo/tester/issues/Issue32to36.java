@@ -130,10 +130,8 @@ public class Issue32to36 {
     }
 
     @Override
-    public TestModels createModelObjects() {
-      TestModels models = new TestModels();
-      models.add(new Issue32(ps));
-      return models;
+    public void createModelObjects(TestModels addHere) {
+      addHere.add(new Issue32(ps));
     }
   }
 }

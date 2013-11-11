@@ -130,14 +130,12 @@ public class ValidTestModel2 {
     }
 
     @Override
-    public TestModels createModelObjects() {
-      TestModels models = new TestModels();
+    public void createModelObjects(TestModels addHere) {
       if (ps != null) {
-        models.add(new ValidTestModel2(reqs, ps));
+        addHere.add(new ValidTestModel2(reqs, ps));
       } else {
-        models.add(new ValidTestModel2(reqs));
+        addHere.add(new ValidTestModel2(reqs));
       }
-      return models;
     }
   }
 }

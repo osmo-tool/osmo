@@ -8,10 +8,8 @@ import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class ValueRangeTests {
-  private long seed = 1;
-
   @Test
-  public void optimizedRandomValueRange() {
+  public void balancingValueRange() {
     ValueRange<Integer> vr = new ValueRange<>(5, 7);
     vr.setSeed(333);
     vr.setStrategy(DataGenerationStrategy.BALANCING);
@@ -40,10 +38,10 @@ public class ValueRangeTests {
   @Test
   public void orderedLoopValueRange() {
     ValueRange<Integer> vr = new ValueRange<>(5, 7);
-    assertEquals("First item", 5, vr.ordered().intValue());
-    assertEquals("Second item", 6, vr.ordered().intValue());
-    assertEquals("Third item", 7, vr.ordered().intValue());
-    assertEquals("Fourth item", 5, vr.ordered().intValue());
+    assertEquals("First item", 5, vr.loop().intValue());
+    assertEquals("Second item", 6, vr.loop().intValue());
+    assertEquals("Third item", 7, vr.loop().intValue());
+    assertEquals("Fourth item", 5, vr.loop().intValue());
   }
 
   @Test

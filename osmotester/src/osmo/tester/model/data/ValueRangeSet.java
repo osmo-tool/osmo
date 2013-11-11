@@ -202,7 +202,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
   }
   
   private void post() {
-    observe(choice);
+    record(choice);
   }
   
   public T random() {
@@ -219,7 +219,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
     pre();
     if (choice == null) {
       ValueRange vr = nextPartition();
-      choice = (T) vr.ordered();
+      choice = (T) vr.loop();
     }
     post();
     return choice;
@@ -257,8 +257,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
 
   @Override
   public void enableGUI() {
-    if (guiEnabled) return;
-    guiEnabled = true;
+    if (gui != null ) return;
     gui = new ValueRangeSetGUI(this);
   }
 

@@ -56,7 +56,8 @@ public class MainGenerator {
   private final long baseSeed;
   /** The seed for the current test case being generated. */
   private Long seed = null;
-  private final ScenarioFilter explorationGuard;
+  /** Forces the generator to follow the defined scenario by removing any steps from enabled list not allowed by scenario. */
+  private final ScenarioFilter scenarioFilter;
 
   /**
    * @param seed   The base seed to use for randomization during generation.
@@ -69,7 +70,7 @@ public class MainGenerator {
     this.suite = suite;
     this.config = config;
     this.listeners = config.getListeners();
-    this.explorationGuard = new ScenarioFilter(config.getScenario());
+    this.scenarioFilter = new ScenarioFilter(config.getScenario());
     createModelObjects();
   }
 
@@ -184,7 +185,7 @@ public class MainGenerator {
     addOptionsFor(suite.getCurrentTest().getCurrentStep(), enabled);
     if (enabled.size() == 0) {
       if (config.shouldFailWhenNoWayForward()) {
-        throw new IllegalStateException("No transition available.");
+        throw new IllegalStateException("No test step available.");
       } else {
         log.debug("No enabled transitions, ending test (fail is disabled).");
         return false;
@@ -241,7 +242,9 @@ public class MainGenerator {
   }
 
   /**
-   * Updates the user defined state (@StateName) in the test suite and stores it into test step etc.
+   * Stores the user defined coverage values {@link osmo.tester.annotation.CoverageValue} observed at this moment
+   * into current test step. Values are paired so that current value is appended to the previous value and the two
+   * characters "->" are put in between the two. The resulting string is the value.
    *
    * @param step The step to store data into.
    */
@@ -383,7 +386,8 @@ public class MainGenerator {
     for (StepFilter filter : config.getFilters()) {
       filter.filter(enabled);
     }
-    explorationGuard.filter(enabled, getCurrentTest().getAllStepNames());
+    //if a scenario is defined, remove everything not part of that scenario
+    scenarioFilter.filter(enabled, getCurrentTest().getAllStepNames());
     //sort the remaining ones to get deterministic test generation
     Collections.sort(enabled);
     //then check which of the remaining are allowed by their guard statements

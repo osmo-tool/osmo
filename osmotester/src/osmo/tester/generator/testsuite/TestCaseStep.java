@@ -33,9 +33,9 @@ public class TestCaseStep {
   private Collection<String> coveredRequirements = null;
   /** The data variables and the values covered for each in this test case. */
   private Map<String, ModelVariable> values = new LinkedHashMap<>();
-  /** The user defined coverage values covered for each in this test case. */
-  private Map<String, ModelVariable> states = new LinkedHashMap<>();
-  /** The pairs of user defined coverage values covered for each in this test case. */
+  /** The user defined state covered in this test step. */
+  private Map<String, ModelVariable> state = new LinkedHashMap<>();
+  /** The pairs of user defined state covered in this test step. */
   private Map<String, ModelVariable> statePairs = new LinkedHashMap<>();
   /** Step identifier. */
   private final int id;
@@ -130,10 +130,10 @@ public class TestCaseStep {
    * Another state is the user defined state, which is queried from specifically annotated methods with
    * {@link osmo.tester.annotation.CoverageValue}.
    *
-   * @param fsm This is where the state is copied from.
+   * @param fsm We grab references to the state objects from here.
    */
   public void storeGeneralState(FSM fsm) {
-    Collection<VariableField> variables = fsm.getStateVariables();
+    Collection<VariableField> variables = fsm.getModelVariables();
     for (VariableField variable : variables) {
       String name = variable.getName();
       Object value = variable.getValue();
@@ -233,15 +233,27 @@ public class TestCaseStep {
     return modelObjectName;
   }
 
+  /**
+   * Adds a user defined state value for this step.
+   * 
+   * @param name  Name of user defined state variable.
+   * @param value Value to store for the state.
+   */
   public void addUserCoverage(String name, String value) {
-    ModelVariable mv = states.get(name);
+    ModelVariable mv = state.get(name);
     if (mv == null) {
       mv = new ModelVariable(name);
-      states.put(name, mv);
+      state.put(name, mv);
     }
     mv.addValue(value, false);
   }
 
+  /**
+   * Adds a user defined state pair value for this step.
+   *
+   * @param pairName  Name of the pair of user defined state variables.
+   * @param value     Value to store for the state.
+   */
   public void addUserCoveragePair(String pairName, String value) {
     ModelVariable mv = statePairs.get(pairName);
     if (mv == null) {
@@ -271,15 +283,25 @@ public class TestCaseStep {
     return attributes.get(name);
   }
 
+  /**
+   * @return The recorded user defined state values.
+   */
   public Collection<ModelVariable> getStatesList() {
-    return states.values();
+    return state.values();
   }
 
+  /**
+   * @return The recorded user defined state value pairs.
+   */
   public Collection<ModelVariable> getStatePairsList() {
     return statePairs.values();
   }
 
+  /**
+   * @param  name The user defined variable to get state for.
+   * @return The recorded user defined state values for variable of given name.
+   */
   public ModelVariable getStatesFor(String name) {
-    return states.get(name);
+    return state.get(name);
   }
 }

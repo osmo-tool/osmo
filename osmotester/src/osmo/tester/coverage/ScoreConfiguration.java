@@ -16,6 +16,15 @@ import java.util.Map;
 
 /**
  * A configuration for scoring test coverage.
+ * Give weights to different elements of test coverage, and these are used for coverage calculation.
+ * Note that also weight of zero and negative weights are possible.
+ * With a weight of zero, that coverage criteria is ignored.
+ * 
+ * With a negative weight, the generator prefers to have as little as possible of that value.
+ * For example, with a negative weight for length the generator will prefer shorter test cases.
+ * Something to note in such a case is the optimizers in the OSMO Tester toolset look for anything that
+ * adds a given amount of coverage score to the set. Thus, using negative length weights can lead the
+ * tool to ignore some potential gain if it is only achieved after a very long sequence of steps.
  *
  * @author Teemu Kanstren
  */
@@ -23,19 +32,19 @@ public class ScoreConfiguration {
   private static final Logger log = new Logger(ScoreConfiguration.class);
   /** Weight for length (number of steps). */
   protected int lengthWeight = 0;
-  /** Weight for number of variables covered (any value(s)). */
+  /** Weight for number of coverage variables covered. One variable counts once regardless of number of values. */
   protected int variableCountWeight = 10;
-  /** Weight for unique values if no specific one is defined for a variable. */
+  /** Weight for unique values for coverage variables, if no specific one is defined for a variable. */
   protected int defaultValueWeight = 1;
-  /** Weights for specific variables (each unique value scores this much). */
+  /** Weights for specific coverage variables (each unique value for that variable scores this much). */
   protected Map<String, Integer> valueWeights = new LinkedHashMap<>();
-  /** Weight for number of unique step-pairs (two steps in a sequence in same test). */
+  /** Weight for number of unique step-pairs (two steps in a sequence). */
   protected int stepPairWeight = 30;
   /** Weight for number of unique steps covered. */
   protected int stepWeight = 20;
   /** Weight for number of covered requirements. */
   protected int requirementWeight = 10;
-  /** Names of variables that should not be validated, e.g. custom user variables. */
+  /** Names of variable names that should not be validated, e.g. custom user variables. */
   protected Collection<String> ignoreList = new LinkedHashSet<>();
   /** Weight for custom state, the ones tagged with @CoverageValue. */
   private int stateWeight = 50;
@@ -50,7 +59,7 @@ public class ScoreConfiguration {
    */
   public void validate(FSM fsm) {
     log.debug("validating against:" + fsm);
-    Collection<VariableField> coverageVariables = fsm.getStateVariables();
+    Collection<VariableField> coverageVariables = fsm.getModelVariables();
     Collection<String> variableNames = new ArrayList<>();
     for (VariableField field : coverageVariables) {
       variableNames.add(field.getName());
@@ -61,6 +70,7 @@ public class ScoreConfiguration {
       variableNames.add(method.getPairName());
     }
     log.debug("FSM variables for coverage:" + variableNames);
+    //use a hashset to avoid duplicates
     Collection<String> notFound = new HashSet<>();
     for (String name : valueWeights.keySet()) {
       if (!variableNames.contains(name) && !ignoreList.contains(name)) {
@@ -71,6 +81,7 @@ public class ScoreConfiguration {
     if (notFound.size() == 0) {
       return;
     }
+    //recreate a list that can be sorted
     List<String> sortMe = new ArrayList<>();
     sortMe.addAll(notFound);
     Collections.sort(sortMe);
@@ -150,7 +161,7 @@ public class ScoreConfiguration {
    *
    * @param names The names to ignore.
    */
-  public void disableCheckingFor(String... names) {
+  public void ignore(String... names) {
     Collections.addAll(ignoreList, names);
   }
 

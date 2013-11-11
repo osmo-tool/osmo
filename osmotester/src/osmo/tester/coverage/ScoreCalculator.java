@@ -32,7 +32,7 @@ public class ScoreCalculator {
     score += tc.getVariables().size() * config.getVariableCountWeight();
     score += tc.getStateCount() * config.getStateWeight();
     score += tc.getStatePairCount() * config.getStatePairWeight();
-    Map<String,Collection<String>> values = tc.getValues();
+    Map<String,Collection<String>> values = tc.getVariableValues();
     for (String name : values.keySet()) {
       Collection<String> varValues = values.get(name);
       score += varValues.size() * config.getVariableWeight(name);
@@ -44,6 +44,7 @@ public class ScoreCalculator {
 
   /**
    * How much score would adding the given test case add to the given test coverage set?
+   * Does not add anything to this set, so after this the set is the same as before.
    * Calculates for all steps in given test case.
    * 
    * @param tc The coverage so far.
@@ -71,25 +72,6 @@ public class ScoreCalculator {
     int newScore = calculateScore(tc2);
     int added = newScore - oldScore;
     log.debug("added score:" + added);
-    return added;
-  }
-
-  /**
-   * Calculates how much the coverage score would raise if the given test cases were added to this set.
-   * Does not add anything to this set, so after this the set is the same as before.
-   *
-   * @param tests The tests to check added coverage for.
-   * @return The new coverage score.
-   */
-  public int addedScoreFor(TestCoverage tc1, Collection<TestCase> tests) {
-    TestCoverage tc2 = tc1.cloneMe();
-    for (TestCase test : tests) {
-      tc2.addTestCoverage(test);
-    }
-    int oldScore = calculateScore(tc1);
-    int newScore = calculateScore(tc2);
-    int added = newScore - oldScore;
-    log.debug("added fitness:" + added);
     return added;
   }
 }

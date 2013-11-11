@@ -1,7 +1,8 @@
-package osmo.tester.parser.annotation;
+package osmo.tester.parser.field;
 
 import osmo.common.log.Logger;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.data.SearchableInput;
 import osmo.tester.parser.AnnotationParser;
 import osmo.tester.parser.ParserParameters;
 import osmo.tester.parser.ParserResult;
@@ -23,11 +24,12 @@ public class TestSuiteParser implements AnnotationParser {
     Field field = parameters.getField();
     //to enable access to private fields
     field.setAccessible(true);
+    String name = SearchableInput.class.getSimpleName();
     Object model = parameters.getModel();
     try {
       TestSuite suite = (TestSuite) field.get(model);
       if (suite != null) {
-        errors += "TestSuite value was not null, which is not allowed.\n";
+        errors += name+" value was not null, which is not allowed.\n";
         return errors;
       }
       suite = parameters.getSuite();

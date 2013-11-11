@@ -9,8 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents the given model object in terms of a finite state machine (FSM).
+ * Represents the given test model parsed from the model objects provided by the user.
  * Produced by the parser and used by the generator to create actual test cases.
+ * The test steps in here are represented as FSMTransitions.
  *
  * @author Teemu Kanstren
  */
@@ -18,19 +19,19 @@ public class FSM {
   private static final Logger log = new Logger(FSM.class);
   /** Key = transition name (from @TestStep("name")), Value = transition object */
   private Map<TransitionName, FSMTransition> transitions = new HashMap<>();
-  /** List of specific guards, associated to groups or transitions. */
+  /** List of specific guards, associated to groups or steps. */
   private List<FSMGuard> specificGuards = new ArrayList<>();
-  /** List of generic guards that apply to all transitions. */
+  /** List of generic guards that apply to all steps. */
   private Collection<InvocationTarget> genericGuards = new ArrayList<>();
-  /** List of guards that should be associated to all but the given name. */
+  /** List of guards that should be associated to all but the step with the given name. */
   private List<FSMGuard> negatedGuards = new ArrayList<>();
-  /** List of generic pre-methods that apply to all transitions. */
+  /** List of generic pre-methods that apply to all steps. */
   private Collection<InvocationTarget> genericPre = new ArrayList<>();
-  /** List of generic post-methods that apply to all transitions. */
+  /** List of generic post-methods that apply to all steps. */
   private Collection<InvocationTarget> genericPost = new ArrayList<>();
-  /** List of specific pre-methods that apply to a specific transition or group. */
+  /** List of specific pre-methods that apply to a specific step or group. */
   private List<FSMGuard> specificPre = new ArrayList<>();
-  /** List of specific post-methods that apply to a specific transition or group.. */
+  /** List of specific post-methods that apply to a specific step or group.. */
   private List<FSMGuard> specificPost = new ArrayList<>();
   /** List of methods to be executed before each test case. */
   private Collection<InvocationTarget> beforeTests = new ArrayList<>();
@@ -42,33 +43,31 @@ public class FSM {
   private Collection<InvocationTarget> beforeSuites = new ArrayList<>();
   /** List of methods to be executed after the overall test suite. */
   private Collection<InvocationTarget> afterSuites = new ArrayList<>();
-  /** List of conditions when to stop (prematurely) test generation (single test, not suite). */
+  /** List of model end conditions defining when to stop test generation (single test, not suite). */
   private Collection<InvocationTarget> endConditions = new ArrayList<>();
   /** List of methods to invoke when entering exploration mode */
   private Collection<InvocationTarget> explorationEnablers = new ArrayList<>();
   /** List of method to invoke when entering generation mode. */
   private Collection<InvocationTarget> generationEnablers = new ArrayList<>();
-  /** List of state variables to store for each test step. */
-  private Collection<VariableField> stateVariables = new ArrayList<>();
+  /** List of model variables to store for each test step. */
+  private Collection<VariableField> modelVariables = new ArrayList<>();
   /** User defined requirements. */
   private Requirements requirements = null;
-  /** The set of objects to call to get current state. Key = model object name, value=target method to get state value.*/
+  /** The set of objects to call to get current user defined state. Key = model object name, value=target method to get coverage value.*/
   private Collection<CoverageMethod> coverageValues = new ArrayList<>();
   /** Name of the start step (before anything else). */
   public static final String START_STEP_NAME = ".osmo.tester.init";
-  /** Name of the start state (before anything else). */
-  public static final String START_STATE_NAME = "osmo.start.state";
 
   /** Constructor. And a useful comment. */
   public FSM() {
   }
 
   /**
-   * Returns an existing object for the requested transition name or creates a new one if one was not previously
+   * Returns an existing object for the requested test step name or creates a new one if one was not previously
    * found existing.
    *
-   * @param name   The name of the transition. Taken from @Transition("name").
-   * @param weight The weight of the transition. Taken from @Transition(weight=x).
+   * @param name   The name of the test step. Taken from @TestStep("name").
+   * @param weight The weight of the test step. Taken from @TestStep(weight=x).
    * @return A transition object for the requested name.
    */
   public FSMTransition createTransition(TransitionName name, int weight) {
@@ -89,27 +88,25 @@ public class FSM {
   }
 
   /**
-   * Checks the FSM for validity according to generic elements. This includes the following constraints:
-   * -Is a requirements object defined in the model? if so use it, otherwise create empty one.
-   * -Check that each @Guard, @Pre and @Post  has a matching transition.
+   * Checks this model for validity.
    * Note that most checks for specific annotations are done already in the associated
    * {@link osmo.tester.parser.AnnotationParser} object.
    *
-   * @param errors Previously defined errors to be reported in addition to new ones found.
+   * @param errors Errors to report in addition to those found here.
    */
   public void checkFSM(String errors) {
     log.debug("Checking FSM validity");
     if (transitions.size() == 0) {
-      errors += "No transitions found in given model object. Model cannot be processed.\n";
+      errors += "No test steps found in given model object. Model cannot be processed.\n";
     }
     List<String> transitionNames = new ArrayList<>();
     List<String> groupNames = new ArrayList<>();
     for (FSMTransition transition : transitions.values()) {
       InvocationTarget target = transition.getTransition();
       TransitionName name = transition.getName();
-      log.debug("Checking transition:" + name);
+      log.debug("Checking test step:" + name);
       if (target == null) {
-        errors += "Transition without invocation target" + name + "\n";
+        errors += "Test step without invocation target" + name + "\n";
         log.debug("Error: Found transition without invocation target - " + name);
       }
       errors = addGenericElements(transition, errors);
@@ -129,11 +126,11 @@ public class FSM {
     errors = checkGuards(specificPost, errors, "Post");
     for (String groupName : groupNames) {
       if (transitionNames.contains(groupName)) {
-        errors += "Groupname same as a step name ("+groupName+"). Must be different.\n";
+        errors += "Group name same as a step name ("+groupName+"). Must be different.\n";
       }
     }
     if (errors.length() > 0) {
-      throw new IllegalStateException("Invalid FSM:\n" + errors);
+      throw new IllegalStateException("Invalid test model:\n" + errors);
     }
     log.debug("FSM checked");
   }
@@ -155,7 +152,7 @@ public class FSM {
    * @return The error msg string given with possible new errors appended.
    */
   private String addGenericElements(FSMTransition step, String errors) {
-    //we add all generic guards to the set of guards for this transition. doing it here includes them in the checks
+    //we add all generic guards to the set of guards for this step. doing it here includes them in the checks
     for (InvocationTarget guard : genericGuards) {
       step.addGuard(guard);
     }
@@ -190,7 +187,7 @@ public class FSM {
   }
 
   /**
-   * Adds annotated pre- and post-methods for specific transitions and groups.
+   * Adds annotated pre- and post-methods for specific test steps and groups.
    *
    * @param transition The transition to process.
    * @param errors Possible errors so far.
@@ -293,7 +290,7 @@ public class FSM {
   }
 
   /**
-   * Add a guard that should return true for all transitions in the test model.
+   * Add a guard that should return true for all test steps in the test model.
    *
    * @param target The guard method to be invoked for evaluation.
    */
@@ -302,7 +299,7 @@ public class FSM {
   }
 
   /**
-   * Add a pre-method that should be executed for a specific transitions or group in the test model.
+   * Add a pre-method that should be executed for a specific test step or group in the test model.
    *
    * @param target The pre method to be invoked for evaluation.
    */
@@ -311,7 +308,7 @@ public class FSM {
   }
 
   /**
-   * Add a pre-method that should be executed for all transitions in the test model.
+   * Add a pre-method that should be executed for all test steps in the test model.
    *
    * @param target The pre method to be invoked for evaluation.
    */
@@ -320,7 +317,7 @@ public class FSM {
   }
 
   /**
-   * Add a post-method that should be executed for all transitions in the test model.
+   * Add a post-method that should be executed for all test step in the test model.
    *
    * @param target The post method to be invoked for evaluation.
    */
@@ -329,7 +326,7 @@ public class FSM {
   }
 
   /**
-   * Add a post-method that should be executed for a specific transitions or group in the test model.
+   * Add a post-method that should be executed for a specific test step or group in the test model.
    *
    * @param target The post method to be invoked for evaluation.
    */
@@ -351,8 +348,8 @@ public class FSM {
    *
    * @param var The variable field itself.
    */
-  public void addStateVariable(VariableField var) {
-    stateVariables.add(var);
+  public void addModelVariable(VariableField var) {
+    modelVariables.add(var);
   }
 
   public void addLastStep(InvocationTarget lastStep) {
@@ -368,8 +365,8 @@ public class FSM {
    *
    * @return variables tagged @Variable.
    */
-  public Collection<VariableField> getStateVariables() {
-    return stateVariables;
+  public Collection<VariableField> getModelVariables() {
+    return modelVariables;
   }
 
   public Requirements getRequirements() {

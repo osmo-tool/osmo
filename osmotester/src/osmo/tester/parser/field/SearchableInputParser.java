@@ -1,6 +1,7 @@
-package osmo.tester.parser.annotation;
+package osmo.tester.parser.field;
 
 import osmo.tester.annotation.Variable;
+import osmo.tester.model.Requirements;
 import osmo.tester.model.data.SearchableInput;
 import osmo.tester.parser.AnnotationParser;
 import osmo.tester.parser.ParserParameters;
@@ -10,7 +11,7 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 
 /**
- * Parses fields of the {@link osmo.tester.model.data.SearchableInput} and stores them to the test model FSM.
+ * Parses fields of the {@link osmo.tester.model.data.SearchableInput} type and stores them to the test model FSM.
  *
  * @author Teemu Kanstren
  */
@@ -21,14 +22,15 @@ public class SearchableInputParser implements AnnotationParser {
     Field field = parameters.getField();
     field.setAccessible(true);
     Object model = parameters.getModel();
+    String name = SearchableInput.class.getSimpleName();
     SearchableInput input = null;
     try {
       input = (SearchableInput) field.get(model);
       if (input == null) {
-        return "SearchableInput must be initialized when defined:" + field.getName() + ".\n";
+        return name+" must be initialized when defined:" + field.getName() + ".\n";
       }
     } catch (IllegalAccessException e) {
-      throw new RuntimeException("Unable to parse SearchableInput object " + field.getName(), e);
+      throw new RuntimeException("Unable to parse "+name+" object " + field.getName(), e);
     }
     input.setSuite(parameters.getSuite());
     input.setSeed(parameters.getSeed());

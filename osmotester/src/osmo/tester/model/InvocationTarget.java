@@ -13,11 +13,11 @@ import java.lang.reflect.Method;
  */
 public class InvocationTarget implements Comparable<InvocationTarget> {
   private static Logger log = new Logger(InvocationTarget.class);
-  /** The model object itself, implementing the actual transition methods etc. */
+  /** The model object itself, implementing the actual methods to be invoked etc. */
   private final Object modelObject;
   /** The method to be invoked on the model object. */
   private final Method method;
-  /** The annotation name for the invoked method (from model annotations). Used for error reporting. */
+  /** The annotation name for the invoked method. Used for error reporting. */
   private final String type;
 
   public InvocationTarget(ParserParameters parameters, Class type) {
@@ -27,6 +27,11 @@ public class InvocationTarget implements Comparable<InvocationTarget> {
     log.debug("Found and created " + this.type + " method:" + method.getName());
   }
 
+  /**
+   * Call the configured method on the configured object. Expect no parameters to be required.
+   * 
+   * @return The return value from the invoked method.
+   */
   public Object invoke() {
     try {
       return method.invoke(modelObject);
@@ -35,6 +40,12 @@ public class InvocationTarget implements Comparable<InvocationTarget> {
     }
   }
 
+  /**
+   * Call the configured method on the configured object. Expect a parameters to be required.
+   *
+   * @param arg The argument to the method to be invoked.
+   * @return The return value from the invoked method.
+   */
   public Object invoke(Object arg) {
     //we need to check if it has parameters since it is optional for a pre- or post-method to have parameters
     if (method.getParameterTypes().length == 0) {

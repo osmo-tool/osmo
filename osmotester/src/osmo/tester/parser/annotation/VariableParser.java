@@ -35,7 +35,7 @@ public class VariableParser implements AnnotationParser {
     } catch (IllegalAccessException e) {
       throw new RuntimeException("Failed to check variable type for " + field.getName(), e);
     }
-    result.getFsm().addStateVariable(var);
+    result.getFsm().addModelVariable(var);
     log.debug("Parsed variable:" + annotationName);
     return errors;
   }

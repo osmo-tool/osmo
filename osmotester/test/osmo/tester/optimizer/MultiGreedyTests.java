@@ -25,8 +25,8 @@ public class MultiGreedyTests {
     oc.setTestEndCondition(new LengthProbability(1, 5, 0.2d));
     oc.setFactory(new MyModelFactory());
     ScoreConfiguration config = new ScoreConfiguration();
-    MultiGreedy multiGreedy = new MultiGreedy(oc, config);
-    List<TestCase> tests = multiGreedy.search(5, 111);
+    MultiGreedy multiGreedy = new MultiGreedy(oc, config, 111, 5);
+    List<TestCase> tests = multiGreedy.search();
     assertEquals("Number of tests from MultiGreedy", 3, tests.size());
     assertEquals("MultiGreedy test1", "TestCase:[start, increase, decrease, increase, increase]", tests.get(0).toString());
     assertEquals("MultiGreedy test2", "TestCase:[start, increase, increase, decrease, decrease]", tests.get(1).toString());
@@ -35,10 +35,8 @@ public class MultiGreedyTests {
 
   private static class MyModelFactory implements ModelFactory {
     @Override
-    public TestModels createModelObjects() {
-      TestModels model = new TestModels();
-      model.add(new CalculatorModel());
-      return model;
+    public void createModelObjects(TestModels addHere) {
+      addHere.add(new CalculatorModel());
     }
   }
 }

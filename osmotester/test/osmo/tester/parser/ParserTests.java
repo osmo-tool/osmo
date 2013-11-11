@@ -80,9 +80,9 @@ public class ParserTests {
       fail("Should throw exception");
     } catch (Exception e) {
       String msg = e.getMessage();
-      String expected = "Invalid FSM:\n" +
+      String expected = "Invalid test model:\n" +
               "Only one Requirements object instance allowed in the model.\n" +
-              "No transitions found in given model object. Model cannot be processed.\n" +
+              "No test steps found in given model object. Model cannot be processed.\n" +
               "Guard without matching step:foo.\n";
       assertEquals(expected, msg);
     }
@@ -96,23 +96,23 @@ public class ParserTests {
     } catch (Exception e) {
       String msg = e.getMessage();
       msg = sortErrors(msg);
-      String expected = "Invalid FSM:\n" +
+      String expected = "Invalid test model:\n" +
               "@AfterSuite methods are not allowed to have parameters: \"badAS()\" has 1 parameters.\n" +
               "@AfterTest methods are not allowed to have parameters: \"badAT()\" has 1 parameters.\n" +
               "@BeforeSuite methods are not allowed to have parameters: \"badBS()\" has 1 parameters.\n" +
               "@BeforeTest methods are not allowed to have parameters: \"badBT()\" has 1 parameters.\n" +
+              "@CoverageValue methods must have 1 parameter (class osmo.tester.generator.testsuite.TestCaseStep): \"badArgument()\" has 2 parameters.\n" +
+              "@CoverageValue parameter must be of type class osmo.tester.generator.testsuite.TestCaseStep: \"badArgument()\" has type class java.lang.String\n" +
               "@ExplorationEnabler methods are not allowed to have parameters: \"enableExploration()\" has 1 parameters.\n" +
               "@GenerationEnabler methods are not allowed to have parameters: \"enableGeneration()\" has 1 parameters.\n" +
-              "CoverageValue methods must have 1 parameter (class osmo.tester.generator.testsuite.TestCaseStep): \"badArgument()\" has 2 parameters.\n" +
-              "CoverageValue parameter must be of type class osmo.tester.generator.testsuite.TestCaseStep: \"badArgument()\" has type class java.lang.String\n" +
+              "@Post methods are not allowed to have any parameters: \"wrong()\" has 1.\n" +
               "Invalid return type for @CoverageValue in (\"badArgument()\"):void. Should be String.\n" +
               "Invalid return type for @EndCondition (\"end()\"):void. Should be boolean.\n" +
               "Invalid return type for @ExplorationEnabler (\"enableExploration()\"):class java.lang.String.\n" +
               "Invalid return type for @ExplorationEnabler (\"enableExploration()\"):int.\n" +
               "Invalid return type for @GenerationEnabler (\"enableGeneration()\"):int.\n" +
               "Invalid return type for guard (\"hello()\"):class java.lang.String.\n" +
-              "Post-methods are not allowed to have any parameters: \"wrong()\" has 1.\n" +
-              "Transition name must be unique. 'foo' given several times.\n"+
+              "Test step name must be unique. 'foo' given several times.\n"+
               "";
       assertEquals(expected, msg);
     }
@@ -149,10 +149,10 @@ public class ParserTests {
 //      e.printStackTrace();
       String msg = e.getMessage();
       msg = sortErrors(msg);
-      String expected = "Invalid FSM:\n" +
+      String expected = "Invalid test model:\n" +
+              "@CoverageValue methods must have 1 parameter (class osmo.tester.generator.testsuite.TestCaseStep): \"noArgument()\" has 0 parameters.\n" +
               "@EndCondition methods are not allowed to have parameters: \"ending()\" has 1 parameters.\n" +
               "@LastStep methods are not allowed to have parameters: \"last()\" has 1 parameters.\n"+
-              "CoverageValue methods must have 1 parameter (class osmo.tester.generator.testsuite.TestCaseStep): \"noArgument()\" has 0 parameters.\n" +
               "Guard methods are not allowed to have parameters: \"hello()\" has 1 parameters.\n"+
               "Requirements object was null, which is not allowed.\n" +
               "";
@@ -167,8 +167,8 @@ public class ParserTests {
       fail("Should throw exception");
     } catch (Exception e) {
       String msg = e.getMessage();
-      String expected = "Invalid FSM:\n" +
-              "@Transition methods are not allowed to have parameters: \"epixx()\" has 1 parameters.\n" +
+      String expected = "Invalid test model:\n" +
+              "@TestStep methods are not allowed to have parameters: \"epixx()\" has 1 parameters.\n" +
               "Invalid return type for @EndCondition (\"hello()\"):class java.lang.String. Should be boolean.\n" +
               "@EndCondition methods are not allowed to have parameters: \"hello()\" has 1 parameters.\n";
       assertEquals(expected, msg);
@@ -182,10 +182,10 @@ public class ParserTests {
       fail("Should throw exception");
     } catch (Exception e) {
       String msg = e.getMessage();
-      String expected = "Invalid FSM:\n" +
-              "@Transition methods are not allowed to have parameters: \"epix()\" has 1 parameters.\n" +
+      String expected = "Invalid test model:\n" +
+              "@TestStep methods are not allowed to have parameters: \"epix()\" has 1 parameters.\n" +
               "Invalid return type for guard (\"listCheck()\"):class java.lang.String.\n" +
-              "@Transition methods are not allowed to have parameters: \"transition1()\" has 1 parameters.\n" +
+              "@TestStep methods are not allowed to have parameters: \"transition1()\" has 1 parameters.\n" +
               "Guard without matching step:world.\n";
       assertEquals(expected, msg);
     }
@@ -222,8 +222,8 @@ public class ParserTests {
       fail("Should throw exception when no transition methods are available.");
     } catch (Exception e) {
       String msg = e.getMessage();
-      String expected = "Invalid FSM:\n" +
-              "No transitions found in given model object. Model cannot be processed.\n";
+      String expected = "Invalid test model:\n" +
+              "No test steps found in given model object. Model cannot be processed.\n";
       assertEquals(expected, msg);
     }
   }
@@ -241,7 +241,7 @@ public class ParserTests {
     VariableModel1 model = new VariableModel1();
     ParserResult result = parser.parse(1, conf(model), new TestSuite());
     FSM fsm = result.getFsm();
-    Collection<VariableField> variables = fsm.getStateVariables();
+    Collection<VariableField> variables = fsm.getModelVariables();
     assertEquals("All @" + Variable.class.getSimpleName() + " items should be parsed.", 10, variables.size());
     assertVariablePresent(variables, "i1");
     assertVariablePresent(variables, "f1");
@@ -278,7 +278,7 @@ public class ParserTests {
     OSMOConfiguration config = conf(model);
     ParserResult result = parser.parse(1, config, new TestSuite());
     FSM fsm = result.getFsm();
-    Collection<VariableField> variables = fsm.getStateVariables();
+    Collection<VariableField> variables = fsm.getModelVariables();
     assertEquals("Number of inputs", 5, variables.size());
     assertVariablePresent(variables, "range");
     assertVariablePresent(variables, "named-set");

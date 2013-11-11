@@ -10,9 +10,7 @@ import java.util.Collection;
 /** @author Teemu Kanstren */
 public class ValueModelFactory implements ModelFactory {
   @Override
-  public TestModels createModelObjects() {
-    TestModels result = new TestModels();
-    result.add(new ValueModel());
-    return result;
+  public void createModelObjects(TestModels addHere) {
+    addHere.add(new ValueModel());
   }
 }

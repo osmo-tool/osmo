@@ -54,7 +54,7 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
   }
 
   @Override
-  public FSMTransition choose(TestSuite history, List<FSMTransition> choices) {
+  public FSMTransition choose(TestSuite suite, List<FSMTransition> choices) {
     log.debug("choosing from:" + choices);
     //count weighted score for all transitions taken so far as well as any new choices
     Map<FSMTransition, Double> scoreMap = countScore(choices);

@@ -31,14 +31,13 @@ public class TraceReportWriter {
   public String createReport(List<TestCase> tests) {
     velocity.setProperty("resource.loader", "class");
     velocity.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
-    //TODO: Test with no parameters, with parameters, ...
     vc.put("tests", tests);
 
     StringWriter sw = new StringWriter();
     velocity.mergeTemplate("osmo/tester/reporting/trace/trace-template.txt", "UTF8", vc, sw);
     return sw.toString();
   }
-
+/*
   public static void main(String[] args) throws Exception {
     TestSuite suite = new TestSuite();
     suite.startTest();
@@ -71,5 +70,5 @@ public class TraceReportWriter {
     buyStep2.addVariableValue("Price", "$5");
     suite.getCurrentTest().setFailed(true);
     new TraceReportWriter().write(suite.getAllTestCases(), "teemu-testaa.html");
-  }
+  }*/
 }

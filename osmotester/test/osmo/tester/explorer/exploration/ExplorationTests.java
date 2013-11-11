@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import osmo.common.TestUtils;
-import osmo.common.log.Logger;
 import osmo.tester.explorer.ExplorationConfiguration;
 import osmo.tester.explorer.OSMOExplorer;
 import osmo.tester.explorer.testmodels.CounterFactory;
@@ -19,7 +18,6 @@ import osmo.tester.model.ModelFactory;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.List;
-import java.util.logging.Level;
 
 import static junit.framework.Assert.*;
 
@@ -53,7 +51,7 @@ public class ExplorationTests {
     assertEquals("Covered pairs", "[.osmo.tester.init->increase, increase->increase, increase->decrease, decrease->increase]", coverage.getStepPairs().toString());
     assertEquals("Covered requirements", "[]", coverage.getRequirements().toString());
     assertEquals("Covered singles", "[increase, decrease]", coverage.getSingles().toString());
-    assertEquals("Covered variables", "{counter=[1, 2]}", coverage.getValues().toString());
+    assertEquals("Covered variables", "{counter=[1, 2]}", coverage.getVariableValues().toString());
   }
 
   /** coverage kriteerit määritellään: x lisäpistettä pitää saada, minimi & maksimipituus (testi ja suite erikseen) */
@@ -157,9 +155,9 @@ public class ExplorationTests {
     assertTestCount(5);
     assertTestSequence(0, "[increase, increase, decrease, increase, increase, increase, increase, increase, increase, increase, increase]");
     assertTestSequence(1, "[increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase]");
-    assertTestSequence(2, "[increase, increase, increase, decrease, decrease, increase, increase, decrease, increase, increase, decrease, decrease, increase, increase, decrease, decrease, increase, decrease, increase]");
-    assertTestSequence(3, "[increase, increase, increase, increase, decrease, increase, decrease, decrease, decrease]");
-    assertTestSequence(4, "[increase, increase, decrease, increase, increase, decrease, decrease, increase, increase]");
+    assertTestSequence(2, "[increase, increase, increase, decrease, decrease, increase, increase, increase, increase, increase, decrease, decrease, increase, decrease, increase, increase, increase, decrease, decrease]");
+    assertTestSequence(3, "[increase, increase, increase, decrease, increase, increase, decrease, decrease, decrease]");
+    assertTestSequence(4, "[increase, increase, decrease, increase, increase, decrease, increase, increase, decrease]");
     long end = System.currentTimeMillis();
 //    assertSuiteScore(1400);
 //    assertTestCount(4);
@@ -226,9 +224,9 @@ public class ExplorationTests {
     assertTestCount(5);
     assertTestSequence(0, "[increase, increase, decrease, increase, increase, increase, increase, increase, increase, increase, increase]");
     assertTestSequence(1, "[increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase]");
-    assertTestSequence(2, "[increase, increase, increase, decrease, decrease, increase, increase, decrease, increase, increase, decrease, decrease, increase, increase, decrease, decrease, increase, decrease, increase]");
-    assertTestSequence(3, "[increase, increase, increase, increase, decrease, increase, decrease, decrease, decrease]");
-    assertTestSequence(4, "[increase, increase, decrease, increase, increase, decrease, decrease, increase, increase]");
+    assertTestSequence(2, "[increase, increase, increase, decrease, decrease, increase, increase, increase, increase, increase, decrease, decrease, increase, decrease, increase, increase, increase, decrease, decrease]");
+    assertTestSequence(3, "[increase, increase, increase, decrease, increase, increase, decrease, decrease, decrease]");
+    assertTestSequence(4, "[increase, increase, decrease, increase, increase, decrease, increase, increase, decrease]");
   }
 
   @Test
@@ -265,10 +263,10 @@ public class ExplorationTests {
     osmo.explore(config);
     List<TestCase> tests = osmo.getSuite().getAllTestCases();
     assertEquals("Suite size", 5, tests.size());
-    TestCase exploredTest = osmo.getAlgorithm().getExplorationEndCondition().getExploredTest();
-    String explored = exploredTest.getStepVariables().toString();
-    String generated = tests.get(4).getStepVariables().toString();
-    assertEquals("Names variables values", explored, generated);
+//    TestCase exploredTest = osmo.getAlgorithm().getExplorationEndCondition().getExploredTest();
+//    String explored = exploredTest.getStepVariables().toString();
+//    String generated = tests.get(4).getStepVariables().toString();
+//    assertEquals("Names variables values", explored, generated);
   }
 
   @Test
