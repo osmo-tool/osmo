@@ -25,8 +25,6 @@ public class ExplorationEndCondition implements EndCondition {
   private static Logger log = new Logger(ExplorationEndCondition.class);
   /** The configuration used to calculate coverage scores. */
   private final ExplorationConfiguration config;
-  /** The latest path explored. */
-  private TestCase exploredTest;
   /** When all other conditions for a test/suite end is reached, this is used to provide some final randomization. */
   private double fallbackProbability;
   /** For randomization when checking suite end fallback. */
@@ -54,6 +52,7 @@ public class ExplorationEndCondition implements EndCondition {
    * 
    * @param config Exploration properties.
    * @param suiteCoverage Used for calculating if end is near or not.
+   * @param exploring Set to true if this instance is to be used for exploration mode.
    */
   public ExplorationEndCondition(ExplorationConfiguration config, TestCoverage suiteCoverage, boolean exploring) {
     this.config = config;
@@ -245,11 +244,6 @@ public class ExplorationEndCondition implements EndCondition {
    * @return True if plateau is reached. False otherwise.
    */
   private boolean isTestPlateau(TestSuite suite, int steps) {
-    //this check means that the exploration algorithm is doing a depth check.
-    //TODO: remove "exploredTest" and change it to boolean variable
-    if (exploredTest == null) {
-      return false;
-    }
     TestCase currentTest = suite.getCurrentTest();
     int length = currentTest.getSteps().size();
     if (length < steps) {
@@ -262,19 +256,6 @@ public class ExplorationEndCondition implements EndCondition {
     int diff = now - before;
     //is the added value more than the given threshold?
     return diff < config.getTestPlateauThreshold();
-  }
-
-  /**
-   * The {@link ExplorerAlgorithm} sets the current explored test here.
-   *
-   * @param exploredTest The test being explored.
-   */
-  public void setExploredTest(TestCase exploredTest) {
-    this.exploredTest = exploredTest;
-  }
-
-  public TestCase getExploredTest() {
-    return exploredTest;
   }
 }
  
