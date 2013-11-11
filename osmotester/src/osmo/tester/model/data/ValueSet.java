@@ -170,7 +170,7 @@ public class ValueSet<T> extends SearchableInput<T> {
   private void post() {
     history.add(choice);
     //log.debug("Value:"+next);
-    observe(choice);
+    record(choice);
   }
 
   /**
@@ -385,8 +385,7 @@ public class ValueSet<T> extends SearchableInput<T> {
 
   @Override
   public void enableGUI() {
-    if (guiEnabled) return;
-    guiEnabled = true;
+    if (gui != null) return;
     gui = new ValueSetGUI(this);
   }
 

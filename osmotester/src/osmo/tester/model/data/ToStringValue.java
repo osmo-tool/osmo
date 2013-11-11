@@ -7,13 +7,13 @@ import osmo.tester.model.VariableValue;
  * a step (transition) as a variable value.
  * <p/>
  * Example:
- * private AtomicInteger hello = new AtomicInteger(0);
- * <p/>
- * &#064;Variable private ToStringValue helloValue = new ToStringValue(hello);
+ * {@code private AtomicInteger hello = new AtomicInteger(0);
+ *
+ * @Variable private ToStringValue helloValue = new ToStringValue(hello);}
  * <p/>
  * <p/>
  * This will result in one  variable being stored named "helloValue". At each point the string representation of "hello"
- * is modified, it will be stored as value between steps (transitions).
+ * is modified, it will be stored as coverage value.
  *
  * @author Teemu Kanstren
  */

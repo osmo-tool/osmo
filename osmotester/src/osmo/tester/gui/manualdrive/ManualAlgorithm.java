@@ -379,7 +379,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
 
   private String stateText() {
     String text = "";
-    Collection<VariableField> variables = fsm.getStateVariables();
+    Collection<VariableField> variables = fsm.getModelVariables();
     for (VariableField variable : variables) {
       text += variable.getName() + ": " + variable.getValue() + "\n";
     }
@@ -435,7 +435,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     this.balancingAlgorithm.init(seed, fsm);
     this.weightedRandomAlgorithm.init(seed, fsm);
     this.fsm = fsm;
-    Collection<VariableField> variables = fsm.getStateVariables();
+    Collection<VariableField> variables = fsm.getModelVariables();
     for (VariableField variable : variables) {
       Object value = variable.getValue();
       if (value instanceof SearchableInput) {

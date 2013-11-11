@@ -1,9 +1,16 @@
 package osmo.tester.model;
 
-/** @author Teemu Kanstren */
+/** 
+ * Represents a {@link osmo.tester.annotation.Guard} in the test model.
+ * 
+ * @author Teemu Kanstren 
+ */
 public class FSMGuard {
+  /** Name of step to which this is associated to. */
   private final TransitionName name;
+  /** The actual method to invoke to get the enabled state. */
   private final InvocationTarget target;
+  /** How many times was this matched to a step/group in the model? For validity checking. */
   private int count = 0;
 
   public FSMGuard(TransitionName name, InvocationTarget target) {
@@ -18,7 +25,10 @@ public class FSMGuard {
   public InvocationTarget getTarget() {
     return target;
   }
-  
+
+  /**
+   * This was found to be associated to something, thus likely being valid.
+   */
   public void found() {
     count++;
   }

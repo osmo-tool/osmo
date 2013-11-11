@@ -15,7 +15,7 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
 /**
- * Explores one path up to the given path, starting other explorers for sub-paths.
+ * Explores one path up to the given depth, starting other instances of this class for sub-paths.
  *
  * @author Teemu Kanstren
  */
@@ -65,23 +65,10 @@ public class PathExplorer extends RecursiveTask<List<TestCase>> {
     for (String explore : toExplore) {
       TraceNode child = trace.add(explore, true);
       MainGenerator generator = ExplorationHelper.initPath(state, script);
-      List<FSMTransition> enabled = generator.getEnabled();
-      for (FSMTransition transition : enabled) {
-        if (transition.getStringName().equals(explore)) {
-          generator.execute(transition);
-          break;
-        }
-      }
+      initPath(explore, generator);
       int newDepth = checkDepth(state, endCondition, generator, depth);
       if (newDepth > 0) {
-        List<String> newScript = new ArrayList<>();
-        newScript.addAll(script);
-        newScript.add(explore);
-        //here we explore further into the depths of the "tree", but do not save the "testcase" so far as it is just
-        //a temporary test on the way further in the depths of the "tree"
-        List<FSMTransition> nowEnabled = generator.getEnabled();
-        PathExplorer explorer = new PathExplorer(state, newDepth - 1, child, nowEnabled, newScript, pool);
-        explorer.fork();
+        PathExplorer explorer = forkExplorer(explore, child, generator, newDepth);
         children.add(explorer);
       } else {
         //we only come here once there is no depth left to go deeper. thus the end result is that the set of 
@@ -95,6 +82,28 @@ public class PathExplorer extends RecursiveTask<List<TestCase>> {
       result.addAll(tests);
     }
     return result;
+  }
+
+  private PathExplorer forkExplorer(String explore, TraceNode child, MainGenerator generator, int newDepth) {
+    List<String> newScript = new ArrayList<>();
+    newScript.addAll(script);
+    newScript.add(explore);
+    //here we explore further into the depths of the "tree", but do not save the "testcase" so far as it is just
+    //a temporary test on the way further in the depths of the "tree"
+    List<FSMTransition> nowEnabled = generator.getEnabled();
+    PathExplorer explorer = new PathExplorer(state, newDepth - 1, child, nowEnabled, newScript, pool);
+    explorer.fork();
+    return explorer;
+  }
+
+  private void initPath(String explore, MainGenerator generator) {
+    List<FSMTransition> enabled = generator.getEnabled();
+    for (FSMTransition transition : enabled) {
+      if (transition.getStringName().equals(explore)) {
+        generator.execute(transition);
+        break;
+      }
+    }
   }
 
   /**

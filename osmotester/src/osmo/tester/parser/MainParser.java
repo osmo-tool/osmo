@@ -36,9 +36,9 @@ import osmo.tester.parser.annotation.GuardParser;
 import osmo.tester.parser.annotation.LastStepParser;
 import osmo.tester.parser.annotation.PostParser;
 import osmo.tester.parser.annotation.PreParser;
-import osmo.tester.parser.annotation.RequirementsParser;
-import osmo.tester.parser.annotation.SearchableInputParser;
-import osmo.tester.parser.annotation.TestSuiteParser;
+import osmo.tester.parser.field.RequirementsParser;
+import osmo.tester.parser.field.SearchableInputParser;
+import osmo.tester.parser.field.TestSuiteParser;
 import osmo.tester.parser.annotation.TransitionParser;
 import osmo.tester.parser.annotation.VariableParser;
 
@@ -55,8 +55,8 @@ import java.util.Map;
 
 /**
  * The main parser that takes the given model object and parses it for specific registered annotations,
- * passes these to specific {@link AnnotationParser} implementations to update the {@link osmo.tester.model.FSM} representation
- * according to the information for the specific annotation.
+ * passes these to specific {@link AnnotationParser} implementations to update the {@link osmo.tester.model.FSM} 
+ * representation according to the information for the specific annotation.
  *
  * @author Teemu Kanstren
  */
@@ -92,11 +92,10 @@ public class MainParser {
   }
 
   /**
-   * Initiates parsing the given model object for the annotations that define the finite state machine (FSM) aspects
-   * of the test model.
+   * Initiates parsing the given model object for the annotations that define the test model elements.
    *
    * @param factory Factory to create the model objects to be parsed.
-   * @return The FSM object created from the given model object that can be used for test generation.
+   * @return The model structure with references to the object instances.
    */
   public ParserResult parse(long seed, ModelFactory factory, TestSuite suite) {
     log.debug("parsing");
@@ -106,7 +105,8 @@ public class MainParser {
     parameters.setSuite(suite);
     parameters.setSeed(seed);
     String errors = "";
-    TestModels models = factory.createModelObjects();
+    TestModels models = new TestModels();
+    factory.createModelObjects(models);
     if (models.size() == 0) {
       errors += "No model objects given. Cannot generate anything.\n";
     }
@@ -257,6 +257,7 @@ public class MainParser {
       methods.addAll(getAllMethods(superclass));
     }
     Collections.addAll(methods, clazz.getMethods());
+    //sort them by names and hope for a more deterministic result..
     Collections.sort(methods, new Comparator<Method>() {
       @Override
       public int compare(Method o1, Method o2) {

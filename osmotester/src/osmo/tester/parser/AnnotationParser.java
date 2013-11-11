@@ -1,10 +1,10 @@
 package osmo.tester.parser;
 
 /**
- * The base interface for parsing annotations. The {@link osmo.tester.parser.MainParser} class maps annotations by their type to
- * specific parsers and calls a matching parser that implements this interface. This specific parser object is then
- * expected to update the underlying {@link osmo.tester.model.FSM} representation according to the information
- * encoded in the annotation.
+ * The base interface for parsing annotations. 
+ * The {@link osmo.tester.parser.MainParser} class maps annotations by their type to specific parsers.
+ * When an annotation is found in a model object by the parser, the specific parser object for it is invoked.
+ * Each of these stores the data to the {@link osmo.tester.model.FSM} test model representation.
  *
  * @author Teemu Kanstren
  */

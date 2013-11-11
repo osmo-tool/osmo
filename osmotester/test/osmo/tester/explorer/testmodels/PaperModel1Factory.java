@@ -21,9 +21,7 @@ public class PaperModel1Factory implements ModelFactory {
   }
 
   @Override
-  public TestModels createModelObjects() {
-    TestModels result = new TestModels();
-    result.add(new PaperModel1(ps));
-    return result;
+  public void createModelObjects(TestModels addHere) {
+    addHere.add(new PaperModel1(ps));
   }
 }

@@ -17,7 +17,7 @@ import java.util.TreeSet;
  * Additionally, each {@link osmo.tester.generator.testsuite.TestCaseStep} also defines which requirements have been
  * covered in which test case and test step. A requirement is defined as a string that is expected to be both its
  * unique identifier and expressive enough to describe the actual intent of the requirement for the user to be able
- * to understand what it is.
+ * to understand what it is. Or you can just put whatever you want in it, of course..
  *
  * @author Teemu Kanstren
  */

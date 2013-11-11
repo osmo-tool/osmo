@@ -6,7 +6,7 @@
       <td>Name</td>
       <td>Count</td>
     </tr>
-#foreach ($t in $transitions)
+#foreach ($t in $steps)
     <tr>
       <td>$t.value</td>
       <td>$t.count</td>

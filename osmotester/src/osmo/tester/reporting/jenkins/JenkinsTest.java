@@ -19,6 +19,7 @@ public class JenkinsTest {
   private static AtomicInteger nextId = new AtomicInteger(0);
   /** ID for this test case. */
   private final int id;
+  /** When running unit tests, we use this to hardcode time. */
   private boolean testing = false;
 
   /** Reset test ID's for testing. */

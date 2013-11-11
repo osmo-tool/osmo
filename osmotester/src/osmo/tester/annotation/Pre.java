@@ -8,13 +8,10 @@ import java.lang.annotation.Target;
 /**
  * Annotated method is executed before each the specified (or any) test step.
  * <p/>
- * The annotated method must have no parameters or one parameter of type Map<String, Object>.
- * If the parameter is there, OSMO Tester will create a Map that is passed to this method.
- * The same Map instance will then be provided to any @Post methods for the same test step.
- * All @Pre and @Post executed for a test step thus share the same Map.
  * 
- * If no name is given, association of "all" is assumed similar to guards. This can be useful, for example,
- * for logging purposes.
+ * If no name is given, association of "all" is assumed similar to guards.
+ * 
+ * The annotated method must have no parameters.
  *
  * @author Teemu Kanstren
  */

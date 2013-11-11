@@ -8,15 +8,12 @@ import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.coverage.ScoreConfiguration;
 import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.MainGenerator;
-import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.multi.MultiOSMO;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.FSM;
-import osmo.tester.model.ModelFactory;
 import osmo.tester.model.Requirements;
-import osmo.tester.model.data.ValueSet;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -114,7 +111,7 @@ public class GreedyOptimizer {
   public List<TestCase> search(int populationSize, long seed) {
     check();
 
-    CSVReport report = new CSVReport(scoreCalculator);
+    CSVCoverageReport report = new CSVCoverageReport(scoreCalculator);
     MainGenerator generator = configure(seed);
     generate(report, generator, populationSize);
 
@@ -126,7 +123,7 @@ public class GreedyOptimizer {
     return suite;
   }
   
-  private void generate(CSVReport report, MainGenerator generator, int populationSize) {
+  private void generate(CSVCoverageReport report, MainGenerator generator, int populationSize) {
     suite = new ArrayList<>();
     start = System.currentTimeMillis();
     int gain = Integer.MAX_VALUE;
@@ -206,7 +203,7 @@ public class GreedyOptimizer {
     return generator;
   }
 
-  private void writeReport(CSVReport report, TestCoverage tc, int resultSize, int generationCount, long seed) {
+  private void writeReport(CSVCoverageReport report, TestCoverage tc, int resultSize, int generationCount, long seed) {
 
     String summary = "summary\n";
     //we do not have the set of possible states or state pairs as those would require executing the "states" which greedy does not do..

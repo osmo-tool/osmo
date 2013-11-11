@@ -12,8 +12,7 @@ import java.util.Collection;
  * In academic terms this is typically called "equivalence partitioning" or "category partitioning".
  * The ranges/categories can be overlapping in which case many values may be generated for a single value.
  * For example, 1-1="one", 1-5="some", observing 1 will produce "one" and "some" coverage values.
- * Notice that if an input value is observed that is not part of any defined category, the value is simply
- * discarded.
+ * If an input value is observed that is not part of any defined category, nothing happens.
  *
  * @author Teemu Kanstren
  */

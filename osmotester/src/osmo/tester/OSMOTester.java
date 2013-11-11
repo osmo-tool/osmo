@@ -15,7 +15,7 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.ModelFactory;
 import osmo.tester.model.Requirements;
-import osmo.tester.optimizer.CSVReport;
+import osmo.tester.optimizer.CSVCoverageReport;
 import osmo.tester.reporting.jenkins.JenkinsReportGenerator;
 import osmo.tester.reporting.trace.TraceReportWriter;
 
@@ -112,7 +112,7 @@ public class OSMOTester {
 
   private static void createHtmlTrace(String filename, List<TestCase> tests) {
     String summary = "summary\n";
-    CSVReport report = new CSVReport(new ScoreCalculator(new ScoreConfiguration()));
+    CSVCoverageReport report = new CSVCoverageReport(new ScoreCalculator(new ScoreConfiguration()));
     report.process(tests);
 
     String totalCsv = report.report();

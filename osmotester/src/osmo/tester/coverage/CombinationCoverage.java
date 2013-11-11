@@ -8,9 +8,14 @@ import java.util.List;
 
 /**
  * Provides a variable value that represents a combination of the given set of other variables.
- * The way to use this is to create a field in the class with this type and pass references to the variables
- * to combine. Each time a step is taken, this then combines the values provided by those objects.
- * To have it tracked for coverage, annotate using {@link osmo.tester.annotation.Variable} as usual.
+ * To use, create a field in the class with this type and pass references to the variables to combine. 
+ * This is represented to the generator as a {@link VariableValue} object, which leads it to store the value
+ * of this object after any step is executed.
+ * The way this happens is that the value() method is invoked, which then asks the referenced objects for their
+ * values and combines these to produce a new value as their combination.
+ * The combined value is a combination of all referenced values with "&" character in between.
+ * 
+ * To have the annotated variable tracked for coverage, annotate using {@link osmo.tester.annotation.Variable} as usual.
  *
  * @author Teemu Kanstren
  */

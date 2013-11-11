@@ -30,8 +30,6 @@ import java.util.concurrent.Future;
  */
 public class MainExplorer implements Runnable {
   private static Logger log = new Logger(MainExplorer.class);
-  /** The test case (test path) that gets the best score of all explored options. */
-  private TestCase winner = null;
   /** The representation of the exploration trace. */
   private final TraceNode trace;
   /** The script so far, that is the current test case steps. We look for the next step on top of this. */
@@ -54,7 +52,7 @@ public class MainExplorer implements Runnable {
   /** For collecting possible coverage metrics. */
   private final Collection<String> possibleStepPairs = new LinkedHashSet<>();
   /** For collecting possible coverage metrics. */
-  private final Map<String, Collection<String>> possibleValues = new LinkedHashMap<>();
+  private final Map<String, Collection<String>> possibleVVs = new LinkedHashMap<>();
   /** For collecting possible coverage metrics. */
   private final Map<String, Collection<String>> possibleStates = new LinkedHashMap<>();
   /** For collecting possible coverage metrics. */
@@ -75,10 +73,6 @@ public class MainExplorer implements Runnable {
 
   public long getDuration() {
     return endtime - starttime;
-  }
-  
-  public TestCase getWinner() {
-    return winner;
   }
 
   public void init(FSM fsm, TestSuite suite, ExplorationState state, List<String> script, int parallelism) {
@@ -181,61 +175,41 @@ public class MainExplorer implements Runnable {
     log.debug("finding best from:" + from);
 
     collectMetrics(from);
-
     calculateAddedCoverages(from, 0);
-
-    List<TestCase> choices = pruneBest(from, 0);
+    List<TestCase> choices = pruneBest(from);
 
     log.debug("pruned:"+choices);
-
     return findBestFrom(choices, script.size());
   }
 
   /**
-   * Fill the class level coverage metrics from the given test cases.
+   * Collect all coverage values that could have been covered by the different explored paths.
    * 
    * @param from Where to look for the coverage metrics.
    */
   private void collectMetrics(List<TestCase> from) {
     TestCoverage tc = new TestCoverage(from);
 
-    Map<String, Collection<String>> observed = tc.getValues();
-    for (String key : observed.keySet()) {
-      Collection<String> possibles = possibleValues.get(key);
-      if (possibles == null) {
-        possibles = new LinkedHashSet<>();
-        possibleValues.put(key, possibles);
-      }
-      possibles.addAll(observed.get(key));
-    }
-
-    //todo: change these to provide numbers only
-    observed = tc.getStates();
-    for (String key : observed.keySet()) {
-      Collection<String> possibles = possibleStates.get(key);
-      if (possibles == null) {
-        possibles = new LinkedHashSet<>();
-        possibleStates.put(key, possibles);
-      }
-      possibles.addAll(observed.get(key));
-    }
-
-    observed = tc.getStatePairs();
-    for (String key : observed.keySet()) {
-      Collection<String> possibles = possibleStatePairs.get(key);
-      if (possibles == null) {
-        possibles = new LinkedHashSet<>();
-        possibleStatePairs.put(key, possibles);
-      }
-      possibles.addAll(observed.get(key));
-    }
+    collectPossible(tc.getVariableValues(), possibleVVs);
+    collectPossible(tc.getStates(), possibleStates);
+    collectPossible(tc.getStatePairs(), possibleStatePairs);
 
     possibleStepPairs.addAll(tc.getStepPairs());
   }
 
+  private void collectPossible(Map<String, Collection<String>> observed, Map<String, Collection<String>> to) {
+    for (String key : observed.keySet()) {
+      Collection<String> possibles = to.get(key);
+      if (possibles == null) {
+        possibles = new LinkedHashSet<>();
+        to.put(key, possibles);
+      }
+      possibles.addAll(observed.get(key));
+    }
+  }
+
   /**
-   * Calculates the added coverage in relation to the test suite for the given set of tests up to the given number
-   * of steps.
+   * Calculates added coverage for the test suite for the given set of tests up to the given number of steps.
    * Used to pick the one that gives the most pluses fastest (with least steps).
    * The added coverage value is stored as a custom attribute in the test case.
    *
@@ -270,7 +244,7 @@ public class MainExplorer implements Runnable {
    * @param choices What to prune.
    * @return The choise of tests that gain the most fastest. 1-N.
    */
-  private List<TestCase> pruneBest(Collection<TestCase> choices, int size) {
+  private List<TestCase> pruneBest(Collection<TestCase> choices) {
     longest = 0;
     //this defines the highest score for the following step of tests
     int highest = Integer.MIN_VALUE;
@@ -305,28 +279,23 @@ public class MainExplorer implements Runnable {
   public String findBestFrom(List<TestCase> from, int count) {
     calculateAddedCoverages(from, count);
 
-    List<TestCase> optimum = pruneBest(from, count);
+    List<TestCase> optimum = pruneBest(from);
 
     if (longest > count && optimum.size() > 1) {
       return findBestFrom(optimum, count + 1);
     }
   
     List<FSMTransition> choices = new ArrayList<>();
-    int index = 0;
+    int index = script.size();
     for (TestCase tc : optimum) {
-      String tn = tc.getSteps().get(script.size()).getName();
+      String tn = tc.getSteps().get(index).getName();
       FSMTransition t = fsm.getTransition(tn);
-      t.setExplorerIndex(index);
-      index++;
       choices.add(t);
     }
 
     FSMTraversalAlgorithm fallback = state.getConfig().getFallback();
     FSMTransition choice = fallback.choose(suite, choices);
     
-    index = choice.getExplorerIndex();
-    winner = from.get(index);
-
     return choice.getStringName();
   }
 
@@ -334,8 +303,8 @@ public class MainExplorer implements Runnable {
     return possibleStepPairs;
   }
 
-  public Map<String, Collection<String>> getPossibleValues() {
-    return possibleValues;
+  public Map<String, Collection<String>> getPossibleVariableValues() {
+    return possibleVVs;
   }
 
   public Map<String, Collection<String>> getPossibleStates() {

@@ -8,12 +8,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Describes a transition in the model object FSM representation.
- * In practice this can be mapped to a method executing a specific test step for test generation when possible.
- * These are identified in the model object from the {@link osmo.tester.annotation.Transition} annotations.
- * This includes the method to execute the test step (and generate scripts, etc.) and also
- * the {@link osmo.tester.annotation.Guard} methods that define when the transition is allowed to be performed and
- * the {@link osmo.tester.annotation.Post} methods that perform checks after the transitions.
+ * Describes a test step in the test model.
+ * In practice this can be mapped to a method executing a specific test step for test generation,
+ * including its guards, pre- and post-methods, and other associated information.
  *
  * @author Teemu Kanstren
  */
@@ -33,10 +30,8 @@ public class FSMTransition implements Comparable<FSMTransition> {
   private final List<InvocationTarget> posts = new ArrayList<>();
   /** The group this transition belongs to, null or "" are considered as no group. */
   private TransitionName groupName;
-  /** A strict one stops the generator, throwing any exceptions. Non-strict will log the error but continue. */
+  /** A strict one stops the generator in case of exception, throwing any exceptions. Non-strict will log the error but continue. */
   private boolean strict = true; //again, the true default value is in the annotation
-  /** This index is used by explorer algorithm when picking one of several equals using a fallback algorithm. */
-  private int explorerIndex = -1;
 
   public FSMTransition(String name) {
     this.name = new TransitionName("", name);
@@ -44,14 +39,6 @@ public class FSMTransition implements Comparable<FSMTransition> {
 
   public FSMTransition(TransitionName name) {
     this.name = name;
-  }
-
-  public int getExplorerIndex() {
-    return explorerIndex;
-  }
-
-  public void setExplorerIndex(int explorerIndex) {
-    this.explorerIndex = explorerIndex;
   }
 
   /** Sort all the elements to get more deterministic test generation. */
@@ -90,11 +77,6 @@ public class FSMTransition implements Comparable<FSMTransition> {
   }
 
   public void setWeight(int weight) {
-    //weight is -1 for oracles and guards, which should not impact this as weight is only defined for a transition
-    //but guards and oracles are also associated with transitions and can sometimes create them
-    if (weight <= 0) {
-      return;
-    }
     this.weight = weight;
   }
 

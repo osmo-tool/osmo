@@ -5,6 +5,7 @@ package osmo.tester.model.data;
  * method (nextXX) is invoked.
  *
  * @author Teemu Kanstren
+ * @deprecated Will be removed from next version in favour of direct methods.
  */
 public enum DataGenerationStrategy {
   /** Completely random pick. */

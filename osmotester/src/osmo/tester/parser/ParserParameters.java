@@ -29,7 +29,7 @@ public class ParserParameters {
   private Field field = null;
   /** The annotated method, if any. When methods are parsed this is non-null, otherwise must null. */
   private Method method = null;
-  /** The prefix of the model object, to be added to names of all parsed transitions, guards, etc. for that object. */
+  /** The prefix of the model object, to be added to names of all parsed test steps, guards, etc. for that object. */
   private String prefix = null;
   /** Test suite object for the model. */
   private TestSuite suite = null;
@@ -117,5 +117,6 @@ public class ParserParameters {
 
   public void reset() {
     classAnnotations.clear();
+    fieldAnnotations.clear();
   }
 }

@@ -31,17 +31,15 @@ public class ReflectiveModelFactory implements ModelFactory {
   }
 
   @Override
-  public TestModels createModelObjects() {
-    TestModels result = new TestModels();
+  public void createModelObjects(TestModels models) {
     for (Class aClass : classes) {
       try {
-        result.add(aClass.newInstance());
+        models.add(aClass.newInstance());
       } catch (Exception e) {
         log.error("Failed to create a model class instance. Exiting.", e);
         e.printStackTrace();
         throw new RuntimeException(e);
       }
     }
-    return result;
   }
 }

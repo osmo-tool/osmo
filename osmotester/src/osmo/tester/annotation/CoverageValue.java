@@ -6,13 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /** 
- * Annotated method is expected to give a descriptive name for a state.
- * While state is practically a combination of all the variables in the model, this can be used to provide
- * more meaningful names for visualization, and also to group coverage values for a state if so desired.
- * You are expected to only have one of these in your overall model, or the generator will fail.
- * If a null value is returned by the method, it will not be taken into account as a state.
- * 
+ * Annotated method is expected to give a value to collect for coverage.
+ * Called after each test step is executed, providing the step as a reference.
+ * Null values are ignored.
+ *
  * The annotated method must return a String value.
+ * The annotated method must take as a parameter a {@link osmo.tester.generator.testsuite.TestCaseStep} object.
  * 
  * @author Teemu Kanstren 
  */

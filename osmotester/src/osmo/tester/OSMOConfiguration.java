@@ -82,10 +82,10 @@ public class OSMOConfiguration implements ModelFactory {
     defaultFactory.add(o);
   }
 
-  public TestModels createModelObjects() {
+  public void createModelObjects(TestModels addHere) {
     //force swap to default if not set
     factory = getFactory();
-    return factory.createModelObjects();
+    factory.createModelObjects(addHere);
   }
 
   public void setAlgorithm(FSMTraversalAlgorithm algorithm) {

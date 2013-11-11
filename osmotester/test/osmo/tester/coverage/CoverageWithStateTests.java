@@ -1,7 +1,6 @@
 package osmo.tester.coverage;
 
 import org.junit.Test;
-import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.endcondition.LengthProbability;
@@ -13,12 +12,9 @@ import osmo.tester.testmodels.RandomValueModel3;
 import osmo.tester.testmodels.RandomValueModel4;
 import osmo.tester.testmodels.VariableModel1;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 
 import static org.junit.Assert.*;
 
@@ -52,7 +48,7 @@ public class CoverageWithStateTests {
   public void combineWithCustomAndStateVariables() {
     ScoreConfiguration config = new ScoreConfiguration();
     config.setDefaultValueWeight(10);
-    config.disableCheckingFor("teemu");
+    config.ignore("teemu");
 
     config.setLengthWeight(0);
     config.setVariableCountWeight(0);
@@ -70,7 +66,7 @@ public class CoverageWithStateTests {
       tc.addTestCoverage(test);
     }
     assertEquals("Number of generated tests", 4, tests.size());
-    Map<String, Collection<String>> variables = tc.getValues();
+    Map<String, Collection<String>> variables = tc.getVariableValues();
     //1 value = 10
     assertEquals("Variable coverage", "[on paras]", variables.get("teemu").toString());
     //4 values = 40
@@ -112,7 +108,7 @@ public class CoverageWithStateTests {
     ScoreCalculator scorer = new ScoreCalculator(config);
     assertEquals("Number of tests", 6, tests.size());
     assertEquals("Test steps", "TestCase:[t1, t2, t3, t4]", tests.get(0).toString());
-    assertEquals("Values covered", "{range=[4, 3, 5]}", tc.getValues().toString());
+    assertEquals("Values covered", "{range=[4, 3, 5]}", tc.getVariableValues().toString());
     //there are 16 state-pairs and 4 states, so it is a total of 24*10
     assertEquals("Coverage score", 176, scorer.calculateScore(tc));
   }
@@ -152,6 +148,6 @@ public class CoverageWithStateTests {
     tc.addTestCoverage(tests.get(0));
     ScoreCalculator sc = new ScoreCalculator(config);
     assertEquals("Coverage score", 27, sc.calculateScore(tc));
-    assertEquals("Covered values", "[many, one, zero]", tc.getValues().get("rc2").toString());
+    assertEquals("Covered values", "[many, one, zero]", tc.getVariableValues().get("rc2").toString());
   }
 }

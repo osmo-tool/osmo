@@ -49,12 +49,10 @@ public class DebuggingSim {
     }
 
     @Override
-    public TestModels createModelObjects() {
-      TestModels models = new TestModels();
+    public void createModelObjects(TestModels addHere) {
       SimCard sim = new SimCard(new SimCardAdaptor());
       sim.out = out;
-      models.add(sim);
-      return models;
+      addHere.add(sim);
     }
   }
 }

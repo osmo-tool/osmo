@@ -1,7 +1,7 @@
 package osmo.tester.model.data;
 
 /**
- * Supported data types, data-flow objects can be configured to produce one type based on given type information.
+ * Supported data types, for classes such as {@link Boundary} and {@link ValueRange} to define the type of data.
  *
  * @author Teemu Kanstren
  */

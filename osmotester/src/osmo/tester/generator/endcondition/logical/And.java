@@ -13,10 +13,10 @@ import java.util.Arrays;
  * @author Teemu Kanstren
  */
 public class And implements EndCondition {
-  /** The set of end conditions to be checked. */
+  /** The set of combined end conditions to be checked. */
   private final EndCondition[] conditions;
 
-  /** @param conditions The set of end conditions to be checked. */
+  /** @param conditions The set of combined end conditions to be checked. */
   public And(EndCondition... conditions) {
     this.conditions = conditions;
   }

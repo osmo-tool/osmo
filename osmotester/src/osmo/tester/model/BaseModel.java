@@ -9,13 +9,10 @@ import osmo.tester.generator.testsuite.TestSuite;
 import java.util.List;
 
 /**
- * A simple base class for providing some common functionality for test models.
- * You can either extend this for your models or just use the annotations in any other class.
+ * A base class for providing some common functionality for simple test models.
  * <p/>
- * The provided fields are initialized with @BeforeTest, meaning that any use of this class cannot rely in
- * other @BeforeTest annotations that these fields are initialized.
- * An exception is the "previous" field, which is initialized with @Post, meaning that any use of this class
- * cannot rely in other @Post annotations that this field is initialized.
+ * Has fields for current test step, test case, and test suite currently being generated.
+ * Also includes a requirements field, which needs to be copied elsewhere if used in several model objects.
  *
  * @author Teemu Kanstren
  */
@@ -26,7 +23,7 @@ public class BaseModel {
   public TestSuite suite = null;
   /** For defining requirements. */
   protected Requirements req = new Requirements();
-  /** Previous generated test case. */
+  /** Previous generated test step. */
   protected TestCaseStep previous = null;
   /** Id of the currently generated test case. */
   protected int id = -1;
@@ -47,13 +44,13 @@ public class BaseModel {
    * Note that due to initialization here, other @Post annotations cannot rely on the previous field.
    */
   @Post("all")
-  public void afterTransition() {
+  public void afterAll() {
     List<TestCaseStep> steps = test.getSteps();
     int size = steps.size();
     if (size < 1) {
       return;
     }
-    //set this transition as the "previous" one, which means of course that no @Post can rely on this
+    //set this step as the "previous" one, which means of course that no @Post can rely on this
     previous = steps.get(size - 1);
   }
 }

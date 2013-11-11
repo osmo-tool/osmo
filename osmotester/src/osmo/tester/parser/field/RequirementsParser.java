@@ -1,4 +1,4 @@
-package osmo.tester.parser.annotation;
+package osmo.tester.parser.field;
 
 import osmo.common.log.Logger;
 import osmo.tester.model.Requirements;
@@ -15,6 +15,7 @@ import java.lang.reflect.Field;
  */
 public class RequirementsParser implements AnnotationParser {
   private static Logger log = new Logger(RequirementsParser.class);
+  /** We store any found requirements object here so we can fail if two different instances are found. */
   private Requirements req = null;
 
   @Override
@@ -24,20 +25,20 @@ public class RequirementsParser implements AnnotationParser {
     //to enable access to private fields
     field.setAccessible(true);
     Object model = parameters.getModel();
+    String name = Requirements.class.getSimpleName();
     try {
       Requirements req = (Requirements) field.get(model);
-      Class<?> type = field.getType();
       if (req == null) {
-        errors += "Requirements object was null, which is not allowed.\n";
+        errors += name+" object was null, which is not allowed.\n";
         return errors;
       }
       if (this.req != null && this.req != req) {
-        errors += "Only one Requirements object instance allowed in the model.\n";
+        errors += "Only one "+name+" object instance allowed in the model.\n";
       }
       result.setRequirements(req);
       this.req = req;
     } catch (IllegalAccessException e) {
-      throw new RuntimeException("Unable to parse/set Requirements object:"+field.getName(), e);
+      throw new RuntimeException("Unable to parse/set "+name+" object:"+field.getName(), e);
     }
     return errors;
   }

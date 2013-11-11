@@ -6,7 +6,7 @@ import osmo.tester.model.data.SearchableInput;
 import java.lang.reflect.Field;
 
 /**
- * Represents a field for a state variable in the model as tagged by @Variable annotation.
+ * Represents a field for a state variable in the model as tagged by {@link osmo.tester.annotation.Variable} annotation.
  *
  * @author Teemu Kanstren
  */
@@ -18,13 +18,14 @@ public class VariableField {
   private final Field field;
   /** Field name, for faster access. */
   private final String name;
-  /** If the variable object implements the VariableValue interface, we store it here for faster access. */
+  /** If the variable object implements the {@link VariableValue} interface, we store it here for faster access. */
   private VariableValue variable = null;
 
   public VariableField(Object modelObject, Field field, String name) {
     this.modelObject = modelObject;
     this.field = field;
     if (name.equals("")) {
+      //this means the user did not specify an explicit name in annotation so we use field name from class file
       name = field.getName();
     }
     this.name = name;

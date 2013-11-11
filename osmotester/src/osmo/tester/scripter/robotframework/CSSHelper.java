@@ -13,6 +13,11 @@ public class CSSHelper {
     alt = false;
   }
 
+  /**
+   * Creates CSS style tags to make every second row of table look different.
+   * 
+   * @return
+   */
   public String getTableClass() {
     if (alt) {
       alt = false;

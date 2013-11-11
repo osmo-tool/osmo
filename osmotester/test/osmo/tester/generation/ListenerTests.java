@@ -40,7 +40,7 @@ public class ListenerTests {
       osmo.generate(555);
       fail("Generation without available transitions should fail.");
     } catch (IllegalStateException e) {
-      assertEquals("No transition available.", e.getMessage());
+      assertEquals("No test step available.", e.getMessage());
     }
     listener.validate("No enabled transitions, generated sequence");
   }

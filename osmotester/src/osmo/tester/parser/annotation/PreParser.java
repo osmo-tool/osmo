@@ -28,35 +28,36 @@ public class PreParser implements AnnotationParser {
     Method method = parameters.getMethod();
     String errors = "";
     Class<?>[] parameterTypes = method.getParameterTypes();
+    String aName = "@"+Pre.class.getSimpleName();
     //return types are not checked because the make no difference for invocation
     if (parameterTypes.length > 0) {
-      errors += "Pre-methods are not allowed to have parameters: \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n";
+      errors += aName+" methods are not allowed to have parameters: \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n";
     }
 
     InvocationTarget target = new InvocationTarget(parameters, Pre.class);
     FSM fsm = result.getFsm();
-    String[] transitionNames = pre.value();
+    String[] targetNames = pre.value();
     String prefix = parameters.getPrefix();
     String group = parameters.getClassAnnotation(Group.class);
-    for (String name : transitionNames) {
-      log.debug("Parsing pre-method '" + name + "'");
-      if (name.equals(Guard.DEFAULT)) {
+    for (String targetName : targetNames) {
+      log.debug("Parsing pre-method '" + targetName + "'");
+      if (targetName.equals(Guard.DEFAULT)) {
         //If no name is given to pre/post but a group is defined for their class, we use that as our target
         if (group.length() > 0) {
-          name = group;
+          targetName = group;
         } else {
           String methodName = parameters.getMethod().getName();
-          name = GuardParser.findNameFrom(methodName);
-          if (name.length() == 0) errors += "Pre method name must be of format xX when using method based naming: "+methodName;
+          targetName = GuardParser.findNameFrom(methodName);
+          if (targetName.length() == 0) errors += aName+ " method name must be of format xX when using method based naming: "+methodName+"\n";
         }
       }
-      if (name.equals("all")) {
+      if (targetName.equals("all")) {
         fsm.addGenericPre(target);
         //generic pre-methods should not be have their own transition or it will fail the FSM check since it is a guard
         //without a transition
         continue;
       }
-      TransitionName tName = new TransitionName(prefix, name);
+      TransitionName tName = new TransitionName(prefix, targetName);
       fsm.addSpecificPre(tName, target);
     }
     return errors;

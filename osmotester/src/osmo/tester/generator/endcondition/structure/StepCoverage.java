@@ -88,7 +88,7 @@ public class StepCoverage implements EndCondition {
   }
 
   /**
-   * Add a new test step (transition) requirement.
+   * Add a new test step requirement.
    *
    * @param step The new requirement.
    */

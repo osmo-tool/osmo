@@ -74,11 +74,11 @@
 </head>
 <body>
   <table class="osmo-table" border="1">
-    <caption>The number of times a given test case includes a given transition:</caption>
+    <caption>The number of times a given test case includes a given step:</caption>
     <thead>
       <tr>
         <th class='corner' scope='col' rowspan='2'>Test ID</th>
-        <th scope='col' colspan='4'>Transition coverage</th>
+        <th scope='col' colspan='4'>Step coverage</th>
       </tr>
       <tr>
         <th class='colhead' scope='col'>Step1</th>
@@ -156,11 +156,11 @@
   </table>
 
   <table class="osmo-table" border="1">
-    <caption>The number of times a given test case includes a given transition pair (T1->T2, T2 occurred after T1):</caption>
+    <caption>The number of times a given test case includes a given step pair (T1->T2, T2 occurred after T1):</caption>
     <thead>
       <tr>
         <th class='corner' scope='col' rowspan='2'>Test ID</th>
-        <th scope='col' colspan='5'>Transition-pair coverage</th>
+        <th scope='col' colspan='5'>Step-pair coverage</th>
       </tr>
       <tr>
         <th class='colhead' scope='col'>.osmo.tester.init->Step1</th>

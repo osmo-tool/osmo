@@ -85,17 +85,17 @@ public class TransitionParser implements AnnotationParser {
 
   private TransitionName checkName(String name, ParserResult result, ParserParameters parameters) {
     if (name.length() == 0) {
-      errors += "Transition must have a name. Define the \"name\" or \"value\" property.\n";
+      errors += "Test step must have a name. Define the \"name\" or \"value\" property.\n";
       return null;
     }
     if (name.equals("all")) {
-      errors += "Transition name \"all\" is reserved. Choose another.\n";
+      errors += "Test step name \"all\" is reserved. Choose another.\n";
       return null;
     }
     String prefix = parameters.getPrefix();
     TransitionName tName = new TransitionName(prefix, name);
     if (result.getFsm().getTransition(tName) != null) {
-      errors += "Transition name must be unique. '"+tName+"' given several times.\n";
+      errors += "Test step name must be unique. '"+tName+"' given several times.\n";
       return null;
     }
     return tName;
@@ -105,7 +105,7 @@ public class TransitionParser implements AnnotationParser {
                                 TransitionName name, int weight, TransitionName group, boolean strict) {
     log.debug("creating transition:" + name);
     FSMTransition transition = result.getFsm().createTransition(name, weight);
-    transition.setTransition(new InvocationTarget(parameters, Transition.class));
+    transition.setTransition(new InvocationTarget(parameters, TestStep.class));
     transition.setGroupName(group);
     transition.setStrict(strict);
   }

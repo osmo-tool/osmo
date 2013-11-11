@@ -8,6 +8,8 @@ import osmo.tester.model.FSM;
 /** 
  * Defines both a minimum length and optional maximum length for test/suite, and the probability to stop
  * once this minimum length has been achieved.
+ * For example, with minimum length of 3 and probability of 0.2, the generated tests are always at least 3 steps
+ * long and after that end with a probability of 20% at each step.
  * 
  * In practice this creates a combined And/Or end condition which create combinations of different Length/Probability
  * end conditions to set the minimum/maximum lengths and the probability to stop after minimum length.

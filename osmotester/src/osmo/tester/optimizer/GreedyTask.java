@@ -16,7 +16,9 @@ public class GreedyTask implements Callable<List<TestCase>> {
   private static Logger log = new Logger(GreedyTask.class);
   /** The optimizer to run in this task. */
   private final GreedyOptimizer optimizer;
+  /** Parameters for the optimizer. */
   private final long seed;
+  /** Parameters for the optimizer. */
   private final int populationSize;
 
   public GreedyTask(GreedyOptimizer optimizer, long seed, int populationSize) {
@@ -25,6 +27,12 @@ public class GreedyTask implements Callable<List<TestCase>> {
     this.populationSize = populationSize;
   }
 
+  /**
+   * This is what the thread pool invokes.
+   * 
+   * @return Set of generated tests.
+   * @throws Exception as usual.
+   */
   @Override
   public List<TestCase> call() throws Exception {
     log.debug("Starting task for optimizer:" + optimizer);

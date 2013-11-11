@@ -6,26 +6,25 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation defines a test step to be taken by the generator when using the test model to generate tests.
- * Possible test steps at a given
- * state are identified as having all associated guard methods return value "true".
+ * This annotation defines a test step to be taken by the generator.
+ * Possible test steps to execute are identified by executing all guards.
+ * The steps for which all guards return true are considered enabled.
  * <p/>
- * Methods annotated with this are expected to make the associated test step happen by either
- * invoking a method or service on the system under test itself (in online mode),
+ * Methods annotated with this annotation are expected to execute a set of actions on the system under test itself 
+ * (in online mode), 
  * or by creating a suitable test script element in the format of the test execution tool (in offline mode).
  * <p/>
  * This annotation has several parameters: "value", "name", "weight", "group", and "strict". 
  * Of these "value" and "name" refer to the same property, the name of the test step. 
- * This is what is used to map the test step to the associated guard statements in a direct name mapping case.
+ * This is what is used to map the test step to the associated guards.
  * The second alternative to mapping steps to guards is through the {@link Group} annotation.
- * A name of "" (empty string) is ignored. 
  * If both "value" and "name" are defined, "name" dominates. If neither is defined, an error is given.
  * <p/>
  * The weight attribute allows one to give weights to test steps. 
  * Weighted algorithms (such as {@link osmo.tester.generator.algorithm.WeightedBalancingAlgorithm}) aim to take
- * steps with higher weights more often. For example,
- * if step "A" is given weight 1 and step B "2", then B is (over time) taken twice as often as A (assuming use of
- * a suitable algorithm). A step without a weight defined has a default weight of 10.
+ * steps with higher weights more often. 
+ * For example, if step "A" is given weight 1 and step B "2", then B is (over time) taken twice as often as A 
+ * (assuming use of a suitable algorithm). If no weight is explicitly defined, a default weight of 10 is used.
  * <p/>
  * The "strict" attribute is a way of saying that if this step fails, test generation should always be stopped.
  * For example, asynchronous updates of non-critical information might not break the rest of the test case even

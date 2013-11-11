@@ -17,7 +17,7 @@ import java.util.Map;
 
 /**
  * Represents test coverage for a set of test cases.
- * User to calculate coverage scores for test suite optimization.
+ * Used to calculate coverage scores for test suite optimization.
  *
  * @author Teemu Kanstren
  */
@@ -35,10 +35,10 @@ public class TestCoverage {
   private Collection<String> variables = new LinkedHashSet<>();
   /** Set of values covered for different model data variables. */
   private Map<String, Collection<String>> values = new LinkedHashMap<>();
-  /** Set of covered states. */
-  private Map<String, Collection<String>> states = new LinkedHashMap<>();
-  /** Set of covered transitions between states. */
-  private Map<String, Collection<String>> statePairs = new LinkedHashMap<>();
+  /** Set of covered coverage values (coverage values). */
+  private Map<String, Collection<String>> coverageValues = new LinkedHashMap<>();
+  /** Set of covered transitions between coverage values, or pairs of observed coverage values. */
+  private Map<String, Collection<String>> coverageValuePairs = new LinkedHashMap<>();
 
   /**
    * Start with an empty set.
@@ -71,7 +71,7 @@ public class TestCoverage {
    *
    * @return The test steps with coverage number.
    */
-  public Map<String, Integer> getTransitionCoverage() {
+  public Map<String, Integer> getStepCoverage() {
     Map<String, Integer> result = new HashMap<>();
     for (String step : steps) {
       Integer count = result.get(step);
@@ -152,28 +152,36 @@ public class TestCoverage {
       this.values.put(name, values);
     }
   }
-  
+
+  /**
+   * Adds coverage values from the given step, including pairs.
+   * For the format of pair value data, see {@link osmo.tester.generator.MainGenerator} and method
+   * storeUserCoverageValues() or whatever it might be when you read this..
+   * 
+   * @param step Add coverage values from here.
+   */
   private synchronized void addStates(TestCaseStep step) {
     Collection<ModelVariable> toAdd = step.getStatesList();
     for (ModelVariable variable : toAdd) {
       String name = variable.getName();
-      Collection<String> values = this.states.get(name);
+      Collection<String> values = this.coverageValues.get(name);
       if (values == null) {
         values = new LinkedHashSet<>();
-        this.states.put(name, values);
+        this.coverageValues.put(name, values);
       }
       for (Object value : variable.getValues()) {
         values.add("" + value);
       }
     }
 
+    //what value if any observed for pairs? e.g., "bob->alice"
     toAdd = step.getStatePairsList();
     for (ModelVariable variable : toAdd) {
       String name = variable.getName();
-      Collection<String> values = this.statePairs.get(name);
+      Collection<String> values = this.coverageValuePairs.get(name);
       if (values == null) {
         values = new LinkedHashSet<>();
-        this.statePairs.put(name, values);
+        this.coverageValuePairs.put(name, values);
       }
       for (Object value : variable.getValues()) {
         values.add("" + value);
@@ -217,10 +225,18 @@ public class TestCoverage {
     return variables;
   }
 
-  public Map<String, Collection<String>> getValues() {
+  /**
+   * @return Values for variables.
+   */
+  public Map<String, Collection<String>> getVariableValues() {
     return values;
   }
 
+  /**
+   * Get the overall number of all values for all variables.
+   * 
+   * @return The number, what else?
+   */
   public int getValueCount() {
     int count = 0;
     for (Collection<String> strings : values.values()) {
@@ -230,24 +246,36 @@ public class TestCoverage {
   }
 
   public Map<String, Collection<String>> getStates() {
-    return states;
+    return coverageValues;
   }
 
+  /**
+   * Get the number of coverage values observed. 
+   * This is the total sum of all values observed for all coverage value methods.
+   * 
+   * @return The count, as explained above.
+   */
   public int getStateCount() {
     int count = 0;
-    for (Collection<String> strings : states.values()) {
+    for (Collection<String> strings : coverageValues.values()) {
       count += strings.size();
     }
     return count;
   }
 
   public Map<String, Collection<String>> getStatePairs() {
-    return statePairs;
+    return coverageValuePairs;
   }
 
+  /**
+   * Get the number of coverage value pairs observed. 
+   * This is the total sum of all value pairs observed for all coverage value methods.
+   *
+   * @return The count, as explained above.
+   */
   public int getStatePairCount() {
     int count = 0;
-    for (Collection<String> strings : statePairs.values()) {
+    for (Collection<String> strings : coverageValuePairs.values()) {
       count += strings.size();
     }
     return count;
@@ -271,15 +299,15 @@ public class TestCoverage {
       values.addAll(this.values.get(key));
       clone.values.put(key, values);
     }
-    for (String key : states.keySet()) {
+    for (String key : coverageValues.keySet()) {
       Collection<String> values = new LinkedHashSet<>();
-      values.addAll(this.states.get(key));
-      clone.states.put(key, values);
+      values.addAll(this.coverageValues.get(key));
+      clone.coverageValues.put(key, values);
     }
-    for (String key : statePairs.keySet()) {
+    for (String key : coverageValuePairs.keySet()) {
       Collection<String> values = new LinkedHashSet<>();
-      values.addAll(this.statePairs.get(key));
-      clone.statePairs.put(key, values);
+      values.addAll(this.coverageValuePairs.get(key));
+      clone.coverageValuePairs.put(key, values);
     }
     return clone;
   }
@@ -300,14 +328,41 @@ public class TestCoverage {
    * @param fsm Our model.
    * @param possibleStepPairs List of possible step-pairs (all that could be covered).
    * @param possibleValues List of possible variable values.
+   * @param possibleCVs List of possible coverage values.
+   * @param possibleCVPairs List of possible coverage value pairs.
    * @param printAll If true, we print a list of names for missing coverage elements.
    * @return The created string. Simple ASCII text on several lines.
    */
   public String coverageString(FSM fsm, Collection<String> possibleStepPairs, Map<String, Collection<String>> possibleValues,
-                               Map<String, Collection<String>> possibleStates, Map<String, Collection<String>> possibleStatePairs, 
+                               Map<String, Collection<String>> possibleCVs, Map<String, Collection<String>> possibleCVPairs, 
                                boolean printAll) {
     String result = "Covered elements:\n";
     result += "Total steps: "+steps.size();
+    result = stepCoverageString(fsm, result);
+    result = stepPairCoverageString(possibleStepPairs, printAll, result);
+    result += "\nUnique requirements: "+reqs.size();
+    result += countString("Variable values", getValueCount(), possibleValues);
+    result += countString("Unique coverage-values", getStateCount(), possibleCVs);
+    result += countString("Unique coverage-value-pairs", getStatePairCount(), possibleCVPairs);
+    
+    return result;
+  }
+
+  private String stepPairCoverageString(Collection<String> possibleStepPairs, boolean printAll, String result) {
+    result += "\nUnique step-pairs: "+stepPairs.size();
+    if (possibleStepPairs != null && possibleStepPairs.size() > 0) {
+      Collection<String> all = new HashSet<>();
+      all.addAll(possibleStepPairs);
+      all.removeAll(stepPairs);
+      result += " (of "+possibleStepPairs.size()+")";
+      if (printAll || (all.size() > 0 && all.size() < 5)) {
+        result += " missing:"+all;
+      }
+    }
+    return result;
+  }
+
+  private String stepCoverageString(FSM fsm, String result) {
     result += "\nUnique steps: "+singles.size();
     if (fsm != null) {
       Collection<FSMTransition> fsmTransitions = fsm.getTransitions();
@@ -322,25 +377,11 @@ public class TestCoverage {
         result += " missing:"+all;
       }
     }
-    result += "\nUnique step-pairs: "+stepPairs.size();
-    if (possibleStepPairs != null && possibleStepPairs.size() > 0) {
-      Collection<String> all = new HashSet<>();
-      all.addAll(possibleStepPairs);
-      all.removeAll(stepPairs);
-      result += " (of "+possibleStepPairs.size()+")";
-      if (printAll || (all.size() > 0 && all.size() < 5)) {
-        result += " missing:"+all;
-      }
-    }
+    return result;
+  }
 
-    result += "\nUnique requirements: "+reqs.size();
-    
-    int valueCount = 0;
-    for (Collection<String> strings : values.values()) {
-      valueCount += strings.size();
-    }
-    result += "\nVariable values: "+valueCount;
-
+  private String countString(String name, int count, Map<String, Collection<String>> possibleValues) {
+    String result = "\n"+name+": "+count;
     if (possibleValues != null && possibleValues.size() > 0) {
       int possibleValueCount = 0;
       for (Collection<String> strings : possibleValues.values()) {
@@ -348,25 +389,6 @@ public class TestCoverage {
       }
       result += " (of "+possibleValueCount+")";
     }
-    
-    result += "\nUnique states: "+getStateCount();
-    if (possibleStates != null && possibleStates.size() > 0) {
-      int possibleCount = 0;
-      for (Collection<String> strings : possibleStates.values()) {
-        possibleCount += strings.size();
-      }
-      result += " (of "+possibleCount+")";
-    }
-    
-    result += "\nUnique state-pairs: "+getStatePairCount();
-    if (possibleStatePairs != null && possibleStatePairs.size() > 0) {
-      int possibleCount = 0;
-      for (Collection<String> strings : possibleStatePairs.values()) {
-        possibleCount += strings.size();
-      }
-      result += " (of "+possibleCount+")";
-    }
-    
     return result;
   }
 
@@ -387,16 +409,16 @@ public class TestCoverage {
       Collection<String> myValues = values.get(var);
       myValues.removeAll(yourValues);
     }
-    for (String var : states.keySet()) {
-      Collection<String> yourValues = in.states.get(var);
+    for (String var : coverageValues.keySet()) {
+      Collection<String> yourValues = in.coverageValues.get(var);
       if (yourValues == null) continue;
-      Collection<String> myValues = states.get(var);
+      Collection<String> myValues = coverageValues.get(var);
       myValues.removeAll(yourValues);
     }
-    for (String var : statePairs.keySet()) {
-      Collection<String> yourValues = in.statePairs.get(var);
+    for (String var : coverageValuePairs.keySet()) {
+      Collection<String> yourValues = in.coverageValuePairs.get(var);
       if (yourValues == null) continue;
-      Collection<String> myValues = statePairs.get(var);
+      Collection<String> myValues = coverageValuePairs.get(var);
       myValues.removeAll(yourValues);
     }
   }

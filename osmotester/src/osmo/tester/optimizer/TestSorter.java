@@ -9,7 +9,8 @@ import java.util.Comparator;
  * For example, if we generate several test sets in parallel and merge them the resulting ordering may vary
  * depending on what order did the sets get finished and added to the set. If we then prune this set to pick
  * a smaller set according to some coverage criteria, the resulting set may be different on different runs.
- * By sorting the merged set before pruning it, we get deterministic results.
+ * By sorting the merged set before pruning it, we get (more) deterministic results.
+ * Note that if several tests still have the same string representation their ordering is not guaranteed.
  * 
  * @author Teemu Kanstren 
  */

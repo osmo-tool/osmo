@@ -6,12 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotated field is considered as a model state variable.
- * That is, you can define coverage requirements over such variables.
- * The generator then keeps track of the values during generation, which can also be used in reporting.
+ * Value of annotated field is collected for test coverage calculations.
+ * The generator keeps track of such values during generation, which can also be used in reporting.
  * <p/>
- * Primitive data types (int, float, double, boolean) are stored as such when
- * a step has been taken into the {@link osmo.tester.generator.testsuite.TestCaseStep} object.
+ * Primitive data types (int, float, double, boolean) are stored as such when a step has been taken.
+ * These are added as variable values to into the {@link osmo.tester.generator.testsuite.TestCaseStep} object.
+ * 
  * Any Objects are also stored as such unless they implement the {@link osmo.tester.model.VariableValue}
  * interface. If this interface is implemented the value() method on it is queried for the value to store.
  * <p/>

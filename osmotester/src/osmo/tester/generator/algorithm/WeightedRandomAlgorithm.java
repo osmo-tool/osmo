@@ -29,7 +29,7 @@ public class WeightedRandomAlgorithm implements FSMTraversalAlgorithm {
   }
 
   @Override
-  public FSMTransition choose(TestSuite history, List<FSMTransition> choices) {
+  public FSMTransition choose(TestSuite suite, List<FSMTransition> choices) {
     log.debug("choosing from:" + choices);
     //sort the list to have smallest weights first, to provide correct parameter list to rawWeightedRandomFrom()
     Collections.sort(choices, new WeightComparator());

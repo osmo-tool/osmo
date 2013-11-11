@@ -8,8 +8,6 @@ import java.util.List;
  * This is mainly used internally by the ValueRange data object, but can also be used directly if needed.
  * NOTE: By default this only generates 5 boundary values for each boundary. Set the count to different
  * values to have more values.
- * <p/>
- * This can also be re-used by re-setting the properties, and calling init() again.
  *
  * @author Teemu Kanstren
  */
@@ -70,10 +68,6 @@ public class Boundary {
         validValues.add(max);
         break;
     }
-//    //first we add the minimum bound to test set
-//    validValues.add(min);
-//    //and the upper bound
-//    validValues.add(max);
     for (int i = 0 ; i < count ; i++) {
       switch (type) {
         case INT:
@@ -106,6 +100,10 @@ public class Boundary {
     }
   }
 
+  /**
+   * @param in If true, requesting values inside the boundary, otherwise outside of it.
+   * @return Requested set.
+   */
   public List<Number> getOptions(boolean in) {
     if (!in) {
       return invalidValues.getOptions();
@@ -113,7 +111,12 @@ public class Boundary {
     return validValues.getOptions();
   }
 
-  /** @return The next boundary value. */
+  /** 
+   * Gives the next value that is inside the boundary. 
+   * That is, bigger than or equal to min and smaller than or equal to max. 
+   * 
+   * @return The next boundary value. 
+   */
   public Number in() {
     //we assume that there can at least one valid value, the boundary itself..
     if (validValues.size() == 0) {
@@ -122,7 +125,12 @@ public class Boundary {
     return validValues.ordered();
   }
 
-  /** @return The next boundary value. */
+  /**
+   * Gives the next value that is outside the boundary. 
+   * That is, smaller than min or bigger than max. 
+   * 
+   * @return The next boundary value. 
+   */
   public Number out() {
     //we assume that there can at least one valid value, the boundary itself..
     if (validValues.size() == 0) {

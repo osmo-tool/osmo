@@ -23,8 +23,7 @@ public class ElementCoverage implements EndCondition {
   }
 
   /**
-   * If set to true, the tool tries to check if the model contains the required elements and the criteria seems
-   * satisfiable.
+   * If set to true, the required elements are checked against the model before generation if they seem satisfiable.
    * 
    * @param check Try to check if given requirements are possible to cover or not.
    */

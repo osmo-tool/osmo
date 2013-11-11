@@ -47,8 +47,8 @@ public class RequirementPrintTests {
             "Unique step-pairs: 3 (of 3)\n" +
             "Unique requirements: 3\n" +
             "Variable values: 0\n" +
-            "Unique states: 0\n" +
-            "Unique state-pairs: 0\n" +
+            "Unique coverage-values: 0\n" +
+            "Unique coverage-value-pairs: 0\n" +
             "\n" +
             "Requirements:[epix, hello, world]\n" +
             "Covered:[epix, hello, world]\n" +
@@ -71,8 +71,8 @@ public class RequirementPrintTests {
             "Unique step-pairs: 4 (of 4)\n" +
             "Unique requirements: 3\n" +
             "Variable values: 0\n" +
-            "Unique states: 0\n" +
-            "Unique state-pairs: 0\n" +
+            "Unique coverage-values: 0\n" +
+            "Unique coverage-value-pairs: 0\n" +
             "\n" +
             "Requirements:[hello]\n" +
             "Covered:[epix, hello, world]\n" +
@@ -95,8 +95,8 @@ public class RequirementPrintTests {
             "Unique step-pairs: 3 (of 3)\n" +
             "Unique requirements: 3\n" +
             "Variable values: 0\n" +
-            "Unique states: 0\n" +
-            "Unique state-pairs: 0\n" +
+            "Unique coverage-values: 0\n" +
+            "Unique coverage-value-pairs: 0\n" +
             "\n" +
             "Requirements:[]\n" +
             "Covered:[epix, hello, world]\n" +
@@ -119,8 +119,8 @@ public class RequirementPrintTests {
             "Unique step-pairs: 3 (of 3)\n" +
             "Unique requirements: 3\n" +
             "Variable values: 0\n" +
-            "Unique states: 0\n" +
-            "Unique state-pairs: 0\n" +
+            "Unique coverage-values: 0\n" +
+            "Unique coverage-value-pairs: 0\n" +
             "\n" +
             "Requirements:[epix, hello, undefined, world]\n" +
             "Covered:[epix, hello, world]\n" +
@@ -148,8 +148,8 @@ public class RequirementPrintTests {
             "Unique step-pairs: 12 (of 12)\n" +
             "Unique requirements: 0\n" +
             "Variable values: 166\n" +
-            "Unique states: 0\n" +
-            "Unique state-pairs: 0\n";
+            "Unique coverage-values: 0\n" +
+            "Unique coverage-value-pairs: 0\n";
     expected = unifyLineSeparators(expected, "\n");
     actual = unifyLineSeparators(actual, "\n");
     assertEquals("Generator printout for coverage", expected, actual);
@@ -169,8 +169,8 @@ public class RequirementPrintTests {
             "Unique step-pairs: 4 (of 4)\n" +
             "Unique requirements: 3\n" +
             "Variable values: 3\n" +
-            "Unique states: 3\n" +
-            "Unique state-pairs: 3\n" +
+            "Unique coverage-values: 3\n" +
+            "Unique coverage-value-pairs: 3\n" +
             "\n" +
             "Requirements:[]\n" +
             //reason why we do not cover "epixx" requirement is because the model resets this between tests
