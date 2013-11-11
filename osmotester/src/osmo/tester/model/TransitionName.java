@@ -1,14 +1,17 @@
 package osmo.tester.model;
 
-/** @author Teemu Kanstren */
+/** 
+ * Internally used to represent names for test steps.
+ * Using a specific prefix allows one to re-use the same model class several times as different instances.
+ * For example, create a class to represent a user. Instanciate several times as "bob", "alice", "teemu" with prefix.
+ * The prefix is what allows the generator to separate these and not consider the names duplicates and as such errors.
+ * 
+ * @author Teemu Kanstren 
+ */
 public class TransitionName {
-  /**
-   * Extra identifier to potentially group the transitions. For example, create a model of a smartphone and
-   * use the same model for several phones in test generation. Give them prefixes such as "HTC", "Google", etc.
-   * This will cause them to be considered as separate transitions in test generation. This is actually already part
-   * of the transition/guard names since parsing but used here to help address "negation" in associations.
-   */
+  /** Extra identifier to potentially group the transitions. */
   private final String prefix;
+  /** The actual name given in the model class. */
   private final String name;
 
   public TransitionName(String prefix, String name) {
@@ -48,6 +51,13 @@ public class TransitionName {
     return result;
   }
 
+  /**
+   * Checks if the given name is different from this name.
+   * Also checks for empty group name, which is why this exists.
+   * 
+   * @param negationName Name we should not match.
+   * @return True if our name does not match the given one.
+   */
   public boolean shouldNegationApply(TransitionName negationName) {
     if (!prefix.equalsIgnoreCase(negationName.prefix)) {
       //wrong prefix

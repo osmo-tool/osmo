@@ -23,12 +23,13 @@ public class EndConditionParser implements AnnotationParser {
     Method method = parameters.getMethod();
     Class<?> returnType = method.getReturnType();
     String errors = "";
+    String name = EndCondition.class.getSimpleName();
     if (returnType != boolean.class && returnType != Boolean.class) {
-      errors += "Invalid return type for @" + EndCondition.class.getSimpleName() + " (\"" + method.getName() + "()\"):" + returnType + ". Should be boolean.\n";
+      errors += "Invalid return type for @" + name + " (\"" + method.getName() + "()\"):" + returnType + ". Should be boolean.\n";
     }
     Class<?>[] parameterTypes = method.getParameterTypes();
     if (parameterTypes.length > 0) {
-      errors += "@" + EndCondition.class.getSimpleName() + " methods are not allowed to have parameters: \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n";
+      errors += "@" + name + " methods are not allowed to have parameters: \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n";
     }
     result.getFsm().addEndCondition(new InvocationTarget(parameters, EndCondition.class));
     return errors;

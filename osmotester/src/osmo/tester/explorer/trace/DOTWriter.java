@@ -1,5 +1,6 @@
 package osmo.tester.explorer.trace;
 
+import osmo.common.TestUtils;
 import osmo.common.log.Logger;
 
 import java.io.IOException;
@@ -16,14 +17,9 @@ import java.util.List;
  * Writes a test exploration trace in GraphViz DOT format.
  * The ExplorationAlgorithm of OSMO Explorer writes the trace for every step explored.
  * This class only does something if the 'enabled' flag is, well, enabled.
- * To use, you need to create a new instance for each test case being generated/traced.
- * After this, you create a set of {@link TraceNode} elements.
- * Finally, you call the write() method to spill out the dot formatted file.
- * The write() call will also invoke a command line 'script' to create a .png file from the trace using graphviz.
- * So naturally, you need to have installed graphviz and have it on the path.
- * Everything is stored in directory "osmo-dot" under the working directory.
- * Upon start, you should call deleteFiles() to clear the directory.
- * {@link osmo.tester.explorer.ExplorerAlgorithm} does this for you.
+ * Writes the trace files in directory "osmo-dot" under the working directory.
+ * Also invokes the graphviz command line tool to create .png file from the trace.
+ * {@link osmo.tester.explorer.ExplorerAlgorithm} uses this to write a log if enabled.
  *
  * @author Teemu Kanstren
  */
@@ -139,24 +135,6 @@ public class DOTWriter {
   }
 
   public static void deleteFiles() {
-    deleteFiles(DIR);
-  }
-
-  /** Delete the trace directory. */
-  public static void deleteFiles(String dirPath) {
-    try {
-      Path dir = Paths.get(dirPath);
-      //delete the directory and all files inside it, recursively
-      Files.walkFileTree(dir, new SimpleFileVisitor<Path>() {
-        @Override
-        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-          Files.delete(file);
-          return FileVisitResult.CONTINUE;
-        }
-      });
-    } catch (IOException e) {
-//      log.error("Unable to delete files", e);
-//      throw new RuntimeException(e);
-    }
+    TestUtils.recursiveDelete(DIR);
   }
 }

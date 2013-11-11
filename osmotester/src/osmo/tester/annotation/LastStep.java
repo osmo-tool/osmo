@@ -7,8 +7,8 @@ import java.lang.annotation.Target;
 
 /**
  * Annotated method is executed as last step in test case, before ending the test case but after having defined
- * to end it. Difference to AfterTest is that this is executed as part of the test case, thus potentially failing
- * the test case and not the overall generation process.
+ * to end it. Difference to {@link AfterTest} is that this is executed as part of the test case, thus potentially 
+ * failing the test case and not the overall generation process.
  * <p/>
  * The annotated method must have no parameters.
  *

@@ -451,7 +451,7 @@ public class ECinemaV2 {
       seed += 100;
       for (int d = 1 ; d <= 3 ; d++) {
         OSMOExplorer explorer = new OSMOExplorer();
-        ExplorationConfiguration config = new ExplorationConfiguration(new ECinemaV2ModelFactory(NullPrintStream.stream), d, seed);
+        ExplorationConfiguration config = new ExplorationConfiguration(new ECinemaV2ModelFactory(), d, seed);
         config.setMinTestLength(1);
         config.setMinSuiteLength(1);
         config.setMinTestScore(500);
@@ -479,28 +479,20 @@ public class ECinemaV2 {
       OSMOConfiguration oc = new OSMOConfiguration();
       oc.setTestEndCondition(new LengthProbability(50, 0.2d));
       oc.setFailWhenError(false);
-      oc.setFactory(new ECinemaV2ModelFactory(NullPrintStream.stream));
-      MultiGreedy greedy = new MultiGreedy(oc, new ScoreConfiguration(), cores);
+      oc.setFactory(new ECinemaV2ModelFactory());
+      MultiGreedy greedy = new MultiGreedy(oc, new ScoreConfiguration(), seed, cores);
       greedy.setTimeout(timeout);
-      List<TestCase> tests = greedy.search(cores, seed);
+      List<TestCase> tests = greedy.search();
       TestCoverage tc = new TestCoverage(tests);
       System.out.println(tc.coverageString(greedy.getFsm(), null, null, null, null, false));
     }
   }
 
   private static class ECinemaV2ModelFactory implements ModelFactory {
-    private final PrintStream out;
-
-    private ECinemaV2ModelFactory(PrintStream out) {
-      this.out = out;
-    }
-
     @Override
-    public TestModels createModelObjects() {
-      TestModels models = new TestModels();
+    public void createModelObjects(TestModels addHere) {
       ECinemaV2 v2 = new ECinemaV2();
-      models.add(new ModelObject(v2));
-      return models;
+      addHere.add(new ModelObject(v2));
     }
   }
 }
