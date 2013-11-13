@@ -39,7 +39,7 @@ public class CoverageValueMethodTests {
   @Test
   public void noState() {
     SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
-    ValidTestModel6 model = new ValidTestModel6();
+    ValidTestModel6 model = new ValidTestModel6(":null:-null-:null:-null-:null:-null-");
     factory.add(model);
     osmo.setModelFactory(factory);
     Length length3 = new Length(3);

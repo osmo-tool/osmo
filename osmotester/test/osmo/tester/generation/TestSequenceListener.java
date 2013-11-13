@@ -73,6 +73,11 @@ public class TestSequenceListener implements GenerationListener {
   }
 
   @Override
+  public void lastStep(String name) {
+    steps.add("ls:" + name);
+  }
+
+  @Override
   public void pre(FSMTransition transition) {
     storeGuards();
     if (tracePostPre) {

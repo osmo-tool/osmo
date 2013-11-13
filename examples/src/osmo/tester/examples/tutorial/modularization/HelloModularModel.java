@@ -7,7 +7,11 @@ import osmo.tester.annotation.TestStep;
 
 /** @author Teemu Kanstren */
 public class HelloModularModel {
-  private ModelState state = new ModelState();
+  private final ModelState state;
+
+  public HelloModularModel(ModelState state) {
+    this.state = state;
+  }
 
   @BeforeTest
   public void startTest() {

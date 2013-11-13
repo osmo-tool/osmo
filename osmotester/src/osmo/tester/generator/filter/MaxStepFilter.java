@@ -126,4 +126,8 @@ public class MaxStepFilter implements StepFilter {
   @Override
   public void testError(TestCase test, Throwable error) {
   }
+
+  @Override
+  public void lastStep(String name) {
+  }
 }

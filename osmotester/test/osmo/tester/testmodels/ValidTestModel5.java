@@ -3,6 +3,7 @@ package osmo.tester.testmodels;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
+import osmo.tester.annotation.LastStep;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Transition;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -79,6 +80,11 @@ public class ValidTestModel5 {
   @Post({"hello", "world"})
   public void sharedCheck() {
     out.print(":two_oracle");
+  }
+  
+  @LastStep
+  public void last() {
+    out.print(":last");
   }
 
   @EndCondition

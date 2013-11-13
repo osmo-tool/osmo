@@ -33,6 +33,11 @@ public class FSMTransition implements Comparable<FSMTransition> {
   /** A strict one stops the generator in case of exception, throwing any exceptions. Non-strict will log the error but continue. */
   private boolean strict = true; //again, the true default value is in the annotation
 
+  /**
+   * This is only used in testing.
+   * 
+   * @param name Name to give, forget the prefix..
+   */
   public FSMTransition(String name) {
     this.name = new TransitionName("", name);
   }

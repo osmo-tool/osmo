@@ -39,6 +39,8 @@ public class Text extends SearchableInput<String> {
   /** Probability for invalid characters to appear in the generated string if using the invalidX generation methods. 
    * Between 0-1. Default 0.5 (half are invalid). */
   private float invalidProbability = 0.5f;
+  /** Do we generate a random string for toString() call or not? */
+  private boolean randomToString = false;
 
   /** Constructor for default values. */
   public Text() {
@@ -265,4 +267,25 @@ public class Text extends SearchableInput<String> {
     return this;
   }
 
+  public Text numbersOnly() {
+    chars.numbersOnly();
+    return this;
+  }
+
+  public boolean isRandomToString() {
+    return randomToString;
+  }
+
+  public Text setRandomToString(boolean randomToString) {
+    this.randomToString = randomToString;
+    return this;
+  }
+
+  @Override
+  public String toString() {
+    if (randomToString) {
+      return random();
+    }
+    return super.toString();
+  }
 }

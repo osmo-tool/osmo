@@ -15,7 +15,7 @@ public class TransitionPieChartExample {
     OSMOTester tester = new OSMOTester();
     tester.addListener(transitionsBarChart);
 //    tester.addListener(new TransitionsPieChart());
-    tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
+    tester.addModelObject(new CalculatorModel());
     tester.setAlgorithm(new ManualAlgorithm(tester));
     tester.generate(55);
   }

@@ -129,12 +129,17 @@ public class MainGenerator {
         boolean shouldContinue = nextStep();
         if (!shouldContinue) {
           log.debug("Ending test case");
-          lastSteps();
           break;
         }
       } catch (RuntimeException | AssertionError e) {
         handleError(test, e);
       }
+    }
+    //have to put last steps here to catch all end conditions firing. have to catch again to avoid failure if so desired
+    try {
+      lastSteps();
+    } catch (RuntimeException | AssertionError e) {
+      handleError(test, e);
     }
     afterTest();
     log.debug("Finished new test generation");
@@ -143,8 +148,17 @@ public class MainGenerator {
   
   private void lastSteps() {
     Collection<InvocationTarget> lastSteps = fsm.getLastSteps();
-    for (InvocationTarget lastStep : lastSteps) {
-      lastStep.invoke();
+    for (InvocationTarget t : lastSteps) {
+      t.invoke();
+      TestCase test = getCurrentTest();
+      TestCaseStep step = test.getCurrentStep();
+      if (step != null) {
+        //step can be null if it fails before anything else..
+        storeUserCoverageValues(step);
+        //store into test step the current state, do it here to allow the post methods and listeners to see step state
+        step.storeGeneralState(fsm);
+      }
+      listeners.lastStep(t.getMethod().getName());
     }
   }
 
@@ -219,7 +233,7 @@ public class MainGenerator {
     invokeAll(transition.getPreMethods(), "pre", transition);
     //this is the actual transition/test step being executed
     InvocationTarget target = transition.getTransition();
-    if (transition.isStrict()) {
+    if (transition.isStrict() && config.shouldFailWhenError()) {
       target.invoke();
     } else {
       try {

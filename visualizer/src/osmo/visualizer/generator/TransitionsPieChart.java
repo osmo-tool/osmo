@@ -72,6 +72,10 @@ public class TransitionsPieChart implements GenerationListener {
   }
 
   @Override
+  public void lastStep(String name) {
+  }
+
+  @Override
   public void pre(FSMTransition transition) {
   }
 

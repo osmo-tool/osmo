@@ -62,4 +62,8 @@ public class GUIGenerationListener implements GenerationListener {
   public void suiteEnded(TestSuite suite) {
     driver.suiteEnded();
   }
+
+  @Override
+  public void lastStep(String name) {
+  }
 }

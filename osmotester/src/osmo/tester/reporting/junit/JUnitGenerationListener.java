@@ -43,6 +43,10 @@ public class JUnitGenerationListener implements GenerationListener {
   }
 
   @Override
+  public void lastStep(String name) {
+  }
+
+  @Override
   public void pre(FSMTransition transition) {
   }
 

@@ -37,6 +37,13 @@ public interface GenerationListener {
   public void step(TestCaseStep step);
 
   /**
+   * Last step annotated method has been invoked.
+   *
+   * @param name The method name.
+   */
+  public void lastStep(String name);
+
+  /**
    * A pre method has been invoked.
    *
    * @param transition The transition associated to the test step.

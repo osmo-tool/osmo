@@ -51,7 +51,7 @@ public class ListenerTests {
     listener.addExpected("suite-start");
     listener.addExpected("start", "g:epixx", "g:hello", "g:world", "t:hello");
     listener.addExpected("g:epixx", "g:hello", "g:world", "t:world");
-    listener.addExpected("g:epixx", "g:hello", "g:world", "pre:epixx", "t:epixx", "post:epixx", "end");
+    listener.addExpected("g:epixx", "g:hello", "g:world", "pre:epixx", "t:epixx", "post:epixx", "ls:last", "end");
     listener.addExpected("suite-end");
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);

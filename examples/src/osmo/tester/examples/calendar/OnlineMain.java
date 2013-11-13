@@ -17,9 +17,8 @@ public class OnlineMain {
     osmo.setTestEndCondition(new Length(5));
     ModelState state = new ModelState();
     CalendarScripter scripter = new OnlineScripter();
-    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
-    osmo.setModelFactory(factory);
-    factory.add(new CalendarMeetingModel(state, scripter));
+    osmo.addModelObject(new CalendarMeetingModel(state, scripter));
+    osmo.addModelObject(state);
     OSMOConfiguration config = osmo.getConfig();
     config.setFailWhenError(false);
     osmo.generate(111);

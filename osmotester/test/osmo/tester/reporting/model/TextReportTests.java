@@ -179,7 +179,7 @@ public class TextReportTests {
             "AfterSuites: \n" +
             "BeforeTests: osmo.tester.testmodels.ValidTestModel5.reset(), \n" +
             "AfterTests: \n" +
-            "Last Steps: \n" +
+            "Last Steps: osmo.tester.testmodels.ValidTestModel5.last(), \n" +
             "Model EndConditions: osmo.tester.testmodels.ValidTestModel5.end(), \n" +
             "Exploration Enablers: \n" +
             "Generation Enablers: \n" +

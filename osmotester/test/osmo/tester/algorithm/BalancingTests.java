@@ -12,6 +12,7 @@ import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
+import osmo.tester.testmodels.ValidTestModel5;
 import osmo.tester.testmodels.ValidTestModel6;
 
 import java.util.ArrayList;
@@ -24,13 +25,11 @@ import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
 public class BalancingTests {
-  private OSMOTester osmo = null;
-  private TestSequenceListener listener;
 
   @Before
   public void testSetup() {
-    osmo = new OSMOTester();
-    listener = new TestSequenceListener();
+    OSMOTester osmo = new OSMOTester();
+    TestSequenceListener listener = new TestSequenceListener();
     osmo.addListener(listener);
   }
 
@@ -39,7 +38,7 @@ public class BalancingTests {
     for (int i = 0 ; i < 1000 ; i++) {
       OSMOTester tester = new OSMOTester();
       tester.setAlgorithm(new BalancingAlgorithm());
-      tester.setModelFactory(new ReflectiveModelFactory(ValidTestModel6.class));
+      tester.addModelObject(new ValidTestModel6(":null:-null-:null:-null-:null:-null-:null:-null-"));
       tester.setTestEndCondition(new Length(4));
       tester.setSuiteEndCondition(new Length(1));
       tester.generate(i);
@@ -60,7 +59,9 @@ public class BalancingTests {
     List<String> pairs = createPairList("t1", "t2", "t3", "t4");
     OSMOTester tester = new OSMOTester();
     tester.setAlgorithm(new BalancingAlgorithm());
-    tester.setModelFactory(new ReflectiveModelFactory(ValidTestModel6.class));
+    ValidTestModel6 model6 = new ValidTestModel6();
+    model6.disableCheck();
+    tester.addModelObject(model6);
     tester.setTestEndCondition(new Length(2500));
     tester.setSuiteEndCondition(new Length(4));
     tester.generate(55);
