@@ -6,6 +6,7 @@ import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
+import osmo.tester.annotation.LastStep;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.Transition;
@@ -44,6 +45,11 @@ public class ErrorModel5 {
 
   @Pre("all")
   public void beforeEpixx() {
+  }
+  
+  @LastStep
+  public void lastStepStanding() {
+    
   }
 
   @EndCondition

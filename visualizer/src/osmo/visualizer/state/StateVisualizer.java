@@ -99,6 +99,10 @@ public class StateVisualizer extends JFrame implements GenerationListener {
   }
 
   @Override
+  public void lastStep(String name) {
+  }
+
+  @Override
   public void pre(FSMTransition t) {
   }
 

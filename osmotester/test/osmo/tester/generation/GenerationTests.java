@@ -72,7 +72,7 @@ public class GenerationTests {
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
     osmo.generate(111);
-    String expected = ":hello:world:epixx_pre:epixx:epixx_oracle";
+    String expected = ":hello:world:epixx_pre:epixx:epixx_oracle:last";
     String actual = out.toString();
     assertEquals(expected, actual);
   }
@@ -146,7 +146,7 @@ public class GenerationTests {
     osmo.setTestEndCondition(length5);
     osmo.setSuiteEndCondition(length2);
     osmo.generate(111);
-    String one = ":hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle";
+    String one = ":hello:two_oracle:gen_oracle:world:two_oracle:gen_oracle:last";
     String two = one;
     two += one;
     String actual = out.toString();
@@ -236,7 +236,7 @@ public class GenerationTests {
     osmo.setSuiteEndCondition(new Length(3));
     osmo.generate(145);
     String actual = out.toString();
-    assertEquals(":beforesuite::beforetest::hello:world:epixx_pre:epixx:epixx_oracle:aftertest::beforetest::epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:aftertest::beforetest::epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:aftertest::aftersuite:", actual);
+    assertEquals(":beforesuite::beforetest::hello:world:epixx_pre:epixx:epixx_oracle:last:aftertest::beforetest::epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:last:aftertest::beforetest::epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:last:aftertest::aftersuite:", actual);
   }
 
   @Test
@@ -254,7 +254,7 @@ public class GenerationTests {
     osmo.setSuiteEndCondition(new Length(3));
     osmo.generate(111);
     String actual = out.toString();
-    assertEquals(":beforesuite::beforesuite::beforesuite::beforetest::beforetest::beforetest::hello:world:epixx_pre:epixx:epixx_oracle:aftertest::aftertest::aftertest::beforetest::beforetest::beforetest::epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:aftertest::aftertest::aftertest::beforetest::beforetest::beforetest::epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:aftertest::aftertest::aftertest::aftersuite::aftersuite::aftersuite:", actual);
+    assertEquals(":beforesuite::beforesuite::beforesuite::beforetest::beforetest::beforetest::hello:world:epixx_pre:epixx:epixx_oracle:last:last:last:aftertest::aftertest::aftertest::beforetest::beforetest::beforetest::epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:last:last:last:aftertest::aftertest::aftertest::beforetest::beforetest::beforetest::epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:epixx_pre:epixx:epixx_oracle:last:last:last:aftertest::aftertest::aftertest::aftersuite::aftersuite::aftersuite:", actual);
   }
 
   @Test

@@ -213,7 +213,9 @@ public class ErrorHandlingTests {
   @Test
   public void transitionWithTrap() {
     listener.setTracePrePost(true);
-    listener.addExpected("suite-start", "start", "g:hello", "pre:hello", "g:hello", "pre:hello", "g:hello", "pre:hello", "end", "suite-end");
+    listener.addExpected("suite-start", "start", "g:hello", "pre:hello", "t:hello", "post:hello");
+    listener.addExpected("g:hello", "pre:hello", "t:hello", "post:hello");
+    listener.addExpected("g:hello", "pre:hello", "t:hello", "post:hello", "ls:lastStepStanding", "end", "suite-end");
     osmo.setModelFactory(new ReflectiveModelFactory(ErrorModel5.class));
     config.setFailWhenError(false);
     Length length3 = new Length(3);
@@ -221,7 +223,7 @@ public class ErrorHandlingTests {
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
     osmo.generate(100);
-    listener.validate("@Transition with trap");
+    listener.validate("@TestStep with trap");
   }
 
   @Test

@@ -3,6 +3,7 @@ package osmo.tester.parser.annotation;
 import osmo.common.log.Logger;
 import osmo.tester.annotation.LastStep;
 import osmo.tester.model.InvocationTarget;
+import osmo.tester.model.TransitionName;
 import osmo.tester.parser.AnnotationParser;
 import osmo.tester.parser.ParserParameters;
 import osmo.tester.parser.ParserResult;
@@ -20,7 +21,8 @@ public class LastStepParser implements AnnotationParser {
   @Override
   public String parse(ParserResult result, ParserParameters parameters) {
     LastStep after = (LastStep) parameters.getAnnotation();
-    result.getFsm().addLastStep(new InvocationTarget(parameters, LastStep.class));
+    InvocationTarget target = new InvocationTarget(parameters, LastStep.class);
+    result.getFsm().addLastStep(target);
     Method method = parameters.getMethod();
     String errors = "";
     Class<?>[] parameterTypes = method.getParameterTypes();

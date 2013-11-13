@@ -11,7 +11,7 @@ import osmo.tester.generator.endcondition.Probability;
 public class Main4 {
   public static void main(String[] args) {
     OSMOTester tester = new OSMOTester();
-    tester.setModelFactory(new ReflectiveModelFactory(HelloModel2.class));
+    tester.addModelObject(new HelloModel2());
     tester.setTestEndCondition(new And(new Length(5), new Probability(0.33)));
     tester.setSuiteEndCondition(new Length(6));
     tester.generate(52);

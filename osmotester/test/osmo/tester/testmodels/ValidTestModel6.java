@@ -16,6 +16,7 @@ public class ValidTestModel6 {
   @Variable
   private int index = 0;
   private final String expectedState;
+  private boolean nocheck = false;
 
   public ValidTestModel6() {
     this.expectedState = null;
@@ -23,6 +24,10 @@ public class ValidTestModel6 {
 
   public ValidTestModel6(String expectedState) {
     this.expectedState = expectedState;
+  }
+  
+  public void disableCheck() {
+    nocheck = true;
   }
 
   @Transition("t1")
@@ -61,6 +66,7 @@ public class ValidTestModel6 {
   
   @LastStep
   public void check() {
+    if (nocheck) return;
     assertEquals("Expected result", expectedState, states);
   }
 }

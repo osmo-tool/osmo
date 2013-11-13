@@ -146,6 +146,12 @@ public class CharSet extends SearchableInput<Character> {
     invalidChars += "åäöÅÄÖ,.<>!\"#%&/()=?´`{[]}\\¨^~';:|-_*-+= ";
   }
 
+  /** Sets the set of generated characters to contain only a-z,A-Z,0-9. */
+  public void numbersOnly() {
+    validChars = "0123456789";
+    invalidChars += "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZåäöÅÄÖ,.<>!\"#%&/()=?´`{[]}\\¨^~';:|-_*-+= ";
+  }
+
   @Override
   public Collection<Character> getOptions() {
     List<Character> result = new ArrayList<>();

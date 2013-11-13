@@ -101,4 +101,11 @@ public class GenerationListenerList implements GenerationListener {
       listener.testError(test, error);
     }
   }
+
+  @Override
+  public void lastStep(String name) {
+    for (GenerationListener listener : listeners) {
+      listener.lastStep(name);
+    }
+  }
 }

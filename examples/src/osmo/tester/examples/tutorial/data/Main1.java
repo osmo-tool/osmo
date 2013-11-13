@@ -10,7 +10,7 @@ import osmo.tester.generator.endcondition.Length;
 public class Main1 {
   public static void main(String[] args) {
     OSMOTester tester = new OSMOTester();
-    tester.setModelFactory(new ReflectiveModelFactory(HelloModel1.class));
+    tester.addModelObject(new HelloModel1());
     tester.setTestEndCondition(new Length(5));
     tester.setSuiteEndCondition(new Length(2));
     tester.generate(52);

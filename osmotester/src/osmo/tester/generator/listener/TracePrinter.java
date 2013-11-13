@@ -38,6 +38,12 @@ public class TracePrinter implements GenerationListener {
   }
 
   @Override
+  public void lastStep(String name) {
+    out.println(testIndex+"."+stepIndex+".LASTSTEP:"+name.toUpperCase());
+    stepIndex++;
+  }
+
+  @Override
   public void pre(FSMTransition transition) {
   }
 

@@ -22,6 +22,10 @@ public abstract class AbstractListener implements GenerationListener {
   }
 
   @Override
+  public void lastStep(String name) {
+  }
+
+  @Override
   public void pre(FSMTransition transition) {
   }
 

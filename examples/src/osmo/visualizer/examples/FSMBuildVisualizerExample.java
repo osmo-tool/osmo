@@ -12,7 +12,7 @@ public class FSMBuildVisualizerExample {
   public static void main(String[] args) {
     FSMBuildVisualizer gv = new FSMBuildVisualizer();
     OSMOTester osmo = new OSMOTester();
-    osmo.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
+    osmo.addModelObject(new CalculatorModel());
     osmo.setTestEndCondition(new Length(15));
     osmo.setSuiteEndCondition(new Length(5));
     osmo.addListener(gv);

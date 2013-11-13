@@ -8,7 +8,7 @@ import osmo.tester.generator.ReflectiveModelFactory;
 public class Main1 {
   public static void main(String[] args) {
     OSMOTester tester = new OSMOTester();
-    tester.setModelFactory(new ReflectiveModelFactory(HelloModel1.class));
+    tester.addModelObject(new HelloModel1());
     tester.generate(52);
   }
 }

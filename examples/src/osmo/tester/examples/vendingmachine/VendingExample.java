@@ -103,7 +103,7 @@ public class VendingExample {
 
   public static void main(String[] args) {
     OSMOTester tester = new OSMOTester();
-    tester.setModelFactory(new ReflectiveModelFactory(VendingExample.class));
+    tester.addModelObject(new VendingExample());
     tester.generate(100);
   }
 }

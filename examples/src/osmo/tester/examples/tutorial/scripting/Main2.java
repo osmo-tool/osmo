@@ -11,9 +11,7 @@ public class Main2 {
     HelloVelocityScripter scripter = new HelloVelocityScripter();
     HelloModel2 model = new HelloModel2(scripter);
     OSMOTester tester = new OSMOTester();
-    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
-    factory.add(model);
-    tester.setModelFactory(factory);
+    tester.addModelObject(model);
     tester.setTestEndCondition(new Length(5));
     tester.setSuiteEndCondition(new Length(2));
     tester.generate(52);

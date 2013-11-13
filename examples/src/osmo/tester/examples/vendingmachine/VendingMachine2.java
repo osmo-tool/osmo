@@ -125,7 +125,7 @@ public class VendingMachine2 {
 
   public static void main(String[] args) {
     OSMOTester tester = new OSMOTester();
-    tester.setModelFactory(new ReflectiveModelFactory(VendingMachine2.class));
+    tester.addModelObject(new VendingMachine2());
     tester.generate(25);
 
     //Print coverage metric
