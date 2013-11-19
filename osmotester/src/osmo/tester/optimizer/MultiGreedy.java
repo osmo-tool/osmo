@@ -55,6 +55,8 @@ public class MultiGreedy {
   private int optimizerCount = Runtime.getRuntime().availableProcessors();
   /** List of created optimizers. */
   private final List<GreedyOptimizer> optimizers = new ArrayList<>();
+  /** Do we delete the osmo-output directory when starting up? */
+  private boolean deleteOldOutput = false;
 
   /**
    * Uses number of processors on system as default for number of threads in the thread pool.
@@ -80,6 +82,15 @@ public class MultiGreedy {
     calculator = new ScoreCalculator(scoreConfig);
     greedyPool = Executors.newFixedThreadPool(parallelism);
     rand = new Randomizer(seed);
+    optimizerCount = parallelism;
+  }
+
+  public boolean isDeleteOldOutput() {
+    return deleteOldOutput;
+  }
+
+  public void setDeleteOldOutput(boolean deleteOldOutput) {
+    this.deleteOldOutput = deleteOldOutput;
   }
 
   public int getPopulationSize() {
@@ -96,6 +107,8 @@ public class MultiGreedy {
    * @return The optimized set of tests.
    */
   public List<TestCase> search() {
+    if (deleteOldOutput) TestUtils.recursiveDelete("osmo-output");
+    
     long start = System.currentTimeMillis();
     List<TestCase> tests = generate();
 

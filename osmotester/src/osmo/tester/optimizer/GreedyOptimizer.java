@@ -180,10 +180,10 @@ public class GreedyOptimizer {
     if (osmoConfig.getFactory() instanceof SingleInstanceModelFactory) {
       System.out.println(MultiOSMO.ERROR_MSG);
     }
-    if (config.getLengthWeight() >= 0) {
-      log.warn("Length weight was defined as >= 0, reset to -1.");
+    if (config.getLengthWeight() > 0) {
+      log.warn("Length weight was defined as > 0, reset to 0.");
       //we do not use positive length weight as it would potentially go on for ever..
-      config.setLengthWeight(-1);
+      config.setLengthWeight(0);
     }
     if (threshold < 1) log.warn("Threshold is " + threshold + ", which is impossible to reach. Are you sure?");
   }

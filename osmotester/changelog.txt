@@ -112,3 +112,11 @@ v3.2.0 27/10/2013
 -changed data generators to use explicit methods instead of next()
 -changed name comparison to ignore case
 -StateName -> CoverageValue
+v3.3.0 15/11/2013
+-added MultiOSMO
+-added trace reporting to all generators
+-refactoring and cleanup
+-updated docs
+-fixed manualdrive
+-fixes to laststep
+-added tutorial for scenarios
