@@ -133,7 +133,7 @@ public class MultiGreedy {
    */
   private List<TestCase> generate() {
     log.info("Starting search with " + optimizerCount + " optimizers");
-    Collection<Future<List<TestCase>>> futures = new ArrayList<>();
+    Collection<Future<Collection<TestCase>>> futures = new ArrayList<>();
 
     runOptimizers(futures);
     List<TestCase> allTests = collectAllTests(futures);
@@ -149,12 +149,12 @@ public class MultiGreedy {
    * 
    * @param futures    Collects here all the {@link Future} objects for the running {@link GreedyTask} instances.
    */
-  private void runOptimizers(Collection<Future<List<TestCase>>> futures) {
+  private void runOptimizers(Collection<Future<Collection<TestCase>>> futures) {
     for (int i = 0 ; i < optimizerCount ; i++) {
       GreedyOptimizer optimizer = new GreedyOptimizer(osmoConfig, optimizerConfig);
       optimizer.setTimeout(timeout);
       GreedyTask task = new GreedyTask(optimizer, rand.nextLong(), populationSize);
-      Future<List<TestCase>> future = greedyPool.submit(task);
+      Future<Collection<TestCase>> future = greedyPool.submit(task);
       log.debug("task submitted to pool");
       futures.add(future);
       optimizers.add(optimizer);
@@ -167,9 +167,9 @@ public class MultiGreedy {
    * @param futures  Access to the tasks in the pool to wait for their completion and access results.
    * @return The combined set, not yet optimized in itself.
    */
-  private List<TestCase> collectAllTests(Collection<Future<List<TestCase>>> futures) {
+  private List<TestCase> collectAllTests(Collection<Future<Collection<TestCase>>> futures) {
     List<TestCase> allTests = new ArrayList<>();
-    for (Future<List<TestCase>> future : futures) {
+    for (Future<Collection<TestCase>> future : futures) {
       try {
         allTests.addAll(future.get());
       } catch (Exception e) {
@@ -202,7 +202,7 @@ public class MultiGreedy {
     //the coverage in fsm is used by coverage reporters which is why we need this
     Requirements reqs = fsm.getRequirements();
     reqs.clearCoverage();
-    TestCoverage coverage = new TestCoverage(cases);
+    TestCoverage coverage = new TestCoverage();
     Collection<String> coveredReqs = coverage.getRequirements();
     for (String req : coveredReqs) {
       reqs.covered(req);
@@ -222,7 +222,7 @@ public class MultiGreedy {
     CSVCoverageReport report = new CSVCoverageReport(calculator);
     report.process(cases);
 
-    TestCoverage tc = new TestCoverage(cases);
+    TestCoverage tc = new TestCoverage();
     summary += tc.coverageString(fsm, possiblePairs, null, null, null, false);
 
     String totalCsv = report.report();

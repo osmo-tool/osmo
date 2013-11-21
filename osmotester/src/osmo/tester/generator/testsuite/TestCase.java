@@ -1,6 +1,7 @@
 package osmo.tester.generator.testsuite;
 
 import osmo.common.log.Logger;
+import osmo.tester.coverage.TestCoverage;
 import osmo.tester.model.FSMTransition;
 
 import java.util.ArrayList;
@@ -37,8 +38,9 @@ public class TestCase {
   private long endTime = 0;
   /** Set to true if during test generation there is an exception thrown. */
   private boolean failed = false;
+  private TestCoverage coverage = new TestCoverage();
 
-  public TestCase(TestSuite parent) {
+  public TestCase() {
     this.id = nextId.getAndIncrement();
   }
 
@@ -60,6 +62,10 @@ public class TestCase {
     return id;
   }
 
+  public TestCoverage getCoverage() {
+    return coverage;
+  }
+
   /**
    * This is the step currently being generated. Once the test step generation starts (before @Pre is invoked) this
    * is already set to the step to be generated (that is, before the actual step code is executed).
@@ -70,18 +76,18 @@ public class TestCase {
     return currentStep;
   }
 
-  /**
-   * @return The max number of variable values observed in this test, meaning the biggest for any step. 
-   *         The variables values are those @Variable tagged in model.
-   */
-  public int getParameterCount() {
-    int max = 0;
-    for (TestCaseStep step : steps) {
-      int ps = step.getValues().size();
-      if (ps > max) max = ps;
-    }
-    return max;
-  }
+//  /**
+//   * @return The max number of variable values observed in this test, meaning the biggest for any step. 
+//   *         The variables values are those @Variable tagged in model.
+//   */
+//  public int getParameterCount() {
+//    int max = 0;
+//    for (TestCaseStep step : steps) {
+//      int ps = step.getValues().size();
+//      if (ps > max) max = ps;
+//    }
+//    return max;
+//  }
 
   /**
    * Time when test generator started executing code for this step.
@@ -132,14 +138,14 @@ public class TestCase {
     return step;
   }
 
-  /**
-   * Defines that the current test step covered the given requirement.
-   *
-   * @param requirement The covered requirement identifier.
-   */
-  public void covered(String requirement) {
-    currentStep.covered(requirement);
-  }
+//  /**
+//   * Defines that the current test step covered the given requirement.
+//   *
+//   * @param requirement The covered requirement identifier.
+//   */
+//  public void covered(String requirement) {
+//    currentStep.covered(requirement);
+//  }
 
   /**
    * Get list of test steps generated (so far) for this test case.
@@ -163,97 +169,97 @@ public class TestCase {
     return stepCoverage;
   }
 
-  /**
-   * Get the set of unique requirements covered, with duplicates removed.
-   *
-   * @return The list of unique requirements covered.
-   */
-  public Collection<String> getUniqueRequirementCoverage() {
-    Collection<String> requirementsCoverage = new LinkedHashSet<>();
-    for (TestCaseStep step : steps) {
-      requirementsCoverage.addAll(step.getCoveredRequirements());
-    }
-    return requirementsCoverage;
-  }
+//  /**
+//   * Get the set of unique requirements covered, with duplicates removed.
+//   *
+//   * @return The list of unique requirements covered.
+//   */
+//  public Collection<String> getUniqueRequirementCoverage() {
+//    Collection<String> requirementsCoverage = new LinkedHashSet<>();
+//    for (TestCaseStep step : steps) {
+//      requirementsCoverage.addAll(step.getCoveredRequirements());
+//    }
+//    return requirementsCoverage;
+//  }
+//
+//  /**
+//   * Gets the full list of covered requirements, including duplicates, in the order they have been covered by the
+//   * different test steps.
+//   *
+//   * @return The full list of covered requirements, in order.
+//   */
+//  public Collection<String> getFullRequirementCoverage() {
+//    Collection<String> requirementsCoverage = new ArrayList<>();
+//    for (TestCaseStep step : steps) {
+//      requirementsCoverage.addAll(step.getCoveredRequirements());
+//    }
+//    return requirementsCoverage;
+//  }
+//
+//  /**
+//   * Add a value covered for a variable in this step.
+//   * 
+//   * @param name Name of variable.
+//   * @param value Value covered.
+//   */
+//  public void addVariableValue(String name, Object value) {
+//    addVariableValue(name, value, true);
+//  }
+//  
+//  /**
+//   * Adds a value for model variable. Means a value that was generated.
+//   *
+//   * @param name  Name of the variable.
+//   * @param value The value of the variable.
+//   * @param merge If true, remove duplicate values.
+//   */
+//  public void addVariableValue(String name, Object value, boolean merge) {
+////    log.debug("Variable:" + name + " add value:" + value);
+//    currentStep.addVariableValue(name, value, merge);
+//  }
 
-  /**
-   * Gets the full list of covered requirements, including duplicates, in the order they have been covered by the
-   * different test steps.
-   *
-   * @return The full list of covered requirements, in order.
-   */
-  public Collection<String> getFullRequirementCoverage() {
-    Collection<String> requirementsCoverage = new ArrayList<>();
-    for (TestCaseStep step : steps) {
-      requirementsCoverage.addAll(step.getCoveredRequirements());
-    }
-    return requirementsCoverage;
-  }
+//  /**
+//   * Returns list of values covered for different variables, with duplicate values removed.
+//   * "Test" refers to collecting values for overall test from all steps, and removing duplicates.
+//   * 
+//   * @return Covered values for this test, no duplicates.
+//   */
+//  public Map<String, ModelVariable> getTestVariables() {
+//    return getVariables(true);
+//  }
+//
+//  /**
+//   * The covered values for all variables. Duplicates included.
+//   *
+//   * @return Coverage for all variables.
+//   */
+//  public Map<String, ModelVariable> getStepVariables() {        
+//    return getVariables(false);
+//  }
 
-  /**
-   * Add a value covered for a variable in this step.
-   * 
-   * @param name Name of variable.
-   * @param value Value covered.
-   */
-  public void addVariableValue(String name, Object value) {
-    addVariableValue(name, value, true);
-  }
-  
-  /**
-   * Adds a value for model variable. Means a value that was generated.
-   *
-   * @param name  Name of the variable.
-   * @param value The value of the variable.
-   * @param merge If true, remove duplicate values.
-   */
-  public void addVariableValue(String name, Object value, boolean merge) {
-//    log.debug("Variable:" + name + " add value:" + value);
-    currentStep.addVariableValue(name, value, merge);
-  }
-
-  /**
-   * Returns list of values covered for different variables, with duplicate values removed.
-   * "Test" refers to collecting values for overall test from all steps, and removing duplicates.
-   * 
-   * @return Covered values for this test, no duplicates.
-   */
-  public Map<String, ModelVariable> getTestVariables() {
-    return getVariables(true);
-  }
-
-  /**
-   * The covered values for all variables. Duplicates included.
-   *
-   * @return Coverage for all variables.
-   */
-  public Map<String, ModelVariable> getStepVariables() {        
-    return getVariables(false);
-  }
-
-  /**
-   * Get all variable values. User can define if duplicates should be removed or not.
-   * 
-   * @param merge If true, duplicates are removed.
-   * @return Key = variable name, value = variable values.
-   */
-  public Map<String, ModelVariable> getVariables(boolean merge) {
-    Map<String, ModelVariable> result = new LinkedHashMap<>();
-
-    for (TestCaseStep step : steps) {
-      Collection<ModelVariable> variables = step.getValues();
-      for (ModelVariable variable : variables) {
-        String name = variable.getName();
-        ModelVariable stored = result.get(name);
-        if (stored == null) {
-          stored = new ModelVariable(name);
-          result.put(name, stored);
-        }
-        stored.addAll(variable, merge);
-      }
-    }
-    return result;
-  }
+//  /**
+//   * Get all variable values. User can define if duplicates should be removed or not.
+//   * 
+//   * @param merge If true, duplicates are removed.
+//   * @return Key = variable name, value = variable values.
+//   */
+//  public Map<String, ModelVariable> getVariables(boolean merge) {
+//    Map<String, ModelVariable> result = new LinkedHashMap<>();
+//
+//    for (TestCaseStep step : steps) {
+//      Collection<ModelVariable> variables = step.getValues();
+//      for (ModelVariable variable : variables) {
+//        String name = variable.getName();
+//        ModelVariable stored = result.get(name);
+//        if (stored == null) {
+//          stored = new ModelVariable(name);
+//          result.put(name, stored);
+//        }
+//        stored.addAll(variable, merge);
+//      }
+//    }
+//    return result;
+//  }
 
     /**
      * Allows setting custom attribute values to store with the generated test case.

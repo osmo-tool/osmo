@@ -60,7 +60,7 @@ public class Issue32to36 {
     tester.generate(333);
     TestSuite suite = tester.getSuite();
     FSM fsm = tester.getFsm();
-    HTMLCoverageReporter reporter = new HTMLCoverageReporter(suite, fsm);
+    HTMLCoverageReporter reporter = new HTMLCoverageReporter(suite.getCoverage(), suite.getAllTestCases(), fsm);
     String matrix = reporter.getTraceabilityMatrix();
     String expected = TestUtils.getResource(Issue32to36.class, "expected/issue33.txt");
     matrix = unifyLineSeparators(matrix, "\n");

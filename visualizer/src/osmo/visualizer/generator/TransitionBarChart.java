@@ -75,7 +75,7 @@ public class TransitionBarChart implements GenerationListener {
 
   @Override
   public void testEnded(TestCase test) {
-    TestCoverage tc = new TestCoverage(test);
+    TestCoverage tc = new TestCoverage();
     String name = "Test"+nextId++;
     data.setValue(tc.getSteps().size(), "Transitions", name);
     data.setValue(tc.getStepPairs().size(), "Pairs", name);

@@ -1,5 +1,6 @@
 package osmo.tester.explorer;
 
+import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.coverage.TestCoverage;
 
 /**

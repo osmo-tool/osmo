@@ -2,6 +2,8 @@ package osmo.tester.explorer.exploration;
 
 import org.junit.Before;
 import org.junit.Test;
+import osmo.tester.coverage.ScoreCalculator;
+import osmo.tester.coverage.ScoreConfiguration;
 import osmo.tester.explorer.ExplorationConfiguration;
 import osmo.tester.explorer.ExplorationState;
 import osmo.tester.explorer.MainExplorer;
@@ -12,6 +14,7 @@ import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.testmodels.CalculatorModel;
@@ -64,24 +67,79 @@ public class BestSearchTests {
     config.getFallback().init(seed, fsm);
 
     List<TestCase> tests = new ArrayList<>();
-    TestCase test1 = new TestCase(null);
-    test1.addStep(new FSMTransition("increase"));
-    test1.addStep(new FSMTransition("increase"));
-    test1.addStep(new FSMTransition("increase"));
-    test1.addStep(new FSMTransition("increase"));
-    test1.addStep(new FSMTransition("increase"));
+    TestCase test1 = new TestCase();
+    createStep("start", test1, 10);
+    createStep("increase", test1, 10);
+    createStep("increase", test1, 0);
+    createStep("increase", test1, 0);
+    createStep("increase", test1, 0);
+    createStep("increase", test1, 0);
     tests.add(test1);
 
-    TestCase test2 = new TestCase(null);
-    test2.addStep(new FSMTransition("increase"));
-    test2.addStep(new FSMTransition("increase"));
-    test2.addStep(new FSMTransition("increase"));
-    test2.addStep(new FSMTransition("increase"));
-    test1.addStep(new FSMTransition("decrease"));
+    TestCase test2 = new TestCase();
+    createStep("start", test2, 10);
+    createStep("increase", test2, 10);
+    createStep("increase", test2, 0);
+    createStep("increase", test2, 0);
+    createStep("increase", test2, 0);
+    createStep("decrease", test2, 10);
     tests.add(test2);
 
     String best = explorer.findBestFrom(tests, 0);
     assertEquals("decrease", best);
+  }
+
+  @Test
+  public void oneIsFaster() {
+    OSMOTester tester = new OSMOTester();
+    tester.setTestEndCondition(new Length(20));
+    tester.setSuiteEndCondition(new Length(6));
+    tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
+    MainGenerator generator = tester.initGenerator(111);
+    tester.getConfig().initialize(111, tester.getFsm());
+    generator.initSuite();
+
+    TestCoverage suiteCoverage = generator.getSuite().getCoverage();
+
+    List<String> script = new ArrayList<>();
+    script.add("start");
+    script.add("increase");
+    script.add("increase");
+    MainExplorer explorer = new MainExplorer(null);
+    FSM fsm = generator.getFsm();
+
+    ExplorationState state = new ExplorationState(config, suiteCoverage);
+    explorer.init(fsm, generator.getSuite(), state, script, 4);
+
+    long seed = System.currentTimeMillis();
+    config.getFallback().init(seed, fsm);
+
+    List<TestCase> tests = new ArrayList<>();
+    TestCase test1 = new TestCase();
+    createStep("start", test1, 10);
+    createStep("increase", test1, 10);
+    createStep("increase", test1, 0);
+    createStep("increase", test1, 0);
+    createStep("increase", test1, 0);
+    createStep("decrease", test1, 10);
+    tests.add(test1);
+
+    TestCase test2 = new TestCase();
+    createStep("start", test2, 10);
+    createStep("increase", test2, 10);
+    createStep("increase", test2, 0);
+    createStep("decrease", test2, 10);
+    createStep("increase", test2, 0);
+    createStep("increase", test2, 0);
+    tests.add(test2);
+
+    String best = explorer.findBestFrom(tests, 0);
+    assertEquals("decrease", best);
+  }
+
+  private void createStep(String name, TestCase to, int addedScore) {
+    TestCaseStep step = to.addStep(new FSMTransition(name));
+    step.setAddedCoverage(addedScore);
   }
 
   @Test
@@ -90,6 +148,7 @@ public class BestSearchTests {
     tester.setTestEndCondition(new Length(20));
     tester.setSuiteEndCondition(new Length(6));
     tester.setModelFactory(new ReflectiveModelFactory(CalculatorModelNoPrints.class));
+    tester.getConfig().setScoreCalculator(new ScoreCalculator(config));
     MainGenerator generator = tester.initGenerator(111);
     tester.getConfig().initialize(111, tester.getFsm());
     generator.initSuite();

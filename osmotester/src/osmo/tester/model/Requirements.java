@@ -71,7 +71,7 @@ public class Requirements {
       log.warn("NULL value given as requirement. Is that intended?");
     }
     covered.add(""+requirement);
-    testSuite.covered(""+requirement);
+    testSuite.coveredRequirement("" + requirement);
   }
 
   /**

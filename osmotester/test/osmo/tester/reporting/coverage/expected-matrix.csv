@@ -5,11 +5,11 @@ Test2,1,1,0,1,1,3,0,0,1,
 
 The number of times a given test case includes a given requirement:
 Test ID,req-one,req-three,req-two,
-Test1,0,0,2,
-Test2,2,0,1,
+Test1,0,0,1,
+Test2,1,0,1,
 
 The number of times a given test case includes a given step pair (T1->T2, T2 occurred after T1):
-Test ID,.osmo.tester.init->one,eight->six,five->six,four->five,four->four,one->one,one->two,seven->eight,six->seven,six->six,three->four,three->three,two->five,two->three,
+Test ID,.osmo.tester.start.step->one,eight->six,five->six,four->five,four->four,one->one,one->two,seven->eight,six->seven,six->six,three->four,three->three,two->five,two->three,
 Test1,1,0,0,1,1,1,1,0,0,0,1,1,0,1,
 Test2,1,1,1,0,0,0,1,1,1,1,0,0,1,0,
 

@@ -56,7 +56,7 @@ public class FSM {
   /** The set of objects to call to get current user defined state. Key = model object name, value=target method to get coverage value.*/
   private Collection<CoverageMethod> coverageValues = new ArrayList<>();
   /** Name of the start step (before anything else). */
-  public static final String START_STEP_NAME = ".osmo.tester.init";
+  public static final String START_STEP_NAME = ".osmo.tester.start.step";
 
   /** Constructor. And a useful comment. */
   public FSM() {

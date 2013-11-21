@@ -613,12 +613,12 @@ public class SimCard {
     tester.generate(44);
   }
 
-  public static void mainG(String[] args) {
+  public static void main(String[] args) {
     long seed = Long.parseLong(args[0]);
     int cores = Integer.parseInt(args[1]);
     int population = Integer.parseInt(args[2]);
     int timeout = Integer.parseInt(args[3]);
-    for (int i = 0 ; i < 100 ; i++) {
+    for (int i = 0 ; i < 1 ; i++) {
       seed += 100;
       System.out.println("seed:"+seed+" cores:"+cores+" pop:"+population+" time:"+timeout);
       Logger.consoleLevel = Level.INFO;
@@ -626,10 +626,13 @@ public class SimCard {
       oc.setTestEndCondition(new LengthProbability(50, 0.2d));
       oc.setFailWhenError(false);
       oc.setFactory(new GSMModelFactory(NullPrintStream.stream));
-      MultiGreedy greedy = new MultiGreedy(oc, new ScoreConfiguration(), seed, cores);
+      ScoreConfiguration config = new ScoreConfiguration();
+      config.setLengthWeight(-1);
+      MultiGreedy greedy = new MultiGreedy(oc, config, seed, cores);
+      greedy.setDeleteOldOutput(true);
       greedy.setTimeout(timeout);
       List<TestCase> tests = greedy.search();
-      TestCoverage tc = new TestCoverage(tests);
+      TestCoverage tc = new TestCoverage();
       System.out.println(tc.coverageString(greedy.getFsm(), null, null, null, null, false));
     }
   }
@@ -651,7 +654,7 @@ public class SimCard {
     explorer.explore(config);
   }
 
-  public static void main(String[] args) {
+  public static void mainEE(String[] args) {
     Logger.consoleLevel = Level.INFO;
     ExplorerAlgorithm.trackCoverage = true;
     long seed = Long.parseLong(args[0]);

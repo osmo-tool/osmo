@@ -5,6 +5,7 @@ import osmo.tester.OSMOTester;
 import osmo.tester.examples.calculator.CalculatorModel;
 import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.endcondition.Length;
+import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.reporting.coverage.HTMLCoverageReporter;
 
 /** @author Teemu Kanstren */
@@ -17,7 +18,8 @@ public class CalculatorMatrix {
     osmo.setSuiteEndCondition(new Length(10));
     osmo.setTestEndCondition(new Length(5));
     osmo.generate(2342);
-    HTMLCoverageReporter reporter = new HTMLCoverageReporter(osmo.getSuite(), osmo.getFsm());
+    TestSuite suite = osmo.getSuite();
+    HTMLCoverageReporter reporter = new HTMLCoverageReporter(suite.getCoverage(), suite.getAllTestCases(), osmo.getFsm());
     String matrix = reporter.getTraceabilityMatrix();
     String file = "calculator-matrix.html";
     TestUtils.write(matrix, file);

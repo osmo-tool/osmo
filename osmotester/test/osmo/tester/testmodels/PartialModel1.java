@@ -25,7 +25,6 @@ public class PartialModel1 {
   public static final String REQ_WORLD = "world";
   public static final String REQ_EPIX = "epix";
   private PrintStream out;
-  private String states = "";
 
   public PartialModel1(Requirements req) {
     this(req, null);
@@ -112,18 +111,9 @@ public class PartialModel1 {
 
   @Pre("all")
   public void savePreState() {
-    //pre-state is always null as we are starting a new step
-    states += ":"+history.getCurrentTest().getCurrentStep().getStatesFor("state1")+":";
-    states += ":"+history.getCurrentTest().getCurrentStep().getStatesFor("state2")+":";
   }
 
   @Post("all")
   public void savePostState() {
-    states += ":"+history.getCurrentTest().getCurrentStep().getStatesFor("state1")+":";
-    states += ":"+history.getCurrentTest().getCurrentStep().getStatesFor("state2")+":";
-  }
-
-  public String getStates() {
-    return states;
   }
 }

@@ -3,6 +3,7 @@ package osmo.tester.generator;
 import osmo.common.OSMOException;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
+import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.filter.StepFilter;
 import osmo.tester.generator.listener.GenerationListenerList;
@@ -156,7 +157,7 @@ public class MainGenerator {
         //step can be null if it fails before anything else..
         storeUserCoverageValues(step);
         //store into test step the current state, do it here to allow the post methods and listeners to see step state
-        step.storeGeneralState(fsm);
+        suite.storeGeneralState(fsm);
       }
       listeners.lastStep(t.getMethod().getName());
     }
@@ -173,9 +174,10 @@ public class MainGenerator {
     log.error(errorMsg, e);
     listeners.testError(test, unwrap);
     if (!(unwrap instanceof AssertionError) || config.shouldFailWhenError()) {
-      if (step != null) {
-        step.storeGeneralState(fsm);
-      }
+      suite.storeGeneralState(fsm);
+//      if (step != null) {
+//        step.storeGeneralState(fsm);
+//      }
       afterTest();
       afterSuite();
       if (unwrap instanceof RuntimeException) {
@@ -247,32 +249,40 @@ public class MainGenerator {
     //we do it here to allow any post-processing of state value for a step
     storeUserCoverageValues(step);
     //store into test step the current state, do it here to allow the post methods and listeners to see step state
-    step.storeGeneralState(fsm);
+    suite.storeGeneralState(fsm);
     listeners.step(step);
     invokeAll(transition.getPostMethods(), "post", transition);
     //set end time
     step.end();
     previousStep = step;
+    calculateAddedCoverage(step);
+  }
+  
+  private void calculateAddedCoverage(TestCaseStep step) {
+    ScoreCalculator sc = config.getScoreCalculator();
+    if (sc == null) return;
+    int added = sc.addedScoreFor(suite.getCoverage(), suite.getCurrentTest());
+    step.setAddedCoverage(added);
   }
 
   /**
    * Stores the user defined coverage values {@link osmo.tester.annotation.CoverageValue} observed at this moment
-   * into current test step. Values are paired so that current value is appended to the previous value and the two
-   * characters "->" are put in between the two. The resulting string is the value.
+   * into current test step. 
    *
-   * @param step The step to store data into.
+   * @param step Current test step.
    */
   private void storeUserCoverageValues(TestCaseStep step) {
     Collection<CoverageMethod> coverages = fsm.getCoverageMethods();
     for (CoverageMethod coverage : coverages) {
       String value = coverage.invoke(step);
       String name = coverage.getVariableName();
-      step.addUserCoverage(name, value);
+      suite.addUserCoverage(name, value);
+//      step.addUserCoverage(name, value);
       log.debug("new coverage: " + name + "=" + value);
-      if (previousStep != null) {
-        Object value1 = previousStep.getStatesFor(name).getValue();
-        step.addUserCoveragePair(coverage.getPairName(), value1 +"->"+value);
-      }
+//      if (previousStep != null) {
+//        Object value1 = previousStep.getStatesFor(name).getValue();
+//        step.addUserCoveragePair(coverage.getPairName(), value1 +"->"+value);
+//      }
     }
   }
 
@@ -336,7 +346,7 @@ public class MainGenerator {
       //use the setSuite method to also initialize the suite object missing state
       suite = new TestSuite();
     }
-    suite.reset();
+//    suite.reset();
     suite.initRequirements(reqs);
     //re-get since suite might have initialized it if it was null
     reqs = suite.getRequirements();
@@ -378,11 +388,6 @@ public class MainGenerator {
     //update history
     suite.endTest();
     listeners.testEnded(current);
-  }
-
-  /** Resets the suite, removing references to any generated tests. */
-  public void resetSuite() {
-    suite.reset();
   }
 
   /**

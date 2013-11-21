@@ -164,7 +164,7 @@ public class Scenario {
   /**
    * Creates an end condition to address minimum slicing requirements.
    *
-   * @param testCaseEndCondition The original end contition given by user.
+   * @param testCaseEndCondition The original end condition given by user.
    * @return Possibly modified end condition if minimum slices found.
    */
   public EndCondition createEndCondition(EndCondition testCaseEndCondition) {

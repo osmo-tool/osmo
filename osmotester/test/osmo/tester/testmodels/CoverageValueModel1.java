@@ -21,7 +21,6 @@ public class CoverageValueModel1 {
   @Variable
   public String lastName = "";
   private TestSuite suite = null;
-  private String states = "";
 
   public CoverageValueModel1() {
   }
@@ -75,15 +74,10 @@ public class CoverageValueModel1 {
 
   @Post("all")
   public void stateCheck() {
-    states += "-"+suite.getCurrentTest().getCurrentStep().getStatesFor("my-state")+"-";
   }
 
   @CoverageValue("my-state")
   public String state(TestCaseStep step) {
     return ""+req.getUniqueCoverage().size();
-  }
-
-  public String getStates() {
-    return states;
   }
 }

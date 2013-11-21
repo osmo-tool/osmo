@@ -78,7 +78,7 @@ public class OfflineMain {
     osmo.generate(566);
     TestSuite suite = osmo.getSuite();
     FSM fsm = osmo.getFsm();
-    HTMLCoverageReporter html = new HTMLCoverageReporter(suite, fsm);
+    HTMLCoverageReporter html = new HTMLCoverageReporter(suite.getCoverage(), suite.getAllTestCases(), fsm);
     String report = html.getTraceabilityMatrix();
     TestUtils.write(report, "coverage.html");
   }

@@ -6,6 +6,7 @@ import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.endcondition.LengthProbability;
 import osmo.tester.generator.endcondition.Probability;
 import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.optimizer.GenerationResults;
 import osmo.tester.optimizer.GreedyOptimizer;
 import osmo.tester.testmodels.RandomValueModel3;
 
@@ -28,8 +29,8 @@ public class CounterOfflineMain {
     oc.setFactory(new ReflectiveModelFactory(CounterModel.class));
     oc.setTestEndCondition(new Probability(0.2));
     GreedyOptimizer greedy = new GreedyOptimizer(oc, gc);
-    List<TestCase> cases = greedy.search(200, 52);
-    for (TestCase test : cases) {
+    GenerationResults cases = greedy.search(200, 52);
+    for (TestCase test : cases.getTests()) {
       System.out.println(test.getAttribute("test-script"));
     }
   }

@@ -315,38 +315,38 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     }
   }
 
-  /**
-   * Builds the description of generated test cases.
-   *
-   * @param history Generated tests.
-   * @return String to show to user.
-   */
-  private String historyText(TestSuite history) {
-    String ret = "";
-
-    int tcId = 1;
-    List<TestCase> tests = history.getAllTestCases();
-    for (TestCase tc : tests) {
-      ret += "----== NEW TEST " + tcId + " ==----\n";
-      tcId++;
-      for (TestCaseStep ts : tc.getSteps()) {
-        int tsId = ts.getId();
-        String added = tsId + ". " + ts.getName() + "\n";
-        Collection<ModelVariable> values = ts.getValues();
-        int i = 1;
-        for (ModelVariable value : values) {
-          added += tsId + "." + i + ". " + value.getName() + " = " + value.getValues() + "\n";
-          i++;
-        }
-        ret += added;
-        Collection<String> coveredRequirements = ts.getCoveredRequirements();
-        for (String req : coveredRequirements) {
-          ret += "(Covered requirement:"+req+")\n";
-        }
-      }
-    }
-    return ret;
-  }
+//  /**
+//   * Builds the description of generated test cases.
+//   *
+//   * @param history Generated tests.
+//   * @return String to show to user.
+//   */
+//  private String historyText(TestSuite history) {
+//    String ret = "";
+//
+//    int tcId = 1;
+//    List<TestCase> tests = history.getAllTestCases();
+//    for (TestCase tc : tests) {
+//      ret += "----== NEW TEST " + tcId + " ==----\n";
+//      tcId++;
+//      for (TestCaseStep ts : tc.getSteps()) {
+//        int tsId = ts.getId();
+//        String added = tsId + ". " + ts.getName() + "\n";
+//        Collection<ModelVariable> values = ts.getValues();
+//        int i = 1;
+//        for (ModelVariable value : values) {
+//          added += tsId + "." + i + ". " + value.getName() + " = " + value.getValues() + "\n";
+//          i++;
+//        }
+//        ret += added;
+//        Collection<String> coveredRequirements = ts.getCoveredRequirements();
+//        for (String req : coveredRequirements) {
+//          ret += "(Covered requirement:"+req+")\n";
+//        }
+//      }
+//    }
+//    return ret;
+//  }
 
   /**
    * For creating start padding for metrics etc.
@@ -362,20 +362,20 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     return ret;
   }
 
-  /**
-   * Creates the data for the metrics pane.
-   *
-   * @param history Created tests.
-   * @return The text for metrics pane.
-   */
-  private String coverageText(TestSuite history) {
-    Map<String, Integer> a = history.getStepCoverage();
-    String ret = "";
-    for (String t : a.keySet()) {
-      ret += t + getSpaces(30 - t.length()) + "\t" + a.get(t) + "\n";
-    }
-    return ret;
-  }
+//  /**
+//   * Creates the data for the metrics pane.
+//   *
+//   * @param history Created tests.
+//   * @return The text for metrics pane.
+//   */
+//  private String coverageText(TestSuite history) {
+//    Map<String, Integer> a = history.getStepCoverage();
+//    String ret = "";
+//    for (String t : a.keySet()) {
+//      ret += t + getSpaces(30 - t.length()) + "\t" + a.get(t) + "\n";
+//    }
+//    return ret;
+//  }
 
   private String stateText() {
     String text = "";
@@ -451,7 +451,8 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     run(suite);
 
     //Make some updates
-    testLogPane.setText(historyText(suite));
+    //TODO: fix this
+//    testLogPane.setText(historyText(suite));
     testLogPane.setCaretPosition(testLogPane.getText().length());
     statePane.setText(stateText());
 //    statePane.setText(coverageText(history));

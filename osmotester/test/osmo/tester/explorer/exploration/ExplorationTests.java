@@ -41,17 +41,24 @@ public class ExplorationTests {
     config.setMinSuiteLength(1);
     config.setMinTestLength(1);
     config.setMinTestScore(150);
+    config.setLengthWeight(0);
+    config.setStepPairWeight(30);
+    config.setStepWeight(20);
+    config.setVariableCountWeight(10);
+    config.setDefaultValueWeight(1);
+    config.setRequirementWeight(0);
     osmo.explore(config);
     assertTestCount(1);
-    assertSuiteScore(172);
-    //172=length+pairs+singles+variablecount+values
-    //172=4*0+4*30+2*20+1*10+2
-    assertTestSequence(0, "[increase, increase, decrease, increase]");
+    assertSuiteScore(179);
+    //179=length+pairs+singles+variablecount+values
+    //179=x*0+4*30+2*20+1*10+9
+    //it is driven to 119, after which the last two pairs are added (+- and --), which makes it 149 and 179
+    assertTestSequence(0, "[increase, increase, increase, increase, increase, increase, increase, increase, increase, decrease, decrease]");
     TestCoverage coverage = osmo.getSuite().getCoverage();
-    assertEquals("Covered pairs", "[.osmo.tester.init->increase, increase->increase, increase->decrease, decrease->increase]", coverage.getStepPairs().toString());
+    assertEquals("Covered pairs", "[.osmo.tester.start.step->increase, increase->increase, increase->decrease, decrease->decrease]", coverage.getStepPairs().toString());
     assertEquals("Covered requirements", "[]", coverage.getRequirements().toString());
     assertEquals("Covered singles", "[increase, decrease]", coverage.getSingles().toString());
-    assertEquals("Covered variables", "{counter=[1, 2]}", coverage.getVariableValues().toString());
+    assertEquals("Covered variables", "{counter=[1, 2, 3, 4, 5, 6, 7, 8, 9]}", coverage.getVariableValues().toString());
   }
 
   /** coverage kriteerit määritellään: x lisäpistettä pitää saada, minimi & maksimipituus (testi ja suite erikseen) */
@@ -76,6 +83,7 @@ public class ExplorationTests {
     config.setMinTestScore(6000);
     config.setStepPairWeight(1);
     config.setStepWeight(1);
+    config.setLengthWeight(0);
     config.setDefaultValueWeight(50);
     osmo.explore(config);
     assertTestCount(1);
@@ -93,6 +101,7 @@ public class ExplorationTests {
     config.setMaxSuiteLength(2);
     config.setMinTestLength(3);
     config.setMinSuiteScore(6000);
+    config.setLengthWeight(0);
     osmo.explore(config);
     assertTestCount(2);
     assertTestSequence(0, "[increase, increase, decrease]");
@@ -152,20 +161,14 @@ public class ExplorationTests {
     config.setFallbackProbability(0.2);
     osmo.explore(config);
     assertSuiteScore(1350);
-    assertTestCount(5);
-    assertTestSequence(0, "[increase, increase, decrease, increase, increase, increase, increase, increase, increase, increase, increase]");
+    assertTestCount(4);
+    //NOTE: the first test is only explorer in depth until minimum score is achieved. after this it is probabilistic ending and only depth 1 exploration, which produces fluctuation
+    assertTestSequence(0, "[increase, increase, increase, increase, increase, decrease, decrease, increase, decrease, increase, decrease]");
     assertTestSequence(1, "[increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase]");
-    assertTestSequence(2, "[increase, increase, increase, decrease, decrease, increase, increase, increase, increase, increase, decrease, decrease, increase, decrease, increase, increase, increase, decrease, decrease]");
-    assertTestSequence(3, "[increase, increase, increase, decrease, increase, increase, decrease, decrease, decrease]");
-    assertTestSequence(4, "[increase, increase, decrease, increase, increase, decrease, increase, increase, decrease]");
+    //NOTE: the following two score 0 and thus are fully random
+    assertTestSequence(2, "[increase, increase, increase, increase, decrease, decrease, increase, increase, decrease, decrease, increase, increase, decrease, increase, increase, decrease, decrease, decrease, increase]");
+    assertTestSequence(3, "[increase, increase, increase, increase, decrease, decrease, decrease, increase, increase, increase, increase, increase, increase, increase, increase, increase, decrease, increase, decrease, increase, decrease, decrease]");
     long end = System.currentTimeMillis();
-//    assertSuiteScore(1400);
-//    assertTestCount(4);
-//    assertTestSequence(0, "[increase, increase, decrease, increase, increase, increase, increase, increase, increase, increase, increase]");
-//    assertTestSequence(1, "[increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, decrease, decrease, increase, increase, decrease, increase, decrease, increase, increase, increase, increase, increase, increase, increase, increase]");
-//    assertTestSequence(2, "[increase]");
-//    assertTestSequence(3, "[increase, increase, increase, decrease]");
-//    long end = System.currentTimeMillis();
 //    long diff = end-start;
 //    System.out.println("plateau time:"+diff);
   }
@@ -209,24 +212,28 @@ public class ExplorationTests {
     config = new ExplorationConfiguration(factory, 9, seed);
     config.setMinSuiteScore(2000);
     config.setMinTestScore(400);
-    config.setMinTestLength(0);
     config.setStepPairWeight(50);
     config.setLengthWeight(0);
-    config.setMinTestLength(5);
+    config.setMinTestLength(6);
     config.setStepWeight(20);
     config.setDefaultValueWeight(50);
     config.setTestPlateauThreshold(20);
-    config.setTestPlateauLength(9);
+    config.setTestPlateauLength(3);
     config.setSuitePlateauThreshold(20);
     config.setMaxSuiteLength(10);
+    config.setFallbackProbability(1d);
     osmo.explore(config);
-    assertSuiteScore(1350);
+    assertSuiteScore(900);
     assertTestCount(5);
-    assertTestSequence(0, "[increase, increase, decrease, increase, increase, increase, increase, increase, increase, increase, increase]");
-    assertTestSequence(1, "[increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase]");
-    assertTestSequence(2, "[increase, increase, increase, decrease, decrease, increase, increase, increase, increase, increase, decrease, decrease, increase, decrease, increase, increase, increase, decrease, decrease]");
-    assertTestSequence(3, "[increase, increase, increase, decrease, increase, increase, decrease, decrease, decrease]");
-    assertTestSequence(4, "[increase, increase, decrease, increase, increase, decrease, increase, increase, decrease]");
+    //here we achieve min length + min score and fallback is 100% so end at min length of 6
+    assertTestSequence(0, "[increase, increase, decrease, increase, increase, increase]");
+    //here we go over min length until we reach min score and then we stop
+    assertTestSequence(1, "[increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase]");
+    //here we go until we reach the one missing pair we are missing (--) and add plateau worth of tests in the end (3)
+    assertTestSequence(2, "[increase, increase, increase, decrease, decrease, increase, increase, decrease]");
+    //last two just go to min length as they score nothing and hit plateau immediately as well
+    assertTestSequence(3, "[increase, increase, increase, decrease, decrease, increase, increase]");
+    assertTestSequence(4, "[increase, increase, increase, increase, decrease, increase, increase]");
   }
 
   @Test

@@ -70,7 +70,7 @@ public class CSVCoverageReport {
     TestCoverage tc = new TestCoverage();
     for (TestCase test : tests) {
       int old = scoreCalculator.calculateScore(tc);
-      tc.addTestCoverage(test);
+      tc.addCoverage(test.getCoverage());
       int now = scoreCalculator.calculateScore(tc);
       int gain = now - old;
       this.gain += gain + "; ";

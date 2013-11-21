@@ -30,8 +30,8 @@ import java.util.Map;
  */
 public class ScoreConfiguration {
   private static final Logger log = new Logger(ScoreConfiguration.class);
-  /** Weight for length (number of steps). */
-  protected int lengthWeight = 0;
+  /** Weight for length (number of steps). Defaults to -1 to favour shorter tests. */
+  protected int lengthWeight = -1;
   /** Weight for number of coverage variables covered. One variable counts once regardless of number of values. */
   protected int variableCountWeight = 10;
   /** Weight for unique values for coverage variables, if no specific one is defined for a variable. */

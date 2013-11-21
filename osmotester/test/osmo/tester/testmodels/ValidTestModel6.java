@@ -12,22 +12,10 @@ import static junit.framework.Assert.assertEquals;
 /** @author Teemu Kanstren */
 public class ValidTestModel6 {
   private TestSuite history = null;
-  private String states = "";
   @Variable
   private int index = 0;
-  private final String expectedState;
-  private boolean nocheck = false;
 
   public ValidTestModel6() {
-    this.expectedState = null;
-  }
-
-  public ValidTestModel6(String expectedState) {
-    this.expectedState = expectedState;
-  }
-  
-  public void disableCheck() {
-    nocheck = true;
   }
 
   @Transition("t1")
@@ -52,21 +40,13 @@ public class ValidTestModel6 {
 
   @Pre("all")
   public void savePreState() {
-    states += ":"+history.getCurrentTest().getCurrentStep().getValuesFor("my-state")+":";
   }
 
   @Post("all")
   public void savePostState() {
-    states += "-"+history.getCurrentTest().getCurrentStep().getValuesFor("my-state")+"-";
-  }
-
-  public String getStates() {
-    return states;
   }
   
   @LastStep
   public void check() {
-    if (nocheck) return;
-    assertEquals("Expected result", expectedState, states);
   }
 }

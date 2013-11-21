@@ -33,7 +33,8 @@ public class CoverageTask implements Runnable {
 
   @Override
   public void run() {
-    int added = scoreCalculator.addedScoreFor(suiteCoverage, test, numberOfSteps);
+//    int added = scoreCalculator.addedScoreFor(suiteCoverage, test, numberOfSteps);
+    int added = scoreCalculator.addedScoreFor(suiteCoverage, test);
     log.debug("running coverage calculation task for " + numberOfSteps + " steps in " + test+" = "+added);
     test.setAttribute(KEY, added);
   }
