@@ -64,6 +64,7 @@ public class GreedyOptimizer {
   private long start = 0;
   private List<TestCase> suite = new ArrayList<>();
   private int iteration = 0;
+  private TestCoverage finalCoverage = null;
 
   /**
    * @param configuration  For scoring the search.
@@ -94,7 +95,7 @@ public class GreedyOptimizer {
    * @param seed Generation seed.
    * @return The optimizer results.
    */
-  public List<TestCase> search(long seed) {
+  public GenerationResults search(long seed) {
     return search(1000, seed);
     
   }
@@ -108,7 +109,7 @@ public class GreedyOptimizer {
    *
    * @return The sorted set of test cases, with requested number of tests.
    */
-  public List<TestCase> search(int populationSize, long seed) {
+  public GenerationResults search(int populationSize, long seed) {
     check();
 
     CSVCoverageReport report = new CSVCoverageReport(scoreCalculator);
@@ -116,11 +117,11 @@ public class GreedyOptimizer {
     generate(report, generator, populationSize);
 
     this.possiblePairs = generator.getPossibleStepPairs();
-    TestCoverage suiteCoverage = new TestCoverage(suite);
+    TestCoverage suiteCoverage = new TestCoverage();
     writeReport(report, suiteCoverage, suite.size(), iteration * populationSize, seed);
 
     updateRequirementsCoverage(suiteCoverage);
-    return suite;
+    return new GenerationResults(suite);
   }
   
   private void generate(CSVCoverageReport report, MainGenerator generator, int populationSize) {
@@ -163,6 +164,7 @@ public class GreedyOptimizer {
     }
     if (gain < threshold) log.info("gain under threshold (" + gain + " vs " + threshold + ")");
     generator.endSuite();
+    finalCoverage = new TestCoverage(suite);
   }
   
   private void updateRequirementsCoverage(TestCoverage suiteCoverage) {
@@ -229,12 +231,6 @@ public class GreedyOptimizer {
     //this sort is here to ensure deterministic results (as far as sequence of steps and scores go..)
     Collections.sort(from, new TestSorter());
     List<TestCase> suite = new ArrayList<>();
-    String ATTR_NAME = "osmo.tester.sorter.temp.coverage";
-    for (TestCase test : from) {
-      //first create initial coverage for all
-      TestCoverage tc = new TestCoverage(test);
-      test.setAttribute(ATTR_NAME, tc);
-    }
 
     int count = from.size();
     TestCoverage previous = new TestCoverage();
@@ -242,7 +238,7 @@ public class GreedyOptimizer {
       int bestScore = 0;
       TestCase best = null;
       for (TestCase test : from) {
-        TestCoverage tc = (TestCoverage) test.getAttribute(ATTR_NAME);
+        TestCoverage tc = test.getCoverage().cloneMe();
         tc.removeAll(previous);
         int score = calculator.calculateScore(tc);
         if (score > bestScore) {
@@ -256,7 +252,7 @@ public class GreedyOptimizer {
       }
       from.remove(best);
       suite.add(best);
-      previous = (TestCoverage) best.getAttribute(ATTR_NAME);
+      previous.addCoverage(best.getCoverage());
     }
     return suite;
   }

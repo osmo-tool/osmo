@@ -69,7 +69,7 @@ public class SummaryTests {
   public void csvTransitions() {
     String expected = getResource(getClass(), "expected-transitions.csv");
     expected = unifyLineSeparators(expected, "\n");
-    CSVCoverageReporter csv = new CSVCoverageReporter(suite, fsm);
+    CSVCoverageReporter csv = new CSVCoverageReporter(suite.getCoverage(), suite.getAllTestCases(), fsm);
     String actual = csv.getStepCounts();
     actual = unifyLineSeparators(actual, "\n");
 /*    System.out.println("----------------");
@@ -84,7 +84,7 @@ public class SummaryTests {
   public void csvTransitionPairs() {
     String expected = getResource(getClass(), "expected-transitionpairs.csv");
     expected = unifyLineSeparators(expected, "\n");
-    CSVCoverageReporter csv = new CSVCoverageReporter(suite, fsm);
+    CSVCoverageReporter csv = new CSVCoverageReporter(suite.getCoverage(), suite.getAllTestCases(), fsm);
     String actual = csv.getStepPairCounts();
     actual = unifyLineSeparators(actual, "\n");
     assertEquals("Generated CSV report for transition coverage", expected, actual);
@@ -94,7 +94,7 @@ public class SummaryTests {
   public void csvRequirements() {
     String expected = getResource(getClass(), "expected-requirements.csv");
     expected = unifyLineSeparators(expected, "\n");
-    CSVCoverageReporter csv = new CSVCoverageReporter(suite, fsm);
+    CSVCoverageReporter csv = new CSVCoverageReporter(suite.getCoverage(), suite.getAllTestCases(), fsm);
     String actual = csv.getRequirementCounts();
     actual = unifyLineSeparators(actual, "\n");
     assertEquals("Generated CSV report for tag coverage", expected, actual);
@@ -104,7 +104,7 @@ public class SummaryTests {
   public void htmlTransitions() {
     String expected = getResource(getClass(), "expected-transitions.txt");
     expected = unifyLineSeparators(expected, "\n");
-    HTMLCoverageReporter html = new HTMLCoverageReporter(suite, fsm);
+    HTMLCoverageReporter html = new HTMLCoverageReporter(suite.getCoverage(), suite.getAllTestCases(), fsm);
     String actual = html.getStepCounts();
     actual = unifyLineSeparators(actual, "\n");
 /*    System.out.println("----------------");
@@ -119,7 +119,7 @@ public class SummaryTests {
   public void htmlTransitionPairs() {
     String expected = getResource(getClass(), "expected-transitionpairs.txt");
     expected = unifyLineSeparators(expected, "\n");
-    HTMLCoverageReporter html = new HTMLCoverageReporter(suite, fsm);
+    HTMLCoverageReporter html = new HTMLCoverageReporter(suite.getCoverage(), suite.getAllTestCases(), fsm);
     String actual = html.getStepPairCounts();
     actual = unifyLineSeparators(actual, "\n");
 /*    System.out.println("----------------");
@@ -134,7 +134,7 @@ public class SummaryTests {
   public void htmlRequirements() {
     String expected = getResource(getClass(), "expected-requirements.txt");
     expected = unifyLineSeparators(expected, "\n");
-    HTMLCoverageReporter html = new HTMLCoverageReporter(suite, fsm);
+    HTMLCoverageReporter html = new HTMLCoverageReporter(suite.getCoverage(), suite.getAllTestCases(), fsm);
     String actual = html.getRequirementCounts();
     actual = unifyLineSeparators(actual, "\n");
     assertEquals("Generated HTML report for requirement coverage", expected, actual);
@@ -144,7 +144,7 @@ public class SummaryTests {
   public void asciiTransitions() {
     String expected = getResource(getClass(), "expected-transitions-ascii.txt");
     expected = unifyLineSeparators(expected, "\n");
-    ASCIICoverageReporter ascii = new ASCIICoverageReporter(suite, fsm);
+    ASCIICoverageReporter ascii = new ASCIICoverageReporter(suite.getCoverage(), suite.getAllTestCases(), fsm);
     String actual = ascii.getStepCounts();
     actual = unifyLineSeparators(actual, "\n");
     assertEquals("Generated ASCII report for transition coverage", expected, actual);
@@ -154,7 +154,7 @@ public class SummaryTests {
   public void asciiTransitionPairs() {
     String expected = getResource(getClass(), "expected-transitionpairs-ascii.txt");
     expected = unifyLineSeparators(expected, "\n");
-    ASCIICoverageReporter ascii = new ASCIICoverageReporter(suite, fsm);
+    ASCIICoverageReporter ascii = new ASCIICoverageReporter(suite.getCoverage(), suite.getAllTestCases(), fsm);
     String actual = ascii.getStepPairCounts();
     actual = unifyLineSeparators(actual, "\n");
     assertEquals("Generated ASCII report for transition coverage", expected, actual);

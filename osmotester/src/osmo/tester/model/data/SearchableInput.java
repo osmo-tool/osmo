@@ -85,7 +85,8 @@ public abstract class SearchableInput<T> implements Input<T>, VariableValue<T> {
       return;
     }
     if (!stored) return;
-    suite.getCurrentTest().addVariableValue(name, value, false);
+//    suite.getCoverage().addVariableValue(name, value, false);
+    suite.addValue(name, ""+value);
   }
 
   public Collection<?> getOptions() {

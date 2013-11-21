@@ -1,5 +1,6 @@
 package osmo.tester.reporting.coverage;
 
+import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
@@ -12,12 +13,8 @@ import java.util.Collection;
  * @author Olli-Pekka Puolitaival, Teemu Kanstrén
  */
 public class HTMLCoverageReporter extends CoverageMetric {
-  public HTMLCoverageReporter(Collection<TestCase> tests, FSM fsm) {
-    super(tests, fsm);
-  }
-
-  public HTMLCoverageReporter(TestSuite ts, FSM fsm) {
-    this(ts.getFinishedTestCases(), fsm);
+  public HTMLCoverageReporter(TestCoverage tc, Collection<TestCase> tests, FSM fsm) {
+    super(tc, tests, fsm);
   }
 
   public String getStepCounts() {

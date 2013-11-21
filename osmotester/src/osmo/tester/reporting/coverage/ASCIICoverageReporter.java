@@ -1,5 +1,6 @@
 package osmo.tester.reporting.coverage;
 
+import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
@@ -16,12 +17,8 @@ import java.util.List;
  * @author Olli-Pekka Puolitaival, Teemu Kanstren
  */
 public class ASCIICoverageReporter extends CoverageMetric {
-  public ASCIICoverageReporter(Collection<TestCase> tests, FSM fsm) {
-    super(tests, fsm);
-  }
-
-  public ASCIICoverageReporter(TestSuite ts, FSM fsm) {
-    this(ts.getFinishedTestCases(), fsm);
+  public ASCIICoverageReporter(TestCoverage tc, Collection<TestCase> tests, FSM fsm) {
+    super(tc, tests, fsm);
   }
 
   public String getStepCounts() {
@@ -80,7 +77,6 @@ public class ASCIICoverageReporter extends CoverageMetric {
   }
 
   public String getRequirementCounts() {
-    //TODO: Implement
     return "";
   }
 

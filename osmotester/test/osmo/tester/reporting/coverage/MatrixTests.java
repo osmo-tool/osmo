@@ -80,7 +80,7 @@ public class MatrixTests {
   @Test
   public void htmlMatrix() throws Exception {
     String expected = getResource(MatrixTests.class, "expected-matrix.txt");
-    HTMLCoverageReporter html = new HTMLCoverageReporter(suite, fsm);
+    HTMLCoverageReporter html = new HTMLCoverageReporter(suite.getCoverage(), suite.getAllTestCases(), fsm);
     String actual = html.getTraceabilityMatrix();
     TestUtils.write(actual, "test-matrix.html");
     expected = unifyLineSeparators(expected, "\n");
@@ -91,7 +91,7 @@ public class MatrixTests {
   @Test
   public void csvMatrix() {
     String expected = getResource(MatrixTests.class, "expected-matrix.csv");
-    CSVCoverageReporter csv = new CSVCoverageReporter(suite, fsm);
+    CSVCoverageReporter csv = new CSVCoverageReporter(suite.getCoverage(), suite.getAllTestCases(), fsm);
     String actual = csv.getTraceabilityMatrix();
     expected = unifyLineSeparators(expected, "\n");
     actual = unifyLineSeparators(actual, "\n");
@@ -101,7 +101,7 @@ public class MatrixTests {
   @Test
   public void asciiMatrix() {
     String expected = getResource(MatrixTests.class, "expected-matrix-ascii.txt");
-    ASCIICoverageReporter ascii = new ASCIICoverageReporter(suite, fsm);
+    ASCIICoverageReporter ascii = new ASCIICoverageReporter(suite.getCoverage(), suite.getAllTestCases(), fsm);
     String actual = ascii.getTraceabilityMatrix();
     expected = unifyLineSeparators(expected, "\n");
     actual = unifyLineSeparators(actual, "\n");

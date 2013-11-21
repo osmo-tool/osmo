@@ -12,7 +12,6 @@ import osmo.tester.model.data.ValueRange;
 /** @author Teemu Kanstren */
 public class CoverageValueModel2 {
   private TestSuite history = null;
-  private String states = "";
   private String state = "start";
   @Variable
   private ValueRange<Integer> range = new ValueRange<>(1, 5);
@@ -48,15 +47,10 @@ public class CoverageValueModel2 {
 
   @Pre("all")
   public void savePreState() {
-    states += ":"+history.getCurrentTest().getCurrentStep().getStatesFor("my-state")+":";
   }
 
   @Post("all")
   public void savePostState() {
-    states += "-"+history.getCurrentTest().getCurrentStep().getStatesFor("my-state")+"-";
   }
 
-  public String getStates() {
-    return states;
-  }
 }

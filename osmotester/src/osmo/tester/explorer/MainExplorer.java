@@ -7,6 +7,7 @@ import osmo.tester.explorer.trace.TraceNode;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
@@ -61,7 +62,8 @@ public class MainExplorer implements Runnable {
   private long starttime = 0;
   /** To measure exploration time. */
   private long endtime = 0;
-  /** Longest test length in current exploration. */
+  /** Longest test length in current exploration. Used as max limiter for pruning. 
+   * Note that some may be shorter but in that case should achieve same score faster as we only look at highest scorers. */
   private int longest = 0;
 
   /**
@@ -102,6 +104,7 @@ public class MainExplorer implements Runnable {
       //if the exploration of this path is already stopped, there will likely be exceptions flying with the
       //change of seed, the path is no longer valid.
       if (shouldStop) return;
+      e.printStackTrace();
       throw e;
     } finally {
       synchronized (this) {
@@ -175,8 +178,8 @@ public class MainExplorer implements Runnable {
     log.debug("finding best from:" + from);
 
     collectMetrics(from);
-    calculateAddedCoverages(from, 0);
-    List<TestCase> choices = pruneBest(from);
+//    calculateAddedCoverages(from, 0);
+    List<TestCase> choices = pruneBest(from, -1);
 
     log.debug("pruned:"+choices);
     return findBestFrom(choices, script.size());
@@ -208,43 +211,43 @@ public class MainExplorer implements Runnable {
     }
   }
 
-  /**
-   * Calculates added coverage for the test suite for the given set of tests up to the given number of steps.
-   * Used to pick the one that gives the most pluses fastest (with least steps).
-   * The added coverage value is stored as a custom attribute in the test case.
-   *
-   * @param from          The set of test cases to calculate coverage for.
-   * @param numberOfSteps The (maximum) number of steps to consider for each test.
-   */
-  private void calculateAddedCoverages(Collection<TestCase> from, int numberOfSteps) {
-    TestCoverage suiteCoverage = state.getSuiteCoverage();
-    Collection<Future> futures = new ArrayList<>();
-    ScoreCalculator scoreCalculator = new ScoreCalculator(state.getConfig());
-    for (TestCase test : from) {
-      if (numberOfSteps == 0) {
-        numberOfSteps = test.getAllStepNames().size();
-      }
-      CoverageTask task = new CoverageTask(test, numberOfSteps, suiteCoverage, scoreCalculator);
-      Future future = coveragePool.submit(task);
-      futures.add(future);
-    }
-    for (Future future : futures) {
-      try {
-        future.get();
-      } catch (Exception e) {
-        throw new RuntimeException("Failed to calculate coverage in exploration", e);
-      }
-    }
-  }
+//  /**
+//   * Calculates added coverage for the test suite for the given set of tests up to the given number of steps.
+//   * Used to pick the one that gives the most pluses fastest (with least steps).
+//   * The added coverage value is stored as a custom attribute in the test case.
+//   *
+//   * @param from          The set of test cases to calculate coverage for.
+//   * @param numberOfSteps The (maximum) number of steps to consider for each test.
+//   */
+//  private void calculateAddedCoverages(Collection<TestCase> from, int numberOfSteps) {
+//    TestCoverage suiteCoverage = state.getSuiteCoverage();
+//    Collection<Future> futures = new ArrayList<>();
+//    ScoreCalculator scoreCalculator = new ScoreCalculator(state.getConfig());
+//    for (TestCase test : from) {
+//      if (numberOfSteps == 0) {
+//        numberOfSteps = test.getAllStepNames().size();
+//      }
+//      CoverageTask task = new CoverageTask(test, numberOfSteps, suiteCoverage, scoreCalculator);
+//      Future future = coveragePool.submit(task);
+//      futures.add(future);
+//    }
+//    for (Future future : futures) {
+//      try {
+//        future.get();
+//      } catch (Exception e) {
+//        throw new RuntimeException("Failed to calculate coverage in exploration", e);
+//      }
+//    }
+//  }
 
   /**
    * Prunes the set of overall equal explored choices to pick the set of tests that achieve the biggest
    * gains the fastest.
    *
    * @param choices What to prune.
-   * @return The choise of tests that gain the most fastest. 1-N.
+   * @return The choice of tests that gain the most fastest. 1-N.
    */
-  private List<TestCase> pruneBest(Collection<TestCase> choices) {
+  private List<TestCase> pruneBest(Collection<TestCase> choices, int count) {
     longest = 0;
     //this defines the highest score for the following step of tests
     int highest = Integer.MIN_VALUE;
@@ -253,7 +256,15 @@ public class MainExplorer implements Runnable {
     for (TestCase test : choices) {
       int length = test.getAllStepNames().size();
       if (length > longest) longest = length;
-      int score = (Integer) test.getAttribute(CoverageTask.KEY);
+      //this can happen if some test is shorter but gets same score, e.g. end condition ends sooner and all score 0
+      if (count >= length) continue;
+      TestCaseStep step = null;
+      if (count < 0) {
+        step = test.getCurrentStep();
+      } else {
+        step = test.getSteps().get(count);
+      }
+      int score = step.getAddedCoverage();
       if (score > highest) {
         optimum.clear();
         highest = score;
@@ -277,11 +288,11 @@ public class MainExplorer implements Runnable {
    * @return The chosen best transition for next step.
    */
   public String findBestFrom(List<TestCase> from, int count) {
-    calculateAddedCoverages(from, count);
+//    calculateAddedCoverages(from, count);
 
-    List<TestCase> optimum = pruneBest(from);
+    List<TestCase> optimum = pruneBest(from, count);
 
-    if (longest > count && optimum.size() > 1) {
+    if (longest > (count+1) && optimum.size() > 1) {
       return findBestFrom(optimum, count + 1);
     }
   

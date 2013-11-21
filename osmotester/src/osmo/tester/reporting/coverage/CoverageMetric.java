@@ -25,21 +25,20 @@ import java.util.Map;
  * @author Teemu Kanstrén, Olli-Pekka Puolitaival
  */
 public abstract class CoverageMetric {
-  /** The tests to report. */
-  protected final Collection<TestCase> tests;
   /** Coverage for the tests. */
-  private final TestCoverage suiteCoverage;
+  protected final TestCoverage suiteCoverage;
   /** The parsed model for test generation. */
   protected final FSM fsm;
+  protected final Collection<TestCase> tests;
   /** For template->report generation. */
   private VelocityEngine velocity = new VelocityEngine();
   /** For storing template variables. */
   private VelocityContext vc = new VelocityContext();
 
-  public CoverageMetric(Collection<TestCase> tests, FSM fsm) {
+  public CoverageMetric(TestCoverage suiteCoverage, Collection<TestCase> tests, FSM fsm) {
     this.fsm = fsm;
+    this.suiteCoverage = suiteCoverage;
     this.tests = tests;
-    this.suiteCoverage = new TestCoverage().addAll(tests);
     velocity.setProperty("resource.loader", "class");
     velocity.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
   }
@@ -122,15 +121,12 @@ public abstract class CoverageMetric {
     Map<String, Integer> coverage = new HashMap<>();
 
     for (TestCase tc : tests) {
-      for (TestCaseStep ts : tc.getSteps()) {
-        Collection<String> keys = ts.getCoveredRequirements();
-
-        for (String key : keys) {
-          Integer count = coverage.get(key);
-          if (count == null)
-            count = 0;
-          coverage.put(key, count + 1);
-        }
+      Collection<String> reqs = tc.getCoverage().getRequirements();
+      for (String req : reqs) {
+        Integer count = coverage.get(req);
+        if (count == null)
+          count = 0;
+        coverage.put(req, count + 1);
       }
     }
 
@@ -215,8 +211,8 @@ public abstract class CoverageMetric {
     List<String> pairs = getStepPairs();
     List<String> reqs = getRequirements();
     List<String> variables = getVariables();
+    //makes no sense to put all variable values and states there as they may be way too many
     List<VariableValues> variableValues = getVariableValues(suiteCoverage.getVariableValues());
-    //makes no sense to put all states there as they may be way too many
 //    List<VariableValues> states = getVariableValues(suiteCoverage.getStates());
 //    List<VariableValues> statePairs = getVariableValues(suiteCoverage.getStatePairs());
 

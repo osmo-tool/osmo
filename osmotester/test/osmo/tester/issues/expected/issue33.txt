@@ -163,7 +163,7 @@
         <th scope='col' colspan='5'>Step-pair coverage</th>
       </tr>
       <tr>
-        <th class='colhead' scope='col'>.osmo.tester.init->Step1</th>
+        <th class='colhead' scope='col'>.osmo.tester.start.step->Step1</th>
         <th class='colhead' scope='col'>Step1->Step1</th>
         <th class='colhead' scope='col'>Step1->Step2</th>
         <th class='colhead' scope='col'>Step2->Step1</th>

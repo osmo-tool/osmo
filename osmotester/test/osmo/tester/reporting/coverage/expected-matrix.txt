@@ -138,11 +138,11 @@
         <th class='testhead' scope='row'>Test1</th>
         <td>0</td>
         <td>0</td>
-        <td>2</td>
+        <td>1</td>
       </tr>
       <tr class='alt'>
         <th class='testhead' scope='row'>Test2</th>
-        <td>2</td>
+        <td>1</td>
         <td>0</td>
         <td>1</td>
       </tr>
@@ -157,7 +157,7 @@
         <th scope='col' colspan='14'>Step-pair coverage</th>
       </tr>
       <tr>
-        <th class='colhead' scope='col'>.osmo.tester.init->one</th>
+        <th class='colhead' scope='col'>.osmo.tester.start.step->one</th>
         <th class='colhead' scope='col'>eight->six</th>
         <th class='colhead' scope='col'>five->six</th>
         <th class='colhead' scope='col'>four->five</th>

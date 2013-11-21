@@ -24,7 +24,6 @@ public class ValidTestModel4 {
   public static final String TAG_EPIX = "epix";
   private final PrintStream out;
   private TestSuite history = null;
-  private String states = "";
 
   public ValidTestModel4(PrintStream out) {
     this.out = out;
@@ -95,15 +94,9 @@ public class ValidTestModel4 {
 
   @Pre("all")
   public void savePreState() {
-    states += ":"+history.getCurrentTest().getCurrentStep().getStatesFor("my-state")+":";
   }
 
   @Post("all")
   public void savePostState() {
-    states += "-"+history.getCurrentTest().getCurrentStep().getStatesFor("my-state")+"-";
-  }
-
-  public String getStates() {
-    return states;
   }
 }

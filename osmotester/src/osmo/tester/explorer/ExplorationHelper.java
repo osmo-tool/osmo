@@ -30,6 +30,7 @@ public class ExplorationHelper {
    */
   public static MainGenerator initPath(ExplorationState state, Collection<String> path, boolean end) {
     MainGenerator generator = createGenerator(state);
+    
     //then we re-create the current test until the current position from which exploration continues
     runScript(generator, path, end);
     return generator;

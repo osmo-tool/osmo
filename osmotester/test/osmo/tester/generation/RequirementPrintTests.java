@@ -170,7 +170,7 @@ public class RequirementPrintTests {
             "Unique requirements: 3\n" +
             "Variable values: 3\n" +
             "Unique coverage-values: 3\n" +
-            "Unique coverage-value-pairs: 3\n" +
+            "Unique coverage-value-pairs: 4\n" +
             "\n" +
             "Requirements:[]\n" +
             //reason why we do not cover "epixx" requirement is because the model resets this between tests

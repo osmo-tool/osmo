@@ -2,6 +2,7 @@ package osmo.tester.generator.algorithm;
 
 import osmo.common.Randomizer;
 import osmo.common.log.Logger;
+import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
@@ -115,7 +116,10 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
    */
   private FSMTransition checkUncoveredSteps(TestSuite suite, List<FSMTransition> choices) {
     //how many times each step has been taken so far
-    Map<String, Integer> coverage = suite.getStepCoverage();
+    TestCoverage tc = new TestCoverage();
+    tc.addCoverage(suite.getCoverage());
+    tc.addCoverage(suite.getCurrentTest().getCoverage());
+    Map<String, Integer> coverage = tc.getStepCoverage();
     Collection<FSMTransition> options = new LinkedHashSet<>();
     options.addAll(choices);
     for (Iterator<FSMTransition> i = options.iterator() ; i.hasNext() ; ) {

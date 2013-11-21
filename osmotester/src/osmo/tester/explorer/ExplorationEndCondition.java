@@ -6,6 +6,7 @@ import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.scenario.Scenario;
@@ -144,6 +145,7 @@ public class ExplorationEndCondition implements EndCondition {
     long mySeed = seed + suite.totalSteps();
     //plateau should take precedence over score limit otherwise it never happens. thus the ordering with this here
     int plateauThreshold = config.getTestPlateauThreshold();
+
     if (plateauThreshold > 0) {
       if (isTestPlateau(suite, config.getTestPlateauLength())) {
         log.debug("test has plateaued");
@@ -156,12 +158,16 @@ public class ExplorationEndCondition implements EndCondition {
     if (minScore > 0) {
       if (suiteCoverage == null) suiteCoverage = suite.getCoverage();
       TestCase test = suite.getCurrentTest();
-      int added = scoreCalculator.addedScoreFor(suiteCoverage, test);
-  
+      TestCaseStep step = test.getCurrentStep();
+      //this is the case when starting generation
+      if (step == null) return false;
+      int added = step.getAddedCoverage();
+
       if (added < minScore) {
         return false;
       }
     }
+    
     //exploration only works nice and shiny until the end condition hits, then we have to go with the pössis
     //this is because if we evaluate paths for overall score and one of them is longer but only due to having
     //a different random "v" (below) value generated, it "seems" better although in fact should not (or should it ?:)
@@ -220,11 +226,9 @@ public class ExplorationEndCondition implements EndCondition {
     for (int i = 0 ; i < size ; i++) {
       suiteClone.remove(suiteClone.size() - 1);
     }
-    TestSuite clone = new TestSuite();
-    clone.addTestCases(suiteClone);
+    TestCoverage cloneTC = new TestCoverage(suiteClone);
     
     //calculate how much the last N tests have added coverage
-    TestCoverage cloneTC = clone.getCoverage();
     int before = scoreCalculator.calculateScore(cloneTC);
     int after = scoreCalculator.calculateScore(suiteCoverage);
     int diff = after - before;
@@ -246,13 +250,23 @@ public class ExplorationEndCondition implements EndCondition {
   private boolean isTestPlateau(TestSuite suite, int steps) {
     TestCase currentTest = suite.getCurrentTest();
     int length = currentTest.getSteps().size();
-    if (length < steps) {
+    //steps + 1 is to measure gain for last "steps" number of steps correctly
+    //for example, suite has four steps: A,B,C,D and we request to look at last 3
+    //if we count different between D and B, we get gain of last two which is C and D
+    //so we must look at different between gain in end of A and in end of D. this requires the + 1
+    int index = length - (steps+1);
+    if (index < steps) {
       //not possible to check the plateau if test is not long enough
       return false;
-    }
-    TestCoverage coverage = suite.getCoverage();
-    int now = scoreCalculator.addedScoreFor(coverage, currentTest);
-    int before = scoreCalculator.addedScoreFor(coverage, currentTest, length-steps);
+    } 
+    int now = currentTest.getCurrentStep().getAddedCoverage();
+    if (!exploring)
+      System.out.print("");
+    int before = currentTest.getSteps().get(index).getAddedCoverage();
+//    TestCoverage coverage = suite.getCoverage();
+//    int now = scoreCalculator.addedScoreFor(coverage, currentTest);
+////    int before = scoreCalculator.addedScoreFor(coverage, currentTest, length-steps);
+//    int before = scoreCalculator.addedScoreFor(coverage, currentTest);
     int diff = now - before;
     //is the added value more than the given threshold?
     return diff < config.getTestPlateauThreshold();

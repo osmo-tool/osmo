@@ -47,29 +47,31 @@ public class ScoreCalculator {
    * Does not add anything to this set, so after this the set is the same as before.
    * Calculates for all steps in given test case.
    * 
-   * @param tc The coverage so far.
+   * @param tc1 The coverage so far.
    * @param test The test to add to the coverage so far (the tc parameter).
    * @return How much score would be added.
    */
-  public int addedScoreFor(TestCoverage tc, TestCase test) {
-    return addedScoreFor(tc, test, test.getAllStepNames().size());
-  }
-
-  /**
-   * Calculates how much the coverage score would raise if the given test case was added to this set.
-   * Does not add anything to this set, so after this the set is the same as before.
-   * Calculates to the number of steps, ignoring any remaining steps beyond given number.
-   *
-   * @param tc1 The coverage so far.
-   * @param test The test to check added coverage for.
-   * @param steps The number of steps to take from the (beginning of) given test.
-   * @return The new coverage score.
-   */
-  public int addedScoreFor(TestCoverage tc1, TestCase test, int steps) {
-    TestCoverage tc2 = tc1.cloneMe();
-    tc2.addTestCoverage(test, steps);
+  public int addedScoreFor(TestCoverage tc1, TestCase test) {
+//    return addedScoreFor(tc, test, test.getAllStepNames().size());
+//  }
+//
+//  /**
+//   * Calculates how much the coverage score would raise if the given test case was added to this set.
+//   * Does not add anything to this set, so after this the set is the same as before.
+//   * Calculates to the number of steps, ignoring any remaining steps beyond given number.
+//   *
+//   * @param tc1 The coverage so far.
+//   * @param test The test to check added coverage for.
+//   * @param steps The number of steps to take from the (beginning of) given test.
+//   * @return The new coverage score.
+//   */
+//  public int addedScoreFor(TestCoverage tc1, TestCase test, int steps) {
+    TestCoverage tc2 = test.getCoverage();
+    TestCoverage tc3 = tc2.cloneMe();
+    tc3.addCoverage(tc1);
+//    tc2.addTestCoverage(test, steps);
     int oldScore = calculateScore(tc1);
-    int newScore = calculateScore(tc2);
+    int newScore = calculateScore(tc3);
     int added = newScore - oldScore;
     log.debug("added score:" + added);
     return added;

@@ -7,7 +7,7 @@
       <td>Count</td>
     </tr>
     <tr>
-      <td>.osmo.tester.init->one</td>
+      <td>.osmo.tester.start.step->one</td>
       <td>2</td>
     </tr>
     <tr>

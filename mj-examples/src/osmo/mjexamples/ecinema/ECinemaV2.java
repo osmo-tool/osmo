@@ -483,7 +483,7 @@ public class ECinemaV2 {
       MultiGreedy greedy = new MultiGreedy(oc, new ScoreConfiguration(), seed, cores);
       greedy.setTimeout(timeout);
       List<TestCase> tests = greedy.search();
-      TestCoverage tc = new TestCoverage(tests);
+      TestCoverage tc = new TestCoverage();
       System.out.println(tc.coverageString(greedy.getFsm(), null, null, null, null, false));
     }
   }

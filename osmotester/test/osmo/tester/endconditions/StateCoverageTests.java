@@ -45,13 +45,14 @@ public class StateCoverageTests {
   public void testCaseState3twice() {
     OSMOTester tester = new OSMOTester();
     tester.setModelFactory(new ReflectiveModelFactory(CoverageValueModel1.class));
+    //duplicates are removed
     tester.setTestEndCondition(new StateCoverage("my-state", "3", "3"));
     tester.setSuiteEndCondition(new Length(1));
     tester.generate(55);
     List<TestCase> history = tester.getSuite().getFinishedTestCases();
     assertEquals("Number of tests generated", 1, history.size());
     TestCase test = history.get(0);
-    assertEquals("Number of steps in a test case", 4, test.getSteps().size());
+    assertEquals("Number of steps in a test case", 3, test.getSteps().size());
   }
 
   @Test

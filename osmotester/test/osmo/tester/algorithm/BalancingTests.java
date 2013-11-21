@@ -38,7 +38,7 @@ public class BalancingTests {
     for (int i = 0 ; i < 1000 ; i++) {
       OSMOTester tester = new OSMOTester();
       tester.setAlgorithm(new BalancingAlgorithm());
-      tester.addModelObject(new ValidTestModel6(":null:-null-:null:-null-:null:-null-:null:-null-"));
+      tester.addModelObject(new ValidTestModel6());
       tester.setTestEndCondition(new Length(4));
       tester.setSuiteEndCondition(new Length(1));
       tester.generate(i);
@@ -47,7 +47,7 @@ public class BalancingTests {
   }
 
   private void assertStepsFound(TestSuite suite, String... steps) {
-    TestCoverage tc = new TestCoverage(suite.getAllTestCases());
+    TestCoverage tc = suite.getCoverage();
     Collection<String> singles = tc.getSingles();
     for (String step : steps) {
       assertTrue("Test should contain step " + step, singles.contains(step));
@@ -60,7 +60,6 @@ public class BalancingTests {
     OSMOTester tester = new OSMOTester();
     tester.setAlgorithm(new BalancingAlgorithm());
     ValidTestModel6 model6 = new ValidTestModel6();
-    model6.disableCheck();
     tester.addModelObject(model6);
     tester.setTestEndCondition(new Length(2500));
     tester.setSuiteEndCondition(new Length(4));

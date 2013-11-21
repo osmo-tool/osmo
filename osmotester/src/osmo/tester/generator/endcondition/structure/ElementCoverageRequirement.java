@@ -112,9 +112,10 @@ public class ElementCoverageRequirement {
    * @return True if coverage satisfied. False if not.
    */
   public boolean checkCoverage(TestCase test) {
-    if (requirements > 0 && requirements > test.getUniqueRequirementCoverage().size()) return false;
-    if (steps > 0 && steps > test.getCoveredSteps().size()) return false;
-    if (pairs > 0 && pairs > countPairs(test.getAllStepNames())) return false;
+    TestCoverage tc = test.getCoverage();
+    if (requirements > 0 && requirements > tc.getRequirements().size()) return false;
+    if (steps > 0 && steps > tc.getSingles().size()) return false;
+    if (pairs > 0 && pairs > tc.getStepPairs().size()) return false;
     return true;
   }
 

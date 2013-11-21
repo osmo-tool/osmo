@@ -61,6 +61,7 @@ public class MultiOSMO {
    * Starts generation using the given generation configuration and given number of parallel threads.
    * 
    * @param time The minimum time to run iterations.
+   * TODO: should return coverage
    */
   public void generate(Time time) {
     check();

@@ -114,7 +114,7 @@ public class ElementCoverageTests {
     assertNoEnd(msg1, msg2);
     suite.addStep(t5);
     assertNoTestEnd(msg1);
-    //since the test is not finished yet, this fails
+    //test not yet ended
     assertNoSuiteEnd(msg2);
     suite.addStep(t1);
     assertTestEnd(msg1);
@@ -177,7 +177,7 @@ public class ElementCoverageTests {
     assertNoEnd(msg1, msg2);
     suite.addStep(t5);
     assertNoTestEnd(msg1);
-    //since the test is not finished yet, this fails
+    //test not yet ended
     assertNoSuiteEnd(msg2);
     suite.addStep(t1);
     assertTestEnd(msg1);
@@ -193,7 +193,7 @@ public class ElementCoverageTests {
     assertNoEnd(msg1, msg2);
 
     suite.addStep(t1);
-    suite.covered("req1");
+    suite.coveredRequirement("req1");
     assertTestEnd(msg1);
     suite.endTest();
     assertSuiteEnd(msg2);

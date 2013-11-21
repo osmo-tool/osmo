@@ -51,15 +51,15 @@ public class GreedyTests {
     TestSuite suite = new TestSuite();
     suite.startTest();
     suite.addStep(new FSMTransition("t1"));
-    suite.covered("r1");
+    suite.coveredRequirement("r1");
     suite.endTest();
     suite.startTest();
     suite.addStep(new FSMTransition("t2"));
     suite.addStep(new FSMTransition("t3"));
-    suite.covered("r2");
+    suite.coveredRequirement("r2");
     suite.addStep(new FSMTransition("t4"));
-    suite.covered("r3");
-    suite.covered("r4");
+    suite.coveredRequirement("r3");
+    suite.coveredRequirement("r4");
     suite.endTest();
     suite.startTest();
     suite.addStep(new FSMTransition("t5"));
@@ -72,10 +72,10 @@ public class GreedyTests {
     assertEquals("Number of tests should be reduced after pruning useless ones.", 2, tests.size());
     TestCase testCase1 = tests.get(0);
     TestCase testCase2 = tests.get(1);
-    Collection<String> tags1 = testCase1.getUniqueRequirementCoverage();
-    Collection<String> tags2 = testCase2.getUniqueRequirementCoverage();
-    assertEquals("Number of new tags covered by test 1.", 3, tags1.size());
-    assertEquals("Number of new tags covered by test 2.", 1, tags2.size());
+    Collection<String> reqs1 = testCase1.getCoverage().getRequirements();
+    Collection<String> reqs2 = testCase2.getCoverage().getRequirements();
+    assertEquals("Number of new requirements covered by test 1.", 3, reqs1.size());
+    assertEquals("Number of new requirementss covered by test 2.", 1, reqs2.size());
     assertEquals("Coverage score", 4, scoreFor(tests));
   }
 
@@ -87,15 +87,15 @@ public class GreedyTests {
     List<TestCase> tests = GreedyOptimizer.sortAndPrune(suite.getFinishedTestCases(), new ScoreCalculator(gc));
     assertEquals("Number of tests should be reduced after pruning useless ones.", 1, tests.size());
     TestCase testCase1 = tests.get(0);
-    Collection<String> tags1 = testCase1.getUniqueRequirementCoverage();
+    Collection<String> reqs1 = testCase1.getCoverage().getRequirements();
     //the first test covers all tags so the rest are discarded
-    assertEquals("Number of new tags covered by test 1.", 2, tags1.size());
+    assertEquals("Number of new requirements covered by test 1.", 2, reqs1.size());
     assertEquals("Coverage score", 2, scoreFor(tests));
   }
 
   @Test
   public void requirementOptimizer3TestsWithCunningOverlap() {
-    GreedyOptimizer optimizer = new GreedyOptimizer(oc, gc);
+    //GreedyOptimizer optimizer = new GreedyOptimizer(oc, gc);
     gc.setRequirementWeight(1);
     TestSuite suite = createSuite2();
     List<TestCase> tests = GreedyOptimizer.sortAndPrune(suite.getFinishedTestCases(), new ScoreCalculator(gc));
@@ -103,12 +103,12 @@ public class GreedyTests {
     TestCase testCase1 = tests.get(0);
     TestCase testCase2 = tests.get(1);
     TestCase testCase3 = tests.get(2);
-    Collection<String> tags1 = testCase1.getUniqueRequirementCoverage();
-    Collection<String> tags2 = testCase2.getUniqueRequirementCoverage();
-    Collection<String> tags3 = testCase3.getUniqueRequirementCoverage();
-    assertEquals("Number of new tags covered by test 1.", 3, tags1.size());
-    assertEquals("Number of new tags covered by test 2.", 2, tags2.size());
-    assertEquals("Number of new tags covered by test 3.", 1, tags3.size());
+    Collection<String> reqs1 = testCase1.getCoverage().getRequirements();
+    Collection<String> reqs2 = testCase2.getCoverage().getRequirements();
+    Collection<String> reqs3 = testCase3.getCoverage().getRequirements();
+    assertEquals("Number of new requirements covered by test 1.", 3, reqs1.size());
+    assertEquals("Number of new requirements covered by test 2.", 2, reqs2.size());
+    assertEquals("Number of new requirements covered by test 3.", 1, reqs3.size());
     assertEquals("Coverage score", 6, scoreFor(tests));
   }
 
@@ -116,15 +116,15 @@ public class GreedyTests {
     TestSuite suite = new TestSuite();
     suite.startTest();
     suite.addStep(new FSMTransition("t1"));
-    suite.covered("r1");
+    suite.coveredRequirement("r1");
     suite.endTest();
     suite.startTest();
     suite.addStep(new FSMTransition("t2"));
     suite.addStep(new FSMTransition("t3"));
-    suite.covered("r2");
+    suite.coveredRequirement("r2");
     suite.addStep(new FSMTransition("t4"));
-    suite.covered("r1");
-    suite.covered("r2");
+    suite.coveredRequirement("r1");
+    suite.coveredRequirement("r2");
     suite.endTest();
     suite.startTest();
     suite.addStep(new FSMTransition("t5"));
@@ -139,24 +139,24 @@ public class GreedyTests {
     TestSuite suite = new TestSuite();
     suite.startTest();
     suite.addStep(new FSMTransition("t1"));
-    suite.covered("r5");
-    suite.covered("r1");
+    suite.coveredRequirement("r5");
+    suite.coveredRequirement("r1");
     suite.endTest();
 
     suite.startTest();
     suite.addStep(new FSMTransition("t2"));
     suite.addStep(new FSMTransition("t3"));
-    suite.covered("r2");
+    suite.coveredRequirement("r2");
     suite.addStep(new FSMTransition("t4"));
     suite.endTest();
 
     suite.startTest();
     suite.addStep(new FSMTransition("t1"));
     suite.addStep(new FSMTransition("t2"));
-    suite.covered("r3");
+    suite.coveredRequirement("r3");
     suite.addStep(new FSMTransition("t3"));
-    suite.covered("r4");
-    suite.covered("r6");
+    suite.coveredRequirement("r4");
+    suite.coveredRequirement("r6");
     suite.addStep(new FSMTransition("t4"));
     suite.endTest();
     return suite;
@@ -208,9 +208,9 @@ public class GreedyTests {
     assertEquals("Number of new steps covered by test 1.", 4, steps1.size());
     assertEquals("Number of new steps covered by test 2.", 1, steps2.size());
     assertEquals("Number of new steps covered by test 3.", 3, steps3.size());
-    Collection<String> reqs1 = testCase1.getUniqueRequirementCoverage();
-    Collection<String> reqs2 = testCase2.getUniqueRequirementCoverage();
-    Collection<String> reqs3 = testCase3.getUniqueRequirementCoverage();
+    Collection<String> reqs1 = testCase1.getCoverage().getRequirements();
+    Collection<String> reqs2 = testCase2.getCoverage().getRequirements();
+    Collection<String> reqs3 = testCase3.getCoverage().getRequirements();
     assertEquals("Number of new requirements covered by test 1.", 3, reqs1.size());
     assertEquals("Number of new requirements covered by test 2.", 2, reqs2.size());
     assertEquals("Number of new requirements covered by test 3.", 1, reqs3.size());
@@ -224,7 +224,8 @@ public class GreedyTests {
     ReflectiveModelFactory factory = new ReflectiveModelFactory(CalculatorModel.class);
     oc.setFactory(factory);
     GreedyOptimizer optimizer = new GreedyOptimizer(oc, config);
-    List<TestCase> tests = optimizer.search(8);
+    GenerationResults results = optimizer.search(8);
+    List<TestCase> tests = results.getTests();
     assertEquals("Number of tests from greedy", 3, tests.size());
     assertEquals("First test from greedy", "[start, increase, decrease, increase, increase]", tests.get(0).getAllStepNames().toString());
     assertEquals("Second test from greedy", "[start, increase, increase, decrease, decrease]", tests.get(1).getAllStepNames().toString());

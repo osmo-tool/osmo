@@ -1,6 +1,7 @@
 package osmo.tester.explorer;
 
 import osmo.tester.OSMOConfiguration;
+import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.coverage.ScoreConfiguration;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
@@ -61,6 +62,7 @@ public class ExplorationConfiguration extends ScoreConfiguration {
     this.factory = factory;
     this.depth = depth;
     this.seed = seed;
+    this.lengthWeight = 0;
   }
 
   public boolean isPrintAll() {
@@ -115,6 +117,7 @@ public class ExplorationConfiguration extends ScoreConfiguration {
    */
   public void fillOSMOConfiguration(OSMOConfiguration config) {
     this.endCondition = new ExplorationEndCondition(this);
+    config.setScoreCalculator(new ScoreCalculator(this));
     config.setSuiteEndCondition(endCondition);
     config.setTestEndCondition(endCondition);
     config.setFactory(factory);

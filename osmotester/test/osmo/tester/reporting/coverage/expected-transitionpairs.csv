@@ -1,5 +1,5 @@
 From->To,Count
-.osmo.tester.init->one,2
+.osmo.tester.start.step->one,2
 one->two,2
 five->six,1
 four->five,1

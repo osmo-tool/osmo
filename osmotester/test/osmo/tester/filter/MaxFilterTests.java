@@ -98,7 +98,7 @@ public class MaxFilterTests {
   public void onceWithAlternative() {
     TestSequenceListener listener = new TestSequenceListener();
     osmo.addListener(listener);
-    osmo.addModelObject(new ValidTestModel6(":null:-null-:null:-null-:null:-null-:null:-null-:null:-null-:null:-null-:null:-null-:null:-null-:null:-null-:null:-null-:null:-null-:null:-null-:null:-null-:null:-null-:null:-null-:null:-null-:null:-null-:null:-null-:null:-null-:null:-null-"));
+    osmo.addModelObject(new ValidTestModel6());
     MaxStepFilter filter = new MaxStepFilter();
     filter.setMax("t1", 1);
     filter.setMax("t2", 2);

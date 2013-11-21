@@ -129,7 +129,8 @@ public class VendingMachine2 {
     tester.generate(25);
 
     //Print coverage metric
-    CSVCoverageReporter csv = new CSVCoverageReporter(tester.getSuite(), tester.getFsm());
+    TestSuite suite = tester.getSuite();
+    CSVCoverageReporter csv = new CSVCoverageReporter(suite.getCoverage(), suite.getAllTestCases(), tester.getFsm());
     System.out.println("\n" + csv.getStepCounts());
   }
 }

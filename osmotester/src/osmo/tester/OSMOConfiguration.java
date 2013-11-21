@@ -1,5 +1,6 @@
 package osmo.tester;
 
+import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
@@ -53,6 +54,7 @@ public class OSMOConfiguration implements ModelFactory {
   private Scenario scenario = null;
   /** If true, the tool will write a HTML test generation trace showing taken steps and observed values. */
   private boolean traceRequested = false;
+  private ScoreCalculator scoreCalculator;
 
   public OSMOConfiguration() {
   }
@@ -249,5 +251,13 @@ public class OSMOConfiguration implements ModelFactory {
 
   public void setTraceRequested(boolean traceRequested) {
     this.traceRequested = traceRequested;
+  }
+
+  public void setScoreCalculator(ScoreCalculator scoreCalculator) {
+    this.scoreCalculator = scoreCalculator;
+  }
+
+  public ScoreCalculator getScoreCalculator() {
+    return scoreCalculator;
   }
 }
