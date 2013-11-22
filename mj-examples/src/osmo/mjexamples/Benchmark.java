@@ -53,4 +53,40 @@ public class Benchmark {
     TestCoverage tc = results.getCoverage();
     System.out.println(tc.coverageString(optimizer.getFsm(), null, null, null, null, false));
   }
+
+  //22.11.2013, before removing inner loops
+//  15:06:53 o.t.o.GreedyOptimizer - greedy 1 starting up
+//  15:06:53 o.t.o.GreedyOptimizer - 1:starting iteration 0
+//          15:06:58 o.t.o.GreedyOptimizer - 1:sorting and pruning iteration results
+//  15:07:22 o.t.o.GreedyOptimizer - loops in sort:354430
+//          15:07:22 o.t.o.GreedyOptimizer - 1:iteration time:(1)28476 gain:248563
+//          15:07:22 o.t.o.GreedyOptimizer - Generation timed out
+//  15:07:22 o.t.o.GreedyOptimizer - GreedyOptimizer 1 generated 1000 tests.
+//  15:07:22 o.t.o.GreedyOptimizer - Resulting suite has 459 tests. Generation time 28483 millis
+//  Covered elements:
+//  Total steps: 24697
+//  Unique steps: 15 (of 15)
+//  Unique step-pairs: 240
+//  Unique requirements: 30
+//  Variable values: 0
+//  Unique coverage-values: 1030
+//  Unique coverage-value-pairs: 5349
+
+  //22.11.2013, after removing inner loops
+//  15:39:21 o.t.o.GreedyOptimizer - greedy 1 starting up
+//  15:39:21 o.t.o.GreedyOptimizer - 1:starting iteration 0
+//          15:39:25 o.t.o.GreedyOptimizer - 1:sorting and pruning iteration results
+//  15:39:27 o.t.o.GreedyOptimizer - loops in sort:354430
+//          15:39:27 o.t.o.GreedyOptimizer - 1:iteration time:(1)6648 gain:248563
+//          15:39:27 o.t.o.GreedyOptimizer - Generation timed out
+//  15:39:27 o.t.o.GreedyOptimizer - GreedyOptimizer 1 generated 1000 tests.
+//  15:39:27 o.t.o.GreedyOptimizer - Resulting suite has 459 tests. Generation time 6654 millis
+//  Covered elements:
+//  Total steps: 24697
+//  Unique steps: 15 (of 15)
+//  Unique step-pairs: 240
+//  Unique requirements: 30
+//  Variable values: 0
+//  Unique coverage-values: 1030
+//  Unique coverage-value-pairs: 5349
 }

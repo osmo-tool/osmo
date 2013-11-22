@@ -127,6 +127,7 @@ public class ExplorationEndCondition implements EndCondition {
       log.debug("Exploration timeout");
       return true;
     }
+
     int max = config.getMaxTestLength();
     int testSteps = suite.currentSteps();
     if (max > 0) {
@@ -260,8 +261,6 @@ public class ExplorationEndCondition implements EndCondition {
       return false;
     } 
     int now = currentTest.getCurrentStep().getAddedCoverage();
-    if (!exploring)
-      System.out.print("");
     int before = currentTest.getSteps().get(index).getAddedCoverage();
 //    TestCoverage coverage = suite.getCoverage();
 //    int now = scoreCalculator.addedScoreFor(coverage, currentTest);

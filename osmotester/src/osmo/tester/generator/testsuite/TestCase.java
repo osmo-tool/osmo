@@ -39,6 +39,7 @@ public class TestCase {
   /** Set to true if during test generation there is an exception thrown. */
   private boolean failed = false;
   private TestCoverage coverage = new TestCoverage();
+  private TestCoverage coverageClone = null;
 
   public TestCase() {
     this.id = nextId.getAndIncrement();
@@ -316,5 +317,14 @@ public class TestCase {
   @Override
   public String toString() {
     return "TestCase:" + steps.toString();
+  }
+
+  public void cloneCoverage() {
+    coverageClone = new TestCoverage();
+    coverageClone.addCoverage(coverage);
+  }
+  
+  public void switchToClonedCoverage() {
+    coverage = coverageClone;
   }
 }

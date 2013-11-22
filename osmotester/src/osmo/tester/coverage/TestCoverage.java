@@ -322,7 +322,6 @@ public class TestCoverage {
 
   /**
    * Remove all coverage elements in the other set from this set.
-   * TODO: this and addCoverage() method take up way too much time in optimizer, need to redo
    *
    * @param in The items to remove from this set.
    */
