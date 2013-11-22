@@ -77,7 +77,7 @@ public class CSVCoverageReport {
 
       coverage += scoreCalculator.calculateScore(tc) + "; ";
       reqs += tc.getRequirements().size() + "; ";
-      length += tc.getSteps().size() + "; ";
+      length += tc.getTotalSteps() + "; ";
       steps += tc.getSingles().size() + "; ";
       stepPairs += tc.getStepPairs().size() + "; ";
       values += tc.getValueCount()+"; ";

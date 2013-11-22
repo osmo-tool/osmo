@@ -25,6 +25,7 @@ public class MultiGreedyTests {
     oc.setTestEndCondition(new LengthProbability(1, 5, 0.2d));
     oc.setFactory(new MyModelFactory());
     ScoreConfiguration config = new ScoreConfiguration();
+    config.setLengthWeight(0);
     MultiGreedy multiGreedy = new MultiGreedy(oc, config, 111, 5);
     List<TestCase> tests = multiGreedy.search();
     assertEquals("Number of tests from MultiGreedy", 3, tests.size());

@@ -53,7 +53,10 @@ public class OSMOConfiguration implements ModelFactory {
   /** Model slicing scenario. */
   private Scenario scenario = null;
   /** If true, the tool will write a HTML test generation trace showing taken steps and observed values. */
-  private boolean traceRequested = false;
+  private boolean sequenceTraceRequested = false;
+  /** IF true, we trace parameters for steps. */
+  private boolean dataTraceRequested = false;
+  /** Used to calculate coverage scores if needed. */
   private ScoreCalculator scoreCalculator;
 
   public OSMOConfiguration() {
@@ -245,12 +248,20 @@ public class OSMOConfiguration implements ModelFactory {
     this.manual = manual;
   }
 
-  public boolean isTraceRequested() {
-    return traceRequested;
+  public boolean isSequenceTraceRequested() {
+    return sequenceTraceRequested;
   }
 
-  public void setTraceRequested(boolean traceRequested) {
-    this.traceRequested = traceRequested;
+  public void setSequenceTraceRequested(boolean sequenceTraceRequested) {
+    this.sequenceTraceRequested = sequenceTraceRequested;
+  }
+
+  public boolean isDataTraceRequested() {
+    return dataTraceRequested;
+  }
+
+  public void setDataTraceRequested(boolean dataTraceRequested) {
+    this.dataTraceRequested = dataTraceRequested;
   }
 
   public void setScoreCalculator(ScoreCalculator scoreCalculator) {

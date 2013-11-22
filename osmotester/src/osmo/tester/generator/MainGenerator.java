@@ -95,7 +95,7 @@ public class MainGenerator {
    */
   private void createModelObjects() {
     //we need +1 since someone might actually generate an empty test with no steps = no salt ever
-    int salt = suite.getCoverage().getSteps().size();
+    int salt = suite.getCoverage().getTotalSteps();
     //create a new seed for the new test case
     seed = baseSeed + salt;
     //we cannot re-parse the single instance or it will fail as it is already parsed and initialized

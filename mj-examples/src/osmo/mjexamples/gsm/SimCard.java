@@ -618,7 +618,7 @@ public class SimCard {
     int cores = Integer.parseInt(args[1]);
     int population = Integer.parseInt(args[2]);
     int timeout = Integer.parseInt(args[3]);
-    for (int i = 0 ; i < 1 ; i++) {
+    for (int i = 0 ; i < 100 ; i++) {
       seed += 100;
       System.out.println("seed:"+seed+" cores:"+cores+" pop:"+population+" time:"+timeout);
       Logger.consoleLevel = Level.INFO;
@@ -629,10 +629,10 @@ public class SimCard {
       ScoreConfiguration config = new ScoreConfiguration();
       config.setLengthWeight(-1);
       MultiGreedy greedy = new MultiGreedy(oc, config, seed, cores);
-      greedy.setDeleteOldOutput(true);
+      greedy.setDeleteOldOutput(false);
       greedy.setTimeout(timeout);
       List<TestCase> tests = greedy.search();
-      TestCoverage tc = new TestCoverage();
+      TestCoverage tc = greedy.getFinalCoverage();
       System.out.println(tc.coverageString(greedy.getFsm(), null, null, null, null, false));
     }
   }
@@ -678,21 +678,6 @@ public class SimCard {
         config.setTimeout(timeout);
         explorer.explore(config);
       }
-    }
-  }
-
-  private static class GSMModelFactory implements ModelFactory {
-    private final PrintStream out;
-
-    private GSMModelFactory(PrintStream out) {
-      this.out = out;
-    }
-
-    @Override
-    public void createModelObjects(TestModels addHere) {
-      SimCard sim = new SimCard(new SimCardAdaptor());
-      sim.out = out;
-      addHere.add(sim);
     }
   }
 }

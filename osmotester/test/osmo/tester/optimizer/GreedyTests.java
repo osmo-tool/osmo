@@ -220,6 +220,7 @@ public class GreedyTests {
   @Test
   public void generation() {
     ScoreConfiguration config = new ScoreConfiguration();
+    config.setLengthWeight(0);
     oc.setTestEndCondition(new LengthProbability(1, 5, 0.1d));
     ReflectiveModelFactory factory = new ReflectiveModelFactory(CalculatorModel.class);
     oc.setFactory(factory);

@@ -98,7 +98,7 @@ public class OSMOTester {
       System.out.println();
       System.out.println(requirements.printCoverage());
     }
-    if (config.isTraceRequested()) {
+    if (config.isSequenceTraceRequested()) {
       String filename = "osmo-output/osmo-" + seed;
       writeTrace(filename, tests, seed, config);
     }
@@ -141,6 +141,7 @@ public class OSMOTester {
 
   public MainGenerator initGenerator(long seed) {
     TestSuite suite = new TestSuite();
+    if (config.isDataTraceRequested()) suite.enableParameterTracking();
     MainGenerator generator = new MainGenerator(seed, suite, config);
     fsm = generator.getFsm();
 //    config.initialize(seed, fsm);

@@ -44,7 +44,7 @@ public class MultiOSMOTests {
     TestUtils.recursiveDelete("osmo-output");
     MultiOSMO mosmo = new MultiOSMO(4, 444);
     OSMOConfiguration config = mosmo.getConfig();
-    config.setTraceRequested(true);
+    config.setSequenceTraceRequested(true);
     config.setFactory(new MyModelFactory());
     config.setTestEndCondition(new Length(10));
     config.setSuiteEndCondition(new Time(2));
@@ -63,7 +63,7 @@ public class MultiOSMOTests {
     TestUtils.recursiveDelete("osmo-output");
     MultiOSMO mosmo = new MultiOSMO(4, 444);
     OSMOConfiguration config = mosmo.getConfig();
-    config.setTraceRequested(true);
+    config.setSequenceTraceRequested(true);
     config.setFactory(new MyModelFactory());
     config.setTestEndCondition(new Length(10));
     config.setSuiteEndCondition(new Time(2));
