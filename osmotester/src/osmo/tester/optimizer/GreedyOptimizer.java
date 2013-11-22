@@ -148,7 +148,7 @@ public class GreedyOptimizer {
         TestCase testCase = generator.nextTest();
         suite.add(testCase);
       }
-      log.info(id + ":sorting");
+      log.info(id + ":sorting and pruning iteration results");
       suite = sortAndPrune(suite, scoreCalculator);
       //we process each iteration to produce a list of how it was overall progressing
       report.process(suite);
@@ -208,7 +208,6 @@ public class GreedyOptimizer {
   }
 
   private void writeReport(CSVCoverageReport report, TestCoverage tc, int resultSize, int generationCount, long seed) {
-
     String summary = "summary\n";
     //we do not have the set of possible states or state pairs as those would require executing the "states" which greedy does not do..
     summary += tc.coverageString(fsm, possiblePairs, null, null, null, false);
@@ -234,46 +233,59 @@ public class GreedyOptimizer {
     Collections.sort(from, new TestSorter());
     List<TestCase> suite = new ArrayList<>();
 
-    TestCoverage previous = new TestCoverage();
-//    long total1 = 0;
-//    long total2 = 0;
-//    long total3 = 0;
+    for (TestCase test : from) {
+      test.cloneCoverage();
+    }
     int times = 0;
+    TestCase best = null;
+    TestCoverage bestCoverage = null;
     while (from.size() > 0) {
       int bestScore = 0;
-      TestCase best = null;
+      TestCase found = null;
       for (TestCase test : from) {
-//        long start1 = System.currentTimeMillis();
-        TestCoverage tc = test.getCoverage().cloneMe();
-//        long end1 = System.currentTimeMillis();
-//        total1 += end1-start1;
-
-//        long start2 = System.currentTimeMillis();
-        tc.removeAll(previous);
-//        long end2 = System.currentTimeMillis();
-//        total2 += end2-start2;
-
-//        long start3 = System.currentTimeMillis();
+        TestCoverage tc = test.getCoverage();
+        if (best != null) tc.removeAll(bestCoverage);
         int score = calculator.calculateScore(tc);
-//        long end3 = System.currentTimeMillis();
-//        total3 += end3-start3;
         if (score > bestScore) {
           bestScore = score;
-          best = test;
+          found = test;
         }
         times++;
       }
-      if (best == null) {
+      if (found == null) {
         //no more gains found in coverage
         break;
       }
+      best = found;
+      bestCoverage = best.getCoverage();
       from.remove(best);
       suite.add(best);
-      previous.addCoverage(best.getCoverage());
     }
-//    log.info("time1:"+total1);
-//    log.info("time2:"+total2);
-//    log.info("time3:"+total3);
+    for (TestCase test : suite) {
+      test.switchToClonedCoverage();
+    }
+//    TestCoverage previous = new TestCoverage();
+//    while (from.size() > 0) {
+//      int bestScore = 0;
+//      TestCase best = null;
+//      for (TestCase test : from) {
+//        TestCoverage tc = test.getCoverage().cloneMe();
+//        tc.removeAll(previous);
+//        int score = calculator.calculateScore(tc);
+//        if (score > bestScore) {
+//          bestScore = score;
+//          best = test;
+//        }
+//        times++;
+//      }
+//      if (best == null) {
+//        //no more gains found in coverage
+//        break;
+//      }
+//      from.remove(best);
+//      suite.add(best);
+//      previous.addCoverage(best.getCoverage());
+//    }
     log.info("loops in sort:"+times);
     return suite;
   }
