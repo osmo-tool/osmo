@@ -65,7 +65,7 @@ public class MultiOSMO {
    */
   public void generate(Time time) {
     check();
-    config.setTraceRequested(false);
+    config.setSequenceTraceRequested(false);
     Collection<Future> futures = new ArrayList<>();
     Randomizer rand = new Randomizer(seed);
     for (int i = 0 ; i < parallelism ; i++) {

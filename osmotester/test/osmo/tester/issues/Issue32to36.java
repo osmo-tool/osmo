@@ -71,6 +71,7 @@ public class Issue32to36 {
   @Test
   public void issue34() throws Exception {
     OSMOTester tester = new OSMOTester();
+    tester.getConfig().setDataTraceRequested(true);
     tester.setTestEndCondition(new Length(5));
     tester.setSuiteEndCondition(new Length(5));
     tester.setAlgorithm(new WeightedBalancingAlgorithm());

@@ -155,13 +155,30 @@
     <thead>
       <tr>
         <th class='corner'>Step</th>
+        <th colspan='$test.parameterCount' class='colhead'>Parameters</th>
       </tr>
     </thead>
     <tbody>
 #foreach ($step in $test.steps)
       <tr>
-        <th class='testhead'>${test.id}.${step.id}:${step.name}</th>
+        <th class='testhead' rowspan='2'>${test.id}.${step.id}:${step.name}</th>
+#if ($test.parameterCount == 0)
       </tr>
+      <tr>
+        <td/>
+      </tr>
+#end
+#if ($test.parameterCount > 0)
+#foreach ($param in $step.htmlValues)
+        <th class='testhead'>$param.value1</th>
+#end
+      </tr>
+      <tr>
+#foreach ($param in $step.htmlValues)
+        <td>$param.value2</td>
+#end
+      </tr>
+#end
 #end
     </tbody>
   </table>

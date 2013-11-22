@@ -45,8 +45,6 @@ public class GreedyOptimizer {
   private final ScoreConfiguration config;
   /** The test model. */
   private FSM fsm = null;
-  /** The number of tests to generate in an iteration. */
-  //private final int populationSize;
   /** Identifier for next greedy optimizer if several are created. */
   private static int nextId = 1;
   /** The identifier for this optimizer. */
@@ -64,15 +62,19 @@ public class GreedyOptimizer {
   private long start = 0;
   private List<TestCase> suite = new ArrayList<>();
   private int iteration = 0;
-  private TestCoverage finalCoverage = null;
 
   /**
    * @param configuration  For scoring the search.
    */
   public GreedyOptimizer(OSMOConfiguration osmoConfig, ScoreConfiguration configuration) {
     this.osmoConfig = osmoConfig;
+    osmoConfig.setDataTraceRequested(false);
     this.config = configuration;
     this.scoreCalculator = new ScoreCalculator(configuration);
+  }
+  
+  public void enableDataTrace() {
+    osmoConfig.setDataTraceRequested(true);
   }
   
   /**
@@ -117,7 +119,7 @@ public class GreedyOptimizer {
     generate(report, generator, populationSize);
 
     this.possiblePairs = generator.getPossibleStepPairs();
-    TestCoverage suiteCoverage = new TestCoverage();
+    TestCoverage suiteCoverage = generator.getSuite().getCoverage();
     writeReport(report, suiteCoverage, suite.size(), iteration * populationSize, seed);
 
     updateRequirementsCoverage(suiteCoverage);
@@ -146,6 +148,7 @@ public class GreedyOptimizer {
         TestCase testCase = generator.nextTest();
         suite.add(testCase);
       }
+      log.info(id + ":sorting");
       suite = sortAndPrune(suite, scoreCalculator);
       //we process each iteration to produce a list of how it was overall progressing
       report.process(suite);
@@ -164,7 +167,6 @@ public class GreedyOptimizer {
     }
     if (gain < threshold) log.info("gain under threshold (" + gain + " vs " + threshold + ")");
     generator.endSuite();
-    finalCoverage = new TestCoverage(suite);
   }
   
   private void updateRequirementsCoverage(TestCoverage suiteCoverage) {
@@ -232,19 +234,34 @@ public class GreedyOptimizer {
     Collections.sort(from, new TestSorter());
     List<TestCase> suite = new ArrayList<>();
 
-    int count = from.size();
     TestCoverage previous = new TestCoverage();
-    for (int i = 0 ; i < count ; i++) {
+//    long total1 = 0;
+//    long total2 = 0;
+//    long total3 = 0;
+    int times = 0;
+    while (from.size() > 0) {
       int bestScore = 0;
       TestCase best = null;
       for (TestCase test : from) {
+//        long start1 = System.currentTimeMillis();
         TestCoverage tc = test.getCoverage().cloneMe();
+//        long end1 = System.currentTimeMillis();
+//        total1 += end1-start1;
+
+//        long start2 = System.currentTimeMillis();
         tc.removeAll(previous);
+//        long end2 = System.currentTimeMillis();
+//        total2 += end2-start2;
+
+//        long start3 = System.currentTimeMillis();
         int score = calculator.calculateScore(tc);
+//        long end3 = System.currentTimeMillis();
+//        total3 += end3-start3;
         if (score > bestScore) {
           bestScore = score;
           best = test;
         }
+        times++;
       }
       if (best == null) {
         //no more gains found in coverage
@@ -254,6 +271,10 @@ public class GreedyOptimizer {
       suite.add(best);
       previous.addCoverage(best.getCoverage());
     }
+//    log.info("time1:"+total1);
+//    log.info("time2:"+total2);
+//    log.info("time3:"+total3);
+    log.info("loops in sort:"+times);
     return suite;
   }
 
@@ -264,4 +285,12 @@ public class GreedyOptimizer {
   public Collection<String> getPossiblePairs() {
     return possiblePairs;
   }
+//
+//  public static void main(String[] args) {
+//    int a = 0;
+//    for (int i = 0 ; i <= 1000 ; i++) {
+//      a += i;
+//    }
+//    System.out.println("a:"+a);
+//  }
 }

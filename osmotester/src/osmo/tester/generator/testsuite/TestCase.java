@@ -76,18 +76,21 @@ public class TestCase {
     return currentStep;
   }
 
-//  /**
-//   * @return The max number of variable values observed in this test, meaning the biggest for any step. 
-//   *         The variables values are those @Variable tagged in model.
-//   */
-//  public int getParameterCount() {
-//    int max = 0;
-//    for (TestCaseStep step : steps) {
-//      int ps = step.getValues().size();
-//      if (ps > max) max = ps;
-//    }
-//    return max;
-//  }
+  /**
+   * @return The max number of variable values observed in this test, meaning the biggest for any step. 
+   *         The variables values are those @Variable tagged in model.
+   */
+  public int getParameterCount() {
+    int max = 0;
+    for (TestCaseStep step : steps) {
+      Map<String, String> values = step.getValues();
+      //if step has no parameters this will be null
+      if (values == null) continue;
+      int ps = values.size();
+      if (ps > max) max = ps;
+    }
+    return max;
+  }
 
   /**
    * Time when test generator started executing code for this step.

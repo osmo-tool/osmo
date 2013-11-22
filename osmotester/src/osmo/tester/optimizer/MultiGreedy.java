@@ -57,6 +57,10 @@ public class MultiGreedy {
   private final List<GreedyOptimizer> optimizers = new ArrayList<>();
   /** Do we delete the osmo-output directory when starting up? */
   private boolean deleteOldOutput = false;
+  /** Should data be traced across steps? Takes a lot of memory. */
+  private boolean dataTrace = false;
+  /** Coverage of the final set. */
+  private TestCoverage finalCoverage = null;
 
   /**
    * Uses number of processors on system as default for number of threads in the thread pool.
@@ -83,6 +87,10 @@ public class MultiGreedy {
     greedyPool = Executors.newFixedThreadPool(parallelism);
     rand = new Randomizer(seed);
     optimizerCount = parallelism;
+  }
+  
+  public void enableDataTrace() {
+    dataTrace = true;
   }
 
   public boolean isDeleteOldOutput() {
@@ -152,6 +160,7 @@ public class MultiGreedy {
   private void runOptimizers(Collection<Future<Collection<TestCase>>> futures) {
     for (int i = 0 ; i < optimizerCount ; i++) {
       GreedyOptimizer optimizer = new GreedyOptimizer(osmoConfig, optimizerConfig);
+      if (dataTrace) optimizer.enableDataTrace();
       optimizer.setTimeout(timeout);
       GreedyTask task = new GreedyTask(optimizer, rand.nextLong(), populationSize);
       Future<Collection<TestCase>> future = greedyPool.submit(task);
@@ -222,8 +231,8 @@ public class MultiGreedy {
     CSVCoverageReport report = new CSVCoverageReport(calculator);
     report.process(cases);
 
-    TestCoverage tc = new TestCoverage();
-    summary += tc.coverageString(fsm, possiblePairs, null, null, null, false);
+    finalCoverage = new TestCoverage(cases);
+    summary += finalCoverage.coverageString(fsm, possiblePairs, null, null, null, false);
 
     String totalCsv = report.report();
     totalCsv += summary + "\n";
@@ -240,5 +249,9 @@ public class MultiGreedy {
 
   public int getTimeout() {
     return timeout;
+  }
+
+  public TestCoverage getFinalCoverage() {
+    return finalCoverage;
   }
 }

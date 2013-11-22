@@ -26,7 +26,7 @@ public class ScoreCalculator {
    * @return The score for the set described in this object.
    */
   public int calculateScore(TestCoverage tc) {
-    int score = tc.getSteps().size() * config.getLengthWeight();
+    int score = tc.getTotalSteps() * config.getLengthWeight();
     score += tc.getSingles().size() * config.getStepWeight();
     score += tc.getStepPairs().size() * config.getStepPairWeight();
     score += tc.getVariables().size() * config.getVariableCountWeight();

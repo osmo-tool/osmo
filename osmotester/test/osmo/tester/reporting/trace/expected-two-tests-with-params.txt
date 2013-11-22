@@ -164,7 +164,7 @@
       </tr>
       <tr>
         <td>bob</td>
-        <td>1nt3rn4l</td>
+        <td>1nt3rn4l, 1nt3rn4l</td>
         <td>true</td>
         <td>not so</td>
         <td>Rock of Gelato, 3rd rock from the Sun</td>
