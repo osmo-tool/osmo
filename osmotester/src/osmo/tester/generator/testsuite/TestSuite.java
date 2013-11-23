@@ -30,12 +30,17 @@ public class TestSuite {
   private TestCoverage coverage = new TestCoverage();
   private TestCoverage testCoverage = null;
   private boolean trackParameters = false;
+  private boolean keepTests = true;
 
   public TestSuite(TestCoverage coverage) {
     this.coverage = coverage;
   }
 
   public TestSuite() {
+  }
+
+  public void setKeepTests(boolean keepTests) {
+    this.keepTests = keepTests;
   }
 
   /**
@@ -58,7 +63,7 @@ public class TestSuite {
   /** End the current test case and moves it to the suite "history". */
   public void endTest() {
     current.setEndTime(System.currentTimeMillis());
-    testCases.add(current);
+    if (keepTests) testCases.add(current);
     current = null;
     coverage.addCoverage(testCoverage);
   }

@@ -95,6 +95,7 @@ public class ExplorationHelper {
     MainGenerator generator = new MainGenerator(state.getConfig().getSeed(), suite, oc);
     generator.invokeAll(generator.getFsm().getExplorationEnablers());
     generator.initSuite();
+    generator.getSuite().setKeepTests(false);
     return generator;
   }
 

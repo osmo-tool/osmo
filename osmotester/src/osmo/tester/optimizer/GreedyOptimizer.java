@@ -119,7 +119,7 @@ public class GreedyOptimizer {
     generate(report, generator, populationSize);
 
     this.possiblePairs = generator.getPossibleStepPairs();
-    TestCoverage suiteCoverage = generator.getSuite().getCoverage();
+    TestCoverage suiteCoverage = new TestCoverage(suite);
     writeReport(report, suiteCoverage, suite.size(), iteration * populationSize, seed);
 
     updateRequirementsCoverage(suiteCoverage);
@@ -198,6 +198,7 @@ public class GreedyOptimizer {
     MainGenerator generator = tester.initGenerator(seed);
     osmoConfig.initialize(seed, tester.getFsm());
     generator.initSuite();
+    generator.getSuite().setKeepTests(false);
     this.fsm = generator.getFsm();
     EndCondition endCondition = osmoConfig.getTestCaseEndCondition();
     endCondition.init(seed, fsm);
@@ -261,32 +262,12 @@ public class GreedyOptimizer {
       from.remove(best);
       suite.add(best);
     }
+    int steps = 0;
     for (TestCase test : suite) {
       test.switchToClonedCoverage();
+      steps += test.getCoverage().getTotalSteps();
     }
-//    TestCoverage previous = new TestCoverage();
-//    while (from.size() > 0) {
-//      int bestScore = 0;
-//      TestCase best = null;
-//      for (TestCase test : from) {
-//        TestCoverage tc = test.getCoverage().cloneMe();
-//        tc.removeAll(previous);
-//        int score = calculator.calculateScore(tc);
-//        if (score > bestScore) {
-//          bestScore = score;
-//          best = test;
-//        }
-//        times++;
-//      }
-//      if (best == null) {
-//        //no more gains found in coverage
-//        break;
-//      }
-//      from.remove(best);
-//      suite.add(best);
-//      previous.addCoverage(best.getCoverage());
-//    }
-    log.info("loops in sort:"+times);
+    log.info("loops in sort:"+times+", tests:"+suite.size()+", steps:"+steps);
     return suite;
   }
 
