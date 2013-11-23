@@ -48,7 +48,7 @@ public class Benchmark {
     ScoreConfiguration sc = new ScoreConfiguration();
     sc.setLengthWeight(-1);
     GreedyOptimizer optimizer = new GreedyOptimizer(oc, sc);
-    optimizer.setTimeout(1);
+    optimizer.setTimeout(100);
     GenerationResults results = optimizer.search(111);
     TestCoverage tc = results.getCoverage();
     System.out.println(tc.coverageString(optimizer.getFsm(), null, null, null, null, false));
