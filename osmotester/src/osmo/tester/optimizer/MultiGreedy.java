@@ -61,6 +61,7 @@ public class MultiGreedy {
   private boolean dataTrace = false;
   /** Coverage of the final set. */
   private TestCoverage finalCoverage = null;
+  private final String midPath;
 
   /**
    * Uses number of processors on system as default for number of threads in the thread pool.
@@ -87,6 +88,7 @@ public class MultiGreedy {
     greedyPool = Executors.newFixedThreadPool(parallelism);
     rand = new Randomizer(seed);
     optimizerCount = parallelism;
+    midPath = "multi-greedy-"+seed+"/";
   }
   
   public void enableDataTrace() {
@@ -160,6 +162,7 @@ public class MultiGreedy {
   private void runOptimizers(Collection<Future<Collection<TestCase>>> futures) {
     for (int i = 0 ; i < optimizerCount ; i++) {
       GreedyOptimizer optimizer = new GreedyOptimizer(osmoConfig, optimizerConfig);
+      optimizer.setMidPath(midPath);
       if (dataTrace) optimizer.enableDataTrace();
       optimizer.setTimeout(timeout);
       GreedyTask task = new GreedyTask(optimizer, rand.nextLong(), populationSize);
@@ -227,6 +230,7 @@ public class MultiGreedy {
    */
   private void writeFinalReport(List<TestCase> cases, long seed) {
     String summary = "summary\n";
+    summary += "tests: "+cases.size()+"\n";
     
     CSVCoverageReport report = new CSVCoverageReport(calculator);
     report.process(cases);
@@ -236,7 +240,7 @@ public class MultiGreedy {
 
     String totalCsv = report.report();
     totalCsv += summary + "\n";
-    TestUtils.write(totalCsv, "osmo-output/greedy-" + seed + "/final-scores.csv");
+    TestUtils.write(totalCsv, "osmo-output/" + midPath + "final-scores.csv");
   }
 
   public FSM getFsm() {

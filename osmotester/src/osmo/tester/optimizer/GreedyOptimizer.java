@@ -62,6 +62,7 @@ public class GreedyOptimizer {
   private long start = 0;
   private List<TestCase> suite = new ArrayList<>();
   private int iteration = 0;
+  private String midPath = "";
 
   /**
    * @param configuration  For scoring the search.
@@ -72,7 +73,11 @@ public class GreedyOptimizer {
     this.config = configuration;
     this.scoreCalculator = new ScoreCalculator(configuration);
   }
-  
+
+  public void setMidPath(String midPath) {
+    this.midPath = midPath;
+  }
+
   public void enableDataTrace() {
     osmoConfig.setDataTraceRequested(true);
   }
@@ -216,7 +221,7 @@ public class GreedyOptimizer {
     String totalCsv = report.report();
     totalCsv += summary + "\n";
     String filename = id + "-scores.csv";
-    TestUtils.write(totalCsv, "osmo-output/greedy-" + seed + "/" + filename);
+    TestUtils.write(totalCsv, "osmo-output/"+midPath+"greedy-" + seed + "/" + filename);
     long end = System.currentTimeMillis();
     long diff = end - start;
     log.info("GreedyOptimizer " + id + " generated " + generationCount + " tests.");
