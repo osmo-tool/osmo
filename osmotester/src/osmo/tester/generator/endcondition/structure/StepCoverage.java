@@ -22,7 +22,7 @@ import java.util.List;
  * @author Teemu Kanstren
  */
 public class StepCoverage implements EndCondition {
-  private static Logger log = new Logger(StepCoverage.class);
+  private static final Logger log = new Logger(StepCoverage.class);
   /** The names of the steps that need to be covered. */
   private Collection<String> required = new ArrayList<>();
 

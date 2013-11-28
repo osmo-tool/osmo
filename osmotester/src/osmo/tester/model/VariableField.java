@@ -11,7 +11,7 @@ import java.lang.reflect.Field;
  * @author Teemu Kanstren
  */
 public class VariableField {
-  private static Logger log = new Logger(VariableField.class);
+  private static final Logger log = new Logger(VariableField.class);
   /** The model object itself, hosting the actual variable object. */
   private final Object modelObject;
   /** The field for the variable. */

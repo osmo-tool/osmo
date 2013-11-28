@@ -19,7 +19,7 @@ import java.lang.reflect.Method;
  * @author Teemu Kanstren
  */
 public class PostParser implements AnnotationParser {
-  private static Logger log = new Logger(PostParser.class);
+  private static final Logger log = new Logger(PostParser.class);
 
   @Override
   public String parse(ParserResult result, ParserParameters parameters) {

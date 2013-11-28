@@ -20,7 +20,7 @@ import java.util.concurrent.RecursiveTask;
  * @author Teemu Kanstren
  */
 public class PathExplorer extends RecursiveTask<List<TestCase>> {
-  private static Logger log = new Logger(PathExplorer.class);
+  private static final Logger log = new Logger(PathExplorer.class);
   /** Common parameters for exploration. */
   private final ExplorationState state;
   /** The depth of exploration for this explorer. */

@@ -18,7 +18,7 @@ import java.util.Arrays;
  * @author Teemu Kanstren
  */
 public class GuardParser implements AnnotationParser {
-  private static Logger log = new Logger(GuardParser.class);
+  private static final Logger log = new Logger(GuardParser.class);
 
   @Override
   public String parse(ParserResult result, ParserParameters parameters) {

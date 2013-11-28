@@ -25,7 +25,7 @@ import java.util.Map;
  * @author Teemu Kanstren, Olli-Pekka Puolitaival
  */
 public class BalancingAlgorithm implements FSMTraversalAlgorithm {
-  private static Logger log = new Logger(BalancingAlgorithm.class);
+  private static final Logger log = new Logger(BalancingAlgorithm.class);
   /** The coverage for step pairs, key = step 1 in pair, value = {step 2 in pair, coverage} */
   private Map<String, Map<FSMTransition, Integer>> spCoverage = new LinkedHashMap<>();
   /** For randomization. Separate instances are used to allow multiple instances running concurrently. */

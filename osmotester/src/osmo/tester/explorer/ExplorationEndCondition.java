@@ -23,7 +23,7 @@ import java.util.List;
  * @author Teemu Kanstren
  */
 public class ExplorationEndCondition implements EndCondition {
-  private static Logger log = new Logger(ExplorationEndCondition.class);
+  private static final Logger log = new Logger(ExplorationEndCondition.class);
   /** The configuration used to calculate coverage scores. */
   private final ExplorationConfiguration config;
   /** When all other conditions for a test/suite end is reached, this is used to provide some final randomization. */

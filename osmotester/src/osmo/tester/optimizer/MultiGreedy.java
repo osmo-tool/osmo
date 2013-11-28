@@ -32,7 +32,7 @@ import java.util.concurrent.Future;
  * @author Teemu Kanstren
  */
 public class MultiGreedy {
-  private static Logger log = new Logger(MultiGreedy.class);
+  private static final Logger log = new Logger(MultiGreedy.class);
   /** Configuration for the optimizer(s). */
   private final ScoreConfiguration optimizerConfig;
   /** The thread pool for running the optimizer tasks. */

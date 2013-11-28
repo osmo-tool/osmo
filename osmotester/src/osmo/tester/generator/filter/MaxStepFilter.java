@@ -20,7 +20,7 @@ import java.util.Map;
  * @author Teemu Kanstren
  */
 public class MaxStepFilter implements StepFilter {
-  private static Logger log = new Logger(MaxStepFilter.class);
+  private static final Logger log = new Logger(MaxStepFilter.class);
   /** Maximum allowed step count. Key = step name, value = maximum number of times to take. */
   private Map<String, Integer> maximums = new HashMap<>();
   /** The actual count of step has been taken. Key = step name, value = number of times taken. */

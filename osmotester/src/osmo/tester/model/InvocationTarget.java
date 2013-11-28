@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
  * @author Teemu Kanstren
  */
 public class InvocationTarget implements Comparable<InvocationTarget> {
-  private static Logger log = new Logger(InvocationTarget.class);
+  private static final Logger log = new Logger(InvocationTarget.class);
   /** The model object itself, implementing the actual methods to be invoked etc. */
   private final Object modelObject;
   /** The method to be invoked on the model object. */

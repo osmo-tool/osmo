@@ -12,7 +12,7 @@ import osmo.tester.parser.ParserResult;
  * @author Teemu Kanstren 
  */
 public class GroupParser implements AnnotationParser {
-  private static Logger log = new Logger(GroupParser.class);
+  private static final Logger log = new Logger(GroupParser.class);
   
   @Override
   public String parse(ParserResult result, ParserParameters parameters) {

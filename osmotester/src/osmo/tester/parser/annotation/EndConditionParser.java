@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
  * @author Teemu Kanstren
  */
 public class EndConditionParser implements AnnotationParser {
-  private static Logger log = new Logger(EndConditionParser.class);
+  private static final Logger log = new Logger(EndConditionParser.class);
 
   @Override
   public String parse(ParserResult result, ParserParameters parameters) {

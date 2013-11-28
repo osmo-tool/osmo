@@ -16,7 +16,7 @@ import java.util.List;
  * @author Teemu Kanstren
  */
 public class ExplorationHelper {
-  private static Logger log = new Logger(ExplorationHelper.class);
+  private static final Logger log = new Logger(ExplorationHelper.class);
 
   public static MainGenerator initPath( ExplorationState state, Collection<String> path) {
     return initPath(state, path, false);

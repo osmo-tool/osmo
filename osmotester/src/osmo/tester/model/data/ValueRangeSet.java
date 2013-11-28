@@ -192,6 +192,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
   }
   
   private void pre() {
+    if (rand == null) throw new IllegalStateException("You need to set seed before using data objects");
     choice = null;
     if (gui != null) {
       choice = (T) gui.next();

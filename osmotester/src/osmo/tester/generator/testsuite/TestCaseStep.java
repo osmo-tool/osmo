@@ -25,7 +25,7 @@ import java.util.Map;
  * @author Teemu Kanstren
  */
 public class TestCaseStep {
-  private static Logger log = new Logger(TestCaseStep.class);
+  private static final Logger log = new Logger(TestCaseStep.class);
   /** The transition (step) that was taken in this test step. */
   private final String transitionName;
   /** The model object from which the transition (step) was executed. */

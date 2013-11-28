@@ -32,7 +32,7 @@ import java.util.Collection;
  * @author Teemu Kanstren
  */
 public class JenkinsReportGenerator implements GenerationListener {
-  private static Logger log = new Logger(JenkinsReportGenerator.class);
+  private static final Logger log = new Logger(JenkinsReportGenerator.class);
   /** For template->report generation. */
   private VelocityEngine velocity = new VelocityEngine();
   /** For storing template variables. */

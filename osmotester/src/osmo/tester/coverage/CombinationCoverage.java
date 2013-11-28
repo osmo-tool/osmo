@@ -20,7 +20,7 @@ import java.util.List;
  * @author Teemu Kanstren
  */
 public class CombinationCoverage implements VariableValue<String> {
-  private static Logger log = new Logger(CombinationCoverage.class);
+  private static final Logger log = new Logger(CombinationCoverage.class);
   /** The references to the variables this is combining. */
   private List<VariableValue> inputs = new ArrayList<>();
 

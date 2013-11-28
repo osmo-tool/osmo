@@ -12,7 +12,7 @@ import java.util.Map;
  * @author Teemu Kanstren 
  */
 public class ScoreCalculator {
-  private static Logger log = new Logger(ScoreCalculator.class);
+  private static final Logger log = new Logger(ScoreCalculator.class);
   /** Defines how the coverage score is calculated. */
   private final ScoreConfiguration config;
 

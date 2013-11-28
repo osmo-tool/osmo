@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
  * @author Teemu Kanstren
  */
 public class BeforeTestParser implements AnnotationParser {
-  private static Logger log = new Logger(BeforeTestParser.class);
+  private static final Logger log = new Logger(BeforeTestParser.class);
 
   @Override
   public String parse(ParserResult result, ParserParameters parameters) {

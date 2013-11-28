@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
  * @author Teemu Kanstren
  */
 public class TransitionParser implements AnnotationParser {
-  private static Logger log = new Logger(TransitionParser.class);
+  private static final Logger log = new Logger(TransitionParser.class);
   private String errors = "";
 
   @Override

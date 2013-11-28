@@ -61,7 +61,7 @@ import java.util.Map;
  * @author Teemu Kanstren
  */
 public class MainParser {
-  private static Logger log = new Logger(MainParser.class);
+  private static final Logger log = new Logger(MainParser.class);
   /** Key = Annotation type, Value = The parser object for that annotation. */
   private final Map<Class<? extends Annotation>, AnnotationParser> annotationParsers = new HashMap<>();
   /** Key = Annotation type, Value = The parser object for that annotation. */

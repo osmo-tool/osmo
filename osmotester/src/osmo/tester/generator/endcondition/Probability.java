@@ -15,7 +15,7 @@ import osmo.tester.model.FSM;
  * @author Teemu Kanstren
  */
 public class Probability implements EndCondition {
-  private static Logger log = new Logger(Probability.class);
+  private static final Logger log = new Logger(Probability.class);
   /** The stopping threshold. */
   private final double threshold;
   /** For random numbers. */
