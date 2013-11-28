@@ -36,7 +36,7 @@ import java.util.List;
  * @author Teemu Kanstren
  */
 public class MainGenerator {
-  private static Logger log = new Logger(MainGenerator.class);
+  private static final Logger log = new Logger(MainGenerator.class);
   /** The test generation configuration. */
   protected final OSMOConfiguration config;
   /** The parsed overall test model. */

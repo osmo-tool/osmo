@@ -184,6 +184,7 @@ public class Text extends SearchableInput<String> {
    * @return Generated data.
    */
   public String random() {
+    if (rand == null) throw new IllegalStateException("You need to set seed before using data objects");
     int length = length();
     char[] c = new char[length];
     for (int i = 0 ; i < length ; i++) {
@@ -203,6 +204,7 @@ public class Text extends SearchableInput<String> {
    * @return the next generated value.
    */
   public String randomInvalid() {
+    if (rand == null) throw new IllegalStateException("You need to set seed before using data objects");
     int length = length();
     char[] c = new char[length];
     for (int i = 0 ; i < length ; i++) {

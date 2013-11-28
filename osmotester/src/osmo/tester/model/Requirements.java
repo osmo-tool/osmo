@@ -22,7 +22,7 @@ import java.util.TreeSet;
  * @author Teemu Kanstren
  */
 public class Requirements {
-  private static Logger log = new Logger(Requirements.class);
+  private static final Logger log = new Logger(Requirements.class);
   /** The overall set of requirements that should be covered. */
   private List<String> reqs = new ArrayList<>();
   /** The set of requirements that have been covered. */

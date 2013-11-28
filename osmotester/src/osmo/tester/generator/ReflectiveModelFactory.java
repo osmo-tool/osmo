@@ -15,7 +15,7 @@ import java.util.Collections;
  * @author Teemu Kanstren 
  */
 public class ReflectiveModelFactory implements ModelFactory {
-  private static Logger log = new Logger(MainGenerator.class);
+  private static final Logger log = new Logger(MainGenerator.class);
   /** List of classes to instantiate as the model objects. */
   private final Collection<Class> classes = new ArrayList<>();
 

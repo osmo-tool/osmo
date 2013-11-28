@@ -30,7 +30,7 @@ import java.util.concurrent.Future;
  * @author Teemu Kanstren 
  */
 public class MultiOSMO {
-  private static Logger log = new Logger(MultiOSMO.class);
+  private static final Logger log = new Logger(MultiOSMO.class);
   /** Shared configuration for all generators, only the seed will be different. */
   private OSMOConfiguration config = new OSMOConfiguration();
   /** How many generators to run in parallel? */

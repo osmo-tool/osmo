@@ -16,7 +16,7 @@ import java.lang.reflect.Method;
  * @author Teemu Kanstren
  */
 public class LastStepParser implements AnnotationParser {
-  private static Logger log = new Logger(LastStepParser.class);
+  private static final Logger log = new Logger(LastStepParser.class);
 
   @Override
   public String parse(ParserResult result, ParserParameters parameters) {

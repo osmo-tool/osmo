@@ -14,7 +14,7 @@ import java.lang.reflect.Field;
  * @author Teemu Kanstren
  */
 public class RequirementsParser implements AnnotationParser {
-  private static Logger log = new Logger(RequirementsParser.class);
+  private static final Logger log = new Logger(RequirementsParser.class);
   /** We store any found requirements object here so we can fail if two different instances are found. */
   private Requirements req = null;
 

@@ -30,7 +30,7 @@ import java.util.concurrent.Future;
  * @author Teemu Kanstren
  */
 public class MainExplorer implements Runnable {
-  private static Logger log = new Logger(MainExplorer.class);
+  private static final Logger log = new Logger(MainExplorer.class);
   /** The representation of the exploration trace. */
   private final TraceNode trace;
   /** The script so far, that is the current test case steps. We look for the next step on top of this. */

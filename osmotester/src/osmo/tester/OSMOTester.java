@@ -33,7 +33,7 @@ import java.util.logging.Level;
  * @author Teemu Kanstren
  */
 public class OSMOTester {
-  private static Logger log = new Logger(OSMOTester.class);
+  private static final Logger log = new Logger(OSMOTester.class);
   /** The parsed model for test generation. */
   private FSM fsm = null;
   /** Configuration for test generation. */

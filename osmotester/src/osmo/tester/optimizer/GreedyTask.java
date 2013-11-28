@@ -14,7 +14,7 @@ import java.util.concurrent.Callable;
  * @author Teemu Kanstren
  */
 public class GreedyTask implements Callable<Collection<TestCase>> {
-  private static Logger log = new Logger(GreedyTask.class);
+  private static final Logger log = new Logger(GreedyTask.class);
   /** The optimizer to run in this task. */
   private final GreedyOptimizer optimizer;
   /** Parameters for the optimizer. */

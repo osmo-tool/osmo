@@ -40,7 +40,7 @@ import java.util.List;
  * @author Teemu Kanstren
  */
 public class GreedyOptimizer {
-  private static Logger log = new Logger(GreedyOptimizer.class);
+  private static final Logger log = new Logger(GreedyOptimizer.class);
   /** Defines weights for different coverage requirements to optimize for. */
   private final ScoreConfiguration config;
   /** The test model. */

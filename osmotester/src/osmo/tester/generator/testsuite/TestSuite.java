@@ -19,7 +19,7 @@ import java.util.Map;
  * @author Teemu Kanstren, Olli-Pekka Puolitaival
  */
 public class TestSuite {
-  private static Logger log = new Logger(TestSuite.class);
+  private static final Logger log = new Logger(TestSuite.class);
   /** The current test being generated. */
   private TestCase current = null;
   /** The test cases generated so far, excluding the current test case. */

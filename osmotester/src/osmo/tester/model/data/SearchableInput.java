@@ -14,7 +14,7 @@ import java.util.Collection;
  * @author Teemu Kanstren
  */
 public abstract class SearchableInput<T> implements Input<T>, VariableValue<T> {
-  private static Logger log = new Logger(SearchableInput.class);
+  private static final Logger log = new Logger(SearchableInput.class);
   /** Variable name. */
   private String name;
   /** For providing values manually through a GUI. Enabled if non-null. */

@@ -15,7 +15,7 @@ import java.util.List;
  * @author Teemu Kanstren
  */
 public class FSMTransition implements Comparable<FSMTransition> {
-  private static Logger log = new Logger(FSMTransition.class);
+  private static final Logger log = new Logger(FSMTransition.class);
   /** Name of the transition, from @Transition("name") or (name="name") or (value="name"). Fails if undefined or empty (""). */
   private final TransitionName name;
   /** Weight of the transitions, from @Transition(weight=x), defaults to 10 (see {@link osmo.tester.annotation.Transition}. */

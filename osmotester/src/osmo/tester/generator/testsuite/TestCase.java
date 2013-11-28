@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Teemu Kanstren, Olli-Pekka Puolitaival
  */
 public class TestCase {
-  private static Logger log = new Logger(TestCase.class);
+  private static final Logger log = new Logger(TestCase.class);
   /** The test steps (taken) for this test case. */
   private List<TestCaseStep> steps = new ArrayList<>();
   /** The latest test step (being/having been generated). */
