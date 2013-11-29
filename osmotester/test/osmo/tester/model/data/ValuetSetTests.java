@@ -28,12 +28,12 @@ public class ValuetSetTests {
     set.add("one");
     set.add("two");
     set.add("three");
-    assertEquals("one", set.ordered());
-    assertEquals("two", set.ordered());
-    assertEquals("three", set.ordered());
-    assertEquals("one", set.ordered());
-    assertEquals("two", set.ordered());
-    assertEquals("three", set.ordered());
+    assertEquals("one", set.loop());
+    assertEquals("two", set.loop());
+    assertEquals("three", set.loop());
+    assertEquals("one", set.loop());
+    assertEquals("two", set.loop());
+    assertEquals("three", set.loop());
   }
 
   @Test
@@ -118,16 +118,16 @@ public class ValuetSetTests {
 
   @Test
   public void addAndRemoveOrderedTest() {
-    assertEquals("one", set.ordered());
-    assertEquals("two", set.ordered());
+    assertEquals("one", set.loop());
+    assertEquals("two", set.loop());
     set.remove("one");
-    assertEquals("three", set.ordered());
+    assertEquals("three", set.loop());
     set.add("four");
     set.add("five");
-    assertEquals("four", set.ordered());
+    assertEquals("four", set.loop());
     set.remove("three");
-    assertEquals("five", set.ordered());
-    assertEquals("two", set.ordered());
+    assertEquals("five", set.loop());
+    assertEquals("two", set.loop());
   }
 
   @Test
@@ -168,13 +168,13 @@ public class ValuetSetTests {
   @Test
   public void weightedAddWithLoop() {
     set.add("four", 3);
-    assertEquals("one", set.ordered());
-    assertEquals("two", set.ordered());
-    assertEquals("three", set.ordered());
-    assertEquals("four", set.ordered());
-    assertEquals("four", set.ordered());
-    assertEquals("four", set.ordered());
-    assertEquals("one", set.ordered());
+    assertEquals("one", set.loop());
+    assertEquals("two", set.loop());
+    assertEquals("three", set.loop());
+    assertEquals("four", set.loop());
+    assertEquals("four", set.loop());
+    assertEquals("four", set.loop());
+    assertEquals("one", set.loop());
   }
   
   @Test

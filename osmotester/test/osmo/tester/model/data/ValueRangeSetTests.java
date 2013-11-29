@@ -226,6 +226,7 @@ public class ValueRangeSetTests {
     vr.addPartition(200, 300);
     vr.addPartition(-300, -200);
     Collection<Integer> actual = new ArrayList<>();
+    vr.setSeed(111);
     for (int i = 0 ; i < 30 ; i++) {
       actual.add(vr.boundaryIn());
     }
@@ -242,6 +243,7 @@ public class ValueRangeSetTests {
     vr.addPartition(-100, -50);
     vr.addPartition(200, 300);
     vr.addPartition(-300, -200);
+    vr.setSeed(111);
     Collection<Integer> actual = new ArrayList<>();
     for (int i = 0 ; i < 30 ; i++) {
       actual.add(vr.boundaryOut());
@@ -260,6 +262,7 @@ public class ValueRangeSetTests {
     vr.addPartition(200f, 300f);
     vr.addPartition(-300f, -200f);
     vr.setIncrement(0.1f);
+    vr.setSeed(111);
     //the valuerangeset actually converts float to double
     double[] expected = new double[]{0, -100, 200, -300, 100, -50, 300, -200, 0.1, -99.9, 200.1, -299.9, 99.9, -50.1, 299.9, -200.1, 0.2, -99.8, 200.2, -299.8, 99.8, -50.2, 299.8, -200.2, 0.3, -99.7, 200.3, -299.7, 99.7, -50.3};
     for (int i = 0 ; i < 30 ; i++) {

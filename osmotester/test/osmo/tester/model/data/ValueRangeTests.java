@@ -38,6 +38,7 @@ public class ValueRangeTests {
   @Test
   public void orderedLoopValueRange() {
     ValueRange<Integer> vr = new ValueRange<>(5, 7);
+    vr.setSeed(111);
     assertEquals("First item", 5, vr.loop().intValue());
     assertEquals("Second item", 6, vr.loop().intValue());
     assertEquals("Third item", 7, vr.loop().intValue());
@@ -81,6 +82,7 @@ public class ValueRangeTests {
   public void boundaryScanDefault() {
     ValueRange<Integer> range = new ValueRange<>(10, 20);
     range.setStrategy(DataGenerationStrategy.BOUNDARY_SCAN);
+    range.setSeed(111);
     assertValues(range, 10, 20, 11, 19, 12, 18, 13, 17, 14, 16, 15, 15, 10, 20, 11, 19);
   }
 
@@ -89,6 +91,7 @@ public class ValueRangeTests {
     ValueRange<Integer> range = new ValueRange<>(10, 20);
     range.setStrategy(DataGenerationStrategy.BOUNDARY_SCAN);
     range.setCount(0);
+    range.setSeed(111);
     assertValues(range, 10, 20, 10, 20);
   }
 
@@ -110,6 +113,7 @@ public class ValueRangeTests {
     ValueRange<Integer> range = new ValueRange<>(10, 20);
     range.setStrategy(DataGenerationStrategy.BOUNDARY_SCAN);
     range.setCount(1);
+    range.setSeed(111);
     assertValues(range, 10, 20, 11, 19, 10, 20, 11, 19, 10, 20);
   }
 
@@ -129,6 +133,7 @@ public class ValueRangeTests {
   public void boundaryScanDefaultInvalid() {
     ValueRange<Integer> range = new ValueRange<>(10, 20);
     range.setStrategy(DataGenerationStrategy.BOUNDARY_SCAN_INVALID);
+    range.setSeed(111);
     assertValues(range, 21, 9, 22, 8, 23, 7, 24, 6, 25, 5, 21, 9);
   }
 

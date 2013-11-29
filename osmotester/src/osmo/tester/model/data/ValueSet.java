@@ -145,7 +145,7 @@ public class ValueSet<T> extends SearchableInput<T> {
   public T next() {
     switch (strategy) {
       case ORDERED_LOOP:
-        return ordered();
+        return loop();
       case BALANCING:
         return balanced();
       case RANDOM:
@@ -344,7 +344,7 @@ public class ValueSet<T> extends SearchableInput<T> {
    *
    * @return The next item according to loop index.
    */
-  public T ordered() {
+  public T loop() {
     pre();
     if (choice == null) {
       List<T> currentOptions = new ArrayList<>();
