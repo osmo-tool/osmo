@@ -72,6 +72,11 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
     }
   }
 
+  /**
+   * 
+   * @param strategy
+   * @deprecated use the direct methods..
+   */
   public void setStrategy(int strategy) {
     this.strategy = strategy;
   }
@@ -161,7 +166,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
       case BALANCED:
         return partitions.balanced();
       case LOOP:
-        return partitions.ordered();
+        return partitions.loop();
       default:
         return partitions.random();
     }

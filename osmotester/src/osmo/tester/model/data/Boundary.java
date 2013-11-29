@@ -31,6 +31,9 @@ public class Boundary {
     this.type = type;
     this.min = min;
     this.max = max;
+    //the actual numbers should not matter as we use no randomization from these
+    validValues.setSeed(1);
+    invalidValues.setSeed(1);
   }
 
   public int getCount() {
@@ -122,7 +125,7 @@ public class Boundary {
     if (validValues.size() == 0) {
       init();
     }
-    return validValues.ordered();
+    return validValues.loop();
   }
 
   /**
@@ -136,6 +139,6 @@ public class Boundary {
     if (validValues.size() == 0) {
       init();
     }
-    return invalidValues.ordered();
+    return invalidValues.loop();
   }
 }

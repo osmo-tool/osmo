@@ -2,7 +2,7 @@ package osmo.tester.model.data;
 
 import org.junit.Before;
 import org.junit.Test;
-import osmo.tester.OSMOConfiguration;
+import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -30,47 +30,48 @@ public class SearchableInputTests {
   public void valueRange() {
     ValueRange<Integer> range = new ValueRange<>(1, 10);
     range.setSuite(suite);
-    range.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     String name = "test-range";
     range.setName(name);
     range.setStored(true);
-    Collection<Integer> expected = new ArrayList<>();
+    range.setSeed(111);
+    Collection<String> expected = new LinkedHashSet<>();
     for (int i = 0 ; i < 11 ; i++) {
-      range.next();
-      expected.add(i % 10 + 1);
+      range.loop();
+      int value = i % 10 + 1;
+      expected.add("" + value);
     }
-//    Map<String, ModelVariable> variables = suite.getStepVariables();
-//    ModelVariable variable = variables.get("test-range");
-//    Collection actual = variable.getValues();
-//    assertEquals("Observed generated values", expected, actual);
+    TestCoverage coverage = suite.getCurrentTest().getCoverage();
+    Map<String, Collection<String>> variables = coverage.getVariableValues();
+    Collection<String> actual = variables.get("test-range");
+    assertEquals("Observed generated values", expected, actual);
   }
 
   @Test
   public void valueSet() {
     ValueSet<String> set = new ValueSet<>("v1", "v2", "v3");
     set.setSuite(suite);
-    set.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     String name = "test-set";
     set.setName(name);
     set.setStored(true);
-    Collection<String> expected = new ArrayList<>();
+    set.setSeed(111);
+    Collection<String> expected = new LinkedHashSet<>();
     Collection<String> expected2 = new LinkedHashSet<>();
     for (int i = 0 ; i < 5 ; i++) {
-      set.next();
+      set.loop();
       String value = "v" + (i % 3 + 1);
       expected.add(value);
       expected2.add(value);
     }
-//    TestCase test = suite.getAllTestCases().get(0);
-//    Map<String, ModelVariable> stepVariables = test.getStepVariables();
-//    ModelVariable variable = stepVariables.get("test-set");
-//    Collection actual = variable.getValues();
-//    assertEquals("Observed generated values", expected, actual);
-//
-//    Map<String, ModelVariable> suiteVariables = suite.getTestVariables();
-//    ModelVariable variable2 = suiteVariables.get("test-set");
-//    Collection actual2 = variable2.getValues();
-//    //the collection types are different, thus the toString()
-//    assertEquals("Observed generated values", expected2.toString(), actual2.toString());
+    suite.endTest();
+    TestCoverage coverage = suite.getAllTestCases().get(0).getCoverage();
+    Map<String, Collection<String>> variables = coverage.getVariableValues();
+    Collection<String> actual = variables.get("test-set");
+    assertEquals("Observed generated values", expected, actual);
+
+    coverage = suite.getCoverage();
+    variables = coverage.getVariableValues();
+    Collection<String> actual2 = variables.get("test-set");
+    //the collection types are different, thus the toString()
+    assertEquals("Observed generated values", expected2.toString(), actual2.toString());
   }
 }

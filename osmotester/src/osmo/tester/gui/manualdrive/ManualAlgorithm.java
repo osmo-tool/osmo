@@ -6,9 +6,6 @@ import osmo.tester.generator.algorithm.BalancingAlgorithm;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.algorithm.WeightedRandomAlgorithm;
-import osmo.tester.generator.testsuite.ModelVariable;
-import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.gui.ModelHelper;
 import osmo.tester.model.FSM;
@@ -62,7 +59,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
   /** History of taken steps and variables. */
   private static JTextPane testLogPane = new JTextPane();
   /** Overall metrics for taken steps. */
-  private static JTextPane statePane = new JTextPane();
+  private static JTextPane metricsPane = new JTextPane();
   /** Used to pass the list choice between inner classes. */
   private static String choiceFromList = null;
   /** If the autoplay is enabled. */
@@ -97,6 +94,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
   private static final JButton btnWriteScript = new JButton("Write Script");
   /** This is given to generator as end condition to allow the end test/suite buttons to work. */
   private final ManualEndCondition mec = new ManualEndCondition();
+  private String historyText = "";
 
   /** Create the frame. */
   public ManualAlgorithm(OSMOTester tester) {
@@ -115,10 +113,10 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     testLogPane.setText("First Test Case starts");
     setContentPane(contentPane);
     JScrollPane scrollTestLog = new JScrollPane(testLogPane);
-    JScrollPane testMetricsPaneScroll = new JScrollPane(statePane);
+    JScrollPane testMetricsPaneScroll = new JScrollPane(metricsPane);
     JLabel lblTestLog = new JLabel("Test log");
     JLabel lblNextStep = new JLabel("Next Step");
-    JLabel lblTraceability = new JLabel("Value History");
+    JLabel lblTraceability = new JLabel("Metrics");
 
     autoPlayButton.addActionListener(new ActionListener() {
       @Override
@@ -147,8 +145,8 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
       }
     });
 
-    statePane.setBackground(SystemColor.menu);
-    statePane.setText("Test metrics");
+    metricsPane.setBackground(SystemColor.menu);
+    metricsPane.setText("Test metrics");
 
     availableStepsList = new JList();
     availableStepsList.addMouseListener(new MouseAdapter() {
@@ -300,8 +298,6 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
       EventQueue.invokeLater(new Runnable() {
         public void run() {
           try {
-//            ManualAlgorithm frame = new ManualAlgorithm();
-//            frame.setVisible(true);
             setVisible(true);
             running = true;
           } catch (Exception e) {
@@ -314,39 +310,6 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
       sleep(300);
     }
   }
-
-//  /**
-//   * Builds the description of generated test cases.
-//   *
-//   * @param history Generated tests.
-//   * @return String to show to user.
-//   */
-//  private String historyText(TestSuite history) {
-//    String ret = "";
-//
-//    int tcId = 1;
-//    List<TestCase> tests = history.getAllTestCases();
-//    for (TestCase tc : tests) {
-//      ret += "----== NEW TEST " + tcId + " ==----\n";
-//      tcId++;
-//      for (TestCaseStep ts : tc.getSteps()) {
-//        int tsId = ts.getId();
-//        String added = tsId + ". " + ts.getName() + "\n";
-//        Collection<ModelVariable> values = ts.getValues();
-//        int i = 1;
-//        for (ModelVariable value : values) {
-//          added += tsId + "." + i + ". " + value.getName() + " = " + value.getValues() + "\n";
-//          i++;
-//        }
-//        ret += added;
-//        Collection<String> coveredRequirements = ts.getCoveredRequirements();
-//        for (String req : coveredRequirements) {
-//          ret += "(Covered requirement:"+req+")\n";
-//        }
-//      }
-//    }
-//    return ret;
-//  }
 
   /**
    * For creating start padding for metrics etc.
@@ -362,20 +325,20 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     return ret;
   }
 
-//  /**
-//   * Creates the data for the metrics pane.
-//   *
-//   * @param history Created tests.
-//   * @return The text for metrics pane.
-//   */
-//  private String coverageText(TestSuite history) {
-//    Map<String, Integer> a = history.getStepCoverage();
-//    String ret = "";
-//    for (String t : a.keySet()) {
-//      ret += t + getSpaces(30 - t.length()) + "\t" + a.get(t) + "\n";
-//    }
-//    return ret;
-//  }
+  /**
+   * Creates the data for the metrics pane.
+   *
+   * @param suite Created tests.
+   * @return The text for metrics pane.
+   */
+  private String coverageText(TestSuite suite) {
+    Map<String, Integer> a = suite.getCoverage().getStepCoverage();
+    String ret = "";
+    for (String t : a.keySet()) {
+      ret += t + getSpaces(30 - t.length()) + "\t" + a.get(t) + "\n";
+    }
+    return ret;
+  }
 
   private String stateText() {
     String text = "";
@@ -444,18 +407,17 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
         si.setChecked(true);
       }
     }
+    historyText = "GENERATION START\n";
   }
 
   @Override
   public FSMTransition choose(TestSuite suite, List<FSMTransition> choices) {
     run(suite);
 
-    //Make some updates
-    //TODO: fix this
-//    testLogPane.setText(historyText(suite));
+    testLogPane.setText(historyText);
     testLogPane.setCaretPosition(testLogPane.getText().length());
-    statePane.setText(stateText());
-//    statePane.setText(coverageText(history));
+    metricsPane.setText(stateText());
+    metricsPane.setText(coverageText(suite));
 
     //Set available transitions to the UI
     availableStepsList.setModel(new ModelHelper(choices));
@@ -468,8 +430,10 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
 
     //Make selection
     for (FSMTransition t : choices) {
-      if (t.getName().toString().equals(choiceFromList)) {
+      String stepName = t.getName().toString();
+      if (stepName.equals(choiceFromList)) {
         choiceFromList = null;
+        historyText += "STEP:"+stepName+"\n";
         return t;
       }
     }
@@ -511,10 +475,6 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     } catch (Exception e) {
       e.printStackTrace();
     }
-//    ManualScriptWriter writer = new ManualScriptWriter();
-//    writer.write(suite);
-//    String separator = System.getProperty("file.separator");
-//    String filename = System.getProperty("user.dir")+separator+ManualScriptWriter.FILENAME;
   }
   
   public void testEnded() {
@@ -524,6 +484,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
   
   public void testStarted() {
     availableStepsList.setEnabled(true);
+    historyText += "--= NEW TEST =--\n";
   }
   
   public void suiteEnded() {
@@ -531,9 +492,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     autoPlayButton.setEnabled(false);
     btnEndTest.setEnabled(false);
     System.out.println("end test disabled");
-//    btnEndTest.repaint();
     btnEndSuite.setEnabled(false);
-//    btnEndSuite.repaint();
   }
 
   @Override
