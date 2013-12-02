@@ -1,7 +1,6 @@
 package osmo.tester.parser.field;
 
 import osmo.tester.annotation.Variable;
-import osmo.tester.model.Requirements;
 import osmo.tester.model.data.SearchableInput;
 import osmo.tester.parser.AnnotationParser;
 import osmo.tester.parser.ParserParameters;

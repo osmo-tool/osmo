@@ -1,7 +1,6 @@
 package osmo.tester.explorer;
 
 import osmo.common.log.Logger;
-import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.coverage.TestCoverage;
 import osmo.tester.explorer.trace.TraceNode;
 import osmo.tester.generator.MainGenerator;
@@ -18,10 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.Future;
 
 /**
  * This is what runs a single iteration of exploration, controlling the high-level flow.
@@ -37,9 +33,6 @@ public class MainExplorer implements Runnable {
   private List<String> script;
   /** The overall state of exploration. */
   private ExplorationState state;
-  /** The thread pool used to count coverages of different test suites and test cases. */
-  private static final ExecutorService coveragePool = 
-          Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(), new DaemonThreadFactory());
   /** The thread pool used for exploration. */
   private static ForkJoinPool explorationPool;
   /** The chosen step (name). */
@@ -210,35 +203,6 @@ public class MainExplorer implements Runnable {
       possibles.addAll(observed.get(key));
     }
   }
-
-//  /**
-//   * Calculates added coverage for the test suite for the given set of tests up to the given number of steps.
-//   * Used to pick the one that gives the most pluses fastest (with least steps).
-//   * The added coverage value is stored as a custom attribute in the test case.
-//   *
-//   * @param from          The set of test cases to calculate coverage for.
-//   * @param numberOfSteps The (maximum) number of steps to consider for each test.
-//   */
-//  private void calculateAddedCoverages(Collection<TestCase> from, int numberOfSteps) {
-//    TestCoverage suiteCoverage = state.getSuiteCoverage();
-//    Collection<Future> futures = new ArrayList<>();
-//    ScoreCalculator scoreCalculator = new ScoreCalculator(state.getConfig());
-//    for (TestCase test : from) {
-//      if (numberOfSteps == 0) {
-//        numberOfSteps = test.getAllStepNames().size();
-//      }
-//      CoverageTask task = new CoverageTask(test, numberOfSteps, suiteCoverage, scoreCalculator);
-//      Future future = coveragePool.submit(task);
-//      futures.add(future);
-//    }
-//    for (Future future : futures) {
-//      try {
-//        future.get();
-//      } catch (Exception e) {
-//        throw new RuntimeException("Failed to calculate coverage in exploration", e);
-//      }
-//    }
-//  }
 
   /**
    * Prunes the set of overall equal explored choices to pick the set of tests that achieve the biggest

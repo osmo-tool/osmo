@@ -12,7 +12,6 @@ import osmo.tester.model.Requirements;
 import osmo.tester.model.VariableField;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Collection;
 
 /** 
