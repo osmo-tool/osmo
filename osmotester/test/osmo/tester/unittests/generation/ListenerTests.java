@@ -1,4 +1,4 @@
-package osmo.tester.generation;
+package osmo.tester.unittests.generation;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -7,9 +7,8 @@ import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.model.Requirements;
-import osmo.tester.testmodels.ValidTestModel1;
-import osmo.tester.testmodels.ValidTestModel2;
-import osmo.tester.testmodels.ValidTestModel3;
+import osmo.tester.unittests.testmodels.ValidTestModel1;
+import osmo.tester.unittests.testmodels.ValidTestModel2;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;

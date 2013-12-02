@@ -1,7 +1,9 @@
-package osmo.tester.reporting.jenkins;
+package osmo.tester.unittests.reporting.jenkins;
 
 import org.junit.Before;
 import org.junit.Test;
+import osmo.tester.reporting.jenkins.JenkinsStep;
+import osmo.tester.reporting.jenkins.JenkinsTest;
 
 import static junit.framework.Assert.*;
 
