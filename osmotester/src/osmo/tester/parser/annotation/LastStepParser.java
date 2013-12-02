@@ -3,7 +3,6 @@ package osmo.tester.parser.annotation;
 import osmo.common.log.Logger;
 import osmo.tester.annotation.LastStep;
 import osmo.tester.model.InvocationTarget;
-import osmo.tester.model.TransitionName;
 import osmo.tester.parser.AnnotationParser;
 import osmo.tester.parser.ParserParameters;
 import osmo.tester.parser.ParserResult;

@@ -4,7 +4,6 @@ import osmo.common.log.Logger;
 import osmo.tester.generator.testsuite.TestCase;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.Callable;
 
 /**

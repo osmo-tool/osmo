@@ -1,7 +1,6 @@
 package osmo.tester.gui.manualdrive;
 
 import osmo.common.log.Logger;
-import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -9,7 +8,6 @@ import osmo.tester.generator.testsuite.TestSuite;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.List;
 
 /**

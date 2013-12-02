@@ -3,8 +3,6 @@ package osmo.tester.optimizer;
 import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.testsuite.TestCase;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /** @author Teemu Kanstren */

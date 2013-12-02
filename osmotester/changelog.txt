@@ -120,3 +120,6 @@ v3.3.0 15/11/2013
 -fixed manualdrive
 -fixes to laststep
 -added tutorial for scenarios
+v3.3.1 02/12/2013
+-optimizing memory & cpu use in greedyoptimizers
+-some small bug fixes
