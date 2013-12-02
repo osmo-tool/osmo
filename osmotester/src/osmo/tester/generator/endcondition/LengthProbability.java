@@ -22,7 +22,7 @@ public class LengthProbability implements EndCondition {
   private EndCondition delegate = null;
 
   public LengthProbability(int minLength, double probability) {
-    init(minLength, -1, probability);
+    init(minLength, 0, probability);
   }
   
   public LengthProbability(int minLength, int maxLength, double probability) {
@@ -30,6 +30,10 @@ public class LengthProbability implements EndCondition {
   }
 
   private void init(int minLength, int maxLength, double probability) {
+    if (maxLength < 0) {
+      String msg = "Maximum length cannot be negative. Given (" + maxLength + "). Use 0 to disable max length.";
+      throw new IllegalArgumentException(msg);
+    }
     if (maxLength > 0) {
       if (minLength > maxLength) {
         String msg = "Given minimum length (" + minLength + ") greater than maximum length ("+maxLength+"). " +

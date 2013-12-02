@@ -42,10 +42,14 @@ public class MatrixTests {
     reqs.covered("req-two");
     addStep("four");
     addStep("four");
+    suite.addValue("Hello", "World");
+    suite.addValue("Clowns", "Red Nosed..");
     addStep("five");
     suite.endTest();
     suite.startTest();
     addStep("one");
+    suite.addValue("Clowns", "Dozed");
+    suite.addValue("Clowns", "Outside");
     addStep("two");
     reqs.covered("req-one");
     reqs.covered("req-one");

@@ -7,8 +7,10 @@ import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.data.CollectionCount;
+import osmo.tester.model.data.ToStringValue;
 import osmo.tester.model.data.ValueRange;
 import osmo.tester.model.data.ValueSet;
+import osmo.tester.unittests.generation.TestVariable;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -28,6 +30,9 @@ public class VariableModel2 {
   private Collection<String> values = new ArrayList<>();
   @Variable
   private CollectionCount valueCount = new CollectionCount(values);
+  private TestVariable testVariable = new TestVariable("MyTV");
+  @Variable("Hello There")
+  private ToStringValue toStringVariable = new ToStringValue(testVariable);
   private final PrintStream out;
 
   public VariableModel2() {

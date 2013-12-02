@@ -14,7 +14,7 @@ public class VectorTests {
   /** Loads the test vector and checks various types of input lines. */
   @Test
   public void testVector() {
-    VectorSet set = new VectorSet("test_vector");
+    VectorSet set = new VectorSet(getClass(), "test_vector");
     List<String> options = set.getOptions();
     set.setStrategy(DataGenerationStrategy.ORDERED_LOOP);
     set.setSeed(111);

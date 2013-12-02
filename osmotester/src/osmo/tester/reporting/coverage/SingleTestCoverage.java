@@ -4,6 +4,7 @@ import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.FSM;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -160,7 +161,9 @@ public class SingleTestCoverage {
    * @return The values covered in this test case.
    */
   public Collection<Object> variableCoverage(String variable) {
-    return variableValues.get(variable);
+    Collection<Object> values = variableValues.get(variable);
+    if (values != null) return values;
+    return Collections.EMPTY_LIST;
   }
 
   public Collection<String> variableNames() {

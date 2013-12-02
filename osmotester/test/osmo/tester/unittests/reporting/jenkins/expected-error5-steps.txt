@@ -2,12 +2,12 @@
   <properties>
     <property name="Algorithm" value="osmo.tester.generator.algorithm.RandomAlgorithm"/>
     <property name="Listener" value="osmo.tester.reporting.jenkins.JenkinsReportGenerator"/>
-    <property name="Model Object" value="osmo.tester.testmodels.ErrorModel5"/>
+    <property name="Model Object" value="osmo.tester.unittests.testmodels.ErrorModel5"/>
     <property name="Seed" value="333"/>
     <property name="Suite End Condition" value="And{conditions=[Length{length=1}, Probability{threshold=0.05}]}"/>
     <property name="Test Case End Condition" value="And{conditions=[Length{length=1}, Probability{threshold=0.1}]}"/>
   </properties>
-  <testcase name="Test1" classname="[osmo.tester.testmodels.ErrorModel5]" time="0.00">
+  <testcase name="Test1" classname="[osmo.tester.unittests.testmodels.ErrorModel5]" time="0.00">
   </testcase>
   <system-out></system-out>
   <system-err></system-err>

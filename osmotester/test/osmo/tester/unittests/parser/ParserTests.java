@@ -281,10 +281,12 @@ public class ParserTests {
     ParserResult result = parser.parse(1, config, new TestSuite());
     FSM fsm = result.getFsm();
     Collection<VariableField> variables = fsm.getModelVariables();
-    assertEquals("Number of inputs", 5, variables.size());
+    assertEquals("Number of inputs", 6, variables.size());
     assertVariablePresent(variables, "range");
     assertVariablePresent(variables, "named-set");
+    assertVariablePresent(variables, "Hello There");
     assertVariableNotPresent(variables, "set");
+    assertVariableNotPresent(variables, "toStringVariable");
   }
 
   @Test
