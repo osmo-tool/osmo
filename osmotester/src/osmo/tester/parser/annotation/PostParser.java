@@ -47,8 +47,11 @@ public class PostParser implements AnnotationParser {
         } else {
           String methodName = parameters.getMethod().getName();
           targetName = GuardParser.findNameFrom(methodName);
-          if (targetName.length() == 0)
-            errors += aName+" method name must be of format xX when using method based naming: " + methodName+"\n";
+          if (targetName.length() == 0) {
+            String msg = aName + " method name must be of format xX when using method based naming: " + methodName;
+            msg += ". Or if using generic association, name \"all\" must be used.\n";
+            errors += msg;
+          }
         }
       }
       if (targetName.equals("all")) {

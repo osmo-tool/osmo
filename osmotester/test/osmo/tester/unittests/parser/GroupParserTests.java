@@ -106,9 +106,9 @@ public class GroupParserTests {
     } catch (Exception e) {
       String expected = "Invalid test model:\n" +
               "@Group must have name.\n" +
-              "Guard without matching step:group1.\n" +
-              "Pre without matching step:group1.\n" +
-              "Post without matching step:group1.\n" +
+              "@Guard without matching step:group1.\n" +
+              "@Pre without matching step:group1.\n" +
+              "@Post without matching step:group1.\n" +
               "Group name same as a step name (step3). Must be different.\n";
       assertEquals("Errors for parsing invalid group model", expected, e.getMessage());
     }
