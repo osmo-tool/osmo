@@ -1,6 +1,5 @@
 package osmo.tester.reporting.coverage;
 
-import osmo.tester.generator.testsuite.ModelVariable;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.FSM;
 

@@ -2,6 +2,7 @@ package osmo.tester.gui.manualdrive;
 
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
+import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.algorithm.BalancingAlgorithm;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
@@ -332,11 +333,21 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
    * @return The text for metrics pane.
    */
   private String coverageText(TestSuite suite) {
-    Map<String, Integer> a = suite.getCoverage().getStepCoverage();
-    String ret = "";
+    TestCoverage coverage = new TestCoverage();
+    coverage.addCoverage(suite.getCoverage());
+    coverage.addCoverage(suite.getCurrentTest().getCoverage());
+    Map<String, Integer> a = coverage.getStepCoverage();
+    String ret = "Number of times steps taken:\n";
     for (String t : a.keySet()) {
       ret += t + getSpaces(30 - t.length()) + "\t" + a.get(t) + "\n";
     }
+
+    ret += "\nNumber of times variables used:\n";
+    Map<String, Collection<String>> values = coverage.getVariableValues();
+    for (String t : values.keySet()) {
+      ret += t + getSpaces(30 - t.length()) + "\t" + values.get(t).size() + "\n";
+    }
+    
     return ret;
   }
 

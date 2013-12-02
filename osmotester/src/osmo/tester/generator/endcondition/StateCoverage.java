@@ -1,7 +1,5 @@
 package osmo.tester.generator.endcondition;
 
-import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 
@@ -9,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 
 /** 
  * An end condition that requires the given set of {@link osmo.tester.annotation.CoverageValue} values to be covered.

@@ -36,11 +36,11 @@ import osmo.tester.parser.annotation.GuardParser;
 import osmo.tester.parser.annotation.LastStepParser;
 import osmo.tester.parser.annotation.PostParser;
 import osmo.tester.parser.annotation.PreParser;
+import osmo.tester.parser.annotation.TransitionParser;
+import osmo.tester.parser.annotation.VariableParser;
 import osmo.tester.parser.field.RequirementsParser;
 import osmo.tester.parser.field.SearchableInputParser;
 import osmo.tester.parser.field.TestSuiteParser;
-import osmo.tester.parser.annotation.TransitionParser;
-import osmo.tester.parser.annotation.VariableParser;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

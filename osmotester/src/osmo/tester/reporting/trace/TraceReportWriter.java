@@ -4,9 +4,6 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import osmo.common.TestUtils;
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.generator.testsuite.TestCaseStep;
-import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.model.FSMTransition;
 
 import java.io.StringWriter;
 import java.util.List;

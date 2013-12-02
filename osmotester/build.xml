@@ -68,7 +68,8 @@
     <clover-setup>
       <files>
         <exclude name="osmo/tester/gui/**/*.java"/>
-        <exclude name="osmo/tester/issues/**/*.java"/>
+        <exclude name="osmo/tester/reporting/junit/**/*.java"/>
+        <exclude name="osmo/tester/unittests/**/*.java"/>
       </files>
     </clover-setup>
   </target>
