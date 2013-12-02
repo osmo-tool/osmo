@@ -6,10 +6,10 @@ import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.data.ToStringValue;
 
 /** @author Teemu Kanstren */
 public class ValidTestModel6 {
-  private TestSuite history = null;
   @Variable
   private int index = 0;
 

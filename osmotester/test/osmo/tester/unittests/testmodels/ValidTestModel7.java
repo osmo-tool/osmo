@@ -15,15 +15,6 @@ public class ValidTestModel7 {
   private int count2 = 0;
   private int count3 = 0;
   private int count4 = 0;
-  private final PrintStream out;
-
-  public ValidTestModel7() {
-    out = null;
-  }
-
-  public ValidTestModel7(PrintStream out) {
-    this.out = out;
-  }
 
   @Guard("t1")
   public boolean allowOne() {

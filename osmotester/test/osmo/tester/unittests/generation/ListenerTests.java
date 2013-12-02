@@ -1,19 +1,24 @@
 package osmo.tester.unittests.generation;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import osmo.common.TestUtils;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.endcondition.Length;
+import osmo.tester.generator.listener.TracePrinter;
 import osmo.tester.model.Requirements;
 import osmo.tester.unittests.testmodels.ValidTestModel1;
 import osmo.tester.unittests.testmodels.ValidTestModel2;
 
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.io.PrintStream;
 
 import static junit.framework.Assert.*;
+import static osmo.common.TestUtils.unifyLineSeparators;
 
 /** @author Teemu Kanstren */
 public class ListenerTests {
@@ -22,9 +27,15 @@ public class ListenerTests {
 
   @Before
   public void testSetup() {
+    TestUtils.startOutputCapture();
     osmo = new OSMOTester();
     listener = new TestSequenceListener();
     osmo.addListener(listener);
+  }
+
+  @After
+  public void down() {
+    TestUtils.endOutputCapture();
   }
 
   @Test
@@ -63,5 +74,42 @@ public class ListenerTests {
     osmo.setSuiteEndCondition(length1);
     osmo.generate(555);
     listener.validate("Generated sequence for test model 2");
+  }
+  
+  @Test
+  public void tracePrinter() {
+    osmo.addModelObject(new ValidTestModel2(new Requirements()));
+    TracePrinter printer = new TracePrinter();
+    osmo.addListener(printer);
+    osmo.setTestEndCondition(new Length(3));
+    osmo.setSuiteEndCondition(new Length(2));
+    osmo.generate(555);
+    String output = TestUtils.getOutput();
+    String expected = "1.1.STEP:HELLO\n" +
+            "1.2.STEP:WORLD\n" +
+            "1.3.STEP:EPIXX\n" +
+            "1.4.LASTSTEP:LAST\n" +
+            "2.1.STEP:EPIXX\n" +
+            "2.2.STEP:EPIXX\n" +
+            "2.3.STEP:EPIXX\n" +
+            "2.4.LASTSTEP:LAST\n" +
+            "generated 2 tests.\n" +
+            "\n" +
+            "Covered elements:\n" +
+            "Total steps: 6\n" +
+            "Unique steps: 3 (of 3)\n" +
+            "Unique step-pairs: 5 (of 5)\n" +
+            "Unique requirements: 3\n" +
+            "Variable values: 0\n" +
+            "Unique coverage-values: 0\n" +
+            "Unique coverage-value-pairs: 0\n" +
+            "\n" +
+            "Requirements:[]\n" +
+            "Covered:[epix, hello, world]\n" +
+            "Not covered:[]\n" +
+            "\n";
+    expected = unifyLineSeparators(expected, "\n");
+    output = unifyLineSeparators(output, "\n");
+    assertEquals("Captured output but TracePrinter", expected, output);
   }
 }

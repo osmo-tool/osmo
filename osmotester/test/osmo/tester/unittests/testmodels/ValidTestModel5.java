@@ -22,8 +22,6 @@ public class ValidTestModel5 {
   public static final String TAG_WORLD = "world";
   public static final String TAG_EPIX = "epix";
   private final PrintStream out;
-  private TestSuite history = null;
-  private String states = "";
 
   public ValidTestModel5(PrintStream out) {
     this.out = out;

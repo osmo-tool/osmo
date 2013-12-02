@@ -19,9 +19,9 @@ public class VectorSet extends ValueSet<String> {
 
   public final String name;
 
-  public VectorSet(String name) {
+  public VectorSet(Class clazz, String name) {
     this.name = name;
-    String text = getResource(getClass(), name + ".txt");
+    String text = getResource(clazz, name + ".txt");
     text = unifyLineSeparators(text, "\n");
     String[] lines = text.split("\n");
     for (String line : lines) {
@@ -33,5 +33,9 @@ public class VectorSet extends ValueSet<String> {
       }
       add(line);
     }
+  }
+
+  public VectorSet(String name) {
+    this(VectorSet.class, name);
   }
 }

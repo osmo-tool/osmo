@@ -47,10 +47,6 @@ public class InvocationTarget implements Comparable<InvocationTarget> {
    * @return The return value from the invoked method.
    */
   public Object invoke(Object arg) {
-    //we need to check if it has parameters since it is optional for a pre- or post-method to have parameters
-    if (method.getParameterTypes().length == 0) {
-      return invoke();
-    }
     try {
       return method.invoke(modelObject, arg);
     } catch (Exception e) {

@@ -31,7 +31,6 @@ public class ErrorHandlingTests {
 
   @Before
   public void testSetup() {
-//    Logger.consoleLevel = Level.ALL;
     osmo = new OSMOTester();
     config = osmo.getConfig();
     listener = new TestSequenceListener();

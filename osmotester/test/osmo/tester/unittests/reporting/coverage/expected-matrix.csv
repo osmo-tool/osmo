@@ -14,9 +14,11 @@ Test1,1,0,0,1,1,1,1,0,0,0,1,1,0,1,
 Test2,1,1,1,0,0,0,1,1,1,1,0,0,1,0,
 
 The set of values for model variables in a given test case:
-Test ID,
-Test1,
-Test2,
+Test ID,Clowns,Hello,
+Test1,[Red Nosed..],[World],
+Test2,[Dozed, Outside],[],
 
 Overall coverage for all tests:
+Clowns,[Red Nosed.., Dozed, Outside]
+Hello,[World]
 

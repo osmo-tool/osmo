@@ -63,7 +63,9 @@ public class TracePrinter implements GenerationListener {
 
   @Override
   public void testError(TestCase test, Throwable error) {
-    String name = test.getCurrentStep().getName();
+    TestCaseStep currentStep = test.getCurrentStep();
+    String name = FSM.START_STEP_NAME;
+    if (currentStep != null) name = currentStep.getName();
     out.println(testIndex+"."+stepIndex+".ERROR:"+name.toUpperCase());
     stepIndex++;
   }

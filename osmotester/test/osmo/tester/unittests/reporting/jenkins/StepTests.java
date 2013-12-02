@@ -33,7 +33,7 @@ public class StepTests {
 
   @Test
   public void classNameFormatting() {
-    assertEquals("Classname formatted", "osmo.tester.reporting.jenkins.StepTests", step.getClassName());
+    assertEquals("Classname formatted", "osmo.tester.unittests.reporting.jenkins.StepTests", step.getClassName());
   }
 
   @Test

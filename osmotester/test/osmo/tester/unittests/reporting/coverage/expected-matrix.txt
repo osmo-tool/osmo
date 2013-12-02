@@ -216,17 +216,23 @@
     <thead>
       <tr>
         <th class='corner' scope='col' rowspan='2'>Test ID</th>
-        <th scope='col' colspan='0'>Variable coverage</th>
+        <th scope='col' colspan='2'>Variable coverage</th>
       </tr>
       <tr>
+        <th class='colhead' scope='col'>Clowns</th>
+        <th class='colhead' scope='col'>Hello</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <th class='testhead' scope='row'>Test1</th>
+        <td>[Red Nosed..]</td>
+        <td>[World]</td>
       </tr>
       <tr class='alt'>
         <th class='testhead' scope='row'>Test2</th>
+        <td>[Dozed, Outside]</td>
+        <td>[]</td>
       </tr>
     </tbody>
   </table>
@@ -240,6 +246,14 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <th class='testhead' scope='row'>Clowns</th>
+        <td>[Red Nosed.., Dozed, Outside]</td>
+      </tr>
+      <tr class='alt'>
+        <th class='testhead' scope='row'>Hello</th>
+        <td>[World]</td>
+      </tr>
     </tbody>
   </table>
 
