@@ -1,23 +1,24 @@
-package osmo.tester.explorer.testmodels;
+package osmo.tester.unittests.explorer.testmodels;
 
+import osmo.common.NullPrintStream;
 import osmo.tester.annotation.AfterSuite;
 import osmo.tester.annotation.AfterTest;
 import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
-import osmo.tester.annotation.TestStep;
+import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
 
+import java.io.PrintStream;
+
 /**
- * Same as the other calculator but without explicit state enumeration. Instead this will keep the counter > 0 and
- * use the counter itself to define the state. This also illustrates how you can name your methods and elements in
- * any way you like, since only the annotations are used.
+ * Same as {@link osmo.tester.unittests.testmodels.CalculatorModel} but without exploration enablers.
  *
  * @author Teemu Kanstren
  */
-public class CounterModel {
+public class CalculatorModelNoPrints {
   private Requirements req = new Requirements();
   private TestSuite history = null;
   @Variable
@@ -25,11 +26,9 @@ public class CounterModel {
   private int testCount = 1;
   private static final String REQ_INCREASE = "increase";
   private static final String REQ_DECREASE = "decrease";
-  private String script = "";
-  public static int decreases = 0;
-  public static int increases = 0;
+  private PrintStream out = NullPrintStream.stream;
 
-  public CounterModel() {
+  public CalculatorModelNoPrints() {
     req.add(REQ_INCREASE);
     req.add(REQ_DECREASE);
   }
@@ -40,25 +39,24 @@ public class CounterModel {
 
   @BeforeSuite
   public void first() {
-    script += "first";
+    out.println("first");
   }
 
   @AfterSuite
   public void last() {
-    script += "last";
+    out.println("last");
   }
 
   @BeforeTest
   public void start() {
     counter = 0;
-    script += "Starting new test case " + testCount+"\n";
+    out.println("Starting new test case " + testCount);
     testCount++;
   }
 
   @AfterTest
   public void end() {
-    script += "\nTest case ended\n";
-    history.getCurrentTest().setAttribute("test-script", script);
+    out.println("Test case ended");
   }
 
   @Guard("start")
@@ -66,9 +64,9 @@ public class CounterModel {
     return counter == 0;
   }
 
-  @TestStep("start")
+  @Transition("start")
   public void startState() {
-    script += "S:" + counter;
+    out.println("S:" + counter);
     counter++;
   }
 
@@ -77,12 +75,11 @@ public class CounterModel {
     return counter > 1;
   }
 
-  @TestStep("decrease")
+  @Transition("decrease")
   public void decreaseState() {
     req.covered(REQ_DECREASE);
     counter--;
-    script += "- " + counter;
-    decreases++;
+    out.println("- " + counter);
   }
 
   @Guard("increase")
@@ -90,11 +87,10 @@ public class CounterModel {
     return counter > 0;
   }
 
-  @TestStep("increase")
+  @Transition("increase")
   public void increaseState() {
     req.covered(REQ_INCREASE);
     counter++;
-    script += "+ " + counter;
-    increases++;
+    out.println("+ " + counter);
   }
 }

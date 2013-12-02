@@ -1,13 +1,13 @@
-package osmo.tester.generation;
+package osmo.tester.unittests.generation;
 
 import org.junit.Test;
 import osmo.common.OSMOException;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.model.Requirements;
-import osmo.tester.testmodels.ErrorModel5;
-import osmo.tester.testmodels.ValidTestModel2;
-import osmo.tester.testmodels.ValidTestModel5;
+import osmo.tester.unittests.testmodels.ErrorModel5;
+import osmo.tester.unittests.testmodels.ValidTestModel2;
+import osmo.tester.unittests.testmodels.ValidTestModel5;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;

@@ -1,4 +1,4 @@
-package osmo.tester.explorer.testmodels;
+package osmo.tester.unittests.explorer.testmodels;
 
 import osmo.tester.explorer.ExplorationConfiguration;
 import osmo.tester.explorer.OSMOExplorer;
