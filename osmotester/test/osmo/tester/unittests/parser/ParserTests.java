@@ -85,7 +85,7 @@ public class ParserTests {
       String expected = "Invalid test model:\n" +
               "Only one Requirements object instance allowed in the model.\n" +
               "No test steps found in given model object. Model cannot be processed.\n" +
-              "Guard without matching step:foo.\n";
+              "@Guard without matching step:foo.\n";
       assertEquals(expected, msg);
     }
   }
@@ -188,7 +188,7 @@ public class ParserTests {
               "@TestStep methods are not allowed to have parameters: \"epix()\" has 1 parameters.\n" +
               "Invalid return type for guard (\"listCheck()\"):class java.lang.String.\n" +
               "@TestStep methods are not allowed to have parameters: \"transition1()\" has 1 parameters.\n" +
-              "Guard without matching step:world.\n";
+              "@Guard without matching step:world.\n";
       assertEquals(expected, msg);
     }
   }

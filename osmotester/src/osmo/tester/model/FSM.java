@@ -120,10 +120,10 @@ public class FSM {
         groupNames.add(groupName);
       }
     }
-    errors = checkGuards(specificGuards, errors, "Guard");
+    errors = checkGuards(specificGuards, errors, "@Guard");
     errors = checkGuards(negatedGuards, errors, "Negation");
-    errors = checkGuards(specificPre, errors, "Pre");
-    errors = checkGuards(specificPost, errors, "Post");
+    errors = checkGuards(specificPre, errors, "@Pre");
+    errors = checkGuards(specificPost, errors, "@Post");
     for (String groupName : groupNames) {
       if (transitionNames.contains(groupName)) {
         errors += "Group name same as a step name ("+groupName+"). Must be different.\n";
@@ -138,7 +138,12 @@ public class FSM {
   private String checkGuards(List<FSMGuard> guards, String errors, String errorMsg) {
     for (FSMGuard guard : guards) {
       if (guard.getCount() == 0) {
-        errors += errorMsg+" without matching step:" + guard.getName()+".\n";
+        TransitionName name = guard.getName();
+        //length 0 is the case where user has used what is considered camelcase notation but has not given valid name
+        //since that should have been caught already before, we do not add another error for it here
+        //TODO: tests for these
+        if (name.toString().length() == 0) return errors;
+        errors += errorMsg+" without matching step:" + name +".\n";
       }
     }
     return errors;

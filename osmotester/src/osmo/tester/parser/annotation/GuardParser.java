@@ -2,6 +2,7 @@ package osmo.tester.parser.annotation;
 
 import osmo.common.log.Logger;
 import osmo.tester.annotation.Guard;
+import osmo.tester.annotation.Pre;
 import osmo.tester.model.FSM;
 import osmo.tester.model.InvocationTarget;
 import osmo.tester.model.TransitionName;
@@ -26,6 +27,7 @@ public class GuardParser implements AnnotationParser {
 
     Method method = parameters.getMethod();
     String errors = "";
+    String aName = "@"+Guard.class.getSimpleName();
     Class<?> returnType = method.getReturnType();
     if (returnType != boolean.class && returnType != Boolean.class) {
       errors += "Invalid return type for guard (\"" + method.getName() + "()\"):" + returnType + ".\n";
@@ -43,7 +45,11 @@ public class GuardParser implements AnnotationParser {
       if (givenName.equals(Guard.DEFAULT)) {
         String methodName = parameters.getMethod().getName();
         givenName = findNameFrom(methodName);
-        if (givenName.length() == 0) errors += "Guard method name must be of format xX when using method based naming: "+methodName;
+        if (givenName.length() == 0) {
+          String msg = aName + " method name must be of format xX when using method based naming: " + methodName;
+          msg += ". Or if using generic association, name \"all\" must be used.\n";
+          errors += msg;
+        }
       }
       if (givenName.equals("all")) {
         //generic guards should not have their own transition or it will fail the FSM check since it is a guard
