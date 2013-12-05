@@ -219,7 +219,6 @@ public class MainExplorer implements Runnable {
     List<TestCase> optimum = new ArrayList<>();
     for (TestCase test : choices) {
       int length = test.getAllStepNames().size();
-      if (length > longest) longest = length;
       //this can happen if some test is shorter but gets same score, e.g. end condition ends sooner and all score 0
       if (count >= length) continue;
       TestCaseStep step = null;
@@ -234,8 +233,15 @@ public class MainExplorer implements Runnable {
         highest = score;
       }
       if (score == highest) {
+        //we are compiling list of longest for next round, if there is a long one that is not in next round we cannot use it
+        //this is why the value can only be set at this point
+        if (length > longest) longest = length;
         optimum.add(test);
       }
+    }
+    if (optimum.size() == 0) {
+      //for some reason the algorithm still seems to do this, so we must provide the ultimate fallback
+      optimum.addAll(choices);
     }
     return optimum;
   }
