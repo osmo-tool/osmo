@@ -108,7 +108,7 @@ public class OSMOExplorer {
     Map<String, Collection<String>> possibleStatePairs = algorithm.getPossibleStatePairs();
     Map<String, Collection<String>> possibleStates = algorithm.getPossibleStates();
     List<TestCase> allTests = osmo.getSuite().getAllTestCases();
-    TestCoverage tc = new TestCoverage();
+    TestCoverage tc = new TestCoverage(allTests);
     ScoreCalculator sc = new ScoreCalculator(config);
     System.out.println("Generated " + allTests.size() + " tests. Achieved score " + sc.calculateScore(tc));
 

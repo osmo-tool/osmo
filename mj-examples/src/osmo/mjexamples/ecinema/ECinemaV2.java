@@ -2,6 +2,7 @@ package osmo.mjexamples.ecinema;
 
 import osmo.common.NullPrintStream;
 import osmo.common.log.Logger;
+import osmo.mjexamples.gsm.GSMModelFactory;
 import osmo.mjexamples.gsm.SimCardAdaptor;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
@@ -440,7 +441,7 @@ public class ECinemaV2 {
     tester.generate(44);
   }
 
-  public static void main(String[] args) {
+  public static void mainE(String[] args) {
     Logger.consoleLevel = Level.INFO;
     ExplorerAlgorithm.trackCoverage = true;
     long seed = Long.parseLong(args[0]);
@@ -467,7 +468,7 @@ public class ECinemaV2 {
     }
   }
 
-  public static void mainG(String[] args) {
+  public static void main(String[] args) {
     Logger.consoleLevel = Level.INFO;
     long seed = Long.parseLong(args[0]);
     int cores = Integer.parseInt(args[1]);
@@ -480,10 +481,13 @@ public class ECinemaV2 {
       oc.setTestEndCondition(new LengthProbability(50, 0.2d));
       oc.setFailWhenError(false);
       oc.setFactory(new ECinemaV2ModelFactory());
-      MultiGreedy greedy = new MultiGreedy(oc, new ScoreConfiguration(), seed, cores);
+      ScoreConfiguration config = new ScoreConfiguration();
+      config.setLengthWeight(-1);
+      MultiGreedy greedy = new MultiGreedy(oc, config, seed, cores);
+      greedy.setDeleteOldOutput(false);
       greedy.setTimeout(timeout);
       List<TestCase> tests = greedy.search();
-      TestCoverage tc = new TestCoverage();
+      TestCoverage tc = greedy.getFinalCoverage();
       System.out.println(tc.coverageString(greedy.getFsm(), null, null, null, null, false));
     }
   }
@@ -492,7 +496,7 @@ public class ECinemaV2 {
     @Override
     public void createModelObjects(TestModels addHere) {
       ECinemaV2 v2 = new ECinemaV2();
-      addHere.add(new ModelObject(v2));
+      addHere.add(v2);
     }
   }
 }
