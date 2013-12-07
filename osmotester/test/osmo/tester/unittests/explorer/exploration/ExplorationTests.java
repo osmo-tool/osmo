@@ -11,15 +11,18 @@ import osmo.tester.explorer.OSMOExplorer;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.ModelFactory;
+import osmo.tester.unittests.explorer.testmodels.CVCounterModel;
 import osmo.tester.unittests.explorer.testmodels.CounterFactory;
 import osmo.tester.unittests.explorer.testmodels.PaperModel1Factory;
 import osmo.tester.unittests.explorer.testmodels.ValueModelFactory;
+import osmo.tester.unittests.optimizer.GreedyTests;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.List;
 
 import static junit.framework.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /** @author Teemu Kanstren */
 public class ExplorationTests {
@@ -257,26 +260,6 @@ public class ExplorationTests {
   }
 
   @Test
-  public void exploredVariablesMatchGenerated() {
-    config = new ExplorationConfiguration(new ValueModelFactory(), 8, 8);
-    config.setStepWeight(0);
-    config.setStepPairWeight(0);
-    config.setDefaultValueWeight(1);
-    config.setVariableCountWeight(0);
-    config.setRequirementWeight(0);
-    config.setMinTestLength(5);
-    config.setMinSuiteLength(5);
-    config.setFallbackProbability(1d);
-    osmo.explore(config);
-    List<TestCase> tests = osmo.getSuite().getAllTestCases();
-    assertEquals("Suite size", 5, tests.size());
-//    TestCase exploredTest = osmo.getAlgorithm().getExplorationEndCondition().getExploredTest();
-//    String explored = exploredTest.getStepVariables().toString();
-//    String generated = tests.get(4).getStepVariables().toString();
-//    assertEquals("Names variables values", explored, generated);
-  }
-
-  @Test
   public void explorationModeEnabled() {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream ps = new PrintStream(out);
@@ -324,5 +307,25 @@ public class ExplorationTests {
     String actual = cases.toString();
     String expected = "[TestCase:[start, increase, increase, increase, increase, increase, increase, decrease, decrease, increase], TestCase:[start, increase, decrease, increase, increase, decrease, increase, increase, decrease, increase], TestCase:[start, increase, decrease, increase, increase, increase, increase, increase, increase, increase]]";
     assertEquals("Explored counter tests", expected, actual);
+  }
+  
+  @Test
+  public void report() throws Exception {
+    OSMOExplorer osmo = new OSMOExplorer();
+    osmo.addModelClass(CVCounterModel.class);
+    ExplorationConfiguration config = new ExplorationConfiguration(factory, 4, 55);
+    config.setStepWeight(30);
+    config.setStepPairWeight(20);
+    config.setDefaultValueWeight(7);
+    config.setVariableCountWeight(5);
+    config.setRequirementWeight(20);
+    config.setMaxTestLength(10);
+    config.setMinSuiteScore(50);
+    config.setMaxSuiteLength(10);
+    config.setSuitePlateauThreshold(50);
+    osmo.explore(config);
+    String report = TestUtils.readFile(osmo.createFullReportPath(), "UTF8");
+    String expected = TestUtils.getResource(ExplorationTests.class, "expected-report.txt");
+    assertEquals("Multi-Greedy report", expected, report);  
   }
 }

@@ -1,5 +1,6 @@
 package osmo.tester.unittests.optimizer;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.common.TestUtils;
@@ -31,6 +32,7 @@ public class GreedyTests {
 
   @Before
   public void initTest() {
+    TestUtils.startOutputCapture();
     gc = new ScoreConfiguration();
     gc.setStepWeight(0);
     gc.setLengthWeight(0);
@@ -39,6 +41,11 @@ public class GreedyTests {
     gc.setVariableCountWeight(0);
     gc.setRequirementWeight(0);
     oc = new OSMOConfiguration();
+  }
+  
+  @After
+  public void resetAfter() {
+    TestUtils.endOutputCapture();
   }
 
   private int scoreFor(Collection<TestCase> tests) {
@@ -99,7 +106,7 @@ public class GreedyTests {
     //GreedyOptimizer optimizer = new GreedyOptimizer(oc, gc);
     gc.setRequirementWeight(1);
     TestSuite suite = createSuite2();
-    List<TestCase> tests = GreedyOptimizer.sortAndPrune(suite.getFinishedTestCases(), new ScoreCalculator(gc));
+    List<TestCase> tests = GreedyOptimizer.sortAndPrune(suite.getAllTestCases(), new ScoreCalculator(gc));
     assertEquals("Number of tests after optimization should match that of before.", 3, tests.size());
     TestCase testCase1 = tests.get(0);
     TestCase testCase2 = tests.get(1);
@@ -167,7 +174,7 @@ public class GreedyTests {
   public void stepOptimizer3TestsNoOverlap() {
     TestSuite suite = createSuite1();
     gc.setStepWeight(1);
-    List<TestCase> tests = GreedyOptimizer.sortAndPrune(suite.getFinishedTestCases(), new ScoreCalculator(gc));
+    List<TestCase> tests = GreedyOptimizer.sortAndPrune(suite.getAllTestCases(), new ScoreCalculator(gc));
     assertEquals("Number of tests after optimization should match that of before.", 3, tests.size());
     TestCase testCase1 = tests.get(0);
     TestCase testCase2 = tests.get(1);
@@ -185,7 +192,7 @@ public class GreedyTests {
   public void stepOptimizer3TestsWithOverlap() {
     TestSuite suite = createSuite2();
     gc.setStepWeight(1);
-    List<TestCase> tests = GreedyOptimizer.sortAndPrune(suite.getFinishedTestCases(), new ScoreCalculator(gc));
+    List<TestCase> tests = GreedyOptimizer.sortAndPrune(suite.getAllTestCases(), new ScoreCalculator(gc));
     assertEquals("Number of tests should be reduced after pruning useless ones.", 1, tests.size());
     TestCase testCase1 = tests.get(0);
     Collection<String> transitions1 = testCase1.getCoveredSteps();
@@ -198,7 +205,7 @@ public class GreedyTests {
     TestSuite suite = createSuite2();
     gc.setStepWeight(1);
     gc.setRequirementWeight(4);
-    List<TestCase> tests = GreedyOptimizer.sortAndPrune(suite.getFinishedTestCases(), new ScoreCalculator(gc));
+    List<TestCase> tests = GreedyOptimizer.sortAndPrune(suite.getAllTestCases(), new ScoreCalculator(gc));
     assertEquals("Number of tests after optimization should match that of before.", 3, tests.size());
     TestCase testCase1 = tests.get(0);
     TestCase testCase2 = tests.get(1);
@@ -219,7 +226,7 @@ public class GreedyTests {
   }
 
   @Test
-  public void generation() {
+  public void generation() throws Exception {
     ScoreConfiguration config = new ScoreConfiguration();
     config.setLengthWeight(0);
     oc.setTestEndCondition(new LengthProbability(1, 5, 0.1d));
@@ -232,6 +239,10 @@ public class GreedyTests {
     assertEquals("First test from greedy", "[start, increase, decrease, increase, increase]", tests.get(0).getAllStepNames().toString());
     assertEquals("Second test from greedy", "[start, increase, increase, decrease, decrease]", tests.get(1).getAllStepNames().toString());
     assertEquals("Third test from greedy", "[start, increase, increase, increase, increase]", tests.get(2).getAllStepNames().toString());
+//    assertEquals("Output report from greedy", "", TestUtils.getOutput());
+    String report = TestUtils.readFile(optimizer.createReportPath(), "UTF8");
+    String expected = TestUtils.getResource(GreedyTests.class, "expected-greedy.txt");
+    assertEquals("Greedy report", expected, report);
   }
   
   @Test

@@ -48,7 +48,7 @@ public class GreedyOptimizer {
   /** Identifier for next greedy optimizer if several are created. */
   private static int nextId = 1;
   /** The identifier for this optimizer. */
-  private int id = nextId++;
+  public final int id = nextId++;
   /** Used to calculate coverage scores for different tests and suites. */
   private final ScoreCalculator scoreCalculator;
   /** How much does an iteration need to gain in score to go for another iteration? Defaults to 1. */
@@ -63,6 +63,7 @@ public class GreedyOptimizer {
   private List<TestCase> suite = new ArrayList<>();
   private int iteration = 0;
   private String midPath = "";
+  private long seed = 0;
 
   /**
    * @param configuration  For scoring the search.
@@ -118,6 +119,7 @@ public class GreedyOptimizer {
    */
   public GenerationResults search(int populationSize, long seed) {
     check();
+    this.seed = seed;
 
     CSVCoverageReport report = new CSVCoverageReport(scoreCalculator);
     MainGenerator generator = configure(seed);
@@ -125,7 +127,7 @@ public class GreedyOptimizer {
 
     this.possiblePairs = generator.getPossibleStepPairs();
     TestCoverage suiteCoverage = new TestCoverage(suite);
-    writeReport(report, suiteCoverage, suite.size(), iteration * populationSize, seed);
+    writeReport(report, suiteCoverage, suite.size(), iteration * populationSize);
 
     updateRequirementsCoverage(suiteCoverage);
     return new GenerationResults(suite);
@@ -213,19 +215,23 @@ public class GreedyOptimizer {
     return generator;
   }
 
-  private void writeReport(CSVCoverageReport report, TestCoverage tc, int resultSize, int generationCount, long seed) {
+  private void writeReport(CSVCoverageReport report, TestCoverage tc, int resultSize, int generationCount) {
     String summary = "summary\n";
     //we do not have the set of possible states or state pairs as those would require executing the "states" which greedy does not do..
     summary += tc.coverageString(fsm, possiblePairs, null, null, null, false);
 
     String totalCsv = report.report();
     totalCsv += summary + "\n";
-    String filename = id + "-scores.csv";
-    TestUtils.write(totalCsv, "osmo-output/"+midPath+"greedy-" + seed + "/" + filename);
+    TestUtils.write(totalCsv, createReportPath());
     long end = System.currentTimeMillis();
     long diff = end - start;
     log.info("GreedyOptimizer " + id + " generated " + generationCount + " tests.");
     log.info("Resulting suite has " + resultSize + " tests. Generation time " + diff + " millis");
+  }
+  
+  public String createReportPath() {
+    String filename = id + "-scores.csv";
+    return "osmo-output/"+midPath+"greedy-" + seed + "/" + filename;
   }
 
   /**
