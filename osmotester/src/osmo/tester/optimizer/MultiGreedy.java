@@ -240,7 +240,12 @@ public class MultiGreedy {
 
     String totalCsv = report.report();
     totalCsv += summary + "\n";
-    TestUtils.write(totalCsv, "osmo-output/" + midPath + "final-scores.csv");
+    String filename = createFinalReportPath();
+    TestUtils.write(totalCsv, filename);
+  }
+  
+  public String createFinalReportPath() {
+    return "osmo-output/" + midPath + "final-scores.csv";
   }
 
   public FSM getFsm() {

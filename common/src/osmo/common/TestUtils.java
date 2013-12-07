@@ -481,4 +481,9 @@ public class TestUtils {
   public static void endOutputCapture() {
     if (sout != null) System.setOut(sout);
   }
+
+  public static String readFile(String path, String encoding) throws IOException {
+    byte[] data = Files.readAllBytes(Paths.get(path));
+    return new String(data, encoding);
+  }
 }

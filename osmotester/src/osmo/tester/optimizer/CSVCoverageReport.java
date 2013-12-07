@@ -41,6 +41,10 @@ public class CSVCoverageReport {
   private String reqs = "number of requirements\n";
   /** Number of all steps in a the test suite up to the test case. */
   private String length = "length\n";
+  /** Number of covered coverage-values. */
+  private String states = "number of states:\n";
+  /** Number of covered coverage-value pairs. */
+  private String statePairs = "number of state pairs:\n";
 
   public CSVCoverageReport(ScoreCalculator scoreCalculator) {
     this.scoreCalculator = scoreCalculator;
@@ -55,6 +59,8 @@ public class CSVCoverageReport {
     report += steps;
     report += stepPairs;
     report += values;
+    report += states;
+    report += statePairs;
     report += reqs;
     report += length;
     return report;
@@ -81,6 +87,8 @@ public class CSVCoverageReport {
       steps += tc.getSingles().size() + "; ";
       stepPairs += tc.getStepPairs().size() + "; ";
       values += tc.getValueCount()+"; ";
+      states += tc.getStateCount()+"; ";
+      statePairs += tc.getStatePairCount()+"; ";
     }
     this.gain += "\n";
     coverage += "\n";
@@ -88,6 +96,8 @@ public class CSVCoverageReport {
     length += "\n";
     steps += "\n";
     stepPairs += "\n";
+    states += "\n";
+    statePairs += "\n";
     values += "\n";
 
     testCount += tests.size();

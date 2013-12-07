@@ -37,6 +37,7 @@ public class OSMOExplorer {
   private Collection<GenerationListener> listeners = new ArrayList<>();
   /** Underlying OSMO Configuration for the actual generator. */
   private OSMOConfiguration osmoConfig = new OSMOConfiguration();
+  private ExplorationConfiguration config;
   /** Identifier for next greedy optimizer if several are created. */
   private static int nextId = 1;
   /** The identifier for this optimizer. */
@@ -72,17 +73,17 @@ public class OSMOExplorer {
    * @param config The configuration to use.
    */
   public void explore(ExplorationConfiguration config) {
+    this.config = config;
     long start = System.currentTimeMillis();
-    configureWith(config);
+    configureGenerator();
 
     System.out.println("Starting exploration with " + config.getParallelism() + " parallel processes.");
     //actual generation magic happens here
     osmo.generate(config.getSeed());
 
-    String path = "osmo-output/expl-" + config.getSeed() + "-" + config.getDepth() + "/";
-    createScoreReport(path, config);
+    createScoreReport();
     //here we write the trace report.. =sequence of steps concretely executed
-    OSMOTester.writeTrace(path+"exploration", osmo.getSuite().getAllTestCases(), config.getSeed(), osmoConfig);
+    OSMOTester.writeTrace(createReportPath()+"exploration", osmo.getSuite().getAllTestCases(), config.getSeed(), osmoConfig);
 
     double seconds = calculateTime(start);
     System.out.println("Generation time: " + seconds + "s.");
@@ -97,11 +98,8 @@ public class OSMOExplorer {
   /**
    * Creates a report for exploration/generation.
    * Prints information such as covered elements, achieved score, used generation parameters.
-   * 
-   * @param path   Where to write the report.
-   * @param config Used exploration configuration.
    */
-  private void createScoreReport(String path, ExplorationConfiguration config) {
+  private void createScoreReport() {
     boolean printAll = config.isPrintAll();
     Map<String, Collection<String>> possibleValues = algorithm.getPossibleValues();
     Collection<String> possibleStepPairs = algorithm.getPossibleStepPairs();
@@ -119,15 +117,21 @@ public class OSMOExplorer {
     report.process(allTests);
     String totalCsv = report.report();
     totalCsv += summary + "\n";
-    TestUtils.write(totalCsv, path + id + "-scores.csv");
+    TestUtils.write(totalCsv, createFullReportPath());
+  }
+  
+  public String createFullReportPath() {
+    return createReportPath() + id + "-scores.csv";
+  }
+  
+  private String createReportPath() {
+    return "osmo-output/expl-" + config.getSeed() + "-" + config.getDepth() + "/";
   }
 
   /**
    * Configures the underlying test generator with the exploration configuration.
-   * 
-   * @param config To use for underlying test generator.
    */
-  private void configureWith(ExplorationConfiguration config) {
+  private void configureGenerator() {
     osmo.setPrintCoverage(false);
     if (classes.size() > 0) {
       ReflectiveModelFactory factory = new ReflectiveModelFactory();
