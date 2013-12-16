@@ -3,19 +3,21 @@ package osmo.tester.generator.multi;
 import osmo.common.Randomizer;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
+import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.endcondition.Time;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /** 
  * Runs a single generator in a thread of its own as executed in a thread pool by {@link MultiOSMO}.
  * 
  * @author Teemu Kanstren 
  */
-public class GeneratorTask implements Runnable {
+public class GeneratorTask implements Callable<TestCoverage> {
   /** The generator configuration. */
   private final OSMOConfiguration config;
   /** Base seed randomizer for the generators running in this task. */
@@ -39,7 +41,8 @@ public class GeneratorTask implements Runnable {
   }
 
   @Override
-  public void run() {
+  public TestCoverage call() throws Exception {
+    TestCoverage tc = new TestCoverage();
     time.init(0, null);
     int i = 1;
     while (!time.endTest(null, null)) {
@@ -50,6 +53,8 @@ public class GeneratorTask implements Runnable {
       tester.generate(seed);
       TestSuite suite = tester.getSuite();
       List<TestCase> tests = suite.getAllTestCases();
+      TestCoverage tc2 = new TestCoverage(tests);
+      tc.addCoverage(tc2);
       if (traceAll) {
         OSMOTester.writeTrace("osmo-output/mosmo-task-"+id+"-i-"+i, tests, seed, config);
       } else {
@@ -63,5 +68,6 @@ public class GeneratorTask implements Runnable {
       }
       i++;
     }
+    return tc;
   }
 }

@@ -146,7 +146,7 @@ public class RequirementPrintTests {
             "Unique steps: 3 (of 3)\n" +
             "Unique step-pairs: 12 (of 12)\n" +
             "Unique requirements: 0\n" +
-            "Variable values: 166\n" +
+            "Variable values: 159\n" +
             "Unique coverage-values: 0\n" +
             "Unique coverage-value-pairs: 0\n";
     expected = unifyLineSeparators(expected, "\n");

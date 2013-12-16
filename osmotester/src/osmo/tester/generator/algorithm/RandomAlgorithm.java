@@ -30,7 +30,11 @@ public class RandomAlgorithm implements FSMTraversalAlgorithm {
 
   @Override
   public void initTest(long seed) {
-    this.rand = new Randomizer(seed);
+    //+1000 is here to avoid giving same seed to this algorithm and valueset objects
+    //if this is done and the valueset has the same number of options as the model has steps
+    //the valueset will produce exact same value for that step (at least if it is first..)
+    //when valueset.random method is used. yes it has happened with randomvaluemodel4 and unit tests..
+    this.rand = new Randomizer(seed+1000);
   }
 
   @Override

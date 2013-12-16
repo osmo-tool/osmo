@@ -416,4 +416,8 @@ public class ValueSet<T> extends SearchableInput<T> {
     free.clear();
     reserved.clear();
   }
+
+  public long getSeed() {
+    return rand.getSeed();
+  }
 }

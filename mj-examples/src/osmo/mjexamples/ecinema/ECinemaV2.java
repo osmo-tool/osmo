@@ -479,7 +479,7 @@ public class ECinemaV2 {
       System.out.println("seed:"+seed+" cores:"+cores+" pop:"+population+" time:"+timeout);
       OSMOConfiguration oc = new OSMOConfiguration();
       oc.setTestEndCondition(new LengthProbability(50, 0.2d));
-      oc.setFailWhenError(false);
+      oc.setStopTestOnError(false);
       oc.setFactory(new ECinemaV2ModelFactory());
       ScoreConfiguration config = new ScoreConfiguration();
       config.setLengthWeight(-1);

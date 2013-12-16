@@ -30,8 +30,6 @@ public class FSMTransition implements Comparable<FSMTransition> {
   private final List<InvocationTarget> posts = new ArrayList<>();
   /** The group this transition belongs to, null or "" are considered as no group. */
   private TransitionName groupName;
-  /** A strict one stops the generator in case of exception, throwing any exceptions. Non-strict will log the error but continue. */
-  private boolean strict = true; //again, the true default value is in the annotation
 
   /**
    * This is only used in testing.
@@ -103,14 +101,6 @@ public class FSMTransition implements Comparable<FSMTransition> {
 
   public Collection<InvocationTarget> getPostMethods() {
     return posts;
-  }
-
-  public boolean isStrict() {
-    return strict;
-  }
-
-  public void setStrict(boolean strict) {
-    this.strict = strict;
   }
 
   @Override

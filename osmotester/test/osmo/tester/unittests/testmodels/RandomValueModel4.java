@@ -1,6 +1,7 @@
 package osmo.tester.unittests.testmodels;
 
 import osmo.tester.annotation.AfterTest;
+import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Variable;
@@ -48,6 +49,10 @@ public class RandomValueModel4 {
   @AfterTest
   public void finish() {
     suite.addValue("teemu", "on paras");
+//    if (suite.getCurrentTest().getAllStepNames().size() == 1) {
+//      String latest = names.getLatestValue();
+//      System.out.println(latest+", "+names.getSeed());
+//    }
   }
   
   @CoverageValue

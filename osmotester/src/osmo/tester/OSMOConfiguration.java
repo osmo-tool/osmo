@@ -37,7 +37,7 @@ public class OSMOConfiguration implements ModelFactory {
   /** Should we fail then test generation if there is no enabled transition? Otherwise we just end the test. */
   private boolean failWhenNoWayForward = true;
   /** Should we fail test generation if an Exception is thrown? */
-  private boolean failWhenError = true;
+  private boolean stopTestOnError = true;
   /** Listeners to be notified about test generation events. */
   private GenerationListenerList listeners = new GenerationListenerList();
   /** Number of tests to generate when using over JUnit. */
@@ -60,6 +60,7 @@ public class OSMOConfiguration implements ModelFactory {
   private ScoreCalculator scoreCalculator;
   /** Are we running an exploration? */
   private boolean exploring = false;
+  private boolean stopGenerationOnError = true;
 
   public OSMOConfiguration() {
   }
@@ -154,8 +155,8 @@ public class OSMOConfiguration implements ModelFactory {
    *
    * @return True if we should stop test generation completely if the model execution throws.
    */
-  public boolean shouldFailWhenError() {
-    return failWhenError;
+  public boolean shouldStopTestOnError() {
+    return stopTestOnError;
   }
 
   /**
@@ -192,7 +193,7 @@ public class OSMOConfiguration implements ModelFactory {
    * @param seed Test generation seed.
    * @param fsm The parsing results.
    */
-  public FSMTraversalAlgorithm initialize(long seed, FSM fsm) {
+  public void initialize(long seed, FSM fsm) {
     suiteEndCondition.init(seed, fsm);
     if (scenario != null) {
       scenario.validate(fsm);
@@ -200,7 +201,6 @@ public class OSMOConfiguration implements ModelFactory {
     }
     //test end condition is initialized in generator between each test case
     listeners.init(seed, fsm, this);
-    return algorithm;
   }
 
   public FSMTraversalAlgorithm cloneAlgorithm(long seed, FSM fsm) {
@@ -212,8 +212,8 @@ public class OSMOConfiguration implements ModelFactory {
     return clone;
   }
   
-  public void setFailWhenError(boolean fail) {
-    failWhenError = fail;
+  public void setStopTestOnError(boolean stop) {
+    stopTestOnError = stop;
   }
 
   public void setFailWhenNoWayForward(boolean fail) {
@@ -282,5 +282,13 @@ public class OSMOConfiguration implements ModelFactory {
 
   public ScoreCalculator getScoreCalculator() {
     return scoreCalculator;
+  }
+
+  public void setStopGenerationOnError(boolean stopGenerationOnError) {
+    this.stopGenerationOnError = stopGenerationOnError;
+  }
+
+  public boolean shouldStopGenerationOnError() {
+    return stopGenerationOnError;
   }
 }

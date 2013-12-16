@@ -27,7 +27,7 @@ public class WeightTests {
 
   @Test
   public void weightedModel1SuiteSize1() {
-    listener.addExpected("suite-start", "start", "t:bob3", "t:bob3", "t:bob4", "t:bob4", "t:bob2", "t:bob3", "t:bob2", "t:bob1", "t:bob1", "t:bob3", "t:bob2", "end", "suite-end");
+    listener.addExpected("suite-start", "start", "t:bob4", "t:bob3", "t:bob3", "t:bob4", "t:bob2", "t:bob4", "t:bob3", "t:bob2", "t:bob2", "t:bob4", "t:bob1", "end", "suite-end");
     osmo.setModelFactory(new ReflectiveModelFactory(WeightedModel1.class));
     osmo.setAlgorithm(new WeightedBalancingAlgorithm());
     Length length3 = new Length(11);
@@ -40,8 +40,8 @@ public class WeightTests {
 
   @Test
   public void weightedModel1SuiteSize2() {
-    listener.addExpected("suite-start", "start", "t:bob3", "t:bob3", "t:bob4", "t:bob4", "t:bob2", "t:bob3", "end");
-    listener.addExpected("start", "t:bob2", "t:bob1", "t:bob1", "t:bob3", "t:bob2", "t:bob4", "end", "suite-end");
+    listener.addExpected("suite-start", "start", "t:bob4", "t:bob3", "t:bob3", "t:bob4", "t:bob2", "t:bob4", "end");
+    listener.addExpected("start", "t:bob3", "t:bob1", "t:bob2", "t:bob4", "t:bob3", "t:bob3", "end", "suite-end");
     osmo.setModelFactory(new ReflectiveModelFactory(WeightedModel1.class));
     osmo.setAlgorithm(new WeightedBalancingAlgorithm());
     Length length3 = new Length(6);

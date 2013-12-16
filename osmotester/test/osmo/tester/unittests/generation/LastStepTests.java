@@ -58,7 +58,7 @@ public class LastStepTests {
     osmo.addListener(listener);
     osmo.setTestEndCondition(new Length(2));
     osmo.setSuiteEndCondition(new Length(2));
-    osmo.getConfig().setFailWhenError(false);
+    osmo.getConfig().setStopTestOnError(false);
     osmo.addModelObject(model);
     osmo.generate(123);
     listener.validate("Sets of steps with last step and catch for throw");

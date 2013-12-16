@@ -3,6 +3,7 @@ package osmo.tester.generator.multi;
 import osmo.common.Randomizer;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
+import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.endcondition.Time;
 
@@ -61,31 +62,32 @@ public class MultiOSMO {
    * Starts generation using the given generation configuration and given number of parallel threads.
    * 
    * @param time The minimum time to run iterations.
-   * TODO: should return coverage
    */
-  public void generate(Time time, boolean reportAll, boolean printCoverage) {
+  public TestCoverage generate(Time time, boolean reportAll, boolean printCoverage) {
     check();
     config.setSequenceTraceRequested(false);
     config.setExploring(true);
-    config.setFailWhenError(false);
-    Collection<Future> futures = new ArrayList<>();
+    config.setStopGenerationOnError(false);
+    Collection<Future<TestCoverage>> futures = new ArrayList<>();
     Randomizer rand = new Randomizer(seed);
     for (int i = 0 ; i < parallelism ; i++) {
       GeneratorTask task = new GeneratorTask(config, time, rand.nextLong(), reportAll, printCoverage);
-      Future future = pool.submit(task);
+      Future<TestCoverage> future = pool.submit(task);
       log.debug("task submitted to pool");
       futures.add(future);
     }
-    for (Future future : futures) {
+    TestCoverage tc = new TestCoverage();
+    for (Future<TestCoverage> future : futures) {
       try {
-        future.get();
+        TestCoverage ftc = future.get();
+        tc.addCoverage(ftc);
       } catch (Exception e) {
         throw new RuntimeException("Failed to run a (Multi) OSMOTester", e);
       }
     }
     pool.shutdown();
-    //here it would be interesting to write a summary but it is currently not feasible as we cannot expect to keep
-    //all test cases in memory for full duration
+    //TODO: write summary to file
+    return tc;
   }
   
   private void check() {
