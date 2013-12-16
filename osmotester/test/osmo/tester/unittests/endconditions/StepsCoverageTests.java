@@ -45,7 +45,7 @@ public class StepsCoverageTests {
     t9 = createTransition("t9", 1);
     t10 = createTransition("t10", 1);
     suite = new TestSuite();
-    suite.startTest();
+    suite.startTest(1);
     stepCoverage = new StepCoverage();
   }
 
@@ -61,7 +61,7 @@ public class StepsCoverageTests {
 
     suite.addStep(t1);
     suite.endTest();
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(t1);
     suite.addStep(t2);
     assertEnd(msg1, msg2);
@@ -77,7 +77,7 @@ public class StepsCoverageTests {
     suite.addStep(t1);
     assertEnd(msg1, msg2);
     suite.endTest();
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(t1);
     suite.addStep(t2);
     assertEnd(msg1, msg2);
@@ -94,7 +94,7 @@ public class StepsCoverageTests {
     suite.addStep(t1);
     assertNoEnd(msg1, msg2);
     suite.endTest();
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(t2);
     assertNoTestEnd(msg1);
     assertSuiteEnd(msg2);
@@ -116,7 +116,7 @@ public class StepsCoverageTests {
     suite.addStep(t1);
     assertNoEnd(msg1, msg2);
     suite.endTest();
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(t2);
     suite.addStep(t3);
     suite.addStep(t4);
@@ -145,7 +145,7 @@ public class StepsCoverageTests {
     suite.addStep(t1);
     assertNoEnd(msg1, msg2);
     suite.endTest();
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(t2);
     suite.addStep(t3);
     suite.addStep(t4);
@@ -153,7 +153,7 @@ public class StepsCoverageTests {
     suite.addStep(t5);
     assertNoEnd(msg1, msg2);
     suite.endTest();
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(t1);
     suite.addStep(t2);
     suite.addStep(t2);

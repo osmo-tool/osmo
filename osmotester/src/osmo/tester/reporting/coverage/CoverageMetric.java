@@ -14,7 +14,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -79,7 +79,7 @@ public abstract class CoverageMetric {
    * @return List defining how often each pair has been taken so far.
    */
   protected List<ValueCount> countStepPairs() {
-    Map<String, Integer> coverage = new HashMap<>();
+    Map<String, Integer> coverage = new LinkedHashMap<>();
 
     for (TestCase tc : tests) {
       String previous = FSM.START_STEP_NAME;
@@ -118,7 +118,7 @@ public abstract class CoverageMetric {
    * @return The coverage count for each requirement.
    */
   protected List<RequirementCount> countRequirements() {
-    Map<String, Integer> coverage = new HashMap<>();
+    Map<String, Integer> coverage = new LinkedHashMap<>();
 
     for (TestCase tc : tests) {
       Collection<String> reqs = tc.getCoverage().getRequirements();

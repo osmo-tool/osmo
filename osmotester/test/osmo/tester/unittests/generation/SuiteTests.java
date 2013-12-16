@@ -16,11 +16,11 @@ public class SuiteTests {
   @Test
   public void validSuite() {
     TestSuite suite = new TestSuite();
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(new FSMTransition("t1"));
     suite.addStep(new FSMTransition("t2"));
     suite.endTest();
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(new FSMTransition("t1"));
     suite.addStep(new FSMTransition("t2"));
     assertEquals("Number of test cases in test suite", 1, suite.getFinishedTestCases().size());
@@ -34,7 +34,7 @@ public class SuiteTests {
   @Test
   public void totalCoverage() {
     TestSuite suite = new TestSuite();
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(new FSMTransition("t1"));
     suite.addStep(new FSMTransition("t2"));
     suite.coveredRequirement("r1");
@@ -45,7 +45,7 @@ public class SuiteTests {
     assertEquals("Coverage for transitions", 2, a2);
     suite.endTest();
 
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(new FSMTransition("t1"));
     suite.addStep(new FSMTransition("t2"));
     suite.coveredRequirement("r1");
@@ -56,7 +56,7 @@ public class SuiteTests {
     assertEquals("Added coverage for transitions", 2, a2);
     suite.endTest();
 
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(new FSMTransition("t1"));
     suite.addStep(new FSMTransition("t3"));
     suite.coveredRequirement("r2");
@@ -67,7 +67,7 @@ public class SuiteTests {
     assertEquals("Coverage for transitions", 2, a2);
     suite.endTest();
 
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(new FSMTransition("t3"));
     suite.addStep(new FSMTransition("t4"));
     suite.coveredRequirement("r3");
@@ -87,15 +87,15 @@ public class SuiteTests {
   @Test
   public void historyContainsByName() {
     TestSuite suite = new TestSuite();
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(new FSMTransition("bob"));
     suite.addStep(new FSMTransition("alice"));
     suite.endTest();
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(new FSMTransition("bob2"));
     suite.addStep(new FSMTransition("alice2"));
     suite.endTest();
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(new FSMTransition("bob3"));
     suite.addStep(new FSMTransition("alice3"));
     suite.endTest();
@@ -108,7 +108,7 @@ public class SuiteTests {
   @Test
   public void currentContainsByName() {
     TestSuite suite = new TestSuite();
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(new FSMTransition("bob"));
     suite.addStep(new FSMTransition("alice"));
     assertTrue(suite.contains(new FSMTransition("bob")));
@@ -117,7 +117,7 @@ public class SuiteTests {
 
   @Test
   public void customAttributes() {
-    TestCase test = new TestCase();
+    TestCase test = new TestCase(1);
     test.setAttribute("script", "whooppee");
     assertEquals("Stored attribute in test case", "whooppee", test.getAttribute("script"));
   }
@@ -126,7 +126,7 @@ public class SuiteTests {
   public void addSingleValue() {
     TestSuite suite = new TestSuite();
     suite.enableParameterTracking();
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(new FSMTransition("bob"));
     suite.addValue("var1", "value1");
     suite.addStep(new FSMTransition("alice"));
@@ -143,7 +143,7 @@ public class SuiteTests {
   public void addSeveralValues() {
     TestSuite suite = new TestSuite();
     suite.enableParameterTracking();
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(new FSMTransition("bob"));
     suite.addValue("var1", "value1.1");
     suite.addValue("var2", "value2.1");

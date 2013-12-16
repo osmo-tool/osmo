@@ -30,7 +30,7 @@ public class SummaryTests {
     reqs.add("req-two");
     reqs.add("req-three");
 
-    suite.startTest();
+    suite.startTest(1);
     addStep("one");
     addStep("two");
     addStep("three");
@@ -38,7 +38,7 @@ public class SummaryTests {
     addStep("four");
     addStep("five");
     suite.endTest();
-    suite.startTest();
+    suite.startTest(1);
     addStep("one");
     addStep("two");
     addStep("five");

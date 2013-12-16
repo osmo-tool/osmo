@@ -11,7 +11,7 @@ import osmo.tester.model.FSMTransition;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -99,7 +99,7 @@ public class StepCoverage implements EndCondition {
   @Override
   public void init(long seed, FSM fsm) {
     Collection<FSMTransition> transitions = fsm.getTransitions();
-    Collection<String> toClear = new HashSet<>();
+    Collection<String> toClear = new LinkedHashSet<>();
     toClear.addAll(required);
     for (FSMTransition transition : transitions) {
       String name = transition.getStringName();

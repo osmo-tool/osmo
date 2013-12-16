@@ -58,6 +58,8 @@ public class OSMOConfiguration implements ModelFactory {
   private boolean dataTraceRequested = false;
   /** Used to calculate coverage scores if needed. */
   private ScoreCalculator scoreCalculator;
+  /** Are we running an exploration? */
+  private boolean exploring = false;
 
   public OSMOConfiguration() {
   }
@@ -72,6 +74,14 @@ public class OSMOConfiguration implements ModelFactory {
 
   public void setFactory(ModelFactory factory) {
     this.factory = factory;
+  }
+
+  public boolean isExploring() {
+    return exploring;
+  }
+
+  public void setExploring(boolean exploring) {
+    this.exploring = exploring;
   }
 
   public ModelFactory getFactory() {
@@ -95,10 +105,6 @@ public class OSMOConfiguration implements ModelFactory {
 
   public void setAlgorithm(FSMTraversalAlgorithm algorithm) {
     this.algorithm = algorithm;
-  }
-
-  public FSMTraversalAlgorithm getAlgorithm() {
-    return algorithm;
   }
 
   /**
@@ -186,11 +192,7 @@ public class OSMOConfiguration implements ModelFactory {
    * @param seed Test generation seed.
    * @param fsm The parsing results.
    */
-  public void initialize(long seed, FSM fsm) {
-    if (algorithm == null) {
-      algorithm = new RandomAlgorithm();
-    }
-    algorithm.init(seed, fsm);
+  public FSMTraversalAlgorithm initialize(long seed, FSM fsm) {
     suiteEndCondition.init(seed, fsm);
     if (scenario != null) {
       scenario.validate(fsm);
@@ -198,8 +200,18 @@ public class OSMOConfiguration implements ModelFactory {
     }
     //test end condition is initialized in generator between each test case
     listeners.init(seed, fsm, this);
+    return algorithm;
   }
 
+  public FSMTraversalAlgorithm cloneAlgorithm(long seed, FSM fsm) {
+    if (algorithm == null) {
+      algorithm = new RandomAlgorithm();
+    }
+    FSMTraversalAlgorithm clone = algorithm.cloneMe();
+    clone.init(seed, fsm);
+    return clone;
+  }
+  
   public void setFailWhenError(boolean fail) {
     failWhenError = fail;
   }

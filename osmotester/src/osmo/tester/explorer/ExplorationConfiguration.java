@@ -201,15 +201,20 @@ public class ExplorationConfiguration extends ScoreConfiguration {
     this.suitePlateauThreshold = suitePlateauThreshold;
   }
 
-  public FSMTraversalAlgorithm getFallback() {
+  public FSMTraversalAlgorithm getFallback(long seed, FSM fsm) {
     if (fallback == null) {
-      setFallback(new RandomAlgorithm());
+      setFallback(new RandomAlgorithm(), seed, fsm);
     }
-    return fallback;
+    FSMTraversalAlgorithm clone = fallback.cloneMe();
+    clone.init(seed, fsm);
+    clone.initTest(seed);
+    return clone;
   }
 
-  public void setFallback(FSMTraversalAlgorithm fallback) {
+  public void setFallback(FSMTraversalAlgorithm fallback, long seed, FSM fsm) {
     this.fallback = fallback;
+    fallback.init(seed, fsm);
+    fallback.initTest(seed);
   }
 
   public double getFallbackProbability() {

@@ -35,5 +35,7 @@ public interface FSMTraversalAlgorithm {
   /**
    * This is called before a new test is started.
    */
-  public void initTest();
+  public void initTest(long seed);
+
+  public FSMTraversalAlgorithm cloneMe();
 }

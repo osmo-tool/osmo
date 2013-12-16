@@ -274,7 +274,8 @@ public class MainExplorer implements Runnable {
       choices.add(t);
     }
 
-    FSMTraversalAlgorithm fallback = state.getConfig().getFallback();
+    ExplorationConfiguration config = state.getConfig();
+    FSMTraversalAlgorithm fallback = config.getFallback(config.getSeed(), fsm);
     FSMTransition choice = fallback.choose(suite, choices);
     
     return choice.getStringName();

@@ -145,8 +145,8 @@
   </style>
 </head>
 <body>
-  <table class="test-table" border="1" name="trace-table $test.number">
-    <caption>Test Generation Trace for Test1</caption>
+  <table class="test-table" border="1" name="trace-table 1">
+    <caption>Test Generation Trace for Test1 [5]</caption>
     <thead>
       <tr>
         <th class='corner'>Step</th>
@@ -242,8 +242,8 @@
     </tbody>
   </table>
   <p/>
-  <table class="test-table" border="1" name="trace-table $test.number">
-    <caption>Test Generation Trace for Test2</caption>
+  <table class="test-table" border="1" name="trace-table 2">
+    <caption>Test Generation Trace for Test2 [10]</caption>
     <thead>
       <tr>
         <th class='corner'>Step</th>
@@ -339,8 +339,8 @@
     </tbody>
   </table>
   <p/>
-  <table class="test-table" border="1" name="trace-table $test.number">
-    <caption>Test Generation Trace for Test3</caption>
+  <table class="test-table" border="1" name="trace-table 3">
+    <caption>Test Generation Trace for Test3 [15]</caption>
     <thead>
       <tr>
         <th class='corner'>Step</th>

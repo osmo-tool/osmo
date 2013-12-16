@@ -51,8 +51,8 @@ public class TestSuite {
   }
 
   /** Start a new test case. */
-  public TestCase startTest() {
-    current = new TestCase();
+  public TestCase startTest(long seed) {
+    current = new TestCase(seed);
     current.setStartTime(System.currentTimeMillis());
     testCoverage = current.getCoverage();
     return current;

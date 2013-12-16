@@ -66,12 +66,12 @@ public class CoverageWithStateTests {
     GreedyOptimizer osmo = new GreedyOptimizer(oc, config);
     GenerationResults results = osmo.search(1000, 33);
     TestCoverage tc = results.getCoverage();
-    assertEquals("Number of generated tests", 6, results.getTests().size());
+    assertEquals("Number of generated tests", 3, results.getTests().size());
     Map<String, Collection<String>> variables = tc.getVariableValues();
     //1 value = 10
     assertEquals("Variable coverage", "[on paras]", variables.get("teemu").toString());
     //4 values = 40
-    assertEquals("Variable coverage", "[null, two, one, many]", variables.get("rangeRange").toString());
+    assertEquals("Variable coverage", "[null, two, many, one]", variables.get("rangeRange").toString());
     //2 values = 20
     assertEquals("Variable coverage", "[null, many]", variables.get("range2Range").toString());
     //32 values = 320
@@ -110,7 +110,7 @@ public class CoverageWithStateTests {
     ScoreCalculator scorer = new ScoreCalculator(config);
     assertEquals("Number of tests", 6, tests.size());
     assertEquals("Test steps", "TestCase:[t1, t2, t3, t4]", tests.iterator().next().toString());
-    assertEquals("Values covered", "{range=[4, 1, 5, 2]}", tc.getVariableValues().toString());
+    assertEquals("Values covered", "{range=[3, 5, 2, 1]}", tc.getVariableValues().toString());
 //    //there are 16 state-pairs and 4 states, so it is a total of 24*10
     assertEquals("Coverage score", 240, scorer.calculateScore(tc));
   }

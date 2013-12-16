@@ -55,10 +55,10 @@ public class WeightedDistributionTests {
 
   @Test
   public void balancingLength1000() {
-    listener.setExpected("bob1", 1633);
-    listener.setExpected("bob2", 2301);
-    listener.setExpected("bob3", 2858);
-    listener.setExpected("bob4", 3208);
+    listener.setExpected("bob1", 1622);
+    listener.setExpected("bob2", 2290);
+    listener.setExpected("bob3", 2799);
+    listener.setExpected("bob4", 3289);
     osmo.setModelFactory(new ReflectiveModelFactory(WeightedModel1.class));
     Length length4 = new Length(10000);
     Length length1 = new Length(1);
@@ -82,9 +82,9 @@ public class WeightedDistributionTests {
   @Test
   public void randomLength200Suite6() {
     listener.setExpected("bob1", 125);
-    listener.setExpected("bob2", 237);
-    listener.setExpected("bob3", 358);
-    listener.setExpected("bob4", 480);
+    listener.setExpected("bob2", 236);
+    listener.setExpected("bob3", 326);
+    listener.setExpected("bob4", 513);
     osmo.setModelFactory(new ReflectiveModelFactory(WeightedModel1.class));
     Length length4 = new Length(200);
     Length length1 = new Length(6);
@@ -107,10 +107,10 @@ public class WeightedDistributionTests {
 
   @Test
   public void balancingLength200Suite6() {
-    listener.setExpected("bob1", 192);
-    listener.setExpected("bob2", 274);
-    listener.setExpected("bob3", 348);
-    listener.setExpected("bob4", 386);
+    listener.setExpected("bob1", 205);
+    listener.setExpected("bob2", 269);
+    listener.setExpected("bob3", 320);
+    listener.setExpected("bob4", 406);
     osmo.setModelFactory(new ReflectiveModelFactory(WeightedModel1.class));
     Length length4 = new Length(200);
     Length length1 = new Length(6);

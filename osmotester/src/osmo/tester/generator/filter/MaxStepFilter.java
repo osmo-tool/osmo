@@ -10,7 +10,7 @@ import osmo.tester.model.FSMTransition;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -22,9 +22,9 @@ import java.util.Map;
 public class MaxStepFilter implements StepFilter {
   private static final Logger log = new Logger(MaxStepFilter.class);
   /** Maximum allowed step count. Key = step name, value = maximum number of times to take. */
-  private Map<String, Integer> maximums = new HashMap<>();
+  private Map<String, Integer> maximums = new LinkedHashMap<>();
   /** The actual count of step has been taken. Key = step name, value = number of times taken. */
-  private Map<String, Integer> taken = new HashMap<>();
+  private Map<String, Integer> taken = new LinkedHashMap<>();
 
   /**
    * Define the maximum number of times a step is allowed to be taken.

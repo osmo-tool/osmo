@@ -6,7 +6,7 @@ import org.apache.velocity.app.VelocityEngine;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -22,7 +22,7 @@ public class RFScripter {
   /** For storing template variables. */
   private VelocityContext vc = new VelocityContext();
   /** The test case variables. */
-  private Map<String, String> variables = new HashMap<>();
+  private Map<String, String> variables = new LinkedHashMap<>();
   /** The test cases to be generated. */
   private Collection<RFTestCase> tests = new ArrayList<>();
   /** Test currently being scripted. */

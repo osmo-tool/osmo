@@ -5,7 +5,7 @@ import osmo.tester.model.FSM;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 
@@ -20,13 +20,13 @@ public class SingleTestCoverage {
   /** Test name. */
   private final String name;
   /** Key=requirement name, value=times covered in this test. */
-  private final Map<String, Integer> reqCount = new HashMap<>();
+  private final Map<String, Integer> reqCount = new LinkedHashMap<>();
   /** Key=transition name, value=times covered in this test. */
-  private final Map<String, Integer> stepCount = new HashMap<>();
+  private final Map<String, Integer> stepCount = new LinkedHashMap<>();
   /** Key=transition pair name ("T1->T2"), value=times covered in this test. */
-  private final Map<String, Integer> pairCount = new HashMap<>();
+  private final Map<String, Integer> pairCount = new LinkedHashMap<>();
   /** Key=variable name, value=values covered in this test. */
-  private final Map<String, Collection<Object>> variableValues = new HashMap<>();
+  private final Map<String, Collection<Object>> variableValues = new LinkedHashMap<>();
 
   /**
    * Counts and collects the coverage of the given test.
@@ -34,7 +34,7 @@ public class SingleTestCoverage {
    * @param tc The test for which to get the coverage.
    */
   public SingleTestCoverage(TestCase tc) {
-    this.name = "Test" + tc.getId();
+    this.name = tc.getName();
     countRequirements(tc);
     countSteps(tc);
     collectVariableValues(tc);

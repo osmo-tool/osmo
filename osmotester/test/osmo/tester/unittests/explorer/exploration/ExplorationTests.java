@@ -166,7 +166,7 @@ public class ExplorationTests {
     assertSuiteScore(1350);
     assertTestCount(4);
     //NOTE: the first test is only explorer in depth until minimum score is achieved. after this it is probabilistic ending and only depth 1 exploration, which produces fluctuation
-    assertTestSequence(0, "[increase, increase, increase, increase, increase, decrease, decrease, increase, decrease, increase, decrease]");
+    assertTestSequence(0, "[increase, increase, increase, increase, increase, decrease, decrease, increase, decrease, decrease, decrease]");
     assertTestSequence(1, "[increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase]");
     //NOTE: the following two score 0 and thus are fully random
     assertTestSequence(2, "[increase, increase, increase, increase, decrease, decrease, increase, increase, decrease, decrease, increase, increase, decrease, increase, increase, decrease, decrease, decrease, increase]");
@@ -235,7 +235,7 @@ public class ExplorationTests {
     //here we go until we reach the one missing pair we are missing (--) and add plateau worth of tests in the end (3)
     assertTestSequence(2, "[increase, increase, increase, decrease, decrease, increase, increase, decrease]");
     //last two just go to min length as they score nothing and hit plateau immediately as well
-    assertTestSequence(3, "[increase, increase, increase, decrease, decrease, increase, increase]");
+    assertTestSequence(3, "[increase, increase, increase, increase, decrease, decrease, decrease]");
     assertTestSequence(4, "[increase, increase, increase, increase, decrease, increase, increase]");
   }
 

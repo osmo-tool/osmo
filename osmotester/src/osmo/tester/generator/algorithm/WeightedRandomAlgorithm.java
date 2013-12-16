@@ -25,7 +25,6 @@ public class WeightedRandomAlgorithm implements FSMTraversalAlgorithm {
 
   @Override
   public void init(long seed, FSM fsm) {
-    this.rand = new Randomizer(seed);
   }
 
   @Override
@@ -42,6 +41,12 @@ public class WeightedRandomAlgorithm implements FSMTraversalAlgorithm {
   }
 
   @Override
-  public void initTest() {
+  public void initTest(long seed) {
+    this.rand = new Randomizer(seed);
+  }
+
+  @Override
+  public FSMTraversalAlgorithm cloneMe() {
+    return new WeightedRandomAlgorithm();
   }
 }

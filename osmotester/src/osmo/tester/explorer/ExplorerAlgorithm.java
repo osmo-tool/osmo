@@ -59,7 +59,7 @@ public class ExplorerAlgorithm implements FSMTraversalAlgorithm {
     DOTWriter.deleteFiles();
     this.fsm = fsm;
     //we initialize the fallback algorithm
-    config.getFallback().init(seed, fsm);
+    config.getFallback(seed, fsm);
   }
 
   public Collection<TimeTrace> getTraces() {
@@ -111,7 +111,7 @@ public class ExplorerAlgorithm implements FSMTraversalAlgorithm {
   }
 
   @Override
-  public void initTest() {
+  public void initTest(long seed) {
     if (currentExplorer != null) {
       currentExplorer.stop();
     }
@@ -241,6 +241,12 @@ public class ExplorerAlgorithm implements FSMTraversalAlgorithm {
 
   public Map<String, Collection<String>> getPossibleStatePairs() {
     return possibleStatePairs;
+  }
+
+  @Override
+  public FSMTraversalAlgorithm cloneMe() {
+    ExplorerAlgorithm clone = new ExplorerAlgorithm(config);
+    return clone;
   }
 }
 

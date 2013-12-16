@@ -141,6 +141,7 @@ public class OSMOExplorer {
       config.setFactory(factory);
     }
     config.fillOSMOConfiguration(osmoConfig);
+    osmoConfig.setExploring(true);
     for (GenerationListener listener : listeners) {
       osmoConfig.addListener(listener);
     }

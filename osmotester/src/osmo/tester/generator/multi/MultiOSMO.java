@@ -63,13 +63,15 @@ public class MultiOSMO {
    * @param time The minimum time to run iterations.
    * TODO: should return coverage
    */
-  public void generate(Time time) {
+  public void generate(Time time, boolean reportAll, boolean printCoverage) {
     check();
     config.setSequenceTraceRequested(false);
+    config.setExploring(true);
+    config.setFailWhenError(false);
     Collection<Future> futures = new ArrayList<>();
     Randomizer rand = new Randomizer(seed);
     for (int i = 0 ; i < parallelism ; i++) {
-      GeneratorTask task = new GeneratorTask(config, time, rand.nextLong());
+      GeneratorTask task = new GeneratorTask(config, time, rand.nextLong(), reportAll, printCoverage);
       Future future = pool.submit(task);
       log.debug("task submitted to pool");
       futures.add(future);

@@ -7,7 +7,6 @@ import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,8 +48,7 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
 
   @Override
   public void init(long seed, FSM fsm) {
-    coverage = new HashMap<>(fsm.getTransitions().size());
-    this.rand = new Randomizer(seed);
+    coverage = new LinkedHashMap<>(fsm.getTransitions().size());
   }
 
   @Override
@@ -150,6 +148,12 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
   }
 
   @Override
-  public void initTest() {
+  public void initTest(long seed) {
+    this.rand = new Randomizer(seed);
+  }
+
+  @Override
+  public FSMTraversalAlgorithm cloneMe() {
+    return new WeightedBalancingAlgorithm();
   }
 }
