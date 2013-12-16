@@ -21,14 +21,14 @@
 Starting new test case 1
 S:0
 + 2
-- 1
-+ 2
 + 3
++ 4
+- 3
 Test case ended
 Starting new test case 2
 S:0
 + 2
-+ 3
+- 1
 Test case ended
 Starting new test case 3
 S:0
@@ -36,17 +36,17 @@ S:0
 + 3
 - 2
 + 3
-- 2
++ 4
 Test case ended
 Starting new test case 4
 S:0
 + 2
-+ 3
+- 1
 Test case ended
 Starting new test case 5
 S:0
 + 2
-+ 3
+- 1
 Test case ended
 last
 </system-out>

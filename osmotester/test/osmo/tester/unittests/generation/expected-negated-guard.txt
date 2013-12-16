@@ -32,13 +32,6 @@
 :g-!epix
 :g-!epix
 :g-world
-:hello
-:gen_oracle
-:g-epix
-:g-hello
-:g-!epix
-:g-!epix
-:g-world
 :world
 :gen_oracle
 :g-epix
@@ -61,5 +54,12 @@
 :g-!epix
 :g-world
 :hello
+:gen_oracle
+:g-epix
+:g-hello
+:g-!epix
+:g-!epix
+:g-world
+:world
 :gen_oracle
 

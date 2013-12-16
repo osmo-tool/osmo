@@ -34,14 +34,14 @@ public class TextReportTests {
             "Requirements: null\n" +
             "Variables: \n" +
             "\n" +
-            "STEP: epixx, WEIGHT=10\n" +
-            "GUARDS: osmo.tester.unittests.testmodels.ValidTestModel1.kitted(), \n" +
+            "STEP: world, WEIGHT=10\n" +
+            "GUARDS: osmo.tester.unittests.testmodels.ValidTestModel1.listCheck(), \n" +
             "GROUP: \n" +
             "POST: \n" +
             "PRE: \n" +
             "\n" +
-            "STEP: world, WEIGHT=10\n" +
-            "GUARDS: osmo.tester.unittests.testmodels.ValidTestModel1.listCheck(), \n" +
+            "STEP: epixx, WEIGHT=10\n" +
+            "GUARDS: osmo.tester.unittests.testmodels.ValidTestModel1.kitted(), \n" +
             "GROUP: \n" +
             "POST: \n" +
             "PRE: \n" +
@@ -68,8 +68,8 @@ public class TextReportTests {
             "Requirements: Requirements{reqs=[]} ([])\n" +
             "Variables: \n" +
             "\n" +
-            "STEP: hello, WEIGHT=10\n" +
-            "GUARDS: osmo.tester.unittests.testmodels.ValidTestModel2.helloCheck(), \n" +
+            "STEP: world, WEIGHT=10\n" +
+            "GUARDS: osmo.tester.unittests.testmodels.ValidTestModel2.worldCheck(), \n" +
             "GROUP: \n" +
             "POST: \n" +
             "PRE: \n" +
@@ -80,8 +80,8 @@ public class TextReportTests {
             "POST: osmo.tester.unittests.testmodels.ValidTestModel2.epixxO(), \n" +
             "PRE: osmo.tester.unittests.testmodels.ValidTestModel2.epixxPre(), \n" +
             "\n" +
-            "STEP: world, WEIGHT=10\n" +
-            "GUARDS: osmo.tester.unittests.testmodels.ValidTestModel2.worldCheck(), \n" +
+            "STEP: hello, WEIGHT=10\n" +
+            "GUARDS: osmo.tester.unittests.testmodels.ValidTestModel2.helloCheck(), \n" +
             "GROUP: \n" +
             "POST: \n" +
             "PRE: \n" +
@@ -108,8 +108,8 @@ public class TextReportTests {
             "Requirements: Requirements{reqs=[]} ([])\n" +
             "Variables: \n" +
             "\n" +
-            "STEP: hello, WEIGHT=10\n" +
-            "GUARDS: osmo.tester.unittests.testmodels.ValidTestModel3.helloCheck(), \n" +
+            "STEP: world, WEIGHT=10\n" +
+            "GUARDS: osmo.tester.unittests.testmodels.ValidTestModel3.worldCheck(), \n" +
             "GROUP: \n" +
             "POST: osmo.tester.unittests.testmodels.ValidTestModel3.stateCheck(), \n" +
             "PRE: \n" +
@@ -120,8 +120,8 @@ public class TextReportTests {
             "POST: osmo.tester.unittests.testmodels.ValidTestModel3.epixxO(), osmo.tester.unittests.testmodels.ValidTestModel3.stateCheck(), \n" +
             "PRE: osmo.tester.unittests.testmodels.ValidTestModel3.epixxPre(), \n" +
             "\n" +
-            "STEP: world, WEIGHT=10\n" +
-            "GUARDS: osmo.tester.unittests.testmodels.ValidTestModel3.worldCheck(), \n" +
+            "STEP: hello, WEIGHT=10\n" +
+            "GUARDS: osmo.tester.unittests.testmodels.ValidTestModel3.helloCheck(), \n" +
             "GROUP: \n" +
             "POST: osmo.tester.unittests.testmodels.ValidTestModel3.stateCheck(), \n" +
             "PRE: \n" +
@@ -140,7 +140,7 @@ public class TextReportTests {
             "AfterSuites: \n" +
             "BeforeTests: osmo.tester.unittests.testmodels.ValidTestModel4.reset(), \n" +
             "AfterTests: \n" +
-            "Last Steps: \n"+
+            "Last Steps: \n" +
             "Model EndConditions: \n" +
             "Exploration Enablers: \n" +
             "Generation Enablers: \n" +
@@ -148,8 +148,8 @@ public class TextReportTests {
             "Requirements: Requirements{reqs=[]} ([])\n" +
             "Variables: \n" +
             "\n" +
-            "STEP: hello, WEIGHT=10\n" +
-            "GUARDS: osmo.tester.unittests.testmodels.ValidTestModel4.helloCheck(), \n" +
+            "STEP: world, WEIGHT=10\n" +
+            "GUARDS: osmo.tester.unittests.testmodels.ValidTestModel4.worldCheck(), \n" +
             "GROUP: \n" +
             "POST: osmo.tester.unittests.testmodels.ValidTestModel4.savePostState(), osmo.tester.unittests.testmodels.ValidTestModel4.sharedCheck(), osmo.tester.unittests.testmodels.ValidTestModel4.stateCheck(), \n" +
             "PRE: osmo.tester.unittests.testmodels.ValidTestModel4.savePreState(), \n" +
@@ -160,8 +160,8 @@ public class TextReportTests {
             "POST: osmo.tester.unittests.testmodels.ValidTestModel4.epixxO(), osmo.tester.unittests.testmodels.ValidTestModel4.savePostState(), osmo.tester.unittests.testmodels.ValidTestModel4.stateCheck(), \n" +
             "PRE: osmo.tester.unittests.testmodels.ValidTestModel4.savePreState(), \n" +
             "\n" +
-            "STEP: world, WEIGHT=10\n" +
-            "GUARDS: osmo.tester.unittests.testmodels.ValidTestModel4.worldCheck(), \n" +
+            "STEP: hello, WEIGHT=10\n" +
+            "GUARDS: osmo.tester.unittests.testmodels.ValidTestModel4.helloCheck(), \n" +
             "GROUP: \n" +
             "POST: osmo.tester.unittests.testmodels.ValidTestModel4.savePostState(), osmo.tester.unittests.testmodels.ValidTestModel4.sharedCheck(), osmo.tester.unittests.testmodels.ValidTestModel4.stateCheck(), \n" +
             "PRE: osmo.tester.unittests.testmodels.ValidTestModel4.savePreState(), \n" +
@@ -188,8 +188,8 @@ public class TextReportTests {
             "Requirements: Requirements{reqs=[]} ([])\n" +
             "Variables: \n" +
             "\n" +
-            "STEP: hello, WEIGHT=10\n" +
-            "GUARDS: osmo.tester.unittests.testmodels.ValidTestModel5.helloCheck(), \n" +
+            "STEP: world, WEIGHT=10\n" +
+            "GUARDS: osmo.tester.unittests.testmodels.ValidTestModel5.worldCheck(), \n" +
             "GROUP: \n" +
             "POST: osmo.tester.unittests.testmodels.ValidTestModel5.sharedCheck(), osmo.tester.unittests.testmodels.ValidTestModel5.stateCheck(), \n" +
             "PRE: \n" +
@@ -200,8 +200,8 @@ public class TextReportTests {
             "POST: osmo.tester.unittests.testmodels.ValidTestModel5.epixxO(), osmo.tester.unittests.testmodels.ValidTestModel5.stateCheck(), \n" +
             "PRE: \n" +
             "\n" +
-            "STEP: world, WEIGHT=10\n" +
-            "GUARDS: osmo.tester.unittests.testmodels.ValidTestModel5.worldCheck(), \n" +
+            "STEP: hello, WEIGHT=10\n" +
+            "GUARDS: osmo.tester.unittests.testmodels.ValidTestModel5.helloCheck(), \n" +
             "GROUP: \n" +
             "POST: osmo.tester.unittests.testmodels.ValidTestModel5.sharedCheck(), osmo.tester.unittests.testmodels.ValidTestModel5.stateCheck(), \n" +
             "PRE: \n" +
@@ -226,13 +226,7 @@ public class TextReportTests {
             "Requirements: null\n" +
             "Variables: index, \n" +
             "\n" +
-            "STEP: t3, WEIGHT=10\n" +
-            "GUARDS: \n" +
-            "GROUP: \n" +
-            "POST: osmo.tester.unittests.testmodels.ValidTestModel6.savePostState(), \n" +
-            "PRE: osmo.tester.unittests.testmodels.ValidTestModel6.savePreState(), \n" +
-            "\n" +
-            "STEP: t2, WEIGHT=10\n" +
+            "STEP: t4, WEIGHT=10\n" +
             "GUARDS: \n" +
             "GROUP: \n" +
             "POST: osmo.tester.unittests.testmodels.ValidTestModel6.savePostState(), \n" +
@@ -244,7 +238,13 @@ public class TextReportTests {
             "POST: osmo.tester.unittests.testmodels.ValidTestModel6.savePostState(), \n" +
             "PRE: osmo.tester.unittests.testmodels.ValidTestModel6.savePreState(), \n" +
             "\n" +
-            "STEP: t4, WEIGHT=10\n" +
+            "STEP: t3, WEIGHT=10\n" +
+            "GUARDS: \n" +
+            "GROUP: \n" +
+            "POST: osmo.tester.unittests.testmodels.ValidTestModel6.savePostState(), \n" +
+            "PRE: osmo.tester.unittests.testmodels.ValidTestModel6.savePreState(), \n" +
+            "\n" +
+            "STEP: t2, WEIGHT=10\n" +
             "GUARDS: \n" +
             "GROUP: \n" +
             "POST: osmo.tester.unittests.testmodels.ValidTestModel6.savePostState(), \n" +

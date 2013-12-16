@@ -15,7 +15,6 @@ import osmo.tester.unittests.testmodels.ErrorModel6;
 import osmo.tester.unittests.testmodels.ErrorModel7;
 import osmo.tester.unittests.testmodels.ErrorModel8;
 import osmo.tester.unittests.testmodels.ErrorModel9;
-import osmo.tester.unittests.testmodels.StrictTestModel;
 
 import static junit.framework.Assert.*;
 
@@ -55,7 +54,7 @@ public class ErrorHandlingTests {
   @Test
   public void beforeTestWithTrap() {
     osmo.setModelFactory(new ReflectiveModelFactory(ErrorModel1.class));
-    config.setFailWhenError(false);
+    config.setStopTestOnError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
@@ -86,7 +85,7 @@ public class ErrorHandlingTests {
   @Test
   public void beforeSuiteWithTrap() {
     osmo.setModelFactory(new ReflectiveModelFactory(ErrorModel3.class));
-    config.setFailWhenError(false);
+    config.setStopTestOnError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
@@ -117,7 +116,7 @@ public class ErrorHandlingTests {
   @Test
   public void afterTestWithTrap() {
     osmo.setModelFactory(new ReflectiveModelFactory(ErrorModel2.class));
-    config.setFailWhenError(false);
+    config.setStopTestOnError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
@@ -148,7 +147,7 @@ public class ErrorHandlingTests {
   @Test
   public void afterSuiteWithTrap() {
     osmo.setModelFactory(new ReflectiveModelFactory(ErrorModel4.class));
-    config.setFailWhenError(false);
+    config.setStopTestOnError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
@@ -180,7 +179,7 @@ public class ErrorHandlingTests {
   public void guardWithTrap() {
     listener.addExpected("suite-start", "start", "g:hello", "end", "suite-end");
     osmo.setModelFactory(new ReflectiveModelFactory(ErrorModel6.class));
-    config.setFailWhenError(false);
+//    config.setStopGenerationOnError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
@@ -216,7 +215,7 @@ public class ErrorHandlingTests {
     listener.addExpected("g:hello", "pre:hello", "t:hello", "post:hello");
     listener.addExpected("g:hello", "pre:hello", "t:hello", "post:hello", "ls:lastStepStanding", "end", "suite-end");
     osmo.setModelFactory(new ReflectiveModelFactory(ErrorModel5.class));
-    config.setFailWhenError(false);
+    config.setStopTestOnError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
@@ -245,7 +244,6 @@ public class ErrorHandlingTests {
     listener.setTracePrePost(true);
     listener.addExpected("suite-start", "start", "g:hello", "pre:hello", "end", "suite-end");
     osmo.setModelFactory(new ReflectiveModelFactory(ErrorModel8.class));
-    config.setFailWhenError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
@@ -279,7 +277,7 @@ public class ErrorHandlingTests {
     listener.setTracePrePost(true);
     listener.addExpected("suite-start", "start", "g:hello", "pre:hello", "t:hello", "post:hello", "g:hello", "pre:hello", "t:hello", "post:hello", "g:hello", "pre:hello", "t:hello", "post:hello", "end", "suite-end");
     osmo.setModelFactory(new ReflectiveModelFactory(ErrorModel7.class));
-    config.setFailWhenError(false);
+    config.setStopTestOnError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
@@ -308,7 +306,6 @@ public class ErrorHandlingTests {
     listener.setTracePrePost(true);
     listener.addExpected("suite-start", "start", "g:hello", "pre:hello", "t:hello", "post:hello", "end", "suite-end");
     osmo.setModelFactory(new ReflectiveModelFactory(ErrorModel9.class));
-    config.setFailWhenError(false);
     Length length3 = new Length(3);
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
@@ -320,25 +317,5 @@ public class ErrorHandlingTests {
       assertEquals("@EndCondition fail", e.getMessage());
     }
     listener.validate("@EndCondition with trap");
-  }
-
-  @Test
-  public void nonStrictStepFails() {
-    listener.addExpected("suite-start", "start", "e:a non-strict one 2", "t:a non-strict one 2", "e:a non-strict one", "t:a non-strict one", "e:a strict one", "end", "suite-end");
-    listener.setTraceGuards(false);
-    listener.setTraceErrors(true);
-    osmo.setModelFactory(new ReflectiveModelFactory(StrictTestModel.class));
-    Length length3 = new Length(3);
-    Length length1 = new Length(1);
-    osmo.setTestEndCondition(length3);
-    osmo.setSuiteEndCondition(length1);
-    try {
-      osmo.generate(100);
-      fail("The final strict test step failure should stop the generator");
-    } catch (RuntimeException e) {
-      assertEquals("t2 fail", e.getMessage());
-    }
-    listener.validate("Strict/non-strict generation combination.");
-    
   }
 }

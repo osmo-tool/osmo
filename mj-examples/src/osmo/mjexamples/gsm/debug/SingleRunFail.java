@@ -16,7 +16,7 @@ public class SingleRunFail {
     OSMOConfiguration config = tester.getConfig();
     config.setFactory(new GSMModelFactory(NullPrintStream.stream));
     config.setSequenceTraceRequested(true);
-    config.setFailWhenError(false);
+    config.setStopTestOnError(true);
     config.setTestEndCondition(new Length(50));
     config.setSuiteEndCondition(new Length(1));
     tester.generate(4275387207638575936l);

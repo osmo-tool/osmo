@@ -55,10 +55,10 @@ public class ExplorationTests {
     assertSuiteScore(179);
     //179=length+pairs+singles+variablecount+values
     //179=x*0+4*30+2*20+1*10+9
-    //it is driven to 119, after which the last two pairs are added (+- and --), which makes it 149 and 179
-    assertTestSequence(0, "[increase, increase, increase, increase, increase, increase, increase, increase, increase, decrease, decrease]");
+    //it is driven to 119, after which the last two pairs are added (+- and -+), which makes it 149 and 179
+    assertTestSequence(0, "[increase, increase, increase, increase, increase, increase, increase, increase, increase, decrease, increase]");
     TestCoverage coverage = osmo.getSuite().getCoverage();
-    assertEquals("Covered pairs", "[.osmo.tester.start.step->increase, increase->increase, increase->decrease, decrease->decrease]", coverage.getStepPairs().toString());
+    assertEquals("Covered pairs", "[.osmo.tester.start.step->increase, increase->increase, increase->decrease, decrease->increase]", coverage.getStepPairs().toString());
     assertEquals("Covered requirements", "[]", coverage.getRequirements().toString());
     assertEquals("Covered singles", "[increase, decrease]", coverage.getSingles().toString());
     assertEquals("Covered variables", "{counter=[1, 2, 3, 4, 5, 6, 7, 8, 9]}", coverage.getVariableValues().toString());
@@ -164,13 +164,14 @@ public class ExplorationTests {
     config.setFallbackProbability(0.2);
     osmo.explore(config);
     assertSuiteScore(1350);
-    assertTestCount(4);
+    assertTestCount(5);
     //NOTE: the first test is only explorer in depth until minimum score is achieved. after this it is probabilistic ending and only depth 1 exploration, which produces fluctuation
-    assertTestSequence(0, "[increase, increase, increase, increase, increase, decrease, decrease, increase, decrease, decrease, decrease]");
+    assertTestSequence(0, "[increase, increase, increase, increase, increase, decrease, increase, increase, increase, increase, increase]");
     assertTestSequence(1, "[increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase]");
-    //NOTE: the following two score 0 and thus are fully random
-    assertTestSequence(2, "[increase, increase, increase, increase, decrease, decrease, increase, increase, decrease, decrease, increase, increase, decrease, increase, increase, decrease, decrease, decrease, increase]");
-    assertTestSequence(3, "[increase, increase, increase, increase, decrease, decrease, decrease, increase, increase, increase, increase, increase, increase, increase, increase, increase, decrease, increase, decrease, increase, decrease, decrease]");
+    //NOTE: the following score 0 and thus are fully random
+    assertTestSequence(2, "[increase, increase, increase, decrease, decrease, increase, increase, decrease, increase, decrease, increase, decrease, increase, increase, decrease, decrease, increase, decrease, decrease]");
+    assertTestSequence(3, "[increase, increase, increase, decrease, increase, decrease, increase, decrease, increase, decrease, increase, decrease, increase, increase, decrease, increase, increase, increase, increase, increase, increase, increase]");
+    assertTestSequence(4, "[increase, increase, increase, increase, increase, decrease, increase, decrease, increase, decrease, increase, decrease, increase, decrease, increase, increase, increase, increase, increase, increase]");
     long end = System.currentTimeMillis();
 //    long diff = end-start;
 //    System.out.println("plateau time:"+diff);
@@ -233,10 +234,10 @@ public class ExplorationTests {
     //here we go over min length until we reach min score and then we stop
     assertTestSequence(1, "[increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase]");
     //here we go until we reach the one missing pair we are missing (--) and add plateau worth of tests in the end (3)
-    assertTestSequence(2, "[increase, increase, increase, decrease, decrease, increase, increase, decrease]");
+    assertTestSequence(2, "[increase, increase, increase, decrease, decrease, increase, increase, increase]");
     //last two just go to min length as they score nothing and hit plateau immediately as well
-    assertTestSequence(3, "[increase, increase, increase, increase, decrease, decrease, decrease]");
-    assertTestSequence(4, "[increase, increase, increase, increase, decrease, increase, increase]");
+    assertTestSequence(3, "[increase, increase, decrease, increase, increase, decrease, decrease]");
+    assertTestSequence(4, "[increase, increase, increase, decrease, decrease, increase, increase]");
   }
 
   @Test
@@ -278,10 +279,10 @@ public class ExplorationTests {
     String expected =
             "Starting new test case 1\n" +
                     "+++++Starting new test case 2\n" +
-                    "++-++Starting new test case 3\n" +
-                    "+++-+Starting new test case 4\n" +
-                    "++++-Starting new test case 5\n" +
-                    "++-++";
+                    "+++--Starting new test case 3\n" +
+                    "+++++Starting new test case 4\n" +
+                    "++-++Starting new test case 5\n" +
+                    "+++++";
     String actual = out.toString();
     actual = TestUtils.unifyLineSeparators(actual, "\n");
     assertEquals("Exploration output", expected, actual);
@@ -303,9 +304,9 @@ public class ExplorationTests {
     config.setMaxSuiteLength(10);
     config.setSuitePlateauThreshold(50);
     osmo.explore(config);
-    List<TestCase> cases = osmo.getSuite().getFinishedTestCases();
+    List<TestCase> cases = osmo.getSuite().getAllTestCases();
     String actual = cases.toString();
-    String expected = "[TestCase:[start, increase, increase, increase, increase, increase, increase, decrease, decrease, increase], TestCase:[start, increase, decrease, increase, increase, decrease, increase, increase, decrease, increase], TestCase:[start, increase, decrease, increase, increase, increase, increase, increase, increase, increase]]";
+    String expected = "[TestCase:[start, increase, increase, increase, increase, increase, increase, decrease, decrease, increase], TestCase:[start, increase, decrease, increase, increase, increase, increase, increase, increase, increase], TestCase:[start, increase, increase, increase, decrease, increase, decrease, decrease, increase, decrease]]";
     assertEquals("Explored counter tests", expected, actual);
   }
   

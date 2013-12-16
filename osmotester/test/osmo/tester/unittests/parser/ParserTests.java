@@ -22,7 +22,6 @@ import osmo.tester.unittests.testmodels.EmptyTestModel6;
 import osmo.tester.unittests.testmodels.PartialModel1;
 import osmo.tester.unittests.testmodels.PartialModel2;
 import osmo.tester.unittests.testmodels.StepAndTransitionModel;
-import osmo.tester.unittests.testmodels.StrictTestModel;
 import osmo.tester.unittests.testmodels.TestStepModel;
 import osmo.tester.unittests.testmodels.ValidTestModel3;
 import osmo.tester.unittests.testmodels.VariableModel1;
@@ -396,27 +395,4 @@ public class ParserTests {
     assertEquals("Number of @AfterTest elements", 3, fsm.getAfterTests().size());
     assertEquals("Number of @AfterSuite elements", 3, fsm.getAfterSuites().size());
   }
-
-  @Test
-  public void strictOrNot() {
-    OSMOConfiguration config = new OSMOConfiguration();
-    config.setFactory(new ReflectiveModelFactory(StrictTestModel.class));
-    ParserResult result = parser.parse(1, config, new TestSuite());
-    FSM fsm = result.getFsm();
-    assertTransitionPresent(fsm, "a non-strict one", 1, 0);
-    assertTransitionPresent(fsm, "a strict one", 1, 0);
-    assertTransitionPresent(fsm, "default strictness", 1, 0);
-    assertEquals("Number of @BeforeTest elements", 0, fsm.getBeforeTests().size());
-    assertEquals("Number of @BeforeSuite elements", 0, fsm.getBeforeSuites().size());
-    assertEquals("Number of @AfterTest elements", 0, fsm.getAfterTests().size());
-    assertEquals("Number of @AfterSuite elements", 0, fsm.getAfterSuites().size());
-
-    FSMTransition t1 = fsm.getTransition("a non-strict one");
-    assertFalse("Transition 1 should be non-strict", t1.isStrict());
-    FSMTransition t2 = fsm.getTransition("a strict one");
-    assertTrue("Transition 2 should be non-strict", t2.isStrict());
-    FSMTransition t3 = fsm.getTransition("default strictness");
-    assertTrue("Detaulf strictness should be true", t3.isStrict());
-  }
-
 }

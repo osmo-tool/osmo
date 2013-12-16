@@ -1,11 +1,11 @@
 Coverage\TC|0|1|
-ten    | | |
-two    |x|x|
-seven  | |x|
-five   |x|x|
 one    |x|x|
+two    |x|x|
 three  |x| |
 four   |x| |
-eight  | |x|
+five   |x|x|
 six    | |x|
+seven  | |x|
+eight  | |x|
+ten    | | |
 

@@ -43,7 +43,7 @@ public class Benchmark {
   private static void generate() {
     OSMOConfiguration oc = new OSMOConfiguration();
     oc.setTestEndCondition(new LengthProbability(50, 0.2d));
-    oc.setFailWhenError(false);
+    oc.setStopTestOnError(false);
     oc.setFactory(new GSMModelFactory(NullPrintStream.stream));
     ScoreConfiguration sc = new ScoreConfiguration();
     sc.setLengthWeight(-1);

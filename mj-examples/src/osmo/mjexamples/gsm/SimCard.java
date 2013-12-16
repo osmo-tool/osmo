@@ -624,7 +624,7 @@ public class SimCard {
       Logger.consoleLevel = Level.INFO;
       OSMOConfiguration oc = new OSMOConfiguration();
       oc.setTestEndCondition(new LengthProbability(50, 0.2d));
-      oc.setFailWhenError(false);
+      oc.setStopTestOnError(false);
       oc.setFactory(new GSMModelFactory(NullPrintStream.stream));
       ScoreConfiguration config = new ScoreConfiguration();
       config.setLengthWeight(-1);

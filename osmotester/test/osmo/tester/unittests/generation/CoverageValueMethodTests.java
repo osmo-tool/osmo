@@ -40,10 +40,10 @@ public class CoverageValueMethodTests {
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
-    osmo.generate(111);
+    osmo.generate(115);
     TestSuite suite = osmo.getSuite();
     assertEquals("State over generation with no state defined", "{}", suite.getCoverage().getStates().toString());
-    assertEquals("Sequence of steps", "[t2, t1, t1]", suite.getAllTestCases().get(0).getSteps().toString());
+    assertEquals("Sequence of steps", "[t3, t4, t1]", suite.getAllTestCases().get(0).getSteps().toString());
   }
 
   @Test
@@ -125,7 +125,7 @@ public class CoverageValueMethodTests {
     osmo.generate(222);
 
     TestSuite suite = osmo.getSuite();
-    String expected = "{my-state=[4, 1, 3]}";
+    String expected = "{my-state=[1, 2, 3]}";
     assertEquals("State when generating", expected, suite.getCoverage().getStates().toString());
 
     Map<String, Collection<String>> testVariables = suite.getCoverage().getVariableValues();

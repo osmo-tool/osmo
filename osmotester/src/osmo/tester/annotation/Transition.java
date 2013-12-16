@@ -22,6 +22,4 @@ public @interface Transition {
   String group() default "";
 
   int weight() default 10;
-
-  boolean strict() default true;
 }

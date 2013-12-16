@@ -135,7 +135,7 @@ public class MainGenerator {
         }
       } catch (RuntimeException | AssertionError e) {
         handleError(test, e);
-        break;
+        if (config.shouldStopTestOnError()) break;
       }
     }
     //have to put last steps here to catch all end conditions firing. have to catch again to avoid failure if so desired
@@ -148,7 +148,7 @@ public class MainGenerator {
     log.debug("Finished new test generation");
     return test;
   }
-  
+
   private void lastSteps() {
     Collection<InvocationTarget> lastSteps = fsm.getLastSteps();
     for (InvocationTarget t : lastSteps) {
@@ -175,8 +175,9 @@ public class MainGenerator {
     String errorMsg = "Error in test generation:" + unwrap.getMessage();
     log.error(errorMsg, e);
     listeners.testError(test, unwrap);
-    if (config.shouldFailWhenError()) {
+    if (config.shouldStopTestOnError()) {
       suite.storeGeneralState(fsm);
+      if (!config.shouldStopGenerationOnError()) return;
       afterTest();
       afterSuite();
       if (unwrap instanceof RuntimeException) {
@@ -210,7 +211,7 @@ public class MainGenerator {
 
     //not the best of hacks but.. manual drive ends by returning null
     if (algorithm instanceof ManualAlgorithm && next == null) return false;
-    
+
     log.debug("Taking transition " + next.getName());
     execute(next);
     if (checkModelEndConditions()) {
@@ -233,9 +234,13 @@ public class MainGenerator {
     invokeAll(transition.getPreMethods(), "pre", transition);
     //this is the actual transition/test step being executed
     InvocationTarget target = transition.getTransition();
-//    if (transition.isStrict() && config.shouldFailWhenError()) {
     try {
       target.invoke();
+    } catch (Exception e) {
+      if (config.shouldStopTestOnError()) {
+        throw e;
+      }
+      listeners.testError(getCurrentTest(), e);
     } finally {
       //we store the "custom" state returned by @StateName tagged methods
       //we do it here to allow any post-processing of state value for a step
@@ -243,14 +248,6 @@ public class MainGenerator {
       //store into test step the current state, do it here to allow the post methods and listeners to see step state
       suite.storeGeneralState(fsm);
     }
-//    } else {
-//      try {
-//        target.invoke();
-//      } catch (Exception e) {
-//        e.printStackTrace();
-//        listeners.testError(getCurrentTest(), e);
-//      }
-//    }
     listeners.step(step);
     invokeAll(transition.getPostMethods(), "post", transition);
     //set end time
@@ -258,7 +255,7 @@ public class MainGenerator {
     previousStep = step;
     calculateAddedCoverage(step);
   }
-  
+
   private void calculateAddedCoverage(TestCaseStep step) {
     ScoreCalculator sc = config.getScoreCalculator();
     if (sc == null) return;
@@ -268,7 +265,7 @@ public class MainGenerator {
 
   /**
    * Stores the user defined coverage values {@link osmo.tester.annotation.CoverageValue} observed at this moment
-   * into current test step. 
+   * into current test step.
    *
    * @param step Current test step.
    */
