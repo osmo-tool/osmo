@@ -147,11 +147,11 @@
 <body>
 #foreach ($test in $tests)
 #if ($test.failed)
-  <table class="fail-table" border="1" name="trace-table $test.number">
+  <table class="fail-table" border="1" name="trace-table $test.id">
 #else
-  <table class="test-table" border="1" name="trace-table $test.number">
+  <table class="test-table" border="1" name="trace-table $test.id">
 #end
-    <caption>Test Generation Trace for $test.name</caption>
+    <caption>Test Generation Trace for $test.name [$test.seed]</caption>
     <thead>
       <tr>
         <th class='corner'>Step</th>

@@ -10,6 +10,7 @@ import osmo.tester.explorer.ExplorationState;
 import osmo.tester.explorer.MainExplorer;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.ReflectiveModelFactory;
+import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
@@ -63,10 +64,10 @@ public class BestSearchTests {
     ExplorationState state = new ExplorationState(config, suiteCoverage);
     explorer.init(fsm, generator.getSuite(), state, script, 4);
 
-    config.getFallback().init(seed, fsm);
+    config.getFallback(seed, fsm);
 
     List<TestCase> tests = new ArrayList<>();
-    TestCase test1 = new TestCase();
+    TestCase test1 = new TestCase(1);
     createStep("start", test1, 10);
     createStep("increase", test1, 10);
     createStep("increase", test1, 0);
@@ -75,7 +76,7 @@ public class BestSearchTests {
     createStep("increase", test1, 0);
     tests.add(test1);
 
-    TestCase test2 = new TestCase();
+    TestCase test2 = new TestCase(1);
     createStep("start", test2, 10);
     createStep("increase", test2, 10);
     createStep("increase", test2, 0);
@@ -111,10 +112,12 @@ public class BestSearchTests {
     explorer.init(fsm, generator.getSuite(), state, script, 4);
 
     long seed = System.currentTimeMillis();
-    config.getFallback().init(seed, fsm);
+    FSMTraversalAlgorithm fallback = config.getFallback(seed, fsm);
+    fallback.init(seed, fsm);
+    fallback.initTest(seed);
 
     List<TestCase> tests = new ArrayList<>();
-    TestCase test1 = new TestCase();
+    TestCase test1 = new TestCase(1);
     createStep("start", test1, 10);
     createStep("increase", test1, 10);
     createStep("increase", test1, 0);
@@ -123,7 +126,7 @@ public class BestSearchTests {
     createStep("decrease", test1, 10);
     tests.add(test1);
 
-    TestCase test2 = new TestCase();
+    TestCase test2 = new TestCase(1);
     createStep("start", test2, 10);
     createStep("increase", test2, 10);
     createStep("increase", test2, 0);
@@ -167,7 +170,7 @@ public class BestSearchTests {
     MainExplorer explorer = new MainExplorer(null);
     FSM fsm = generator.getFsm();
     explorer.init(fsm, generator.getSuite(), state, script, 4);
-    config.getFallback().init(seed, fsm);
+    config.getFallback(seed, fsm);
     
     List<TestCase> tests = new ArrayList<>();
     for (int i = 0 ; i < 50 ; i++) {

@@ -22,7 +22,7 @@ public class SearchableInputTests {
   @Before
   public void reset() {
     suite = new TestSuite();
-    TestCase test = suite.startTest();
+    TestCase test = suite.startTest(1);
     test.addStep(new FSMTransition("test"));
   }
 

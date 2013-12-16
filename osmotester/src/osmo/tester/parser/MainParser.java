@@ -49,7 +49,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,9 +63,9 @@ import java.util.Map;
 public class MainParser {
   private static final Logger log = new Logger(MainParser.class);
   /** Key = Annotation type, Value = The parser object for that annotation. */
-  private final Map<Class<? extends Annotation>, AnnotationParser> annotationParsers = new HashMap<>();
+  private final Map<Class<? extends Annotation>, AnnotationParser> annotationParsers = new LinkedHashMap<>();
   /** Key = Annotation type, Value = The parser object for that annotation. */
-  private final Map<Class, AnnotationParser> fieldParsers = new HashMap<>();
+  private final Map<Class, AnnotationParser> fieldParsers = new LinkedHashMap<>();
 
   public MainParser() {
     //we set up the parser objects for the different annotation types

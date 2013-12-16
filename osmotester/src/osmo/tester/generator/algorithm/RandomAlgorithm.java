@@ -21,7 +21,6 @@ public class RandomAlgorithm implements FSMTraversalAlgorithm {
 
   @Override
   public void init(long seed, FSM fsm) {
-    this.rand = new Randomizer(seed);
   }
 
   @Override
@@ -30,6 +29,12 @@ public class RandomAlgorithm implements FSMTraversalAlgorithm {
   }
 
   @Override
-  public void initTest() {
+  public void initTest(long seed) {
+    this.rand = new Randomizer(seed);
+  }
+
+  @Override
+  public FSMTraversalAlgorithm cloneMe() {
+    return new RandomAlgorithm();
   }
 }

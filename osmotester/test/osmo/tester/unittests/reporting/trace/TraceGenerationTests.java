@@ -27,7 +27,7 @@ public class TraceGenerationTests {
 
   @Test
   public void testNoSteps() throws Exception {
-    suite.startTest();
+    suite.startTest(1);
     assertTrace(suite, "expected-no-steps.txt");
   }
 
@@ -42,7 +42,7 @@ public class TraceGenerationTests {
 
   @Test
   public void oneTestOneStepNoParams() throws Exception {
-    suite.startTest();
+    suite.startTest(1);
     FSMTransition login = new FSMTransition("Login");
     TestCaseStep loginStep = suite.addStep(login);
     suite.endTest();
@@ -51,7 +51,7 @@ public class TraceGenerationTests {
 
   @Test
   public void oneTestOneStepWithParams() throws Exception {
-    suite.startTest();
+    suite.startTest(1);
     FSMTransition login = new FSMTransition("Login");
     TestCaseStep loginStep = suite.addStep(login);
     loginStep.addValue("Username", "bob");
@@ -65,7 +65,7 @@ public class TraceGenerationTests {
 
   @Test
   public void twoStepWithParams() throws Exception {
-    suite.startTest();
+    suite.startTest(1);
 
     FSMTransition login = new FSMTransition("Login");
     TestCaseStep loginStep = suite.addStep(login);
@@ -88,7 +88,7 @@ public class TraceGenerationTests {
   @Test
   public void twoTestsWithParams() throws Exception {
     TestSuite suite = new TestSuite();
-    suite.startTest();
+    suite.startTest(1);
 
     FSMTransition login = new FSMTransition("Login");
     TestCaseStep loginStep = suite.addStep(login);
@@ -108,7 +108,7 @@ public class TraceGenerationTests {
     buyStep.addValue("Price", "$5");
 
     suite.endTest();
-    suite.startTest();
+    suite.startTest(1);
 
     FSMTransition login2 = new FSMTransition("Login");
     TestCaseStep loginStep2 = suite.addStep(login2);

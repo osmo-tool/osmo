@@ -1,9 +1,14 @@
 package osmo.tester.generator.multi;
 
+import osmo.common.Randomizer;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.Time;
+import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /** 
  * Runs a single generator in a thread of its own as executed in a thread pool by {@link MultiOSMO}.
@@ -13,20 +18,24 @@ import osmo.tester.generator.testsuite.TestSuite;
 public class GeneratorTask implements Runnable {
   /** The generator configuration. */
   private final OSMOConfiguration config;
-  /** Base seed for the generators running in this task. */
-  private long seed;
+  /** Base seed randomizer for the generators running in this task. */
+  private final Randomizer seeder;
   /** The minimum time the iterations need to run. */
   private final Time time;
   /** A unique ID for this task, for writing traces. */
   private final int id;
   /** Next ID for next parallel task.. */
   private static volatile int nextId = 1;
+  private final boolean traceAll;
+  private final boolean printCoverage;
 
-  public GeneratorTask(OSMOConfiguration config, Time time, long seed) {
+  public GeneratorTask(OSMOConfiguration config, Time time, long seed, boolean traceAll, boolean printCoverage) {
     this.config = config;
-    this.seed = seed;
+    this.seeder = new Randomizer(seed);
     this.time = time;
     this.id = nextId++;
+    this.traceAll = traceAll;
+    this.printCoverage = printCoverage;
   }
 
   @Override
@@ -34,12 +43,24 @@ public class GeneratorTask implements Runnable {
     time.init(0, null);
     int i = 1;
     while (!time.endTest(null, null)) {
-      seed += 100;
       OSMOTester tester = new OSMOTester();
       tester.setConfig(config);
+      tester.setPrintCoverage(printCoverage);
+      long seed = seeder.nextLong();
       tester.generate(seed);
       TestSuite suite = tester.getSuite();
-      OSMOTester.writeTrace("osmo-output/mosmo-task-"+id+"-i-"+i, suite.getAllTestCases(), seed, config);
+      List<TestCase> tests = suite.getAllTestCases();
+      if (traceAll) {
+        OSMOTester.writeTrace("osmo-output/mosmo-task-"+id+"-i-"+i, tests, seed, config);
+      } else {
+        List<TestCase> failed = new ArrayList<>();
+        for (TestCase test : tests) {
+          if (test.isFailed()) {
+            failed.add(test);
+          }
+        }
+        if (failed.size() > 0) OSMOTester.writeTrace("osmo-output/mosmo-task-"+id+"-i-"+i, failed, seed, config);
+      }
       i++;
     }
   }

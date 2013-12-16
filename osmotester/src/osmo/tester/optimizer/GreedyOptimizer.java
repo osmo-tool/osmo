@@ -18,7 +18,7 @@ import osmo.tester.model.Requirements;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -56,7 +56,7 @@ public class GreedyOptimizer {
   /** Seconds until the search times out. Timeout is checked between iterations and refers to how long overall generation progresses. */
   private long timeout = -1;
   /** For tracking all the path options encountered. */
-  private Collection<String> possiblePairs = new HashSet<>();
+  private Collection<String> possiblePairs = new LinkedHashSet<>();
   /** Generator configuration. */
   private final OSMOConfiguration osmoConfig;
   private long start = 0;

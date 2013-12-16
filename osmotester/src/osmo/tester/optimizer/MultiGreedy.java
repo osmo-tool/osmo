@@ -13,7 +13,7 @@ import osmo.tester.model.Requirements;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -46,7 +46,7 @@ public class MultiGreedy {
   /** How many tests should each optimizer generate in an iteration? */
   private int populationSize = 1000;
   /** Set of possible pairs of steps observed during generation. */
-  private Collection<String> possiblePairs = new HashSet<>();
+  private Collection<String> possiblePairs = new LinkedHashSet<>();
   /** For calculating coverage scores. */
   private final ScoreCalculator calculator;
   /** For randomization. */

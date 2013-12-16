@@ -98,9 +98,12 @@ public class OSMOTester {
       System.out.println();
       System.out.println(requirements.printCoverage());
     }
+    String filename = "osmo-output/osmo-" + seed;
     if (config.isSequenceTraceRequested()) {
-      String filename = "osmo-output/osmo-" + seed;
       writeTrace(filename, tests, seed, config);
+    }
+    if (!config.isExploring()) {
+      writeCoverageReport(filename, tests);
     }
   }
   
@@ -109,20 +112,23 @@ public class OSMOTester {
     createJenkinsReport(filename, tests, seed, config);
   }
 
-
-  private static void createHtmlTrace(String filename, List<TestCase> tests) {
+  private static void writeCoverageReport(String filename, List<TestCase> tests) {
     String summary = "summary\n";
     CSVCoverageReport report = new CSVCoverageReport(new ScoreCalculator(new ScoreConfiguration()));
     report.process(tests);
 
     String totalCsv = report.report();
     totalCsv += summary + "\n";
+    //we only write the coverage report if
     TestUtils.write(totalCsv, filename + ".csv");
+  }
+
+  private static void createHtmlTrace(String filename, List<TestCase> tests) {
     TraceReportWriter trace = new TraceReportWriter();
     try {
       trace.write(tests, filename+".html");
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error("Failed to write trace", e);
     }
   }
 

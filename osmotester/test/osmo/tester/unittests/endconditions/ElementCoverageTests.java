@@ -36,7 +36,7 @@ public class ElementCoverageTests {
     t4 = createTransition("t4", 1);
     t5 = createTransition("t5", 1);
     suite = new TestSuite();
-    suite.startTest();
+    suite.startTest(1);
   }
 
   private FSMTransition createTransition(String name, int weight) {
@@ -52,7 +52,7 @@ public class ElementCoverageTests {
 
     suite.addStep(t1);
     suite.endTest();
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(t1);
     suite.addStep(t2);
     assertEnd(msg1, msg2);
@@ -69,7 +69,7 @@ public class ElementCoverageTests {
     assertTestEnd(msg1);
     suite.endTest();
     assertSuiteEnd(msg2);
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(t1);
     suite.addStep(t2);
     assertTestEnd(msg1);
@@ -88,7 +88,7 @@ public class ElementCoverageTests {
     assertNoTestEnd(msg1);
     suite.endTest();
     assertNoSuiteEnd(msg2);
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(t1);
     suite.addStep(t2);
     assertTestEnd(msg1);
@@ -106,7 +106,7 @@ public class ElementCoverageTests {
     suite.addStep(t1);
     assertNoEnd(msg1, msg2);
     suite.endTest();
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(t2);
     suite.addStep(t3);
     suite.addStep(t4);
@@ -132,7 +132,7 @@ public class ElementCoverageTests {
     assertTestEnd(msg1);
     suite.endTest();
     assertSuiteEnd(msg2);
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(t1);
     suite.addStep(t2);
     assertTestEnd(msg1);
@@ -151,7 +151,7 @@ public class ElementCoverageTests {
     assertNoTestEnd(msg1);
     suite.endTest();
     assertNoSuiteEnd(msg2);
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(t1);
     suite.addStep(t2);
     assertTestEnd(msg1);
@@ -169,7 +169,7 @@ public class ElementCoverageTests {
     suite.addStep(t1);
     assertNoEnd(msg1, msg2);
     suite.endTest();
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(t2);
     suite.addStep(t3);
     suite.addStep(t4);
@@ -196,7 +196,7 @@ public class ElementCoverageTests {
     assertTestEnd(msg1);
     suite.endTest();
     assertSuiteEnd(msg2);
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(t1);
     suite.addStep(t2);
     //should not end as the test covers no requirements

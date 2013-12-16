@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -22,7 +22,7 @@ public class ParserParameters {
   /** The annotation being currently processed. */
   private Object annotation = null;
   /** All OSMO annotations for the class of the model object. */
-  private Map<String, String> classAnnotations = new HashMap<>();
+  private Map<String, String> classAnnotations = new LinkedHashMap<>();
   /** All OSMO annotations for the represented field, including the one being processed. */
   private Collection<Object> fieldAnnotations = new ArrayList<>();
   /** The annotated field, if any. When fields are parsed, this is non-null, otherwise null. */

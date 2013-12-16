@@ -32,7 +32,7 @@ public class MatrixTests {
     reqs.add("req-two");
     reqs.add("req-three");
 
-    suite.startTest();
+    suite.startTest(1);
     addStep("one");
     addStep("one");
     addStep("two");
@@ -46,7 +46,7 @@ public class MatrixTests {
     suite.addValue("Clowns", "Red Nosed..");
     addStep("five");
     suite.endTest();
-    suite.startTest();
+    suite.startTest(1);
     addStep("one");
     suite.addValue("Clowns", "Dozed");
     suite.addValue("Clowns", "Outside");

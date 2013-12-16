@@ -57,11 +57,11 @@ public class GreedyTests {
   @Test
   public void requirementOptimizer3TestsNoOverlap() {
     TestSuite suite = new TestSuite();
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(new FSMTransition("t1"));
     suite.coveredRequirement("r1");
     suite.endTest();
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(new FSMTransition("t2"));
     suite.addStep(new FSMTransition("t3"));
     suite.coveredRequirement("r2");
@@ -69,7 +69,7 @@ public class GreedyTests {
     suite.coveredRequirement("r3");
     suite.coveredRequirement("r4");
     suite.endTest();
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(new FSMTransition("t5"));
     suite.addStep(new FSMTransition("t6"));
     suite.addStep(new FSMTransition("t7"));
@@ -122,11 +122,11 @@ public class GreedyTests {
 
   private TestSuite createSuite1() {
     TestSuite suite = new TestSuite();
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(new FSMTransition("t1"));
     suite.coveredRequirement("r1");
     suite.endTest();
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(new FSMTransition("t2"));
     suite.addStep(new FSMTransition("t3"));
     suite.coveredRequirement("r2");
@@ -134,7 +134,7 @@ public class GreedyTests {
     suite.coveredRequirement("r1");
     suite.coveredRequirement("r2");
     suite.endTest();
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(new FSMTransition("t5"));
     suite.addStep(new FSMTransition("t6"));
     suite.addStep(new FSMTransition("t7"));
@@ -145,20 +145,20 @@ public class GreedyTests {
 
   private TestSuite createSuite2() {
     TestSuite suite = new TestSuite();
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(new FSMTransition("t1"));
     suite.coveredRequirement("r5");
     suite.coveredRequirement("r1");
     suite.endTest();
 
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(new FSMTransition("t2"));
     suite.addStep(new FSMTransition("t3"));
     suite.coveredRequirement("r2");
     suite.addStep(new FSMTransition("t4"));
     suite.endTest();
 
-    suite.startTest();
+    suite.startTest(1);
     suite.addStep(new FSMTransition("t1"));
     suite.addStep(new FSMTransition("t2"));
     suite.coveredRequirement("r3");

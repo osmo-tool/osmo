@@ -507,6 +507,11 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
   }
 
   @Override
-  public void initTest() {
+  public void initTest(long seed) {
+  }
+
+  @Override
+  public FSMTraversalAlgorithm cloneMe() {
+    return null;
   }
 }

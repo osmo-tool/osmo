@@ -6,7 +6,7 @@ import osmo.tester.gui.manualdrive.ValueSetGUI;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -315,7 +315,7 @@ public class ValueSet<T> extends SearchableInput<T> {
       //choices now has all items that have never been covered
 
       if (choices.size() == 0) {
-        Map<T, Integer> coverage = new HashMap<>();
+        Map<T, Integer> coverage = new LinkedHashMap<>();
         for (T t : history) {
           Integer count = coverage.get(t);
           //when first encountered, the object will have "null" instances so we translate that to 0

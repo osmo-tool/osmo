@@ -6,7 +6,7 @@ import osmo.tester.model.FSM;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 /** 
  * An end condition that requires the given set of {@link osmo.tester.annotation.CoverageValue} values to be covered.
@@ -18,7 +18,7 @@ public class StateCoverage implements EndCondition {
   /** Name of variable to cover. */
   private final String name;
   /** List of required values to covered. */
-  private Collection<String> required = new HashSet<>();
+  private Collection<String> required = new LinkedHashSet<>();
 
   public StateCoverage(String name, String... states) {
     this.name = name;

@@ -47,6 +47,7 @@ public class JenkinsReportGenerator implements GenerationListener {
   private final boolean steps;
   /** Seed used in test generation. */
   private Long seed = null;
+  private FSM fsm;
 
   /**
    * @param filename The name of the report file.
@@ -64,6 +65,7 @@ public class JenkinsReportGenerator implements GenerationListener {
   @Override
   public void init(long seed, FSM fsm, OSMOConfiguration config) {
     this.seed = seed;
+    this.fsm = fsm;
     this.config = config;
   }
 
@@ -205,7 +207,7 @@ public class JenkinsReportGenerator implements GenerationListener {
    */
   private Collection<Property> fillProperties() {
     Collection<Property> properties = new ArrayList<>();
-    String algorithm = config.getAlgorithm().getClass().getName();
+    String algorithm = config.cloneAlgorithm(seed, fsm).getClass().getName();
     properties.add(new Property(ALGORITHM, algorithm));
     Collection<StepFilter> filters = config.getFilters();
     for (StepFilter filter : filters) {

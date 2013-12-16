@@ -8,7 +8,6 @@ import osmo.tester.model.VariableField;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -71,7 +70,7 @@ public class ScoreConfiguration {
     }
     log.debug("FSM variables for coverage:" + variableNames);
     //use a hashset to avoid duplicates
-    Collection<String> notFound = new HashSet<>();
+    Collection<String> notFound = new LinkedHashSet<>();
     for (String name : valueWeights.keySet()) {
       if (!variableNames.contains(name) && !ignoreList.contains(name)) {
         //a variable defined for score calculation does not exist in the code

@@ -6,7 +6,7 @@ import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -274,7 +274,7 @@ public class TestCoverage {
   private String stepPairCoverageString(Collection<String> possibleStepPairs, boolean printAll, String result) {
     result += "\nUnique step-pairs: " + stepPairs.size();
     if (possibleStepPairs != null && possibleStepPairs.size() > 0) {
-      Collection<String> all = new HashSet<>();
+      Collection<String> all = new LinkedHashSet<>();
       all.addAll(possibleStepPairs);
       all.removeAll(stepPairs);
       result += " (of " + possibleStepPairs.size() + ")";
@@ -292,7 +292,7 @@ public class TestCoverage {
       int fsmMax = fsmTransitions.size();
       result += (" (of " + fsmMax + ")");
       if (fsmMax > singles.size()) {
-        Collection<String> all = new HashSet<>();
+        Collection<String> all = new LinkedHashSet<>();
         for (FSMTransition ft : fsmTransitions) {
           all.add(ft.getStringName());
         }

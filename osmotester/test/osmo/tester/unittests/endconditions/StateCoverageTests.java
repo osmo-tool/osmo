@@ -64,7 +64,7 @@ public class StateCoverageTests {
     tester.setSuiteEndCondition(new StateCoverage("my-state", "1", "2", "3", "4", "4", "4", "4", "4"));
     tester.generate(55);
     List<TestCase> history = tester.getSuite().getFinishedTestCases();
-    assertEquals("Number of tests generated", 8, history.size());
+    assertEquals("Number of tests generated", 5, history.size());
     String expected = "[TestCase:[t2], TestCase:[t2], TestCase:[t3], TestCase:[t2], TestCase:[t1], TestCase:[t2], TestCase:[t2], TestCase:[t4]]";
     assertEquals(expected, history.toString());
   }

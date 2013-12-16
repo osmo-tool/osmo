@@ -4,7 +4,7 @@ import osmo.common.log.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +18,7 @@ import java.util.Map;
 public class FSM {
   private static final Logger log = new Logger(FSM.class);
   /** Key = transition name (from @TestStep("name")), Value = transition object */
-  private Map<TransitionName, FSMTransition> transitions = new HashMap<>();
+  private Map<TransitionName, FSMTransition> transitions = new LinkedHashMap<>();
   /** List of specific guards, associated to groups or steps. */
   private List<FSMGuard> specificGuards = new ArrayList<>();
   /** List of generic guards that apply to all steps. */

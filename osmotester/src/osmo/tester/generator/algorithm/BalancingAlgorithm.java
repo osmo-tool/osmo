@@ -36,8 +36,6 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
 
   @Override
   public void init(long seed, FSM fsm) {
-    //this needs to be here to use passed in seed value
-    this.rand = new Randomizer(seed);
   }
 
   @Override
@@ -198,6 +196,13 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
   }
 
   @Override
-  public void initTest() {
+  public void initTest(long seed) {
+    this.rand = new Randomizer(seed);
+  }
+
+  @Override
+  public FSMTraversalAlgorithm cloneMe() {
+    BalancingAlgorithm clone = new BalancingAlgorithm();
+    return clone;
   }
 }

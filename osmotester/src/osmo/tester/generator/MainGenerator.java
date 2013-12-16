@@ -24,7 +24,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -52,13 +52,14 @@ public class MainGenerator {
   /** Keeps track of overall number of tests generated. */
   private static int testCount = 0;
   /** Set of possible pairs, key = source, value = targets. */
-  private Collection<String> possiblePairs = new HashSet<>();
+  private Collection<String> possiblePairs = new LinkedHashSet<>();
   /** The base seed to use for test generation. Each new test case gets a different seed based on this. */
   private final long baseSeed;
   /** The seed for the current test case being generated. */
   private Long seed = null;
   /** Forces the generator to follow the defined scenario by removing any steps from enabled list not allowed by scenario. */
   private final ScenarioFilter scenarioFilter;
+  private final FSMTraversalAlgorithm algorithm;
 
   /**
    * @param seed   The base seed to use for randomization during generation.
@@ -73,6 +74,7 @@ public class MainGenerator {
     this.listeners = config.getListeners();
     this.scenarioFilter = new ScenarioFilter(config.getScenario());
     createModelObjects();
+    this.algorithm = config.cloneAlgorithm(seed, fsm);
   }
 
   /** Invoked to start the test generation using the configured parameters. */
@@ -94,7 +96,7 @@ public class MainGenerator {
    * by the user and these will be re-used across the generation.
    */
   private void createModelObjects() {
-    //we need +1 since someone might actually generate an empty test with no steps = no salt ever
+    //if configuration allows empty tests, this can produce same seed and loop it.. but that is model issue
     int salt = suite.getCoverage().getTotalSteps();
     //create a new seed for the new test case
     seed = baseSeed + salt;
@@ -120,8 +122,7 @@ public class MainGenerator {
   public TestCase nextTest() {
     previousStep = null;
     createModelObjects();
-    FSMTraversalAlgorithm algorithm = config.getAlgorithm();
-    algorithm.initTest();
+    algorithm.initTest(seed);
     log.debug("Starting new test generation");
     beforeTest();
     TestCase test = suite.getCurrentTest();
@@ -134,6 +135,7 @@ public class MainGenerator {
         }
       } catch (RuntimeException | AssertionError e) {
         handleError(test, e);
+        break;
       }
     }
     //have to put last steps here to catch all end conditions firing. have to catch again to avoid failure if so desired
@@ -173,11 +175,8 @@ public class MainGenerator {
     String errorMsg = "Error in test generation:" + unwrap.getMessage();
     log.error(errorMsg, e);
     listeners.testError(test, unwrap);
-    if (!(unwrap instanceof AssertionError) || config.shouldFailWhenError()) {
+    if (config.shouldFailWhenError()) {
       suite.storeGeneralState(fsm);
-//      if (step != null) {
-//        step.storeGeneralState(fsm);
-//      }
       afterTest();
       afterSuite();
       if (unwrap instanceof RuntimeException) {
@@ -207,7 +206,6 @@ public class MainGenerator {
         return false;
       }
     }
-    FSMTraversalAlgorithm algorithm = config.getAlgorithm();
     FSMTransition next = algorithm.choose(suite, enabled);
 
     //not the best of hacks but.. manual drive ends by returning null
@@ -235,21 +233,24 @@ public class MainGenerator {
     invokeAll(transition.getPreMethods(), "pre", transition);
     //this is the actual transition/test step being executed
     InvocationTarget target = transition.getTransition();
-    if (transition.isStrict() && config.shouldFailWhenError()) {
+//    if (transition.isStrict() && config.shouldFailWhenError()) {
+    try {
       target.invoke();
-    } else {
-      try {
-        target.invoke();
-      } catch (Exception e) {
-        e.printStackTrace();
-        listeners.testError(getCurrentTest(), e);
-      }
+    } finally {
+      //we store the "custom" state returned by @StateName tagged methods
+      //we do it here to allow any post-processing of state value for a step
+      storeUserCoverageValues(step);
+      //store into test step the current state, do it here to allow the post methods and listeners to see step state
+      suite.storeGeneralState(fsm);
     }
-    //we store the "custom" state returned by @StateName tagged methods
-    //we do it here to allow any post-processing of state value for a step
-    storeUserCoverageValues(step);
-    //store into test step the current state, do it here to allow the post methods and listeners to see step state
-    suite.storeGeneralState(fsm);
+//    } else {
+//      try {
+//        target.invoke();
+//      } catch (Exception e) {
+//        e.printStackTrace();
+//        listeners.testError(getCurrentTest(), e);
+//      }
+//    }
     listeners.step(step);
     invokeAll(transition.getPostMethods(), "post", transition);
     //set end time
@@ -373,7 +374,7 @@ public class MainGenerator {
     //re-initialize end conditions before new tests to remove previous test state
     config.getTestCaseEndCondition().init(seed, fsm);
     //update suite
-    TestCase test = suite.startTest();
+    TestCase test = suite.startTest(seed);
     listeners.testStarted(suite.getCurrentTest());
     Collection<InvocationTarget> befores = fsm.getBeforeTests();
     invokeAll(befores);
