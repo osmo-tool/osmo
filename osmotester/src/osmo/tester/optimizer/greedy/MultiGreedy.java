@@ -1,4 +1,4 @@
-package osmo.tester.optimizer;
+package osmo.tester.optimizer.greedy;
 
 import osmo.common.Randomizer;
 import osmo.common.TestUtils;
@@ -10,6 +10,7 @@ import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.FSM;
 import osmo.tester.model.Requirements;
+import osmo.tester.optimizer.CSVCoverageReport;
 
 import java.util.ArrayList;
 import java.util.Collection;

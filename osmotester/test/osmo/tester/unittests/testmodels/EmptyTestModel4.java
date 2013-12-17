@@ -4,7 +4,8 @@ import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.LastStep;
-import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.TestStep;
+import osmo.tester.annotation.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
 
@@ -18,7 +19,7 @@ public class EmptyTestModel4 {
     return false;
   }
 
-  @Transition("foo")
+  @TestStep("foo")
   public void epixx() {
   }
 

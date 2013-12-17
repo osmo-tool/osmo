@@ -3,7 +3,7 @@ package osmo.tester.unittests.testmodels;
 import osmo.common.NullPrintStream;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
-import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.data.CollectionCount;
@@ -56,7 +56,7 @@ public class VariableModel2 {
     return !first;
   }
 
-  @Transition("first")
+  @TestStep("first")
   public void first() {
     first = true;
     out.println(":first:");
@@ -67,7 +67,7 @@ public class VariableModel2 {
     return first && !second;
   }
 
-  @Transition("second")
+  @TestStep("second")
   public void second() {
     second = true;
     out.println(":second:");
@@ -78,7 +78,7 @@ public class VariableModel2 {
     return first && second;
   }
 
-  @Transition("third")
+  @TestStep("third")
   public void third() {
     out.println("range:" + range.next());
     String next = set.next();

@@ -5,7 +5,7 @@ import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.TestStep;
-import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.TestStep;
 
 import java.io.PrintStream;
 
@@ -32,7 +32,7 @@ public class GroupModel2 {
     ps.println("login");
   }
 
-  @Transition(name="hello", group="logged in")
+  @TestStep(name="hello", group="logged in")
   public void hello() {
     hello = true;
     ps.println("hello");

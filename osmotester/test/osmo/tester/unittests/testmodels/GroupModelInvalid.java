@@ -5,7 +5,7 @@ import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.TestStep;
-import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.TestStep;
 
 /** @author Teemu Kanstren */
 @Group()
@@ -15,7 +15,7 @@ public class GroupModelInvalid {
     
   }
 
-  @Transition(name="step2", group="step3")
+  @TestStep(name="step2", group="step3")
   public void groupedTransition() {
 
   }

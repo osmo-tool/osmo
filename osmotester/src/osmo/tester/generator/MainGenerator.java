@@ -275,12 +275,7 @@ public class MainGenerator {
       String value = coverage.invoke(step);
       String name = coverage.getVariableName();
       suite.addUserCoverage(name, value);
-//      step.addUserCoverage(name, value);
       log.debug("new coverage: " + name + "=" + value);
-//      if (previousStep != null) {
-//        Object value1 = previousStep.getStatesFor(name).getValue();
-//        step.addUserCoveragePair(coverage.getPairName(), value1 +"->"+value);
-//      }
     }
   }
 

@@ -1,5 +1,6 @@
 package osmo.tester.unittests.testmodels;
 
+import osmo.common.Randomizer;
 import osmo.tester.annotation.AfterSuite;
 import osmo.tester.annotation.AfterTest;
 import osmo.tester.annotation.BeforeSuite;
@@ -9,9 +10,12 @@ import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.TestStep;
+import osmo.tester.model.data.ValueRange;
 
 /** @author Teemu Kanstren */
-public class ErrorModel9 {
+public class ErrorModelProbability {
+  private Randomizer rand = new Randomizer();
+  
   @BeforeTest
   public void start1() {
   }
@@ -30,6 +34,8 @@ public class ErrorModel9 {
 
   @TestStep("hello")
   public void transition1() {
+    //throw exception with 10% probability to allow for search
+    if (rand.nextInt(1, 10) == 1) throw new RuntimeException("@EndCondition fail");
   }
 
   @Guard("hello")
@@ -47,6 +53,6 @@ public class ErrorModel9 {
 
   @EndCondition
   public boolean end1() {
-    throw new RuntimeException("@EndCondition fail");
+    return false;
   }
 }

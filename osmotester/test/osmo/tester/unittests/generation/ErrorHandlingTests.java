@@ -204,7 +204,7 @@ public class ErrorHandlingTests {
       osmo.generate(100);
       fail("Throwing an exception without trap should propagate.");
     } catch (RuntimeException e) {
-      assertEquals("Error in test generation:@Transition assert fail", e.getMessage());
+      assertEquals("Error in test generation:@TestStep assert fail", e.getMessage());
     }
   }
 

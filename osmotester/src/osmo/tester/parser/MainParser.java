@@ -1,5 +1,6 @@
 package osmo.tester.parser;
 
+import osmo.common.Randomizer;
 import osmo.common.log.Logger;
 import osmo.tester.annotation.AfterSuite;
 import osmo.tester.annotation.AfterTest;
@@ -38,6 +39,7 @@ import osmo.tester.parser.annotation.PostParser;
 import osmo.tester.parser.annotation.PreParser;
 import osmo.tester.parser.annotation.TransitionParser;
 import osmo.tester.parser.annotation.VariableParser;
+import osmo.tester.parser.field.RandomizerParser;
 import osmo.tester.parser.field.RequirementsParser;
 import osmo.tester.parser.field.SearchableInputParser;
 import osmo.tester.parser.field.TestSuiteParser;
@@ -89,6 +91,7 @@ public class MainParser {
     fieldParsers.put(SearchableInput.class, new SearchableInputParser());
     fieldParsers.put(Requirements.class, new RequirementsParser());
     fieldParsers.put(TestSuite.class, new TestSuiteParser());
+    fieldParsers.put(Randomizer.class, new RandomizerParser());
   }
 
   /**

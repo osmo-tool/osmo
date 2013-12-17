@@ -5,7 +5,7 @@ import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.LastStep;
 import osmo.tester.annotation.Post;
-import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
 
@@ -37,7 +37,7 @@ public class ValidTestModel5 {
     return !req.isCovered(TAG_HELLO) && !req.isCovered(TAG_WORLD) && !req.isCovered(TAG_EPIX);
   }
 
-  @Transition("hello")
+  @TestStep("hello")
   public void transition1() {
     req.covered(TAG_HELLO);
     out.print(":hello");
@@ -48,7 +48,7 @@ public class ValidTestModel5 {
     return req.isCovered(TAG_HELLO) && !req.isCovered(TAG_WORLD) && !req.isCovered(TAG_EPIX);
   }
 
-  @Transition("world")
+  @TestStep("world")
   public void epix() {
     req.covered(TAG_WORLD);
     out.print(":world");
@@ -59,7 +59,7 @@ public class ValidTestModel5 {
     return req.isCovered(TAG_WORLD);
   }
 
-  @Transition("epixx")
+  @TestStep("epixx")
   public void epixx() {
     req.covered(TAG_EPIX);
     out.print(":epixx");

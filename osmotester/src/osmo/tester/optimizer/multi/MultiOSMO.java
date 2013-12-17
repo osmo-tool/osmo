@@ -1,4 +1,4 @@
-package osmo.tester.generator.multi;
+package osmo.tester.optimizer.multi;
 
 import osmo.common.Randomizer;
 import osmo.common.log.Logger;

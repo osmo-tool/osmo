@@ -3,7 +3,8 @@ package osmo.tester.unittests.testmodels;
 import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
-import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.TestStep;
+import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -16,25 +17,25 @@ public class CoverageValueModel2 {
   @Variable
   private ValueRange<Integer> range = new ValueRange<>(1, 5);
 
-  @Transition("t1")
+  @TestStep("t1")
   public void one() {
     state = "1";
 //    range.next();
   }
 
-  @Transition("t2")
+  @TestStep("t2")
   public void two() {
     state = "2";
 //    range.next();
   }
 
-  @Transition("t3")
+  @TestStep("t3")
   public void three() {
     state = "3";
     range.next();
   }
 
-  @Transition("t4")
+  @TestStep("t4")
   public void four() {
     state = "4";
 //    range.next();

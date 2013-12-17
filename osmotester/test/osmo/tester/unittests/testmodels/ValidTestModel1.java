@@ -1,7 +1,7 @@
 package osmo.tester.unittests.testmodels;
 
 import osmo.tester.annotation.Guard;
-import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
 
 /**
@@ -16,7 +16,7 @@ public class ValidTestModel1 {
     return history;
   }
 
-  @Transition("world")
+  @TestStep("world")
   public void epix() {
 
   }
@@ -26,7 +26,7 @@ public class ValidTestModel1 {
     return false;
   }
 
-  @Transition("epixx")
+  @TestStep("epixx")
   public void epixx() {
 
   }

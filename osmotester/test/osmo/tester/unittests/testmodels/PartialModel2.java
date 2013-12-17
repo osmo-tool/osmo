@@ -10,7 +10,7 @@ import osmo.tester.annotation.ExplorationEnabler;
 import osmo.tester.annotation.Group;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
-import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.TestStep;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
@@ -60,13 +60,13 @@ public class PartialModel2 {
     return req.isCovered(TAG_HELLO) && !req.isCovered(TAG_WORLD) && !req.isCovered(TAG_EPIX);
   }
 
-  @Transition("world")
+  @TestStep("world")
   public void epix() {
     req.covered(TAG_WORLD);
     out.print(":world");
   }
 
-  @Transition("epixx")
+  @TestStep("epixx")
   public void epixx() {
     req.covered(TAG_EPIX);
     out.print(":epixx");

@@ -1,22 +1,12 @@
 package osmo.mjexamples.gsm;
 
-import osmo.common.NullPrintStream;
 import osmo.common.log.Logger;
-import osmo.tester.coverage.ScoreConfiguration;
-import osmo.tester.coverage.TestCoverage;
 import osmo.tester.explorer.ExplorationConfiguration;
 import osmo.tester.explorer.OSMOExplorer;
-import osmo.tester.generator.endcondition.LengthProbability;
-import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.ModelFactory;
 import osmo.tester.model.TestModels;
-import osmo.tester.optimizer.MultiGreedy;
-import osmo.tester.parser.ModelObject;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.logging.Level;
 
 /** @author Teemu Kanstren */

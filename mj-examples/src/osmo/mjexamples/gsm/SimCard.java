@@ -1,8 +1,6 @@
 package osmo.mjexamples.gsm;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,11 +27,8 @@ import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.gui.manualdrive.ManualAlgorithm;
-import osmo.tester.model.ModelFactory;
 import osmo.tester.model.Requirements;
-import osmo.tester.model.TestModels;
-import osmo.tester.optimizer.MultiGreedy;
-import osmo.tester.parser.ModelObject;
+import osmo.tester.optimizer.greedy.MultiGreedy;
 
 /**
  * This is an EFSM model of the SIM card within a mobile phone.

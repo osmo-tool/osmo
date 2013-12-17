@@ -1,25 +1,25 @@
 package osmo.tester.unittests.testmodels;
 
-import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.TestStep;
 
 /** @author Teemu Kanstren */
 public class WeightedModel1 {
-  @Transition(name = "bob2", weight = 2)
+  @TestStep(name = "bob2", weight = 2)
   public void hello() {
 
   }
 
-  @Transition(name = "bob3", weight = 3)
+  @TestStep(name = "bob3", weight = 3)
   public void world() {
 
   }
 
-  @Transition(name = "bob4", weight = 4)
+  @TestStep(name = "bob4", weight = 4)
   public void xyz() {
 
   }
 
-  @Transition(name = "bob1", weight = 1)
+  @TestStep(name = "bob1", weight = 1)
   public void abc() {
 
   }

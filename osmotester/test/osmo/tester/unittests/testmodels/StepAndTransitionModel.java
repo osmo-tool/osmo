@@ -8,7 +8,7 @@ import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.TestStep;
-import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.TestStep;
 import osmo.tester.model.Requirements;
 
 import java.io.PrintStream;
@@ -57,7 +57,7 @@ public class StepAndTransitionModel {
     return req.isCovered(TAG_HELLO) && !req.isCovered(TAG_WORLD) && !req.isCovered(TAG_EPIX);
   }
 
-  @Transition("world")
+  @TestStep("world")
   public void epix() {
     req.covered(TAG_WORLD);
     out.print(":world");
@@ -73,7 +73,7 @@ public class StepAndTransitionModel {
     out.print(":epixx_pre");
   }
 
-  @Transition("epixx")
+  @TestStep("epixx")
   public void epixx() {
     req.covered(TAG_EPIX);
     out.print(":epixx");
