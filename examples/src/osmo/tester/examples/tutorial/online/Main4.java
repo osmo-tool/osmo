@@ -13,7 +13,7 @@ public class Main4 {
     tester.setTestEndCondition(new Length(5));
     tester.setSuiteEndCondition(new Length(4));
     tester.getConfig().setUnwrapExceptions(true);
-    tester.getConfig().setFailWhenError(true);
+    tester.getConfig().setStopTestOnError(true);
     tester.generate(52);
   }
 }

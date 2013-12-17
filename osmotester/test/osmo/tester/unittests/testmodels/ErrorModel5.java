@@ -9,7 +9,7 @@ import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.LastStep;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
-import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.TestStep;
 
 /** @author Teemu Kanstren */
 public class ErrorModel5 {
@@ -29,9 +29,9 @@ public class ErrorModel5 {
   public void endAll() {
   }
 
-  @Transition("hello")
+  @TestStep("hello")
   public void transition1() {
-    throw new AssertionError("@Transition assert fail");
+    throw new AssertionError("@TestStep assert fail");
   }
 
   @Guard("hello")

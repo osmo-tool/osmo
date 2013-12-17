@@ -1,9 +1,6 @@
 package osmo.mjexamples.ecinema;
 
-import osmo.common.NullPrintStream;
 import osmo.common.log.Logger;
-import osmo.mjexamples.gsm.GSMModelFactory;
-import osmo.mjexamples.gsm.SimCardAdaptor;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.annotation.BeforeTest;
@@ -25,12 +22,8 @@ import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.model.ModelFactory;
 import osmo.tester.model.Requirements;
 import osmo.tester.model.TestModels;
-import osmo.tester.optimizer.MultiGreedy;
-import osmo.tester.parser.ModelObject;
+import osmo.tester.optimizer.greedy.MultiGreedy;
 
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;

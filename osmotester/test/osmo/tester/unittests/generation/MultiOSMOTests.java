@@ -8,7 +8,7 @@ import osmo.tester.OSMOConfiguration;
 import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.Time;
-import osmo.tester.generator.multi.MultiOSMO;
+import osmo.tester.optimizer.multi.MultiOSMO;
 import osmo.tester.model.ModelFactory;
 import osmo.tester.model.Requirements;
 import osmo.tester.model.TestModels;

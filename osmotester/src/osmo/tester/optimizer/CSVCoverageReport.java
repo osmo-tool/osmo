@@ -15,7 +15,7 @@ import java.util.Collection;
  * Metrics are grouped separately, so there is a heading for requirements, steps, variable values, and so on.
  * Several test sets may be represented, in which case several rows of metrics are listed under each heading.
  * In such a case, each row represents a separate set of tests in order of creation.
- * For example, {@link GreedyOptimizer} creates sets after sets to optimize the overall score.
+ * For example, {@link osmo.tester.optimizer.greedy.GreedyOptimizer} creates sets after sets to optimize the overall score.
  * The evolution of said scores can be observed with this.
  * 
  * @author Teemu Kanstren 

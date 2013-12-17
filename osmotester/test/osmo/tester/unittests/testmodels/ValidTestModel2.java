@@ -9,7 +9,7 @@ import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.LastStep;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
-import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.TestStep;
 import osmo.tester.model.ModelFactory;
 import osmo.tester.model.Requirements;
 import osmo.tester.model.TestModels;
@@ -73,7 +73,7 @@ public class ValidTestModel2 {
     return !reqs.isCovered(REQ_HELLO) && !reqs.isCovered(REQ_WORLD) && !reqs.isCovered(REQ_EPIX);
   }
 
-  @Transition("hello")
+  @TestStep("hello")
   public void transition1() {
     reqs.covered(REQ_HELLO);
     out.print(":hello");
@@ -84,7 +84,7 @@ public class ValidTestModel2 {
     return reqs.isCovered(REQ_HELLO) && !reqs.isCovered(REQ_WORLD) && !reqs.isCovered(REQ_EPIX);
   }
 
-  @Transition("world")
+  @TestStep("world")
   public void epix() {
     reqs.covered(REQ_WORLD);
     out.print(":world");
@@ -100,7 +100,7 @@ public class ValidTestModel2 {
     out.print(":epixx_pre");
   }
 
-  @Transition("epixx")
+  @TestStep("epixx")
   public void epixx() {
     reqs.covered(REQ_EPIX);
     out.print(":epixx");

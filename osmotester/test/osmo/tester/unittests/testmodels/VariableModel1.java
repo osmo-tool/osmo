@@ -3,7 +3,7 @@ package osmo.tester.unittests.testmodels;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
-import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.data.ToStringValue;
@@ -41,7 +41,7 @@ public class VariableModel1 {
   public void post() {
   }
 
-  @Transition("first")
+  @TestStep("first")
   public void one() {
     i1++;
     f1++;

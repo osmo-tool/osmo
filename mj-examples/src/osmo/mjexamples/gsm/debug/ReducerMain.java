@@ -1,24 +1,27 @@
 package osmo.mjexamples.gsm.debug;
 
 import osmo.common.NullPrintStream;
+import osmo.common.log.Logger;
 import osmo.mjexamples.gsm.GSMModelFactory;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.Time;
-import osmo.tester.generator.multi.MultiOSMO;
+import osmo.tester.optimizer.reducer.Reducer;
 
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 /**
  * @author Teemu Kanstren
  */
-public class MainMulti {
+public class ReducerMain {
   public static void main(String[] args) {
-    MultiOSMO osmo = new MultiOSMO(0x555);
-    OSMOConfiguration config = osmo.getConfig();
+    Logger.consoleLevel = Level.INFO;
+    Reducer reducer = new Reducer(111);
+    OSMOConfiguration config = reducer.getConfig();
     config.setFactory(new GSMModelFactory(NullPrintStream.stream));
     config.setTestEndCondition(new Length(50));
     config.setSuiteEndCondition(new Length(20));
-    osmo.generate(new Time(10, TimeUnit.HOURS), false, false);
+    reducer.search(2, TimeUnit.HOURS, 500, 50);
   }
 }

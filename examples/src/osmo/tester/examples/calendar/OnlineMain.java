@@ -20,7 +20,7 @@ public class OnlineMain {
     osmo.addModelObject(new CalendarMeetingModel(state, scripter));
     osmo.addModelObject(state);
     OSMOConfiguration config = osmo.getConfig();
-    config.setFailWhenError(false);
+    config.setStopTestOnError(false);
     osmo.generate(111);
   }
 

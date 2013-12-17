@@ -7,14 +7,11 @@ import osmo.tester.OSMOConfiguration;
 import osmo.tester.coverage.ScoreConfiguration;
 import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.endcondition.LengthProbability;
-import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.optimizer.GenerationResults;
-import osmo.tester.optimizer.GreedyOptimizer;
-import osmo.tester.optimizer.MultiGreedy;
+import osmo.tester.optimizer.greedy.GreedyOptimizer;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.logging.Level;
 
 /** @author Teemu Kanstren */

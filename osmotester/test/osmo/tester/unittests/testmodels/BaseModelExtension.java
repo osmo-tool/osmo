@@ -5,7 +5,8 @@ import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
-import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.TestStep;
+import osmo.tester.annotation.TestStep;
 import osmo.tester.model.BaseModel;
 
 import static junit.framework.Assert.*;
@@ -34,7 +35,7 @@ public class BaseModelExtension extends BaseModel {
     return !first;
   }
 
-  @Transition("first")
+  @TestStep("first")
   public void first() {
     assertNull("Previous should be null at first transition", previous);
     first = true;
@@ -49,7 +50,7 @@ public class BaseModelExtension extends BaseModel {
   public void beforeSecond() {
   }
 
-  @Transition("second")
+  @TestStep("second")
   public void second() {
     String transition = previous.getName();
     assertNotNull("Previous transition", transition);

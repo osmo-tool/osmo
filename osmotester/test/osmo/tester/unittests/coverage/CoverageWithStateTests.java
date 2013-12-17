@@ -1,7 +1,6 @@
 package osmo.tester.unittests.coverage;
 
 import org.junit.Test;
-import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.coverage.CombinationCoverage;
 import osmo.tester.coverage.ScoreCalculator;
@@ -12,7 +11,7 @@ import osmo.tester.generator.endcondition.LengthProbability;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.data.ValueSet;
 import osmo.tester.optimizer.GenerationResults;
-import osmo.tester.optimizer.GreedyOptimizer;
+import osmo.tester.optimizer.greedy.GreedyOptimizer;
 import osmo.tester.unittests.testmodels.CoverageValueModel2;
 import osmo.tester.unittests.testmodels.RandomValueModel3;
 import osmo.tester.unittests.testmodels.RandomValueModel4;
@@ -23,7 +22,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 
 import static org.junit.Assert.*;
 

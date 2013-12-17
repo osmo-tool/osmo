@@ -3,7 +3,7 @@ package osmo.tester.unittests.testmodels;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
-import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.TestStep;
 
 import java.io.PrintStream;
 
@@ -32,7 +32,7 @@ public class GuardianModel {
     return true;
   }
 
-  @Transition("hello")
+  @TestStep("hello")
   public void transition1() {
     out.print(pre + ":hello\n");
   }
@@ -43,7 +43,7 @@ public class GuardianModel {
     return true;
   }
 
-  @Transition("world")
+  @TestStep("world")
   public void epix() {
     out.print(pre + ":world\n");
   }
@@ -65,7 +65,7 @@ public class GuardianModel {
     out.print(pre + ":epixx_pre\n");
   }
 
-  @Transition("epixx")
+  @TestStep("epixx")
   public void epixx() {
     out.print(pre + ":epixx\n");
     epix = true;

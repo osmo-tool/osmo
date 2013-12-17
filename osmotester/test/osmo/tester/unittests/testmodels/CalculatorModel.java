@@ -9,7 +9,8 @@ import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.ExplorationEnabler;
 import osmo.tester.annotation.GenerationEnabler;
 import osmo.tester.annotation.Guard;
-import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.TestStep;
+import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
@@ -97,7 +98,7 @@ public class CalculatorModel {
     return counter == 0;
   }
 
-  @Transition("start")
+  @TestStep("start")
   public void startState() {
     out.println("S:" + counter);
     counter++;
@@ -108,7 +109,7 @@ public class CalculatorModel {
     return counter > 1;
   }
 
-  @Transition("decrease")
+  @TestStep("decrease")
   public void decreaseState() {
     try {
       Thread.sleep(sleepTime);
@@ -125,7 +126,7 @@ public class CalculatorModel {
     return counter > 0;
   }
 
-  @Transition("increase")
+  @TestStep("increase")
   public void increaseState() {
     try {
       Thread.sleep(sleepTime);

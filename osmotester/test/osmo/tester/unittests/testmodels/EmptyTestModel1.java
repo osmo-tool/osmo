@@ -10,7 +10,8 @@ import osmo.tester.annotation.GenerationEnabler;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
-import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.TestStep;
+import osmo.tester.annotation.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
 
@@ -53,12 +54,12 @@ public class EmptyTestModel1 {
     return true;
   }
 
-  @Transition("hello")
+  @TestStep("hello")
   public void transition1() {
 
   }
 
-  @Transition("world")
+  @TestStep("world")
   public void epix() {
 
   }
@@ -73,7 +74,7 @@ public class EmptyTestModel1 {
     return false;
   }
 
-  @Transition("epixx")
+  @TestStep("epixx")
   public void epixx() {
 
   }

@@ -4,7 +4,8 @@ import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
-import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.TestStep;
+import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -39,7 +40,7 @@ public class CoverageValueModel1 {
     return !req.isCovered(TAG_HELLO) && !req.isCovered(TAG_WORLD) && !req.isCovered(TAG_EPIX);
   }
 
-  @Transition("hello")
+  @TestStep("hello")
   public void transition1() {
     firstName = "hello";
     lastName = "world";
@@ -51,7 +52,7 @@ public class CoverageValueModel1 {
     return req.isCovered(TAG_HELLO) && !req.isCovered(TAG_WORLD) && !req.isCovered(TAG_EPIX);
   }
 
-  @Transition("world")
+  @TestStep("world")
   public void epix() {
 //    System.out.println("world");
     req.covered(TAG_WORLD);
@@ -62,7 +63,7 @@ public class CoverageValueModel1 {
     return req.isCovered(TAG_WORLD);
   }
 
-  @Transition("epixx")
+  @TestStep("epixx")
   public void epixx() {
     req.covered(TAG_EPIX);
     suite.addValue("global", "bad");

@@ -9,7 +9,7 @@ import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.LastStep;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
-import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.TestStep;
 
 /** @author Teemu Kanstren */
 public class ErrorModelSleepy {
@@ -29,14 +29,14 @@ public class ErrorModelSleepy {
   public void endAll() {
   }
 
-  @Transition("hello")
+  @TestStep("hello")
   public void transition1() {
     try {
       //this wait is to allow timed end condition in multi-osmo to run through in deterministic way
       Thread.sleep(100);
     } catch (InterruptedException e) {
     }
-    throw new AssertionError("@Transition assert fail");
+    throw new AssertionError("@TestStep assert fail");
   }
 
   @Guard("hello")

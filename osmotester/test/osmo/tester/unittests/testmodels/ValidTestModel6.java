@@ -3,7 +3,7 @@ package osmo.tester.unittests.testmodels;
 import osmo.tester.annotation.LastStep;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
-import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.data.ToStringValue;
@@ -16,22 +16,22 @@ public class ValidTestModel6 {
   public ValidTestModel6() {
   }
 
-  @Transition("t1")
+  @TestStep("t1")
   public void one() {
     index = 1;
   }
 
-  @Transition("t2")
+  @TestStep("t2")
   public void two() {
     index = 2;
   }
 
-  @Transition("t3")
+  @TestStep("t3")
   public void three() {
     index = 3;
   }
 
-  @Transition("t4")
+  @TestStep("t4")
   public void four() {
     index = 4;
   }

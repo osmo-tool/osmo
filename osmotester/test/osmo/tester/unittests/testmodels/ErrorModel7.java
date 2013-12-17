@@ -8,7 +8,7 @@ import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
-import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.TestStep;
 
 /** @author Teemu Kanstren */
 public class ErrorModel7 {
@@ -28,7 +28,7 @@ public class ErrorModel7 {
   public void endAll() {
   }
 
-  @Transition("hello")
+  @TestStep("hello")
   public void transition1() {
   }
 

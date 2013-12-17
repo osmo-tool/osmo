@@ -1,7 +1,8 @@
-package osmo.tester.optimizer;
+package osmo.tester.optimizer.greedy;
 
 import osmo.common.log.Logger;
 import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.optimizer.GenerationResults;
 
 import java.util.Collection;
 import java.util.concurrent.Callable;

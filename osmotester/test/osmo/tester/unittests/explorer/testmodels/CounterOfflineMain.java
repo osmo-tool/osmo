@@ -6,7 +6,7 @@ import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.endcondition.Probability;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.optimizer.GenerationResults;
-import osmo.tester.optimizer.GreedyOptimizer;
+import osmo.tester.optimizer.greedy.GreedyOptimizer;
 
 /** @author Teemu Kanstren */
 public class CounterOfflineMain {

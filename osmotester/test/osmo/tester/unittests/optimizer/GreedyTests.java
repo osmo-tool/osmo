@@ -11,12 +11,12 @@ import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.endcondition.LengthProbability;
-import osmo.tester.generator.multi.MultiOSMO;
+import osmo.tester.optimizer.multi.MultiOSMO;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.optimizer.GenerationResults;
-import osmo.tester.optimizer.GreedyOptimizer;
+import osmo.tester.optimizer.greedy.GreedyOptimizer;
 import osmo.tester.unittests.testmodels.CalculatorModel;
 import osmo.tester.unittests.testmodels.RandomValueModel;
 
