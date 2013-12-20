@@ -6,7 +6,6 @@ import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.LastStep;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.TestStep;
-import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
 
 import java.io.PrintStream;

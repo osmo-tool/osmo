@@ -9,7 +9,6 @@ import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.TestStep;
-import osmo.tester.annotation.TestStep;
 
 /** @author Teemu Kanstren */
 public class ErrorModel1 {

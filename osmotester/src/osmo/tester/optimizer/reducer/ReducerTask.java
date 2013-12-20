@@ -4,13 +4,16 @@ import osmo.common.Randomizer;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
-import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.scenario.Scenario;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Teemu Kanstren
@@ -33,12 +36,22 @@ public class ReducerTask implements Runnable {
 
   @Override
   public void run() {
+    try {
+      runrun();
+    } catch (Exception e) {
+      log.error("Failed to run reducer task", e);
+    }
+  }
+  
+  public void runrun() {
     while (!state.isDone()) {
       OSMOTester tester = new OSMOTester();
       tester.setConfig(config);
       tester.setPrintCoverage(false);
-      int newMinimum = state.getMinimum() - 1;
+      int newMinimum = state.getMinimum()-1;
+//      int newMinimum = state.getMinimum()-1;
       if (newMinimum <= 0) {
+        log.info("Stopping due to new minimun "+newMinimum);
         state.finish();
         return;
       }
@@ -48,17 +61,33 @@ public class ReducerTask implements Runnable {
       int id = nextId++;
       log.info("Starting reducer task "+id+" with seed "+seed + " and population "+populationSize);
       tester.generate(seed);
+      state.testsDone(populationSize);
       TestSuite suite = tester.getSuite();
       List<TestCase> tests = suite.getAllTestCases();
       for (TestCase test : tests) {
-        int failedLength = test.getAllStepNames().size();
-        if (state.check(test, failedLength)) {
-          List<TestCase> smallest = new ArrayList<>();
-          smallest.add(test);
-          OSMOTester.writeTrace("osmo-output/reducer-"+failedLength, smallest, test.getSeed(), config);
-        }
+        if (!test.isFailed()) continue;
+        if (!state.check(test)) continue;
+        List<TestCase> smallest = new ArrayList<>();
+        smallest.add(test);
+        String filename = state.addTest(test);
+//        System.out.println("filename:"+filename);
+        if (filename != null) OSMOTester.writeTrace(filename, smallest, test.getSeed(), config);
+        Scenario scenario = createScenario(test);
+        config.setScenario(scenario);
       }
     }
-    
+  }
+
+  public Scenario createScenario(TestCase test) {
+    Scenario scenario = new Scenario(true);
+    List<String> allSteps = test.getAllStepNames();
+    Collection<String> steps = new HashSet<>();
+    steps.addAll(allSteps);
+    TestMetrics metric = new TestMetrics(test);
+    Map<String,Integer> counts = metric.getStepCounts();
+    for (String step : steps) {
+      scenario.addSlice(step, 0, counts.get(step));
+    }
+    return scenario;
   }
 }

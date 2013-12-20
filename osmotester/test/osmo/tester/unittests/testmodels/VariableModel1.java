@@ -6,7 +6,6 @@ import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.model.data.ToStringValue;
 import osmo.tester.unittests.generation.TestVariable;
 
 /** @author Teemu Kanstren */

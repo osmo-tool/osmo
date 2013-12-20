@@ -1,0 +1,23 @@
+Test reduction report for OSMO Tester
+
+Number of tests generated: $testCount
+Test lengths in iterations: $lengths
+Final length: $finalLength
+
+Invariants (for $shortests tests)):
+Step counts:
+#foreach ($step in $stepCounts)
+  $step.step : $step.count
+#end
+Final steps: $finalSteps
+
+Precedences:
+#foreach ($precedence in $precedences)
+  $precerence.before -> $precerence.after
+#end
+
+Shared sequences:
+#foreach ($sequence in $sequences)
+  $sequence
+  
+#end

@@ -65,11 +65,12 @@ public class OSMOConfiguration implements ModelFactory {
   public OSMOConfiguration() {
   }
 
-  public void setScenario(Scenario scenario) {
+  //scenario set and get need to be synchronized as the reducer shares the config across many and all use scenario
+  public synchronized void setScenario(Scenario scenario) {
     this.scenario = scenario;
   }
 
-  public Scenario getScenario() {
+  public synchronized Scenario getScenario() {
     return scenario;
   }
 

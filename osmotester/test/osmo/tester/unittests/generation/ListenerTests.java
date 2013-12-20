@@ -14,11 +14,10 @@ import osmo.tester.unittests.testmodels.ValidTestModel1;
 import osmo.tester.unittests.testmodels.ValidTestModel2;
 
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 import java.io.PrintStream;
 
 import static junit.framework.Assert.*;
-import static osmo.common.TestUtils.unifyLineSeparators;
+import static osmo.common.TestUtils.*;
 
 /** @author Teemu Kanstren */
 public class ListenerTests {

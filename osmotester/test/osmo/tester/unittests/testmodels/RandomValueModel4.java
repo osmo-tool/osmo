@@ -1,7 +1,6 @@
 package osmo.tester.unittests.testmodels;
 
 import osmo.tester.annotation.AfterTest;
-import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Variable;
