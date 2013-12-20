@@ -10,7 +10,6 @@ import osmo.tester.annotation.ExplorationEnabler;
 import osmo.tester.annotation.GenerationEnabler;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
-import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.algorithm.RandomAlgorithm;

@@ -14,14 +14,12 @@ import osmo.tester.model.ModelFactory;
 import osmo.tester.unittests.explorer.testmodels.CVCounterModel;
 import osmo.tester.unittests.explorer.testmodels.CounterFactory;
 import osmo.tester.unittests.explorer.testmodels.PaperModel1Factory;
-import osmo.tester.unittests.explorer.testmodels.ValueModelFactory;
-import osmo.tester.unittests.optimizer.GreedyTests;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.List;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 /** @author Teemu Kanstren */

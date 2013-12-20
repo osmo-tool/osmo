@@ -3,7 +3,6 @@ package osmo.tester.optimizer.reducer;
 import osmo.common.Randomizer;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
-import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.optimizer.multi.MultiOSMO;
 
@@ -78,11 +77,14 @@ public class Reducer {
     }
     pool.shutdown();
     int minimum = state.getMinimum();
-    if (minimum < Integer.MAX_VALUE) {
-      System.out.println("Got down to:"+ minimum);
+    if (minimum < length) {
+      System.out.println("Got down to:" + minimum);
     } else {
       System.out.println("Failed to find errors!");
     }
+    Analyzer analyzer = new Analyzer(state);
+    analyzer.analyze();
+    analyzer.writeReport();
     return state;
   }
 
@@ -90,4 +92,5 @@ public class Reducer {
     if (config.getFactory() instanceof SingleInstanceModelFactory) {
       System.out.println(MultiOSMO.ERROR_MSG);
     }
-  }}
+  }
+}

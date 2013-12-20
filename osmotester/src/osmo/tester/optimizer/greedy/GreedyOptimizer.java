@@ -10,13 +10,13 @@ import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.MainGenerator;
 import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.endcondition.EndCondition;
-import osmo.tester.optimizer.multi.MultiOSMO;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.FSM;
 import osmo.tester.model.Requirements;
 import osmo.tester.optimizer.CSVCoverageReport;
 import osmo.tester.optimizer.GenerationResults;
 import osmo.tester.optimizer.TestSorter;
+import osmo.tester.optimizer.multi.MultiOSMO;
 
 import java.util.ArrayList;
 import java.util.Collection;

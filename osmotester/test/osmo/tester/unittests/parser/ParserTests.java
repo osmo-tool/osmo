@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.annotation.Variable;
-import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;

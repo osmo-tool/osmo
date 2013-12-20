@@ -1,15 +1,10 @@
 package osmo.tester.unittests.explorer.testmodels;
 
-import osmo.tester.annotation.AfterSuite;
-import osmo.tester.annotation.AfterTest;
-import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
-import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestCaseStep;
-import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
 
 /**

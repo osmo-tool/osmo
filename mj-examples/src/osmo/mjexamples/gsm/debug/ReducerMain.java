@@ -22,6 +22,6 @@ public class ReducerMain {
     config.setFactory(new GSMModelFactory(NullPrintStream.stream));
     config.setTestEndCondition(new Length(50));
     config.setSuiteEndCondition(new Length(20));
-    reducer.search(2, TimeUnit.HOURS, 500, 50);
+    reducer.search(4, TimeUnit.HOURS, 500, 50);
   }
 }

@@ -3,8 +3,6 @@ package osmo.tester.unittests.testmodels;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
 
-import java.io.PrintStream;
-
 /**
  * This model runs steps in an order where the lest covered is not always enabled.
  *

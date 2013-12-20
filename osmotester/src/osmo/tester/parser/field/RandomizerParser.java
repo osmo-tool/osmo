@@ -1,14 +1,11 @@
 package osmo.tester.parser.field;
 
 import osmo.common.Randomizer;
-import osmo.tester.annotation.Variable;
-import osmo.tester.model.data.SearchableInput;
 import osmo.tester.parser.AnnotationParser;
 import osmo.tester.parser.ParserParameters;
 import osmo.tester.parser.ParserResult;
 
 import java.lang.reflect.Field;
-import java.util.Collection;
 
 /**
  * Parses fields of the {@link osmo.common.Randomizer} type and stores them to the test model FSM.
