@@ -5,6 +5,7 @@ import org.apache.velocity.app.VelocityEngine;
 import osmo.common.TestUtils;
 import osmo.common.log.Logger;
 import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.model.FSM;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -17,9 +18,11 @@ import java.util.Map;
 public class Analyzer {
   private static final Logger log = new Logger(Analyzer.class);
   private final ReducerState state;
-  private Invariants invariants;
+  private Invariants invariants = null;
+  private final List<String> steps;
 
-  public Analyzer(ReducerState state) {
+  public Analyzer(List<String> steps, ReducerState state) {
+    this.steps = steps;
     this.state = state;
   }
   
@@ -30,16 +33,15 @@ public class Analyzer {
   }
 
   public Invariants analyze(TestCase... tests) {
-    invariants = new Invariants();
+    invariants = new Invariants(steps);
     for (TestCase test : tests) {
-      TestMetrics metrics = new TestMetrics(test);
-      invariants.process(metrics);
+      invariants.process(test);
     }
     return invariants;
   }
 
-  public void writeReport() {
-    TestUtils.write(createReport(), "osmo-output/reducer.txt");
+  public void writeReport(String name) {
+    TestUtils.write(createReport(), "osmo-output/"+name+".txt");
   }
 
   public String createReport() {
@@ -58,7 +60,8 @@ public class Analyzer {
     }
     vc.put("stepCounts", counts);
     vc.put("finalSteps", invariants.getLastSteps());
-    vc.put("patterns", invariants.getPatterns());
+    vc.put("precedences", invariants.getPrecedencePatterns());
+    vc.put("sequences", invariants.getSequencePatterns());
 
     velocity.setProperty("resource.loader", "class");
     velocity.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");

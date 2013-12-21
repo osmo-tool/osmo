@@ -1,24 +1,30 @@
 Test reduction report for OSMO Tester
 
-Number of tests generated: 200
-Test lengths in iterations: [39, 30, 27, 22]
-Final length: 22
+Number of tests generated: 400
+Test lengths in iterations: [39, 30, 27, 22, 14]
+Final length: 14
 
-Invariants (for 1 tests)):
+Invariants (for 4 tests)):
 Step counts:
-  Select MF : 1
-  Enable PIN 11 : 1
+  Disable PIN OK : 1
   Select EF IMSI : 1
-  Change new PIN : 1
-  Select EF FR : 1
-  Select DF Roaming : 1
   Unlock PIN bad : 10
-  Read Binary : 3
-  Select EF LP : 2
+  Read Binary : 1
   Select DF GSM : 1
 Final steps: [Read Binary]
 
-Precedences:
+Precedences (7):
+  Disable PIN OK->Read Binary
+  Disable PIN OK->Select EF IMSI
+  Select DF GSM->Read Binary
+  Select DF GSM->Select EF IMSI
+  Select EF IMSI->Read Binary
+  Unlock PIN bad->Read Binary
+  Unlock PIN bad->Select EF IMSI
 
 Shared sequences:
+  [Disable PIN OK]
+  [Select DF GSM]
+  [Select EF IMSI, Unlock PIN bad, Unlock PIN bad, Unlock PIN bad, Unlock PIN bad, Unlock PIN bad]
+  [Unlock PIN bad, Unlock PIN bad, Unlock PIN bad, Unlock PIN bad, Unlock PIN bad, Read Binary]
 

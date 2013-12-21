@@ -17,6 +17,7 @@ import osmo.tester.scenario.Scenario;
 import osmo.tester.scenario.Slice;
 import osmo.tester.unittests.testmodels.ErrorModelProbability;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,7 @@ public class ReducerTests {
     config.setFactory(new ReflectiveModelFactory(ErrorModelProbability.class));
     config.setTestEndCondition(new Length(50));
     config.setSuiteEndCondition(new Length(20));
-    ReducerState state = reducer.search(5, TimeUnit.SECONDS, 50, 10);
+    ReducerState state = reducer.search(1, TimeUnit.SECONDS, 50, 10);
     List<TestCase> tests = state.getTests();
     assertEquals("Number of tests", 1, tests.size());
     TestCase test1 = tests.get(0);
@@ -99,25 +100,34 @@ public class ReducerTests {
 
   @Test
   public void invariants() {
+    TestCase test14_1 = createTest14_1();
+    TestCase test14_2 = createTest14_2();
+    TestCase test14_3 = createTest14_3();
+    TestCase test14_4 = createTest14_4();
     TestCase test22 = createTest22();
     TestCase test27 = createTest27();
     TestCase test30 = createTest30();
     TestCase test39 = createTest39();
-    Analyzer analyzer = new Analyzer(null);
-    Invariants invariants = analyzer.analyze(test22, test27, test30, test39);
+    Analyzer analyzer = new Analyzer(createStepList(), null);
+    Invariants invariants = analyzer.analyze(test14_1, test14_2, test14_3, test14_4, test22, test27, test30, test39);
     assertEquals("'Unlock PIN bad' min", 10, invariants.minFor("Unlock PIN bad"));
     assertEquals("'Unlock PIN bad' max", 11, invariants.maxFor("Unlock PIN bad"));
     assertEquals("Last steps", "[Read Binary]", invariants.getLastSteps().toString());
-    assertEquals("Patterns", "", invariants.getPatterns());
+    assertEquals("Precedences", "[Select DF GSM->Select EF IMSI, Unlock PIN bad->Select EF IMSI]", invariants.getPrecedencePatterns().toString());
+    assertEquals("Sequences", "[[Read Binary], [Select DF GSM], [Select EF IMSI], [Unlock PIN bad, Unlock PIN bad]]", invariants.getSequencePatterns().toString());
   }
 
   @Test
   public void report() {
+    TestCase test14_1 = createTest14_1();
+    TestCase test14_2 = createTest14_2();
+    TestCase test14_3 = createTest14_3();
+    TestCase test14_4 = createTest14_4();
     TestCase test22 = createTest22();
     TestCase test27 = createTest27();
     TestCase test30 = createTest30();
     TestCase test39 = createTest39();
-    ReducerState state = new ReducerState(50);
+    ReducerState state = new ReducerState(createStepList(), 50);
     state.addTest(test39);
     state.testsDone(50);
     state.addTest(test30);
@@ -126,7 +136,15 @@ public class ReducerTests {
     state.testsDone(50);
     state.addTest(test22);
     state.testsDone(50);
-    Analyzer analyzer = new Analyzer(state);
+    state.addTest(test14_4);
+    state.testsDone(50);
+    state.addTest(test14_3);
+    state.testsDone(50);
+    state.addTest(test14_2);
+    state.testsDone(50);
+    state.addTest(test14_1);
+    state.testsDone(50);
+    Analyzer analyzer = new Analyzer(createStepList(), state);
     analyzer.analyze();
     String report = analyzer.createReport();
     String expected = TestUtils.getResource(ReducerTests.class, "expected-reducer2.txt");
@@ -135,6 +153,82 @@ public class ReducerTests {
     assertEquals("Reducer report", expected, report);
   }
   
+  private TestCase createTest14_1() {
+    TestCase test = new TestCase(1);
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Disable PIN OK"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Select DF GSM"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Select EF IMSI"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Read Binary"));
+    return test;
+  }
+
+  private TestCase createTest14_2() {
+    TestCase test = new TestCase(1);
+    test.addStep(new FSMTransition("Disable PIN OK"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Select DF GSM"));
+    test.addStep(new FSMTransition("Select EF IMSI"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Read Binary"));
+    return test;
+  }
+
+  private TestCase createTest14_3() {
+    TestCase test = new TestCase(1);
+    test.addStep(new FSMTransition("Select DF GSM"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Disable PIN OK"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Select EF IMSI"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Read Binary"));
+    return test;
+  }
+
+  private TestCase createTest14_4() {
+    TestCase test = new TestCase(1);
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Disable PIN OK"));
+    test.addStep(new FSMTransition("Select DF GSM"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Select EF IMSI"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Unlock PIN bad"));
+    test.addStep(new FSMTransition("Read Binary"));
+    return test;
+  }
+
   private TestCase createTest22() {
     TestCase test = new TestCase(1);
     test.addStep(new FSMTransition("Unlock PIN bad"));//1 //1
@@ -271,5 +365,25 @@ public class ReducerTests {
     test.addStep(new FSMTransition("Select EF FR"));
     test.addStep(new FSMTransition("Read Binary"));
     return test;
+  }
+
+  private List<String> createStepList() {
+    List<String> steps = new ArrayList<>();
+    steps.add("Unlock PIN bad");
+    steps.add("Select EF LP");
+    steps.add("Select DF Roaming");
+    steps.add("Select EF FR");
+    steps.add("Enable PIN 11");
+    steps.add("Select MF");
+    steps.add("Change new PIN");
+    steps.add("Select DF GSM");
+    steps.add("Select EF IMSI");
+    steps.add("Read Binary");
+    steps.add("Verify PIN 11");
+    steps.add("Verify PIN 12");
+    steps.add("Disable PIN OK");
+    steps.add("Change same PIN");
+//    steps.add();
+    return steps;
   }
 }

@@ -1,8 +1,14 @@
 package osmo.tester.optimizer.reducer;
 
+import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.model.FSM;
+import osmo.tester.optimizer.reducer.invariants.Precedence;
+import osmo.tester.optimizer.reducer.invariants.SharedSequence;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,11 +19,22 @@ public class Invariants {
   private Map<String, Integer> maxs = new HashMap<>();
   private Collection<String> lastSteps = new LinkedHashSet<>();
   private Map<String, Integer> stepCounts = new HashMap<>();
+  private final Precedence precedence;
+  private SharedSequence sequences = new SharedSequence();
+  
+  public Invariants(List<String> steps) {
+    precedence = new Precedence(steps);
+  }
 
-  public void process(TestMetrics metrics) {
-    Map<String, Integer> counts = metrics.getStepCounts();
-    for (String step : counts.keySet()) {
-      int count = counts.get(step);
+  public void process(TestCase test) {
+    List<String> steps = test.getAllStepNames();
+    sequences.init(steps);
+    precedence.process(steps);
+    sequences.process(steps);
+    TestMetrics metrics = new TestMetrics(test);
+    stepCounts = metrics.getStepCounts();
+    for (String step : stepCounts.keySet()) {
+      int count = stepCounts.get(step);
       Integer min = mins.get(step);
       Integer max = maxs.get(step);
       if (min == null) min = Integer.MAX_VALUE;
@@ -26,7 +43,6 @@ public class Invariants {
       if (count > max) maxs.put(step, count);
       lastSteps.add(metrics.getLastStep());
     }
-    stepCounts = metrics.getStepCounts();
   }
 
   public int minFor(String step) {
@@ -49,7 +65,11 @@ public class Invariants {
     return stepCounts;
   }
   
-  public String getPatterns() {
-    return "";
+  public Collection<String> getPrecedencePatterns() {
+    return precedence.getPatterns();
+  }
+
+  public Collection<String> getSequencePatterns() {
+    return sequences.getPatterns();
   }
 }

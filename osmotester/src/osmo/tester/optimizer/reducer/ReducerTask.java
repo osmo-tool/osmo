@@ -7,6 +7,7 @@ import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.FSM;
 import osmo.tester.scenario.Scenario;
 
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class ReducerTask implements Runnable {
       OSMOTester tester = new OSMOTester();
       tester.setConfig(config);
       tester.setPrintCoverage(false);
-      int newMinimum = state.getMinimum()-1;
+      int newMinimum = state.getMinimum();
 //      int newMinimum = state.getMinimum()-1;
       if (newMinimum <= 0) {
         log.info("Stopping due to new minimun "+newMinimum);
@@ -67,11 +68,13 @@ public class ReducerTask implements Runnable {
       for (TestCase test : tests) {
         if (!test.isFailed()) continue;
         if (!state.check(test)) continue;
-        List<TestCase> smallest = new ArrayList<>();
-        smallest.add(test);
         String filename = state.addTest(test);
 //        System.out.println("filename:"+filename);
-        if (filename != null) OSMOTester.writeTrace(filename, smallest, test.getSeed(), config);
+        if (filename != null) {
+          List<TestCase> smallest = new ArrayList<>();
+          smallest.add(test);
+          OSMOTester.writeTrace(filename, smallest, test.getSeed(), config);
+        }
         Scenario scenario = createScenario(test);
         config.setScenario(scenario);
       }

@@ -11,13 +11,12 @@ Step counts:
 #end
 Final steps: $finalSteps
 
-Precedences:
+Precedences ($precedences.size()):
 #foreach ($precedence in $precedences)
-  $precerence.before -> $precerence.after
+  $precedence
 #end
 
 Shared sequences:
 #foreach ($sequence in $sequences)
   $sequence
-  
 #end
