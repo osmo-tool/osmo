@@ -4,10 +4,15 @@ import osmo.common.Randomizer;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.SingleInstanceModelFactory;
+import osmo.tester.model.FSM;
+import osmo.tester.model.FSMTransition;
 import osmo.tester.optimizer.multi.MultiOSMO;
+import osmo.tester.parser.MainParser;
+import osmo.tester.parser.ParserResult;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -55,7 +60,17 @@ public class Reducer {
     config.setStopGenerationOnError(false);
     Collection<Future> futures = new ArrayList<>();
     Randomizer rand = new Randomizer(seed);
-    ReducerState state = new ReducerState(length);
+
+    MainParser parser = new MainParser();
+    ParserResult parserResult = parser.parse(0, config.getFactory(), null);
+    FSM fsm = parserResult.getFsm();
+    Collection<FSMTransition> transitions = fsm.getTransitions();
+    List<String> steps = new ArrayList<>();
+    for (FSMTransition transition : transitions) {
+      steps.add(transition.getStringName());
+    }
+    ReducerState state = new ReducerState(steps, length);
+
     for (int i = 0 ; i < parallelism ; i++) {
       ReducerTask task = new ReducerTask(config, rand.nextLong(), populationSize, state);
       Future future = pool.submit(task);
@@ -82,9 +97,9 @@ public class Reducer {
     } else {
       System.out.println("Failed to find errors!");
     }
-    Analyzer analyzer = new Analyzer(state);
+    Analyzer analyzer = new Analyzer(steps, state);
     analyzer.analyze();
-    analyzer.writeReport();
+    analyzer.writeReport("reducer");
     return state;
   }
 

@@ -21,9 +21,11 @@ public class ReducerState {
   private final Collection<String> hashes = new HashSet<>();
   private Collection<Integer> lengths = new ArrayList<>();
   private final AtomicInteger testCount = new AtomicInteger(0);
+  private final List<String> allSteps;
 
-  public ReducerState(int minimum) {
+  public ReducerState(List<String> allSteps, int minimum) {
     this.minimum = minimum;
+    this.allSteps = allSteps;
   }
 
   public synchronized int getMinimum() {
@@ -45,6 +47,9 @@ public class ReducerState {
     String hash = steps.toString();
     if (hashes.contains(hash)) return null;
     if (length < minimum) {
+      Analyzer analyzer = new Analyzer(allSteps, this);
+      analyzer.analyze();
+      analyzer.writeReport("reducer-task-"+length);
       tests.clear();
       hashes.clear();
       count = 0;

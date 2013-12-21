@@ -1,6 +1,6 @@
 Test reduction report for OSMO Tester
 
-Number of tests generated: 50
+Number of tests generated: 350
 Test lengths in iterations: [5, 3, 1]
 Final length: 1
 
@@ -9,7 +9,8 @@ Step counts:
   hello : 1
 Final steps: [hello]
 
-Precedences:
+Precedences (0):
 
 Shared sequences:
+  [hello]
 
