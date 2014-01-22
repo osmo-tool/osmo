@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * TODO: start removing steps to shorten after a while
+ * 
  * @author Teemu Kanstren
  */
 public class ReducerTask implements Runnable {
@@ -28,11 +30,11 @@ public class ReducerTask implements Runnable {
   private final int populationSize;
   private static int nextId = 1;
 
-  public ReducerTask(OSMOConfiguration config, long seed, int populationSize, ReducerState state) {
-    this.config = config;
+  public ReducerTask(OSMOConfiguration osmoConfig, long seed, ReducerConfig config, ReducerState state) {
+    this.config = osmoConfig;
     this.seeder = new Randomizer(seed);
     this.state = state;
-    this.populationSize = populationSize;
+    this.populationSize = config.getPopulationSize();
   }
 
   @Override
@@ -50,8 +52,8 @@ public class ReducerTask implements Runnable {
       tester.setConfig(config);
       tester.setPrintCoverage(false);
       int newMinimum = state.getMinimum();
-//      int newMinimum = state.getMinimum()-1;
       if (newMinimum <= 0) {
+        //does this really happen?
         log.info("Stopping due to new minimun "+newMinimum);
         state.finish();
         return;
@@ -60,7 +62,7 @@ public class ReducerTask implements Runnable {
       tester.setSuiteEndCondition(new Length(populationSize));
       long seed = seeder.nextLong();
       int id = nextId++;
-      log.info("Starting reducer task "+id+" with seed "+seed + " and population "+populationSize);
+      log.debug("Starting reducer task "+id+" with seed "+seed + " and population "+populationSize);
       tester.generate(seed);
       state.testsDone(populationSize);
       TestSuite suite = tester.getSuite();

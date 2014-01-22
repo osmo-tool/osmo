@@ -106,8 +106,16 @@ public class OSMOTester {
       writeCoverageReport(filename, tests);
     }
   }
-  
-  public static void writeTrace(String filename, List<TestCase> tests, long seed, OSMOConfiguration config) {
+
+  /**
+   * This needs to be synchronized or the reports written and system.out can be messed up.
+   * 
+   * @param filename
+   * @param tests
+   * @param seed
+   * @param config
+   */
+  public static synchronized void writeTrace(String filename, List<TestCase> tests, long seed, OSMOConfiguration config) {
     createHtmlTrace(filename, tests);
     createJenkinsReport(filename, tests, seed, config);
   }
@@ -142,7 +150,6 @@ public class OSMOTester {
     jenkins.suiteEnded(null);
     String report = jenkins.generateTestReport();
     TestUtils.write(report, filename + ".xml");
-    
   }
 
   public MainGenerator initGenerator(long seed) {

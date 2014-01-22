@@ -156,6 +156,18 @@ public class Logger {
   }
 
   /**
+   * Prints warning level messages. If warning level is not enabled, nothing is printed.
+   *
+   * @param msg The message to be printed.
+   */
+  public void warn(String msg, Throwable e) {
+    if (isOff()) {
+      return;
+    }
+    logger.log(Level.WARNING, msg, e);
+  }
+
+  /**
    * Prints information level messages. If info level is not enabled, nothing is printed.
    *
    * @param msg The message to be printed.
