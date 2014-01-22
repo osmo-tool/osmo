@@ -61,6 +61,7 @@ public class OSMOConfiguration implements ModelFactory {
   /** Are we running an exploration? */
   private boolean exploring = false;
   private boolean stopGenerationOnError = true;
+  private boolean printExplorationErrors;
 
   public OSMOConfiguration() {
   }
@@ -291,5 +292,13 @@ public class OSMOConfiguration implements ModelFactory {
 
   public boolean shouldStopGenerationOnError() {
     return stopGenerationOnError;
+  }
+
+  public boolean isPrintExplorationErrors() {
+    return printExplorationErrors;
+  }
+
+  public void setPrintExplorationErrors(boolean printExplorationErrors) {
+    this.printExplorationErrors = printExplorationErrors;
   }
 }

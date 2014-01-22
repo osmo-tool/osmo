@@ -10,6 +10,7 @@ import osmo.tester.model.FSMTransition;
 import osmo.tester.optimizer.reducer.Analyzer;
 import osmo.tester.optimizer.reducer.Invariants;
 import osmo.tester.optimizer.reducer.Reducer;
+import osmo.tester.optimizer.reducer.ReducerConfig;
 import osmo.tester.optimizer.reducer.ReducerState;
 import osmo.tester.optimizer.reducer.ReducerTask;
 import osmo.tester.optimizer.reducer.TestMetrics;
@@ -32,18 +33,23 @@ public class ReducerTests {
   @Test
   public void probableModel() throws Exception {
     TestUtils.recursiveDelete("osmo-output");
-    Reducer reducer = new Reducer(1, 111);
-    OSMOConfiguration config = reducer.getConfig();
-    config.setFactory(new ReflectiveModelFactory(ErrorModelProbability.class));
-    config.setTestEndCondition(new Length(50));
-    config.setSuiteEndCondition(new Length(20));
-    ReducerState state = reducer.search(1, TimeUnit.SECONDS, 50, 10);
+    Reducer reducer = new Reducer(1);
+    OSMOConfiguration osmoConfig = reducer.getOsmoConfig();
+    osmoConfig.setFactory(new ReflectiveModelFactory(ErrorModelProbability.class));
+    osmoConfig.setTestEndCondition(new Length(50));
+    osmoConfig.setSuiteEndCondition(new Length(20));
+    ReducerConfig config = new ReducerConfig(111);
+    config.setTotalTime(TimeUnit.SECONDS, 1);
+    config.setPopulationSize(50);
+    config.setLength(10);
+    config.setTestMode(true);
+    ReducerState state = reducer.search(config);
     List<TestCase> tests = state.getTests();
     assertEquals("Number of tests", 1, tests.size());
     TestCase test1 = tests.get(0);
     assertEquals("Final test length", 1, test1.getAllStepNames().size());
     assertEquals("Iteration lengths", "[5, 3, 1]", state.getLengths().toString());
-    String report = TestUtils.readFile("osmo-output/reducer.txt", "UTF8");
+    String report = TestUtils.readFile("osmo-output/reducer-final.txt", "UTF8");
     String expected = TestUtils.getResource(ReducerTests.class, "expected-reducer.txt");
     report = TestUtils.unifyLineSeparators(report, "\n");
     expected = TestUtils.unifyLineSeparators(expected, "\n");
@@ -58,7 +64,7 @@ public class ReducerTests {
   
   @Test
   public void scenarioBuilding() {
-    ReducerTask task = new ReducerTask(null, 0, 0, null);
+    ReducerTask task = new ReducerTask(null, 0, new ReducerConfig(111), null);
     TestCase test = new TestCase(0);
     test.addStep(new FSMTransition("hello1"));
     test.addStep(new FSMTransition("hello2"));
@@ -110,8 +116,8 @@ public class ReducerTests {
     TestCase test39 = createTest39();
     Analyzer analyzer = new Analyzer(createStepList(), null);
     Invariants invariants = analyzer.analyze(test14_1, test14_2, test14_3, test14_4, test22, test27, test30, test39);
-    assertEquals("'Unlock PIN bad' min", 10, invariants.minFor("Unlock PIN bad"));
-    assertEquals("'Unlock PIN bad' max", 11, invariants.maxFor("Unlock PIN bad"));
+    assertEquals("Step counts", "[Unlock PIN bad : 10-11, Select EF LP : 0-5, Select DF Roaming : 0-1, Select EF FR : 0-4, Enable PIN 11 : 0-2, Select MF : 0-1, Change new PIN : 0-2, Select DF GSM : 1-3, Select EF IMSI : 1-3, Read Binary : 1-4, Verify PIN 11 : 0-2, Verify PIN 12 : 0-3, Disable PIN OK : 0-4, Change same PIN : 0-2]", invariants.getUsedStepCounts().toString());
+    assertEquals("Missing steps", "[Miss me]", invariants.getMissingSteps().toString());
     assertEquals("Last steps", "[Read Binary]", invariants.getLastSteps().toString());
     assertEquals("Precedences", "[Select DF GSM->Select EF IMSI, Unlock PIN bad->Select EF IMSI]", invariants.getPrecedencePatterns().toString());
     assertEquals("Sequences", "[[Read Binary], [Select DF GSM], [Select EF IMSI], [Unlock PIN bad, Unlock PIN bad]]", invariants.getSequencePatterns().toString());
@@ -127,7 +133,8 @@ public class ReducerTests {
     TestCase test27 = createTest27();
     TestCase test30 = createTest30();
     TestCase test39 = createTest39();
-    ReducerState state = new ReducerState(createStepList(), 50);
+    ReducerConfig config = new ReducerConfig(111);
+    ReducerState state = new ReducerState(createStepList(), config);
     state.addTest(test39);
     state.testsDone(50);
     state.addTest(test30);
@@ -383,7 +390,7 @@ public class ReducerTests {
     steps.add("Verify PIN 12");
     steps.add("Disable PIN OK");
     steps.add("Change same PIN");
-//    steps.add();
+    steps.add("Miss me");
     return steps;
   }
 }

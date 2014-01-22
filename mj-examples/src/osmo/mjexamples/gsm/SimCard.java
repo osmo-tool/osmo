@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import osmo.common.NullPrintStream;
+import osmo.common.TestUtils;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
@@ -15,6 +16,7 @@ import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.ExplorationEnabler;
 import osmo.tester.annotation.GenerationEnabler;
 import osmo.tester.annotation.TestStep;
+import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.coverage.ScoreConfiguration;
 import osmo.tester.coverage.TestCoverage;
 import osmo.tester.explorer.ExplorationConfiguration;
@@ -28,6 +30,7 @@ import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.gui.manualdrive.ManualAlgorithm;
 import osmo.tester.model.Requirements;
+import osmo.tester.optimizer.CSVCoverageReport;
 import osmo.tester.optimizer.greedy.MultiGreedy;
 
 /**
@@ -76,7 +79,7 @@ public class SimCard {
   public static final int Max_Puk_Try = 10;
   protected String read_data;
   protected Status_Word result;
-  private Requirements req = new Requirements();
+  public Requirements req = new Requirements();
   public PrintStream out = System.out;
 
   // These variables model what a SimCard knows about Files.
@@ -307,9 +310,9 @@ public class SimCard {
   public void Enabled_PIN(int Pin) {
     // pre: Pin > 0 and Pin < 10000
     out.println("status_PIN_block:"+status_PIN_block+", status_en:"+status_en+" "+Pin+"="+PIN);
-    if (status_PIN_block != B_Status.Blocked && status_en != E_Status.Enabled && PIN != Pin) {
-      System.out.println("HERE WE ARE");
-    }
+//    if (status_PIN_block != B_Status.Blocked && status_en != E_Status.Enabled && PIN != Pin) {
+//      System.out.println("HERE WE ARE");
+//    }
 
     if (status_PIN_block == B_Status.Blocked) {
       result = Status_Word.sw_9840;
@@ -328,10 +331,12 @@ public class SimCard {
       status_PIN_block = B_Status.Blocked;
       perm_session = false;
       result = Status_Word.sw_9840;
+      //cannot be covered
       req.covered(Req.Enable4); //"@REQ: ENABLE4 @"
     } else {
       counter_PIN_try = counter_PIN_try + 1;
       result = Status_Word.sw_9804;
+      //cannot be covered
       req.covered(Req.Enable5); //"@REQ: ENABLE5 @"
     }
 
@@ -512,12 +517,14 @@ public class SimCard {
     if (EF == null) {
       result = Status_Word.sw_9400;
       req.covered(Req.ReadBin2); //"@REQ: READ_BINARY2 @"
+//      throw new RuntimeException("REQun etsintä päällä");
     } else if (EF.perm_read == Permission.Always) {
       result = Status_Word.sw_9000;
       read_data = EF.data;
       req.covered(Req.ReadBin1); //"@REQ: READ_BINARY1, REQ4 @"
     } else if (EF.perm_read == Permission.Never) {
       result = Status_Word.sw_9804;
+      //TODO:impossible to cover
       req.covered(Req.ReadBin3_5); //"@REQ: READ_BINARY3, REQ5 @"
     } else if (EF.perm_read == Permission.Adm) {
       result = Status_Word.sw_9804;
@@ -536,143 +543,16 @@ public class SimCard {
     }
   }
 
-  public static void main_impossible_reqs(String[] args) {
-    SimCard model = new SimCard(new SimCardAdaptor());
-    model.reset();
-    model.req.setTestSuite(new TestSuite());
-    model.disablePINGood();
-    model.changePinNew();
-    model.enablePIN11();
-  }
-  
-  public static void main_bug(String[] args) {
-    SimCard model = new SimCard(new SimCardAdaptor());
-    model.reset();
-    model.req.setTestSuite(new TestSuite());
-    model.unblockPINBad();//1 
-    model.Read_Binary(); //2
-    model.selectDF_Roaming(); //3
-    model.changePinNew(); //4
-    model.unblockPINBad(); //5
-    model.selectDF_Gsm(); //6
-    model.selectEF_LP(); //7
-    model.enablePIN11(); //8
-    model.changePinNew(); //9
-    model.selectDF_Gsm(); //10
-    model.unblockPINBad();  //11
-    model.unblockPINBad(); //12
-    model.selectEF_LP(); //13
-    model.selectEF_LP(); //14
-    model.changePinNew(); //15
-    model.verifyPIN12(); //16
-    model.selectMF(); //17
-    model.unblockPINBad(); //18
-    model.changePinNew(); //19
-    model.unblockPINBad(); //20
-    model.selectEF_IMSI(); //21
-    model.Read_Binary(); //22
-    model.unblockPINBad(); //23
-    model.Read_Binary(); //24
-    model.enablePIN11(); //25
-    model.verifyPIN11(); //26
-    model.selectDF_Roaming(); //27
-    model.unblockPINBad(); //28
-    model.enablePIN11(); //29
-    model.Read_Binary(); //30
-    model.verifyPIN12(); //31
-    model.Read_Binary(); //32
-    model.selectEF_FR(); //33
-    model.selectDF_Roaming(); //34
-    model.selectDF_Gsm(); //35
-    model.Read_Binary(); //36
-    model.unblockPINBad(); //37
-    model.Read_Binary(); //38
-    model.enablePIN11(); //39
-    model.unblockPINBad(); //40
-    model.selectEF_IMSI(); //41
-    model.unblockPINGood12(); //42
-    model.Read_Binary(); //43
-  }
-  
-  public static void main_(String[] args) {
-    OSMOTester tester = new OSMOTester();
-    tester.setAlgorithm(new ManualAlgorithm(tester));
-//    tester.setAlgorithm(new BalancingAlgorithm());
-//    tester.addListener(new TracePrinter());
-    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
-    factory.add(new SimCard(new SimCardAdaptor()));
-    tester.setModelFactory(factory);
-    tester.setSuiteEndCondition(new Length(200));
-//    tester.setSuiteEndCondition(new Time(345));
-    tester.setTestEndCondition(new LengthProbability(50, 0.2d));
-    tester.generate(44);
-  }
-
   public static void main(String[] args) {
-    long seed = Long.parseLong(args[0]);
-    int cores = Integer.parseInt(args[1]);
-    int population = Integer.parseInt(args[2]);
-    int timeout = Integer.parseInt(args[3]);
-    for (int i = 0 ; i < 100 ; i++) {
-      seed += 100;
-      System.out.println("seed:"+seed+" cores:"+cores+" pop:"+population+" time:"+timeout);
-      Logger.consoleLevel = Level.INFO;
-      OSMOConfiguration oc = new OSMOConfiguration();
-      oc.setTestEndCondition(new LengthProbability(50, 0.2d));
-      oc.setStopTestOnError(false);
-      oc.setFactory(new GSMModelFactory(NullPrintStream.stream));
-      ScoreConfiguration config = new ScoreConfiguration();
-      config.setLengthWeight(-1);
-      MultiGreedy greedy = new MultiGreedy(oc, config, seed, cores);
-      greedy.setDeleteOldOutput(false);
-      greedy.setTimeout(timeout);
-      List<TestCase> tests = greedy.search();
-      TestCoverage tc = greedy.getFinalCoverage();
-      System.out.println(tc.coverageString(greedy.getFsm(), null, null, null, null, false));
-    }
-  }
-
-  public static void mainE(String[] args) {
-    ExplorerAlgorithm.trackCoverage = true;
-    long seed = Long.parseLong(args[0]);
-    int cores = Integer.parseInt(args[1]);
-    int population = Integer.parseInt(args[2]);
-    int timeout = Integer.parseInt(args[3]);
-    OSMOExplorer explorer = new OSMOExplorer();
-    ExplorationConfiguration config = new ExplorationConfiguration(new GSMModelFactory(System.out), 3, seed);
-    config.setMinTestLength(1);
-    config.setMinSuiteLength(1);
-    config.setParallelism(cores);
-    config.setTestPlateauThreshold(1);
-    config.setSuitePlateauThreshold(1);
-    config.setTimeout(timeout);
-    explorer.explore(config);
-  }
-
-  public static void mainEE(String[] args) {
-    Logger.consoleLevel = Level.INFO;
-    ExplorerAlgorithm.trackCoverage = true;
-    long seed = Long.parseLong(args[0]);
-    int cores = Integer.parseInt(args[1]);
-    int population = Integer.parseInt(args[2]);
-    int timeout = Integer.parseInt(args[3]);
-    for (int i = 0 ; i < 100 ; i++) {
-      seed += 100;
-      for (int d = 1 ; d <= 3 ; d++) {
-        OSMOExplorer explorer = new OSMOExplorer();
-        ExplorationConfiguration config = new ExplorationConfiguration(new GSMModelFactory(NullPrintStream.stream), d, seed);
-        config.setMinTestLength(1);
-        config.setMinSuiteLength(1);
-        config.setMinTestScore(500);
-        config.setMinSuiteScore(Integer.MAX_VALUE);
-        config.setTestPlateauLength(5);
-        config.setParallelism(cores);
-        config.setTestPlateauThreshold(1);
-        config.setTestPlateauLength(5);
-        config.setSuitePlateauThreshold(1);
-        config.setTimeout(timeout);
-        explorer.explore(config);
-      }
-    }
+    SimCard model = new SimCard(new SimCardAdaptor());
+    model.reset();
+    TestSuite suite = new TestSuite(new TestCoverage());
+    suite.startTest(11);
+    model.req.setTestSuite(suite);
+    model.unblockPINGood12();
+    model.disablePINGood();
+    model.changePinSame();
+    model.changePinNew();
+    model.verifyPIN11();
   }
 }

@@ -7,7 +7,7 @@ Final length: $finalLength
 Invariants (for $shortests tests)):
 Step counts:
 #foreach ($step in $stepCounts)
-  $step.step : $step.count
+  $step
 #end
 Final steps: $finalSteps
 
@@ -19,4 +19,9 @@ Precedences ($precedences.size()):
 Shared sequences:
 #foreach ($sequence in $sequences)
   $sequence
+#end
+
+Missing steps:
+#foreach ($step in $missingSteps)
+  $step
 #end

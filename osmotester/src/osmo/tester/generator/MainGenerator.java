@@ -173,11 +173,17 @@ public class MainGenerator {
     }
     Throwable unwrap = unwrap(e);
     String errorMsg = "Error in test generation:" + unwrap.getMessage();
-    log.error(errorMsg, e);
+    if (config.isExploring()) {
+      if (config.isPrintExplorationErrors()) log.warn(errorMsg, e);
+    } else {
+      log.error(errorMsg, e);
+    }
+    
     listeners.testError(test, unwrap);
     if (config.shouldStopTestOnError()) {
       suite.storeGeneralState(fsm);
       if (!config.shouldStopGenerationOnError()) return;
+      //this is done here as aftertest is also invoked by the generator is we do not stop whole generation
       afterTest();
       afterSuite();
       if (unwrap instanceof RuntimeException) {

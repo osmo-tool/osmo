@@ -22,10 +22,19 @@ public class ReducerState {
   private Collection<Integer> lengths = new ArrayList<>();
   private final AtomicInteger testCount = new AtomicInteger(0);
   private final List<String> allSteps;
+  private long startTime = Long.MIN_VALUE;
+  private final long timeout;
+  private final ReducerConfig config;
 
-  public ReducerState(List<String> allSteps, int minimum) {
-    this.minimum = minimum;
+  public ReducerState(List<String> allSteps, ReducerConfig config) {
+    this.config = config;
+    this.minimum = config.getLength();
     this.allSteps = allSteps;
+    this.timeout = config.getIterationUnit().toMillis(config.getIterationTime());
+  }
+
+  public ReducerConfig getConfig() {
+    return config;
   }
 
   public synchronized int getMinimum() {
@@ -47,21 +56,40 @@ public class ReducerState {
     String hash = steps.toString();
     if (hashes.contains(hash)) return null;
     if (length < minimum) {
+      if (length == 1) {
+        endIteration();
+      }
+      startTime = System.currentTimeMillis();
+      //first we write the report for the previous iteration that just finished
       Analyzer analyzer = new Analyzer(allSteps, this);
       analyzer.analyze();
-      analyzer.writeReport("reducer-task-"+length);
+      analyzer.writeReport("reducer-task-"+minimum);
       tests.clear();
       hashes.clear();
       count = 0;
       minimum = length;
       lengths.add(length);
       log.info("Found smaller:"+minimum);
+      checkIfSingleStep(steps);
     }
     tests.add(test);
     hashes.add(hash);
     count++;
     if (count > 100) return null;
-    return "osmo-output/reducer-"+length+"-"+count;
+    Analyzer analyzer = new Analyzer(allSteps, this);
+    String path = analyzer.getPath();
+    return path+"reducer-"+length+"-"+count;
+  }
+
+  private void checkIfSingleStep(Collection<String> steps) {
+    HashSet<String> singles = new HashSet<>();
+    singles.addAll(steps);
+    if (singles.size() == 1) endIteration();
+  }
+
+  private void endIteration() {
+    done = true;
+    notifyAll();
   }
 
   public List<TestCase> getTests() {
@@ -72,11 +100,20 @@ public class ReducerState {
     return lengths;
   }
   
-  public void testsDone(int count) {
+  public synchronized void testsDone(int count) {
     testCount.addAndGet(count);
+    if (startTime > 0) {
+      //if our reduction iteration has passed its timeout we stop
+      long now = System.currentTimeMillis();
+      long diff = now-startTime;
+      if (diff > timeout) {
+        endIteration();
+      }
+    }
   }
   
   public int getTestCount() {
+    if (config.isTestMode()) return 0;
     return testCount.get();
   }
 

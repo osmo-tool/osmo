@@ -57,6 +57,7 @@ public class ExplorationConfiguration extends ScoreConfiguration {
   private Scenario scenario;
   /** Passed to underlying generator, stops generation when no path forward is seen. Otherwise, new test is started. */
   private boolean failWhenNoWayForward;
+  private boolean stopGenerationOnError;
 
   public ExplorationConfiguration(ModelFactory factory, int depth, long seed) {
     this.factory = factory;
@@ -123,6 +124,7 @@ public class ExplorationConfiguration extends ScoreConfiguration {
     config.setFactory(factory);
     config.setScenario(scenario);
     config.setFailWhenNoWayForward(failWhenNoWayForward);
+    config.setStopGenerationOnError(stopGenerationOnError);
   }
 
   public int getMinTestLength() {
@@ -302,5 +304,13 @@ public class ExplorationConfiguration extends ScoreConfiguration {
 
   public boolean isFailWhenNoWayForward() {
     return failWhenNoWayForward;
+  }
+
+  public void setStopGenerationOnError(boolean stopGenerationOnError) {
+    this.stopGenerationOnError = stopGenerationOnError;
+  }
+
+  public boolean isStopGenerationOnError() {
+    return stopGenerationOnError;
   }
 }

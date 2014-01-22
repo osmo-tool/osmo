@@ -5,18 +5,16 @@ import org.apache.velocity.app.VelocityEngine;
 import osmo.common.TestUtils;
 import osmo.common.log.Logger;
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.model.FSM;
 
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Teemu Kanstren
  */
 public class Analyzer {
   private static final Logger log = new Logger(Analyzer.class);
+  private final ReducerConfig config;
   private final ReducerState state;
   private Invariants invariants = null;
   private final List<String> steps;
@@ -24,12 +22,13 @@ public class Analyzer {
   public Analyzer(List<String> steps, ReducerState state) {
     this.steps = steps;
     this.state = state;
+    this.config = state.getConfig();
   }
-  
-  public void analyze() {
+
+  public Invariants analyze() {
     List<TestCase> tests = state.getTests();
     TestCase[] array = tests.toArray(new TestCase[tests.size()]);
-    analyze(array);
+    return analyze(array);
   }
 
   public Invariants analyze(TestCase... tests) {
@@ -41,7 +40,7 @@ public class Analyzer {
   }
 
   public void writeReport(String name) {
-    TestUtils.write(createReport(), "osmo-output/"+name+".txt");
+    TestUtils.write(createReport(), getPath() + name + ".txt");
   }
 
   public String createReport() {
@@ -52,13 +51,8 @@ public class Analyzer {
     vc.put("lengths", state.getLengths());
     vc.put("finalLength", state.getTests().get(0).getAllStepNames().size());
     vc.put("shortests", state.getTests().size());
-    Map<String, Integer> stepCounts = invariants.getStepCounts();
-    List<StepCount> counts = new ArrayList<>();
-    for (String name : stepCounts.keySet()) {
-      StepCount sc = new StepCount(name, stepCounts.get(name));
-      counts.add(sc);
-    }
-    vc.put("stepCounts", counts);
+    vc.put("stepCounts", invariants.getUsedStepCounts());
+    vc.put("missingSteps", invariants.getMissingSteps());
     vc.put("finalSteps", invariants.getLastSteps());
     vc.put("precedences", invariants.getPrecedencePatterns());
     vc.put("sequences", invariants.getSequencePatterns());
@@ -70,21 +64,11 @@ public class Analyzer {
     return sw.toString();
   }
 
-  public static class StepCount {
-    private final String step;
-    private final int count;
-
-    private StepCount(String step, int count) {
-      this.step = step;
-      this.count = count;
-    }
-
-    public String getStep() {
-      return step;
-    }
-
-    public int getCount() {
-      return count;
-    }
+  public String getPath() {
+    long seed = config.getSeed();
+    long time = config.getIterationTime();
+    String extension = config.getPathExtension();
+    if (extension.length() > 0) extension = "-" + extension;
+    return "osmo-output/reducer-" + seed + "-" + time + extension+"/";
   }
 }
