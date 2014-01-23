@@ -47,7 +47,7 @@ public class OSMOConfiguration implements ModelFactory {
   /** Factory for creating model objects, alternative to adding them one by one. */
   private ModelFactory factory = null;
   /** We default to this if user does not specify a factory. This is where any addModelObject() calls go. */
-  private SingleInstanceModelFactory defaultFactory = new SingleInstanceModelFactory();
+  private final SingleInstanceModelFactory defaultFactory = new SingleInstanceModelFactory();
   /** Is manual drive enabled? Used to enable manual GUI etc. */
   private static boolean manual = false;
   /** Model slicing scenario. */
@@ -64,6 +64,26 @@ public class OSMOConfiguration implements ModelFactory {
   private boolean printExplorationErrors;
 
   public OSMOConfiguration() {
+  }
+  
+  public OSMOConfiguration(OSMOConfiguration cloneMe) {
+    this.testCaseEndCondition = cloneMe.testCaseEndCondition;
+    this.suiteEndCondition = cloneMe.suiteEndCondition;
+    this.algorithm = cloneMe.algorithm;
+    this.filters = cloneMe.filters;
+    this.listeners = cloneMe.listeners;
+    this.failWhenNoWayForward = cloneMe.failWhenNoWayForward;
+    this.stopTestOnError = cloneMe.stopTestOnError;
+    this.junitLength = cloneMe.junitLength;
+    this.unwrapExceptions = cloneMe.unwrapExceptions;
+    this.factory = cloneMe.factory;
+    this.sequenceTraceRequested = cloneMe.sequenceTraceRequested;
+    this.dataTraceRequested = cloneMe.dataTraceRequested;
+    this.scoreCalculator = cloneMe.scoreCalculator;
+    this.stopGenerationOnError = cloneMe.stopGenerationOnError;
+    this.printExplorationErrors = cloneMe.printExplorationErrors;
+    this.exploring = cloneMe.exploring;
+    this.scenario = cloneMe.scenario;
   }
 
   //scenario set and get need to be synchronized as the reducer shares the config across many and all use scenario

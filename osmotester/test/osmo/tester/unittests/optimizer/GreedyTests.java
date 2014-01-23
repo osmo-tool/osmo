@@ -16,7 +16,7 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.optimizer.GenerationResults;
 import osmo.tester.optimizer.greedy.GreedyOptimizer;
-import osmo.tester.optimizer.multi.MultiOSMO;
+import osmo.tester.optimizer.multiosmo.MultiOSMO;
 import osmo.tester.unittests.testmodels.CalculatorModel;
 import osmo.tester.unittests.testmodels.RandomValueModel;
 

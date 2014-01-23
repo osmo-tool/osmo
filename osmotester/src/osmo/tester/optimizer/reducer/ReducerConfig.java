@@ -16,9 +16,18 @@ public class ReducerConfig {
   /** The seed for creating more random seeds for the generators. NOT the seed for separate tasks. */
   private final long seed;
   private String extension = "";
+  private int parallelism = Runtime.getRuntime().availableProcessors();
 
   public ReducerConfig(long seed) {
     this.seed = seed;
+  }
+
+  public int getParallelism() {
+    return parallelism;
+  }
+
+  public void setParallelism(int parallelism) {
+    this.parallelism = parallelism;
   }
 
   public String getPathExtension() {

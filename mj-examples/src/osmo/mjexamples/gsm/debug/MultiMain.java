@@ -5,7 +5,7 @@ import osmo.mjexamples.gsm.GSMModelFactory;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.endcondition.Time;
-import osmo.tester.optimizer.multi.MultiOSMO;
+import osmo.tester.optimizer.multiosmo.MultiOSMO;
 
 import java.util.concurrent.TimeUnit;
 
