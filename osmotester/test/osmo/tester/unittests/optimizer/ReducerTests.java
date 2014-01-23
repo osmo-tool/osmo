@@ -8,12 +8,12 @@ import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.optimizer.reducer.Analyzer;
-import osmo.tester.optimizer.reducer.Invariants;
+import osmo.tester.optimizer.reducer.FuzzerTask;
+import osmo.tester.optimizer.reducer.debug.Invariants;
 import osmo.tester.optimizer.reducer.Reducer;
 import osmo.tester.optimizer.reducer.ReducerConfig;
 import osmo.tester.optimizer.reducer.ReducerState;
-import osmo.tester.optimizer.reducer.ReducerTask;
-import osmo.tester.optimizer.reducer.TestMetrics;
+import osmo.tester.optimizer.reducer.debug.TestMetrics;
 import osmo.tester.scenario.Scenario;
 import osmo.tester.scenario.Slice;
 import osmo.tester.unittests.testmodels.ErrorModelProbability;
@@ -33,17 +33,18 @@ public class ReducerTests {
   @Test
   public void probableModel() throws Exception {
     TestUtils.recursiveDelete("osmo-output");
-    Reducer reducer = new Reducer(1);
+    ReducerConfig config = new ReducerConfig(111);
+    config.setParallelism(1);
+    Reducer reducer = new Reducer(config);
     OSMOConfiguration osmoConfig = reducer.getOsmoConfig();
     osmoConfig.setFactory(new ReflectiveModelFactory(ErrorModelProbability.class));
     osmoConfig.setTestEndCondition(new Length(50));
     osmoConfig.setSuiteEndCondition(new Length(20));
-    ReducerConfig config = new ReducerConfig(111);
     config.setTotalTime(TimeUnit.SECONDS, 1);
     config.setPopulationSize(50);
     config.setLength(10);
     config.setTestMode(true);
-    ReducerState state = reducer.search(config);
+    ReducerState state = reducer.search();
     List<TestCase> tests = state.getTests();
     assertEquals("Number of tests", 1, tests.size());
     TestCase test1 = tests.get(0);
@@ -64,7 +65,7 @@ public class ReducerTests {
   
   @Test
   public void scenarioBuilding() {
-    ReducerTask task = new ReducerTask(null, 0, new ReducerConfig(111), null);
+    FuzzerTask task = new FuzzerTask(null, 0, new ReducerConfig(111), null);
     TestCase test = new TestCase(0);
     test.addStep(new FSMTransition("hello1"));
     test.addStep(new FSMTransition("hello2"));

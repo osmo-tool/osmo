@@ -5,6 +5,7 @@ import org.apache.velocity.app.VelocityEngine;
 import osmo.common.TestUtils;
 import osmo.common.log.Logger;
 import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.optimizer.reducer.debug.Invariants;
 
 import java.io.StringWriter;
 import java.util.List;

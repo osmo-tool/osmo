@@ -16,7 +16,7 @@ import osmo.tester.model.Requirements;
 import osmo.tester.optimizer.CSVCoverageReport;
 import osmo.tester.optimizer.GenerationResults;
 import osmo.tester.optimizer.TestSorter;
-import osmo.tester.optimizer.multi.MultiOSMO;
+import osmo.tester.optimizer.multiosmo.MultiOSMO;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -5,7 +5,7 @@ package osmo.tester.model;
  * Used by the versions that run several generators in parallel, such as 
  * {@link osmo.tester.optimizer.greedy.GreedyOptimizer},
  * {@link osmo.tester.optimizer.greedy.MultiGreedy},
- * {@link osmo.tester.optimizer.multi.MultiOSMO},
+ * {@link osmo.tester.optimizer.multiosmo.MultiOSMO},
  * {@link osmo.tester.explorer.OSMOExplorer}.
  * 
  * @author Teemu Kanstren 

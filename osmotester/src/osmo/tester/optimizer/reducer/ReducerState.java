@@ -25,6 +25,9 @@ public class ReducerState {
   private long startTime = Long.MIN_VALUE;
   private final long timeout;
   private final ReducerConfig config;
+  private TestCase test = null;
+  /** Stop when first option found? Used for initial search. */
+  private boolean stopOnFirst = false;
 
   public ReducerState(List<String> allSteps, ReducerConfig config) {
     this.config = config;
@@ -41,6 +44,16 @@ public class ReducerState {
     return minimum;
   }
 
+  public void setStopOnFirst(boolean stopOnFirst) {
+    this.stopOnFirst = stopOnFirst;
+  }
+
+  public void resetDone() {
+    this.done = false;
+    //if we are already at minimum, no need to continue with anything else
+    checkIfSingleStep(test.getAllStepNames());
+  }
+
   public boolean isDone() {
     return done;
   }
@@ -48,14 +61,20 @@ public class ReducerState {
   public void finish() {
     this.done = true;
   }
+  
+  public TestCase getTest() {
+    return test;
+  }
 
-  public synchronized String addTest(TestCase test) {
+  public synchronized void addTest(TestCase test) {
+    this.test = test;
     List<String> steps = test.getAllStepNames();
     int length = steps.size();
-    if (length > minimum) return null;
+    if (length > minimum) return;
     String hash = steps.toString();
-    if (hashes.contains(hash)) return null;
+    if (hashes.contains(hash)) return;
     if (length < minimum) {
+      if (stopOnFirst) endIteration();
       if (length == 1) {
         endIteration();
       }
@@ -75,10 +94,6 @@ public class ReducerState {
     tests.add(test);
     hashes.add(hash);
     count++;
-    if (count > 100) return null;
-    Analyzer analyzer = new Analyzer(allSteps, this);
-    String path = analyzer.getPath();
-    return path+"reducer-"+length+"-"+count;
   }
 
   private void checkIfSingleStep(Collection<String> steps) {
@@ -87,7 +102,7 @@ public class ReducerState {
     if (singles.size() == 1) endIteration();
   }
 
-  private void endIteration() {
+  private synchronized void endIteration() {
     done = true;
     notifyAll();
   }
