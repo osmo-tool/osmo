@@ -10,19 +10,34 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * Collects invariants over traces of test steps in given test cases.
+ * 
  * @author Teemu Kanstren
  */
 public class Invariants {
+  /** Set of last steps in tests. */
   private final LastSteps lastSteps = new LastSteps();
+  /** Min and max of step counts in tests. */
   private final StepCounts stepCounts;
+  /** Which steps always appear before some others. */
   private final Precedence precedence;
+  /** Common sequences in all test traces. */
   private SharedSequence sequences = new SharedSequence();
-  
-  public Invariants(List<String> steps) {
-    precedence = new Precedence(steps);
-    stepCounts = new StepCounts(steps);
+
+  /**
+   * 
+   * @param allSteps All steps in the model.
+   */
+  public Invariants(List<String> allSteps) {
+    precedence = new Precedence(allSteps);
+    stepCounts = new StepCounts(allSteps);
   }
 
+  /**
+   * Updates invariants with the traces from given test.
+   * 
+   * @param test Trace to feed invariant processors.
+   */
   public void process(TestCase test) {
     List<String> steps = test.getAllStepNames();
     sequences.init(steps);

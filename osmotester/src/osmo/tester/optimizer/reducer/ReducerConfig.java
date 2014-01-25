@@ -3,19 +3,31 @@ package osmo.tester.optimizer.reducer;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * Defines a configuration for performing test reduction.
+ * Separate from the actual generator configuration which is also used in reduction.
+ * 
  * @author Teemu Kanstren
  */
 public class ReducerConfig {
+  /** Defines maximum time to run the overall reduction process. */
   private long totalTime = 1;
+  /** Defines maximum time to run the overall reduction process. */
   private TimeUnit totalUnit = TimeUnit.HOURS;
+  /** Defines maximum time to run a single iteration in a task after finding a test to reduce. */
   private long iterationTime = 5;
+  /** Defines maximum time to run a single iteration in a task after finding a test to reduce. */
   private TimeUnit iterationUnit = TimeUnit.MINUTES;
+  /** Number of tests to generate in an iteration for a task. */
   private int populationSize = 500;
+  /** Length of a test case to generate in an iteration for a task. */
   private int length = 100;
+  /** Are we running tests and should return static values for some part of reducer such as test count for reports? */
   private boolean testMode;
-  /** The seed for creating more random seeds for the generators. NOT the seed for separate tasks. */
+  /** The seed for creating more random seeds for the generators. NOT the seed for separate tasks, but seed of those seeds. */
   private final long seed;
+  /** Possible extension to add to test report file name. */
   private String extension = "";
+  /** Number of threads to request the thread pool to run concurrently, -> number of tasks to try to run in parallel. */
   private int parallelism = Runtime.getRuntime().availableProcessors();
 
   public ReducerConfig(long seed) {

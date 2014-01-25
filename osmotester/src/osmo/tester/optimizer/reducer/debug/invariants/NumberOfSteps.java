@@ -1,4 +1,4 @@
-package osmo.tester.optimizer.reducer.debug;
+package osmo.tester.optimizer.reducer.debug.invariants;
 
 import osmo.tester.generator.testsuite.TestCase;
 
@@ -7,16 +7,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Number of times different steps were taken in given tests.
+ * 
  * @author Teemu Kanstren
  */
-public class TestMetrics {
-  private String lastStep = null;
+public class NumberOfSteps {
+  /** Key = step name, Value = number of times step was taken. */
   private Map<String, Integer> stepCounts = new HashMap<>();
 
-  public TestMetrics() {
-  }
-  
-  public TestMetrics(TestCase test) {
+  public NumberOfSteps(TestCase test) {
     List<String> steps = test.getAllStepNames();
     for (String step : steps) {
       process(step);
@@ -34,10 +33,5 @@ public class TestMetrics {
     }
     count++;
     stepCounts.put(step, count);
-    lastStep = step;
-  }
-
-  public String getLastStep() {
-    return lastStep;
   }
 }
