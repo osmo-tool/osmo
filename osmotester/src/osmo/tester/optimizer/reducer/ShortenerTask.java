@@ -7,7 +7,7 @@ import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.optimizer.reducer.debug.TestMetrics;
+import osmo.tester.optimizer.reducer.debug.invariants.NumberOfSteps;
 import osmo.tester.scenario.Scenario;
 
 import java.util.Collection;
@@ -16,23 +16,39 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Tries to reduce given test case by removing one step at a time.
+ * For example, test has 2 times step A and 3 times step B.
+ * This tries to generate a set of tests with 1 A and 3 B. 
+ * If this does not reach target, it tries with 2 A and 2 B. Repeat for every step.
+ * 
  * @author Teemu Kanstren
  */
 public class ShortenerTask implements Runnable {
   private static final Logger log = new Logger(ShortenerTask.class);
+  /** The generator configuration. */
   private final OSMOConfiguration osmoConfig;
+  /** Current reduction state; found tests, iteration information, etc. */
   private final ReducerState state;
+  /** Set of steps that we have not tried to shorten (remove) in current iteration. */
   private final Collection<String> untried = new HashSet<>();
-  /** Base seed randomizer for the generators running in this task. */
+  /** Base seed randomizer for the generators running in this task. Used to generate generator seeds. */
   private final Randomizer seeder;
+  /** Number of tests to generate in one iteration. */
   private final int populationSize;
+  /** Task iteration counter. */
   private static int nextId = 1;
 
-  public ShortenerTask(OSMOConfiguration osmoConfig, long seed, ReducerConfig config, ReducerState state) {
+  /**
+   * 
+   * @param osmoConfig Generator configuration.
+   * @param seed Seed for seeding generators.
+   * @param state Current reducer state.
+   */
+  public ShortenerTask(OSMOConfiguration osmoConfig, long seed, ReducerState state) {
     this.osmoConfig = new OSMOConfiguration(osmoConfig);
     this.state = state;
     this.seeder = new Randomizer(seed);
-    this.populationSize = config.getPopulationSize();
+    this.populationSize = state.getConfig().getPopulationSize();
   }
 
   @Override
@@ -53,7 +69,8 @@ public class ShortenerTask implements Runnable {
         tester.setPrintCoverage(false);
         int newMinimum = state.getMinimum();
         tester.setTestEndCondition(new Length(newMinimum));
-        tester.setSuiteEndCondition(new Length(1));
+        //we need to try many as there can be many combinations possible
+        tester.setSuiteEndCondition(new Length(populationSize));
         long seed = seeder.nextLong();
         int id = nextId++;
         log.debug("Starting shortener task "+id+" with seed "+seed + " and population "+populationSize);
@@ -78,16 +95,28 @@ public class ShortenerTask implements Runnable {
     }
   }
 
+  /**
+   * Creates a scenario that can be used to configure the generator for producing shorter test case with given step
+   * having maximum one less instance than before.
+   * 
+   * @param test The test to minimize.
+   * @param removeMe We want to have one less of this step in new tests.
+   * @return Scenario defining generator configuration for requested test + remove step.
+   */
   public Scenario createScenario(TestCase test, String removeMe) {
+    //create a strict scenario so undefined steps are forbidden
+    //TODO: should reuse generator scenario
     Scenario scenario = new Scenario(true);
     List<String> allSteps = test.getAllStepNames();
     Collection<String> steps = new HashSet<>();
     steps.addAll(allSteps);
-    TestMetrics metric = new TestMetrics(test);
+    NumberOfSteps metric = new NumberOfSteps(test);
     Map<String,Integer> counts = metric.getStepCounts();
     for (String step : steps) {
+      //find the one to reduce and reduce..
       int max = counts.get(step);
       if (step.equals(removeMe)) max--;
+      //if we dont define it and scenario is strict, step is forbidden
       if (max > 0) scenario.addSlice(step, 0, max);
     }
     return scenario;

@@ -13,7 +13,7 @@ import osmo.tester.optimizer.reducer.debug.Invariants;
 import osmo.tester.optimizer.reducer.Reducer;
 import osmo.tester.optimizer.reducer.ReducerConfig;
 import osmo.tester.optimizer.reducer.ReducerState;
-import osmo.tester.optimizer.reducer.debug.TestMetrics;
+import osmo.tester.optimizer.reducer.debug.invariants.NumberOfSteps;
 import osmo.tester.scenario.Scenario;
 import osmo.tester.scenario.Slice;
 import osmo.tester.unittests.testmodels.ErrorModelProbability;
@@ -50,22 +50,19 @@ public class ReducerTests {
     TestCase test1 = tests.get(0);
     assertEquals("Final test length", 1, test1.getAllStepNames().size());
     assertEquals("Iteration lengths", "[5, 3, 1]", state.getLengths().toString());
-    String report = TestUtils.readFile("osmo-output/reducer-final.txt", "UTF8");
+    String report = TestUtils.readFile("osmo-output/reducer-111/reducer-final.txt", "UTF8");
     String expected = TestUtils.getResource(ReducerTests.class, "expected-reducer.txt");
     report = TestUtils.unifyLineSeparators(report, "\n");
     expected = TestUtils.unifyLineSeparators(expected, "\n");
     assertEquals("Reducer report", expected, report);
-    List<String> files = TestUtils.listFiles("osmo-output", ".html", false);
-    for (Iterator<String> i = files.iterator() ; i.hasNext() ; ) {
-      String file = i.next();
-      if (!file.startsWith("reducer")) i.remove();
-    }
-    assertEquals("Generated report files", "[reducer-1-1.html, reducer-3-1.html, reducer-5-1.html]", files.toString());
+    List<String> files = TestUtils.listFiles("osmo-output/reducer-111", ".html", false);
+    assertEquals("Generated report files", "[final-tests.html]", files.toString());
   }
   
   @Test
   public void scenarioBuilding() {
-    FuzzerTask task = new FuzzerTask(null, 0, new ReducerConfig(111), null);
+    ReducerState state = new ReducerState(null, new ReducerConfig(111));
+    FuzzerTask task = new FuzzerTask(null, 0, state);
     TestCase test = new TestCase(0);
     test.addStep(new FSMTransition("hello1"));
     test.addStep(new FSMTransition("hello2"));
@@ -90,7 +87,7 @@ public class ReducerTests {
   @Test
   public void metrics() {
     TestCase test22 = createTest22();
-    TestMetrics metrics = new TestMetrics(test22);
+    NumberOfSteps metrics = new NumberOfSteps(test22);
     Map<String, Integer> counts = metrics.getStepCounts();
     assertEquals("Number of steps", 10, counts.size());
     assertEquals("'Unlock PIN bad' count", 10, (int)counts.get("Unlock PIN bad"));
@@ -115,7 +112,8 @@ public class ReducerTests {
     TestCase test27 = createTest27();
     TestCase test30 = createTest30();
     TestCase test39 = createTest39();
-    Analyzer analyzer = new Analyzer(createStepList(), null);
+    ReducerState state = new ReducerState(null, new ReducerConfig(111));
+    Analyzer analyzer = new Analyzer(createStepList(), state);
     Invariants invariants = analyzer.analyze(test14_1, test14_2, test14_3, test14_4, test22, test27, test30, test39);
     assertEquals("Step counts", "[Unlock PIN bad : 10-11, Select EF LP : 0-5, Select DF Roaming : 0-1, Select EF FR : 0-4, Enable PIN 11 : 0-2, Select MF : 0-1, Change new PIN : 0-2, Select DF GSM : 1-3, Select EF IMSI : 1-3, Read Binary : 1-4, Verify PIN 11 : 0-2, Verify PIN 12 : 0-3, Disable PIN OK : 0-4, Change same PIN : 0-2]", invariants.getUsedStepCounts().toString());
     assertEquals("Missing steps", "[Miss me]", invariants.getMissingSteps().toString());

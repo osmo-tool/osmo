@@ -15,12 +15,17 @@ import osmo.tester.parser.ParserResult;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
+ * Runs a search for specific target in the model and once found, tries to reduce the path to it to minimal.
+ * The target is to find a part of the model that throws an exception.
+ * TODO: add a way to make covering a requirement throw an exception
+ * 
  * @author Teemu Kanstren
  */
 public class Reducer {
@@ -31,8 +36,11 @@ public class Reducer {
   private final int parallelism;
   /** The thread pool for running the generator tasks. */
   private final ExecutorService pool;
+  /** If true,  the osmo-output directory will be deleted at the beginning. */
   private boolean deleteOldOutput;
+  /** Configuration for reduction tasks. */
   private final ReducerConfig config;
+  /** Used to create random seeds for different tasks. Takes seed itself from reducer config. */
   private Randomizer rand;
 
   public Reducer(ReducerConfig config) {
@@ -50,12 +58,19 @@ public class Reducer {
    */
   public ReducerState search() {
     check();
+    //when reducing the path options, we can hit a spot where there is no path forward.
+    //we do not want the whole process to end there
     osmoConfig.setFailWhenNoWayForward(false);
+    //we do not wish to have excess spam logs as we produce our own traces in the end
     osmoConfig.setSequenceTraceRequested(false);
+    //this also avoids the generator from spamming excess prints
     osmoConfig.setExploring(true);
+    //and if we get an error we want to continue and find more errors.. since errors are our targets
     osmoConfig.setStopGenerationOnError(false);
+    //using the base seed we create a randomizer to create seeds for all tasks
     rand = new Randomizer(config.getSeed());
 
+    //we need a list of all possible step names in the model to build reports in the end
     MainParser parser = new MainParser();
     ParserResult parserResult = parser.parse(0, osmoConfig.getFactory(), null);
     FSM fsm = parserResult.getFsm();
@@ -66,6 +81,7 @@ public class Reducer {
     }
     ReducerState state = new ReducerState(allSteps, config);
 
+    //in the initial fuzzy search, we stop on first found instance. from this we shorten and then fuzz again
     state.setStopOnFirst(true);
     long totalTime = config.getTotalUnit().toMillis(config.getTotalTime());
     log.info("Running initial search");
@@ -73,16 +89,16 @@ public class Reducer {
     state.setStopOnFirst(false);
     state.resetDone();
     log.info("Running first shortening");
-    shorten(state);
-    //perform fuzzy search again but do not stop on first
-    state.resetDone();
+    shorten(state, totalTime);
+//    //perform fuzzy search again but do not stop on first
+//    state.resetDone();
     long iterationTime = config.getIterationUnit().toMillis(config.getIterationTime());
-    log.info("Running second search");
-    fuzz(state, iterationTime);
-    //perform another shortening attempt just in case fuzzy made a difference
-    state.resetDone();
-    log.info("Running second shortening");
-    shorten(state);
+//    log.info("Running second search");
+//    fuzz(state, iterationTime);
+//    //perform another shortening attempt just in case fuzzy made a difference
+//    state.resetDone();
+//    log.info("Running second shortening");
+//    shorten(state, totalTime);
     //perform final fuzzy for invariant capture
     state.resetDone();
     log.info("Running final search");
@@ -118,9 +134,24 @@ public class Reducer {
   }
 
   private void fuzz(ReducerState state, long waitTime) {
-    Collection<Future> futures = new ArrayList<>();
+    Collection<Runnable> tasks = new ArrayList<>();
     for (int i = 0 ; i < parallelism ; i++) {
-      FuzzerTask task = new FuzzerTask(osmoConfig, rand.nextLong(), config, state);
+      FuzzerTask task = new FuzzerTask(osmoConfig, rand.nextLong(), state);
+      tasks.add(task);
+    }
+    runTasks(tasks, state, waitTime);
+  }
+  
+
+  /**
+   * Performs a fuzzy search for an exception.
+   * 
+   * @param state     Current search state.
+   * @param waitTime  Milliseconds to wait for completion before cutting the search.
+   */
+  private void runTasks(Collection<Runnable> tasks, ReducerState state, long waitTime) {
+    Collection<Future> futures = new ArrayList<>();
+    for (Runnable task : tasks) {
       Future future = pool.submit(task);
       log.debug("task submitted to pool");
       futures.add(future);
@@ -131,11 +162,12 @@ public class Reducer {
         //we might have finished before coming here if previous searches were 100% success
         if (!state.isDone()) state.wait(waitTime);
       }
-      //if overall timeout instead of reduction, we terminate searches
+      //if overall timeout instead of reduction, we terminate searches (signal them to stop)
       state.finish();
     } catch (InterruptedException e) {
       log.debug("Got insomnia, failed to sleep!??", e);
     }
+    //here we wait for the tasks to finish properly
     for (Future future : futures) {
       try {
         future.get();
@@ -145,17 +177,25 @@ public class Reducer {
     }
   }
 
-  private void shorten(ReducerState state) {
-    //perform possible shortening
-    ShortenerTask task = new ShortenerTask(osmoConfig, rand.nextLong(), config, state);
-    Future shortFuture = pool.submit(task);
-    try {
-      shortFuture.get();
-    } catch (Exception e) {
-      throw new RuntimeException("Failed to run a Shortener", e);
+  /**
+   * Tries to shorten current found test.
+   * Meaning, removes a step at a time, sees if still produces exception, if so repeat with shorter.
+   * 
+   * @param state Current search state.
+   */
+  private void shorten(ReducerState state, long waitTime) {
+    Collection<Runnable> tasks = new ArrayList<>();
+    for (int i = 0 ; i < parallelism ; i++) {
+      ShortenerTask task = new ShortenerTask(osmoConfig, rand.nextLong(), state);
+      tasks.add(task);
     }
+    runTasks(tasks, state, waitTime);
   }
 
+  /**
+   * Checks if current configuration has some known issue.
+   * Also deletes old output if so configured.
+   */
   private void check() {
     if (osmoConfig.getFactory() instanceof SingleInstanceModelFactory) {
       System.out.println(MultiOSMO.ERROR_MSG);
