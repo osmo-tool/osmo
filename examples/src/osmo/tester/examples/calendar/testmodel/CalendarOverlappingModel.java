@@ -1,5 +1,6 @@
 package osmo.tester.examples.calendar.testmodel;
 
+import osmo.tester.annotation.Description;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Transition;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
@@ -37,6 +38,7 @@ public class CalendarOverlappingModel {
     this.out = out;
   }
 
+  @Description("Someone has a valid meeting in their calendar")
   @Guard("Add Overlapping Meeting")
   public boolean guardAddOverLappingEvent() {
     return state.hasEvents();
@@ -53,6 +55,7 @@ public class CalendarOverlappingModel {
     scripter.addEvent(overLapping);
   }
 
+  @Description("Someone has a valid task in their calendar")
   @Guard("Add Overlapping Task")
   public boolean guardAddOverLappingTask() {
     return state.hasTasks();
@@ -66,6 +69,7 @@ public class CalendarOverlappingModel {
     scripter.addTask(overLapping);
   }
 
+  @Description("Someone has a valid meeting in their calendar")
   @Guard("AddTaskOverlappingEvent")
   public boolean guardAddTaskOverLappingEvent() {
     return state.hasEvents();

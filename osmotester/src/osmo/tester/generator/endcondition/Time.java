@@ -62,6 +62,14 @@ public class Time implements EndCondition {
     executor.schedule(end, delay, timeUnit);
   }
 
+  public long getDelay() {
+    return delay;
+  }
+
+  public TimeUnit getTimeUnit() {
+    return timeUnit;
+  }
+
   @Override
   public String toString() {
     return "Time{" +

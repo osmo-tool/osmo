@@ -9,6 +9,10 @@ import java.io.PrintStream;
 public class GSMModelFactory implements ModelFactory {
   private final PrintStream out;
 
+  public GSMModelFactory() {
+    this.out = null;
+  }
+
   public GSMModelFactory(PrintStream out) {
     this.out = out;
   }

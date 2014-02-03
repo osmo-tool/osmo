@@ -2,6 +2,7 @@ package osmo.tester.examples.calendar.testmodel;
 
 import osmo.tester.annotation.AfterSuite;
 import osmo.tester.annotation.BeforeTest;
+import osmo.tester.annotation.Description;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.annotation.Transition;
@@ -38,6 +39,7 @@ public class CalendarMeetingModel {
     this.out = out;
   }
 
+  @Description("General test setup")
   @BeforeTest
   public void setup() {
     state.reset();
@@ -45,6 +47,7 @@ public class CalendarMeetingModel {
     out.println("-NEW TEST");
   }
 
+  @Description("Write script to file")
   @AfterSuite
   public void dump() {
     scripter.write();
@@ -60,6 +63,7 @@ public class CalendarMeetingModel {
     scripter.addEvent(event);
   }
 
+  @Description("Someone has an existing meeting in calendar")
   @Guard("Remove Meeting")
   public boolean guardRemoveOrganizerEvent() {
     return state.hasEvents();

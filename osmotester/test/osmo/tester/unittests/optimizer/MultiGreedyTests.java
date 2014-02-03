@@ -46,6 +46,11 @@ public class MultiGreedyTests {
     String expected = TestUtils.getResource(GreedyTests.class, "expected-multigreedy.txt");
     assertEquals("Multi-Greedy report", expected, report);  
     }
+  
+  @Test
+  public void maxLength() {
+    fail("TBD");
+  }
 
   private static class MyModelFactory implements ModelFactory {
     @Override

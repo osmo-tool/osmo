@@ -67,6 +67,8 @@ public class GreedyOptimizer {
   private int iteration = 0;
   private String midPath = "";
   private long seed = 0;
+  /** If > 0 defines the maximum number of tests to return. */
+  private int max = 0;
 
   /**
    * @param configuration  For scoring the search.
@@ -159,7 +161,7 @@ public class GreedyOptimizer {
         suite.add(testCase);
       }
       log.info(id + ":sorting and pruning iteration results");
-      suite = sortAndPrune(suite, scoreCalculator);
+      suite = sortAndPrune(suite, scoreCalculator, max);
       //we process each iteration to produce a list of how it was overall progressing
       report.process(suite);
       TestCoverage suiteCoverage = new TestCoverage(suite);
@@ -243,11 +245,12 @@ public class GreedyOptimizer {
    * @param from The source set to pick from.
    * @return Greedily sorted suite of requested size.
    */
-  public static List<TestCase> sortAndPrune(List<TestCase> from, ScoreCalculator calculator) {
+  public static List<TestCase> sortAndPrune(List<TestCase> from, ScoreCalculator calculator, int max) {
     //this sort is here to ensure deterministic results (as far as sequence of steps and scores go..)
     Collections.sort(from, new TestSorter());
     List<TestCase> suite = new ArrayList<>();
 
+    //first we need to clone the coverage so we can reuse it later since first loop removes items from it
     for (TestCase test : from) {
       test.cloneCoverage();
     }
@@ -275,9 +278,12 @@ public class GreedyOptimizer {
       bestCoverage = best.getCoverage();
       from.remove(best);
       suite.add(best);
+      //if max length for suite defined, we do not go beyong that
+      if (max > 0 && suite.size() >= max) break;
     }
     int steps = 0;
     for (TestCase test : suite) {
+      //here we switch to the original coverage
       test.switchToClonedCoverage();
       steps += test.getCoverage().getTotalSteps();
     }
@@ -292,12 +298,4 @@ public class GreedyOptimizer {
   public Collection<String> getPossiblePairs() {
     return possiblePairs;
   }
-//
-//  public static void main(String[] args) {
-//    int a = 0;
-//    for (int i = 0 ; i <= 1000 ; i++) {
-//      a += i;
-//    }
-//    System.out.println("a:"+a);
-//  }
 }
