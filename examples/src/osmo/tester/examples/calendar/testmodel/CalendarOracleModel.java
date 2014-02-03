@@ -1,5 +1,6 @@
 package osmo.tester.examples.calendar.testmodel;
 
+import osmo.tester.annotation.Description;
 import osmo.tester.annotation.Post;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 
@@ -36,14 +37,15 @@ public class CalendarOracleModel {
     this.out = out;
   }
 
+  @Description("Check all model state against SUT")
   @Post("all")
   public void genericOracle() {
     Collection<String> users = state.getUsers();
     Map<String, Collection<ModelTask>> tasks = new HashMap<>();
     Map<String, Collection<ModelEvent>> events = new HashMap<>();
     for (String user : users) {
-      tasks.put(user, new LinkedHashSet<ModelTask>());
-      events.put(user, new LinkedHashSet<ModelEvent>());
+      tasks.put(user, new LinkedHashSet<>());
+      events.put(user, new LinkedHashSet<>());
     }
 
     for (ModelTask task : state.getTasks()) {

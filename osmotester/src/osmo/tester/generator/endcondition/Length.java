@@ -25,6 +25,10 @@ public class Length implements EndCondition {
     this.length = length;
   }
 
+  public int getLength() {
+    return length;
+  }
+
   @Override
   public boolean endSuite(TestSuite suite, FSM fsm) {
     log.debug("finished tests:" + suite.getFinishedTestCases().size() + " current steps:" + suite.currentSteps());

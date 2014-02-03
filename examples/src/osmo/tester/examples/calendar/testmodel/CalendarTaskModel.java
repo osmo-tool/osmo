@@ -1,5 +1,6 @@
 package osmo.tester.examples.calendar.testmodel;
 
+import osmo.tester.annotation.Description;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
@@ -42,6 +43,7 @@ public class CalendarTaskModel {
     scripter.addTask(task);
   }
 
+  @Description("Some user has a task")
   @Guard("Remove Task")
   public boolean guardRemoveTask() {
     return state.hasTasks();

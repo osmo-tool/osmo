@@ -63,6 +63,8 @@ public class MultiGreedy {
   /** Coverage of the final set. */
   private TestCoverage finalCoverage = null;
   private final String midPath;
+  /** If > 0 defines the maximum number of tests to return. */
+  private int max = 0;
 
   /**
    * Uses number of processors on system as default for number of threads in the thread pool.
@@ -91,7 +93,15 @@ public class MultiGreedy {
     optimizerCount = parallelism;
     midPath = "multi-greedy-"+seed+"/";
   }
-  
+
+  public int getMax() {
+    return max;
+  }
+
+  public void setMax(int max) {
+    this.max = max;
+  }
+
   public void enableDataTrace() {
     dataTrace = true;
   }
@@ -125,7 +135,7 @@ public class MultiGreedy {
 
     log.info("sorting set from all optimizers");
     //this does the final round of optimization for the set received from all optimizers..
-    tests = GreedyOptimizer.sortAndPrune(tests, calculator);
+    tests = GreedyOptimizer.sortAndPrune(tests, calculator, max);
 
     writeFinalReport(tests, rand.getSeed());
     updateRequirements(tests);
@@ -148,11 +158,23 @@ public class MultiGreedy {
 
     runOptimizers(futures);
     List<TestCase> allTests = collectAllTests(futures);
+    
+    allTests = trimToMax(allTests);
 
     log.info("optimizers done");
     greedyPool.shutdown();
     collectReportData();
     return allTests;
+  }
+
+  private List<TestCase> trimToMax(List<TestCase> allTests) {
+    if (max <= 0) return allTests;
+    List<TestCase> tests = new ArrayList<>();
+    for (TestCase test : allTests) {
+      tests.add(test);
+      if (tests.size() >= max) return tests;
+    }
+    return tests;
   }
 
   /**

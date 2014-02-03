@@ -7,6 +7,7 @@ import osmo.tester.annotation.AfterTest;
 import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.CoverageValue;
+import osmo.tester.annotation.Description;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.ExplorationEnabler;
 import osmo.tester.annotation.GenerationEnabler;
@@ -29,6 +30,7 @@ import osmo.tester.parser.annotation.AfterTestParser;
 import osmo.tester.parser.annotation.BeforeSuiteParser;
 import osmo.tester.parser.annotation.BeforeTestParser;
 import osmo.tester.parser.annotation.CoverageValueParser;
+import osmo.tester.parser.annotation.DescriptionParser;
 import osmo.tester.parser.annotation.EndConditionParser;
 import osmo.tester.parser.annotation.ExplorationEnablerParser;
 import osmo.tester.parser.annotation.GenerationEnablerParser;
@@ -87,6 +89,7 @@ public class MainParser {
     annotationParsers.put(ExplorationEnabler.class, new ExplorationEnablerParser());
     annotationParsers.put(GenerationEnabler.class, new GenerationEnablerParser());
     annotationParsers.put(Group.class, new GroupParser());
+    annotationParsers.put(Description.class, new DescriptionParser());
     
     fieldParsers.put(SearchableInput.class, new SearchableInputParser());
     fieldParsers.put(Requirements.class, new RequirementsParser());
@@ -128,6 +131,7 @@ public class MainParser {
     }
     //finally we check that the generated FSM itself is valid
     fsm.checkFSM(errors);
+    result.postProcess();
     return result;
   }
 

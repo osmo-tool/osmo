@@ -1,5 +1,6 @@
 package osmo.tester.examples.calendar.testmodel;
 
+import osmo.tester.annotation.Description;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
@@ -37,6 +38,7 @@ public class CalendarParticipantModel {
     this.out = out;
   }
 
+  @Description("There is a meeting with room for a new person")
   @Guard("Add Participant")
   public boolean guardLinkEventToUser() {
     return state.getEventsWithSpace().size() > 0;
@@ -56,6 +58,7 @@ public class CalendarParticipantModel {
     scripter.linkEventToUser(event, user);
   }
 
+  @Description("Some meeting has a participant")
   @Guard("Remove Participant")
   public boolean guardRemoveParticipantEvent() {
     return state.hasParticipants();

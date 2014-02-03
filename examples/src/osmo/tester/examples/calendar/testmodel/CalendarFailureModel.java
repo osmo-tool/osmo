@@ -1,5 +1,6 @@
 package osmo.tester.examples.calendar.testmodel;
 
+import osmo.tester.annotation.Description;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
@@ -29,6 +30,7 @@ public class CalendarFailureModel {
     this.out = out;
   }
 
+  @Description("This is always true")
   @Guard("Failing Assertion")
   public boolean shallWeAllowIt() {
     return true;

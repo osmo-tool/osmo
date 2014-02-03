@@ -20,6 +20,9 @@ import osmo.tester.model.FSM;
 public class LengthProbability implements EndCondition {
   /** The combining And/Or end condition to which the parameters and requests are delegated. */
   private EndCondition delegate = null;
+  private int min;
+  private int max;
+  private double probability;
 
   public LengthProbability(int minLength, double probability) {
     init(minLength, 0, probability);
@@ -30,6 +33,9 @@ public class LengthProbability implements EndCondition {
   }
 
   private void init(int minLength, int maxLength, double probability) {
+    this.min = minLength;
+    this.max = maxLength;
+    this.probability = probability;
     if (maxLength < 0) {
       String msg = "Maximum length cannot be negative. Given (" + maxLength + "). Use 0 to disable max length.";
       throw new IllegalArgumentException(msg);
@@ -60,5 +66,17 @@ public class LengthProbability implements EndCondition {
   @Override
   public void init(long seed, FSM fsm) {
     delegate.init(seed, fsm);
+  }
+
+  public int getMin() {
+    return min;
+  }
+
+  public int getMax() {
+    return max;
+  }
+
+  public double getProbability() {
+    return probability;
   }
 }

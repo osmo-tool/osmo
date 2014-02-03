@@ -19,6 +19,8 @@ public class InvocationTarget implements Comparable<InvocationTarget> {
   private final Method method;
   /** The annotation name for the invoked method. Used for error reporting. */
   private final String type;
+  /** Description of the method for GUI. */
+  private String description = "";
 
   public InvocationTarget(ParserParameters parameters, Class type) {
     this.modelObject = parameters.getModel();
@@ -60,6 +62,14 @@ public class InvocationTarget implements Comparable<InvocationTarget> {
 
   public Method getMethod() {
     return method;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public String getDescription() {
+    return description;
   }
 
   @Override
