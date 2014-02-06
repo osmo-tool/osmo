@@ -3,7 +3,8 @@ package osmo.tester.gui.jfx.configurationtab.endconditions;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import osmo.tester.generator.endcondition.LengthProbability;
-import osmo.tester.gui.jfx.configurationtab.BasicsPane;
+import osmo.tester.gui.jfx.configurationtab.GeneratorPane;
+import osmo.tester.gui.jfx.configurationtab.generator.SingleCore;
 
 /**
  * @author Teemu Kanstren
@@ -21,7 +22,7 @@ public class LengthProbabilityDescription implements ECDescription {
   }
 
   @Override
-  public Pane createEditor(BasicsPane parent, Stage stage) {
+  public Pane createEditor(SingleCore parent, Stage stage) {
     return new LengthProbabilityEditor(parent, stage, this);
   }
 

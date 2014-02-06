@@ -11,13 +11,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import osmo.tester.generator.endcondition.Length;
-import osmo.tester.gui.jfx.configurationtab.BasicsPane;
+import osmo.tester.gui.jfx.configurationtab.GeneratorPane;
+import osmo.tester.gui.jfx.configurationtab.generator.SingleCore;
 
 /**
  * @author Teemu Kanstren
  */
 public class LengthEditor extends GridPane {
-  public LengthEditor(BasicsPane parent, Stage stage, LengthDescription desc) {
+  public LengthEditor(SingleCore parent, Stage stage, LengthDescription desc) {
     setHgap(10);
     setVgap(10);
     setPadding(new Insets(10, 10, 10, 10));

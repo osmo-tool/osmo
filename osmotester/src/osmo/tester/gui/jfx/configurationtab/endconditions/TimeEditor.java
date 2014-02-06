@@ -10,11 +10,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import osmo.tester.generator.endcondition.LengthProbability;
 import osmo.tester.generator.endcondition.Time;
-import osmo.tester.gui.jfx.configurationtab.BasicsPane;
+import osmo.tester.gui.jfx.configurationtab.GeneratorPane;
+import osmo.tester.gui.jfx.configurationtab.generator.SingleCore;
 
 import java.util.concurrent.TimeUnit;
 
@@ -22,13 +21,13 @@ import java.util.concurrent.TimeUnit;
  * @author Teemu Kanstren
  */
 public class TimeEditor extends GridPane {
-  public TimeEditor(BasicsPane parent, Stage stage, TimeDescription desc) {
+  public TimeEditor(SingleCore parent, Stage stage, TimeDescription desc) {
     setHgap(10);
     setVgap(10);
     setPadding(new Insets(10, 10, 10, 10));
 
     Label labelDelay = new Label("Delay:");
-    TextField fieldDelay = new TextField("" + desc.getEndCondition().getDelay());
+    TextField fieldDelay = new TextField();
     fieldDelay.setPrefColumnCount(5);
     add(labelDelay, 0, 0);
     add(fieldDelay, 1, 0);

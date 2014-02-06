@@ -150,6 +150,9 @@ public class ScoreConfiguration {
     defaultValueWeight = weight;
   }
 
+  public int getDefaultValueWeight() {
+    return defaultValueWeight;
+  }
 
   public void setVariableWeight(String name, int weight) {
     valueWeights.put(name, weight);

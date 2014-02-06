@@ -19,6 +19,7 @@ public class CalendarFactory implements ModelFactory {
   public void createModelObjects(TestModels here) {
     ModelState state = new ModelState();
     OfflineScripter scripter = new OfflineScripter(state, "example");
+    here.add(state);
     here.add(new CalendarMeetingModel(state, scripter));
     here.add(new CalendarFailureModel(state, scripter));
     here.add(new CalendarOracleModel(state, scripter));

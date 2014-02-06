@@ -4,22 +4,29 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import osmo.tester.gui.jfx.GUIState;
 
 /**
  * @author Teemu Kanstren
  */
 public class ConfigurationTab extends Tab {
-  public ConfigurationTab() {
+  private final GUIState state;
+  
+  public ConfigurationTab(GUIState state) {
     super("Configuration");
+    this.state = state;
     setClosable(false);
+
     GridPane grid = createGridPane();
     VBox box = createVBox();
     grid.add(box, 1, 1);
-    ScorePane score = new ScorePane();
+    ScorePane score = new ScorePane(state);
     grid.add(score, 3, 1);
 
     createSeparator(Orientation.HORIZONTAL, grid, 0, 0, 5, 1);
@@ -28,13 +35,13 @@ public class ConfigurationTab extends Tab {
     createSeparator(Orientation.VERTICAL, grid, 2, 0, 1, 3);
     createSeparator(Orientation.VERTICAL, grid, 4, 0, 1, 3);
 
-    setContent(grid);
+    ScrollPane scroller = new ScrollPane(grid);
+    setContent(scroller);
   }
   
   private void createSeparator(Orientation orientation, GridPane grid, int x, int y, int w, int h) {
     Separator separator = new Separator(orientation);
     grid.add(separator, x, y, w, h);
-    
   }
 
   private GridPane createGridPane() {
@@ -48,12 +55,14 @@ public class ConfigurationTab extends Tab {
   private VBox createVBox() {
     VBox box = new VBox(10);
     ObservableList<Node> children = box.getChildren();
-    BasicsPane basics = new BasicsPane();
-    Separator separator = new Separator(Orientation.HORIZONTAL);
-    AdvancedPane advanced = new AdvancedPane();
-    children.add(basics);
-    children.add(separator);
-    children.add(advanced);
+    GeneralPane general = new GeneralPane(state);
+    Separator separator1 = new Separator(Orientation.HORIZONTAL);
+    GeneratorPane genetor = new GeneratorPane(state);
+    Separator separator2 = new Separator(Orientation.HORIZONTAL);
+    children.add(general);
+    children.add(separator1);
+    children.add(genetor);
+    children.add(separator2);
     return box;
   }
 }

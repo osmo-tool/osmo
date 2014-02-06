@@ -19,6 +19,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import osmo.tester.gui.jfx.GUIState;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
@@ -33,6 +34,7 @@ import java.util.Collection;
  */
 public class ModelTab extends Tab {
 //  private final GridPane grid;
+  private final GUIState state;
   private final VBox topVBox;
   private Button loadButton;
   private TextField field;
@@ -47,8 +49,9 @@ public class ModelTab extends Tab {
   private boolean showLastSteps = true;
   private ParserResult parserResult = null;
 
-  public ModelTab() {
+  public ModelTab(GUIState state) {
     super("Model");
+    this.state = state;
     setClosable(false);
     topVBox = createMainPane();
     createFactoryPane();
@@ -68,7 +71,7 @@ public class ModelTab extends Tab {
     });
     HBox box = new HBox(label, field, loadButton);
     box.setSpacing(10);
-    box.setAlignment(Pos.CENTER);
+    box.setAlignment(Pos.CENTER_LEFT);
 //    grid.add(box, 0, 0);
     topVBox.getChildren().add(box);
   }
@@ -83,6 +86,15 @@ public class ModelTab extends Tab {
     CheckBox afterTest = new CheckBox("AfterTest");
     CheckBox afterSuite = new CheckBox("AfterSuite");
     CheckBox lastStep = new CheckBox("LastStep");
+    
+    guard.setSelected(showGuards);
+    pre.setSelected(showPre);
+    post.setSelected(showPost);
+    beforeTest.setSelected(showBeforeTest);
+    beforeSuite.setSelected(showBeforeSuite);
+    afterTest.setSelected(showAfterTest);
+    afterSuite.setSelected(showAfterSuite);
+    lastStep.setSelected(showLastSteps);
 
     guard.selectedProperty().addListener((observable, oldValue, newValue) -> {
       showGuards = newValue;
@@ -145,14 +157,6 @@ public class ModelTab extends Tab {
     return grid;
   }
 
-  private GridPane createGridPane2() {
-    GridPane grid = new GridPane();
-    grid.setHgap(10);
-    grid.setVgap(10);
-    grid.setPadding(new Insets(10, 10, 10, 10));
-    return grid;
-  }
-
   private void loadModel() {
     String factoryClass = field.getText();
     MainParser parser = new MainParser();
@@ -165,6 +169,7 @@ public class ModelTab extends Tab {
     }
     parserResult = parser.parse(0, factory, null);
     refreshModel();
+    state.setFactory(factory);
   }
   
   private void refreshModel() {
@@ -198,6 +203,7 @@ public class ModelTab extends Tab {
     addAfterTests(fsm, kids);
     addBeforeSuites(fsm, kids);
     addAfterSuites(fsm, kids);
+    addLastSteps(fsm, kids);
     children.add(inbox);
   }
 
@@ -243,6 +249,14 @@ public class ModelTab extends Tab {
     }
   }
 
+  private void addLastSteps(FSM fsm, ObservableList<Node> kids) {
+    if (!showLastSteps) return;
+    Collection<InvocationTarget> lastSteps = fsm.getLastSteps();
+    for (InvocationTarget lastStep : lastSteps) {
+      kids.add(new Label("LASTSTEP: "+lastStep.getDescription()));
+    }
+  }
+
   private void addBeforeTests(FSM fsm, ObservableList<Node> kids) {
     if (!showBeforeTest) return;
     Collection<InvocationTarget> beforeTests = fsm.getBeforeTests();
@@ -258,7 +272,7 @@ public class ModelTab extends Tab {
     boolean preExists = showPre && pres.size() > 0;
     boolean postExists = showPost && posts.size() > 0;
     if (preExists || postExists) {
-      Label plus = new Label("+Following Pre/Post actions apply");
+      Label plus = new Label("Following Pre/Post actions apply");
       kids.add(plus);
       if (preExists) addPre(kids, pres);
       if (postExists) addPost(kids, posts);
@@ -275,14 +289,14 @@ public class ModelTab extends Tab {
 
   private void addPost(ObservableList<Node> kids, Collection<InvocationTarget> posts) {
     for (InvocationTarget post : posts) {
-      Label label = new Label("POST: "+post.getDescription());
+      Label label = new Label("-POST: "+post.getDescription());
       kids.add(label);
     }
   }
 
   private void addPre(ObservableList<Node> kids, Collection<InvocationTarget> pres) {
     for (InvocationTarget pre : pres) {
-      Label label = new Label("PRE: "+pre.getDescription());
+      Label label = new Label("-PRE: "+pre.getDescription());
       kids.add(label);
     }
   }
@@ -294,7 +308,7 @@ public class ModelTab extends Tab {
       Label label = new Label("Always enabled");
       kids.add(label);
     } else {
-      Label label = new Label("Enabled if following guards true:");
+      Label label = new Label("Enabled if following is true:");
       kids.add(label);
     }
     for (InvocationTarget guard : guards) {
