@@ -192,6 +192,11 @@ public class ParserTests {
   }
 
   @Test
+  public void testDescriptions() {
+    fail("TBD");
+  }
+  
+  @Test
   public void testPartialModels() {
     Requirements req = new Requirements();
     PartialModel1 model1 = new PartialModel1(req, null);

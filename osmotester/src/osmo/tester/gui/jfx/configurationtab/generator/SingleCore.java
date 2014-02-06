@@ -1,11 +1,15 @@
-package osmo.tester.gui.jfx.configurationtab;
+package osmo.tester.gui.jfx.configurationtab.generator;
 
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import osmo.tester.gui.jfx.configurationtab.endconditions.ECDescription;
@@ -21,7 +25,7 @@ import java.util.List;
 /**
  * @author Teemu Kanstren
  */
-public class BasicsPane extends GridPane {
+public class SingleCore implements GeneratorDescription {
   private ECDescription chosenTestEC = null;
   private ECDescription chosenSuiteEC = null;
   private List<ECDescription> testECs = new ArrayList<>();
@@ -30,22 +34,31 @@ public class BasicsPane extends GridPane {
   private ComboBox<ECDescription> oldSuiteBox = null;
   private Button testButton;
   private Button suiteButton;
-  public static final int labelY = 0;
-  public static final int testY = 1;
-  public static final int suiteY = 2;
-  public static final int algoY = 3;
+  private static final int testY = 1;
+  private static final int suiteY = 2;
+  private static final int algoY = 3;
+  private static final int seedY = 4;
+  protected final GridPane grid = new GridPane();
 
-  public BasicsPane() {
-    setHgap(10);
-    setVgap(10);
+  public SingleCore() {
     init();
-    int y = 0;
-    add(new Label("Basic Settings"), 0, labelY, 3, 1);
+    grid.setVgap(10);
+    grid.setHgap(10);
+  }
+
+  @Override
+  public String toString() {
+    return "Single Core";
+  }
+  
+  @Override
+  public Pane createPane() {
     createTestECPane();
     createSuiteECPane();
     createAlgorithmPane();
+    return grid;
   }
-  
+
   private void init() {
     testECs.add(new LengthDescription());
     ProbabilityDescription probabilityT = new ProbabilityDescription();
@@ -63,13 +76,13 @@ public class BasicsPane extends GridPane {
     suiteECs.add(new EndlessDescription());
     suiteECs.add(new TimeDescription());
   }
-
+  
   public void createTestECPane() {
     if (oldTestBox != null) {
-      getChildren().remove(oldTestBox);
+      grid.getChildren().remove(oldTestBox);
     } else {
       Text testECLabel = new Text("Test endcondition:");
-      add(testECLabel, 0, testY);
+      grid.add(testECLabel, 0, testY);
 
       testButton = new Button("...");
       testButton.setOnAction(event -> {
@@ -77,7 +90,7 @@ public class BasicsPane extends GridPane {
         stage.setScene(new Scene(chosenTestEC.createEditor(this, stage)));
         stage.show();
       });
-      add(testButton, 2, testY);
+      grid.add(testButton, 2, testY);
     }
 
     ComboBox<ECDescription> ecBox = new ComboBox<>();
@@ -88,17 +101,17 @@ public class BasicsPane extends GridPane {
       chosenTestEC = ecBox.getValue();
       testButton.setDisable(!chosenTestEC.supportsEditing());
     });
-    add(ecBox, 1, testY);
+    grid.add(ecBox, 1, testY);
     oldTestBox = ecBox;
     oldTestBox.setMaxWidth(200);
   }
 
   public void createSuiteECPane() {
     if (oldSuiteBox != null) {
-      getChildren().remove(oldSuiteBox);
+      grid.getChildren().remove(oldSuiteBox);
     } else {
       Text suiteECLabel = new Text("Suite endcondition:");
-      add(suiteECLabel, 0, suiteY);
+      grid.add(suiteECLabel, 0, suiteY);
 
       suiteButton = new Button("...");
       suiteButton.setOnAction(event -> {
@@ -106,7 +119,7 @@ public class BasicsPane extends GridPane {
         stage.setScene(new Scene(chosenSuiteEC.createEditor(this, stage)));
         stage.show();
       });
-      add(suiteButton, 2, suiteY);
+      grid.add(suiteButton, 2, suiteY);
     }
 
     ComboBox<ECDescription> ecBox = new ComboBox<>();
@@ -117,18 +130,18 @@ public class BasicsPane extends GridPane {
       chosenSuiteEC = ecBox.getValue();
       suiteButton.setDisable(!chosenSuiteEC.supportsEditing());
     });
-    add(ecBox, 1, suiteY);
+    grid.add(ecBox, 1, suiteY);
     oldSuiteBox = ecBox;
     oldSuiteBox.setMaxWidth(200);
   }
 
-  private void createAlgorithmPane() {
+  public void createAlgorithmPane() {
     Text label = new Text("Algorithm:");
-    add(label, 0, algoY);
+    grid.add(label, 0, algoY);
     ComboBox<String> box = new ComboBox<>();
     ObservableList<String> items = box.getItems();
     items.addAll("Random", "Balancing", "Weighted Random", "Weighted Balancing");
     box.setValue("Random");
-    add(box, 1, algoY);
+    grid.add(box, 1, algoY);
   }
 }
