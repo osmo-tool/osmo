@@ -4,7 +4,6 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Tab;
@@ -17,7 +16,8 @@ import osmo.tester.gui.jfx.GUIState;
  */
 public class ConfigurationTab extends Tab {
   private final GUIState state;
-  
+  private final ScorePane scorePane;
+
   public ConfigurationTab(GUIState state) {
     super("Configuration");
     this.state = state;
@@ -26,8 +26,8 @@ public class ConfigurationTab extends Tab {
     GridPane grid = createGridPane();
     VBox box = createVBox();
     grid.add(box, 1, 1);
-    ScorePane score = new ScorePane(state);
-    grid.add(score, 3, 1);
+    scorePane = new ScorePane(state);
+    grid.add(scorePane, 3, 1);
 
     createSeparator(Orientation.HORIZONTAL, grid, 0, 0, 5, 1);
     createSeparator(Orientation.HORIZONTAL, grid, 0, 2, 5, 1);
@@ -64,5 +64,9 @@ public class ConfigurationTab extends Tab {
     children.add(genetor);
     children.add(separator2);
     return box;
+  }
+  
+  public void storeScoreWeights() {
+    scorePane.storeWeights();
   }
 }

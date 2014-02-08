@@ -19,6 +19,7 @@ public class MainWindow extends Application {
   private final GUIState state = new GUIState(this);
   private final ExecutionTab executionTab = new ExecutionTab(state);
   private final TabPane tabPane = new TabPane();
+  private final ConfigurationTab configurationTab = new ConfigurationTab(state);
 
   public static void main(String[] args) {
     launch(args);
@@ -29,12 +30,11 @@ public class MainWindow extends Application {
     stage.setTitle("OSMO Tester v4.0alpha");
 
     Tab tab1 = new ModelTab(state);
-    Tab tab2 = new ConfigurationTab(state);
     Tab tab4 = new ResultsTab();
     Tab tab5 = new CreditsTab();
     ObservableList<Tab> tabs = tabPane.getTabs();
     tabs.add(tab1);
-    tabs.add(tab2);
+    tabs.add(configurationTab);
     tabs.add(executionTab);
     tabs.add(tab4);
     tabs.add(tab5);
@@ -46,12 +46,13 @@ public class MainWindow extends Application {
   }
 
   public void openSingleCoreExecution() {
-    executionTab.showSingleCore();
     tabPane.getSelectionModel().select(executionTab);
+    executionTab.showSingleCore();
   }
 
   public void openGreedyExecution() {
-    executionTab.showGreedy();
+    configurationTab.storeScoreWeights();
     tabPane.getSelectionModel().select(executionTab);
+    executionTab.showGreedy();
   }
 }

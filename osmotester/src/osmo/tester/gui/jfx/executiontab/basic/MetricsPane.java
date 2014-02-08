@@ -27,7 +27,7 @@ public class MetricsPane extends GridPane {
     setHgap(10);
     setVgap(10);
     setPadding(new Insets(10, 10, 10, 10));
-    Label iterationLabel = new Label("Iteration:");
+    Label iterationLabel = new Label("Iterations:");
     Label testsLabel = new Label("Tests:");
     Label lengthLabel = new Label("Length:");
     Label stepsLabel = new Label("Steps:");
@@ -82,11 +82,16 @@ public class MetricsPane extends GridPane {
     this.coverage = coverage;
   }
   
-  public void increaseCount() {
+  public void increaseTestCount() {
     testCount++;
+  }
+  
+  public void increaseIterationCount() {
+    iterationCount++;
   }
 
   public void refresh() {
+    iterationField.setText("" + iterationCount);
     testsField.setText("" + testCount);
     lengthField.setText("" + coverage.getTotalSteps());
     stepsField.setText("" + coverage.getSingles().size());

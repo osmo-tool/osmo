@@ -318,7 +318,6 @@ public class ModelTab extends Tab {
     }
   }
 
-
   //osmo.mjexamples.gsm.GSMModelFactory
   //osmo.tester.examples.calendar.CalendarFactory
 }

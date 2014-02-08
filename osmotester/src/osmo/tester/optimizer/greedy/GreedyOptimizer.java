@@ -21,6 +21,7 @@ import osmo.tester.optimizer.multiosmo.MultiOSMO;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -69,6 +70,7 @@ public class GreedyOptimizer {
   private long seed = 0;
   /** If > 0 defines the maximum number of tests to return. */
   private int max = 0;
+  private Collection<IterationListener> listeners = new HashSet<>();
 
   /**
    * @param configuration  For scoring the search.
@@ -82,6 +84,10 @@ public class GreedyOptimizer {
 
   public void setMidPath(String midPath) {
     this.midPath = midPath;
+  }
+
+  public void setMax(int max) {
+    this.max = max;
   }
 
   public void enableDataTrace() {
@@ -98,7 +104,7 @@ public class GreedyOptimizer {
   }
 
   /** @param timeout Generation timeout in seconds. */
-  public void setTimeout(int timeout) {
+  public void setTimeout(long timeout) {
     this.timeout = timeout;
   }
 
@@ -171,6 +177,9 @@ public class GreedyOptimizer {
       previousScore = score;
       
       long diff = System.currentTimeMillis() - iStart;
+      for (IterationListener listener : listeners) {
+        listener.iterationDone(suite);
+      }
       log.info(id + ":iteration time:(" + iteration + ")" + diff + " gain:" + gain);
       if (endTime > 0 && endTime < System.currentTimeMillis()) {
         log.info("Generation timed out");
@@ -297,5 +306,9 @@ public class GreedyOptimizer {
 
   public Collection<String> getPossiblePairs() {
     return possiblePairs;
+  }
+
+  public void addIterationListener(IterationListener listener) {
+    listeners.add(listener);
   }
 }

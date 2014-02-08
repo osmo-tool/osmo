@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import osmo.tester.gui.jfx.GUIState;
 
 import java.util.concurrent.TimeUnit;
 
@@ -17,8 +18,8 @@ import java.util.concurrent.TimeUnit;
 public class MultiGreedy extends Greedy {
   private static final int parallelismY = 3;
 
-  public MultiGreedy() {
-    super();
+  public MultiGreedy(GUIState state) {
+    super(state);
   }
 
   @Override

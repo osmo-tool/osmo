@@ -1,21 +1,26 @@
 package osmo.tester.gui.jfx.executiontab.greedy;
 
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.gui.jfx.GUIState;
+import osmo.tester.gui.jfx.executiontab.TestDescription;
 import osmo.tester.gui.jfx.executiontab.basic.MetricsPane;
 import osmo.tester.gui.jfx.executiontab.basic.ReducerPane;
 import osmo.tester.gui.jfx.executiontab.basic.TestInfoPane;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +29,7 @@ import java.util.List;
 public class GreedyInfoPane extends GridPane {
   private final MetricsPane metricsPane = new MetricsPane(true, true);
   private final IterationInfoPane iterationInfoPane;
-  private final TextField iterationField = new TextField();
+  private final ListView<Iteration> iterations = new ListView<>();
 
   public GreedyInfoPane(GUIState state) {
     iterationInfoPane = new IterationInfoPane(state);
@@ -34,14 +39,17 @@ public class GreedyInfoPane extends GridPane {
     VBox vbox = createLeftPane();
     add(vbox, 0, 0);
     add(iterationInfoPane, 1, 0);
+    ReadOnlyObjectProperty<Iteration> selectedProperty = iterations.getSelectionModel().selectedItemProperty();
+    selectedProperty.addListener((observable, oldValue, newValue) -> choice(newValue));
+  }
+
+  private void choice(Iteration iteration) {
+    iterationInfoPane.visualize(iteration.getTests());
   }
 
   private VBox createLeftPane() {
-    Label iterationLabel = new Label("Iteration: ");
-    iterationField.setEditable(false);
-    iterationField.setPrefColumnCount(5);
-
     HBox hbox = new HBox(10);
+    hbox.setPadding(new Insets(0, 0, 10, 0));
     Button stop = new Button("Stop");
     hbox.setAlignment(Pos.CENTER);
     hbox.getChildren().add(stop);
@@ -51,10 +59,14 @@ public class GreedyInfoPane extends GridPane {
     kids.add(new Label("Generation Metrics"));
     kids.add(metricsPane);
     kids.add(hbox);
+    kids.add(iterations);
     return vbox;
   }
 
   public void addIteration(List<TestCase> tests) {
-    
+    iterations.getItems().add(new Iteration(tests));
+    metricsPane.increaseIterationCount();
+    metricsPane.setCoverage(new TestCoverage(tests));
+    metricsPane.refresh();
   }
 }
