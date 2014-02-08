@@ -46,7 +46,7 @@ public class BasicExecutorPane extends GridPane {
 
   public void testEnded(TestCase test) {
     coverage.addCoverage(test.getCoverage());
-    metricsPane.increaseCount();
+    metricsPane.increaseTestCount();
     metricsPane.refresh();
     singleInfoPane.addTest(test);
   }

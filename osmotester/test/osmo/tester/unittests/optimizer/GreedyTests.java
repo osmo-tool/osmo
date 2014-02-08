@@ -283,4 +283,9 @@ public class GreedyTests {
   public void maxLength() {
     fail("TBD");
   }
+
+  @Test
+  public void iterationListener() {
+    fail("TBD");
+  }
 }

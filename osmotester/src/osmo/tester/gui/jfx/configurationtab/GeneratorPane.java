@@ -13,10 +13,12 @@ import osmo.tester.gui.jfx.GUIState;
 import osmo.tester.gui.jfx.configurationtab.generator.Exploration;
 import osmo.tester.gui.jfx.configurationtab.generator.GeneratorDescription;
 import osmo.tester.gui.jfx.configurationtab.generator.Greedy;
+import osmo.tester.gui.jfx.configurationtab.generator.GreedyParameters;
 import osmo.tester.gui.jfx.configurationtab.generator.MultiCore;
 import osmo.tester.gui.jfx.configurationtab.generator.MultiGreedy;
 import osmo.tester.gui.jfx.configurationtab.generator.Requirements;
 import osmo.tester.gui.jfx.configurationtab.generator.SingleCore;
+import osmo.tester.optimizer.greedy.GreedyOptimizer;
 
 /**
  * @author Teemu Kanstren
@@ -25,12 +27,11 @@ public class GeneratorPane extends VBox {
   private final GUIState state;
   private Node old = null;
   private ComboBox<GeneratorDescription> generatorCombo;
+  private GeneratorDescription generator = null;
 
   public GeneratorPane(GUIState state) {
     super(10);
     this.state = state;
-//    setHgap(10);
-//    setVgap(10);
     createLabelPane();
   }
 
@@ -45,7 +46,7 @@ public class GeneratorPane extends VBox {
     generatorCombo.setOnAction((event) -> setGenerator(generatorCombo.getValue()));
     ObservableList<GeneratorDescription> items = generatorCombo.getItems();
     SingleCore singleCore = new SingleCore();
-    items.addAll(singleCore, new MultiCore(), new Greedy(), new MultiGreedy(), new Exploration(), new Requirements());
+    items.addAll(singleCore, new MultiCore(), new Greedy(state), new MultiGreedy(state), new Exploration(), new Requirements());
     generatorCombo.setValue(singleCore);
     kids.add(generatorCombo);
     Button button = new Button("Generate");
@@ -54,6 +55,7 @@ public class GeneratorPane extends VBox {
   }
 
   private void setGenerator(GeneratorDescription generator) {
+    this.generator = generator;
     if (old != null) getChildren().remove(old);
     old = generator.createPane();
     getChildren().add(old);
@@ -85,12 +87,20 @@ public class GeneratorPane extends VBox {
     state.openSingleCoreExecution();
     OSMOTester tester = new OSMOTester();
     tester.setConfig(state.getOsmoConfig());
-    String seedText = state.getSeedField().getText();
-    long seed = Long.parseLong(seedText);
+    long seed = state.getSeed();
     tester.generate(seed);
   }
   
   private void startGreedy() {
+    Greedy greedyDesc = (Greedy) generator;
+    greedyDesc.storeParameters();
     state.openGreedyExecution();
+    GreedyOptimizer greedy = new GreedyOptimizer(state.getOsmoConfig(), state.getScoreConfig());
+    greedy.addIterationListener(state.getGreedyParameters().getListener());
+    GreedyParameters gp = state.getGreedyParameters();
+    greedy.setThreshold(gp.getThreshold());
+    greedy.setTimeout(gp.getTimeoutInSeconds());
+    greedy.setMax(gp.getMaxTests());
+    greedy.search(gp.getPopulation(), state.getSeed());
   }
 }

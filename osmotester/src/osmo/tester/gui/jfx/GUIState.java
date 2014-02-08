@@ -2,7 +2,9 @@ package osmo.tester.gui.jfx;
 
 import javafx.scene.control.TextField;
 import osmo.tester.OSMOConfiguration;
+import osmo.tester.coverage.ScoreConfiguration;
 import osmo.tester.explorer.ExplorationConfiguration;
+import osmo.tester.gui.jfx.configurationtab.generator.GreedyParameters;
 import osmo.tester.model.ModelFactory;
 
 /**
@@ -10,7 +12,9 @@ import osmo.tester.model.ModelFactory;
  */
 public class GUIState {
   private final OSMOConfiguration osmoConfig = new OSMOConfiguration();
+  private final GreedyParameters greedyParameters = new GreedyParameters();
   private final ExplorationConfiguration explorationConfig = new ExplorationConfiguration(null, 1, 0);
+  private final ScoreConfiguration scoreConfig = new ScoreConfiguration();
   private TextField seedField;
   private final MainWindow mainWindow;
 
@@ -26,6 +30,10 @@ public class GUIState {
     return explorationConfig;
   }
 
+  public ScoreConfiguration getScoreConfig() {
+    return scoreConfig;
+  }
+
   public void setFactory(ModelFactory factory) {
     osmoConfig.setFactory(factory);
     explorationConfig.setFactory(factory);
@@ -35,8 +43,8 @@ public class GUIState {
     this.seedField = seedField;
   }
 
-  public TextField getSeedField() {
-    return seedField;
+  public long getSeed() {
+    return Long.parseLong(seedField.getText());
   }
 
   public void openSingleCoreExecution() {
@@ -45,5 +53,9 @@ public class GUIState {
 
   public void openGreedyExecution() {
     mainWindow.openGreedyExecution();
+  }
+
+  public GreedyParameters getGreedyParameters() {
+    return greedyParameters;
   }
 }

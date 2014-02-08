@@ -317,7 +317,7 @@ public class SimCard {
     if (status_PIN_block == B_Status.Blocked) {
       result = Status_Word.sw_9840;
       req.covered(Req.Enable2); //"@REQ: ENABLE2 @"
-      throw new RuntimeException("REQun etsintä päällä");
+     // throw new RuntimeException("REQun etsintä päällä");
     } else if (status_en == E_Status.Enabled) {
       result = Status_Word.sw_9808;
       req.covered(Req.Enable3); //"@REQ: ENABLE3 @"

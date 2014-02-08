@@ -7,6 +7,7 @@ import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import osmo.tester.coverage.ScoreConfiguration;
 import osmo.tester.explorer.ExplorationConfiguration;
 import osmo.tester.gui.jfx.GUIState;
 
@@ -23,7 +24,6 @@ public class ScorePane extends GridPane {
   private final TextField requirementsWeight = new TextField();
   private final TextField stateWeight = new TextField();
   private final TextField statePairWeight = new TextField();
-  
   
   public ScorePane(GUIState state) {
     this.state = state;
@@ -66,5 +66,34 @@ public class ScorePane extends GridPane {
     requirementsWeight.setText(""+ec.getRequirementWeight());
     stateWeight.setText(""+ec.getStateWeight());
     statePairWeight.setText(""+ec.getStatePairWeight());
+  }
+  
+  public void storeWeights() {
+    ExplorationConfiguration ec = state.getExplorationConfig();
+    ScoreConfiguration sc = state.getScoreConfig();
+    int length = Integer.parseInt(lengthWeight.getText());
+    int variableCount = Integer.parseInt(variableCountWeight.getText());
+    int value = Integer.parseInt(valueWeight.getText());
+    int step = Integer.parseInt(stepWeight.getText());
+    int stepPair = Integer.parseInt(stepPairWeight.getText());
+    int requirements = Integer.parseInt(requirementsWeight.getText());
+    int state = Integer.parseInt(stateWeight.getText());
+    int statePair = Integer.parseInt(statePairWeight.getText());
+    ec.setLengthWeight(length);
+    sc.setLengthWeight(length);
+    ec.setVariableCountWeight(variableCount);
+    sc.setVariableCountWeight(variableCount);
+    ec.setDefaultValueWeight(value);
+    sc.setDefaultValueWeight(value);
+    ec.setStepWeight(step);
+    sc.setStepWeight(step);
+    ec.setStepPairWeight(stepPair);
+    sc.setStepPairWeight(stepPair);
+    ec.setRequirementWeight(requirements);
+    sc.setRequirementWeight(requirements);
+    ec.setStateWeight(state);
+    sc.setStateWeight(state);
+    ec.setStatePairWeight(statePair);
+    sc.setStatePairWeight(statePair);
   }
 }

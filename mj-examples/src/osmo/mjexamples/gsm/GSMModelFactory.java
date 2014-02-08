@@ -1,5 +1,6 @@
 package osmo.mjexamples.gsm;
 
+import osmo.common.NullPrintStream;
 import osmo.tester.model.ModelFactory;
 import osmo.tester.model.TestModels;
 
@@ -10,7 +11,7 @@ public class GSMModelFactory implements ModelFactory {
   private final PrintStream out;
 
   public GSMModelFactory() {
-    this.out = null;
+    this.out = NullPrintStream.stream;
   }
 
   public GSMModelFactory(PrintStream out) {
