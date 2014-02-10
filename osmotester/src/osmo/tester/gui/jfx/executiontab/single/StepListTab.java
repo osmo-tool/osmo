@@ -1,4 +1,4 @@
-package osmo.tester.gui.jfx.executiontab.basic;
+package osmo.tester.gui.jfx.executiontab.single;
 
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;

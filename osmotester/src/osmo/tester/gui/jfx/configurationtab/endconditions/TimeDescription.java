@@ -4,6 +4,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import osmo.tester.generator.endcondition.Time;
 import osmo.tester.gui.jfx.configurationtab.GeneratorPane;
+import osmo.tester.gui.jfx.configurationtab.generator.GeneratorDescription;
 import osmo.tester.gui.jfx.configurationtab.generator.SingleCore;
 
 import java.util.concurrent.TimeUnit;
@@ -24,7 +25,7 @@ public class TimeDescription implements ECDescription {
   }
 
   @Override
-  public Pane createEditor(SingleCore parent, Stage stage) {
+  public Pane createEditor(GeneratorDescription parent, Stage stage) {
     return new TimeEditor(parent, stage, this);
   }
 

@@ -12,13 +12,14 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import osmo.tester.generator.endcondition.LengthProbability;
 import osmo.tester.gui.jfx.configurationtab.GeneratorPane;
+import osmo.tester.gui.jfx.configurationtab.generator.GeneratorDescription;
 import osmo.tester.gui.jfx.configurationtab.generator.SingleCore;
 
 /**
  * @author Teemu Kanstren
  */
 public class LengthProbabilityEditor extends GridPane {
-  public LengthProbabilityEditor(SingleCore parent, Stage stage, LengthProbabilityDescription desc) {
+  public LengthProbabilityEditor(GeneratorDescription parent, Stage stage, LengthProbabilityDescription desc) {
     setHgap(10);
     setVgap(10);
     setPadding(new Insets(10, 10, 10, 10));

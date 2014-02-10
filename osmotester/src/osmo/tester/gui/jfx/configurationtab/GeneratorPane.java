@@ -8,6 +8,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.gui.jfx.GUIState;
 import osmo.tester.gui.jfx.configurationtab.generator.Exploration;
@@ -45,8 +46,8 @@ public class GeneratorPane extends VBox {
     generatorCombo = new ComboBox<>();
     generatorCombo.setOnAction((event) -> setGenerator(generatorCombo.getValue()));
     ObservableList<GeneratorDescription> items = generatorCombo.getItems();
-    SingleCore singleCore = new SingleCore();
-    items.addAll(singleCore, new MultiCore(), new Greedy(state), new MultiGreedy(state), new Exploration(), new Requirements());
+    SingleCore singleCore = new SingleCore(state);
+    items.addAll(singleCore, new MultiCore(state), new Greedy(state), new MultiGreedy(state), new Exploration(), new Requirements(state));
     generatorCombo.setValue(singleCore);
     kids.add(generatorCombo);
     Button button = new Button("Generate");
@@ -84,6 +85,8 @@ public class GeneratorPane extends VBox {
   }
 
   private void startSingleCore() {
+    SingleCore sc = (SingleCore) generator;
+    sc.storeParameters();
     state.openSingleCoreExecution();
     OSMOTester tester = new OSMOTester();
     tester.setConfig(state.getOsmoConfig());
@@ -95,12 +98,15 @@ public class GeneratorPane extends VBox {
     Greedy greedyDesc = (Greedy) generator;
     greedyDesc.storeParameters();
     state.openGreedyExecution();
-    GreedyOptimizer greedy = new GreedyOptimizer(state.getOsmoConfig(), state.getScoreConfig());
+    OSMOConfiguration config = state.getOsmoConfig();
+    GreedyOptimizer greedy = new GreedyOptimizer(config, state.getScoreConfig());
     greedy.addIterationListener(state.getGreedyParameters().getListener());
     GreedyParameters gp = state.getGreedyParameters();
     greedy.setThreshold(gp.getThreshold());
     greedy.setTimeout(gp.getTimeoutInSeconds());
     greedy.setMax(gp.getMaxTests());
+    config.setTestEndCondition(gp.getTestEndCondition());
+    config.setAlgorithm(gp.getAlgorithm());
     greedy.search(gp.getPopulation(), state.getSeed());
   }
 }

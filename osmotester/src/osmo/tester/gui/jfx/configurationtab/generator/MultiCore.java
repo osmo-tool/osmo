@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import osmo.tester.gui.jfx.GUIState;
 import osmo.tester.gui.jfx.configurationtab.endconditions.ECDescription;
 import osmo.tester.gui.jfx.configurationtab.endconditions.EndlessDescription;
 import osmo.tester.gui.jfx.configurationtab.endconditions.LengthDescription;
@@ -29,8 +30,8 @@ import java.util.List;
 public class MultiCore extends SingleCore {
   private static final int parallelismY = 5;
 
-  public MultiCore() {
-    super();
+  public MultiCore(GUIState state) {
+    super(state);
   }
 
   @Override

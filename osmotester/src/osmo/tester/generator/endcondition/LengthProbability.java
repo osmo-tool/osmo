@@ -10,6 +10,11 @@ import osmo.tester.model.FSM;
  * once this minimum length has been achieved.
  * For example, with minimum length of 3 and probability of 0.2, the generated tests are always at least 3 steps
  * long and after that end with a probability of 20% at each step.
+ *
+ * The probability must be between 0..1 where 0 means the generation is never stopped
+ * and 1 means the generation is always stopped.
+ * As an example, value 0.2 means the probability is 20%, that is the value from the random number generator must
+ * be below 0.2 to signal stop.
  * 
  * In practice this creates a combined And/Or end condition which create combinations of different Length/Probability
  * end conditions to set the minimum/maximum lengths and the probability to stop after minimum length.

@@ -8,6 +8,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import osmo.tester.gui.jfx.GUIState;
 import osmo.tester.gui.jfx.configurationtab.endconditions.ECDescription;
 import osmo.tester.gui.jfx.configurationtab.endconditions.EndlessDescription;
 import osmo.tester.gui.jfx.configurationtab.endconditions.LengthDescription;
@@ -22,8 +23,8 @@ import java.util.List;
  * @author Teemu Kanstren
  */
 public class Requirements extends SingleCore {
-  public Requirements() {
-    super();
+  public Requirements(GUIState state) {
+    super(state);
   }
 
   @Override

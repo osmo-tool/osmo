@@ -287,10 +287,16 @@ public class GreedyOptimizer {
       bestCoverage = best.getCoverage();
       from.remove(best);
       suite.add(best);
-      //if max length for suite defined, we do not go beyong that
+      //if max length for suite defined, we do not go beyond that
       if (max > 0 && suite.size() >= max) break;
     }
     int steps = 0;
+    //loop all and not just the results, as sometimes the listeners use the old ones (the GUI does at this writing)
+    for (TestCase test : from) {
+      //here we switch to the original coverage
+      test.switchToClonedCoverage();
+      steps += test.getCoverage().getTotalSteps();
+    }
     for (TestCase test : suite) {
       //here we switch to the original coverage
       test.switchToClonedCoverage();

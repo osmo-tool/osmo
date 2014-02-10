@@ -1,5 +1,9 @@
 package osmo.tester.gui.jfx.configurationtab.generator;
 
+import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
+import osmo.tester.generator.algorithm.RandomAlgorithm;
+import osmo.tester.generator.endcondition.EndCondition;
+import osmo.tester.generator.endcondition.Probability;
 import osmo.tester.gui.jfx.executiontab.greedy.IterationInfoListener;
 import osmo.tester.optimizer.greedy.IterationListener;
 
@@ -17,6 +21,8 @@ public class GreedyParameters {
   private int timeout = 10;
   private TimeUnit timeUnit = TimeUnit.SECONDS;
   private IterationListener listener = null;
+  private EndCondition testEndCondition = new Probability(0.2);
+  private FSMTraversalAlgorithm algorithm = new RandomAlgorithm();
 
   public GreedyParameters() {
   }
@@ -76,5 +82,21 @@ public class GreedyParameters {
 
   public void setListener(IterationListener listener) {
     this.listener = listener;
+  }
+
+  public void setTestEndCondition(EndCondition testEndCondition) {
+    this.testEndCondition = testEndCondition;
+  }
+
+  public EndCondition getTestEndCondition() {
+    return testEndCondition;
+  }
+
+  public void setAlgorithm(FSMTraversalAlgorithm algorithm) {
+    this.algorithm = algorithm;
+  }
+
+  public FSMTraversalAlgorithm getAlgorithm() {
+    return algorithm;
   }
 }

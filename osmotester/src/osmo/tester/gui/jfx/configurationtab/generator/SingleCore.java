@@ -12,12 +12,22 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import osmo.tester.OSMOConfiguration;
+import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
+import osmo.tester.generator.endcondition.EndCondition;
+import osmo.tester.gui.jfx.GUIState;
+import osmo.tester.gui.jfx.configurationtab.algorithms.AlgorithmDescription;
+import osmo.tester.gui.jfx.configurationtab.algorithms.BalancingDescription;
+import osmo.tester.gui.jfx.configurationtab.algorithms.RandomDescription;
+import osmo.tester.gui.jfx.configurationtab.algorithms.WeightedBalancingDescription;
+import osmo.tester.gui.jfx.configurationtab.algorithms.WeightedRandomDescription;
 import osmo.tester.gui.jfx.configurationtab.endconditions.ECDescription;
 import osmo.tester.gui.jfx.configurationtab.endconditions.EndlessDescription;
 import osmo.tester.gui.jfx.configurationtab.endconditions.LengthDescription;
 import osmo.tester.gui.jfx.configurationtab.endconditions.LengthProbabilityDescription;
 import osmo.tester.gui.jfx.configurationtab.endconditions.ProbabilityDescription;
 import osmo.tester.gui.jfx.configurationtab.endconditions.TimeDescription;
+import osmo.tester.model.FSM;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +36,7 @@ import java.util.List;
  * @author Teemu Kanstren
  */
 public class SingleCore implements GeneratorDescription {
+  private final GUIState state;
   private ECDescription chosenTestEC = null;
   private ECDescription chosenSuiteEC = null;
   private List<ECDescription> testECs = new ArrayList<>();
@@ -39,8 +50,10 @@ public class SingleCore implements GeneratorDescription {
   private static final int algoY = 3;
   private static final int seedY = 4;
   protected final GridPane grid = new GridPane();
+  private ComboBox<AlgorithmDescription> algoBox;
 
-  public SingleCore() {
+  public SingleCore(GUIState state) {
+    this.state = state;
     init();
     grid.setVgap(10);
     grid.setHgap(10);
@@ -138,10 +151,55 @@ public class SingleCore implements GeneratorDescription {
   public void createAlgorithmPane() {
     Text label = new Text("Algorithm:");
     grid.add(label, 0, algoY);
-    ComboBox<String> box = new ComboBox<>();
-    ObservableList<String> items = box.getItems();
-    items.addAll("Random", "Balancing", "Weighted Random", "Weighted Balancing");
-    box.setValue("Random");
-    grid.add(box, 1, algoY);
+    algoBox = new ComboBox<>();
+    ObservableList<AlgorithmDescription> items = algoBox.getItems();
+    RandomDescription random = new RandomDescription();
+    BalancingDescription balancing = new BalancingDescription();
+    WeightedRandomDescription weightedRandom = new WeightedRandomDescription();
+    WeightedBalancingDescription weightedBalancing = new WeightedBalancingDescription();
+    items.addAll(random, balancing, weightedRandom, weightedBalancing);
+    algoBox.setValue(random);
+    grid.add(algoBox, 1, algoY);
+  }
+
+  public void storeParameters() {
+    OSMOConfiguration config = state.getOsmoConfig();
+    config.setAlgorithm(algoBox.getValue().getAlgorithm());
+    config.setTestEndCondition(chosenTestEC.getEndCondition());
+    config.setSuiteEndCondition(chosenSuiteEC.getEndCondition());
+  }
+  
+  public void readParameters() {
+    OSMOConfiguration config = state.getOsmoConfig();
+
+    //TODO: move to own class
+    EndCondition endCondition = config.getTestCaseEndCondition();
+    ObservableList<ECDescription> items = oldTestBox.getItems();
+    for (ECDescription item : items) {
+      if (item.getEndCondition().getClass().equals(endCondition.getClass())) {
+        oldTestBox.setValue(item);
+        break;
+      }
+    }
+
+    //TODO: move to own class
+    EndCondition suiteEC = config.getSuiteEndCondition();
+    items = oldSuiteBox.getItems();
+    for (ECDescription item : items) {
+      if (item.getEndCondition().getClass().equals(suiteEC.getClass())) {
+        oldSuiteBox.setValue(item);
+        break;
+      }
+    }
+
+    //we just need the algorithm class so we can pass in fake info
+    FSMTraversalAlgorithm algorithm = config.cloneAlgorithm(0, new FSM());
+    ObservableList<AlgorithmDescription> algoItems = algoBox.getItems();
+    for (AlgorithmDescription algo : algoItems) {
+      if (algo.getAlgorithm().getClass().equals(algorithm.getClass())) {
+        algoBox.setValue(algo);
+        break;
+      }
+    }
   }
 }

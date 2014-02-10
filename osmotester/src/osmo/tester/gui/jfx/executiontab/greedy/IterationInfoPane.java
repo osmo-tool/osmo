@@ -5,12 +5,14 @@ import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.gui.jfx.GUIState;
+import osmo.tester.gui.jfx.testinfowindow.TestInfoWindow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +72,9 @@ public class IterationInfoPane extends VBox {
     ObservableList<Node> kids = getChildren();
     kids.add(chart);
     kids.add(grid);
+    Button showButton = new Button("Show Tests");
+    showButton.setOnAction((event) -> showTests());
+    kids.add(showButton);
   }
   
   public void visualize(List<TestCase> tests) {
@@ -129,5 +134,11 @@ public class IterationInfoPane extends VBox {
   
   public void refresh() {
     visualize(shown);
+  }
+  
+  private void showTests() {
+    TestInfoWindow tiw = new TestInfoWindow(state);
+    tiw.addTests(shown);
+    tiw.show();
   }
 }
