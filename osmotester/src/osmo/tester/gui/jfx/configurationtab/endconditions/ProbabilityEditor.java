@@ -12,13 +12,14 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import osmo.tester.generator.endcondition.Probability;
 import osmo.tester.gui.jfx.configurationtab.GeneratorPane;
+import osmo.tester.gui.jfx.configurationtab.generator.GeneratorDescription;
 import osmo.tester.gui.jfx.configurationtab.generator.SingleCore;
 
 /**
  * @author Teemu Kanstren
  */
 public class ProbabilityEditor extends GridPane {
-  public ProbabilityEditor(SingleCore parent, Stage stage, ProbabilityDescription desc) {
+  public ProbabilityEditor(GeneratorDescription parent, Stage stage, ProbabilityDescription desc) {
     setHgap(10);
     setVgap(10);
     setPadding(new Insets(10, 10, 10, 10));

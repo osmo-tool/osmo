@@ -15,7 +15,8 @@ public class Iteration {
 
   public Iteration(List<TestCase> tests) {
     this.id = nextId++;
-    this.tests = tests;
+    this.tests = new ArrayList<>();
+    this.tests.addAll(tests);
   }
 
   public int getId() {

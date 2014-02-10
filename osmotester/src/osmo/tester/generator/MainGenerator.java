@@ -96,10 +96,11 @@ public class MainGenerator {
    * by the user and these will be re-used across the generation.
    */
   private void createModelObjects() {
-    //if configuration allows empty tests, this can produce same seed and loop it.. but that is model issue
     int salt = suite.getCoverage().getTotalSteps();
+    long oldSeed = seed;
     //create a new seed for the new test case
     seed = baseSeed + salt;
+    //if configuration allows empty tests, above can produce same seed and loop it.. therefor the check
     //we cannot re-parse the single instance or it will fail as it is already parsed and initialized
     if (config.getFactory() instanceof SingleInstanceModelFactory && fsm != null) return;
     //re-parse the model, which causes re-creation of the model objects and as such creates the new references
@@ -126,7 +127,7 @@ public class MainGenerator {
     log.debug("Starting new test generation");
     beforeTest();
     TestCase test = suite.getCurrentTest();
-    while (!config.getTestCaseEndCondition().endTest(suite, fsm)) {
+    while (!endTest()) {
       try {
         boolean shouldContinue = nextStep();
         if (!shouldContinue) {
@@ -147,6 +148,11 @@ public class MainGenerator {
     afterTest();
     log.debug("Finished new test generation");
     return test;
+  }
+
+  private boolean endTest() {
+    if (getCurrentTest().getAllStepNames().size() < 1) return false;
+    return config.getTestCaseEndCondition().endTest(suite, fsm);
   }
 
   private void lastSteps() {

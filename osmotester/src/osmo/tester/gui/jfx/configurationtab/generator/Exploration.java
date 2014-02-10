@@ -40,7 +40,17 @@ public class Exploration implements GeneratorDescription {
   public String toString() {
     return "Exploration";
   }
-  
+
+  @Override
+  public void createTestECPane() {
+    
+  }
+
+  @Override
+  public void createSuiteECPane() {
+
+  }
+
   @Override
   public Node createPane() {
     createDepth();

@@ -8,4 +8,6 @@ import javafx.scene.layout.Pane;
  */
 public interface GeneratorDescription {
   public Node createPane();
+  public void createTestECPane();
+  public void createSuiteECPane();
 }

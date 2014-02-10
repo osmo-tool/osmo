@@ -5,7 +5,7 @@ import osmo.tester.generator.listener.GenerationListener;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.gui.jfx.executiontab.basic.BasicExecutorPane;
+import osmo.tester.gui.jfx.executiontab.single.BasicExecutorPane;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 

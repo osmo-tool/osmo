@@ -8,19 +8,14 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.gui.jfx.GUIState;
-import osmo.tester.gui.jfx.executiontab.TestDescription;
-import osmo.tester.gui.jfx.executiontab.basic.MetricsPane;
-import osmo.tester.gui.jfx.executiontab.basic.ReducerPane;
-import osmo.tester.gui.jfx.executiontab.basic.TestInfoPane;
+import osmo.tester.gui.jfx.executiontab.single.MetricsPane;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

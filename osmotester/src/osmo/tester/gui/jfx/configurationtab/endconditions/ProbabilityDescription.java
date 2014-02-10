@@ -4,6 +4,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import osmo.tester.generator.endcondition.Probability;
 import osmo.tester.gui.jfx.configurationtab.GeneratorPane;
+import osmo.tester.gui.jfx.configurationtab.generator.GeneratorDescription;
 import osmo.tester.gui.jfx.configurationtab.generator.SingleCore;
 
 /**
@@ -22,7 +23,7 @@ public class ProbabilityDescription implements ECDescription {
   }
 
   @Override
-  public Pane createEditor(SingleCore parent, Stage stage) {
+  public Pane createEditor(GeneratorDescription parent, Stage stage) {
     return new ProbabilityEditor(parent, stage, this);
   }
 

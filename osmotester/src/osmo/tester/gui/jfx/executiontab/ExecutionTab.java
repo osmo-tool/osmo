@@ -3,9 +3,8 @@ package osmo.tester.gui.jfx.executiontab;
 import javafx.scene.control.Tab;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.listener.GenerationListener;
-import osmo.tester.generator.listener.GenerationListenerList;
 import osmo.tester.gui.jfx.GUIState;
-import osmo.tester.gui.jfx.executiontab.basic.BasicExecutorPane;
+import osmo.tester.gui.jfx.executiontab.single.BasicExecutorPane;
 import osmo.tester.gui.jfx.executiontab.greedy.GreedyInfoPane;
 import osmo.tester.gui.jfx.executiontab.greedy.IterationInfoListener;
 

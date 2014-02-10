@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import osmo.tester.generator.endcondition.Time;
 import osmo.tester.gui.jfx.configurationtab.GeneratorPane;
+import osmo.tester.gui.jfx.configurationtab.generator.GeneratorDescription;
 import osmo.tester.gui.jfx.configurationtab.generator.SingleCore;
 
 import java.util.concurrent.TimeUnit;
@@ -21,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  * @author Teemu Kanstren
  */
 public class TimeEditor extends GridPane {
-  public TimeEditor(SingleCore parent, Stage stage, TimeDescription desc) {
+  public TimeEditor(GeneratorDescription parent, Stage stage, TimeDescription desc) {
     setHgap(10);
     setVgap(10);
     setPadding(new Insets(10, 10, 10, 10));

@@ -5,6 +5,7 @@ import javafx.stage.Stage;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.endcondition.Endless;
 import osmo.tester.gui.jfx.configurationtab.GeneratorPane;
+import osmo.tester.gui.jfx.configurationtab.generator.GeneratorDescription;
 import osmo.tester.gui.jfx.configurationtab.generator.SingleCore;
 
 /**
@@ -19,7 +20,7 @@ public class EndlessDescription implements ECDescription {
   }
 
   @Override
-  public Pane createEditor(SingleCore parent, Stage stage) {
+  public Pane createEditor(GeneratorDescription parent, Stage stage) {
     return null;
   }
 
