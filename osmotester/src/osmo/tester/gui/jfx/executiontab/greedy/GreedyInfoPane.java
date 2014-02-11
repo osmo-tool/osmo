@@ -1,5 +1,6 @@
 package osmo.tester.gui.jfx.executiontab.greedy;
 
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -17,17 +18,20 @@ import osmo.tester.gui.jfx.GUIState;
 import osmo.tester.gui.jfx.executiontab.single.MetricsPane;
 import osmo.tester.gui.jfx.testinfo.SuiteChartPane;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Teemu Kanstren
  */
 public class GreedyInfoPane extends GridPane {
+  private final GUIState state;
   private final MetricsPane metricsPane = new MetricsPane(true, true);
   private final SuiteChartPane iterationInfoPane;
   private final ListView<Iteration> iterations = new ListView<>();
 
   public GreedyInfoPane(GUIState state) {
+    this.state = state;
     iterationInfoPane = new SuiteChartPane(state);
     setHgap(10);
     setVgap(10);
@@ -40,7 +44,7 @@ public class GreedyInfoPane extends GridPane {
   }
 
   private void choice(Iteration iteration) {
-    iterationInfoPane.visualize(iteration.getTests());
+    iterationInfoPane.visualize(iteration, true);
   }
 
   private VBox createLeftPane() {
@@ -59,11 +63,14 @@ public class GreedyInfoPane extends GridPane {
     return vbox;
   }
 
-  public void addIteration(List<TestCase> tests) {
-    iterations.getItems().add(new Iteration(tests));
-    metricsPane.increaseIterationCount();
-    metricsPane.setCoverage(new TestCoverage(tests));
-    metricsPane.refresh();
-    metricsPane.setTestCount(tests.size());
+  public void addIteration(List<TestCase> iterationTests) {
+    List<TestCase> tests = new ArrayList<>(iterationTests);
+    Platform.runLater(() -> {
+      iterations.getItems().add(new Iteration(tests));
+      metricsPane.increaseIterationCount();
+      metricsPane.setCoverage(new TestCoverage(tests));
+      metricsPane.refresh();
+      metricsPane.setTestCount(tests.size());
+    });
   }
 }

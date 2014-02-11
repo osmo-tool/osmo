@@ -1,5 +1,6 @@
 package osmo.tester.gui.jfx.executiontab.single;
 
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -91,15 +92,17 @@ public class MetricsPane extends GridPane {
   }
 
   public void refresh() {
-    iterationField.setText("" + iterationCount);
-    testsField.setText("" + testCount);
-    lengthField.setText("" + coverage.getTotalSteps());
-    stepsField.setText("" + coverage.getSingles().size());
-    stepPairsField.setText("" + coverage.getStepPairs().size());
-    stateField.setText(""+coverage.getStateCount());
-    statePairsField.setText(""+coverage.getStatePairCount());
-    valuesField.setText(""+coverage.getValueCount());
-    requirementsField.setText(""+coverage.getRequirements().size());
+    Platform.runLater(() -> {
+      iterationField.setText("" + iterationCount);
+      testsField.setText("" + testCount);
+      lengthField.setText("" + coverage.getTotalSteps());
+      stepsField.setText("" + coverage.getSingles().size());
+      stepPairsField.setText("" + coverage.getStepPairs().size());
+      stateField.setText(""+coverage.getStateCount());
+      statePairsField.setText(""+coverage.getStatePairCount());
+      valuesField.setText(""+coverage.getValueCount());
+      requirementsField.setText(""+coverage.getRequirements().size());
+    });
   }
 
   public void setTestCount(int testCount) {

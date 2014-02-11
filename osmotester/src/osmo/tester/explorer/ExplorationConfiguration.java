@@ -24,27 +24,27 @@ public class ExplorationConfiguration extends ScoreConfiguration {
   /** Minimum length for each generated test case, exploration will not stop before this. */
   protected int minTestLength = 10;
   /** Maximum length for each generated test case, exploration will stop for this test here if not before. */
-  protected int maxTestLength = 0;
+  protected int maxTestLength = 50;
   /** Minimum length for generated test suite, exploration will not stop before this. */
-  protected int minSuiteLength = 0;
+  protected int minSuiteLength = 10;
   /** Maximum length for generated test suite, exploration will stop here if not before. */
-  protected int maxSuiteLength = 0;
+  protected int maxSuiteLength = 20;
   /** Minimum added score to stop generation of current test. Minimum & Maximum test length have precedence over this. */
   protected int minTestScore = 0;
   /** Minimum added score to stop suite generation. Minimum & Maximum suite length have precedence over this. */
   protected int minSuiteScore = 0;
   /** The threshold to stop test generation if no gain is observed over test. */
-  protected int testPlateauThreshold = 0;
+  protected int testPlateauThreshold = 1;
   /** How many steps with minimum score together before we consider to have hit a plateau? */
   protected int testPlateauLength = 1;
   /** The threshold to stop test generation if no gain is observed over suite. */
-  protected int suitePlateauThreshold = 0;
+  protected int suitePlateauThreshold = 1;
   /** The probability to stop after minimum values are reached. Defaults to 0.2 (1=immediate stop,0=no stop). */
   protected double fallbackProbability = 0.2;
   /** The end condition created from the configuration defined in this class. */
   protected ExplorationEndCondition endCondition = null;
-  /** Max number of seconds to run, after which the exploration is stopped if not before. 0 or less means never. */
-  protected int timeout = 0;
+  /** Max number of minutes to run, after which the exploration is stopped if not before. 0 or less means never. */
+  protected int timeout = 30;
   /** Randomization seed. */
   private final long seed;
   /** Fallback algorithm for step selection. */
@@ -64,6 +64,10 @@ public class ExplorationConfiguration extends ScoreConfiguration {
     this.depth = depth;
     this.seed = seed;
     this.lengthWeight = 0;
+  }
+
+  public void setDepth(int depth) {
+    this.depth = depth;
   }
 
   public boolean isPrintAll() {

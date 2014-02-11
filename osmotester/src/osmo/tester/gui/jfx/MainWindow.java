@@ -28,6 +28,7 @@ public class MainWindow extends Application {
   @Override
   public void start(Stage stage) throws Exception {
     stage.setTitle("OSMO Tester v4.0alpha");
+    state.setStage(stage);
 
     Tab tab1 = new ModelTab(state);
     Tab tab4 = new ResultsTab();
@@ -54,5 +55,11 @@ public class MainWindow extends Application {
     configurationTab.storeScoreWeights();
     tabPane.getSelectionModel().select(executionTab);
     executionTab.showGreedy();
+  }
+
+  public void openExplorationExecution() {
+    configurationTab.storeScoreWeights();
+    tabPane.getSelectionModel().select(executionTab);
+    executionTab.showSingleCore();
   }
 }

@@ -4,12 +4,12 @@ package osmo.tester.gui.jfx.testinfo;
  * @author Teemu Kanstren
  */
 public class ChartSettings {
-  public boolean showOverall = true;
-  public boolean showSteps = false;
-  public boolean showStepPairs = false;
-  public boolean showStates = false;
-  public boolean showStatePairs = false;
-  public boolean showVariables = false;
-  public boolean showValues = false;
-  public boolean showRequirements = false;
+  public boolean showScore = false;
+  public boolean showSteps = true;
+  public boolean showStepPairs = true;
+  public boolean showStates = true;
+  public boolean showStatePairs = true;
+  public boolean showVariables = true;
+  public boolean showValues = true;
+  public boolean showRequirements = true;
 }

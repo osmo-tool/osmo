@@ -78,6 +78,8 @@ public class ExplorationEndCondition implements EndCondition {
   }
 
   public boolean isSuiteFinished(List<TestCase> suite, TestCoverage tc) {
+    if (!exploring)
+      System.out.println("here");
     if (isTimedOut()) {
       return true;
     }
@@ -193,7 +195,7 @@ public class ExplorationEndCondition implements EndCondition {
     }
     long now = System.currentTimeMillis();
     long diff = now - startTime;
-    if (diff > config.getTimeout() * 1000) {
+    if (diff > config.getTimeout() * 1000 *60 ) {
       return true;
     }
     return false;

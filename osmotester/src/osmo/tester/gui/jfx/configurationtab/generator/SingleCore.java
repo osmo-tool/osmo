@@ -39,8 +39,10 @@ public class SingleCore implements GeneratorDescription {
   private final GUIState state;
   private ECDescription chosenTestEC = null;
   private ECDescription chosenSuiteEC = null;
+  private AlgorithmDescription chosenAlgorithm = null;
   private List<ECDescription> testECs = new ArrayList<>();
   private List<ECDescription> suiteECs = new ArrayList<>();
+  private List<AlgorithmDescription> algorithms = new ArrayList<>();
   private ComboBox<ECDescription> oldTestBox = null;
   private ComboBox<ECDescription> oldSuiteBox = null;
   private Button testButton;
@@ -88,6 +90,13 @@ public class SingleCore implements GeneratorDescription {
     suiteECs.add(new LengthProbabilityDescription());
     suiteECs.add(new EndlessDescription());
     suiteECs.add(new TimeDescription());
+
+    algorithms.add(new RandomDescription());
+    algorithms.add(new BalancingDescription());
+    algorithms.add(new WeightedRandomDescription());
+    algorithms.add(new WeightedBalancingDescription());
+
+    readParameters();
   }
   
   public void createTestECPane() {
@@ -153,12 +162,8 @@ public class SingleCore implements GeneratorDescription {
     grid.add(label, 0, algoY);
     algoBox = new ComboBox<>();
     ObservableList<AlgorithmDescription> items = algoBox.getItems();
-    RandomDescription random = new RandomDescription();
-    BalancingDescription balancing = new BalancingDescription();
-    WeightedRandomDescription weightedRandom = new WeightedRandomDescription();
-    WeightedBalancingDescription weightedBalancing = new WeightedBalancingDescription();
-    items.addAll(random, balancing, weightedRandom, weightedBalancing);
-    algoBox.setValue(random);
+    items.addAll(algorithms);
+    algoBox.setValue(chosenAlgorithm);
     grid.add(algoBox, 1, algoY);
   }
 
@@ -172,32 +177,26 @@ public class SingleCore implements GeneratorDescription {
   public void readParameters() {
     OSMOConfiguration config = state.getOsmoConfig();
 
-    //TODO: move to own class
     EndCondition endCondition = config.getTestCaseEndCondition();
-    ObservableList<ECDescription> items = oldTestBox.getItems();
-    for (ECDescription item : items) {
+    for (ECDescription item : testECs) {
       if (item.getEndCondition().getClass().equals(endCondition.getClass())) {
-        oldTestBox.setValue(item);
+        chosenTestEC = item;
         break;
       }
     }
 
-    //TODO: move to own class
     EndCondition suiteEC = config.getSuiteEndCondition();
-    items = oldSuiteBox.getItems();
-    for (ECDescription item : items) {
+    for (ECDescription item : suiteECs) {
       if (item.getEndCondition().getClass().equals(suiteEC.getClass())) {
-        oldSuiteBox.setValue(item);
+        chosenSuiteEC = item;
         break;
       }
     }
 
-    //we just need the algorithm class so we can pass in fake info
-    FSMTraversalAlgorithm algorithm = config.cloneAlgorithm(0, new FSM());
-    ObservableList<AlgorithmDescription> algoItems = algoBox.getItems();
-    for (AlgorithmDescription algo : algoItems) {
-      if (algo.getAlgorithm().getClass().equals(algorithm.getClass())) {
-        algoBox.setValue(algo);
+    FSMTraversalAlgorithm fake = config.cloneAlgorithm(0, null);
+    for (AlgorithmDescription algorithm : algorithms) {
+      if (algorithm.getAlgorithm().getClass().equals(fake.getClass())) {
+        chosenAlgorithm = algorithm;
         break;
       }
     }

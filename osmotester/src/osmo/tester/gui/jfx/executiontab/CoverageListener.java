@@ -1,5 +1,6 @@
 package osmo.tester.gui.jfx.executiontab;
 
+import javafx.application.Platform;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.listener.GenerationListener;
 import osmo.tester.generator.testsuite.TestCase;
@@ -71,6 +72,6 @@ public class CoverageListener implements GenerationListener {
 
   @Override
   public void suiteEnded(TestSuite suite) {
-
+    Platform.runLater(pane::suiteEnded);
   }
 }
