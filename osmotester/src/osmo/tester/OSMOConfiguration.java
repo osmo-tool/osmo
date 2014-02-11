@@ -16,9 +16,12 @@ import osmo.tester.model.ModelFactory;
 import osmo.tester.model.TestModels;
 import osmo.tester.model.data.SearchableInput;
 import osmo.tester.scenario.Scenario;
+import osmo.tester.scripter.internal.TestScript;
+import osmo.tester.scripter.internal.TestScripts;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Defines configuration for test generation.
@@ -62,6 +65,7 @@ public class OSMOConfiguration implements ModelFactory {
   private boolean exploring = false;
   private boolean stopGenerationOnError = true;
   private boolean printExplorationErrors;
+  private List<TestScript> scripts = null;
 
   public OSMOConfiguration() {
   }
@@ -320,5 +324,13 @@ public class OSMOConfiguration implements ModelFactory {
 
   public void setPrintExplorationErrors(boolean printExplorationErrors) {
     this.printExplorationErrors = printExplorationErrors;
+  }
+
+  public List<TestScript> getScripts() {
+    return scripts;
+  }
+
+  public void setScripts(List<TestScript> scripts) {
+    this.scripts = scripts;
   }
 }

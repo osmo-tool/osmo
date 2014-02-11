@@ -101,4 +101,8 @@ public class MetricsPane extends GridPane {
     valuesField.setText(""+coverage.getValueCount());
     requirementsField.setText(""+coverage.getRequirements().size());
   }
+
+  public void setTestCount(int testCount) {
+    this.testCount = testCount;
+  }
 }

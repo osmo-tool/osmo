@@ -10,6 +10,10 @@ import javafx.scene.layout.VBox;
 import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.gui.jfx.GUIState;
+import osmo.tester.gui.jfx.testinfo.SuiteChartPane;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Teemu Kanstren
@@ -17,17 +21,20 @@ import osmo.tester.gui.jfx.GUIState;
 public class BasicExecutorPane extends GridPane {
   private final TestCoverage coverage = new TestCoverage();
   private final MetricsPane metricsPane = new MetricsPane(true, false);
-  private final TestInfoPane singleInfoPane;
+//  private final TestInfoPane singleInfoPane;
+  private final SuiteChartPane iterationInfoPane;
+  private final List<TestCase> tests = new ArrayList<>();
 
   public BasicExecutorPane(GUIState state) {
-    singleInfoPane = new TestInfoPane(state);
+//    singleInfoPane = new TestInfoPane(state);
+    iterationInfoPane = new SuiteChartPane(state);
     setHgap(10);
     setVgap(10);
     setPadding(new Insets(10, 10, 10, 10));
     VBox vbox = createLeftPane();
     add(vbox, 0, 0);
-    add(singleInfoPane, 1, 0, 1, 2);
-    add(new ReducerPane(), 2, 0, 1, 2);
+    add(iterationInfoPane, 1, 0, 1, 2);
+//    add(new ReducerPane(), 2, 0, 1, 2);
   }
 
   private VBox createLeftPane() {
@@ -48,6 +55,8 @@ public class BasicExecutorPane extends GridPane {
     coverage.addCoverage(test.getCoverage());
     metricsPane.increaseTestCount();
     metricsPane.refresh();
-    singleInfoPane.addTest(test);
+//    singleInfoPane.addTest(test);
+    tests.add(test);
+    iterationInfoPane.visualize(tests);
   }
 }

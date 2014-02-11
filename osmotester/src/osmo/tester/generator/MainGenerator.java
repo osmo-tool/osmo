@@ -19,6 +19,8 @@ import osmo.tester.model.Requirements;
 import osmo.tester.parser.MainParser;
 import osmo.tester.parser.ParserResult;
 import osmo.tester.scenario.ScenarioFilter;
+import osmo.tester.scripter.internal.TestScript;
+import osmo.tester.scripter.internal.TestScripts;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -58,8 +60,10 @@ public class MainGenerator {
   /** The seed for the current test case being generated. */
   private Long seed = null;
   /** Forces the generator to follow the defined scenario by removing any steps from enabled list not allowed by scenario. */
-  private final ScenarioFilter scenarioFilter;
+  private ScenarioFilter scenarioFilter;
   private final FSMTraversalAlgorithm algorithm;
+  private List<TestScript> scripts = null;
+  private TestScript script = null;
 
   /**
    * @param seed   The base seed to use for randomization during generation.
@@ -73,6 +77,8 @@ public class MainGenerator {
     this.config = config;
     this.listeners = config.getListeners();
     this.scenarioFilter = new ScenarioFilter(config.getScenario());
+    this.scripts = config.getScripts();
+    //this is used to initialize variables such as fsm
     createModelObjects();
     this.algorithm = config.cloneAlgorithm(seed, fsm);
   }
@@ -82,11 +88,16 @@ public class MainGenerator {
     log.debug("starting generation");
     config.initialize(seed, fsm);
     initSuite();
-    while (!config.getSuiteEndCondition().endSuite(suite, fsm)) {
+    while (!shouldStopSuite()) {
       nextTest();
     }
     log.debug("Ending suite");
     endSuite();
+  }
+
+  private boolean shouldStopSuite() {
+    if (scripts != null) return suite.getAllTestCases().size() >= scripts.size();
+    return config.getSuiteEndCondition().endSuite(suite, fsm);
   }
 
   /**
@@ -97,9 +108,13 @@ public class MainGenerator {
    */
   private void createModelObjects() {
     int salt = suite.getCoverage().getTotalSteps();
-    long oldSeed = seed;
     //create a new seed for the new test case
     seed = baseSeed + salt;
+    if (scripts != null) {
+      script = scripts.get(suite.getAllTestCases().size());
+      seed = script.getSeed();
+      scenarioFilter = new ScenarioFilter(script.toScenario());
+    }
     //if configuration allows empty tests, above can produce same seed and loop it.. therefor the check
     //we cannot re-parse the single instance or it will fail as it is already parsed and initialized
     if (config.getFactory() instanceof SingleInstanceModelFactory && fsm != null) return;
@@ -151,7 +166,10 @@ public class MainGenerator {
   }
 
   private boolean endTest() {
-    if (getCurrentTest().getAllStepNames().size() < 1) return false;
+    //always require test to have a step
+    int length = getCurrentTest().getAllStepNames().size();
+    if (length < 1) return false;
+    if (script != null) return length >= script.getSteps().size();
     return config.getTestCaseEndCondition().endTest(suite, fsm);
   }
 

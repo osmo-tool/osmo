@@ -1,4 +1,4 @@
-package osmo.tester.gui.jfx.executiontab.single;
+package osmo.tester.gui.jfx.testinfo;
 
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.collections.ObservableList;
@@ -10,6 +10,8 @@ import javafx.scene.layout.VBox;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.gui.jfx.GUIState;
 import osmo.tester.gui.jfx.executiontab.TestDescription;
+import osmo.tester.gui.jfx.executiontab.single.MetricsTab;
+import osmo.tester.gui.jfx.executiontab.single.StepListTab;
 
 /**
  * @author Teemu Kanstren
