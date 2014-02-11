@@ -20,7 +20,6 @@ import osmo.tester.parser.MainParser;
 import osmo.tester.parser.ParserResult;
 import osmo.tester.scenario.ScenarioFilter;
 import osmo.tester.scripter.internal.TestScript;
-import osmo.tester.scripter.internal.TestScripts;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -96,7 +95,12 @@ public class MainGenerator {
   }
 
   private boolean shouldStopSuite() {
-    if (scripts != null) return suite.getAllTestCases().size() >= scripts.size();
+    int length = suite.getAllTestCases().size();
+    if (scripts != null) {
+      return length >= scripts.size();
+    }
+    //always require at least one test
+    if (length < 1) return false;
     return config.getSuiteEndCondition().endSuite(suite, fsm);
   }
 
@@ -142,7 +146,7 @@ public class MainGenerator {
     log.debug("Starting new test generation");
     beforeTest();
     TestCase test = suite.getCurrentTest();
-    while (!endTest()) {
+    while (!shouldEndTest()) {
       try {
         boolean shouldContinue = nextStep();
         if (!shouldContinue) {
@@ -165,7 +169,7 @@ public class MainGenerator {
     return test;
   }
 
-  private boolean endTest() {
+  private boolean shouldEndTest() {
     //always require test to have a step
     int length = getCurrentTest().getAllStepNames().size();
     if (length < 1) return false;

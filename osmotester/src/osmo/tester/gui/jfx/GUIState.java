@@ -1,6 +1,7 @@
 package osmo.tester.gui.jfx;
 
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.coverage.ScoreConfiguration;
 import osmo.tester.explorer.ExplorationConfiguration;
@@ -12,16 +13,24 @@ import osmo.tester.model.ModelFactory;
  * @author Teemu Kanstren
  */
 public class GUIState {
-  private final OSMOConfiguration osmoConfig = new OSMOConfiguration();
+  private ModelFactory factory = null;
+  private OSMOConfiguration osmoConfig = new OSMOConfiguration();
   private final GreedyParameters greedyParameters = new GreedyParameters();
   private final ExplorationConfiguration explorationConfig = new ExplorationConfiguration(null, 1, 0);
   private final ScoreConfiguration scoreConfig = new ScoreConfiguration();
   private TextField seedField;
   private final MainWindow mainWindow;
   private ChartSettings chartSettings = new ChartSettings();
+  private Stage stage;
 
   public GUIState(MainWindow mainWindow) {
     this.mainWindow = mainWindow;
+  }
+
+  public void setOsmoConfig(OSMOConfiguration osmoConfig) {
+    this.osmoConfig = osmoConfig;
+    osmoConfig.setFactory(factory);
+    explorationConfig.setFactory(factory);
   }
 
   public OSMOConfiguration getOsmoConfig() {
@@ -37,8 +46,7 @@ public class GUIState {
   }
 
   public void setFactory(ModelFactory factory) {
-    osmoConfig.setFactory(factory);
-    explorationConfig.setFactory(factory);
+    this.factory = factory;
   }
 
   public void setSeedField(TextField seedField) {
@@ -57,6 +65,10 @@ public class GUIState {
     mainWindow.openGreedyExecution();
   }
 
+  public void openExplorationExecution() {
+    mainWindow.openExplorationExecution();
+  }
+
   public GreedyParameters getGreedyParameters() {
     return greedyParameters;
   }
@@ -68,4 +80,13 @@ public class GUIState {
   public void setChartSettings(ChartSettings chartSettings) {
     this.chartSettings = chartSettings;
   }
+
+  public void setStage(Stage stage) {
+    this.stage = stage;
+  }
+
+  public Stage getStage() {
+    return stage;
+  }
+
 }

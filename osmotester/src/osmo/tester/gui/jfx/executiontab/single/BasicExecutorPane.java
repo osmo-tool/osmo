@@ -57,6 +57,10 @@ public class BasicExecutorPane extends GridPane {
     metricsPane.refresh();
 //    singleInfoPane.addTest(test);
     tests.add(test);
-    iterationInfoPane.visualize(tests);
+    iterationInfoPane.addTest(test);
+  }
+  
+  public void suiteEnded() {
+    iterationInfoPane.finalRefresh();
   }
 }

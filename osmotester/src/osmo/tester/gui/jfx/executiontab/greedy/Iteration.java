@@ -1,6 +1,10 @@
 package osmo.tester.gui.jfx.executiontab.greedy;
 
+import javafx.scene.chart.XYChart;
+import osmo.tester.coverage.ScoreCalculator;
+import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.gui.jfx.GUIState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +19,12 @@ public class Iteration {
 
   public Iteration(List<TestCase> tests) {
     this.id = nextId++;
-    this.tests = new ArrayList<>();
-    this.tests.addAll(tests);
+    this.tests = new ArrayList<>(tests);
+  }
+
+  public Iteration(Iteration cloneMe) {
+    this.tests = new ArrayList<>(cloneMe.tests);
+    this.id = cloneMe.id;
   }
 
   public int getId() {
@@ -31,4 +39,5 @@ public class Iteration {
   public String toString() {
     return "Iteration "+id;
   }
+
 }

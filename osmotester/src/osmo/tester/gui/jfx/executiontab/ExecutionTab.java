@@ -28,6 +28,7 @@ public class ExecutionTab extends Tab {
     setContent(single);
     OSMOConfiguration osmoConfig = state.getOsmoConfig();
     Collection<GenerationListener> listeners = osmoConfig.getListeners().getListeners();
+    //if we get here many times as result of several runs in same session, we need to throw away the old stuff
     for (Iterator<GenerationListener> i = listeners.iterator() ; i.hasNext() ; ) {
       GenerationListener listener = i.next();
       if (listener instanceof CoverageListener) i.remove();

@@ -20,9 +20,13 @@ public class LengthTests {
   }
 
   private void testWithLength(int expectedLength) {
+    testWithLength(expectedLength, expectedLength);
+  }
+  
+  private void testWithLength(int goal, int expectedLength) {
     OSMOTester tester = new OSMOTester();
     tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
-    Length testStrategy = new Length(expectedLength);
+    Length testStrategy = new Length(goal);
     tester.setTestEndCondition(testStrategy);
     tester.setSuiteEndCondition(testStrategy);
     tester.generate(111);
@@ -41,7 +45,7 @@ public class LengthTests {
 
   @Test
   public void length0() {
-    testWithLength(0);
+    testWithLength(0, 1);
   }
 
   @Test
