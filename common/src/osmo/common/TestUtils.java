@@ -482,8 +482,12 @@ public class TestUtils {
     if (sout != null) System.setOut(sout);
   }
 
-  public static String readFile(String path, String encoding) throws IOException {
-    byte[] data = Files.readAllBytes(Paths.get(path));
-    return new String(data, encoding);
+  public static String readFile(String path, String encoding) {
+    try {
+      byte [] data = Files.readAllBytes(Paths.get(path));
+      return new String(data, encoding);
+    } catch (IOException e) {
+      throw new RuntimeException("Failed to read file '"+path+"'", e);
+    }
   }
 }

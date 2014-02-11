@@ -1,4 +1,4 @@
-package osmo.tester.gui.jfx.executiontab.single;
+package osmo.tester.gui.jfx.testinfo;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;

@@ -5,6 +5,7 @@ import osmo.tester.OSMOConfiguration;
 import osmo.tester.coverage.ScoreConfiguration;
 import osmo.tester.explorer.ExplorationConfiguration;
 import osmo.tester.gui.jfx.configurationtab.generator.GreedyParameters;
+import osmo.tester.gui.jfx.testinfo.ChartSettings;
 import osmo.tester.model.ModelFactory;
 
 /**
@@ -17,6 +18,7 @@ public class GUIState {
   private final ScoreConfiguration scoreConfig = new ScoreConfiguration();
   private TextField seedField;
   private final MainWindow mainWindow;
+  private ChartSettings chartSettings = new ChartSettings();
 
   public GUIState(MainWindow mainWindow) {
     this.mainWindow = mainWindow;
@@ -57,5 +59,13 @@ public class GUIState {
 
   public GreedyParameters getGreedyParameters() {
     return greedyParameters;
+  }
+
+  public ChartSettings getChartSettings() {
+    return chartSettings;
+  }
+
+  public void setChartSettings(ChartSettings chartSettings) {
+    this.chartSettings = chartSettings;
   }
 }

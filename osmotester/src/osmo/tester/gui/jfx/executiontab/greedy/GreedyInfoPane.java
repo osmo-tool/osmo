@@ -15,6 +15,7 @@ import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.gui.jfx.GUIState;
 import osmo.tester.gui.jfx.executiontab.single.MetricsPane;
+import osmo.tester.gui.jfx.testinfo.SuiteChartPane;
 
 import java.util.List;
 
@@ -23,11 +24,11 @@ import java.util.List;
  */
 public class GreedyInfoPane extends GridPane {
   private final MetricsPane metricsPane = new MetricsPane(true, true);
-  private final IterationInfoPane iterationInfoPane;
+  private final SuiteChartPane iterationInfoPane;
   private final ListView<Iteration> iterations = new ListView<>();
 
   public GreedyInfoPane(GUIState state) {
-    iterationInfoPane = new IterationInfoPane(state);
+    iterationInfoPane = new SuiteChartPane(state);
     setHgap(10);
     setVgap(10);
     setPadding(new Insets(10, 10, 10, 10));
@@ -63,5 +64,6 @@ public class GreedyInfoPane extends GridPane {
     metricsPane.increaseIterationCount();
     metricsPane.setCoverage(new TestCoverage(tests));
     metricsPane.refresh();
+    metricsPane.setTestCount(tests.size());
   }
 }

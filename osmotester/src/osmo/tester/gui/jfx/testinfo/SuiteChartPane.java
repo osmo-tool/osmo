@@ -1,4 +1,4 @@
-package osmo.tester.gui.jfx.executiontab.greedy;
+package osmo.tester.gui.jfx.testinfo;
 
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -9,10 +9,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import osmo.tester.coverage.ScoreCalculator;
+import osmo.tester.coverage.ScoreConfiguration;
 import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.gui.jfx.GUIState;
-import osmo.tester.gui.jfx.testinfowindow.TestInfoWindow;
+import osmo.tester.gui.jfx.testinfo.TestInfoWindow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,7 @@ import java.util.List;
 /**
  * @author Teemu Kanstren
  */
-public class IterationInfoPane extends VBox {
+public class SuiteChartPane extends VBox {
   private final GUIState state;
   private final CheckBox showOverall = new CheckBox("Score");
   private final CheckBox showSteps = new CheckBox("Steps");
@@ -33,7 +35,7 @@ public class IterationInfoPane extends VBox {
   private final LineChart<Number,Number> chart;
   private List<TestCase> shown = null;
 
-  public IterationInfoPane(GUIState state) {
+  public SuiteChartPane(GUIState state) {
     super(10);
     this.state = state;
 
@@ -75,6 +77,8 @@ public class IterationInfoPane extends VBox {
     Button showButton = new Button("Show Tests");
     showButton.setOnAction((event) -> showTests());
     kids.add(showButton);
+    
+    setChartSettings(state.getChartSettings());
   }
   
   public void visualize(List<TestCase> tests) {
@@ -108,8 +112,10 @@ public class IterationInfoPane extends VBox {
     
     TestCoverage tc = new TestCoverage();
     int i = 1;
+    ScoreCalculator sc = new ScoreCalculator(state.getScoreConfig());
     for (TestCase test : tests) {
       tc.addCoverage(test.getCoverage());
+      overallSeriesData.add(new XYChart.Data<>(i, sc.calculateScore(tc)));
       stepsSeriesData.add(new XYChart.Data<>(i, tc.getSingles().size()));
       stepPairsSeriesData.add(new XYChart.Data<>(i, tc.getStepPairs().size()));
       statesSeriesData.add(new XYChart.Data<>(i, tc.getStateCount()));
@@ -140,5 +146,28 @@ public class IterationInfoPane extends VBox {
     TestInfoWindow tiw = new TestInfoWindow(state);
     tiw.addTests(shown);
     tiw.show();
+  }
+  
+  public void setChartSettings(ChartSettings settings) {
+    showOverall.setSelected(settings.showOverall);
+    showSteps.setSelected(settings.showSteps);
+    showStepPairs.setSelected(settings.showStepPairs);
+    showStates.setSelected(settings.showStates);
+    showStatePairs.setSelected(settings.showStatePairs);
+    showValues.setSelected(settings.showValues);
+    showVariables.setSelected(settings.showVariables);
+    showRequirements.setSelected(settings.showRequirements);
+  }
+  
+  public void storeChartSettings() {
+    ChartSettings settings = state.getChartSettings();
+    settings.showOverall = showOverall.isSelected();
+    settings.showSteps = showSteps.isSelected();
+    settings.showStepPairs = showStepPairs.isSelected();
+    settings.showStates = showStates.isSelected();
+    settings.showStatePairs = showStatePairs.isSelected();
+    settings.showValues = showValues.isSelected();
+    settings.showVariables = showVariables.isSelected();
+    settings.showRequirements = showRequirements.isSelected();
   }
 }
