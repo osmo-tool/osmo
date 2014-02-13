@@ -16,14 +16,18 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.optimizer.GenerationResults;
 import osmo.tester.optimizer.greedy.GreedyOptimizer;
+import osmo.tester.optimizer.greedy.IterationListener;
 import osmo.tester.optimizer.multiosmo.MultiOSMO;
 import osmo.tester.unittests.testmodels.CalculatorModel;
 import osmo.tester.unittests.testmodels.RandomValueModel;
+import osmo.tester.unittests.testmodels.RandomValueModel4;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /** @author Teemu Kanstren */
 public class GreedyTests {
@@ -90,7 +94,6 @@ public class GreedyTests {
   @Test
   public void requirementOptimizer3TestsWithOverlap() {
     gc.setRequirementWeight(1);
-    GreedyOptimizer optimizer = new GreedyOptimizer(oc, gc);
     TestSuite suite = createSuite1();
     List<TestCase> tests = GreedyOptimizer.sortAndPrune(suite.getFinishedTestCases(), new ScoreCalculator(gc), 0);
     assertEquals("Number of tests should be reduced after pruning useless ones.", 1, tests.size());
@@ -118,6 +121,17 @@ public class GreedyTests {
     assertEquals("Number of new requirements covered by test 2.", 2, reqs2.size());
     assertEquals("Number of new requirements covered by test 3.", 1, reqs3.size());
     assertEquals("Coverage score", 6, scoreFor(tests));
+  }
+
+  @Test
+  public void optimizerOverlappingState() {
+    //GreedyOptimizer optimizer = new GreedyOptimizer(oc, gc);
+    gc.setStateWeight(1);
+    gc.setStatePairWeight(100);
+    TestSuite suite = createSuite3();
+    List<TestCase> tests = GreedyOptimizer.sortAndPrune(suite.getAllTestCases(), new ScoreCalculator(gc), 0);
+    assertEquals("Number of tests after sort and prune", 3, tests.size());
+    assertEquals("Coverage score", 705, scoreFor(tests));
   }
 
   private TestSuite createSuite1() {
@@ -161,6 +175,41 @@ public class GreedyTests {
     suite.startTest(1);
     suite.addStep(new FSMTransition("t1"));
     suite.addStep(new FSMTransition("t2"));
+    suite.coveredRequirement("r3");
+    suite.addStep(new FSMTransition("t3"));
+    suite.coveredRequirement("r4");
+    suite.coveredRequirement("r6");
+    suite.addStep(new FSMTransition("t4"));
+    suite.endTest();
+    return suite;
+  }
+
+  private TestSuite createSuite3() {
+    TestSuite suite = new TestSuite();
+    suite.startTest(1);
+    suite.addStep(new FSMTransition("t1"));
+    suite.addUserCoverage("uc1", "1");
+    suite.addUserCoverage("uc1", "2");
+    suite.coveredRequirement("r5");
+    suite.coveredRequirement("r1");
+    suite.endTest();
+
+    suite.startTest(1);
+    suite.addStep(new FSMTransition("t2"));
+    suite.addStep(new FSMTransition("t3"));
+    suite.addUserCoverage("uc2", "1");
+    suite.addUserCoverage("uc2", "2");
+    suite.coveredRequirement("r2");
+    suite.addStep(new FSMTransition("t4"));
+    suite.addUserCoverage("uc2", "3");
+    suite.addUserCoverage("uc2", "2");
+    suite.endTest();
+
+    suite.startTest(1);
+    suite.addStep(new FSMTransition("t1"));
+    suite.addStep(new FSMTransition("t2"));
+    suite.addUserCoverage("uc2", "3");
+    suite.addUserCoverage("uc2", "2");
     suite.coveredRequirement("r3");
     suite.addStep(new FSMTransition("t3"));
     suite.coveredRequirement("r4");
@@ -281,11 +330,51 @@ public class GreedyTests {
 
   @Test
   public void maxLength() {
-    fail("TBD");
+    gc = new ScoreConfiguration();
+    oc.setFactory(new ReflectiveModelFactory(RandomValueModel4.class));
+    oc.setTestEndCondition(new LengthProbability(5, 1d));
+    GreedyOptimizer greedy = new GreedyOptimizer(oc, gc);
+    greedy.setMax(2);
+    //-1 works because greedy actually produces worse results over time when constrained to max length.. sometimes
+    greedy.setThreshold(-1);
+    GenerationResults results = greedy.search(100, 8);
+    List<TestCase> tests = results.getTests();
+    assertEquals("Number of tests from greedy with max", 2, tests.size());
+    //asserting the score might be useful as well to see it performs better. but would require better test model.
   }
 
   @Test
   public void iterationListener() {
-    fail("TBD");
+    gc = new ScoreConfiguration();
+    oc.setFactory(new ReflectiveModelFactory(RandomValueModel4.class));
+    oc.setTestEndCondition(new LengthProbability(5, 1d));
+    GreedyOptimizer greedy = new GreedyOptimizer(oc, gc);
+    MyIterationListener listener = new MyIterationListener();
+    greedy.addIterationListener(listener);
+    //-1 works because greedy actually produces worse results over time when constrained to max length.. sometimes
+    greedy.setThreshold(-1);
+    GenerationResults results = greedy.search(100, 8);
+
+    assertEquals("Number of iterations", 2, listener.count);
+    assertEquals("Number of iterations", 1, listener.finished);
+    assertEquals("Final tests", results.getTests(), listener.finalTests);
+    //asserting the score might be useful as well to see it performs better. but would require better test model.
+  }
+
+  private static class MyIterationListener implements IterationListener {
+    private int count = 0;
+    private int finished = 0;
+    private List<TestCase> finalTests = null;
+
+    @Override
+    public void iterationDone(List<TestCase> tests) {
+      count++;
+    }
+
+    @Override
+    public void generationDone(List<TestCase> tests) {
+      finished++;
+      finalTests = tests;
+    }
   }
 }

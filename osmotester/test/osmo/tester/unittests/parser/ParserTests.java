@@ -6,10 +6,7 @@ import osmo.tester.OSMOConfiguration;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.model.FSM;
-import osmo.tester.model.FSMTransition;
-import osmo.tester.model.Requirements;
-import osmo.tester.model.VariableField;
+import osmo.tester.model.*;
 import osmo.tester.parser.MainParser;
 import osmo.tester.parser.ParserResult;
 import osmo.tester.unittests.testmodels.EmptyTestModel1;
@@ -28,10 +25,7 @@ import osmo.tester.unittests.testmodels.VariableModel2;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static junit.framework.Assert.*;
 
@@ -189,11 +183,6 @@ public class ParserTests {
               "@Guard without matching step:world.\n";
       assertEquals(expected, msg);
     }
-  }
-
-  @Test
-  public void testDescriptions() {
-    fail("TBD");
   }
   
   @Test
@@ -398,5 +387,65 @@ public class ParserTests {
     assertEquals("Number of @BeforeSuite elements", 3, fsm.getBeforeSuites().size());
     assertEquals("Number of @AfterTest elements", 3, fsm.getAfterTests().size());
     assertEquals("Number of @AfterSuite elements", 3, fsm.getAfterSuites().size());
+  }
+  
+  @Test
+  public void descriptions() {
+    EmptyTestModel1 model = new EmptyTestModel1();
+    ParserResult result = parser.parse(1, conf(model), new TestSuite());
+    FSM fsm = result.getFsm();
+    Collection<InvocationTarget> afterSuites = fsm.getAfterSuites();
+    Collection<InvocationTarget> beforeSuites = fsm.getBeforeSuites();
+    Collection<InvocationTarget> beforeTests = fsm.getBeforeTests();
+    Collection<InvocationTarget> afterTests = fsm.getAfterTests();
+    Collection<FSMTransition> transitions = fsm.getTransitions();
+    Collection<CoverageMethod> coverageMethods = fsm.getCoverageMethods();
+    Collection<InvocationTarget> endConditions = fsm.getEndConditions();
+    Collection<InvocationTarget> explorationEnablers = fsm.getExplorationEnablers();
+    Collection<InvocationTarget> generationEnablers = fsm.getGenerationEnablers();
+    Collection<InvocationTarget> lastSteps = fsm.getLastSteps();
+
+    assertDescriptions(afterSuites, "After the suite looks like this");
+    assertDescriptions(beforeSuites, "Before the suite looks like this");
+    assertDescriptions(beforeTests, "Start here", "Before test we do this");
+    assertDescriptions(afterTests, "After test we do this");
+    assertDescriptions(endConditions, "Extra end condition one", "Extra end condition two");
+    assertDescriptions(explorationEnablers, "");
+    assertDescriptions(generationEnablers, "");
+    assertDescriptions(lastSteps);
+
+    Collection<InvocationTarget> guards = new LinkedHashSet<>();
+    Collection<InvocationTarget> posts = new LinkedHashSet<>();
+    Collection<InvocationTarget> pres = new LinkedHashSet<>();
+    Collection<InvocationTarget> tts = new LinkedHashSet<>();
+    for (FSMTransition transition : transitions) {
+      guards.addAll(transition.getGuards());
+      posts.addAll(transition.getPostMethods());
+      pres.addAll(transition.getPreMethods());
+      tts.add(transition.getTransition());
+    }
+    assertDescriptions(guards, "Negative guard looks like this", "World is guarded here", "", "", "");
+    assertDescriptions(posts, "", "", "Post one");
+    assertDescriptions(pres, "", "Pre one");
+    assertDescriptions(tts, "", "", "");
+
+    Collection<InvocationTarget> cvs = new LinkedHashSet<>();
+    for (CoverageMethod method : coverageMethods) {
+      cvs.add(method.getInvocationTarget());
+    }
+    assertDescriptions(cvs);
+  }
+  
+  private void assertDescriptions(Collection<InvocationTarget> targets, String... descs) {
+    List<String> found = new ArrayList<>();
+    for (InvocationTarget target : targets) {
+      found.add(target.getDescription());
+    }
+    List<String> expected = new ArrayList<>();
+    expected.addAll(Arrays.asList(descs));
+    assertEquals("Number of descriptions to find", expected.size(), found.size());
+    for (String name : expected) {
+      assertTrue("Target not found:"+name, found.contains(name));
+    }
   }
 }

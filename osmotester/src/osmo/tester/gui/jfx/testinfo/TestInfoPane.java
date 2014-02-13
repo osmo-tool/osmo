@@ -38,7 +38,7 @@ public class TestInfoPane extends VBox {
     children.add(new Label("Test Info"));
     children.add(tabs);
     stepListTab = new StepListTab();
-    metricsTab = new MetricsTab();
+    metricsTab = new MetricsTab(state);
     tabs.getTabs().add(stepListTab);
     tabs.getTabs().add(metricsTab);
   }

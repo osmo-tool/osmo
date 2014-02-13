@@ -224,6 +224,6 @@ public class Exploration implements GeneratorDescription {
     config.setMinSuiteLength(Integer.parseInt(minSuiteLenField.getText()));
     config.setParallelism(Integer.parseInt(parallelismField.getText()));
     config.setDepth(Integer.parseInt(depthField.getText()));
-    config.setTimeout(Integer.parseInt(timeoutField.getText()));
+    config.setTimeout(Integer.parseInt(timeoutField.getText())*60);
   }
 }

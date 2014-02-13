@@ -1,5 +1,6 @@
 package osmo.tester.generator.endcondition;
 
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 
@@ -32,7 +33,8 @@ public interface EndCondition {
    *
    * @param seed Randomization seed.
    * @param fsm Representation of the model.
+   * @param config The configuration for the generator session.
    */
-  public void init(long seed, FSM fsm);
+  public void init(long seed, FSM fsm, OSMOConfiguration config);
 }
 

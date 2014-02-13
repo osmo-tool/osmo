@@ -34,7 +34,7 @@ public class ErrorModelProbability {
   @TestStep("hello")
   public void transition1() {
     //throw exception with 10% probability to allow for search
-    if (rand.nextInt(1, 10) == 1) throw new RuntimeException("@EndCondition fail");
+    if (rand.nextInt(1, 10) == 1) throw new RuntimeException("Epic fail");
   }
 
   @Guard("hello")

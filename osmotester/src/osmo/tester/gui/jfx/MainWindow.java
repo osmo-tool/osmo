@@ -47,18 +47,21 @@ public class MainWindow extends Application {
   }
 
   public void openSingleCoreExecution() {
+    configurationTab.storeGeneralParameters();
     tabPane.getSelectionModel().select(executionTab);
     executionTab.showSingleCore();
   }
 
   public void openGreedyExecution() {
     configurationTab.storeScoreWeights();
+    configurationTab.storeGeneralParameters();
     tabPane.getSelectionModel().select(executionTab);
     executionTab.showGreedy();
   }
 
   public void openExplorationExecution() {
     configurationTab.storeScoreWeights();
+    configurationTab.storeGeneralParameters();
     tabPane.getSelectionModel().select(executionTab);
     executionTab.showSingleCore();
   }

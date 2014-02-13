@@ -1,5 +1,6 @@
 package osmo.tester.generator.endcondition;
 
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 
@@ -21,6 +22,6 @@ public class Endless implements EndCondition {
   }
 
   @Override
-  public void init(long seed, FSM fsm) {
+  public void init(long seed, FSM fsm, OSMOConfiguration config) {
   }
 }

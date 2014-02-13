@@ -24,7 +24,6 @@ import java.util.concurrent.Future;
 /**
  * Runs a search for specific target in the model and once found, tries to reduce the path to it to minimal.
  * The target is to find a part of the model that throws an exception.
- * TODO: add a way to make covering a requirement throw an exception
  * 
  * @author Teemu Kanstren
  */

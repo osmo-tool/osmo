@@ -6,12 +6,17 @@ import org.junit.Test;
 import osmo.common.TestUtils;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.coverage.ScoreConfiguration;
+import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.endcondition.LengthProbability;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.ModelFactory;
 import osmo.tester.model.TestModels;
+import osmo.tester.optimizer.GenerationResults;
+import osmo.tester.optimizer.greedy.GreedyOptimizer;
+import osmo.tester.optimizer.greedy.IterationListener;
 import osmo.tester.optimizer.greedy.MultiGreedy;
 import osmo.tester.unittests.testmodels.CalculatorModel;
+import osmo.tester.unittests.testmodels.RandomValueModel4;
 
 import java.util.List;
 
@@ -49,13 +54,57 @@ public class MultiGreedyTests {
   
   @Test
   public void maxLength() {
-    fail("TBD");
+    OSMOConfiguration oc = new OSMOConfiguration();
+    ScoreConfiguration sc = new ScoreConfiguration();
+    oc.setFactory(new ReflectiveModelFactory(RandomValueModel4.class));
+    oc.setTestEndCondition(new LengthProbability(5, 1d));
+    MultiGreedy greedy = new MultiGreedy(oc, sc, 1);
+    greedy.setMax(2);
+    greedy.setTimeout(2);
+    greedy.setThreshold(-1);
+    List<TestCase> tests = greedy.search();
+    assertEquals("Number of tests from greedy with max", 2, tests.size());
+    //asserting the score might be useful as well to see it performs better. but would require better test model.
+  }
+
+  @Test
+  public void iterationListener() {
+    OSMOConfiguration oc = new OSMOConfiguration();
+    ScoreConfiguration sc = new ScoreConfiguration();
+    oc.setFactory(new ReflectiveModelFactory(RandomValueModel4.class));
+    oc.setTestEndCondition(new LengthProbability(5, 1d));
+    MultiGreedy greedy = new MultiGreedy(oc, sc, 1);
+    greedy.setTimeout(2);
+    greedy.setThreshold(-1);
+    MyIterationListener listener = new MyIterationListener();
+    greedy.addIterationListener(listener);
+    List<TestCase> tests = greedy.search();
+//    assertEquals("Number of iterations", 2, listener.count);
+    assertEquals("Number of iterations", 1, listener.finished);
+    assertEquals("Final tests", tests, listener.finalTests);
   }
 
   private static class MyModelFactory implements ModelFactory {
     @Override
     public void createModelObjects(TestModels addHere) {
       addHere.add(new CalculatorModel());
+    }
+  }
+  
+  private static class MyIterationListener implements IterationListener {
+    private int count = 0;
+    private int finished = 0;
+    private List<TestCase> finalTests = null;
+    
+    @Override
+    public void iterationDone(List<TestCase> tests) {
+      count++;
+    }
+
+    @Override
+    public void generationDone(List<TestCase> tests) {
+      finished++;
+      finalTests = tests;
     }
   }
 }

@@ -34,6 +34,7 @@ public class ExplorationTests {
     config = new ExplorationConfiguration(factory, 6, seed);
     osmo = new OSMOExplorer();
     config.setFallbackProbability(1d);
+    config.setMinSuiteLength(1);
   }
 
   @Test
@@ -147,6 +148,7 @@ public class ExplorationTests {
   public void plateauTestsZeroMinTestLength() {
 //    long start = System.currentTimeMillis();
     config = new ExplorationConfiguration(factory, 9, seed);
+    config.setMinSuiteLength(1);
     config.setMinSuiteScore(2000);
     config.setMinTestScore(400);
     config.setMinTestLength(0);
@@ -211,6 +213,7 @@ public class ExplorationTests {
   @Test
   public void plateauTestsFiveMinTestLength() {
     config = new ExplorationConfiguration(factory, 9, seed);
+    config.setMinSuiteLength(1);
     config.setMinSuiteScore(2000);
     config.setMinTestScore(400);
     config.setStepPairWeight(50);
@@ -291,6 +294,7 @@ public class ExplorationTests {
     ModelFactory factory = new CounterFactory();
     OSMOExplorer osmo = new OSMOExplorer();
     ExplorationConfiguration config = new ExplorationConfiguration(factory, 4, 55);
+    config.setMinSuiteLength(1);
     config.setStepWeight(30);
     config.setStepPairWeight(20);
     config.setDefaultValueWeight(7);
@@ -318,12 +322,13 @@ public class ExplorationTests {
     config.setVariableCountWeight(5);
     config.setRequirementWeight(20);
     config.setMaxTestLength(10);
+    config.setMinSuiteLength(1);
     config.setMinSuiteScore(50);
     config.setMaxSuiteLength(10);
     config.setSuitePlateauThreshold(50);
     osmo.explore(config);
     String report = TestUtils.readFile(osmo.createFullReportPath(), "UTF8");
     String expected = TestUtils.getResource(ExplorationTests.class, "expected-report.txt");
-    assertEquals("Multi-Greedy report", expected, report);  
+    assertEquals("Exploration report", expected, report);  
   }
 }

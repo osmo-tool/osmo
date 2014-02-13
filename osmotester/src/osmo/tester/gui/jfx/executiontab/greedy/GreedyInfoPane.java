@@ -26,12 +26,13 @@ import java.util.List;
  */
 public class GreedyInfoPane extends GridPane {
   private final GUIState state;
-  private final MetricsPane metricsPane = new MetricsPane(true, true);
+  private final MetricsPane metricsPane;
   private final SuiteChartPane iterationInfoPane;
   private final ListView<Iteration> iterations = new ListView<>();
 
   public GreedyInfoPane(GUIState state) {
     this.state = state;
+    this.metricsPane = new MetricsPane(state, true, true);
     iterationInfoPane = new SuiteChartPane(state);
     setHgap(10);
     setVgap(10);
@@ -65,6 +66,17 @@ public class GreedyInfoPane extends GridPane {
 
   public void addIteration(List<TestCase> iterationTests) {
     List<TestCase> tests = new ArrayList<>(iterationTests);
+    Platform.runLater(() -> {
+      if (state.getOsmoConfig().isKeepTests()) iterations.getItems().add(new Iteration(tests));
+      metricsPane.increaseIterationCount();
+      metricsPane.setCoverage(new TestCoverage(tests));
+      metricsPane.refresh();
+      metricsPane.setTestCount(tests.size());
+    });
+  }
+  
+  public void finished(List<TestCase> finalTests) {
+    List<TestCase> tests = new ArrayList<>(finalTests);
     Platform.runLater(() -> {
       iterations.getItems().add(new Iteration(tests));
       metricsPane.increaseIterationCount();

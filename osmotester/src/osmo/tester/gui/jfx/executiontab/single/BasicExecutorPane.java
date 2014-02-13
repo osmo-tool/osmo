@@ -19,13 +19,16 @@ import java.util.List;
  * @author Teemu Kanstren
  */
 public class BasicExecutorPane extends GridPane {
+  private final GUIState state;
   private final TestCoverage coverage = new TestCoverage();
-  private final MetricsPane metricsPane = new MetricsPane(true, false);
+  private final MetricsPane metricsPane;
 //  private final TestInfoPane singleInfoPane;
   private final SuiteChartPane iterationInfoPane;
   private final List<TestCase> tests = new ArrayList<>();
 
   public BasicExecutorPane(GUIState state) {
+    this.state = state;
+    metricsPane = new MetricsPane(state, true, false);
 //    singleInfoPane = new TestInfoPane(state);
     iterationInfoPane = new SuiteChartPane(state);
     setHgap(10);
@@ -57,7 +60,7 @@ public class BasicExecutorPane extends GridPane {
     metricsPane.refresh();
 //    singleInfoPane.addTest(test);
     tests.add(test);
-    iterationInfoPane.addTest(test);
+    iterationInfoPane.addTest(coverage, metricsPane.getTestCount(), test);
   }
   
   public void suiteEnded() {

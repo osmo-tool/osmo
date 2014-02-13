@@ -66,6 +66,9 @@ public class ParserResult {
     }
     targets.addAll(fsm.getAfterTests());
     targets.addAll(fsm.getAfterSuites());
+    targets.addAll(fsm.getEndConditions());
+    targets.addAll(fsm.getExplorationEnablers());
+    targets.addAll(fsm.getGenerationEnablers());
     for (InvocationTarget target : targets) {
       String desc = descriptions.get(idFor(target));
       if (desc != null) {

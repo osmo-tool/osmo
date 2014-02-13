@@ -19,4 +19,9 @@ public class IterationInfoListener implements IterationListener {
   public void iterationDone(List<TestCase> tests) {
     info.addIteration(tests);
   }
+
+  @Override
+  public void generationDone(List<TestCase> tests) {
+    info.finished(tests);
+  }
 }

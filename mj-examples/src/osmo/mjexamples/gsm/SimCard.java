@@ -1,6 +1,7 @@
 package osmo.mjexamples.gsm;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,8 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.gui.manualdrive.ManualAlgorithm;
 import osmo.tester.model.Requirements;
 import osmo.tester.optimizer.CSVCoverageReport;
+import osmo.tester.optimizer.GenerationResults;
+import osmo.tester.optimizer.greedy.GreedyOptimizer;
 import osmo.tester.optimizer.greedy.MultiGreedy;
 
 /**
@@ -544,16 +547,31 @@ public class SimCard {
     }
   }
 
+  //this should be preserved just as an example of how the greedy can provide smaller score with max limit between iterations
   public static void main(String[] args) {
-    SimCard model = new SimCard(new SimCardAdaptor());
-    model.reset();
-    TestSuite suite = new TestSuite(new TestCoverage());
-    suite.startTest(11);
-    model.req.setTestSuite(suite);
-    model.unblockPINGood12();
-    model.disablePINGood();
-    model.changePinSame();
-    model.changePinNew();
-    model.verifyPIN11();
+    GSMModelFactory factory = new GSMModelFactory();
+    OSMOConfiguration config = new OSMOConfiguration();
+    config.setFactory(factory);
+    ScoreConfiguration sc = new ScoreConfiguration();
+    sc.setLengthWeight(0);
+    GreedyOptimizer optimizer = new GreedyOptimizer(config, sc);
+    
+    optimizer.setTimeout(5); //128225
+    optimizer.disableThreshold();
+    optimizer.setMax(5);
+    long start = System.currentTimeMillis();
+    GenerationResults results = optimizer.search(100, 1);
+    long end = System.currentTimeMillis();
+    long diff = end-start;
+    System.out.println("diff:"+diff);
+    ScoreCalculator calculator = new ScoreCalculator(sc);
+    int score = calculator.calculateScore(results.getCoverage());
+    System.out.println("score:"+score+" tests:"+results.getTests().size()); //128225, 459 tests
+    List<TestCase> trim = new ArrayList<>();
+    for (int i = 0 ; i < 5 ; i++) {
+      trim.add(results.getTests().get(i));
+    }
+    int score2 = calculator.calculateScore(new TestCoverage(trim));
+    System.out.println("score2:"+score2); //24551, 18897
   }
 }

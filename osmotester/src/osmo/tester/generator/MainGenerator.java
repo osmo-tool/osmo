@@ -77,6 +77,7 @@ public class MainGenerator {
     this.listeners = config.getListeners();
     this.scenarioFilter = new ScenarioFilter(config.getScenario());
     this.scripts = config.getScripts();
+    suite.setKeepTests(config.isKeepTests());
     //this is used to initialize variables such as fsm
     createModelObjects();
     this.algorithm = config.cloneAlgorithm(seed, fsm);
@@ -87,15 +88,15 @@ public class MainGenerator {
     log.debug("starting generation");
     config.initialize(seed, fsm);
     initSuite();
-    while (!shouldStopSuite()) {
+    while (!shouldEndSuite()) {
       nextTest();
     }
     log.debug("Ending suite");
     endSuite();
   }
 
-  private boolean shouldStopSuite() {
-    int length = suite.getAllTestCases().size();
+  private boolean shouldEndSuite() {
+    int length = suite.currentTestNumber();
     if (scripts != null) {
       return length >= scripts.size();
     }
@@ -398,7 +399,7 @@ public class MainGenerator {
   public TestCase beforeTest() {
     testCount++;
     //re-initialize end conditions before new tests to remove previous test state
-    config.getTestCaseEndCondition().init(seed, fsm);
+    config.getTestCaseEndCondition().init(seed, fsm, config);
     //update suite
     TestCase test = suite.startTest(seed);
     listeners.testStarted(suite.getCurrentTest());

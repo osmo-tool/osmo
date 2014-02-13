@@ -21,42 +21,42 @@ public class GeneralPane extends VBox {
   private final GUIState state;
   private final TextField seedField = new TextField();
   private final Randomizer rand = new Randomizer();
+  private final CheckBox failIfNoStep = new CheckBox("Fail when no steps");
+  private final CheckBox stopTestOnError = new CheckBox("Stop test on error");
+  private final CheckBox stopGenerationOnError = new CheckBox("Stop generation on error");
+  private final CheckBox sequenceTrace = new CheckBox("Write sequence trace");
+  private final CheckBox dataTrace = new CheckBox("Collect data trace");
+  private final CheckBox printErrors = new CheckBox("Print exploration errors");
+  private final CheckBox drawChart = new CheckBox("Draw chart");
+  private final CheckBox keepFailedOnly = new CheckBox("Keep only failing tests");
 
   public GeneralPane(GUIState state) {
     super(10);
     this.state = state;
-    CheckBox cb1 = new CheckBox("Fail when no steps");
-    CheckBox cb2 = new CheckBox("Stop test on error");
-    CheckBox cb3 = new CheckBox("Stop generation on error");
-    CheckBox cb4 = new CheckBox("Write sequence trace");
-    CheckBox cb5 = new CheckBox("Collect data trace");
-    CheckBox cb6 = new CheckBox("Print exploration errors");
-    CheckBox cb7 = new CheckBox("Draw chart");
-    CheckBox cb8 = new CheckBox("Keep only failing tests");
 
     OSMOConfiguration osmoConfig = state.getOsmoConfig();
-    cb1.setSelected(osmoConfig.shouldFailWhenNoWayForward());
-    cb2.setSelected(osmoConfig.shouldStopTestOnError());
-    cb3.setSelected(osmoConfig.shouldStopGenerationOnError());
-    cb4.setSelected(osmoConfig.isSequenceTraceRequested());
-    cb5.setSelected(osmoConfig.isDataTraceRequested());
-    cb6.setSelected(osmoConfig.isPrintExplorationErrors());
-    cb7.setSelected(false);
-    cb8.setSelected(false);
+    failIfNoStep.setSelected(osmoConfig.shouldFailWhenNoWayForward());
+    stopTestOnError.setSelected(osmoConfig.shouldStopTestOnError());
+    stopGenerationOnError.setSelected(osmoConfig.shouldStopGenerationOnError());
+    sequenceTrace.setSelected(osmoConfig.isSequenceTraceRequested());
+    dataTrace.setSelected(osmoConfig.isDataTraceRequested());
+    printErrors.setSelected(osmoConfig.isPrintExplorationErrors());
+    drawChart.setSelected(state.isDrawChart());
+    keepFailedOnly.setSelected(state.isOnlyFailingTests());
 
     Pane seedPane = createSeedPane();
     state.setSeedField(seedField);
 
     ObservableList<Node> children = getChildren();
     children.add(new Label("General Settings"));
-    children.add(cb1);
-    children.add(cb2);
-    children.add(cb3);
-    children.add(cb4);
-    children.add(cb5);
-    children.add(cb6);
-    children.add(cb7);
-    children.add(cb8);
+    children.add(failIfNoStep);
+    children.add(stopTestOnError);
+    children.add(stopGenerationOnError);
+    children.add(sequenceTrace);
+    children.add(dataTrace);
+    children.add(printErrors);
+    children.add(drawChart);
+    children.add(keepFailedOnly);
     children.add(seedPane);
   }
 
@@ -71,5 +71,19 @@ public class GeneralPane extends VBox {
     hbox.getChildren().add(button);
     button.setOnAction((event) -> seedField.setText(""+rand.nextLong()));
     return hbox;
+  }
+
+
+  public void storeParameters() {
+    OSMOConfiguration config = state.getOsmoConfig();
+    config.setFailWhenNoWayForward(failIfNoStep.isSelected());
+    config.setStopTestOnError(stopTestOnError.isSelected());
+    config.setStopGenerationOnError(stopGenerationOnError.isSelected());
+    config.setSequenceTraceRequested(sequenceTrace.isSelected());
+    config.setDataTraceRequested(dataTrace.isSelected());
+    config.setPrintExplorationErrors(printErrors.isSelected());
+    config.setKeepTests(keepFailedOnly.isSelected());
+    state.setDrawChart(drawChart.isSelected());
+    state.setOnlyFailingTests(keepFailedOnly.isSelected());
   }
 }

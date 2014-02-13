@@ -12,10 +12,7 @@ import osmo.tester.model.FSM;
 import osmo.tester.model.Requirements;
 import osmo.tester.optimizer.CSVCoverageReport;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -65,6 +62,8 @@ public class MultiGreedy {
   private final String midPath;
   /** If > 0 defines the maximum number of tests to return. */
   private int max = 0;
+  private int threshold = 1;
+  private final Collection<IterationListener> listeners = new HashSet<>();
 
   /**
    * Uses number of processors on system as default for number of threads in the thread pool.
@@ -100,6 +99,14 @@ public class MultiGreedy {
 
   public void setMax(int max) {
     this.max = max;
+  }
+
+  public int getThreshold() {
+    return threshold;
+  }
+
+  public void setThreshold(int threshold) {
+    this.threshold = threshold;
   }
 
   public void enableDataTrace() {
@@ -144,6 +151,11 @@ public class MultiGreedy {
     long end = System.currentTimeMillis();
     long seconds = (end-start)/1000;
     System.out.println("duration of search: "+seconds+"s.");
+
+    for (IterationListener listener : listeners) {
+      listener.generationDone(tests);
+    }
+
     return tests;
   }
 
@@ -164,6 +176,7 @@ public class MultiGreedy {
     log.info("optimizers done");
     greedyPool.shutdown();
     collectReportData();
+    
     return allTests;
   }
 
@@ -186,8 +199,13 @@ public class MultiGreedy {
     for (int i = 0 ; i < optimizerCount ; i++) {
       GreedyOptimizer optimizer = new GreedyOptimizer(osmoConfig, optimizerConfig);
       optimizer.setMidPath(midPath);
+      optimizer.setSubStatus(true);
       if (dataTrace) optimizer.enableDataTrace();
       optimizer.setTimeout(timeout);
+      optimizer.setThreshold(threshold);
+      for (IterationListener listener : listeners) {
+        optimizer.addIterationListener(listener);
+      }
       GreedyTask task = new GreedyTask(optimizer, rand.nextLong(), populationSize);
       Future<Collection<TestCase>> future = greedyPool.submit(task);
       log.debug("task submitted to pool");
@@ -236,12 +254,8 @@ public class MultiGreedy {
     //finally, we need to update the coverage in the FSM to reflect the final pruned suite
     //the coverage in fsm is used by coverage reporters which is why we need this
     Requirements reqs = fsm.getRequirements();
-    reqs.clearCoverage();
-    TestCoverage coverage = new TestCoverage();
-    Collection<String> coveredReqs = coverage.getRequirements();
-    for (String req : coveredReqs) {
-      reqs.covered(req);
-    }
+    TestCoverage coverage = new TestCoverage(cases);
+    reqs.fillCoverage(coverage);
   }
 
   /**
@@ -285,5 +299,9 @@ public class MultiGreedy {
 
   public TestCoverage getFinalCoverage() {
     return finalCoverage;
+  }
+
+  public void addIterationListener(IterationListener listener) {
+    this.listeners.add(listener);
   }
 }

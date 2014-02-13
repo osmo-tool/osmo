@@ -1,5 +1,6 @@
 package osmo.tester.generator.endcondition;
 
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 
@@ -50,7 +51,7 @@ public class Time implements EndCondition {
   }
 
   @Override
-  public void init(long seed, FSM fsm) {
+  public void init(long seed, FSM fsm, OSMOConfiguration config) {
     shouldEnd = false;
     ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
     Runnable end = new Runnable() {
