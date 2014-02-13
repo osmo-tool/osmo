@@ -1,16 +1,6 @@
 package osmo.tester.unittests.testmodels;
 
-import osmo.tester.annotation.AfterSuite;
-import osmo.tester.annotation.AfterTest;
-import osmo.tester.annotation.BeforeSuite;
-import osmo.tester.annotation.BeforeTest;
-import osmo.tester.annotation.EndCondition;
-import osmo.tester.annotation.ExplorationEnabler;
-import osmo.tester.annotation.GenerationEnabler;
-import osmo.tester.annotation.Guard;
-import osmo.tester.annotation.Post;
-import osmo.tester.annotation.Pre;
-import osmo.tester.annotation.TestStep;
+import osmo.tester.annotation.*;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
 
@@ -23,46 +13,55 @@ public class EmptyTestModel1 {
     return history;
   }
 
+  @Description("Start here")
   @BeforeTest
   public void start1() {
 
   }
 
+  @Description("Before test we do this")
   @BeforeTest
   public void start2() {
 
   }
 
+  @Description("After test we do this")
   @AfterTest
   public void end() {
 
   }
 
+  @Description("Before the suite looks like this")
   @BeforeSuite
   public void beforeAll() {
 
   }
 
+  @Description("After the suite looks like this")
   @AfterSuite
   public void endAll() {
 
   }
 
+  @Description("Negative guard looks like this")
   @Guard("!world")
   public boolean negato() {
     return true;
   }
 
+  @Description("Greetings are provided here")
   @TestStep("hello")
   public void transition1() {
 
   }
 
+  @Description("World is round")
   @TestStep("world")
   public void epix() {
 
   }
 
+  @Description("World is guarded here")
   @Guard
   public boolean gWorld() {
     return false;
@@ -100,19 +99,23 @@ public class EmptyTestModel1 {
   public void epixxOracle() {
   }
 
+  @Description("Pre one")
   @Pre({"hello", "epixx"})
   public void commonPre() {
   }
 
+  @Description("Post one")
   @Post({"hello", "epixx"})
   public void commonOracle() {
   }
 
+  @Description("Extra end condition one")
   @EndCondition
   public boolean end1() {
     return false;
   }
 
+  @Description("Extra end condition two")
   @EndCondition
   public boolean end2() {
     return false;

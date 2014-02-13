@@ -4,19 +4,28 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import osmo.common.TestUtils;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.generator.endcondition.Length;
+import osmo.tester.generator.listener.FailureCollector;
 import osmo.tester.generator.listener.TracePrinter;
+import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
+import osmo.tester.scripter.internal.TestLoader;
+import osmo.tester.scripter.internal.TestScript;
+import osmo.tester.unittests.testmodels.ErrorModelProbability;
 import osmo.tester.unittests.testmodels.ValidTestModel1;
 import osmo.tester.unittests.testmodels.ValidTestModel2;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.List;
 
 import static junit.framework.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static osmo.common.TestUtils.*;
 
 /** @author Teemu Kanstren */
@@ -110,5 +119,30 @@ public class ListenerTests {
     expected = unifyLineSeparators(expected, "\n");
     output = unifyLineSeparators(output, "\n");
     assertEquals("Captured output but TracePrinter", expected, output);
+  }
+
+  @Test
+  public void failureCollector() {
+    ErrorModelProbability model = new ErrorModelProbability();
+    OSMOTester tester = new OSMOTester();
+    Length length = new Length(10);
+    tester.setSuiteEndCondition(length);
+    tester.setTestEndCondition(length);
+    OSMOConfiguration config = tester.getConfig();
+    config.setKeepTests(false);
+    config.setStopGenerationOnError(false);
+    FailureCollector collector = new FailureCollector();
+    config.addListener(collector);
+    tester.addModelObject(model);
+    tester.generate(1);
+    TestSuite suite = tester.getSuite();
+    List<TestCase> tests = suite.getAllTestCases();
+    assertEquals("Number of tests in generator", 0, tests.size());
+    assertEquals("Number of collected failures", 7, collector.getFailed().size());
+    TestUtils.recursiveDelete("osmo-output");
+    collector.writeTrace("osmo-output");
+    TestLoader loader = new TestLoader();
+    List<TestScript> scripts = loader.loadTests("osmo-output");
+    assertEquals("Number of loaded tests", 7, scripts.size());
   }
 }

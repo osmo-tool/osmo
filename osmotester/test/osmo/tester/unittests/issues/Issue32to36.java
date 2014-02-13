@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import osmo.common.NullPrintStream;
 import osmo.common.TestUtils;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.algorithm.WeightedBalancingAlgorithm;
 import osmo.tester.generator.endcondition.EndCondition;
@@ -118,7 +119,7 @@ public class Issue32to36 {
     }
 
     @Override
-    public void init(long seed, FSM fsm) {
+    public void init(long seed, FSM fsm, OSMOConfiguration config) {
       initialized = true;
     }
   }

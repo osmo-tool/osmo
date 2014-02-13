@@ -63,8 +63,13 @@ public class OSMOConfiguration implements ModelFactory {
   private ScoreCalculator scoreCalculator;
   /** Are we running an exploration? */
   private boolean exploring = false;
+  /** If true, we stop the whole generation process when an exception is thrown. */
   private boolean stopGenerationOnError = true;
+  /** If true, we print out exception traces when running test model in exploration mode. */
   private boolean printExplorationErrors;
+  /** Should we keep generated tests or throw them away after done? Useful for long sessions. */
+  private boolean keepTests = true;
+  /** If defined, only these specific tests are "generated" and executed and nothing else. */
   private List<TestScript> scripts = null;
 
   public OSMOConfiguration() {
@@ -88,6 +93,14 @@ public class OSMOConfiguration implements ModelFactory {
     this.printExplorationErrors = cloneMe.printExplorationErrors;
     this.exploring = cloneMe.exploring;
     this.scenario = cloneMe.scenario;
+  }
+
+  public boolean isKeepTests() {
+    return keepTests;
+  }
+
+  public void setKeepTests(boolean keepTests) {
+    this.keepTests = keepTests;
   }
 
   //scenario set and get need to be synchronized as the reducer shares the config across many and all use scenario
@@ -220,7 +233,7 @@ public class OSMOConfiguration implements ModelFactory {
    * @param fsm The parsing results.
    */
   public void initialize(long seed, FSM fsm) {
-    suiteEndCondition.init(seed, fsm);
+    suiteEndCondition.init(seed, fsm, this);
     if (scenario != null) {
       scenario.validate(fsm);
       setTestEndCondition(scenario.createEndCondition(testCaseEndCondition));

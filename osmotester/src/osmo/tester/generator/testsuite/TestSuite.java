@@ -29,6 +29,8 @@ public class TestSuite {
   private TestCoverage testCoverage = null;
   private boolean trackParameters = false;
   private boolean keepTests = true;
+  /** Number of tests that have passed through. Even if tests are not kept. And note that parallel suites will differ.. */
+  private int testCount = 0;
 
   public TestSuite(TestCoverage coverage) {
     this.coverage = coverage;
@@ -47,7 +49,7 @@ public class TestSuite {
    * @return Number of previous tests in suite + 1;
    */
   public int currentTestNumber() {
-    return testCases.size()+1;
+    return testCount;
   }
 
   /** Start a new test case. */
@@ -60,6 +62,7 @@ public class TestSuite {
 
   /** End the current test case and moves it to the suite "history". */
   public void endTest() {
+    testCount++;
     current.setEndTime(System.currentTimeMillis());
     if (keepTests) testCases.add(current);
     current = null;

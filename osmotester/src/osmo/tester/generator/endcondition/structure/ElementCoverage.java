@@ -1,5 +1,6 @@
 package osmo.tester.generator.endcondition.structure;
 
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
@@ -42,7 +43,7 @@ public class ElementCoverage implements EndCondition {
   }
 
   @Override
-  public void init(long seed, FSM fsm) {
+  public void init(long seed, FSM fsm, OSMOConfiguration config) {
     requirement.init(fsm);
   }
 }

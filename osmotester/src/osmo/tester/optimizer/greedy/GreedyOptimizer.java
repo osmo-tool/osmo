@@ -45,35 +45,56 @@ import java.util.List;
  */
 public class GreedyOptimizer {
   private static final Logger log = new Logger(GreedyOptimizer.class);
-  /** Defines weights for different coverage requirements to optimize for. */
+  /**
+   * Defines weights for different coverage requirements to optimize for.
+   */
   private final ScoreConfiguration config;
-  /** The test model. */
+  /**
+   * The test model.
+   */
   private FSM fsm = null;
-  /** Identifier for next greedy optimizer if several are created. */
+  /**
+   * Identifier for next greedy optimizer if several are created.
+   */
   private static int nextId = 1;
-  /** The identifier for this optimizer. */
+  /**
+   * The identifier for this optimizer.
+   */
   public final int id = nextId++;
-  /** Used to calculate coverage scores for different tests and suites. */
+  /**
+   * Used to calculate coverage scores for different tests and suites.
+   */
   private final ScoreCalculator scoreCalculator;
-  /** How much does an iteration need to gain in score to go for another iteration? Defaults to 1. */
+  /**
+   * How much does an iteration need to gain in score to go for another iteration? Defaults to 1.
+   */
   private int threshold = 1;
-  /** Seconds until the search times out. Timeout is checked between iterations and refers to how long overall generation progresses. */
+  /**
+   * Seconds until the search times out. Timeout is checked between iterations and refers to how long overall generation progresses.
+   */
   private long timeout = -1;
-  /** For tracking all the path options encountered. */
+  /**
+   * For tracking all the path options encountered.
+   */
   private Collection<String> possiblePairs = new LinkedHashSet<>();
-  /** Generator configuration. */
+  /**
+   * Generator configuration.
+   */
   private final OSMOConfiguration osmoConfig;
   private long start = 0;
   private List<TestCase> suite = new ArrayList<>();
   private int iteration = 0;
   private String midPath = "";
   private long seed = 0;
-  /** If > 0 defines the maximum number of tests to return. */
+  /**
+   * If > 0 defines the maximum number of tests to return.
+   */
   private int max = 0;
   private Collection<IterationListener> listeners = new HashSet<>();
+  private boolean subStatus;
 
   /**
-   * @param configuration  For scoring the search.
+   * @param configuration For scoring the search.
    */
   public GreedyOptimizer(OSMOConfiguration osmoConfig, ScoreConfiguration configuration) {
     this.osmoConfig = osmoConfig;
@@ -86,6 +107,13 @@ public class GreedyOptimizer {
     this.midPath = midPath;
   }
 
+  /**
+   * Sets the maximum length.
+   * Note that this may produce a test suite with less score than just generating a full one and trimming that.
+   * To avoid, use large population size or disable threshold with negative value.
+   *
+   * @param max maximum size.
+   */
   public void setMax(int max) {
     this.max = max;
   }
@@ -93,7 +121,7 @@ public class GreedyOptimizer {
   public void enableDataTrace() {
     osmoConfig.setDataTraceRequested(true);
   }
-  
+
   /**
    * You can set any threshold you like. Zero or less means going on forever. Timeout is recommended in such case.
    *
@@ -103,21 +131,24 @@ public class GreedyOptimizer {
     this.threshold = threshold;
   }
 
-  /** @param timeout Generation timeout in seconds. */
+  /**
+   * @param timeout Generation timeout in seconds.
+   */
   public void setTimeout(long timeout) {
     this.timeout = timeout;
   }
 
   /**
    * Use default of 1000 for population size.
-   * 
+   *
    * @param seed Generation seed.
    * @return The optimizer results.
    */
   public GenerationResults search(long seed) {
     return search(1000, seed);
-    
+
   }
+
   /**
    * Performs a search following the defined search configuration.
    * Provides a sorted list of test cases, where the one with highest fitness is first, one that
@@ -141,9 +172,15 @@ public class GreedyOptimizer {
     writeReport(report, suiteCoverage, suite.size(), iteration * populationSize);
 
     updateRequirementsCoverage(suiteCoverage);
+
+    if (!subStatus) {
+      for (IterationListener listener : listeners) {
+        listener.generationDone(suite);
+      }
+    }
     return new GenerationResults(suite);
   }
-  
+
   private void generate(CSVCoverageReport report, MainGenerator generator, int populationSize) {
     suite = new ArrayList<>();
     start = System.currentTimeMillis();
@@ -154,14 +191,14 @@ public class GreedyOptimizer {
       //timeout is given in seconds so we multiple by 1000 to get milliseconds
       endTime = System.currentTimeMillis() + timeout * 1000;
     }
-    log.info("greedy "+id+" starting up");
+    log.info("greedy " + id + " starting up");
     //to get a shorter test suite, use negative length weight.. in most cases should be no problem
     while (gain >= threshold) {
       long iStart = System.currentTimeMillis();
       log.info(id + ":starting iteration " + iteration);
       iteration++;
 
-      for (int i = 0 ; i < populationSize ; i++) {
+      for (int i = 0; i < populationSize; i++) {
         log.debug("creating test case " + i);
         TestCase testCase = generator.nextTest();
         suite.add(testCase);
@@ -175,12 +212,14 @@ public class GreedyOptimizer {
       int score = scoreCalculator.calculateScore(suiteCoverage);
       gain = score - previousScore;
       previousScore = score;
-      
-      long diff = System.currentTimeMillis() - iStart;
+
       for (IterationListener listener : listeners) {
         listener.iterationDone(suite);
       }
+
+      long diff = System.currentTimeMillis() - iStart;
       log.info(id + ":iteration time:(" + iteration + ")" + diff + " gain:" + gain);
+//      System.err.println(id + ":iteration time:(" + iteration + ")" + diff + " gain:" + gain);
       if (endTime > 0 && endTime < System.currentTimeMillis()) {
         log.info("Generation timed out");
         break;
@@ -189,16 +228,12 @@ public class GreedyOptimizer {
     if (gain < threshold) log.info("gain under threshold (" + gain + " vs " + threshold + ")");
     generator.endSuite();
   }
-  
+
   private void updateRequirementsCoverage(TestCoverage suiteCoverage) {
     //finally, we need to update the coverage in the FSM to reflect the final pruned suite
     //the coverage in fsm is used by coverage reporters which is why we need this
     Requirements reqs = fsm.getRequirements();
-    reqs.clearCoverage();
-    Collection<String> coveredReqs = suiteCoverage.getRequirements();
-    for (String req : coveredReqs) {
-      reqs.covered(req);
-    }
+    reqs.fillCoverage(suiteCoverage);
   }
 
   private void check() {
@@ -212,7 +247,7 @@ public class GreedyOptimizer {
     }
     if (threshold < 1) log.warn("Threshold is " + threshold + ", which is impossible to reach. Are you sure?");
   }
-  
+
   private MainGenerator configure(long seed) {
     OSMOTester tester = new OSMOTester();
     tester.setConfig(osmoConfig);
@@ -222,7 +257,7 @@ public class GreedyOptimizer {
     generator.getSuite().setKeepTests(false);
     this.fsm = generator.getFsm();
     EndCondition endCondition = osmoConfig.getTestCaseEndCondition();
-    endCondition.init(seed, fsm);
+    endCondition.init(seed, fsm, osmoConfig);
     tester.setTestEndCondition(endCondition);
     config.validate(fsm);
     log.debug("greedy configuration validated");
@@ -242,10 +277,10 @@ public class GreedyOptimizer {
     log.info("GreedyOptimizer " + id + " generated " + generationCount + " tests.");
     log.info("Resulting suite has " + resultSize + " tests. Generation time " + diff + " millis");
   }
-  
+
   public String createReportPath() {
     String filename = id + "-scores.csv";
-    return "osmo-output/"+midPath+"greedy-" + seed + "/" + filename;
+    return "osmo-output/" + midPath + "greedy-" + seed + "/" + filename;
   }
 
   /**
@@ -285,6 +320,7 @@ public class GreedyOptimizer {
       }
       best = found;
       bestCoverage = best.getCoverage();
+//      System.out.println("best:"+bestScore);
       from.remove(best);
       suite.add(best);
       //if max length for suite defined, we do not go beyond that
@@ -302,7 +338,7 @@ public class GreedyOptimizer {
       test.switchToClonedCoverage();
       steps += test.getCoverage().getTotalSteps();
     }
-    log.info("loops in sort:"+times+", tests:"+suite.size()+", steps:"+steps);
+    log.info("loops in sort:" + times + ", tests:" + suite.size() + ", steps:" + steps);
     return suite;
   }
 
@@ -316,5 +352,23 @@ public class GreedyOptimizer {
 
   public void addIterationListener(IterationListener listener) {
     listeners.add(listener);
+  }
+
+  /**
+   * NOTE: greedy with limited max size can actually get smaller gain over time.
+   * Mostly this seems to be due to achieving higher overall score in all but when limiting the size,
+   * the ordering when picking highest first seems to produce a case where adding the third one stops
+   * from adding a full set of 5 that would score higher. Instead, these would come later..
+   */
+  public void disableThreshold() {
+    this.threshold = Integer.MIN_VALUE;
+  }
+
+  public void setSubStatus(boolean subStatus) {
+    this.subStatus = subStatus;
+  }
+
+  public boolean isSubStatus() {
+    return subStatus;
   }
 }

@@ -8,6 +8,7 @@ import osmo.tester.explorer.ExplorationConfiguration;
 import osmo.tester.gui.jfx.configurationtab.generator.GreedyParameters;
 import osmo.tester.gui.jfx.testinfo.ChartSettings;
 import osmo.tester.model.ModelFactory;
+import osmo.tester.optimizer.reducer.ReducerConfig;
 
 /**
  * @author Teemu Kanstren
@@ -22,6 +23,9 @@ public class GUIState {
   private final MainWindow mainWindow;
   private ChartSettings chartSettings = new ChartSettings();
   private Stage stage;
+  private boolean drawChart;
+  private boolean onlyFailingTests;
+  private ReducerConfig reducerConfig;
 
   public GUIState(MainWindow mainWindow) {
     this.mainWindow = mainWindow;
@@ -89,4 +93,28 @@ public class GUIState {
     return stage;
   }
 
+  public boolean isDrawChart() {
+    return drawChart;
+  }
+
+  public void setDrawChart(boolean drawChart) {
+    this.drawChart = drawChart;
+  }
+
+  public boolean isOnlyFailingTests() {
+    return onlyFailingTests;
+  }
+
+  public void setOnlyFailingTests(boolean onlyFailingTests) {
+    this.onlyFailingTests = onlyFailingTests;
+  }
+
+  public ReducerConfig getReducerConfig() {
+    reducerConfig = new ReducerConfig(getSeed());
+    return reducerConfig;
+  }
+
+  public void setReducerConfig(ReducerConfig reducerConfig) {
+    this.reducerConfig = reducerConfig;
+  }
 }

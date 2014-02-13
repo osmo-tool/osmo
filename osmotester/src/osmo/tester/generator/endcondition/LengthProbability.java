@@ -1,5 +1,6 @@
 package osmo.tester.generator.endcondition;
 
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.endcondition.logical.And;
 import osmo.tester.generator.endcondition.logical.Or;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -69,8 +70,8 @@ public class LengthProbability implements EndCondition {
   }
 
   @Override
-  public void init(long seed, FSM fsm) {
-    delegate.init(seed, fsm);
+  public void init(long seed, FSM fsm, OSMOConfiguration config) {
+    delegate.init(seed, fsm, config);
   }
 
   public int getMin() {

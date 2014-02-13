@@ -42,7 +42,8 @@ public class MultiOSMOTests {
   }
 
   @Test
-  public void generate4() {
+  public void generate4() throws Exception {
+    Thread.sleep(100);
     TestUtils.recursiveDelete("osmo-output");
     MultiOSMO mosmo = new MultiOSMO(4, 444);
     OSMOConfiguration config = mosmo.getConfig();

@@ -18,6 +18,7 @@ import osmo.tester.gui.jfx.GUIState;
 public class ConfigurationTab extends Tab {
   private final GUIState state;
   private final ScorePane scorePane;
+  private GeneralPane generalPane;
 
   public ConfigurationTab(GUIState state) {
     super("Configuration");
@@ -56,11 +57,11 @@ public class ConfigurationTab extends Tab {
   private VBox createVBox() {
     VBox box = new VBox(10);
     ObservableList<Node> children = box.getChildren();
-    GeneralPane general = new GeneralPane(state);
+    generalPane = new GeneralPane(state);
     Separator separator1 = new Separator(Orientation.HORIZONTAL);
     GeneratorPane genetor = new GeneratorPane(state);
     Separator separator2 = new Separator(Orientation.HORIZONTAL);
-    children.add(general);
+    children.add(generalPane);
     children.add(separator1);
     children.add(genetor);
     children.add(separator2);
@@ -69,5 +70,9 @@ public class ConfigurationTab extends Tab {
   
   public void storeScoreWeights() {
     scorePane.storeWeights();
+  }
+
+  public void storeGeneralParameters() {
+    generalPane.storeParameters();
   }
 }

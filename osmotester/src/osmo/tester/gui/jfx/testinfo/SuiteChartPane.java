@@ -57,7 +57,6 @@ public class SuiteChartPane extends VBox {
 
   private final LineChart<Number, Number> chart;
   private Iteration shown = null;
-  private TestCoverage coverage = null;
   private final ScoreCalculator calculator;
   
   private volatile long previousUpdate = 0;
@@ -139,12 +138,12 @@ public class SuiteChartPane extends VBox {
   }
 
   public void visualize(Iteration iteration, boolean force) {
+    if (!state.isDrawChart()) return;
     //update at most once per second to avoid lag
     long diff = System.currentTimeMillis() - previousUpdate;
     if (!force && diff < 1000) return;
 
     this.shown = new Iteration(iteration);
-    this.shown = iteration;
 
     scoreSeriesData.clear();
     stepsSeriesData.clear();
@@ -161,7 +160,7 @@ public class SuiteChartPane extends VBox {
     //we sample at max 500*1.5 = 600 points for a chart, as too big datasets seem to slow javafx way down
     //1.5 is from rounding errors where 1.49 will still round down to 1 as delta
     int delta = Math.round(tests.size() / 400);
-    //delta of zero would be epic fail
+    //delta of zero would be epic fail. or division by zero error. or adding same value forever.
     if (delta < 1) delta = 1;
     for (TestCase test : tests) {
       i++;
@@ -183,28 +182,15 @@ public class SuiteChartPane extends VBox {
 //    });
   }
 
-  public void addTest(TestCase test) {
-    if (shown == null) {
-      shown = new Iteration(new ArrayList<>());
-      coverage = new TestCoverage();
+  public void addTest(TestCoverage coverage, int i, TestCase test) {
+    if (shown == null) shown = new Iteration(new ArrayList<>());
+    if (state.isOnlyFailingTests()) {
+      if (test.isFailed()) shown.getTests().add(test);
+    } else {
+      shown.getTests().add(test);
     }
-//    Plots plots = shown.addTest(test);
-//    Platform.runLater(() -> {
-//      if (showScore.isSelected()) scoreSeriesData.add(plots.getScorePlot());
-//      if (showSteps.isSelected()) stepsSeriesData.add(plots.getStepPlot());
-//      if (showStepPairs.isSelected()) stepPairsSeriesData.add(plots.getStepPairPlot());
-//      if (showStates.isSelected()) statesSeriesData.add(plots.getStatePlot());
-//      if (showStatePairs.isSelected()) statePairsSeriesData.add(plots.getStatePairPlot());
-//      if (showVariables.isSelected()) variablesSeriesData.add(plots.getVariablePlot());
-//      if (showValues.isSelected()) valuesSeriesData.add(plots.getValuePlot());
-//      if (showRequirements.isSelected()) requirementsSeriesData.add(plots.getRequirementPlot());
-//    });
-
-
-    shown.getTests().add(test);
-    coverage.addCoverage(test.getCoverage());
+    if (!state.isDrawChart()) return;
     int score = calculator.calculateScore(coverage);
-    int i = shown.getTests().size()-1;
     Platform.runLater(() -> {
       if (showScore.isSelected()) scoreSeriesData.add(new XYChart.Data<>(i, score));
       if (showSteps.isSelected()) stepsSeriesData.add(new XYChart.Data<>(i, coverage.getSingles().size()));
@@ -231,7 +217,6 @@ public class SuiteChartPane extends VBox {
     tiw.show();
   }
 
-  //TODO: move the show and save buttons to own class/pane
   private void saveTests() {
     DirectoryChooser dirChooser = new DirectoryChooser();
     dirChooser.setTitle("Select Test Directory");

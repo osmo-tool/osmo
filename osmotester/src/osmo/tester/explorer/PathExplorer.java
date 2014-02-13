@@ -46,7 +46,7 @@ public class PathExplorer extends RecursiveTask<List<TestCase>> {
     this.pool = pool;
     //we need a separate copy of the end condition as it needs to be set into exploration mode
     this.endCondition = new ExplorationEndCondition(state.getConfig(), state.getSuiteCoverage(), true);
-    endCondition.init(state.getConfig().getSeed(), null);
+    endCondition.init(state.getConfig().getSeed(), null, null);
   }
 
   /**

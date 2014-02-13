@@ -11,6 +11,7 @@ import osmo.tester.unittests.testmodels.CalculatorModel;
 import java.util.List;
 
 import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
 
 /** @author Teemu Kanstren */
 public class LengthTests {
@@ -26,9 +27,9 @@ public class LengthTests {
   private void testWithLength(int goal, int expectedLength) {
     OSMOTester tester = new OSMOTester();
     tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
-    Length testStrategy = new Length(goal);
-    tester.setTestEndCondition(testStrategy);
-    tester.setSuiteEndCondition(testStrategy);
+    Length length = new Length(goal);
+    tester.setTestEndCondition(length);
+    tester.setSuiteEndCondition(length);
     tester.generate(111);
     TestSuite suite = tester.getSuite();
     List<TestCase> history = suite.getFinishedTestCases();
@@ -56,5 +57,34 @@ public class LengthTests {
     } catch (Exception e) {
       assertEquals("Length cannot be < 0, was -1.", e.getMessage());
     }
+  }
+  
+  @Test
+  public void suiteLengthTestsNotKept() {
+    OSMOTester tester = new OSMOTester();
+    tester.getConfig().setKeepTests(false);
+    tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
+    Length length = new Length(10);
+    tester.setTestEndCondition(length);
+    tester.setSuiteEndCondition(length);
+    tester.generate(111);
+    TestSuite suite = tester.getSuite();
+    List<TestCase> tests = suite.getAllTestCases();
+    assertEquals("Number of tests generated", 10, suite.currentTestNumber());
+    assertEquals("Number of tests kept", 0, tests.size());
+  }
+  
+  @Test
+  public void length1WithZeroRequested() {
+    OSMOTester tester = new OSMOTester();
+    tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
+    Length length = new Length(0);
+    tester.setTestEndCondition(length);
+    tester.setSuiteEndCondition(length);
+    tester.generate(111);
+    TestSuite suite = tester.getSuite();
+    List<TestCase> tests = suite.getAllTestCases();
+    assertEquals("Number of tests generated", 1, tests.size());
+    assertEquals("Number of steps", 1, tests.get(0).getAllStepNames().size());
   }
 }

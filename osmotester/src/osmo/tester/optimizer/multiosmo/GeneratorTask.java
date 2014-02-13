@@ -43,7 +43,7 @@ public class GeneratorTask implements Callable<TestCoverage> {
   @Override
   public TestCoverage call() throws Exception {
     TestCoverage tc = new TestCoverage();
-    time.init(0, null);
+    time.init(0, null, config);
     int i = 1;
     while (!time.endTest(null, null)) {
       OSMOTester tester = new OSMOTester();

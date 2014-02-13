@@ -43,8 +43,8 @@ public class ExplorationConfiguration extends ScoreConfiguration {
   protected double fallbackProbability = 0.2;
   /** The end condition created from the configuration defined in this class. */
   protected ExplorationEndCondition endCondition = null;
-  /** Max number of minutes to run, after which the exploration is stopped if not before. 0 or less means never. */
-  protected int timeout = 30;
+  /** Max number of seconds to run, after which the exploration is stopped if not before. 0 or less means never. */
+  protected int timeout = 30*60;
   /** Randomization seed. */
   private final long seed;
   /** Fallback algorithm for step selection. */

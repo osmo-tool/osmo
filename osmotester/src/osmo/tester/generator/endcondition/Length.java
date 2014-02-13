@@ -1,6 +1,9 @@
 package osmo.tester.generator.endcondition;
 
 import osmo.common.log.Logger;
+import osmo.tester.OSMOConfiguration;
+import osmo.tester.generator.listener.AbstractListener;
+import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 
@@ -31,18 +34,21 @@ public class Length implements EndCondition {
 
   @Override
   public boolean endSuite(TestSuite suite, FSM fsm) {
-    log.debug("finished tests:" + suite.getFinishedTestCases().size() + " current steps:" + suite.currentSteps());
-    return suite.getFinishedTestCases().size() >= length;
+    int suiteLength = suite.currentTestNumber();
+    log.debug("finished tests:" + suiteLength + " current steps:" + suite.currentSteps());
+    //suite maintains length of size + 1, but at this point the previous one has just ended, or so we think..
+    return suiteLength >= length;
   }
 
   @Override
   public boolean endTest(TestSuite suite, FSM fsm) {
-    log.debug(" et:" + suite.getFinishedTestCases().size() + " c:" + suite.currentSteps());
-    return suite.currentSteps() >= length;
+    int currentSteps = suite.currentSteps();
+    log.debug(" et:" + suite.getAllTestCases().size() + " c:" + currentSteps);
+    return currentSteps >= length;
   }
 
   @Override
-  public void init(long seed, FSM fsm) {
+  public void init(long seed, FSM fsm, OSMOConfiguration config) {
   }
 
   @Override

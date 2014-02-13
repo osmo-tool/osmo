@@ -2,6 +2,7 @@ package osmo.tester.explorer;
 
 import osmo.common.Randomizer;
 import osmo.common.log.Logger;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.endcondition.EndCondition;
@@ -72,14 +73,12 @@ public class ExplorationEndCondition implements EndCondition {
 
   @Override
   public boolean endSuite(TestSuite suite, FSM fsm) {
-    List<TestCase> tests = suite.getFinishedTestCases();
+    List<TestCase> tests = suite.getAllTestCases();
     TestCoverage coverage = suite.getCoverage();
     return isSuiteFinished(tests, coverage);
   }
 
   public boolean isSuiteFinished(List<TestCase> suite, TestCoverage tc) {
-    if (!exploring)
-      System.out.println("here");
     if (isTimedOut()) {
       return true;
     }
@@ -195,14 +194,14 @@ public class ExplorationEndCondition implements EndCondition {
     }
     long now = System.currentTimeMillis();
     long diff = now - startTime;
-    if (diff > config.getTimeout() * 1000 *60 ) {
+    if (diff > config.getTimeout() * 1000) {
       return true;
     }
     return false;
   }
 
   @Override
-  public void init(long seed, FSM fsm) {
+  public void init(long seed, FSM fsm, OSMOConfiguration osmoConfig) {
     this.seed = seed;
     this.rand = new Randomizer(seed);
     //pathexplorer uses this to check path ending without the fsm

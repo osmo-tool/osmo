@@ -5,7 +5,9 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.coverage.TestCoverage;
+import osmo.tester.gui.jfx.GUIState;
 
 /**
  * @author Teemu Kanstren
@@ -23,11 +25,16 @@ public class MetricsPane extends GridPane {
   private final TextField statePairsField = new TextField();
   private final TextField valuesField = new TextField();
   private final TextField requirementsField = new TextField();
+  private final TextField scoreField = new TextField();
+  private final ScoreCalculator calculator;
   
-  public MetricsPane(boolean showTests, boolean showIterations) {
+  public MetricsPane(GUIState state, boolean showTests, boolean showIterations) {
     setHgap(10);
     setVgap(10);
     setPadding(new Insets(10, 10, 10, 10));
+
+    this.calculator = new ScoreCalculator(state.getScoreConfig());
+
     Label iterationLabel = new Label("Iterations:");
     Label testsLabel = new Label("Tests:");
     Label lengthLabel = new Label("Length:");
@@ -37,6 +44,7 @@ public class MetricsPane extends GridPane {
     Label statePairsLabel = new Label("State-Pairs:");
     Label valuesLabel = new Label("Values:");
     Label requirementsLabel = new Label("Requirements:");
+    Label scoreLabel = new Label("Score:");
 
     iterationField.setEditable(false);
     testsField.setEditable(false);
@@ -47,6 +55,7 @@ public class MetricsPane extends GridPane {
     statePairsField.setEditable(false);
     valuesField.setEditable(false);
     requirementsField.setEditable(false);
+    scoreField.setEditable(false);
 
     iterationField.setPrefColumnCount(10);
     testsField.setPrefColumnCount(10);
@@ -57,6 +66,7 @@ public class MetricsPane extends GridPane {
     statePairsField.setPrefColumnCount(10);
     valuesField.setPrefColumnCount(10);
     requirementsField.setPrefColumnCount(10);
+    scoreField.setPrefColumnCount(10);
 
     int y=0;
     if (showIterations) add(iterationLabel, 0, y);
@@ -77,6 +87,8 @@ public class MetricsPane extends GridPane {
     add(valuesField, 1, y++);
     add(requirementsLabel, 0, y);
     add(requirementsField, 1, y++);
+    add(scoreLabel, 0, y);
+    add(scoreField, 1, y++);
   }
 
   public void setCoverage(TestCoverage coverage) {
@@ -102,10 +114,15 @@ public class MetricsPane extends GridPane {
       statePairsField.setText(""+coverage.getStatePairCount());
       valuesField.setText(""+coverage.getValueCount());
       requirementsField.setText(""+coverage.getRequirements().size());
+      scoreField.setText(""+calculator.calculateScore(coverage));
     });
   }
 
   public void setTestCount(int testCount) {
     this.testCount = testCount;
+  }
+
+  public int getTestCount() {
+    return testCount;
   }
 }

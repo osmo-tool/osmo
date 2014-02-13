@@ -9,4 +9,5 @@ import java.util.List;
  */
 public interface IterationListener {
   public void iterationDone(List<TestCase> tests);
+  public void generationDone(List<TestCase> tests);
 }

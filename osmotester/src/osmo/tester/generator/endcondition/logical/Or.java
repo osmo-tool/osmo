@@ -1,5 +1,6 @@
 package osmo.tester.generator.endcondition.logical;
 
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
@@ -44,9 +45,9 @@ public class Or implements EndCondition {
   }
 
   @Override
-  public void init(long seed, FSM fsm) {
+  public void init(long seed, FSM fsm, OSMOConfiguration config) {
     for (EndCondition condition : conditions) {
-      condition.init(seed, fsm);
+      condition.init(seed, fsm, config);
     }
   }
 

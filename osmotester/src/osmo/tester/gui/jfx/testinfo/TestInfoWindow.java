@@ -22,7 +22,7 @@ public class TestInfoWindow extends Stage {
     setTitle("Test Information");
     initModality(Modality.APPLICATION_MODAL);
     tiPane = new TestInfoPane(state);
-    ReducerPane reducer = new ReducerPane();
+    ReducerPane reducer = new ReducerPane(state, tiPane);
     GridPane grid = new GridPane();
     grid.setHgap(10);
     grid.setVgap(10);
