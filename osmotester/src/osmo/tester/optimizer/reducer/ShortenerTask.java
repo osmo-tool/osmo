@@ -56,11 +56,13 @@ public class ShortenerTask implements Runnable {
     state.resetDone();
     while (!state.isDone()) {
       TestCase previousTest = state.getTest();
+      //create a list of untried steps as all the steps in the test case. then try to remove each one at a time.
       untried.clear();
       untried.addAll(previousTest.getAllStepNames());
       while (untried.size() > 0) {
         String removeMe = untried.iterator().next();
         untried.remove(removeMe);
+        //create a new generator scenario allowing the steps in the test and with the chosen step removed
         Scenario scenario = createScenario(previousTest, removeMe);
 
         OSMOTester tester = new OSMOTester();
@@ -68,6 +70,7 @@ public class ShortenerTask implements Runnable {
         tester.setConfig(osmoConfig);
         tester.setPrintCoverage(false);
         int newMinimum = state.getMinimum();
+        log.debug("removed:"+removeMe+" size now:"+newMinimum);
         tester.setTestEndCondition(new Length(newMinimum));
         //we need to try many as there can be many combinations possible
         tester.setSuiteEndCondition(new Length(populationSize));
@@ -79,9 +82,10 @@ public class ShortenerTask implements Runnable {
         List<TestCase> tests = suite.getAllTestCases();
 
         for (TestCase test : tests) {
-          if (!test.isFailed()) continue;
+          //if we debug, we ignore passing tests. if we look for requirements we look at them all
+          if (!state.getConfig().isRequirementsSearch() && !test.isFailed()) continue;
           if (!state.check(test)) {
-            log.error("Shortener producer a longer test. This should never happen.");
+            //in debugging mode this should never happen, in requirements mode can happen often
             continue;
           }
           state.addTest(test);
@@ -105,7 +109,7 @@ public class ShortenerTask implements Runnable {
    */
   public Scenario createScenario(TestCase test, String removeMe) {
     //create a strict scenario so undefined steps are forbidden
-    //TODO: should reuse generator scenario
+    //TODO: should reuse generator scenario and not overwrite one if user has define one before
     Scenario scenario = new Scenario(true);
     List<String> allSteps = test.getAllStepNames();
     Collection<String> steps = new HashSet<>();
