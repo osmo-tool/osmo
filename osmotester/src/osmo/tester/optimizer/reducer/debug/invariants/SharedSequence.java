@@ -24,7 +24,7 @@ public class SharedSequence {
    * Initialize by collecting sequences from given test.
    * Following iterations can only remove ones not present in new tests, not add new.
    * This is because the first test did not have them so all tests will not have them. 
-   * Some may but we are looking for ones in all. And first one is part of all.
+   * Some may but we are looking for ones that are found in all. And first one is part of all.
    * 
    * @param steps For the test to check.
    */

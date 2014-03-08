@@ -23,8 +23,9 @@ import java.util.concurrent.Future;
 
 /**
  * Runs a search for specific target in the model and once found, tries to reduce the path to it to minimal.
- * The target is to find a part of the model that throws an exception.
- * 
+ * In debug mode, the target is to find a part of the model that throws an exception.
+ * In requirements mode, the target is to find shortest paths to all requirements, one for each.
+ *
  * @author Teemu Kanstren
  */
 public class Reducer {
@@ -80,6 +81,23 @@ public class Reducer {
     }
     ReducerState state = new ReducerState(allSteps, config);
 
+    if (config.getRequirementsTarget() > 0) {
+      requirementsSearch(state);
+    } else {
+      debugSearch(state);
+    }
+
+    pool.shutdown();
+    writeReports(allSteps, state);
+    return state;
+  }
+
+  /**
+   * Runs the search for the debugging configuration.
+   * 
+   * @param state To use in search.
+   */
+  private void debugSearch(ReducerState state) {
     //in the initial fuzzy search, we stop on first found instance. from this we shorten and then fuzz again
     state.setStopOnFirst(true);
     long totalTime = config.getTotalUnit().toMillis(config.getTotalTime());
@@ -87,38 +105,74 @@ public class Reducer {
     fuzz(state, totalTime);
     state.setStopOnFirst(false);
     state.resetDone();
-    log.info("Running first shortening");
-    shorten(state, totalTime);
-//    //perform fuzzy search again but do not stop on first
-//    state.resetDone();
+    log.info("Running shortening");
     long iterationTime = config.getIterationUnit().toMillis(config.getIterationTime());
-//    log.info("Running second search");
-//    fuzz(state, iterationTime);
-//    //perform another shortening attempt just in case fuzzy made a difference
-//    state.resetDone();
-//    log.info("Running second shortening");
-//    shorten(state, totalTime);
-    //perform final fuzzy for invariant capture
+    shorten(state, iterationTime);
+    //perform fuzzy search again but do not stop on first
     state.resetDone();
-    log.info("Running final search");
+    log.info("Running final fuzz");
     fuzz(state, iterationTime);
-    
-    pool.shutdown();
+
     int minimum = state.getMinimum();
     if (minimum < config.getLength()) {
       System.out.println("Got down to:" + minimum);
     } else {
       System.out.println("Failed to find errors!");
     }
-    writeReports(allSteps, state);
-    return state;
   }
-  
+
+  /**
+   * Runs the search for the requirements configuration.
+   * 
+   * @param state To use in search.
+   */
+  private void requirementsSearch(ReducerState state) {
+    boolean shouldRun = true;
+    long endTime = config.getTotalUnit().toMillis(config.getTotalTime());
+    endTime += System.currentTimeMillis();
+    while (shouldRun) {
+      state.resetDone();
+      //in the initial fuzzy search, we stop on first found instance. then shorten
+      state.setStopOnFirst(true);
+      long iterationTime = config.getIterationUnit().toMillis(config.getIterationTime());
+      log.info("Running initial search");
+      if (state.getTest() == null) {
+        fuzz(state, iterationTime);
+      }
+      if (state.getTest() == null) {
+        if (System.currentTimeMillis() > endTime) {
+          //if we find no way to cover anything, we drop out
+          break;
+        } else {
+          continue;
+        }
+      }
+      log.debug("Searching with test: " + state.getTest());
+      state.setStopOnFirst(false);
+      state.resetDone();
+      log.info("Running shortening");
+      //we do not care about finding many options as we just need on for a requirement, thus no fuzz in end
+      shorten(state, iterationTime);
+      log.info("Next requirement");
+      //move to next requirement, or stop if all have been processed
+      shouldRun = state.nextRequirement();
+      log.debug("Search continue status:" + shouldRun);
+    }
+  }
+
+  /**
+   * Write the debug reports for found steps and invariants.
+   * 
+   * @param allSteps All steps in test model, used in test or not.
+   * @param state End state for reduction to report.
+   */
   private void writeReports(List<String> allSteps, ReducerState state) {
+    //first we find all invariants and write the basic report on those
     Analyzer analyzer = new Analyzer(allSteps, state);
     analyzer.analyze();
     analyzer.writeReport("reducer-final");
 
+    //then we write the traces for best tests, limiting to max of 100 traces
     List<TestCase> tests = state.getTests();
     List<TestCase> traced = new ArrayList<>();
     int i = 1;
@@ -128,25 +182,30 @@ public class Reducer {
       if (i > 100) break;
       traced.add(test);
     }
-    String filename = analyzer.getPath()+"final-tests";
+    String filename = analyzer.getPath() + "final-tests";
     OSMOTester.writeTrace(filename, traced, config.getSeed(), osmoConfig);
   }
 
+  /**
+   * Fuzz tests, that is create random test cases for given configuration.
+   * 
+   * @param state Reduction state to use for fuzzing.
+   * @param waitTime Time to wait until signalling stop for fuzz tasks if not stopped yet.
+   */
   private void fuzz(ReducerState state, long waitTime) {
     Collection<Runnable> tasks = new ArrayList<>();
-    for (int i = 0 ; i < parallelism ; i++) {
+    for (int i = 0; i < parallelism; i++) {
       FuzzerTask task = new FuzzerTask(osmoConfig, rand.nextLong(), state);
       tasks.add(task);
     }
     runTasks(tasks, state, waitTime);
   }
-  
 
   /**
-   * Performs a fuzzy search for an exception.
-   * 
-   * @param state     Current search state.
-   * @param waitTime  Milliseconds to wait for completion before cutting the search.
+   * Run the given set of search tasks, fuzz or shortening.
+   *
+   * @param state    Current search state.
+   * @param waitTime Milliseconds to wait for completion before signalling tasks to end the search.
    */
   private void runTasks(Collection<Runnable> tasks, ReducerState state, long waitTime) {
     Collection<Future> futures = new ArrayList<>();
@@ -158,6 +217,7 @@ public class Reducer {
     try {
       //wait for search to finish
       synchronized (state) {
+        log.debug("waiting time " + waitTime);
         //we might have finished before coming here if previous searches were 100% success
         if (!state.isDone()) state.wait(waitTime);
       }
@@ -179,12 +239,12 @@ public class Reducer {
   /**
    * Tries to shorten current found test.
    * Meaning, removes a step at a time, sees if still produces exception, if so repeat with shorter.
-   * 
+   *
    * @param state Current search state.
    */
   private void shorten(ReducerState state, long waitTime) {
     Collection<Runnable> tasks = new ArrayList<>();
-    for (int i = 0 ; i < parallelism ; i++) {
+    for (int i = 0; i < parallelism; i++) {
       ShortenerTask task = new ShortenerTask(osmoConfig, rand.nextLong(), state);
       tasks.add(task);
     }
@@ -192,7 +252,7 @@ public class Reducer {
   }
 
   /**
-   * Checks if current configuration has some known issue.
+   * Checks if current configuration has known issues, such as sharing model instances over tasks.
    * Also deletes old output if so configured.
    */
   private void check() {

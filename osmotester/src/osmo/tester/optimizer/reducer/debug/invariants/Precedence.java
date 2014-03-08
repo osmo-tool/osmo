@@ -17,6 +17,7 @@ import java.util.Map;
 public class Precedence {
   /** Key = step name, Value = Other steps observed before this step. */
   private Map<String, Collection<String>> previousMap = new HashMap<>();
+  /** List of all possible steps in the test model. */
   private final List<String> allSteps;
 
   /**
@@ -25,6 +26,7 @@ public class Precedence {
   public Precedence(List<String> allSteps) {
     this.allSteps = allSteps;
     for (String step : allSteps) {
+      //for each step, we initially claim that all other steps are before it. the we remove ones that are not later..
       List<String> previous = new ArrayList<>();
       previous.addAll(allSteps);
       previous.remove(step);
@@ -60,7 +62,7 @@ public class Precedence {
   /**
    * For report building.
    * 
-   * @return List of all precendence patterns still valid.
+   * @return List of all precedence patterns still valid.
    */
   public Collection<String> getPatterns() {
     List<String> result = new ArrayList<>();

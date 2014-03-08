@@ -197,6 +197,10 @@ public class TestCase {
     }
     return names;
   }
+  
+  public int getLength() {
+    return steps.size();
+  }
 
   /**
    * Allows setting the test case as failed.

@@ -70,8 +70,9 @@ public class Requirements {
     if (requirement == null) {
       log.warn("NULL value given as requirement. Is that intended?");
     }
-    covered.add(""+requirement);
-    testSuite.coveredRequirement("" + requirement);
+    String name = "" + requirement;
+    covered.add(name);
+    testSuite.coveredRequirement(name);
   }
 
   /**

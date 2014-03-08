@@ -5,9 +5,15 @@ import osmo.tester.generator.testsuite.TestCase;
 
 import java.util.List;
 
-/** @author Teemu Kanstren */
+/** 
+ * Results for a greedy search, including suite coverage and tests in suite.
+ * 
+ * @author Teemu Kanstren 
+ */
 public class GenerationResults {
+  /** Coverage of test suite. */
   private final TestCoverage coverage;
+  /** The test 'suite'. */
   private final List<TestCase> tests;
 
   public GenerationResults(List<TestCase> tests) {
