@@ -5,6 +5,7 @@ import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.examples.calendar.testmodel.ModelEvent;
 import osmo.tester.examples.calendar.testmodel.ModelState;
 import osmo.tester.examples.calendar.testmodel.ModelTask;
+import osmo.tester.examples.calendar.testmodel.User;
 import osmo.tester.model.data.Text;
 import osmo.tester.scripter.robotframework.RFParameter;
 import osmo.tester.scripter.robotframework.RFScripter;
@@ -70,8 +71,8 @@ public class OfflineScripter implements CalendarScripter {
    * @return The complete test script.
    */
   public String createScript() {
-    for (String user : state.getUsers()) {
-      scripter.addVariable(user, StringUtils.capitalizeFirstLetter(user));
+    for (User user : state.getUsers()) {
+      scripter.addVariable(user.getId(), StringUtils.capitalizeFirstLetter(user.getName()));
     }
     script = scripter.createScript();
     return script;
@@ -100,7 +101,7 @@ public class OfflineScripter implements CalendarScripter {
     task.setTaskId(taskId);
     RFParameter start = new RFParameter(formatTime(task.getTime()), false);
     RFParameter description = new RFParameter(task.getDescription(), false);
-    RFParameter uid = new RFParameter(task.getUid(), true);
+    RFParameter uid = new RFParameter(task.getUser().getId(), true);
     scripter.addStepWithResult("Add Task", taskId, uid, start, description);
   }
 
@@ -116,7 +117,7 @@ public class OfflineScripter implements CalendarScripter {
     String eventId = "Event" + nextEventId;
     nextEventId++;
     event.setEventId(eventId);
-    RFParameter uid = new RFParameter(event.getUid(), true);
+    RFParameter uid = new RFParameter(event.getUser().getId(), true);
     RFParameter start = new RFParameter(formatTime(event.getStart()), false);
     RFParameter end = new RFParameter(formatTime(event.getEnd()), false);
     RFParameter description = new RFParameter(event.getDescription(), false);
@@ -179,7 +180,7 @@ public class OfflineScripter implements CalendarScripter {
   @Override
   public void linkEventToUser(ModelEvent event, String targetUid) {
     RFParameter tUidRef = new RFParameter(targetUid, true);
-    RFParameter sUidRef = new RFParameter(event.getUid(), true);
+    RFParameter sUidRef = new RFParameter(event.getUser().getId(), true);
     RFParameter eventId = new RFParameter(event.getEventId(), true);
     scripter.addStep("Link Event to User", tUidRef, sUidRef, eventId);
   }

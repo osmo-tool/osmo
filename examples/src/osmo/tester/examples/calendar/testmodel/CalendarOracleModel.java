@@ -40,34 +40,34 @@ public class CalendarOracleModel {
   @Description("Check all model state against SUT")
   @Post("all")
   public void genericOracle() {
-    Collection<String> users = state.getUsers();
-    Map<String, Collection<ModelTask>> tasks = new HashMap<>();
-    Map<String, Collection<ModelEvent>> events = new HashMap<>();
-    for (String user : users) {
+    Collection<User> users = state.getUsers();
+    Map<User, Collection<ModelTask>> tasks = new HashMap<>();
+    Map<User, Collection<ModelEvent>> events = new HashMap<>();
+    for (User user : users) {
       tasks.put(user, new LinkedHashSet<>());
       events.put(user, new LinkedHashSet<>());
     }
 
     for (ModelTask task : state.getTasks()) {
-      String uid = task.getUid();
-      Collection<ModelTask> userTasks = tasks.get(uid);
+      User user = task.getUser();
+      Collection<ModelTask> userTasks = tasks.get(user);
       userTasks.add(task);
     }
 
     for (ModelEvent event : state.getEvents()) {
-      String uid = event.getUid();
-      Collection<ModelEvent> userEvents = events.get(uid);
+      User user = event.getUser();
+      Collection<ModelEvent> userEvents = events.get(user);
       userEvents.add(event);
-      Collection<String> participants = event.getParticipants();
-      for (String participant : participants) {
+      Collection<User> participants = event.getParticipants();
+      for (User participant : participants) {
         Collection<ModelEvent> participantEvents = events.get(participant);
         participantEvents.add(event);
       }
     }
 
-    for (String user : users) {
-      scripter.assertUserTasks(user, tasks.get(user));
-      scripter.assertUserEvents(user, events.get(user));
+    for (User user : users) {
+      scripter.assertUserTasks(user.getId(), tasks.get(user));
+      scripter.assertUserEvents(user.getId(), events.get(user));
     }
   }
 }

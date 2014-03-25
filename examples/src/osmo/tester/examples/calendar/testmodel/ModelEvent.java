@@ -18,18 +18,18 @@ public class ModelEvent { // implements Comparable<ModelEvent> {
   private String description;
   /** Location of the event. */
   private String location;
-  /** ID for the user who is the organizer. */
-  private String uid;
+  /** Organizing user. */
+  private User user;
   /** Unique ID for the event. */
   private String eventId;
-  private Collection<String> participants = new ArrayList<>();
+  private Collection<User> participants = new ArrayList<>();
 
-  public ModelEvent(String uid, Date start, Date end, String description, String location) {
+  public ModelEvent(User user, Date start, Date end, String description, String location) {
     this.start = start;
     this.end = end;
     this.description = description;
     this.location = location;
-    this.uid = uid;
+    this.user = user;
   }
 
   public Date getStart() {
@@ -48,8 +48,8 @@ public class ModelEvent { // implements Comparable<ModelEvent> {
     return location;
   }
 
-  public String getUid() {
-    return uid;
+  public User getUser() {
+    return user;
   }
 
   public String getEventId() {
@@ -60,15 +60,15 @@ public class ModelEvent { // implements Comparable<ModelEvent> {
     this.eventId = eventId;
   }
 
-  public void addParticipant(String user) {
+  public void addParticipant(User user) {
     participants.add(user);
   }
 
-  public void removeParticipant(String user) {
+  public void removeParticipant(User user) {
     participants.remove(user);
   }
 
-  public Collection<String> getParticipants() {
+  public Collection<User> getParticipants() {
     return participants;
   }
 
@@ -79,7 +79,7 @@ public class ModelEvent { // implements Comparable<ModelEvent> {
             ", end=" + end +
             ", description='" + description + '\'' +
             ", location='" + location + '\'' +
-            ", uid='" + uid + '\'' +
+            ", user='" + user.getId() + '\'' +
             ", eventId='" + eventId + '\'' +
             ", participants=" + participants +
             '}';

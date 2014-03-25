@@ -1,5 +1,6 @@
 package osmo.tester.examples.calendar.testmodel;
 
+import osmo.common.Randomizer;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.Variable;
@@ -23,12 +24,10 @@ import static osmo.common.TestUtils.*;
  * @author Teemu Kanstren
  */
 public class ModelState {
-  /** How many users? */
-  private ValueRange<Integer> userCount = new ValueRange<>(1, 10);
   /** Users with calendars. */
-  private ValueSet<String> users = new ValueSet<>();
+  private ValueSet<User> users = new ValueSet<>();
   /** For creating names for users. */
-  private Text names = new Text(4,7);
+  private Text names = new Text(4, 7).asciiLettersAndNumbersOnly();
   @Variable
   /** Tasks for all users. */
   private ValueSet<ModelTask> tasks = new ValueSet<>();
@@ -37,12 +36,14 @@ public class ModelState {
   private ValueSet<ModelEvent> events = new ValueSet<>();
   @Variable
   /** For creating random duration between 1 seconds to 4 hours. */
-  private ValueRange<Integer> duration = new ValueRange<>(1000, 1000*60*60*4);
+  private ValueRange<Integer> duration = new ValueRange<>(1000, 1000 * 60 * 60 * 4);
   @Variable
   /** Used to generate start times between January 2000 and December 2010. */
   private ValueRange<Long> startTime = new ValueRange<>(0, 0);
   private int eventCount = 1;
   private int taskCount = 1;
+  private int userCount = -1;
+  private Randomizer rand = new Randomizer();
 
   public ModelState() {
     names.setName("name");
@@ -53,21 +54,36 @@ public class ModelState {
     end.setTime(new Date(0));
     end.set(2010, Calendar.DECEMBER, 31, 23, 59, 59);
     startTime = new ValueRange<>(start.getTimeInMillis(), end.getTimeInMillis());
-
   }
-  
-  /** Used to reset the state between test generation. */
-  public void reset() {
-    int n = userCount.random();
-    for (int i = 1; i <= n; i++) {
-//      this.users.add("user" + i);
-      this.users.add(names.next());
+
+  public void setUserCount(int userCount) {
+    this.userCount = userCount;
+  }
+
+  /**
+   * Used to initialize state before a test suite is generated.
+   * Could be put in constructor as well but demonstrated user of
+   */
+  public void init() {
+    users.clear();
+    if (userCount < 1) {
+      userCount = rand.nextInt(1, 10);
     }
+    for (int i = 1 ; i <= userCount ; i++) {
+//      this.users.add("user" + i);
+      this.users.add(new User(names.next()));
+    }
+  }
+
+  /**
+   * Clear state between tests.
+   */
+  public void reset() {
     tasks.clear();
     events.clear();
   }
 
-  public String randomUID() {
+  public User randomUser() {
     return users.random();
   }
 
@@ -81,17 +97,17 @@ public class ModelState {
     return task;
   }
 
-  public ModelEvent createEvent(String uid, Date start, Date end) {
+  public ModelEvent createEvent(User user, Date start, Date end) {
     String description = "event" + eventCount;
     String location = "location" + eventCount++;
-    ModelEvent event = new ModelEvent(uid, start, end, description, location);
+    ModelEvent event = new ModelEvent(user, start, end, description, location);
     events.add(event);
     return event;
   }
 
-  public ModelTask createTask(String uid, Date time) {
+  public ModelTask createTask(User user, Date time) {
     String description = "task" + taskCount++;
-    ModelTask task = new ModelTask(uid, time, description);
+    ModelTask task = new ModelTask(user, time, description);
     tasks.add(task);
     return task;
   }
@@ -100,8 +116,8 @@ public class ModelState {
     return events.size() > 0;
   }
 
-  public Collection<String> getUsers() {
-    Collection<String> result = new ArrayList<>();
+  public Collection<User> getUsers() {
+    Collection<User> result = new ArrayList<>();
     result.addAll(users.getOptions());
     return result;
   }
@@ -123,7 +139,7 @@ public class ModelState {
   public ParticipantEvent getAndRemoveParticipantEvent() {
     Collection<ParticipantEvent> participants = getParticipants();
     ParticipantEvent participantEvent = oneOf(participants);
-    String participant = participantEvent.getParticipant();
+    User participant = participantEvent.getParticipant();
     ModelEvent event = participantEvent.getEvent();
     event.removeParticipant(participant);
     return participantEvent;
@@ -133,7 +149,7 @@ public class ModelState {
     List<ModelEvent> options = events.getOptions();
     Collection<ParticipantEvent> participants = new ArrayList<>();
     for (ModelEvent event : options) {
-      for (String participant : event.getParticipants()) {
+      for (User participant : event.getParticipants()) {
         participants.add(new ParticipantEvent(participant, event));
       }
     }
@@ -157,7 +173,7 @@ public class ModelState {
   }
 
   public Date randomEndTime(Date start) {
-    return new Date(start.getTime()+duration.random());
+    return new Date(start.getTime() + duration.random());
   }
 
   @Override
@@ -181,7 +197,7 @@ public class ModelState {
   public ModelEvent getEventWithSpace() {
     return oneOf(getEventsWithSpace());
   }
-  
+
   @CoverageValue
   public String state(TestCaseStep step) {
     if (hasEvents() && hasTasks()) {

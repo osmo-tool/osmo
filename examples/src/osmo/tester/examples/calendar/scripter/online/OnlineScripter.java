@@ -50,7 +50,7 @@ public class OnlineScripter implements CalendarScripter {
 
   @Override
   public void addTask(ModelTask task) {
-    CalendarApplication calendar = getCalendarFor(task.getUid());
+    CalendarApplication calendar = getCalendarFor(task.getUser().getId());
     CalendarTask calendarTask = calendar.addTask(task.getTime(), task.getDescription());
     task.setTaskId(calendarTask.getId());
   }
@@ -63,7 +63,7 @@ public class OnlineScripter implements CalendarScripter {
 
   @Override
   public void addEvent(ModelEvent event) {
-    CalendarApplication calendar = getCalendarFor(event.getUid());
+    CalendarApplication calendar = getCalendarFor(event.getUser().getId());
     CalendarEvent calendarEvent = calendar.addEvent(event.getStart(), event.getEnd(), event.getDescription(), event.getLocation());
     event.setEventId(calendarEvent.getId());
   }
@@ -161,7 +161,7 @@ public class OnlineScripter implements CalendarScripter {
   @Override
   public void linkEventToUser(ModelEvent event, String uid) {
     CalendarApplication calendarTo = getCalendarFor(uid);
-    CalendarApplication calendarFrom = getCalendarFor(event.getUid());
+    CalendarApplication calendarFrom = getCalendarFor(event.getUser().getId());
     String eventId = event.getEventId();
 //    System.out.println("attached event:"+event);
     calendarTo.attach(calendarFrom.getEvent(eventId));

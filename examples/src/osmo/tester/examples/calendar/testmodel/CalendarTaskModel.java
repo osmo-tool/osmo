@@ -36,9 +36,9 @@ public class CalendarTaskModel {
 
   @TestStep("Add Task")
   public void addTask() {
-    String uid = state.randomUID();
+    User user = state.randomUser();
     Date time = state.randomStartTime();
-    ModelTask task = state.createTask(uid, time);
+    ModelTask task = state.createTask(user, time);
     out.println("--ADDTASK:" + task);
     scripter.addTask(task);
   }
@@ -53,7 +53,7 @@ public class CalendarTaskModel {
   public void removeTask() {
     ModelTask task = state.getAndRemoveRandomTask();
     out.println("--REMOVETASK:" + task);
-    scripter.removeTask(task.getUid(), task.getTaskId());
+    scripter.removeTask(task.getUser().getId(), task.getTaskId());
   }
 }
 
