@@ -39,8 +39,10 @@ public class CalendarFailureModel {
   @TestStep("Failing Assertion")
   public void giefFailure() {
     Collection<ModelEvent> events = new ArrayList<>();
-    events.add(new ModelEvent("persikka", new Date(0), new Date(0), null, null));
-    scripter.assertUserEvents(state.randomUID(), events);
+    User failingUser = new User("persikka", -1);
+    events.add(new ModelEvent(failingUser, new Date(0), new Date(0), null, null));
+//    out.println("--MANSIKKA");
+    scripter.assertUserEvents(state.randomUser().getId(), events);
     out.println("--MUSTIKKA");
   }
 }

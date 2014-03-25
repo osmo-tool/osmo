@@ -6,16 +6,16 @@ package osmo.tester.examples.calendar.testmodel;
  * @author Teemu Kanstren
  */
 public class ParticipantEvent {
-  /** User identifier (uid) of the participant. */
-  private final String participant;
+  /** User object for participant. */
+  private final User participant;
   private final ModelEvent event;
 
-  public ParticipantEvent(String participant, ModelEvent event) {
+  public ParticipantEvent(User participant, ModelEvent event) {
     this.participant = participant;
     this.event = event;
   }
 
-  public String getParticipant() {
+  public User getParticipant() {
     return participant;
   }
 

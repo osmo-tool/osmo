@@ -28,40 +28,19 @@ import osmo.tester.reporting.coverage.HTMLCoverageReporter;
  */
 public class OfflineMain {
   /**
-   * This is used to execute the calendar example.
+   * This is used to execute the calendar example with an offline scripter.
    *
    * @param args command line arguments, ignored.
    */
-  public static void main1(String[] args) {
-    OSMOTester osmo = new OSMOTester();
-//    osmo.setSuiteEndCondition(new Length(2));
-    ModelState state = new ModelState();
-    CalendarScripter scripter = new OnlineScripter();
-    SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
-    osmo.setModelFactory(factory);
-//    CalendarScripter scripter = new OfflineScripter("tests.html");
-    factory.add(new CalendarMeetingModel(state, scripter));
-//    factory.add(new CalendarOracleModel(state, scripter));
-    factory.add(new CalendarTaskModel(state, scripter));
-    factory.add(new CalendarOverlappingModel(state, scripter));
-    factory.add(new CalendarParticipantModel(state, scripter));
-//    factory.add(new CalendarErrorHandlingModel(state, scripter));
-//    factory.add(new CalendarFailureModel(state, scripter));
-    osmo.generate(111);
-  }
-
   public static void main(String[] args) throws Exception {
     OSMOTester osmo = new OSMOTester();
     OSMOConfiguration config = new OSMOConfiguration();
     config.setUnwrapExceptions(true);
-//    FSMBuildVisualizer visu = new FSMBuildVisualizer();
-//    config.addListener(visu);
     osmo.setConfig(config);
     osmo.setTestEndCondition(new Length(5));
     osmo.setSuiteEndCondition(new Length(5));
     ModelState state = new ModelState();
-//    CalendarScripter scripter = new OnlineScripter();
-//    CalendarScripter scripter = new MockScripter();
+    state.setUserCount(3);
     CalendarScripter scripter = new OfflineScripter(state, "tests.html");
     SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
     osmo.setModelFactory(factory);
@@ -72,10 +51,7 @@ public class OfflineMain {
     factory.add(new CalendarOverlappingModel(state, scripter));
     factory.add(new CalendarParticipantModel(state, scripter));
     factory.add(new CalendarErrorHandlingModel(state, scripter));
-//    factory.add(new CalendarFailureModel(state, scripter));
-//    osmo.setAlgorithm(new ManualAlgorithm());
-//    osmo.setAlgorithm(new ManualAlgorithm());
-    osmo.generate(566);
+    osmo.generate(55);
     TestSuite suite = osmo.getSuite();
     FSM fsm = osmo.getFsm();
     HTMLCoverageReporter html = new HTMLCoverageReporter(suite.getCoverage(), suite.getAllTestCases(), fsm);

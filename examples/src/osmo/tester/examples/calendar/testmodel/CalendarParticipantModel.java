@@ -1,5 +1,7 @@
 package osmo.tester.examples.calendar.testmodel;
 
+import osmo.common.Randomizer;
+import osmo.common.TestUtils;
 import osmo.tester.annotation.Description;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
@@ -23,8 +25,7 @@ public class CalendarParticipantModel {
   /** The scripter for creating/executing the test cases. */
   private final CalendarScripter scripter;
   private final PrintStream out;
-  /** Used here to allow scripting to capture and control the data. */
-  private ValueSet<String> userId = new ValueSet<>();
+  private final Randomizer rand = new Randomizer();
 
   public CalendarParticipantModel(ModelState state, CalendarScripter scripter) {
     this.state = state;
@@ -46,16 +47,15 @@ public class CalendarParticipantModel {
 
   @TestStep("Add Participant")
   public void linkEventToUser() {
-    Collection<String> users = state.getUsers();
+    Collection<User> users = state.getUsers();
     ModelEvent event = state.getEventWithSpace();
-    Collection<String> participants = event.getParticipants();
+    Collection<User> participants = event.getParticipants();
     users.removeAll(participants);
-    users.remove(event.getUid());
-    userId.setOptions(users);
-    String user = userId.next();
-    out.println("--ADDPARTICIPANT:" + user + " - " + event);
+    users.remove(event.getUser());
+    User user = rand.oneOf(users);
+    out.println("--ADDPARTICIPANT:" + user.getId() + " - " + event);
     event.addParticipant(user);
-    scripter.linkEventToUser(event, user);
+    scripter.linkEventToUser(event, user.getId());
   }
 
   @Description("Some meeting has a participant")
@@ -68,6 +68,6 @@ public class CalendarParticipantModel {
   public void removeParticipantEvent() {
     ParticipantEvent event = state.getAndRemoveParticipantEvent();
     out.println("--REMOVEPARTICIPANT:" + event);
-    scripter.removeEvent(event.getParticipant(), event.getEvent().getEventId());
+    scripter.removeEvent(event.getParticipant().getId(), event.getEvent().getEventId());
   }
 }

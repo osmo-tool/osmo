@@ -13,18 +13,18 @@ public class ModelTask { //implements Comparable<ModelTask> {
   /** Description of the task. */
   private String description;
   /** User whose task it is. */
-  private String uid;
+  private User user;
   /** Unique identifier for the task. */
   private String taskId;
 
-  public ModelTask(String uid, Date time, String description) {
+  public ModelTask(User user, Date time, String description) {
     this.time = time;
     this.description = description;
-    this.uid = uid;
+    this.user = user;
   }
 
-  public String getUid() {
-    return uid;
+  public User getUser() {
+    return user;
   }
 
   public Date getTime() {
@@ -46,7 +46,7 @@ public class ModelTask { //implements Comparable<ModelTask> {
   @Override
   public String toString() {
     return "ModelTask{" +
-            "uid='" + uid + '\'' +
+            "user='" + user.getId() + '\'' +
             ", description='" + description + '\'' +
             ", time=" + time +
             '}';

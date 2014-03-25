@@ -1,6 +1,7 @@
 package osmo.tester.examples.calendar.testmodel;
 
 import osmo.tester.annotation.AfterSuite;
+import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Description;
 import osmo.tester.annotation.Guard;
@@ -38,12 +39,17 @@ public class CalendarMeetingModel {
     this.scripter = scripter;
     this.out = out;
   }
+  
+  @BeforeSuite
+  public void suiteSetup() {
+    state.init();
+  }
 
   @Description("General test setup")
   @BeforeTest
   public void setup() {
-    state.reset();
     scripter.reset();
+    state.reset();
     out.println("-NEW TEST");
   }
 
@@ -55,10 +61,10 @@ public class CalendarMeetingModel {
 
   @Transition("Add Meeting")
   public void addEvent() {
-    String uid = state.randomUID();
+    User user = state.randomUser();
     Date start = state.randomStartTime();
     Date end = state.randomEndTime(start);
-    ModelEvent event = state.createEvent(uid, start, end);
+    ModelEvent event = state.createEvent(user, start, end);
     out.println("--ADDMEETING:" + event);
     scripter.addEvent(event);
   }
@@ -73,6 +79,6 @@ public class CalendarMeetingModel {
   public void removeOrganizerEvent() {
     ModelEvent event = state.getAndRemoveOwnerEvent();
     out.println("--REMOVEMEETING:" + event);
-    scripter.removeEvent(event.getUid(), event.getEventId());
+    scripter.removeEvent(event.getUser().getId(), event.getEventId());
   }
 }

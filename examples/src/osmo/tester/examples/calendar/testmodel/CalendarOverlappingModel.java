@@ -50,7 +50,7 @@ public class CalendarOverlappingModel {
     long diff = event.getEnd().getTime() - event.getStart().getTime();
     Date start = new Date(event.getStart().getTime() + cLong(500, diff));
     Date end = state.randomEndTime(start);
-    ModelEvent overLapping = state.createEvent(event.getUid(), start, end);
+    ModelEvent overLapping = state.createEvent(event.getUser(), start, end);
     out.println("--ADDOVERLAPPINGEVENT:" + event);
     scripter.addEvent(overLapping);
   }
@@ -64,7 +64,7 @@ public class CalendarOverlappingModel {
   @Transition("Add Overlapping Task")
   public void addOverlappingTask() {
     ModelTask task = state.getRandomExistingTask();
-    ModelTask overLapping = state.createTask(task.getUid(), task.getTime());
+    ModelTask overLapping = state.createTask(task.getUser(), task.getTime());
     out.println("--ADDOVERLAPPINGTASK:" + overLapping);
     scripter.addTask(overLapping);
   }
@@ -78,7 +78,7 @@ public class CalendarOverlappingModel {
   @Transition("AddTaskOverlappingEvent")
   public void addTaskOverlappingEvent() {
     ModelEvent event = state.getRandomExistingEvent();
-    ModelTask overLapping = state.createTask(event.getUid(), event.getStart());
+    ModelTask overLapping = state.createTask(event.getUser(), event.getStart());
     out.println("--ADDTASKOVERLAPPINGEVENT:" + overLapping);
     scripter.addTask(overLapping);
   }

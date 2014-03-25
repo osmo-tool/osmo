@@ -35,13 +35,13 @@ public class CalendarErrorHandlingModel {
   @TestStep("Remove Task That Does Not Exist")
   public void removeTaskThatDoesNotExist() {
     out.println("--REMOVETASKTHATDOESNOTEXIST:");
-    scripter.removeTaskThatDoesNotExist(state.randomUID());
+    scripter.removeTaskThatDoesNotExist(state.randomUser().getId());
   }
 
   @TestStep("Remove Event That Does Not Exist")
   public void removeEventThatDoesNotExist() {
     out.println("--REMOVETASKTHATDOESNOTEXIST:");
-    scripter.removeEventThatDoesNotExist(state.randomUID());
+    scripter.removeEventThatDoesNotExist(state.randomUser().getId());
   }
 
 }
