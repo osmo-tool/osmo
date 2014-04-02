@@ -1,0 +1,48 @@
+<html>
+<head></head>
+<body>
+  <table border="1">
+    <tr>
+      <td>Pair</td>
+      <td>Count</td>
+    </tr>
+    <tr>
+      <td>.osmo.tester.start.step->one</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>one->two</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>five->six</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>four->five</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>seven->eight</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>six->seven</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>three->four</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>two->five</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>two->three</td>
+      <td>1</td>
+    </tr>
+  </table>
+</body>
+</html>
+

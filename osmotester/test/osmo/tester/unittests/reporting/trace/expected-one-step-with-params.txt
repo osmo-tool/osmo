@@ -1,0 +1,177 @@
+<html>
+<head>
+  <style type="text/css">
+    .test-table
+    {
+      font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+      border-collapse:collapse;
+      empty-cells:show;
+    }
+    .test-table th
+    {
+      font-size:1.1em;
+      text-align:left;
+      padding-top:5px;
+      padding-bottom:4px;
+      background-color:#A7C942;
+      color:#ffffff;
+    }
+    .test-table th.colhead
+    {
+      font-size:1.1em;
+      text-align:left;
+      padding-top:5px;
+      padding-bottom:4px;
+      background-color:#A7C942;
+      color:#ffffff;
+      border-bottom: 2px solid #333;
+    }
+    .test-table th.corner
+    {
+      font-size:1.1em;
+      text-align:left;
+      padding-top:5px;
+      padding-bottom:4px;
+      background-color:#A7C942;
+      color:#ffffff;
+      border-bottom: 2px solid #333;
+      border-right: 2px solid #333;
+    }
+    .test-table td, .test-table th[scope=row]
+    {
+      font-size:1em;
+      border:1px solid #98bf21;
+      padding:3px 7px 2px 7px;
+    }
+    .test-table th.testhead
+    {
+      font-size:1.1em;
+      text-align:left;
+      padding-top:5px;
+      padding-bottom:4px;
+      background-color:#B8DA53;
+      color:#ffffff;
+      border-right: 2px solid #333;
+    }
+    .test-table tr.alt td
+    {
+      color:#000000;
+      background-color:#EAF2D3;
+    }
+    .test-table tr:hover th[scope=row], .test-table tr:hover td
+    {
+      background-color: #632a2a;
+      color: #fff;
+    }
+    .test-table caption
+    {
+      caption-side: top;
+      font-size: 0.9em;
+      font-style: bold;
+      text-align: center;
+      padding: 0.5em 0;
+    }
+
+    .fail-table
+    {
+      font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+      border-collapse:collapse;
+      empty-cells:show;
+    }
+    .fail-table th
+    {
+      font-size:1.1em;
+      text-align:left;
+      padding-top:5px;
+      padding-bottom:4px;
+      background-color:#C9A742;
+      color:#ffffff;
+    }
+    .fail-table th.colhead
+    {
+      font-size:1.1em;
+      text-align:left;
+      padding-top:5px;
+      padding-bottom:4px;
+      background-color:#C9A742;
+      color:#ffffff;
+      border-bottom: 2px solid #333;
+    }
+    .fail-table th.corner
+    {
+      font-size:1.1em;
+      text-align:left;
+      padding-top:5px;
+      padding-bottom:4px;
+      background-color:#C9A742;
+      color:#ffffff;
+      border-bottom: 2px solid #333;
+      border-right: 2px solid #333;
+    }
+    .fail-table td, .fail-table th[scope=row]
+    {
+      font-size:1em;
+      border:1px solid #bf9821;
+      padding:3px 7px 2px 7px;
+    }
+    .fail-table th.testhead
+    {
+      font-size:1.1em;
+      text-align:left;
+      padding-top:5px;
+      padding-bottom:4px;
+      background-color:#DAB853;
+      color:#ffffff;
+      border-right: 2px solid #333;
+    }
+    .fail-table tr.alt td
+    {
+      color:#000000;
+      background-color:#F2EAD3;
+    }
+    .fail-table tr:hover th[scope=row], .fail-table tr:hover td
+    {
+      background-color: #632a2a;
+      color: #fff;
+    }
+    .fail-table caption
+    {
+      caption-side: top;
+      font-size: 0.9em;
+      font-style: bold;
+      text-align: center;
+      padding: 0.5em 0;
+    }
+  </style>
+</head>
+<body>
+  <table class="test-table" border="1" name="trace-table 1">
+    <caption>Test Generation Trace for Test1 [1]</caption>
+    <thead>
+      <tr>
+        <th class='corner'>Step</th>
+        <th colspan='5' class='colhead'>Parameters</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th class='testhead' rowspan='2'>1.1:Login</th>
+        <th class='testhead'>Username</th>
+        <th class='testhead'>Password</th>
+        <th class='testhead'>Fancy Pants</th>
+        <th class='testhead'>Funny</th>
+        <th class='testhead'>Address</th>
+      </tr>
+      <tr>
+        <td>bob</td>
+        <td>1nt3rn4l</td>
+        <td>true</td>
+        <td>not so</td>
+        <td>Rock of Gelato, 3rd rock from the Sun</td>
+      </tr>
+    </tbody>
+  </table>
+  <p/>
+</body>
+</html>
+

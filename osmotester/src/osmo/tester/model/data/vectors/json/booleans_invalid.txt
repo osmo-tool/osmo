@@ -1,0 +1,9 @@
+tr ue
+fal se
+1
+0
+wrong
+\u8888
+;
+"true"
+"false"
