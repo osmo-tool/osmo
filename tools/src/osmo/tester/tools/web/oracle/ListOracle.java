@@ -2,6 +2,7 @@ package osmo.tester.tools.web.oracle;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import osmo.common.log.Logger;
 
 import java.util.Iterator;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
  * @author Teemu Kanstren 
  */
 public class ListOracle {
+  private static final Logger log = new Logger(ListOracle.class);
   /** Tolerance for how many items the list should have, e.g. expect 5 but tolerance of 2 = 3-7 expected size. */
   private final int tolerance;
   /** List name, used for readable error reporting. */
@@ -71,7 +73,7 @@ public class ListOracle {
         }
         return;
       } catch (AssertionError ae) {
-        System.out.println("fail "+retries);
+        log.debug("fail "+retries);
         if (retries >= retryCount) {
           throw ae;
         }
@@ -109,8 +111,10 @@ public class ListOracle {
    * @param actualList The actual rows (HTML list root element).
    */
   private void checkLoose(List<String> expectedList, List<WebElement> actualList) {
+    log.debug("List of actual rows:"+actualList);
     for (WebElement actualRow : actualList) {
       String actualRowText = actualRow.getText();
+      log.debug("Found item:"+actualRowText);
       if (attribute != null) actualRowText = actualRow.getAttribute(attribute);
       for (Iterator<String> i = expectedList.iterator() ; i.hasNext() ; ) {
         String expectedRow = i.next();
