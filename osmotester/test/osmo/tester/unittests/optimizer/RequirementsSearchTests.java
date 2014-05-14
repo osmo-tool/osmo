@@ -50,12 +50,13 @@ public class RequirementsSearchTests {
     assertEquals("Req X10 length", 10, x10.getLength());
     assertEquals("Req Y10 length", 11, y10.getLength());
     //epic fail due to too hard to find exact match when some combos pass the value
-    assertEquals("Req X&Y5 length", 19, xy5.getLength());
+    assertEquals("Req X&Y5 length", 6, xy5.getLength());
   }
 
   @Test
   public void model10find1() {
-    Logger.consoleLevel = Level.FINEST;
+//    Logger.consoleLevel = Level.FINEST;
+//    Logger.fileLevel = Level.FINEST;
     Logger.packageName = "o.t.o.r";
     Model10Factory factory = new Model10Factory();
     ReducerConfig config = new ReducerConfig(111);
@@ -63,20 +64,21 @@ public class RequirementsSearchTests {
     Reducer reducer = new Reducer(config);
     OSMOConfiguration osmoConfig = reducer.getOsmoConfig();
     osmoConfig.setFactory(factory);
-    osmoConfig.setTestEndCondition(new Length(50));
-    osmoConfig.setSuiteEndCondition(new Length(20));
-    config.setIterationTime(TimeUnit.SECONDS, 10);
-    config.setTotalTime(TimeUnit.SECONDS, 50);
+//    osmoConfig.setTestEndCondition(new Length(50));
+//    osmoConfig.setSuiteEndCondition(new Length(20));
+    config.setIterationTime(TimeUnit.SECONDS, 5);
+    config.setTotalTime(TimeUnit.SECONDS, 20);
     config.setPopulationSize(500);
     config.setLength(10);
     config.setTestMode(true);
     config.setRequirementsTarget(4);
     ReducerState state = reducer.search();
     Map<String,TestCase> tests = state.getRequirementsTests();
-    assertEquals("Number of requirements tests", 1, tests.size());
+    assertEquals("Number of requirements tests", 2, tests.size());
     TestCase x3 = tests.get("X3");
-    //we only expect to find this one as 10 is too short for others (unless you are super lucky)
     assertEquals("Req X3 length", 3, x3.getLength());
+    TestCase xy5 = tests.get("X&Y 5");
+    assertEquals("Req X&Y 5 length", 7, xy5.getLength());
   }
 
   @Test

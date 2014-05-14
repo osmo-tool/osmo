@@ -1,10 +1,7 @@
 package osmo.tester.optimizer.reducer.debug;
 
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.optimizer.reducer.debug.invariants.LastSteps;
-import osmo.tester.optimizer.reducer.debug.invariants.Precedence;
-import osmo.tester.optimizer.reducer.debug.invariants.SharedSequence;
-import osmo.tester.optimizer.reducer.debug.invariants.StepCounts;
+import osmo.tester.optimizer.reducer.debug.invariants.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -20,7 +17,9 @@ public class Invariants {
   /** Min and max of step counts in tests. */
   private final StepCounts stepCounts;
   /** Which steps always appear before some others. */
-  private final Precedence precedence;
+  private final StrictPrecedence strictPrecedence;
+  /** Which steps always appear before some others. */
+  private final FlexPrecedence flexPrecedence;
   /** Common sequences in all test traces. */
   private SharedSequence sequences = new SharedSequence();
 
@@ -29,7 +28,8 @@ public class Invariants {
    * @param allSteps All steps in the model.
    */
   public Invariants(List<String> allSteps) {
-    precedence = new Precedence(allSteps);
+    strictPrecedence = new StrictPrecedence(allSteps);
+    flexPrecedence = new FlexPrecedence(allSteps);
     stepCounts = new StepCounts(allSteps);
   }
 
@@ -41,7 +41,8 @@ public class Invariants {
   public void process(TestCase test) {
     List<String> steps = test.getAllStepNames();
     sequences.init(steps);
-    precedence.process(steps);
+    strictPrecedence.process(steps);
+    flexPrecedence.process(steps);
     sequences.process(steps);
     stepCounts.process(steps);
     lastSteps.process(steps);
@@ -59,11 +60,15 @@ public class Invariants {
     return stepCounts.getMissingStepCounts();
   }
 
-  public Collection<String> getPrecedencePatterns() {
-    return precedence.getPatterns();
+  public Collection<String> getStrictPrecedences() {
+    return strictPrecedence.getPatterns();
   }
 
-  public Collection<String> getSequencePatterns() {
+  public Collection<String> getFlexPrecedences() {
+    return flexPrecedence.getPatterns();
+  }
+
+  public Collection<String> getSequences() {
     return sequences.getPatterns();
   }
 }

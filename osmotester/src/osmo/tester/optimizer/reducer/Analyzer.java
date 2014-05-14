@@ -58,6 +58,7 @@ public class Analyzer {
     invariants = new Invariants(allSteps);
     for (TestCase test : tests) {
       invariants.process(test);
+      log.debug("Processed:"+test);
     }
     return invariants;
   }
@@ -87,8 +88,9 @@ public class Analyzer {
     vc.put("stepCounts", invariants.getUsedStepCounts());
     vc.put("missingSteps", invariants.getMissingSteps());
     vc.put("finalSteps", invariants.getLastSteps());
-    vc.put("precedences", invariants.getPrecedencePatterns());
-    vc.put("sequences", invariants.getSequencePatterns());
+    vc.put("s_precedences", invariants.getStrictPrecedences());
+    vc.put("f_precedences", invariants.getFlexPrecedences());
+    vc.put("sequences", invariants.getSequences());
 
     velocity.setProperty("resource.loader", "class");
     velocity.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");

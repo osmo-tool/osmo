@@ -99,19 +99,21 @@ public class Reducer {
    */
   private void debugSearch(ReducerState state) {
     //in the initial fuzzy search, we stop on first found instance. from this we shorten and then fuzz again
-    state.setStopOnFirst(true);
+    state.startInitialSearch();
     long totalTime = config.getTotalUnit().toMillis(config.getTotalTime());
     log.info("Running initial search");
-    fuzz(state, totalTime);
-    state.setStopOnFirst(false);
-    state.resetDone();
+    fuzz1(state, totalTime);
+    state.startShortening();
+    if (state.getTests().size() == 0) {
+      System.out.println("Could not find any test.");
+      return;
+    }
     log.info("Running shortening");
     long iterationTime = config.getIterationUnit().toMillis(config.getIterationTime());
     shorten(state, iterationTime);
-    //perform fuzzy search again but do not stop on first
-    state.resetDone();
+    state.startFinalFuzz();
     log.info("Running final fuzz");
-    fuzz(state, iterationTime);
+    fuzz2(state, iterationTime);
 
     int minimum = state.getMinimum();
     if (minimum < config.getLength()) {
@@ -131,15 +133,11 @@ public class Reducer {
     long endTime = config.getTotalUnit().toMillis(config.getTotalTime());
     endTime += System.currentTimeMillis();
     while (shouldRun) {
-      state.resetDone();
-      //in the initial fuzzy search, we stop on first found instance. then shorten
-      state.setStopOnFirst(true);
+      state.startInitialSearch();
       long iterationTime = config.getIterationUnit().toMillis(config.getIterationTime());
-      log.info("Running initial search");
-      if (state.getTest() == null) {
-        fuzz(state, iterationTime);
-      }
-      if (state.getTest() == null) {
+      log.info("Running initial search with tests:"+state.getTests());
+      if (state.getTests().size() == 0) {
+        fuzz1(state, iterationTime);
         if (System.currentTimeMillis() > endTime) {
           //if we find no way to cover anything, we drop out
           break;
@@ -147,11 +145,10 @@ public class Reducer {
           continue;
         }
       }
-      log.debug("Searching with test: " + state.getTest());
-      state.setStopOnFirst(false);
-      state.resetDone();
+      log.debug("Searching with tests: " + state.getTests());
+      state.startShortening();
       log.info("Running shortening");
-      //we do not care about finding many options as we just need on for a requirement, thus no fuzz in end
+      //we do not care about finding many options as we just need one for a requirement, thus no fuzz in end
       shorten(state, iterationTime);
       log.info("Next requirement");
       //move to next requirement, or stop if all have been processed
@@ -192,10 +189,28 @@ public class Reducer {
    * @param state Reduction state to use for fuzzing.
    * @param waitTime Time to wait until signalling stop for fuzz tasks if not stopped yet.
    */
-  private void fuzz(ReducerState state, long waitTime) {
+  private void fuzz1(ReducerState state, long waitTime) {
     Collection<Runnable> tasks = new ArrayList<>();
+    //in debug mode the requirements tests are not set, thus this becomes null as expected
+    TestCase test = state.getRequirementTest();
     for (int i = 0; i < parallelism; i++) {
-      FuzzerTask task = new FuzzerTask(osmoConfig, rand.nextLong(), state);
+      FuzzerTask task = new FuzzerTask(osmoConfig, test, rand.nextLong(), state);
+      tasks.add(task);
+    }
+    runTasks(tasks, state, waitTime);
+  }
+
+  /**
+   * Fuzz tests, that is create random test cases for given configuration.
+   *
+   * @param state Reduction state to use for fuzzing.
+   * @param waitTime Time to wait until signalling stop for fuzz tasks if not stopped yet.
+   */
+  private void fuzz2(ReducerState state, long waitTime) {
+    Collection<Runnable> tasks = new ArrayList<>();
+    List<TestCase> tests = state.getTests();
+    for (TestCase test : tests) {
+      FuzzerTask task = new FuzzerTask(osmoConfig, test, rand.nextLong(), state);
       tasks.add(task);
     }
     runTasks(tasks, state, waitTime);
@@ -219,19 +234,19 @@ public class Reducer {
       synchronized (state) {
         log.debug("waiting time " + waitTime);
         //we might have finished before coming here if previous searches were 100% success
-        if (!state.isDone()) state.wait(waitTime);
+        state.wait(waitTime);
       }
       //if overall timeout instead of reduction, we terminate searches (signal them to stop)
-      state.finish();
+      state.endSearch();
     } catch (InterruptedException e) {
-      log.debug("Got insomnia, failed to sleep!??", e);
+      log.debug("Could not sleep", e);
     }
     //here we wait for the tasks to finish properly
     for (Future future : futures) {
       try {
         future.get();
       } catch (Exception e) {
-        throw new RuntimeException("Failed to run a Reducer", e);
+        throw new RuntimeException("Failed to run a reducer task", e);
       }
     }
   }
@@ -244,10 +259,15 @@ public class Reducer {
    */
   private void shorten(ReducerState state, long waitTime) {
     Collection<Runnable> tasks = new ArrayList<>();
-    for (int i = 0; i < parallelism; i++) {
-      ShortenerTask task = new ShortenerTask(osmoConfig, rand.nextLong(), state);
+    List<TestCase> tests = state.getTests();
+    for (TestCase test : tests) {
+      ShortenerTask task = new ShortenerTask(osmoConfig, test, rand.nextLong(), state);
       tasks.add(task);
     }
+//    for (int i = 0; i < parallelism; i++) {
+//      ShortenerTask task = new ShortenerTask(osmoConfig, rand.nextLong(), state);
+//      tasks.add(task);
+//    }
     runTasks(tasks, state, waitTime);
   }
 

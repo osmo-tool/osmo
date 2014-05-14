@@ -37,6 +37,7 @@ public class ShortenerTask implements Runnable {
   private final int populationSize;
   /** Task iteration counter. */
   private static int nextId = 1;
+  private TestCase previousTest;
 
   /**
    * 
@@ -44,9 +45,10 @@ public class ShortenerTask implements Runnable {
    * @param seed Seed for seeding generators.
    * @param state Current reducer state.
    */
-  public ShortenerTask(OSMOConfiguration osmoConfig, long seed, ReducerState state) {
+  public ShortenerTask(OSMOConfiguration osmoConfig, TestCase previousTest, long seed, ReducerState state) {
     this.osmoConfig = new OSMOConfiguration(osmoConfig);
     this.state = state;
+    this.previousTest = previousTest;
     this.seeder = new Randomizer(seed);
     this.populationSize = state.getConfig().getPopulationSize();
   }
@@ -54,11 +56,13 @@ public class ShortenerTask implements Runnable {
   @Override
   public void run() {
     state.resetDone();
+    log.debug("Starting new shortener");
     while (!state.isDone()) {
-      TestCase previousTest = state.getTest();
+      //TestCase previousTest = state.getTest();
       //create a list of untried steps as all the steps in the test case. then try to remove each one at a time.
       untried.clear();
       untried.addAll(previousTest.getAllStepNames());
+
       while (untried.size() > 0) {
         String removeMe = untried.iterator().next();
         untried.remove(removeMe);
@@ -69,14 +73,14 @@ public class ShortenerTask implements Runnable {
         osmoConfig.setScenario(scenario);
         tester.setConfig(osmoConfig);
         tester.setPrintCoverage(false);
-        int newMinimum = state.getMinimum();
-        log.debug("removed:"+removeMe+" size now:"+newMinimum);
+        int newMinimum = previousTest.getLength()-1;
+        log.debug("removed:"+removeMe+" size now:"+newMinimum+" remaining:"+untried);
         tester.setTestEndCondition(new Length(newMinimum));
         //we need to try many as there can be many combinations possible
         tester.setSuiteEndCondition(new Length(populationSize));
         long seed = seeder.nextLong();
         int id = nextId++;
-        log.debug("Starting shortener task "+id+" with seed "+seed + " and population "+populationSize);
+        log.debug("Starting shortener run "+id+" with seed "+seed + " and population "+populationSize);
         tester.generate(seed);
         TestSuite suite = tester.getSuite();
         List<TestCase> tests = suite.getAllTestCases();
@@ -88,14 +92,16 @@ public class ShortenerTask implements Runnable {
             //in debugging mode this should never happen, in requirements mode can happen often
             continue;
           }
+          previousTest = test;
           state.addTest(test);
           untried.clear();
         }
+        log.debug("Finished with step "+removeMe);
       }
-      //if we did not find anything shorter, we finish
-      if (state.getTest() == previousTest) {
-        state.finish();
-      }
+//      //if we did not find anything shorter, we finish
+//      if (!found) {
+//        state.finish();
+//      }
     }
   }
 
@@ -109,7 +115,6 @@ public class ShortenerTask implements Runnable {
    */
   public Scenario createScenario(TestCase test, String removeMe) {
     //create a strict scenario so undefined steps are forbidden
-    //TODO: should reuse generator scenario and not overwrite one if user has define one before
     Scenario scenario = new Scenario(true);
     List<String> allSteps = test.getAllStepNames();
     Collection<String> steps = new HashSet<>();

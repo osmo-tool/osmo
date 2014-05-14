@@ -11,10 +11,13 @@ import java.util.Map;
 
 /**
  * Analyzes if some step is always before some other step in all given tests.
+ * If strict, keeps only those that were before another in all tests.
+ * If flexible, keeps those that were before another in the tests where they were present.
+ * That is, the first one can never appear if the step is absent from one of the traces.
  * 
  * @author Teemu Kanstren
  */
-public class Precedence {
+public class StrictPrecedence {
   /** Key = step name, Value = Other steps observed before this step. */
   private Map<String, Collection<String>> previousMap = new HashMap<>();
   /** List of all possible steps in the test model. */
@@ -23,7 +26,7 @@ public class Precedence {
   /**
    * @param allSteps All steps in the model.
    */
-  public Precedence(List<String> allSteps) {
+  public StrictPrecedence(List<String> allSteps) {
     this.allSteps = allSteps;
     for (String step : allSteps) {
       //for each step, we initially claim that all other steps are before it. the we remove ones that are not later..
@@ -42,7 +45,7 @@ public class Precedence {
    */
   public void process(List<String> names) {
     for (String step : allSteps) {
-      //if one is never present, we toss it as it is not required to reach failure
+      //never present -> remove
       if (!names.contains(step)) {
         previousMap.get(step).clear();
       }

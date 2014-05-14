@@ -29,6 +29,7 @@ public class ReducerConfig {
   private String extension = "";
   /** Number of threads to request the thread pool to run concurrently, -> number of tasks to try to run in parallel. */
   private int parallelism = Runtime.getRuntime().availableProcessors();
+  private int diversity = 10;
   /** How many requirements we are looking for? If > 0 signals we are doing requirements search. Otherwise it is debug. */
   private int requirementsTarget = 0;
 
@@ -50,6 +51,14 @@ public class ReducerConfig {
 
   public void setParallelism(int parallelism) {
     this.parallelism = parallelism;
+  }
+
+  public int getDiversity() {
+    return diversity;
+  }
+
+  public void setDiversity(int diversity) {
+    this.diversity = diversity;
   }
 
   public String getPathExtension() {
