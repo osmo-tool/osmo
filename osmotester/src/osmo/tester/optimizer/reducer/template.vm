@@ -11,8 +11,13 @@ Step counts:
 #end
 Final steps: $finalSteps
 
-Precedences ($precedences.size()):
-#foreach ($precedence in $precedences)
+Strict precedences ($s_precedences.size()):
+#foreach ($precedence in $s_precedences)
+  $precedence
+#end
+
+Flex precedences ($f_precedences.size()):
+#foreach ($precedence in $f_precedences)
   $precedence
 #end
 

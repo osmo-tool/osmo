@@ -13,7 +13,16 @@ Step counts:
   Disable PIN OK : 1
 Final steps: [Read Binary]
 
-Precedences (7):
+Strict precedences (7):
+  Disable PIN OK->Read Binary
+  Disable PIN OK->Select EF IMSI
+  Select DF GSM->Read Binary
+  Select DF GSM->Select EF IMSI
+  Select EF IMSI->Read Binary
+  Unlock PIN bad->Read Binary
+  Unlock PIN bad->Select EF IMSI
+
+Flex precedences (7):
   Disable PIN OK->Read Binary
   Disable PIN OK->Select EF IMSI
   Select DF GSM->Read Binary

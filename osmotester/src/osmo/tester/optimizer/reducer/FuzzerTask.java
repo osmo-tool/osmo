@@ -34,11 +34,13 @@ public class FuzzerTask implements Runnable {
   private final int populationSize;
   /** Task iteration counter. */
   private static int nextId = 1;
+  private final TestCase test;
 
-  public FuzzerTask(OSMOConfiguration osmoConfig, long seed, ReducerState state) {
-    this.config = osmoConfig;
+  public FuzzerTask(OSMOConfiguration osmoConfig, TestCase test, long seed, ReducerState state) {
+    this.config = new OSMOConfiguration(osmoConfig);
     this.seeder = new Randomizer(seed);
     this.state = state;
+    this.test = test;
     this.populationSize = state.getConfig().getPopulationSize();
   }
 
@@ -58,16 +60,20 @@ public class FuzzerTask implements Runnable {
    * Task main execution delegates here. To allow cleaner implementation if exceptions need to be thrown.
    */
   public void runrun() {
+    log.info("Starting fuzz task");
     while (!state.isDone()) {
       OSMOTester tester = new OSMOTester();
       tester.setConfig(config);
       tester.setPrintCoverage(false);
+      if (test != null) {
+        //here we update the generator configuration to look for shorter tests allowing only found steps
+        Scenario scenario = createScenario(test);
+        config.setScenario(scenario);
+      }
       int newMinimum = state.getMinimum();
-      if (newMinimum <= 0) {
-        //does this really happen?
-        log.info("Stopping due to new minimun "+newMinimum);
-        state.finish();
-        return;
+      int length = state.getConfig().getLength();
+      if (newMinimum > length) {
+        newMinimum = length;
       }
       //if a parallel task found a shorter path, we aim for even shorter
       tester.setTestEndCondition(new Length(newMinimum));
@@ -75,7 +81,7 @@ public class FuzzerTask implements Runnable {
       //create new seed for our new test generator
       long seed = seeder.nextLong();
       int id = nextId++;
-      log.debug("Starting reducer task "+id+" with seed "+seed + " and population "+populationSize);
+      log.info("Starting fuzzer "+id+" with seed "+seed + " and population "+populationSize);
       tester.generate(seed);
       //update counter for how many tests overall have been generated
       state.testsDone(populationSize);
@@ -89,9 +95,6 @@ public class FuzzerTask implements Runnable {
         //in case of requirements, it also captures any better tests for other requirements
         if (!state.check(test)) continue;
         state.addTest(test);
-        //here we update the generator configuration to look for shorter tests allowing only found steps
-        Scenario scenario = createScenario(test);
-        config.setScenario(scenario);
       }
     }
   }
@@ -110,7 +113,8 @@ public class FuzzerTask implements Runnable {
     NumberOfSteps metric = new NumberOfSteps(test);
     Map<String,Integer> counts = metric.getStepCounts();
     for (String step : steps) {
-      scenario.addSlice(step, 0, counts.get(step));
+//      scenario.addSlice(step, 0, counts.get(step));
+      scenario.addSlice(step, 0, test.getLength());
     }
     return scenario;
   }
