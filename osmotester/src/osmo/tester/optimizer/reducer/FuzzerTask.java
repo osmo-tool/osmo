@@ -81,7 +81,7 @@ public class FuzzerTask implements Runnable {
       //create new seed for our new test generator
       long seed = seeder.nextLong();
       int id = nextId++;
-      log.info("Starting fuzzer "+id+" with seed "+seed + " and population "+populationSize);
+      log.debug("Starting fuzzer "+id+" with seed "+seed + " and population "+populationSize);
       tester.generate(seed);
       //update counter for how many tests overall have been generated
       state.testsDone(populationSize);

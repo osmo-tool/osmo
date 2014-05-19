@@ -374,6 +374,7 @@ public class TestUtils {
    */
   public static List<String> listFiles(String dir, String type, boolean fullPath) {
     File folder = new File(dir);
+    if (!folder.exists()) throw new IllegalArgumentException("Given dir does not exist:"+dir);
     File[] directoryList = folder.listFiles();
     List<String> files = new ArrayList<>();
 

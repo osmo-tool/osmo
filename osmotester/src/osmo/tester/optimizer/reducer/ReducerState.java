@@ -4,6 +4,7 @@ import osmo.common.log.Logger;
 import osmo.tester.generator.testsuite.TestCase;
 
 import java.util.*;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -43,10 +44,7 @@ public class ReducerState {
   private Map<String, TestCase> requirementsTests = new HashMap<>();
   /** The list of processed requirements so far. The ones that have best test 'found' already. */
   private Collection<String> processedRequirements = new ArrayList<>();
-
-  private enum ReductionPhase {INITIAL_SEARCH, SHORTENING, FINAL_FUZZ}
-
-  ;
+  private enum ReductionPhase {INITIAL_SEARCH, SHORTENING, FINAL_FUZZ};
   private ReductionPhase phase = ReductionPhase.INITIAL_SEARCH;
 
   /**
@@ -69,20 +67,30 @@ public class ReducerState {
   public void startShortening() {
     startTime = System.currentTimeMillis();
     phase = ReductionPhase.SHORTENING;
-    int shortest = Integer.MAX_VALUE;
-    List<TestCase> shortList = new ArrayList<>();
-    for (TestCase test : tests) {
-      int length = test.getLength();
-      if (length < shortest) {
-        shortest = length;
-        shortList.clear();
-      }
-      if (length == shortest) {
-        shortList.add(test);
-      }
+//    int shortest = Integer.MAX_VALUE;
+//    List<TestCase> shortList = new ArrayList<>();
+//    for (TestCase test : tests) {
+//      int length = test.getLength();
+//      if (length < shortest) {
+//        shortest = length;
+//        shortList.clear();
+//      }
+//      if (length == shortest) {
+//        shortList.add(test);
+//      }
+//    }
+//    tests.clear();
+//    tests.addAll(shortList);
+//    while (tests.size() > 0 && tests.size() < config.getDiversity()) {
+//      log.info("Only "+tests.size() + " tests, replicating more");
+//      tests.addAll(shortList);
+//    }
+    //TODO: write some tests to see this initial set works as intended and longer ones are not removed
+    while (tests.size() > 0 && tests.size() < config.getDiversity()) {
+      log.info("Only "+tests.size() + " tests, replicating more");
+      tests.addAll(tests);
     }
-    tests.clear();
-    tests.addAll(shortList);
+    log.info("Number of tests in start of shortening "+tests.size());
     resetDone();
   }
 
@@ -121,6 +129,7 @@ public class ReducerState {
   }
 
   public boolean isDone() {
+    if (done) return true;
     checkTimeout();
     return done;
   }
@@ -147,6 +156,7 @@ public class ReducerState {
     Long hash = testHash(test);
     //if we already have this test, we ignore it
     if (hashes.contains(hash)) return;
+    log.info("Adding test:"+test);
     switch (phase) {
       case INITIAL_SEARCH:
         addTestInitialSearch(test);
@@ -160,6 +170,10 @@ public class ReducerState {
       default:
         throw new IllegalStateException("Unknown reduction phase:" + phase);
     }
+    //first we write the report for the previous iteration that just finished
+    Analyzer analyzer = new Analyzer(allSteps, this);
+    analyzer.analyze();
+    analyzer.writeReport("reducer-task-" + test.getLength());
     hashes.add(hash);
   }
 
@@ -167,6 +181,7 @@ public class ReducerState {
     //add the new test to the set of initial tests
     tests.add(test);
     if (tests.size() == config.getDiversity()) {
+      log.info("Diversity target reached, stopping iteration.");
       endSearch();
     }
   }
@@ -189,10 +204,10 @@ public class ReducerState {
     if (length < minimum) {
       //starting a new iteration, so store new start time for the iteration
       startTime = System.currentTimeMillis();
-      //first we write the report for the previous iteration that just finished
-      Analyzer analyzer = new Analyzer(allSteps, this);
-      analyzer.analyze();
-      analyzer.writeReport("reducer-task-" + minimum);
+//      //first we write the report for the previous iteration that just finished
+//      Analyzer analyzer = new Analyzer(allSteps, this);
+//      analyzer.analyze();
+//      analyzer.writeReport("reducer-task-" + minimum);
       //set new state for the new iteration
       tests.clear();
       hashes.clear();
@@ -287,6 +302,7 @@ public class ReducerState {
     long now = System.currentTimeMillis();
     long diff = now - startTime;
     if (diff > timeout) {
+      log.info("Iteration timed out");
       endSearch();
     }
   }

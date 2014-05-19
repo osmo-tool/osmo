@@ -17,10 +17,12 @@ import java.util.logging.Level;
 public class ReducerMain {
   public static void main(String[] args) {
     Logger.consoleLevel = Level.INFO;
-    ReducerConfig config = new ReducerConfig(111);
+    long seed = Long.parseLong(args[0]);
+    System.out.println("Using seed:"+seed);
+    ReducerConfig config = new ReducerConfig(seed);
 //    config.setParallelism(1);
     Reducer reducer = new Reducer(config);
-    reducer.setDeleteOldOutput(true);
+    reducer.setDeleteOldOutput(false);
     OSMOConfiguration osmoConfig = reducer.getOsmoConfig();
     osmoConfig.setFactory(new GSMModelFactory(NullPrintStream.stream));
 //    osmoConfig.setTestEndCondition(new Length(50));

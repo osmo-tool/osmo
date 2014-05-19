@@ -236,6 +236,7 @@ public class Reducer {
         //we might have finished before coming here if previous searches were 100% success
         state.wait(waitTime);
       }
+      log.info("Notifying state to stop just in case..");
       //if overall timeout instead of reduction, we terminate searches (signal them to stop)
       state.endSearch();
     } catch (InterruptedException e) {
