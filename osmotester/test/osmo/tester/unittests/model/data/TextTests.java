@@ -1,7 +1,6 @@
 package osmo.tester.unittests.model.data;
 
 import org.junit.Test;
-import osmo.tester.model.data.DataGenerationStrategy;
 import osmo.tester.model.data.Text;
 
 import java.util.HashSet;
@@ -46,7 +45,7 @@ public class TextTests {
   public void generateSequenceOf1() {
     Text text = new Text(1, 1);
     text.setSeed(333);
-    String word = text.next();
+    String word = text.random();
     assertEquals("Generated sequence length should match requested", 1, word.length());
   }
 
@@ -54,7 +53,7 @@ public class TextTests {
   public void generateSequenceOf2() {
     Text text = new Text(2, 2);
     text.setSeed(333);
-    String word = text.next();
+    String word = text.random();
     assertEquals("Generated sequence length should match requested", 2, word.length());
   }
 
@@ -66,7 +65,7 @@ public class TextTests {
     boolean four = false;
     boolean five = false;
     for (int i = 0 ; i < 1000 ; i++) {
-      String word = text.next();
+      String word = text.random();
       int length = word.length();
       assertTrue("Generated sequence length should be between 3-5, was " + length, length >= 3 && length <= 5);
       three = three || length == 3;
@@ -77,25 +76,28 @@ public class TextTests {
     assertTrue("Should have generated length 4 char sequence.", four);
     assertTrue("Should have generated length 5 char sequence.", five);
   }
+
   @Test
   public void invalidLength() {
-    testLength(DataGenerationStrategy.RANDOM_INVALID);
-    testLength(DataGenerationStrategy.RANDOM);
+    testLength(true);
+    testLength(false);
   }
 
-  private void testLength(DataGenerationStrategy strategy) {
+  private void testLength(boolean invalid) {
     Text text = new Text(10, 20);
     text.setSeed(333);
-    text.setStrategy(strategy);
     text.enableInvalidLength(true);
     Set<Integer> lengths = new HashSet<>();
     for (int i = 0 ; i < 100 ; i++) {
-      String word = text.next();
+      String word = null;
+      if (invalid) word = text.randomInvalid();
+      else word = text.random();
       int length = word.length();
       lengths.add(length);
       assertTrue("Invalid length for 10-20+5 should first be 21-25, was:" + length, length > 20 && length <= 25);
 
-      word = text.next();
+      if (invalid) word = text.randomInvalid();
+      else word = text.random();
       length = word.length();
       lengths.add(length);
       assertTrue("Invalid length for 10-20+5 should second be 5-9, was:" + length, length >= 5 && length < 10);
@@ -107,9 +109,8 @@ public class TextTests {
   public void invalidRandom() {
     Text text = new Text(10, 20);
     text.setSeed(333);
-    text.setStrategy(DataGenerationStrategy.RANDOM_INVALID);
     text.asciiLettersAndNumbersOnly();
-    String word = text.next();
+    String word = text.randomInvalid();
     int invalid = countInvalidAsciiCharsIn(word);
     int valid = word.length() - invalid;
     assertTrue("Number of valid chars in random invalid should be > 0, was " + valid, valid > 0);
@@ -133,7 +134,7 @@ public class TextTests {
     Text text = new Text(10, 20);
     text.setSeed(333);
     text.enableZeroSize(true);
-    String word = text.next();
+    String word = text.random();
     int length = word.length();
     assertTrue("Zero size enabled with invalid length disabled should produce no effect", length >= 10 && length <= 20);
 
@@ -141,12 +142,12 @@ public class TextTests {
     text.setSeed(333);
     text.enableZeroSize(true);
     text.enableInvalidLength(true);
-    word = text.next();
+    word = text.random();
     assertEquals("Zero size enabled with invalid length enabled should produce zero size as first item.", 0, word.length());
-    word = text.next();
+    word = text.random();
     length = word.length();
     assertTrue("Zero size enabled with invalid length enabled should produce >max size as second item.", length > 20);
-    word = text.next();
+    word = text.random();
     length = word.length();
     assertTrue("Zero size enabled with invalid length enabled should produce <min size as second item.", length < 10);
   }
@@ -185,9 +186,8 @@ public class TextTests {
     Text text = new Text(10, 10);
     text.setSeed(333);
     text.asciiLettersAndNumbersOnly();
-    text.setStrategy(DataGenerationStrategy.RANDOM_INVALID);
     text.setInvalidProbability(0);
-    String word = text.next();
+    String word = text.randomInvalid();
     int count = countInvalidAsciiCharsIn(word);
     assertEquals("Number of invalid chars with zero invalid probability", 0, count);
   }
@@ -197,9 +197,8 @@ public class TextTests {
     Text text = new Text(10, 10);
     text.setSeed(333);
     text.asciiLettersAndNumbersOnly();
-    text.setStrategy(DataGenerationStrategy.RANDOM_INVALID);
     text.setInvalidProbability(1);
-    String word = text.next();
+    String word = text.randomInvalid();
     int count = countInvalidAsciiCharsIn(word);
     assertEquals("All chars should be invalid with full invalid probability", 10, count);
   }
@@ -212,7 +211,7 @@ public class TextTests {
     text.setOffset(1, 5);
     text.enableInvalidLength(true);
     for (int i = 0 ; i < 100 ; i++) {
-      String word = text.next();
+      String word = text.random();
 //      System.out.println(word.length()+":"+word);
       assertNotNull("Invalid generation should always produce a word or exception, not null", word);
       assertTrue("Invalid should never go over max size + max offset", word.length() < 8);

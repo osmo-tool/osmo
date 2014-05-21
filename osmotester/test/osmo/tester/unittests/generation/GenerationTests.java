@@ -219,8 +219,8 @@ public class GenerationTests {
     osmo.setTestEndCondition(combo);
     osmo.setSuiteEndCondition(combo);
     osmo.generate(111);
-    assertEquals("Number of tests", 100, osmo.getSuite().getFinishedTestCases().size());
-    assertEquals("Test length", 100, osmo.getSuite().getFinishedTestCases().get(0).getSteps().size());
+    assertEquals("Number of tests", 100, osmo.getSuite().getAllTestCases().size());
+    assertEquals("Test length", 100, osmo.getSuite().getAllTestCases().get(0).getSteps().size());
   }
 
   @Test

@@ -45,8 +45,6 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
   protected List<Number> history = new ArrayList<>();
   /** Balancing strategy selection set. */
   protected ValueSet<T> balancingChoices = new ValueSet<>();
-  /** The strategy for data generation. */
-  private DataGenerationStrategy algorithm = DataGenerationStrategy.RANDOM;
   /** The actual type of data to be generated. */
   private DataType type;
   /** Handles boundary scan data generation strategy. */
@@ -138,39 +136,6 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
     return history;
   }
 
-  /**
-   * 
-   * @param algorithm The new algorithm.
-   * @return
-   * @deprecated Will be removed in next version.
-   */
-  @Override
-  public ValueRange<T> setStrategy(DataGenerationStrategy algorithm) {
-    this.algorithm = algorithm;
-    return this;
-  }
-
-  /**
-   * 
-   * @return
-   * @deprecated will remove next release
-   */
-  @Override
-  public T next() {
-    switch (algorithm) {
-      case ORDERED_LOOP:
-        return loop();
-      case BALANCING:
-        return balanced();
-      case BOUNDARY_SCAN:
-        return boundaryIn();
-      case BOUNDARY_SCAN_INVALID:
-        return boundaryOut();
-      default:
-        return random();
-    }
-  }
-  
   private void pre() {
     if (rand == null) throw new IllegalStateException("You need to set seed before using data objects");
     choice = null;

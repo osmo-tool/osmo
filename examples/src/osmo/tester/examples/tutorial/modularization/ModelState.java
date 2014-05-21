@@ -1,6 +1,5 @@
 package osmo.tester.examples.tutorial.modularization;
 
-import osmo.tester.model.data.DataGenerationStrategy;
 import osmo.tester.model.data.ValueRange;
 import osmo.tester.model.data.ValueSet;
 
@@ -14,7 +13,7 @@ public class ModelState {
   private ValueRange<Double> ranges = new ValueRange<>(0.1d, 5.2d);
 
   public ModelState() {
-    names.setStrategy(DataGenerationStrategy.BALANCING);
+   
   }
 
   public void reset() {
@@ -27,11 +26,11 @@ public class ModelState {
   }
 
   public String nextName() {
-    return names.next();
+    return names.balanced();
   }
 
   public int nextSize() {
-    return sizes.next();
+    return sizes.random();
   }
 
   public void didHello() {
@@ -47,10 +46,10 @@ public class ModelState {
   }
 
   public String nextWorld() {
-    return worlds.next();
+    return worlds.random();
   }
 
   public double nextRange() {
-    return ranges.next();
+    return ranges.random();
   }
 }

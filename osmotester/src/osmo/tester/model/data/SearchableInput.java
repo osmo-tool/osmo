@@ -13,7 +13,7 @@ import java.util.Collection;
  *
  * @author Teemu Kanstren
  */
-public abstract class SearchableInput<T> implements Input<T>, VariableValue<T> {
+public abstract class SearchableInput<T> implements VariableValue<T> {
   private static final Logger log = new Logger(SearchableInput.class);
   /** Variable name. */
   private String name;

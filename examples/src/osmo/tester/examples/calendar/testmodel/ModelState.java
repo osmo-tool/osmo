@@ -5,7 +5,6 @@ import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestCaseStep;
-import osmo.tester.model.data.DataGenerationStrategy;
 import osmo.tester.model.data.Text;
 import osmo.tester.model.data.ValueRange;
 import osmo.tester.model.data.ValueSet;
@@ -71,7 +70,7 @@ public class ModelState {
     }
     for (int i = 1 ; i <= userCount ; i++) {
 //      this.users.add("user" + i);
-      this.users.add(new User(names.next()));
+      this.users.add(new User(names.random()));
     }
   }
 

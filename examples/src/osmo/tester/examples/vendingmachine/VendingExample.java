@@ -4,7 +4,6 @@ import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.annotation.*;
 import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.model.data.Input;
 import osmo.tester.model.data.ValueSet;
 
 import java.io.PrintStream;
@@ -27,7 +26,7 @@ public class VendingExample {
   private int cents = 0;
   private int bottles = 10;
   private final int PRICE = 100;
-  private final Input<Integer> coins = new ValueSet<>(10, 20, 50);
+  private final ValueSet<Integer> coins = new ValueSet<>(10, 20, 50);
   private TestSuite testSuite = null;
 
   public VendingExample() {
@@ -45,18 +44,18 @@ public class VendingExample {
     cents = 0;
     //uncomment this for failure to continue with 0 available transitions
     bottles = 10;
-    int tests = testSuite.getFinishedTestCases().size() + 1;
+    int tests = testSuite.getAllTestCases().size() + 1;
     out.print("Starting test:" + tests + "\n");
   }
 
   @AfterSuite
   public void done() {
-    out.print("Created total of " + testSuite.getFinishedTestCases().size() + " tests.\n");
+    out.print("Created total of " + testSuite.getAllTestCases().size() + " tests.\n");
   }
 
   @TestStep("insert-money")
   public void insertMoney() {
-    int coin = coins.next();
+    int coin = coins.random();
     scripter.step("INSERT " + coin);
     cents += coin;
   }

@@ -22,8 +22,6 @@ public class Text extends SearchableInput<String> {
   private final CharSet chars = new CharSet();
   /** History of generated text for this object. */
   private Collection<String> history = new ArrayList<>();
-  /** How are the characters generated? */
-  private DataGenerationStrategy strategy = DataGenerationStrategy.RANDOM;
   /** Produce words of invalid length? Invalid is what we call length outside configured bounds.. */
   private boolean invalid = false;
   /** Length of previously generated value. Used to track upper/lower bounds violations when generating invalid data. */
@@ -113,42 +111,6 @@ public class Text extends SearchableInput<String> {
   }
 
   /**
-   * Not supported by this class.
-   */
-  @Override
-  public Text setStrategy(DataGenerationStrategy algorithm) {
-    switch (algorithm) {
-      case RANDOM:
-      case RANDOM_INVALID:
-        this.strategy = algorithm;
-        return this;
-      default:
-        throw new UnsupportedOperationException(Text.class.getSimpleName() + " supports only Random data generation strategy, given: " + algorithm.name() + ".");
-    }
-  }
-
-  /**
-   * Generates a sequence of characters, in length between the configured min and max values.
-   *
-   * @return The generated character sequence.
-   */
-  @Override
-  public String next() {
-    if (gui != null) {
-      return (String) gui.next();
-    }
-    OSMOConfiguration.check(this);
-    switch (strategy) {
-      case RANDOM:
-        return random();
-      case RANDOM_INVALID:
-        return randomInvalid();
-      default:
-        throw new IllegalStateException("Unsupported data generation strategy for " + Text.class.getName() + " (random and scripted only supported): " + strategy.getClass().getName());
-    }
-  }
-
-  /**
    * Calculate length of text to generate next.
    * 
    * @return Length defined.
@@ -210,7 +172,7 @@ public class Text extends SearchableInput<String> {
     for (int i = 0 ; i < length ; i++) {
       float f = rand.nextFloat(0, 1);
       if (f > invalidProbability) {
-        c[i] = chars.next();
+        c[i] = chars.random();
       } else {
         c[i] = chars.invalidRandom();
       }

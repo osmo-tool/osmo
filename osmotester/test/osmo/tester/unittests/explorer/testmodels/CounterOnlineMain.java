@@ -23,7 +23,7 @@ public class CounterOnlineMain {
     config.setMaxSuiteLength(10);
     config.setSuitePlateauThreshold(50);
     osmo.explore(config);
-    List<TestCase> cases = osmo.getSuite().getFinishedTestCases();
+    List<TestCase> cases = osmo.getSuite().getAllTestCases();
     for (TestCase test : cases) {
       System.out.println(test.getAttribute("test-script"));
     }

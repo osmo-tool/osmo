@@ -36,7 +36,7 @@ public class HelloModel3 {
 
   @TestStep("hello")
   public void sayHello() {
-    System.out.println("HELLO "+text.next());
+    System.out.println("HELLO "+text.random());
     helloCount++;
   }
 
@@ -47,7 +47,7 @@ public class HelloModel3 {
 
   @TestStep("world")
   public void sayWorld() {
-    System.out.println("WORLD "+text.next());
+    System.out.println("WORLD "+text.random());
     worldCount++;
   }
 }

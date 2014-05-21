@@ -94,7 +94,7 @@ public class ExplorationTests {
 
   private void assertTestCount(int expected) {
     TestSuite suite = osmo.getSuite();
-    assertEquals("Number of generated tests", expected, suite.getFinishedTestCases().size());
+    assertEquals("Number of generated tests", expected, suite.getAllTestCases().size());
   }
 
   @Test
@@ -111,7 +111,7 @@ public class ExplorationTests {
   }
 
   private void assertTestSequence(int testIndex, String sequence) {
-    TestCase testCase = osmo.getSuite().getFinishedTestCases().get(testIndex);
+    TestCase testCase = osmo.getSuite().getAllTestCases().get(testIndex);
     String actual = testCase.getAllStepNames().toString();
     assertEquals("Explored test", sequence, actual);
   }

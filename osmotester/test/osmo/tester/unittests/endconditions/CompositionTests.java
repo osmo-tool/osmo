@@ -29,7 +29,7 @@ public class CompositionTests {
     tester.setSuiteEndCondition(length2);
     tester.generate(333);
     TestSuite suite = tester.getSuite();
-    List<TestCase> history = suite.getFinishedTestCases();
+    List<TestCase> history = suite.getAllTestCases();
     assertEquals("Number of tests generated", 2, history.size());
     for (TestCase test : history) {
       assertEquals("Number of steps in a test case", 4, test.getSteps().size());
@@ -49,7 +49,7 @@ public class CompositionTests {
     tester.setSuiteEndCondition(length2);
     tester.generate(333);
     TestSuite suite = tester.getSuite();
-    List<TestCase> history = suite.getFinishedTestCases();
+    List<TestCase> history = suite.getAllTestCases();
     assertEquals("Number of tests generated", 2, history.size());
     for (TestCase test : history) {
       assertEquals("Number of steps in a test case", 6, test.getSteps().size());
@@ -71,7 +71,7 @@ public class CompositionTests {
     tester.setSuiteEndCondition(length2);
     tester.generate(333);
     TestSuite suite = tester.getSuite();
-    List<TestCase> history = suite.getFinishedTestCases();
+    List<TestCase> history = suite.getAllTestCases();
     assertEquals("Number of tests generated", 2, history.size());
     for (TestCase test : history) {
       assertEquals("Number of steps in a test case", 2, test.getSteps().size());
@@ -91,7 +91,7 @@ public class CompositionTests {
     tester.setSuiteEndCondition(and);
     tester.generate(333);
     TestSuite suite = tester.getSuite();
-    List<TestCase> history = suite.getFinishedTestCases();
+    List<TestCase> history = suite.getAllTestCases();
     assertEquals("Number of tests generated", 6, history.size());
     for (TestCase test : history) {
       assertEquals("Number of steps in a test case", 6, test.getSteps().size());

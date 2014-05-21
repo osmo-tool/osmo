@@ -80,7 +80,7 @@ public class GreedyTests {
     suite.endTest();
 
     gc.setRequirementWeight(1);
-    List<TestCase> tests = GreedyOptimizer.sortAndPrune(suite.getFinishedTestCases(), new ScoreCalculator(gc), 0);
+    List<TestCase> tests = GreedyOptimizer.sortAndPrune(suite.getAllTestCases(), new ScoreCalculator(gc), 0);
     assertEquals("Number of tests should be reduced after pruning useless ones.", 2, tests.size());
     TestCase testCase1 = tests.get(0);
     TestCase testCase2 = tests.get(1);
@@ -95,7 +95,7 @@ public class GreedyTests {
   public void requirementOptimizer3TestsWithOverlap() {
     gc.setRequirementWeight(1);
     TestSuite suite = createSuite1();
-    List<TestCase> tests = GreedyOptimizer.sortAndPrune(suite.getFinishedTestCases(), new ScoreCalculator(gc), 0);
+    List<TestCase> tests = GreedyOptimizer.sortAndPrune(suite.getAllTestCases(), new ScoreCalculator(gc), 0);
     assertEquals("Number of tests should be reduced after pruning useless ones.", 1, tests.size());
     TestCase testCase1 = tests.get(0);
     Collection<String> reqs1 = testCase1.getCoverage().getRequirements();
