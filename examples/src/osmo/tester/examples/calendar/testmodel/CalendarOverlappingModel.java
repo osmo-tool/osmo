@@ -2,7 +2,7 @@ package osmo.tester.examples.calendar.testmodel;
 
 import osmo.tester.annotation.Description;
 import osmo.tester.annotation.Guard;
-import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.TestStep;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 
 import java.io.PrintStream;
@@ -44,7 +44,7 @@ public class CalendarOverlappingModel {
     return state.hasEvents();
   }
 
-  @Transition("Add Overlapping Meeting")
+  @TestStep("Add Overlapping Meeting")
   public void addOverlappingEvent() {
     ModelEvent event = state.getRandomExistingEvent();
     long diff = event.getEnd().getTime() - event.getStart().getTime();
@@ -61,7 +61,7 @@ public class CalendarOverlappingModel {
     return state.hasTasks();
   }
 
-  @Transition("Add Overlapping Task")
+  @TestStep("Add Overlapping Task")
   public void addOverlappingTask() {
     ModelTask task = state.getRandomExistingTask();
     ModelTask overLapping = state.createTask(task.getUser(), task.getTime());
@@ -75,7 +75,7 @@ public class CalendarOverlappingModel {
     return state.hasEvents();
   }
 
-  @Transition("AddTaskOverlappingEvent")
+  @TestStep("AddTaskOverlappingEvent")
   public void addTaskOverlappingEvent() {
     ModelEvent event = state.getRandomExistingEvent();
     ModelTask overLapping = state.createTask(event.getUser(), event.getStart());

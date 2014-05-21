@@ -13,10 +13,7 @@ import osmo.tester.optimizer.multiosmo.MultiOSMO;
 import osmo.tester.parser.MainParser;
 import osmo.tester.parser.ParserResult;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -116,6 +113,9 @@ public class Reducer {
     fuzz2(state, iterationTime);
 
     int minimum = state.getMinimum();
+    
+    state.prune();
+    
     if (minimum < config.getLength()) {
       System.out.println("Got down to:" + minimum);
     } else {
@@ -155,6 +155,7 @@ public class Reducer {
       shouldRun = state.nextRequirement();
       log.debug("Search continue status:" + shouldRun);
     }
+    state.prune();
   }
 
   /**

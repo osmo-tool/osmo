@@ -44,7 +44,10 @@ public class ReducerState {
   private Map<String, TestCase> requirementsTests = new HashMap<>();
   /** The list of processed requirements so far. The ones that have best test 'found' already. */
   private Collection<String> processedRequirements = new ArrayList<>();
-  private enum ReductionPhase {INITIAL_SEARCH, SHORTENING, FINAL_FUZZ};
+
+  private enum ReductionPhase {INITIAL_SEARCH, SHORTENING, FINAL_FUZZ}
+
+  ;
   private ReductionPhase phase = ReductionPhase.INITIAL_SEARCH;
 
   /**
@@ -85,12 +88,17 @@ public class ReducerState {
 //      log.info("Only "+tests.size() + " tests, replicating more");
 //      tests.addAll(shortList);
 //    }
+    //we need to update "minimum" size for later phases even if we still want to keep all sizes at start for diversity
+    for (TestCase test : tests) {
+      int length = test.getLength();
+      if (length < minimum) minimum = length;
+    }
     //TODO: write some tests to see this initial set works as intended and longer ones are not removed
     while (tests.size() > 0 && tests.size() < config.getDiversity()) {
-      log.info("Only "+tests.size() + " tests, replicating more");
+      log.info("Only " + tests.size() + " tests, replicating more");
       tests.addAll(tests);
     }
-    log.info("Number of tests in start of shortening "+tests.size());
+    log.info("Number of tests in start of shortening " + tests.size());
     resetDone();
   }
 
@@ -156,7 +164,7 @@ public class ReducerState {
     Long hash = testHash(test);
     //if we already have this test, we ignore it
     if (hashes.contains(hash)) return;
-    log.info("Adding test:"+test);
+    log.info("Adding test:" + test);
     switch (phase) {
       case INITIAL_SEARCH:
         addTestInitialSearch(test);
@@ -268,6 +276,20 @@ public class ReducerState {
       result.addAll(tests);
     }
     return result;
+  }
+
+  /**
+   * Removes all tests from given set that are longer than minimum.
+   * Modifies the given collection.
+   * This call is required for cases where the initial search finds the shortest one and later phases do not
+   * find anything better. In that case, the initial set holds until the end, including tests of varying length.
+   * If a later phase manages to improve, this would not be required.
+   */
+  public void prune() {
+    for (Iterator<TestCase> i = tests.iterator(); i.hasNext(); ) {
+      TestCase test = i.next();
+      if (test.getLength() > minimum) i.remove();
+    }
   }
 
   public Map<String, TestCase> getRequirementsTests() {

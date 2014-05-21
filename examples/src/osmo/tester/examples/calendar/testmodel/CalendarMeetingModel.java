@@ -6,7 +6,6 @@ import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Description;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
-import osmo.tester.annotation.Transition;
 import osmo.tester.examples.calendar.scripter.CalendarScripter;
 import osmo.tester.model.Requirements;
 
@@ -59,7 +58,7 @@ public class CalendarMeetingModel {
     scripter.write();
   }
 
-  @Transition("Add Meeting")
+  @TestStep("Add Meeting")
   public void addEvent() {
     User user = state.randomUser();
     Date start = state.randomStartTime();

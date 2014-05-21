@@ -2,14 +2,7 @@ package osmo.tester.examples.vendingmachine;
 
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
-import osmo.tester.annotation.AfterSuite;
-import osmo.tester.annotation.BeforeTest;
-import osmo.tester.annotation.EndCondition;
-import osmo.tester.annotation.Guard;
-import osmo.tester.annotation.Post;
-import osmo.tester.annotation.Pre;
-import osmo.tester.annotation.Transition;
-import osmo.tester.generator.ReflectiveModelFactory;
+import osmo.tester.annotation.*;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.data.Input;
 import osmo.tester.model.data.ValueSet;
@@ -61,7 +54,7 @@ public class VendingExample {
     out.print("Created total of " + testSuite.getFinishedTestCases().size() + " tests.\n");
   }
 
-  @Transition("insert-money")
+  @TestStep("insert-money")
   public void insertMoney() {
     int coin = coins.next();
     scripter.step("INSERT " + coin);
@@ -73,7 +66,7 @@ public class VendingExample {
     return cents >= PRICE;
   }
 
-  @Transition("vend")
+  @TestStep("vend")
   public void vend() {
     scripter.step("VEND (" + bottles + ")");
     cents -= PRICE;
