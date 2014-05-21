@@ -1,12 +1,7 @@
 package osmo.tester.examples.calculator;
 
 import osmo.tester.OSMOTester;
-import osmo.tester.annotation.AfterSuite;
-import osmo.tester.annotation.AfterTest;
-import osmo.tester.annotation.BeforeSuite;
-import osmo.tester.annotation.BeforeTest;
-import osmo.tester.annotation.Guard;
-import osmo.tester.annotation.Transition;
+import osmo.tester.annotation.*;
 import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.algorithm.RandomAlgorithm;
 import osmo.tester.generator.endcondition.Length;
@@ -69,7 +64,7 @@ public class CalculatorModel2 {
     return currentState == null;
   }
 
-  @Transition("start")
+  @TestStep("start")
   public void startState() {
     out.println("S:" + counter);
     counter++;
@@ -81,7 +76,7 @@ public class CalculatorModel2 {
     return currentState == State.Increase || currentState == State.Decrease || currentState == State.Start;
   }
 
-  @Transition("decrease")
+  @TestStep("decrease")
   public void decreaseState() {
     out.println("Decreased: " + counter--);
     currentState = State.Decrease;
@@ -92,7 +87,7 @@ public class CalculatorModel2 {
     return currentState == State.Increase || currentState == State.Decrease || currentState == State.Start;
   }
 
-  @Transition("increase")
+  @TestStep("increase")
   public void increaseState() {
     out.println("Increased: " + counter++);
     currentState = State.Increase;

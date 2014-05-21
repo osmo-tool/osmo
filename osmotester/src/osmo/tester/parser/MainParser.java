@@ -17,7 +17,6 @@ import osmo.tester.annotation.LastStep;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.Pre;
 import osmo.tester.annotation.TestStep;
-import osmo.tester.annotation.Transition;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
@@ -73,7 +72,6 @@ public class MainParser {
 
   public MainParser() {
     //we set up the parser objects for the different annotation types
-    annotationParsers.put(Transition.class, new TransitionParser());
     annotationParsers.put(TestStep.class, new TransitionParser());
     annotationParsers.put(Guard.class, new GuardParser());
     annotationParsers.put(LastStep.class, new LastStepParser());

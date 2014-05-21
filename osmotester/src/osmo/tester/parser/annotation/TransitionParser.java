@@ -3,7 +3,6 @@ package osmo.tester.parser.annotation;
 import osmo.common.log.Logger;
 import osmo.tester.annotation.Group;
 import osmo.tester.annotation.TestStep;
-import osmo.tester.annotation.Transition;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
 import osmo.tester.model.TransitionName;
@@ -14,7 +13,7 @@ import osmo.tester.parser.ParserResult;
 import java.lang.reflect.Method;
 
 /**
- * Parses {@link osmo.tester.annotation.Transition} and {@link osmo.tester.annotation.TestStep} annotations 
+ * Parses {@link osmo.tester.annotation.TestStep} and {@link osmo.tester.annotation.TestStep} annotations 
  * from the given model object.
  *
  * @author Teemu Kanstren
@@ -31,34 +30,20 @@ public class TransitionParser implements AnnotationParser {
     String name = null;
     int weight = 0;
     String group = parameters.getClassAnnotation(Group.class);
-    if (annotation instanceof Transition) {
-      Transition t = (Transition) annotation;
-      name = t.name();
-      //first we try the "name" property which dominates, then the default "value" property
-      //since they both have default values of "" this is used as an indicator of undefined name
-      //however, missing name is not taken as an error to allow leaving transitions unnamed if no guards or
-      //oracles need to be associated to one
-      if (name.length() == 0) {
-        name = t.value();
-      }
-      weight = t.weight();
-      if (t.group().length() > 0) {
-        group = t.group();
-      }
-      type = Transition.class.getSimpleName();
-    } else {
-      TestStep ts = (TestStep) annotation;
-      name = ts.name();
-      //same as with transition tag above
-      if (name.length() == 0) {
-        name = ts.value();
-      }
-      weight = ts.weight();
-      if (ts.group().length() > 0) {
-        group = ts.group();
-      }
-      type = TestStep.class.getSimpleName();
+    TestStep ts = (TestStep) annotation;
+    name = ts.name();
+    //first we try the "name" property which dominates, then the default "value" property
+    //since they both have default values of "" this is used as an indicator of undefined name
+    //however, missing name is not taken as an error to allow leaving transitions unnamed if no guards or
+    //oracles need to be associated to one      
+    if (name.length() == 0) {
+      name = ts.value();
     }
+    weight = ts.weight();
+    if (ts.group().length() > 0) {
+      group = ts.group();
+    }
+    type = TestStep.class.getSimpleName();
     //if no name given, use method name
     if (name.length() == 0) {
       name = parseName(parameters.getMethod().getName());
