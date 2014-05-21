@@ -108,16 +108,6 @@ public class TestSuite {
   }
 
   /**
-   * Gives the test cases in this test suite. Excludes the currently generated test case (if not yet finished).
-   *
-   * @return The test cases.
-   * @deprecated Should be removed and only getAllTestCases() be used.
-   */
-  public List<TestCase> getFinishedTestCases() {
-    return testCases;
-  }
-
-  /**
    * Gives all test cases in this test suite, including the one being currently generated.
    *
    * @return The test cases.

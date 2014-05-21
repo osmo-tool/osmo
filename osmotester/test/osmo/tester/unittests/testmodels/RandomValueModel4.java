@@ -27,35 +27,28 @@ public class RandomValueModel4 {
 
   @TestStep("Step1")
   public void step() {
-    range.next();
+    range.random();
   }
 
   @TestStep("Step2")
   public void step2() {
-    Integer next = range2.next();
+    Integer next = range2.random();
   }
 
   //NOTE:given the same seed value, the generator will take the third step (this) and the names the third value (keijo)
   //->covers same stuff forever
   @TestStep("Step3")
   public void step3() {
-    String next = names.next();
-//    if (suite.getCurrentTest().getSteps().size() == 1) {
-//      System.out.print(names.getRandomizer().getSeed()+", ");
-//    }
+    String next = names.random();
   }
   
   @AfterTest
   public void finish() {
     suite.addValue("teemu", "on paras");
-//    if (suite.getCurrentTest().getAllStepNames().size() == 1) {
-//      String latest = names.getLatestValue();
-//      System.out.println(latest+", "+names.getSeed());
-//    }
   }
   
   @CoverageValue
   public String stateName(TestCaseStep step) {
-    return state.next();
+    return state.random();
   }
 }

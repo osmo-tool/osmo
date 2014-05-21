@@ -10,8 +10,6 @@ import java.util.List;
  * @author Teemu Kanstren
  */
 public class CharSet extends SearchableInput<Character> {
-  /** The input strategy to choose a char. */
-  private DataGenerationStrategy strategy = DataGenerationStrategy.RANDOM;
   /** Defines the list of characters for generating valid items. */
   private String validChars = "abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ0123456789,.<>!\"#%&/()=?´`{[]}\\¨^~';:|-_*-+= ";
   /** Defines the list of characters for generating invalid items. */
@@ -26,23 +24,6 @@ public class CharSet extends SearchableInput<Character> {
     }
     for (int i = 127 ; i <= 258 ; i++) {
       invalidChars += (char) i;
-    }
-  }
-
-  @Override
-  public CharSet setStrategy(DataGenerationStrategy strategy) {
-    switch (strategy) {
-      case RANDOM:
-      case ORDERED_LOOP:
-      case ORDERED_LOOP_INVALID:
-      case RANDOM_INVALID:
-        this.strategy = strategy;
-        loopIndex = 0;
-        return this;
-      default:
-        String name = CharSet.class.getSimpleName();
-        String msg = name + " only supports Random, Looping, and Invalid generation strategies. Given:" + strategy;
-        throw new UnsupportedOperationException(msg);
     }
   }
 
@@ -73,23 +54,6 @@ public class CharSet extends SearchableInput<Character> {
     }
     validChars = result;
     invalidChars += removed;
-  }
-
-  /** @return Next generated character. */
-  public Character next() {
-    switch (strategy) {
-      case RANDOM:
-        return random();
-      case ORDERED_LOOP:
-        return loop();
-      case RANDOM_INVALID:
-        return invalidRandom();
-      case ORDERED_LOOP_INVALID:
-        return invalidLoop();
-      default:
-        String name = CharSet.class.getSimpleName();
-        throw new IllegalArgumentException("DataGenerationStrategy " + strategy + " not supported by " + name + ".");
-    }
   }
 
   public Character random() {
@@ -156,9 +120,6 @@ public class CharSet extends SearchableInput<Character> {
   public Collection<Character> getOptions() {
     List<Character> result = new ArrayList<>();
     char[] temp = validChars.toCharArray();
-    if (strategy == DataGenerationStrategy.ORDERED_LOOP_INVALID || strategy == DataGenerationStrategy.RANDOM_INVALID) {
-      temp = invalidChars.toCharArray();
-    }
     for (char c : temp) {
       result.add(c);
     }

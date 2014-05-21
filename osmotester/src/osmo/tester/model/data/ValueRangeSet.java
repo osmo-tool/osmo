@@ -32,43 +32,12 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
   public ValueRangeSet() {
   }
 
-  /**
-   * Sets the input generation strategy.
-   *
-   * @param strategy The new strategy.
-   * @deprecated Will be removed next release.
-   */
-  @Override
-  public ValueRangeSet<T> setStrategy(DataGenerationStrategy strategy) {
-    partitions.setStrategy(strategy);
-    return this;
-  }
-
   @Override
   public void setSeed(long seed) {
     super.setSeed(seed);
     partitions.setSeed(seed);
     for (ValueRange range : partitions.getOptions()) {
       range.setSeed(seed);
-    }
-  }
-
-  /**
-   * Set the data generation strategy for the composing partitions.
-   *
-   * @param strategy The new strategy.
-   * @deprecated Will be removed next release.
-   */
-  public void setPartitionStrategy(DataGenerationStrategy strategy) {
-    switch (strategy) {
-      case BALANCING:
-        this.strategy = BALANCED;
-        return;
-      case ORDERED_LOOP:
-        this.strategy = LOOP;
-        return;
-      default:
-        this.strategy = RANDOM;
     }
   }
 
@@ -179,23 +148,6 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
     }
   }
 
-  /**
-   * 
-   * @return
-   * @deprecated will remove next release
-   */
-  @Override
-  public T next() {
-    switch (strategy) {
-      case LOOP:
-        return ordered();
-      case BALANCED:
-        return balanced();
-      default:
-        return random();
-    }
-  }
-  
   private void pre() {
     if (rand == null) throw new IllegalStateException("You need to set seed before using data objects");
     choice = null;

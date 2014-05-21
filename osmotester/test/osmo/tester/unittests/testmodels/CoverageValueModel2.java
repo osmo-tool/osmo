@@ -31,7 +31,7 @@ public class CoverageValueModel2 {
   @TestStep("t3")
   public void three() {
     state = "3";
-    range.next();
+    range.random();
   }
 
   @TestStep("t4")

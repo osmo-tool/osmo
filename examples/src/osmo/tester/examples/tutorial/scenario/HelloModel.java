@@ -5,7 +5,6 @@ import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
-import osmo.tester.model.data.DataGenerationStrategy;
 import osmo.tester.model.data.ValueSet;
 
 /** @author Teemu Kanstren */
@@ -25,11 +24,11 @@ public class HelloModel {
 
   @TestStep("hello")
   public void sayHello() {
-    System.out.println("HELLO "+names.next());
+    System.out.println("HELLO "+names.random());
   }
 
   @TestStep("world")
   public void sayWorld() {
-    System.out.println("WORLD "+worlds.next());
+    System.out.println("WORLD "+worlds.random());
   }
 }

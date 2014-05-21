@@ -57,9 +57,8 @@ public abstract class ValueGUI extends JDialog {
     skip.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        ValueGUI.this.input.disableGUI();
-        value = ValueGUI.this.input.next();
-        ValueGUI.this.input.enableGUI();
+        //setting value to null should cause the underlying object to generate the value
+        value = null;
         setVisible(false);
         observed = true;
         synchronized (ValueGUI.this) {
@@ -72,7 +71,8 @@ public abstract class ValueGUI extends JDialog {
       @Override
       public void actionPerformed(ActionEvent e) {
         ValueGUI.this.input.disableGUI();
-        value = ValueGUI.this.input.next();
+        //setting value to null should cause the underlying object to generate the value
+        value = null;
         setVisible(false);
         observed = true;
         synchronized (ValueGUI.this) {
@@ -119,16 +119,9 @@ public abstract class ValueGUI extends JDialog {
   public Object next() {
     observed = false;
     setVisible(true);
-//    synchronized (this) {
-//      try {
-//        wait();
-//      } catch (InterruptedException e) {
-//        //ignored
-//      }
+//    if (!observed) {
+//      input.record(value);
 //    }
-    if (!observed) {
-      input.record(value);
-    }
     return value;
   }
 

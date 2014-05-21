@@ -80,8 +80,8 @@ public class VariableModel2 {
 
   @TestStep("third")
   public void third() {
-    out.println("range:" + range.next());
-    String next = set.next();
+    out.println("range:" + range.random());
+    String next = set.random();
     values.add(next);
     out.println(":third=" + next + ":");
   }

@@ -40,7 +40,7 @@ public class ValueRangeGUI extends ValueGUI {
     range.enableGUI();
 
 //    ValueRangeGUI helloworld = new ValueRangeGUI(range);
-    System.out.println(range.next());
+    System.out.println(range.random());
   }
 
   @Override

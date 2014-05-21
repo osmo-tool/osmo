@@ -22,7 +22,7 @@ public class StateCoverageTests {
     tester.setTestEndCondition(new StateCoverage("my-state", "3"));
     tester.setSuiteEndCondition(new Length(1));
     tester.generate(55);
-    List<TestCase> history = tester.getSuite().getFinishedTestCases();
+    List<TestCase> history = tester.getSuite().getAllTestCases();
     assertEquals("Number of tests generated", 1, history.size());
     TestCase test = history.get(0);
     assertEquals("Number of steps in a test case", 3, test.getSteps().size());
@@ -35,7 +35,7 @@ public class StateCoverageTests {
     tester.setTestEndCondition(new StateCoverage("my-state", "2"));
     tester.setSuiteEndCondition(new Length(1));
     tester.generate(55);
-    List<TestCase> history = tester.getSuite().getFinishedTestCases();
+    List<TestCase> history = tester.getSuite().getAllTestCases();
     assertEquals("Number of tests generated", 1, history.size());
     TestCase test = history.get(0);
     assertEquals("Number of steps in a test case", 2, test.getSteps().size());
@@ -49,7 +49,7 @@ public class StateCoverageTests {
     tester.setTestEndCondition(new StateCoverage("my-state", "3", "3"));
     tester.setSuiteEndCondition(new Length(1));
     tester.generate(55);
-    List<TestCase> history = tester.getSuite().getFinishedTestCases();
+    List<TestCase> history = tester.getSuite().getAllTestCases();
     assertEquals("Number of tests generated", 1, history.size());
     TestCase test = history.get(0);
     assertEquals("Number of steps in a test case", 3, test.getSteps().size());

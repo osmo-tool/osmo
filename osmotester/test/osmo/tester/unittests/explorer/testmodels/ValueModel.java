@@ -9,6 +9,6 @@ public class ValueModel {
   
   @TestStep("Hello")
   public void hello() {
-    names.next();
+    names.random();
   }
 }

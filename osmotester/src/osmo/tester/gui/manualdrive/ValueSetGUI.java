@@ -48,9 +48,9 @@ public class ValueSetGUI extends ValueGUI {
     Text text = new Text(5, 7);
     text.asciiLettersAndNumbersOnly();
     ValueSet<String> set = new ValueSet<>();
-    set.add(text.next());
-    set.add(text.next());
-    set.add(text.next());
+    set.add(text.random());
+    set.add(text.random());
+    set.add(text.random());
     set.setName("user");
     ValueSetGUI gui = new ValueSetGUI(set);
     gui.setVisible(true);

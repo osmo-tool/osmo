@@ -5,7 +5,6 @@ import osmo.tester.annotation.BeforeSuite;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
-import osmo.tester.model.data.DataGenerationStrategy;
 import osmo.tester.model.data.ValueRange;
 import osmo.tester.model.data.ValueSet;
 
@@ -20,7 +19,6 @@ public class HelloModel4 {
 
   @BeforeSuite
   public void init() {
-    names.setStrategy(DataGenerationStrategy.BALANCING);
   }
 
   @BeforeTest
@@ -42,7 +40,7 @@ public class HelloModel4 {
 
   @TestStep("hello")
   public void sayHello() {
-    System.out.println("HELLO "+names.next()+" ("+sizes.next()+")");
+    System.out.println("HELLO "+names.balanced()+" ("+sizes.random()+")");
     helloCount++;
   }
 
@@ -53,7 +51,7 @@ public class HelloModel4 {
 
   @TestStep("world")
   public void sayWorld() {
-    System.out.println("WORLD "+worlds.next()+" ("+ranges.next()+")");
+    System.out.println("WORLD "+worlds.random()+" ("+ranges.random()+")");
     worldCount++;
   }
 }

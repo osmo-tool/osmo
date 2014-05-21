@@ -11,6 +11,6 @@ public class RandomValueModel {
   
   @TestStep("Step")
   public void step() {
-    range.next();
+    range.random();
   }
 }

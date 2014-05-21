@@ -189,31 +189,31 @@ public class ValueRangeSetTests {
     ValueRangeSet<Integer> vrs1 = new ValueRangeSet<>();
     vrs1.setSeed(333);
     vrs1.addPartition(1, 2);
-    Integer o1 = vrs1.next();
+    Integer o1 = vrs1.random();
     assertEquals("Integer value range should produce integers..", Integer.class, o1.getClass());
 
     ValueRangeSet<Long> vrs2 = new ValueRangeSet<>();
     vrs2.setSeed(333);
     vrs2.addPartition(Long.class, 1, 2);
-    Long o2 = vrs2.next();
+    Long o2 = vrs2.random();
     assertEquals("Long value range should produce longs..", Long.class, o2.getClass());
 
     ValueRangeSet<Long> vrs3 = new ValueRangeSet<>();
     vrs3.setSeed(333);
     vrs3.addPartition(1l, 2l);
-    Long o3 = vrs3.next();
+    Long o3 = vrs3.random();
     assertEquals("Long value range should produce longs..", Long.class, o3.getClass());
 
     ValueRangeSet<Double> vrs4 = new ValueRangeSet<>();
     vrs4.setSeed(333);
     vrs4.addPartition(Double.class, 1, 2);
-    Double o4 = vrs4.next();
+    Double o4 = vrs4.random();
     assertEquals("Double value range should produce doubles..", Double.class, o4.getClass());
 
     ValueRangeSet<Double> vrs5 = new ValueRangeSet<>();
     vrs5.setSeed(333);
     vrs5.addPartition(1d, 2d);
-    Double o5 = vrs5.next();
+    Double o5 = vrs5.random();
     assertEquals("Double value range should produce doubles..", Double.class, o5.getClass());
   }
 
@@ -275,7 +275,7 @@ public class ValueRangeSetTests {
 
   private void assertValues(ValueRangeSet<Double> range, double... expected) {
     for (double i : expected) {
-      assertEquals(i, range.next());
+      assertEquals(i, range.random());
     }
   }
 }

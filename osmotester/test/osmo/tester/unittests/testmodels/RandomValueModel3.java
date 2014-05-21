@@ -14,11 +14,11 @@ public class RandomValueModel3 {
 
   @TestStep("Step1")
   public void step() {
-    rc2.process(range.next());
+    rc2.process(range.random());
   }
 
   @TestStep("Step2")
   public void step2() {
-    rc2.process(range.next());
+    rc2.process(range.random());
   }
 }

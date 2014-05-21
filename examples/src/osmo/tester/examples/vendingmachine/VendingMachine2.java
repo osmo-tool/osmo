@@ -55,13 +55,13 @@ public class VendingMachine2 {
   public void start() {
     coins = 0;
     bottles = 10;
-    int tests = testSuite.getFinishedTestCases().size() + 1;
+    int tests = testSuite.getAllTestCases().size() + 1;
     out.print("Starting test:" + tests + "\n");
   }
 
   @AfterSuite
   public void done() {
-    out.print("Created total of " + testSuite.getFinishedTestCases().size() + " tests." + "\n");
+    out.print("Created total of " + testSuite.getAllTestCases().size() + " tests." + "\n");
   }
 
   @TestStep(C20)

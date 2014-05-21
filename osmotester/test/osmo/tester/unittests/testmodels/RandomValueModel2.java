@@ -19,17 +19,17 @@ public class RandomValueModel2 {
 
   @TestStep("Step1")
   public void step() {
-    range.next();
+    range.random();
   }
 
   @TestStep("Step2")
   public void step2() {
-    range2.next();
+    range2.random();
   }
 
   @TestStep("Step3")
   public void step3() {
-    names.next();
+    names.random();
   }
   
   @AfterTest

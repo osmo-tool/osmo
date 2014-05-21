@@ -25,8 +25,6 @@ public class ValueSet<T> extends SearchableInput<T> {
   private List<T> reserved = new ArrayList<>();
   /** Options still available for reserving. */
   private List<T> free = new ArrayList<>();
-  /** The input strategy to choose an object. */
-  private DataGenerationStrategy strategy = DataGenerationStrategy.RANDOM;
   /** Index for ordered loop. Using this instead of iterator to allow modification of options in runtime. */
   private int next = 0;
   private T choice = null;
@@ -51,29 +49,7 @@ public class ValueSet<T> extends SearchableInput<T> {
     init();
   }
 
-  /**
-   * Constructor for defining the initial input generation strategy.
-   *
-   * @param strategy The algorithm for data generation.
-   */
-  public ValueSet(DataGenerationStrategy strategy) {
-    this.strategy = strategy;
-    init();
-  }
-
   private void init() {
-  }
-
-  /**
-   * Defines the input strategy.
-   *
-   * @param strategy The new strategy.
-   * @deprecated will remove in next release, use the replacing functions for random() etc.
-   */
-  @Override
-  public ValueSet<T> setStrategy(DataGenerationStrategy strategy) {
-    this.strategy = strategy;
-    return this;
   }
 
   /**
@@ -132,27 +108,6 @@ public class ValueSet<T> extends SearchableInput<T> {
     options.remove(option);
     free.remove(option);
     reserved.remove(option);
-  }
-
-  /**
-   * Produces an object from this set to be used as input in test cases.
-   * The choice depends on the chosen input strategy.
-   *
-   * @return The chosen input object.
-   * @deprecated will remove in next release, use the replacing functions for random() etc.
-   */
-  @Override
-  public T next() {
-    switch (strategy) {
-      case ORDERED_LOOP:
-        return loop();
-      case BALANCING:
-        return balanced();
-      case RANDOM:
-        return random();
-      default:
-        throw new IllegalArgumentException("Unsupported strategy (" + strategy.name() + ") for " + ValueSet.class.getSimpleName());
-    }
   }
   
   private void pre() {
