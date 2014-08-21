@@ -27,6 +27,22 @@
     <url>https://code.google.com/p/osmo/source/browse/</url>
   </scm>
 
+  <developers>
+    <developer>
+      <id>tkanstren</id>
+      <name>Teemu Kanstren</name>
+      <email>tkanstren@gmail.com</email>
+      <url>http://www.kanstren.net</url>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+        <role>supreme commander</role>
+        <role>superhero</role>
+      </roles>
+      <timezone>Europe/Helsinki</timezone>
+    </developer>
+  </developers>
+  
   <dependencies>
     <dependency>
       <groupId>org.apache.velocity</groupId>
@@ -95,6 +111,20 @@
             <id>attach-javadocs</id>
             <goals>
               <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>1.5</version>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
             </goals>
           </execution>
         </executions>
