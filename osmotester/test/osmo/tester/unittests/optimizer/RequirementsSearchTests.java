@@ -8,10 +8,8 @@ import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.optimizer.reducer.Reducer;
 import osmo.tester.optimizer.reducer.ReducerConfig;
 import osmo.tester.optimizer.reducer.ReducerState;
-import osmo.tester.unittests.testmodels.Model10;
 import osmo.tester.unittests.testmodels.Model10Factory;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;

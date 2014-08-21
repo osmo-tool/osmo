@@ -5,7 +5,6 @@ import osmo.common.TestUtils;
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.ReflectiveModelFactory;
-import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.optimizer.reducer.Analyzer;
@@ -27,7 +26,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 
 import static org.junit.Assert.*;
 

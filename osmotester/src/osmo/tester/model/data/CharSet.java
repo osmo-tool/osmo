@@ -96,7 +96,7 @@ public class CharSet extends SearchableInput<Character> {
   }
 
   /**
-   * Removes the XML tag start and end characters from generation ("<" and ">") to allow for the
+   * Removes the XML tag start and end characters from generation ("{@literal <}" and "{@literal >}") to allow for the
    * generation of data that can be embedded in XML files.
    * Note that it can still produce some invalid options, so be careful out there..
    */

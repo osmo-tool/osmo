@@ -7,6 +7,8 @@ import osmo.tester.parser.ParserParameters;
 import osmo.tester.parser.ParserResult;
 
 /**
+ * Parses a {@link osmo.tester.annotation.Description} annotation from test model.
+ * 
  * @author Teemu Kanstren
  */
 public class DescriptionParser implements AnnotationParser {

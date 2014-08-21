@@ -5,7 +5,6 @@ import osmo.mjexamples.gsm.GSMModelFactory;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.Length;
-import osmo.tester.generator.endcondition.Time;
 
 /**
  * @author Teemu Kanstren

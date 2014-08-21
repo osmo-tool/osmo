@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * Annotated method is executed after each test case that has been generated (before next).
- * <p/>
+ * <p>
  * The annotated method must have no parameters.
  *
  * @author Teemu Kanstren

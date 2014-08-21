@@ -26,8 +26,11 @@ public class TestSuite {
   private Requirements requirements;
   /** The coverage for this test suite. */
   private TestCoverage coverage = new TestCoverage();
+  /** Coverage for current test case under generation. */
   private TestCoverage testCoverage = null;
+  /** Whether we should track variable parameters or not. */
   private boolean trackParameters = false;
+  /** Keep generated tests in history or dump them? For large scale generation is required. */
   private boolean keepTests = true;
   /** Number of tests that have passed through. Even if tests are not kept. And note that parallel suites will differ.. */
   private int testCount = 0;
@@ -52,7 +55,12 @@ public class TestSuite {
     return testCount;
   }
 
-  /** Start a new test case. */
+  /** 
+   * Start a new test case.
+   * 
+   * @param seed Randomization seed for new test case.
+   * @return The test case object to use for generating new test case.
+   */
   public TestCase startTest(long seed) {
     current = new TestCase(seed);
     current.setStartTime(System.currentTimeMillis());

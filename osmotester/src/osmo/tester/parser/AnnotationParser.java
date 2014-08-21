@@ -12,6 +12,7 @@ public interface AnnotationParser {
   /**
    * Called to parse the given information for this annotation.
    *
+   * @param result For collecting parsing results.
    * @param parameters The information for the annotation parser.
    * @return Error messages from the parser.
    */

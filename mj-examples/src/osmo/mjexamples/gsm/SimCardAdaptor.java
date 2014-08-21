@@ -3,7 +3,6 @@ package osmo.mjexamples.gsm;
 import junit.framework.Assert;
 import osmo.common.NullPrintStream;
 
-import java.io.FileNotFoundException;
 import java.io.PrintStream;
 
 /** This class connects the SimCard model to the GSM11Impl.

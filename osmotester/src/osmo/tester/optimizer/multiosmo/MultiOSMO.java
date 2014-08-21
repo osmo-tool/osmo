@@ -62,6 +62,9 @@ public class MultiOSMO {
    * Starts generation using the given generation configuration and given number of parallel threads.
    * 
    * @param time The minimum time to run iterations.
+   * @param reportAll Write generator traces to file for all generators?
+   * @param printCoverage Do we want each generator to print achieved coverage in the end?
+   * @return The coverage for generated tests.
    */
   public TestCoverage generate(Time time, boolean reportAll, boolean printCoverage) {
     check();

@@ -34,6 +34,8 @@ public interface FSMTraversalAlgorithm {
 
   /**
    * This is called before a new test is started.
+   * 
+   * @param seed Randomization seed for the starting test.
    */
   public void initTest(long seed);
 

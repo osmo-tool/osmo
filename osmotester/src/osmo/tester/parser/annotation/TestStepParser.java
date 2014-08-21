@@ -13,13 +13,12 @@ import osmo.tester.parser.ParserResult;
 import java.lang.reflect.Method;
 
 /**
- * Parses {@link osmo.tester.annotation.TestStep} and {@link osmo.tester.annotation.TestStep} annotations 
- * from the given model object.
+ * Parses {@link osmo.tester.annotation.TestStep} annotations from the given model object.
  *
  * @author Teemu Kanstren
  */
-public class TransitionParser implements AnnotationParser {
-  private static final Logger log = new Logger(TransitionParser.class);
+public class TestStepParser implements AnnotationParser {
+  private static final Logger log = new Logger(TestStepParser.class);
   private String errors = "";
 
   @Override

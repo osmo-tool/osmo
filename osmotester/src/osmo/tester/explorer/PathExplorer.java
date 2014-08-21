@@ -111,6 +111,9 @@ public class PathExplorer extends RecursiveTask<List<TestCase>> {
    * Checking happens through the defined configuration in the {@link ExplorationEndCondition}.
    * Static to allow cloud classes to access this without an instance.
    *
+   * @param state Current exploration state for this path.
+   * @param ec The end condition to check if we are done on a path.
+   * @param generator The generator used to create this path.
    * @param toCheck The depth to check.
    * @return 0 if the end condition wants to stop, otherwise the given parameter value.
    */

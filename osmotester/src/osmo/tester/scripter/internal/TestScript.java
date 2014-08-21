@@ -6,10 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * A test script that the generator can execute on a matching model instance.
+ * Allows just saving the seed and sequence of step names to re-produce whole test execution.
+ * Of course, you also need to save the model and generator versions..
+ * 
  * @author Teemu Kanstren
  */
 public class TestScript {
+  /** Seed for generator. */
   private Long seed = null;
+  /** Sequence of steps the generator should take. */
   private final List<String> steps = new ArrayList<>();
 
   public TestScript() {

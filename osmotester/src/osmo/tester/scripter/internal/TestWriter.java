@@ -6,9 +6,13 @@ import osmo.tester.generator.testsuite.TestCase;
 import java.util.List;
 
 /**
+ * For writing a set of tests to a file in a format that can be later re-loaded and re-executed on the generator.
+ * Matching reader is {@link TestLoader}.
+ * 
  * @author Teemu Kanstren
  */
 public class TestWriter {
+  /** Where to save the scripts to. Relative to working directory. */
   private final String outputDir;
 
   public TestWriter(String outputDir) {

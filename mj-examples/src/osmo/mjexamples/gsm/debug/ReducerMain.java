@@ -4,7 +4,6 @@ import osmo.common.NullPrintStream;
 import osmo.common.log.Logger;
 import osmo.mjexamples.gsm.GSMModelFactory;
 import osmo.tester.OSMOConfiguration;
-import osmo.tester.generator.endcondition.Length;
 import osmo.tester.optimizer.reducer.Reducer;
 import osmo.tester.optimizer.reducer.ReducerConfig;
 

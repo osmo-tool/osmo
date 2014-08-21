@@ -15,6 +15,7 @@ import java.util.Collection;
  * NOTE: Use Double as datatype for floating point numbers, not Float. Float is not supported in this class at this time.
  *
  * @author Teemu Kanstren
+ * @param <T> Type of values to generate. Integer, Long or Double.
  */
 public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
   private static final Logger log = new Logger(ValueRangeSet.class);

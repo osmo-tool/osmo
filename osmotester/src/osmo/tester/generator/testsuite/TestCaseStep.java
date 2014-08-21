@@ -136,7 +136,10 @@ public class TestCaseStep {
   public Map<String, String> getValues() {
     return values;
   }
-  
+
+  /**
+   * @return Variable values for this step, in format usable to print a HTML list.
+   */
   public List<ValuePair<String>> getHtmlValues() {
     if (values == null) return Collections.EMPTY_LIST;
     List<ValuePair<String>> pairs = new ArrayList<>();

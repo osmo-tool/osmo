@@ -24,8 +24,10 @@ public class ExplorationHelper {
   /**
    * Initializes an exploration path with the current test suite and a new test case up to the given script.
    * This is not always the current concrete generated test case but can also be a location in the explored path.
-   *
+   * 
+   * @param state Current exploration state.
    * @param path The script of the exploration path to be initialized.
+   * @param end If true, the test is set as ended after finishing the path.
    * @return The generator initialized with the current test suite and given test path.
    */
   public static MainGenerator initPath(ExplorationState state, Collection<String> path, boolean end) {

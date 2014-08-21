@@ -306,6 +306,7 @@ public class FSM {
   /**
    * Add a pre-method that should be executed for a specific test step or group in the test model.
    *
+   * @param name Name of step or group to associate with.
    * @param target The pre method to be invoked for evaluation.
    */
   public void addSpecificPre(TransitionName name, InvocationTarget target) {
@@ -333,6 +334,7 @@ public class FSM {
   /**
    * Add a post-method that should be executed for a specific test step or group in the test model.
    *
+   * @param name Name of step or group to associate with.
    * @param target The post method to be invoked for evaluation.
    */
   public void addSpecificPost(TransitionName name, InvocationTarget target) {

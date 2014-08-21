@@ -123,10 +123,13 @@ v3.3.0 15/11/2013
 v3.3.1 02/12/2013
 -optimizing memory & cpu use in greedyoptimizers
 -some small bug fixes
-v3.4.0 x/y/2014
+v3.4.0 20/8/2014
 -optimizer for requirements coverage alone
 -reducer for automated debugging support
 -some bug fixes
 -removed old deprecated stuff
--changed to testng for unit tests
+-removed common module, moved into osmotester module
+-updated maven build
+-upload to maven central
+
 

@@ -6,12 +6,12 @@ import java.util.Collection;
 
 /**
  * This can be used to provide a @Variable value that that records the size of given collection.
- * <p/>
+ * <p>
  * Example:
  * {@code private Collection<String> names = new ArrayList<String>();}
  *
  * {@code @Variable private CollectionCount nameCount = new CollectionCount(names);}
- * <p/>
+ * <p>
  * This will result in one  variable being stored named "nameCount". At each point the size of "names" is
  * modified, it will be stored with the size as value between steps (transitions).
  * 

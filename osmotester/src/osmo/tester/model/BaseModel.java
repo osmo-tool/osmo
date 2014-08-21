@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * A base class for providing some common functionality for simple test models.
- * <p/>
+ * <p>
  * Has fields for current test step, test case, and test suite currently being generated.
  * Also includes a requirements field, which needs to be copied elsewhere if used in several model objects.
  *

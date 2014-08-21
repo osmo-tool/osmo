@@ -24,22 +24,8 @@ import osmo.tester.model.ModelFactory;
 import osmo.tester.model.Requirements;
 import osmo.tester.model.TestModels;
 import osmo.tester.model.data.SearchableInput;
-import osmo.tester.parser.annotation.AfterSuiteParser;
-import osmo.tester.parser.annotation.AfterTestParser;
-import osmo.tester.parser.annotation.BeforeSuiteParser;
-import osmo.tester.parser.annotation.BeforeTestParser;
-import osmo.tester.parser.annotation.CoverageValueParser;
-import osmo.tester.parser.annotation.DescriptionParser;
-import osmo.tester.parser.annotation.EndConditionParser;
-import osmo.tester.parser.annotation.ExplorationEnablerParser;
-import osmo.tester.parser.annotation.GenerationEnablerParser;
-import osmo.tester.parser.annotation.GroupParser;
-import osmo.tester.parser.annotation.GuardParser;
-import osmo.tester.parser.annotation.LastStepParser;
-import osmo.tester.parser.annotation.PostParser;
-import osmo.tester.parser.annotation.PreParser;
-import osmo.tester.parser.annotation.TransitionParser;
-import osmo.tester.parser.annotation.VariableParser;
+import osmo.tester.parser.annotation.*;
+import osmo.tester.parser.annotation.TestStepParser;
 import osmo.tester.parser.field.RandomizerParser;
 import osmo.tester.parser.field.RequirementsParser;
 import osmo.tester.parser.field.SearchableInputParser;
@@ -72,7 +58,7 @@ public class MainParser {
 
   public MainParser() {
     //we set up the parser objects for the different annotation types
-    annotationParsers.put(TestStep.class, new TransitionParser());
+    annotationParsers.put(TestStep.class, new TestStepParser());
     annotationParsers.put(Guard.class, new GuardParser());
     annotationParsers.put(LastStep.class, new LastStepParser());
     annotationParsers.put(AfterTest.class, new AfterTestParser());
@@ -98,7 +84,9 @@ public class MainParser {
   /**
    * Initiates parsing the given model object for the annotations that define the test model elements.
    *
+   * @param seed Randomization seed to initialize parsed objects.
    * @param factory Factory to create the model objects to be parsed.
+   * @param suite Test suite to initialize parsed objects.
    * @return The model structure with references to the object instances.
    */
   public ParserResult parse(long seed, ModelFactory factory, TestSuite suite) {

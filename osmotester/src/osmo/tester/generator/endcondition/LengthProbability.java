@@ -26,8 +26,11 @@ import osmo.tester.model.FSM;
 public class LengthProbability implements EndCondition {
   /** The combining And/Or end condition to which the parameters and requests are delegated. */
   private EndCondition delegate = null;
+  /** Minimum length. */
   private int min;
+  /** Maximum length. */
   private int max;
+  /** Probability to stop after min and before max. */
   private double probability;
 
   public LengthProbability(int minLength, double probability) {

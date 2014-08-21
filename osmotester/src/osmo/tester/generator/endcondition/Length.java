@@ -2,8 +2,6 @@ package osmo.tester.generator.endcondition;
 
 import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
-import osmo.tester.generator.listener.AbstractListener;
-import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 

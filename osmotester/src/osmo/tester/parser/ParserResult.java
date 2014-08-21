@@ -21,6 +21,7 @@ public class ParserResult {
   private final FSM fsm;
   /** Requirements object for the model. */
   private Requirements requirements = null;
+  /** Descriptions for model elements. Name = model element name, value = its description. */
   private Map<String, String> descriptions = new HashMap<>();
 
   public ParserResult(FSM fsm) {

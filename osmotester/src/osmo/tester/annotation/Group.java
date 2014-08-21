@@ -25,6 +25,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Group {
-  /** The group name. Defaults to empty string, which should not be used. */
+  /** @return The group name. Defaults to empty string, which should not be used. */
   String value() default "";
 }

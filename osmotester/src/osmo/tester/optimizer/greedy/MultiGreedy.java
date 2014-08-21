@@ -62,7 +62,9 @@ public class MultiGreedy {
   private final String midPath;
   /** If > 0 defines the maximum number of tests to return. */
   private int max = 0;
+  /** Score threshold to stop generation if we do not gain more than this. */
   private int threshold = 1;
+  /** Listeners to be notified about finishing some iterations or all generation. */
   private final Collection<IterationListener> listeners = new HashSet<>();
 
   /**

@@ -24,7 +24,7 @@ import java.util.logging.Level;
 
 /**
  * The main class for initiating the MBT tool.
- * <p/>
+ * <p>
  * Create the model object using the annotations from osmo.tester.annotation package.
  * Set test generation stop strategies for both the overall test suite and individual test cases.
  * Set the algorithm for test generation.
@@ -81,7 +81,8 @@ public class OSMOTester {
     config.addModelObject(prefix, modelObject);
   }
 
-  /** Invoke this to perform actual test generation from the given model, with the given algorithms and strategies. */
+  /** Invoke this to perform actual test generation from the given model, with the given algorithms and strategies. 
+   * @param seed Generation seed to initialized the test case seeds.*/
   public void generate(long seed) {
     log.debug("generator starting up");
     generator = initGenerator(seed);
