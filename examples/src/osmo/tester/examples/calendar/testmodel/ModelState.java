@@ -1,7 +1,6 @@
 package osmo.tester.examples.calendar.testmodel;
 
 import osmo.common.Randomizer;
-import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.Variable;
 import osmo.tester.generator.testsuite.TestCaseStep;

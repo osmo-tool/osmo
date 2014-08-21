@@ -7,7 +7,12 @@ import osmo.tester.parser.ModelObject;
 import java.util.ArrayList;
 import java.util.Collection;
 
-/** @author Teemu Kanstren */
+/** 
+ * For cases where we want to use a single instance to generate tests but need to provide a factory for it.
+ * A convenience class that just returns the given instance always.
+ * 
+ * @author Teemu Kanstren 
+ */
 public class SingleInstanceModelFactory implements ModelFactory {
   private Collection<ModelObject> models = new ArrayList<>();
   

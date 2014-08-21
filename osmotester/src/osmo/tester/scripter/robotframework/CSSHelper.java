@@ -16,7 +16,7 @@ public class CSSHelper {
   /**
    * Creates CSS style tags to make every second row of table look different.
    * 
-   * @return
+   * @return alt for odds, none for evens (or is it the other way around?)
    */
   public String getTableClass() {
     if (alt) {

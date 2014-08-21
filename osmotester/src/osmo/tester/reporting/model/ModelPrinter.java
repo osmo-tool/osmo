@@ -25,6 +25,7 @@ public class ModelPrinter {
   private OSMOConfiguration config = new OSMOConfiguration();
 
   /**
+   * @param factory For creating model objects.
    * @see osmo.tester.OSMOTester
    */
   public void setModelFactory(ModelFactory factory) {

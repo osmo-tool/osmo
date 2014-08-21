@@ -12,6 +12,7 @@ import java.util.Collection;
  * A superclass for data variable classes whose value is to be recorded during test generation.
  *
  * @author Teemu Kanstren
+ * @param <T> The type of input.
  */
 public abstract class SearchableInput<T> implements VariableValue<T> {
   private static final Logger log = new Logger(SearchableInput.class);

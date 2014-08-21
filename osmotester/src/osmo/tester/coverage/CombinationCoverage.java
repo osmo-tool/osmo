@@ -13,7 +13,7 @@ import java.util.List;
  * of this object after any step is executed.
  * The way this happens is that the value() method is invoked, which then asks the referenced objects for their
  * values and combines these to produce a new value as their combination.
- * The combined value is a combination of all referenced values with "&" character in between.
+ * The combined value is a combination of all referenced values with "{@literal &}" character in between.
  * 
  * To have the annotated variable tracked for coverage, annotate using {@link osmo.tester.annotation.Variable} as usual.
  *
@@ -41,7 +41,7 @@ public class CombinationCoverage implements VariableValue<String> {
   }
 
   /**
-   * This is where the combined value is provided. It is the values of given variables concatenated with the char "&"
+   * This is where the combined value is provided. It is the values of given variables concatenated with the char "{@literal &}"
    * in between.
    * 
    * @return The value to store for coverage.

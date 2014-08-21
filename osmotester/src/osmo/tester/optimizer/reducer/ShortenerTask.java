@@ -37,11 +37,13 @@ public class ShortenerTask implements Runnable {
   private final int populationSize;
   /** Task iteration counter. */
   private static int nextId = 1;
+  /** Previous best test to improve on. */
   private TestCase previousTest;
 
   /**
    * 
    * @param osmoConfig Generator configuration.
+   * @param previousTest Previous best test to improve on.
    * @param seed Seed for seeding generators.
    * @param state Current reducer state.
    */

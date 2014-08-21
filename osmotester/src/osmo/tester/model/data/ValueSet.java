@@ -16,6 +16,7 @@ import java.util.Map;
  * Input generation picks one of these objects according to the used query function.
  *
  * @author Teemu Kanstren
+ * @param <T> Type of values to generate. Integer, Long or Double.
  */
 public class ValueSet<T> extends SearchableInput<T> {
   private static final Logger log = new Logger(ValueSet.class);

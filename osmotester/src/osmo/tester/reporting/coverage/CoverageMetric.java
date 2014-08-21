@@ -30,7 +30,7 @@ public abstract class CoverageMetric {
   /** The parsed model for test generation. */
   protected final FSM fsm;
   protected final Collection<TestCase> tests;
-  /** For template->report generation. */
+  /** For template to report generation. */
   private VelocityEngine velocity = new VelocityEngine();
   /** For storing template variables. */
   private VelocityContext vc = new VelocityContext();
@@ -72,7 +72,7 @@ public abstract class CoverageMetric {
 
   /**
    * Count the number of times each step pair has been covered.
-   * A step pair is A->B, meaning that step B was taken after A.
+   * A step pair is A-{@literal >}B, meaning that step B was taken after A.
    * If the number of times taken is 0, the value 0 is given for that pair.
    * Thus, each pair should be represented in the result(s).
    *
@@ -264,7 +264,7 @@ public abstract class CoverageMetric {
   /**
    * Provides a list of step pairs.
    *
-   * @return The pair names, with steps separated by "->".
+   * @return The pair names, with steps separated by "-{@literal >}".
    */
   private List<String> getStepPairs() {
     List<String> result = new ArrayList<>();

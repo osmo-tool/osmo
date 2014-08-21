@@ -10,21 +10,21 @@ import java.lang.annotation.Target;
  * The annotation takes as parameter the test step name(s) to which it should be linked. 
  * One test step can have several guards associated with it, in which case all these must return "true" 
  * for the step to be considered as enabled and given to the algorithms as an option for execution.
- * <p/>
+ * <p>
  * The annotated method must have no parameters and return a boolean value.
- * <p/>
+ * <p>
  * Example:
  *
- * @TestStep("bob") public void hello() {
+ * {@literal @}TestStep("bob") public void hello() {
  * System.out.println("Hello Bob");
  * }
- * @Guard("bob") public boolean allowBob() {
- * return Math.random() > 0.6;
+ * {@literal @}Guard("bob") public boolean allowBob() {
+ * return Math.random() {@literal >} 0.6;
  * }
- * <p/>
+ * <p>
  * The above example will allow the test step named "bob" (method hello()) to be taken if the Math.random() call 
  * returns a value bigger than 0.6.
- * <p/>
+ * <p>
  * Currently there is a special Guard annotation with the name "all". This is the same as not having any name at all.
  * If such a guard annotation is found, it will be associated to all the test steps. 
  * A single guard can be associated to several test steps by using an array as the identifier.
@@ -40,5 +40,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface Guard {
   public static final String DEFAULT = "osmo.tester.annotations.DEFAULT_VALUE";
+  /** @return Set of steps (or groups) this guard should match (be attached to). */
   String[] value() default DEFAULT;
 }

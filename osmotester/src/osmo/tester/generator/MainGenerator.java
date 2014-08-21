@@ -425,7 +425,7 @@ public class MainGenerator {
    * returning the set of {@link osmo.tester.annotation.TestStep} methods that have no guards returning a value
    * of {@code false}.
    *
-   * @return The list of enabled {@link osmo.tester.annotation.Transition} methods.
+   * @return The list of enabled {@link osmo.tester.annotation.TestStep} methods.
    */
   public List<FSMTransition> getEnabled() {
     List<FSMTransition> enabled = new ArrayList<>();

@@ -108,9 +108,9 @@ public class OSMORunner extends BlockJUnit4ClassRunner {
   }
 
   /**
-   * Capture any @Test annotated basic JUnit tests as well if any are defined.
+   * Capture any {@literal @}Test annotated basic JUnit tests as well if any are defined.
    *
-   * @return
+   * @return Methods to run tests for JUnit.
    */
   @Override
   protected List<FrameworkMethod> computeTestMethods() {

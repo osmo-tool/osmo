@@ -7,7 +7,11 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
-/** @author Teemu Kanstren */
+/** 
+ * To help implement the {@link osmo.tester.generator.listener.GenerationListener} interface with less hassle.
+ * 
+ * @author Teemu Kanstren 
+ */
 public abstract class AbstractListener implements GenerationListener {
   @Override
   public void init(long seed, FSM fsm, OSMOConfiguration config) {

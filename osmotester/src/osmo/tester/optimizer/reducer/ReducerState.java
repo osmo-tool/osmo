@@ -4,7 +4,6 @@ import osmo.common.log.Logger;
 import osmo.tester.generator.testsuite.TestCase;
 
 import java.util.*;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**

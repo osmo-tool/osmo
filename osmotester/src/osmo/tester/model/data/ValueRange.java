@@ -14,19 +14,19 @@ import java.util.List;
  * Notice that due to limitations of the Java generics type system, you have to either provide the type
  * as an explicit argument to the constructor or otherwise the type to be generated will be based on the
  * type of object passed as the "min" value of the range.
- * <p/>
+ * <p>
  * To get integers do either
  * {@code new ValueRange<Integer>(1,2);} or
  * {@code new ValueRange<Integer>(Integer.class, 1, 2);}
- * <p/>
+ * <p>
  * to get long values do either
  * {@code new ValueRange<Long>(1l,2l);} or
  * {@code new ValueRange<Long>(Long.class, 1, 2);}
- * <p/>
+ * <p>
  * to get double values do either
  * {@code new ValueRange<Double>(1d,2d);} or
  * {@code new ValueRange<Double>(Double.class, 1, 2);}
- * <p/>
+ * <p>
  * Omitting the type information will result in generation of integers.
  * It is also possible to use any of the specific functions such as nextInt(), nextLong() and nextDouble()
  * regardless of configured type.

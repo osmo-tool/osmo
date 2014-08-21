@@ -5,10 +5,14 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * For holding a set of test scripts (test suite).
+ * 
  * @author Teemu Kanstren
  */
 public class TestScripts {
+  /** The scripts to hold. */
   private List<TestScript> scripts = new ArrayList<>();
+  /** For iterating over the scripts. */
   private Iterator<TestScript> i = null;
 
   public void addScript(TestScript script) {

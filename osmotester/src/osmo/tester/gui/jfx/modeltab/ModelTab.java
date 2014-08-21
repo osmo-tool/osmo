@@ -1,8 +1,6 @@
 package osmo.tester.gui.jfx.modeltab;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -15,15 +13,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import osmo.common.NullPrintStream;
-import osmo.tester.OSMOTester;
-import osmo.tester.generator.endcondition.Length;
-import osmo.tester.generator.listener.AbstractListener;
-import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.gui.jfx.GUIState;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;

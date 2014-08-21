@@ -2,11 +2,12 @@ package osmo.tester.scripter.internal;
 
 import osmo.common.TestUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * For loading tests from files and create test scripts from those. The scripts can be executed with the generator.
+ * 
  * @author Teemu Kanstren
  */
 public class TestLoader {

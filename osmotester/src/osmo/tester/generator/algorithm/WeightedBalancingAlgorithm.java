@@ -16,20 +16,20 @@ import java.util.Set;
  * A test generation algorithm that is similar to the {@link BalancingAlgorithm} but also takes into account
  * weights assigned to test steps. This algorithm does not consider step-pairs, it only balances the steps according
  * to their frequency in the trace so far and the weight they have been given.
- * <p/>
+ * <p>
  * For example, consider a model that has 2 steps A and B, and both have been visited twice.
  * Now if A has a weight of 2 and B a weight of 3, the algorithm favors B due to its combined weight and coverage values.
- * <p/>
+ * <p>
  * The formula is:
  * -for each possible choice calculate: test step weight / number of times step covered
  * -multiply these values until you get a value over 10
  * -use the resulting values as the "score" to pick one of the test steps (as weighted random choice, score=weight)
- * <p/>
+ * <p>
  * Thus steps with same coverage and same weight = same probability to be taken next.
  * Steps with same coverage but different weight = one with higher weight has higher probability to be taken next.
  * Steps with different coverage and different weight = which one gets higher score depends on how much bigger is
  * the weight and how much bigger is the coverage on either of the choices.
- * <p/>
+ * <p>
  * Note than in calculation, a step that is never visited has a visited value of 1 (and one that is visited once
  * has a value of 2 and so on) to allow for simplified calculation of test step scores. Otherwise all
  * test steps would start with score of 0, and the choices of first step would be random without weight.
@@ -103,7 +103,7 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
   /**
    * Counts the "score" of a set of steps. The step with the highest score should be taken first and the
    * one with the lowest last. See class header for formula description and notes on why visit values start with 1.
-   * <p/>
+   * <p>
    * Note that this is typically recalculated between each step taken since the one with
    * the highest score may be also the highest in the next round and we cannot simply take them in order from a single
    * calculation (even if the available set was the same).

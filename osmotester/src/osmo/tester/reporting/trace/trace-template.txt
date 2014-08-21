@@ -182,7 +182,7 @@
 #end
     </tbody>
   </table>
-  <p/>
+  <p>
 #end
 </body>
 </html>

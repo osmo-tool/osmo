@@ -1,7 +1,6 @@
 package osmo.tester.model.data;
 
 import osmo.common.log.Logger;
-import osmo.tester.OSMOConfiguration;
 import osmo.tester.gui.manualdrive.TextGUI;
 
 import java.util.ArrayList;
@@ -78,6 +77,7 @@ public class Text extends SearchableInput<String> {
    * Enable or disable production of zero size strings in invalid data generation. By default this is disabled.
    *
    * @param zeroSize Enable/disable flag.
+   * @return Self reference for chaining.
    */
   public Text enableZeroSize(boolean zeroSize) {
     this.zeroSize = zeroSize;
@@ -183,13 +183,15 @@ public class Text extends SearchableInput<String> {
     return next;
   }
 
-  /** Set to only generate XML compliant characters. */
+  /** Set to only generate XML compliant characters. 
+   * @return Self reference for chaining. */
   public Text enableXml() {
     chars.enableXml();
     return this;
   }
 
-  /** Only a-z, A-Z, 0-9. */
+  /** Only a-z, A-Z, 0-9. 
+   * @return Self reference for chaining. */
   public Text asciiLettersAndNumbersOnly() {
     chars.asciiLettersAndNumbersOnly();
     return this;
@@ -199,6 +201,7 @@ public class Text extends SearchableInput<String> {
    * Reduce the set of generated chars by given set of chars.
    *
    * @param charsToRemove The string of chars to be removed.
+   * @return Self reference for chaining.
    */
   public Text reduceBy(String charsToRemove) {
     chars.reduceBy(charsToRemove);

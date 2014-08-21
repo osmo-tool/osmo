@@ -28,7 +28,9 @@ public class GeneratorTask implements Callable<TestCoverage> {
   private final int id;
   /** Next ID for next parallel task.. */
   private static volatile int nextId = 1;
+  /** Write generator traces for the generated tests? */
   private final boolean traceAll;
+  /** Print coverage in the end? */
   private final boolean printCoverage;
 
   public GeneratorTask(OSMOConfiguration config, Time time, long seed, boolean traceAll, boolean printCoverage) {

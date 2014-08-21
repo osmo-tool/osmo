@@ -22,7 +22,6 @@ import osmo.tester.unittests.testmodels.CalculatorModel;
 import osmo.tester.unittests.testmodels.RandomValueModel;
 import osmo.tester.unittests.testmodels.RandomValueModel4;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 

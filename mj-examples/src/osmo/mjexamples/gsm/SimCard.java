@@ -5,13 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 
 import osmo.common.NullPrintStream;
-import osmo.common.TestUtils;
-import osmo.common.log.Logger;
 import osmo.tester.OSMOConfiguration;
-import osmo.tester.OSMOTester;
 import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.CoverageValue;
 import osmo.tester.annotation.ExplorationEnabler;
@@ -20,21 +16,11 @@ import osmo.tester.annotation.TestStep;
 import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.coverage.ScoreConfiguration;
 import osmo.tester.coverage.TestCoverage;
-import osmo.tester.explorer.ExplorationConfiguration;
-import osmo.tester.explorer.ExplorerAlgorithm;
-import osmo.tester.explorer.OSMOExplorer;
-import osmo.tester.generator.SingleInstanceModelFactory;
-import osmo.tester.generator.endcondition.Length;
-import osmo.tester.generator.endcondition.LengthProbability;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
-import osmo.tester.generator.testsuite.TestSuite;
-import osmo.tester.gui.manualdrive.ManualAlgorithm;
 import osmo.tester.model.Requirements;
-import osmo.tester.optimizer.CSVCoverageReport;
 import osmo.tester.optimizer.GenerationResults;
 import osmo.tester.optimizer.greedy.GreedyOptimizer;
-import osmo.tester.optimizer.greedy.MultiGreedy;
 
 /**
  * This is an EFSM model of the SIM card within a mobile phone.

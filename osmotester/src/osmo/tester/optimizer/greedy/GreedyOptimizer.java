@@ -45,57 +45,43 @@ import java.util.List;
  */
 public class GreedyOptimizer {
   private static final Logger log = new Logger(GreedyOptimizer.class);
-  /**
-   * Defines weights for different coverage requirements to optimize for.
-   */
+  /** Defines weights for different coverage requirements to optimize for. */
   private final ScoreConfiguration config;
-  /**
-   * The test model.
-   */
+  /** The test model. */
   private FSM fsm = null;
-  /**
-   * Identifier for next greedy optimizer if several are created.
-   */
+  /** Identifier for next greedy optimizer if several are created. */
   private static int nextId = 1;
-  /**
-   * The identifier for this optimizer.
-   */
+  /** The identifier for this optimizer. */
   public final int id = nextId++;
-  /**
-   * Used to calculate coverage scores for different tests and suites.
-   */
+  /** Used to calculate coverage scores for different tests and suites. */
   private final ScoreCalculator scoreCalculator;
-  /**
-   * How much does an iteration need to gain in score to go for another iteration? Defaults to 1.
-   */
+  /** How much does an iteration need to gain in score to go for another iteration? Defaults to 1. */
   private int threshold = 1;
-  /**
-   * Seconds until the search times out. Timeout is checked between iterations and refers to how long overall generation progresses.
-   */
+  /** Seconds until the search times out. Timeout is checked between iterations and refers to how long overall generation progresses. */
   private long timeout = -1;
-  /**
-   * For tracking all the path options encountered.
-   */
+  /** For tracking all the path options encountered. */
   private Collection<String> possiblePairs = new LinkedHashSet<>();
-  /**
-   * Generator configuration.
-   */
+  /** Generator configuration. */
   private final OSMOConfiguration osmoConfig;
+  /** Start time of optimization. */
   private long start = 0;
+  /** Final optimized suite. */
   private List<TestCase> suite = new ArrayList<>();
+  /** Number of iteration running. */
   private int iteration = 0;
+  /** Text to append to middle of filename when writing output reports. */
   private String midPath = "";
+  /** Randomization seed to randomize generators with. */
   private long seed = 0;
-  /**
-   * If > 0 defines the maximum number of tests to return.
-   */
+  /** If > 0 defines the maximum number of tests to return. */
   private int max = 0;
+  /** Listeners to notify about iterations. */
   private Collection<IterationListener> listeners = new HashSet<>();
+  /** If we are running as sub-optimizer for multi-greedy we do not notify about final generation finished. */
   private boolean subStatus;
 
-  /**
-   * @param configuration For scoring the search.
-   */
+  /** @param osmoConfig Generator configuration to use in optimizers doing generation.
+   * @param configuration For scoring the search. */
   public GreedyOptimizer(OSMOConfiguration osmoConfig, ScoreConfiguration configuration) {
     this.osmoConfig = osmoConfig;
     osmoConfig.setDataTraceRequested(false);
@@ -157,6 +143,8 @@ public class GreedyOptimizer {
    * From this overall set, the subset that gives some added coverage is returned.
    * If a test adds no coverage to the overall set, it is not returned.
    *
+   * @param populationSize Number of tests to generate.
+   * @param seed Randomization seed to randomize the generator.
    * @return The sorted set of test cases, with requested number of tests.
    */
   public GenerationResults search(int populationSize, long seed) {
@@ -287,6 +275,8 @@ public class GreedyOptimizer {
    * Same as createSortedSet(int howMany) but does not generate the tests, uses the given set as source instead.
    *
    * @param from The source set to pick from.
+   * @param calculator For calculating coverage score.
+   * @param max Maximum number of tests to include in results.
    * @return Greedily sorted suite of requested size.
    */
   public static List<TestCase> sortAndPrune(List<TestCase> from, ScoreCalculator calculator, int max) {

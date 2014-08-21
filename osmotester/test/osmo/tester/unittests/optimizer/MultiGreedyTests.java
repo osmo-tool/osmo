@@ -11,8 +11,6 @@ import osmo.tester.generator.endcondition.LengthProbability;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.ModelFactory;
 import osmo.tester.model.TestModels;
-import osmo.tester.optimizer.GenerationResults;
-import osmo.tester.optimizer.greedy.GreedyOptimizer;
 import osmo.tester.optimizer.greedy.IterationListener;
 import osmo.tester.optimizer.greedy.MultiGreedy;
 import osmo.tester.unittests.testmodels.CalculatorModel;

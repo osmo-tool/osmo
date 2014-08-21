@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * When annotated method returns true, test generation for the current test (not suite) is stopped.
- * <p/>
+ * <p>
  * Each annotated method must have a boolean return value and no parameters.
  *
  * @author Teemu Kanstren

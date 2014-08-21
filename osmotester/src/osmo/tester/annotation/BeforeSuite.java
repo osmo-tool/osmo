@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * Annotated method is executed before test generation has been started
  * (only once before the whole suite, not before each test case).
- * <p/>
+ * <p>
  * The annotated method must have no parameters.
  *
  * @author Teemu Kanstren

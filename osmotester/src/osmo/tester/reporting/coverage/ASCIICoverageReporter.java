@@ -50,6 +50,8 @@ public class ASCIICoverageReporter extends CoverageMetric {
    * Output something like this
    * step1   step2  2
    * step2   step3  0
+   * 
+   * @return Formatted report for step-pairs.
    */
   public String getStepPairCounts() {
     List<ValueCount> tpc = countStepPairs();

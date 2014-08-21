@@ -29,9 +29,9 @@ public class ExplorationConfiguration extends ScoreConfiguration {
   protected int minSuiteLength = 10;
   /** Maximum length for generated test suite, exploration will stop here if not before. */
   protected int maxSuiteLength = 20;
-  /** Minimum added score to stop generation of current test. Minimum & Maximum test length have precedence over this. */
+  /** Minimum added score to stop generation of current test. Minimum and Maximum test length have precedence over this. */
   protected int minTestScore = 0;
-  /** Minimum added score to stop suite generation. Minimum & Maximum suite length have precedence over this. */
+  /** Minimum added score to stop suite generation. Minimum and Maximum suite length have precedence over this. */
   protected int minSuiteScore = 0;
   /** The threshold to stop test generation if no gain is observed over test. */
   protected int testPlateauThreshold = 1;

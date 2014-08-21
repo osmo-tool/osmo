@@ -46,6 +46,9 @@ public class TestCase {
     this.seed = seed;
   }
 
+  /**
+   * Restarts the test id from 1.
+   */
   public static void reset() {
     nextId = new AtomicInteger(1);
   }

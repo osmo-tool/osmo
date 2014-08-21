@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * Annotated method is executed before each the specified (or any) test step.
- * <p/>
+ * <p>
  * 
  * If no name is given, association of "all" is assumed similar to guards.
  * 
@@ -18,5 +18,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Pre {
+  /** @return The set of test steps (or groups) this should be associated with. */
   String[] value() default Guard.DEFAULT;
 }

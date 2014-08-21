@@ -3,7 +3,7 @@ package osmo.tester.unittests.parser;
 import org.junit.Test;
 import osmo.tester.parser.ParserParameters;
 import osmo.tester.parser.annotation.GuardParser;
-import osmo.tester.parser.annotation.TransitionParser;
+import osmo.tester.parser.annotation.TestStepParser;
 
 import static junit.framework.Assert.*;
 
@@ -42,19 +42,19 @@ public class MethodNameTests {
   public void okNameParsingStep() {
     String input = "helloWorld";
     ParserParameters parameters = new ParserParameters();
-    String output = TransitionParser.parseName(input);
+    String output = TestStepParser.parseName(input);
     assertEquals("Parsed guard name", "HelloWorld", output);
 
     input = "hilloS";
-    output = TransitionParser.parseName(input);
+    output = TestStepParser.parseName(input);
     assertEquals("Parsed guard name", "HilloS", output);
 
     input = "_MethodHere";
-    output = TransitionParser.parseName(input);
+    output = TestStepParser.parseName(input);
     assertEquals("Parsed guard name", "_MethodHere", output);
 
     input = "a";
-    output = TransitionParser.parseName(input);
+    output = TestStepParser.parseName(input);
     assertEquals("Parsed guard name", "A", output);
   }
 }

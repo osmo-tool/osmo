@@ -87,6 +87,7 @@ public class RangeCategory implements VariableValue {
    * @param min  Range minimum.
    * @param max  Range maximum.
    * @param name Defines what to call the new value if it hits inside the range.
+   * @return Self reference for chaining.
    */
   public RangeCategory addCategory(int min, int max, String name) {
     if (name == null) {
