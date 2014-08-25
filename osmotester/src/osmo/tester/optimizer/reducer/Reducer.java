@@ -100,6 +100,8 @@ public class Reducer {
     long totalTime = config.getTotalUnit().toMillis(config.getTotalTime());
     log.info("Running initial search");
     fuzz1(state, totalTime);
+    //need to clear scripts after initial fuzz in order to allow variation in search
+    osmoConfig.setScripts(null);
     state.startShortening();
     if (state.getTests().size() == 0) {
       System.out.println("Could not find any test.");
@@ -145,6 +147,8 @@ public class Reducer {
           continue;
         }
       }
+      //need to clear scripts after initial fuzz in order to allow variation in search
+      osmoConfig.setScripts(null);
       log.debug("Searching with tests: " + state.getTests());
       state.startShortening();
       log.info("Running shortening");

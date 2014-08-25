@@ -62,6 +62,9 @@ public class FuzzerTask implements Runnable {
   public void runrun() {
     log.info("Starting fuzz task");
     while (!state.isDone()) {
+      if (state.isFoundFailing()) {
+        config.setScripts(null);
+      }
       OSMOTester tester = new OSMOTester();
       tester.setConfig(config);
       tester.setPrintCoverage(false);
