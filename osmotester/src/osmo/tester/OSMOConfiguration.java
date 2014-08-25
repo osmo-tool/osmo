@@ -93,6 +93,8 @@ public class OSMOConfiguration implements ModelFactory {
     this.printExplorationErrors = cloneMe.printExplorationErrors;
     this.exploring = cloneMe.exploring;
     this.scenario = cloneMe.scenario;
+    this.keepTests = cloneMe.keepTests;
+    this.scripts = cloneMe.scripts;
   }
 
   public boolean isKeepTests() {

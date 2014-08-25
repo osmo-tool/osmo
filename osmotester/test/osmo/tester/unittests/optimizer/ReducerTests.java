@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 import static org.junit.Assert.*;
 
@@ -88,7 +89,7 @@ public class ReducerTests {
 
   @Test
   public void model10() throws Exception {
-//    Logger.consoleLevel = Level.FINEST;
+    Logger.consoleLevel = Level.FINEST;
     Logger.packageName = "o.t.o.r";
     ReducerConfig config = new ReducerConfig(111);
     config.setParallelism(1);

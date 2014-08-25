@@ -43,10 +43,9 @@ public class ReducerState {
   private Map<String, TestCase> requirementsTests = new HashMap<>();
   /** The list of processed requirements so far. The ones that have best test 'found' already. */
   private Collection<String> processedRequirements = new ArrayList<>();
+  private boolean foundFailing = false;
 
   private enum ReductionPhase {INITIAL_SEARCH, SHORTENING, FINAL_FUZZ}
-
-  ;
   private ReductionPhase phase = ReductionPhase.INITIAL_SEARCH;
 
   /**
@@ -140,7 +139,12 @@ public class ReducerState {
     checkTimeout();
     return done;
   }
-//
+
+  public boolean isFoundFailing() {
+    return foundFailing;
+  }
+
+  //
 //  /**
 //   * Sets reduction to "done" status causing tasks to stop at following point.
 //   */
@@ -177,6 +181,7 @@ public class ReducerState {
       default:
         throw new IllegalStateException("Unknown reduction phase:" + phase);
     }
+    foundFailing = true;
     //first we write the report for the previous iteration that just finished
     Analyzer analyzer = new Analyzer(allSteps, this);
     analyzer.analyze();
