@@ -49,7 +49,6 @@
   </target>
 
   <target name="compile" depends="init">
-    <ant dir="../common" antfile="build.xml" target="jar" inheritall="false"/>
     <echo message="Compiling production..."/>
     <javac source="8" target="8" debug="true" classpathref="class.path" srcdir="${prod-src}" destdir="${prod-dest}"/>
     <echo message="Compiling tests..."/>
@@ -59,7 +58,6 @@
   <target name="jar" depends="clean,compile,copyresources" description="Create jar file">
     <jar destfile="${jar.file}">
       <fileset dir="${prod-dest}"/>
-      <fileset dir="${osmo-common-output}"/>
     </jar>
   </target>
 
