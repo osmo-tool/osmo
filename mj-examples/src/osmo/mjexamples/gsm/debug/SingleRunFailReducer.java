@@ -16,12 +16,16 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 /**
+ * 
+ * 
  * @author Teemu Kanstren
  */
 public class SingleRunFailReducer {
   public static void main(String[] args) {
-   // Logger.consoleLevel = Level.FINEST;
+    Logger.consoleLevel = Level.INFO;
     Logger.packageName = "o.t.o.r";
+    long iterationTime = Long.parseLong(args[0]);
+    long totalTime = Long.parseLong(args[1]);
     ReducerConfig config = new ReducerConfig(1);
     Reducer reducer = new Reducer(config);
     OSMOConfiguration osmoConfig = reducer.getOsmoConfig();
@@ -31,8 +35,10 @@ public class SingleRunFailReducer {
     osmoConfig.setTestEndCondition(new Length(50));
     osmoConfig.setSuiteEndCondition(new Length(1));
     osmoConfig.setFactory(new GSMModelFactory(NullPrintStream.stream));
-    config.setIterationTime(TimeUnit.SECONDS, 5);
-    config.setTotalTime(TimeUnit.SECONDS, 20);
+    config.setIterationTime(TimeUnit.MINUTES, iterationTime);
+    config.setTotalTime(TimeUnit.MINUTES, totalTime);
+//    config.setIterationTime(TimeUnit.SECONDS, 5);
+//    config.setTotalTime(TimeUnit.SECONDS, 15);
     config.setPopulationSize(100);
     config.setLength(50);
     reducer.search();

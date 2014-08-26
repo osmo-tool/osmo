@@ -225,6 +225,7 @@ public class ReducerState {
       hashes.clear();
       minimum = length;
       lengths.add(length);
+//      System.out.println("found smaller:"+minimum);
       log.info("Found smaller:" + minimum);
       //if we already reached smallest possible set, stop iteration
       //checkIfSingleStep();
