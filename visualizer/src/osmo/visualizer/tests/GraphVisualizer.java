@@ -46,7 +46,12 @@ public class GraphVisualizer extends JFrame implements GenerationListener {
   }
 
   @Override
-  public void step(TestCaseStep step) {
+  public void stepStarting(TestCaseStep step) {
+
+  }
+
+  @Override
+  public void stepDone(TestCaseStep step) {
     Object parent = graph.getDefaultParent();
     graph.getModel().beginUpdate();
     try {

@@ -22,7 +22,7 @@ public class CoverageListener implements GenerationListener {
 
   @Override
   public void init(long seed, FSM fsm, OSMOConfiguration config) {
-    
+
   }
 
   @Override
@@ -31,7 +31,12 @@ public class CoverageListener implements GenerationListener {
   }
 
   @Override
-  public void step(TestCaseStep step) {
+  public void stepStarting(TestCaseStep step) {
+
+  }
+
+  @Override
+  public void stepDone(TestCaseStep step) {
 
   }
 

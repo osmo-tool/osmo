@@ -248,7 +248,7 @@ public class UtilTests {
       //expected
     }
   }
-  
+
   @Test
   public void listFilesNameOnly() {
     List<String> files = listFiles("osmo/osmotester/test-data2", "txt", false);
@@ -261,5 +261,48 @@ public class UtilTests {
     String filename = files.get(0);
     assertTrue("File path should end with file name (afile.txt), was "+filename, filename.endsWith("afile.txt"));
     assertTrue("File should have full path, was "+filename, filename.length() > "afile.txt".length());
+  }
+
+  @Test
+  public void compareListContentsNoOverlap() {
+    List<String> names1 = new ArrayList<>();
+    List<String> names2 = new ArrayList<>();
+    names1.add("bob");
+    names1.add("alice");
+    names2.add("teemu");
+    assertFalse(checkContainsSame(names1, names2));
+  }
+
+  @Test
+  public void compareListContentsPartialOverlap() {
+    List<String> names1 = new ArrayList<>();
+    List<String> names2 = new ArrayList<>();
+    names1.add("bob");
+    names1.add("alice");
+    names2.add("bob");
+    assertFalse(checkContainsSame(names1, names2));
+  }
+
+  @Test
+  public void compareListContentsFullOverlap() {
+    List<String> names1 = new ArrayList<>();
+    List<String> names2 = new ArrayList<>();
+    names1.add("bob");
+    names1.add("alice");
+    names2.add("bob");
+    names2.add("alice");
+    assertTrue(checkContainsSame(names1, names2));
+  }
+
+  @Test
+  public void compareListContentsFullOverlapWithExtra() {
+    List<String> names1 = new ArrayList<>();
+    List<String> names2 = new ArrayList<>();
+    names1.add("bob");
+    names1.add("alice");
+    names2.add("bob");
+    names2.add("alice");
+    names2.add("teemu");
+    assertFalse(checkContainsSame(names1, names2));
   }
 }

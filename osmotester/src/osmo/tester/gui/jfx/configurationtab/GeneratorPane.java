@@ -11,10 +11,12 @@ import javafx.scene.layout.VBox;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.explorer.OSMOExplorer;
+import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.gui.jfx.GUIGeneratorTask;
 import osmo.tester.gui.jfx.GUIState;
 import osmo.tester.gui.jfx.configurationtab.generator.Exploration;
 import osmo.tester.gui.jfx.configurationtab.generator.GeneratorDescription;
+import osmo.tester.gui.jfx.configurationtab.generator.GeneratorTaskListener;
 import osmo.tester.gui.jfx.configurationtab.generator.Greedy;
 import osmo.tester.gui.jfx.configurationtab.generator.GreedyParameters;
 import osmo.tester.gui.jfx.configurationtab.generator.MultiCore;
@@ -23,13 +25,14 @@ import osmo.tester.gui.jfx.configurationtab.generator.Requirements;
 import osmo.tester.gui.jfx.configurationtab.generator.SingleCore;
 import osmo.tester.optimizer.greedy.GreedyOptimizer;
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
  * @author Teemu Kanstren
  */
-public class GeneratorPane extends VBox {
+public class GeneratorPane extends VBox implements GeneratorTaskListener {
   private final GUIState state;
   private Node old = null;
   private ComboBox<GeneratorDescription> generatorCombo;
@@ -74,7 +77,7 @@ public class GeneratorPane extends VBox {
       startSingleCore();
     }
     if (choice instanceof MultiCore) {
-      
+
     }
     if (choice instanceof Greedy) {
       startGreedy();
@@ -102,7 +105,7 @@ public class GeneratorPane extends VBox {
     new Thread(task).start();
 //    tester.generate(seed);
   }
-  
+
   private void startGreedy() {
     state.setOsmoConfig(new OSMOConfiguration());
     Greedy greedyDesc = (Greedy) generator;
@@ -131,7 +134,9 @@ public class GeneratorPane extends VBox {
     new Thread(task).start();
   }
 
-  public void taskFinished() {
+  public void taskFinished(List<TestCase> tests) {
     task = null;
   }
+
+
 }

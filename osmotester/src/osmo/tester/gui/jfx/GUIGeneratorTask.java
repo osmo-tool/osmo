@@ -2,8 +2,13 @@ package osmo.tester.gui.jfx;
 
 import osmo.tester.OSMOTester;
 import osmo.tester.explorer.OSMOExplorer;
-import osmo.tester.gui.jfx.configurationtab.GeneratorPane;
+import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.gui.jfx.configurationtab.generator.GeneratorTaskListener;
+import osmo.tester.optimizer.GenerationResults;
 import osmo.tester.optimizer.greedy.GreedyOptimizer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Teemu Kanstren
@@ -14,10 +19,10 @@ public class GUIGeneratorTask implements Runnable {
   private final OSMOExplorer explorer;
   private final long seed;
   private final int population;
-  private final GeneratorPane parent;
+  private final GeneratorTaskListener parent;
   private final GUIState state;
 
-  public GUIGeneratorTask(GeneratorPane parent, OSMOTester tester, long seed) {
+  public GUIGeneratorTask(GeneratorTaskListener parent, OSMOTester tester, long seed) {
     this.parent = parent;
     this.tester = tester;
     this.seed = seed;
@@ -27,7 +32,7 @@ public class GUIGeneratorTask implements Runnable {
     this.state = null;
   }
 
-  public GUIGeneratorTask(GeneratorPane parent, GreedyOptimizer greedy, int population, long seed) {
+  public GUIGeneratorTask(GeneratorTaskListener parent, GreedyOptimizer greedy, int population, long seed) {
     this.parent = parent;
     this.tester = null;
     this.seed = seed;
@@ -37,7 +42,7 @@ public class GUIGeneratorTask implements Runnable {
     this.state = null;
   }
 
-  public GUIGeneratorTask(GeneratorPane parent, OSMOExplorer explorer, GUIState state) {
+  public GUIGeneratorTask(GeneratorTaskListener parent, OSMOExplorer explorer, GUIState state) {
     this.parent = parent;
     this.tester = null;
     this.seed = 0;
@@ -49,25 +54,29 @@ public class GUIGeneratorTask implements Runnable {
 
   @Override
   public void run() {
+    List<TestCase> tests = new ArrayList<>();
     try {
-      if (tester != null) runTester();
-      if (greedy != null) runGreedy();
-      if (explorer != null) runExplorer();
+      if (tester != null) tests = runTester();
+      if (greedy != null) tests = runGreedy();
+      if (explorer != null) tests = runExplorer();
     } catch (Exception e) {
       e.printStackTrace();
     }
-    parent.taskFinished();
+    parent.taskFinished(tests);
   }
 
-  private void runGreedy() {
-    greedy.search(population, seed);
+  private List<TestCase> runGreedy() {
+    GenerationResults results = greedy.search(population, seed);
+    return results.getTests();
   }
 
-  private void runTester() {
+  private List<TestCase> runTester() {
     tester.generate(seed);
+    return tester.getSuite().getAllTestCases();
   }
-  
-  private void runExplorer() {
+
+  private List<TestCase> runExplorer() {
     explorer.explore(state.getExplorationConfig());
+    return explorer.getSuite().getAllTestCases();
   }
 }
