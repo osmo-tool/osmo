@@ -47,9 +47,16 @@ public class GenerationListenerList implements GenerationListener {
   }
 
   @Override
-  public void step(TestCaseStep step) {
+  public void stepStarting(TestCaseStep step) {
     for (GenerationListener listener : listeners) {
-      listener.step(step);
+      listener.stepStarting(step);
+    }
+  }
+
+  @Override
+  public void stepDone(TestCaseStep step) {
+    for (GenerationListener listener : listeners) {
+      listener.stepDone(step);
     }
   }
 

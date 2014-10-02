@@ -15,7 +15,7 @@ import osmo.tester.model.FSMTransition;
 public interface GenerationListener {
   /**
    * Called once before test generation.
-   * 
+   *
    * @param seed   Test generation seed.
    * @param fsm    The parsed model.
    * @param config Provided configuration.
@@ -30,11 +30,18 @@ public interface GenerationListener {
   public void guard(FSMTransition transition);
 
   /**
+   * A test step is about to be invoked.
+   *
+   * @param step The step to be invoked.
+   */
+  public void stepStarting(TestCaseStep step);
+
+  /**
    * A test step has been invoked.
    *
    * @param step The step taken.
    */
-  public void step(TestCaseStep step);
+  public void stepDone(TestCaseStep step);
 
   /**
    * Last step annotated method has been invoked.

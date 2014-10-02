@@ -10,8 +10,8 @@
   <property name="instrumented-dest" value="${main-output}/instrumented"/>
   <property name="coverage-dir" value="${main-output}/coverage"/>
   <property name="javadoc-dir" value="${main-output}/docs/api"/>
-  <property name="clover.home" value="${env.CLOVER_HOME}"/>
-  <property name="build.version" value="3.4.0"/>
+  <!--property name="clover.home" value="${env.CLOVER_HOME}"/-->
+  <property name="build.version" value="3.5.0"/>
   <property name="osmo-common-output" value="../common/ant-out/production"/>
   <property name="jar.file" value="osmo-tester-v${build.version}.jar"/>
   <property name="zip.file" value="osmo-tester-v${build.version}.zip"/>
@@ -25,7 +25,7 @@
     <path location="${osmo-common-output}"/>
   </path>
 
-  <taskdef resource="cloverlib.xml" classpath="${clover.home}/lib/clover.jar"/>
+  <!--taskdef resource="cloverlib.xml" classpath="${clover.home}/lib/clover.jar"/-->
 
   <!-- CLEAN -->
   <target name="clean">
@@ -35,7 +35,7 @@
     <delete file="${jar.file}"/>
     <echo message="Removing zip file:${zip.file}"/>
     <delete file="${zip.file}"/>
-    <clover-clean/>
+    <!--clover-clean/-->
   </target>
 
   <!-- MK DEPLOY DIR -->
@@ -61,7 +61,7 @@
     </jar>
   </target>
 
-  <target name="init.clover">
+  <!--target name="init.clover">
     <clover-clean/>
     <clover-setup>
       <files>
@@ -70,7 +70,7 @@
         <exclude name="osmo/tester/unittests/**/*.java"/>
       </files>
     </clover-setup>
-  </target>
+  </target-->
 
   <!--target name="test" depends="init.clover, clean, compile, copyresources"-->
   <target name="test" depends="clean, compile, copyresources">

@@ -100,20 +100,28 @@ public class CharSet extends SearchableInput<Character> {
    * generation of data that can be embedded in XML files.
    * Note that it can still produce some invalid options, so be careful out there..
    */
-  public void enableXml() {
+  public CharSet enableXml() {
     reduceBy("<>");
+    return this;
   }
 
   /** Sets the set of generated characters to contain only a-z,A-Z,0-9. */
-  public void asciiLettersAndNumbersOnly() {
+  public CharSet asciiLettersAndNumbersOnly() {
     validChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     invalidChars += "åäöÅÄÖ,.<>!\"#%&/()=?´`{[]}\\¨^~';:|-_*-+= ";
+    return this;
   }
 
   /** Sets the set of generated characters to contain only a-z,A-Z,0-9. */
-  public void numbersOnly() {
+  public CharSet numbersOnly() {
     validChars = "0123456789";
     invalidChars += "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZåäöÅÄÖ,.<>!\"#%&/()=?´`{[]}\\¨^~';:|-_*-+= ";
+    return this;
+  }
+
+  public CharSet custom(String validChars) {
+    this.validChars = validChars;
+    return this;
   }
 
   @Override

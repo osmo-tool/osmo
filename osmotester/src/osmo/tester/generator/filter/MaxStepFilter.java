@@ -83,7 +83,12 @@ public class MaxStepFilter implements StepFilter {
   }
 
   @Override
-  public void step(TestCaseStep step) {
+  public void stepStarting(TestCaseStep step) {
+
+  }
+
+  @Override
+  public void stepDone(TestCaseStep step) {
     String name = step.getName();
     Integer count = taken.get(name);
     if (count == null) {

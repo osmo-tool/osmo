@@ -57,7 +57,7 @@ public class JenkinsReportGenerator implements GenerationListener {
     this.filename = filename;
     this.steps = steps;
   }
-  
+
   public void enableTestMode() {
     suite = new JenkinsSuite("OSMO Test Suite", true);
   }
@@ -74,7 +74,12 @@ public class JenkinsReportGenerator implements GenerationListener {
   }
 
   @Override
-  public void step(TestCaseStep step) {
+  public void stepStarting(TestCaseStep step) {
+
+  }
+
+  @Override
+  public void stepDone(TestCaseStep step) {
   }
 
   @Override
