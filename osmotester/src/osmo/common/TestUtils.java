@@ -319,7 +319,7 @@ public class TestUtils {
 
   /**
    * Takes given XML and indents everything with 2 spaces.
-   * 
+   *
    * @param xml The XML to format in text format.
    * @return Same XML but formatted with indents of 2 spaces.
    * @throws TransformerException If it all breaks up.
@@ -342,10 +342,10 @@ public class TestUtils {
   }
 
   /**
-   * Writes the given text to a file with the given name. 
+   * Writes the given text to a file with the given name.
    * The filename should be a valid path given the working directory.
    * IOExceptions are re-thrown as RuntimeExceptions.
-   * 
+   *
    * @param text The text to write.
    * @param fileName The file name and path to write it to.
    */
@@ -355,8 +355,7 @@ public class TestUtils {
     if (parent != null) {
       parent.mkdirs();
     }
-    try {
-      FileOutputStream out = new FileOutputStream(file);
+    try (FileOutputStream out = new FileOutputStream(file)) {
       out.write(text.getBytes());
     } catch (IOException e) {
       throw new RuntimeException("Failed to write to file:"+fileName, e);
@@ -366,7 +365,7 @@ public class TestUtils {
   /**
    * Provide a list of all files of given type in given directory.
    * Type is identified by suffix. For example type "png" gives list of files ending with ".png".
-   * 
+   *
    * @param dir  The directory where to look for the files.
    * @param type The type of files to look for.
    * @param fullPath If true, returns full path of files. Otherwise just the file name.
@@ -397,7 +396,7 @@ public class TestUtils {
 
   /**
    * Recursively deletes the given path (file or directory).
-   * 
+   *
    * @param path The root folder to delete.
    */
   public static void recursiveDelete(String path) {
@@ -406,7 +405,7 @@ public class TestUtils {
 
   /**
    * Recursively deletes the given path (file or directory).
-   * 
+   *
    * @param file The root folder to delete.
    */
   public static void recursiveDelete(File file) {
@@ -423,7 +422,7 @@ public class TestUtils {
    * Copies given files to the given target directory.
    * If source is a file, only that file is copied.
    * If source is a directory, all files and subdirectories are copied recursively.
-   * 
+   *
    * @param from The source to copy from.
    * @param to Destination directory. If it does not exist, it is created. If it is a file, throws IllegalArgumentException.
    * @throws IOException In case of IO problems.. eh
@@ -443,7 +442,7 @@ public class TestUtils {
 
   /**
    * Internally handles recursion for file copy.
-   * 
+   *
    * @param src The source directory.
    * @param dest Where we are copying to.
    * @throws IOException In case of IO problems.. eh
@@ -474,11 +473,11 @@ public class TestUtils {
     PrintStream ps = new PrintStream(out);
     System.setOut(ps);
   }
-  
+
   public static String getOutput() {
     return out.toString();
   }
-  
+
   public static void endOutputCapture() {
     if (sout != null) System.setOut(sout);
   }
@@ -490,5 +489,23 @@ public class TestUtils {
     } catch (IOException e) {
       throw new RuntimeException("Failed to read file '"+path+"'", e);
     }
+  }
+
+  public static String readFile(String path, String encoding, boolean fail) {
+    try {
+      byte [] data = Files.readAllBytes(Paths.get(path));
+      return new String(data, encoding);
+    } catch (IOException e) {
+      if (fail) throw new RuntimeException("Failed to read file '"+path+"'", e);
+      return null;
+    }
+  }
+
+  public static boolean checkContainsSame(List<? extends Object> list1, Collection<? extends Object> list2) {
+    if (list1.size() != list2.size()) return false;
+    Collection<Object> list3 = new ArrayList<>();
+    list3.addAll(list1);
+    list3.removeAll(list2);
+    return list3.size() == 0;
   }
 }

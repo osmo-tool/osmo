@@ -64,7 +64,12 @@ public class TransitionsPieChart implements GenerationListener {
   }
 
   @Override
-  public void step(TestCaseStep step) {
+  public void stepStarting(TestCaseStep step) {
+
+  }
+
+  @Override
+  public void stepDone(TestCaseStep step) {
     String name = step.getName();
     int count = values.get(name);
     values.put(name, ++count);

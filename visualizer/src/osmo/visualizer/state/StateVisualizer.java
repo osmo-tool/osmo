@@ -91,9 +91,14 @@ public class StateVisualizer extends JFrame implements GenerationListener {
     }
     layout.reset();
   }
-  
+
   @Override
-  public void step(TestCaseStep t) {
+  public void stepStarting(TestCaseStep step) {
+
+  }
+
+  @Override
+  public void stepDone(TestCaseStep t) {
 //    addEdge(t.getValues().toString());
 //    current = t.getValues().toString();
   }

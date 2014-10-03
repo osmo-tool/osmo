@@ -105,6 +105,16 @@ public class MatrixTests {
   }
 
   @Test
+  public void csvMatrixNumbers() {
+    String expected = getResource(MatrixTests.class, "expected-matrix-numbers.csv");
+    CSVCoverageReporter csv = new CSVCoverageReporter(suite.getCoverage(), suite.getAllTestCases(), fsm);
+    String actual = csv.getTraceabilityNumberMatrix();
+    expected = unifyLineSeparators(expected, "\n");
+    actual = unifyLineSeparators(actual, "\n");
+    assertEquals("Generated CSV coverage number matrix", expected, actual);
+  }
+
+  @Test
   public void asciiMatrix() {
     String expected = getResource(MatrixTests.class, "expected-matrix-ascii.txt");
     ASCIICoverageReporter ascii = new ASCIICoverageReporter(suite.getCoverage(), suite.getAllTestCases(), fsm);

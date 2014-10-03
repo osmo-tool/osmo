@@ -89,9 +89,14 @@ public class FSMBuildVisualizer extends JFrame implements GenerationListener {
     }
     layout.reset();
   }
-  
+
   @Override
-  public void step(TestCaseStep t) {
+  public void stepStarting(TestCaseStep step) {
+
+  }
+
+  @Override
+  public void stepDone(TestCaseStep t) {
     addEdge(t.getName());
     current = t.getName();
   }
