@@ -1,0 +1,135 @@
+v0.1 06/2011
+initial release
+v0.2 12/07/2011
+added features based on v0.1 experiences and feedback, and invariance taxonomy
+-added weights to transitions
+-added weighted random algorithm
+-added @EndState annotation
+-renamed generation algorithms to FSM traversal algorithms
+-renamed strategies to end conditions
+-added compositional end conditions (or/and) for test cases and test suites
+-added support for several end conditions for both test case and test suite
+-added data generation and evaluation components, including readable characters, value range, and value range set
+-added implementation for basic test suite optimizers
+-fixed some bugs and did some refactoring to clarify code
+v0.3 16/07/2011
+-split oracle to pre and post methods
+v0.4 02/08/2011
+-added @Variable annotation and resulting state storage to TestStep? and @Pre and @Post parameters.
+-fixed some bugs and did some optimizations
+v1.0 24/08/2011
+-This is the first version to provide some stable interface
+-Cleaned up excess parameters from TestSuite and TestStep
+-Fixed spamming over several log files ( issue #7 )
+-Changed TestSuite? initialization to require non-null value
+-Added requirements coverage and test data reporters ( issue #6 ,  issue #11 )
+-Added basic boundary scan algorithm to dataflow generators ( issue #9 )
+-Defined common interfaces for dataflow input and output ( issue #8 )
+v1.1.0 09/09/2011
+-fixes to make random numbers more uniformly distributed
+-added transitioncoverage endcondition
+v1.2.0 04/10/2011
+-added extensive calendar example (in source code) and tutorial (in manual)
+-added robot framework scripter
+-added ASCII reporting
+v 1.2.1 17/10/2011
+-fixes to the calendar example
+-random test generation algorithm uses the common seed now (enables determinism and model versioning)
+-valuerangeset to support boundary scan
+v 2.0.0 24/11/2011
+-several fixes to make calendar example better, including more deterministic etc.
+-separated osmo.visualizer.examples to different module from core
+-added option for strict end conditions
+-added end condition for data (variable) coverage
+-added end condition for transition (step) coverage
+-added filtering support to define when some steps or values should not be used
+-added support for model prefixes
+-added support for custom (user) attributes inside test case objects (from test models)
+-improved suite optimization algorithms
+-improved checking for invalid configurations
+-created an api to use the test generator externally not just from OSMOTester class
+-improved (new) weighted random algorithm
+-renamed optimized random to less random
+-added option to use testutils functions with separate seeds at the same time (Randomizer in common module)
+-added first draft GUI for running OSMOTester manually
+-added first draft of text based domain specific language
+-added coverage matrices
+-refactored (warning: api change), fixed bugs, the usual stuff..
+v 2.2.0 29/01/2012
+-JUnit integration
+-Separate OSMOConfiguration object
+-TestStep to replace Transition (which will still remain)
+-Tutorials for various features
+v 2.2.1 08/02/2012
+-Fix for "n must be positive" error in Balancing algorithm.
+v 2.3.0 13/06/2012
+-Using Clover for test coverage in development
+-Upgraded build to JDK 7
+-Performance tuning for algorithms
+-Bug fixes
+-Added getOptions to some data model objects
+-Refactored some API methods for clarity
+-Added Time end condition
+-Added ability to define slice configurations for inline variables
+-GUI metric changes
+-Added basic support for integrated Jenkins reporting
+-Exception unwrapping is on by default
+-Out of bounds data generation options
+v 2.3.1 28/06/2012
+-Fixed build error (instrumented classes)
+v2.4.0 12/10/2012
+-Test report showing traces for generated tests
+-Added annotation for @LastStep
+-Guard association negation support
+-Sorting of steps, guards, and pre-post elements (determinism++)
+v2.5.0 20/02/2013
+-@StateName added
+-Cleaned up old stuff
+-Fixed various bugs in ManualDrive
+-Seed must now be set explicitly
+v3.0.0 16/03/2013
+-@EndState removed
+-Cleaned up old stuff
+-Merged some end conditions to ElementCoverage end condition
+-Added end condition for StateCoverage (of @StateName values)
+-Fixed bugs
+-Added group support to test steps, guards, and pre-post-elements
+-Added offline optimizer and associated test generation coverage mechanisms
+v3.1.0 29/08/2013
+-seed is now parameter to generator, not a static value (for parallel runs)
+-optimized greedy optimizer to run final sort much faster
+-added check for multiple steps with same name
+-added more extensive coverage metric printing
+-some cleanup: removed file scripting, removed output interface
+-added group support at class level
+-changed coverage categories to model objects
+-added state-pairs to coverage options
+v3.2.0 27/10/2013
+-removed TestSuiteField -> recognized from field type
+-moreved RequirementsField -> recognized from field type
+-added support to read step names from method names
+-added support for scenarios: startup sequence + slices
+-changed data generators to use explicit methods instead of next()
+-changed name comparison to ignore case
+-StateName -> CoverageValue
+v3.3.0 15/11/2013
+-added MultiOSMO
+-added trace reporting to all generators
+-refactoring and cleanup
+-updated docs
+-fixed manualdrive
+-fixes to laststep
+-added tutorial for scenarios
+v3.3.1 02/12/2013
+-optimizing memory & cpu use in greedyoptimizers
+-some small bug fixes
+v3.4.0 20/8/2014
+-optimizer for requirements coverage alone
+-reducer for automated debugging support
+-some bug fixes
+-removed old deprecated stuff
+-removed common module, moved into osmotester module
+-updated maven build
+-upload to maven central
+
+

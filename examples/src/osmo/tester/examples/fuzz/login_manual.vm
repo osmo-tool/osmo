@@ -1,0 +1,6 @@
+{
+  "username":"$username",
+  "password":"$password",
+  "sessionid":"$sessionid",
+  "hash":"$hash",
+}

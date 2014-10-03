@@ -1,0 +1,15 @@
+#XPATH injection vectors
+#taken from OWASP Testing Guide v3 Appendix C: Fuzz vectors:
+#https://www.owasp.org/index.php/OWASP_Testing_Guide_Appendix_C:_Fuzz_Vectors
+#which defines the license (on April 2012) as:
+#Creative Commons 3.0: http://creativecommons.org/licenses/by-sa/3.0/
+'+or+'1'='1
+'+or+''='
+x'+or+1=1+or+'x'='y
+/
+//
+//*
+*/*
+@*
+count(/child::node())
+x'+or+name()='username'+or+'x'='y

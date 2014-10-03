@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.osmo</groupId>
+  <artifactId>osmo-parent</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>OSMO :: Parent</name>
+  <packaging>pom</packaging>
+
+  <properties>
+    <version.jung>2.0.1</version.jung>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <modules>
+    <module>common</module>
+    <module>osmotester</module>
+    <module>metaedithelper</module>
+    <module>visualizer</module>
+    <module>examples</module>
+  </modules>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- Internal dependencies -->
+      <dependency>
+        <groupId>org.osmo</groupId>
+        <artifactId>osmo-common</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.osmo</groupId>
+        <artifactId>osmo-osmotester</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.osmo</groupId>
+        <artifactId>osmo-metaedithelper</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.osmo</groupId>
+        <artifactId>osmo-visualizer</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.osmo</groupId>
+        <artifactId>osmo-examples</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <!-- External dependencies -->
+      <dependency>
+        <groupId>org.apache.velocity</groupId>
+        <artifactId>velocity</artifactId>
+        <version>1.7</version>
+      </dependency>
+      <dependency>
+        <groupId>axis</groupId>
+        <artifactId>axis</artifactId>
+        <version>1.4</version>
+      </dependency>
+      <dependency>
+        <groupId>org.tinyjee.jgraphx</groupId>
+        <artifactId>jgraphx</artifactId>
+        <version>1.10.3.2</version>
+      </dependency>
+      <dependency>
+        <groupId>log4j</groupId>
+        <artifactId>log4j</artifactId>
+        <version>1.2.16</version>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.9</version>
+      </dependency>
+      <dependency>
+        <groupId>jfree</groupId>
+        <artifactId>jcommon</artifactId>
+        <version>1.0.9</version>
+      </dependency>
+      <dependency>
+        <groupId>jfree</groupId>
+        <artifactId>jfreechart</artifactId>
+        <version>1.0.9</version>
+      </dependency>
+      <dependency>
+        <groupId>net.sourceforge.collections</groupId>
+        <artifactId>collections-generic</artifactId>
+        <version>4.01</version>
+      </dependency>
+      <dependency>
+        <groupId>net.sf.jung</groupId>
+        <artifactId>jung-api</artifactId>
+        <version>${version.jung}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.sf.jung</groupId>
+        <artifactId>jung-visualization</artifactId>
+        <version>${version.jung}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.sf.jung</groupId>
+        <artifactId>jung-graph-impl</artifactId>
+        <version>${version.jung}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.sf.jung</groupId>
+        <artifactId>jung-algorithms</artifactId>
+        <version>${version.jung}</version>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
