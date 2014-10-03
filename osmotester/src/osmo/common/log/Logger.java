@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -26,8 +27,7 @@ public class Logger {
   public static String packageName = "";
   /** Log file handler, shared to keep from creating numerous log files. */
   private static FileHandler file;
-  /** Name of the log file to be written. */
-  private static String logfile = "osmo.log";
+  private static LogHandler console;
   /** Maps levels to OSMO string definitions. */
   private final static Map<String, Level> levelMap = new HashMap<>();
 
@@ -38,7 +38,9 @@ public class Logger {
     levelMap.put("error", Level.SEVERE);
     levelMap.put("info", Level.INFO);
     initFromFile();
+    Runtime.getRuntime().addShutdownHook(new Thread(file::close));
   }
+
 
   /**
    * Constructor.
@@ -68,7 +70,7 @@ public class Logger {
     logger = java.util.logging.Logger.getLogger(name);
     logger.setUseParentHandlers(false);
     logger.setLevel(Level.ALL);
-    Handler console = new LogHandler();
+    console = new LogHandler();
     console.setFormatter(new LogFormatter());
     console.setLevel(consoleLevel);
     logger.addHandler(console);
@@ -83,7 +85,7 @@ public class Logger {
       FileInputStream fis = new FileInputStream(configurationFile);
       Properties props = new Properties();
       props.load(fis);
-      logfile = props.getProperty("log.file.name", "osmo.log");
+      String logfile = props.getProperty("log.file.name", "osmo.log");
       String fileLogLevel = props.getProperty("log.file.level", "off");
       fileLevel = toLevel(fileLogLevel);
 

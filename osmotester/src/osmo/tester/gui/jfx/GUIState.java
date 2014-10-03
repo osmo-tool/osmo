@@ -23,7 +23,7 @@ public class GUIState {
   private final MainWindow mainWindow;
   private ChartSettings chartSettings = new ChartSettings();
   private Stage stage;
-  private boolean drawChart;
+  private boolean drawChart = true;
   private boolean onlyFailingTests;
   private ReducerConfig reducerConfig;
 

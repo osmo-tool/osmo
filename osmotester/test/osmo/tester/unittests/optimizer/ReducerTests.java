@@ -89,7 +89,7 @@ public class ReducerTests {
 
   @Test
   public void model10() throws Exception {
-    Logger.consoleLevel = Level.FINEST;
+//    Logger.consoleLevel = Level.FINEST;
     Logger.packageName = "o.t.o.r";
     ReducerConfig config = new ReducerConfig(111);
     config.setParallelism(1);

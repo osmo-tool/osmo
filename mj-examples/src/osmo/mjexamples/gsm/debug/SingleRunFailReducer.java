@@ -6,6 +6,12 @@ import osmo.mjexamples.gsm.GSMModelFactory;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.Length;
+import osmo.tester.generator.listener.GenerationListener;
+import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.generator.testsuite.TestCaseStep;
+import osmo.tester.generator.testsuite.TestSuite;
+import osmo.tester.model.FSM;
+import osmo.tester.model.FSMTransition;
 import osmo.tester.optimizer.reducer.Reducer;
 import osmo.tester.optimizer.reducer.ReducerConfig;
 import osmo.tester.scripter.internal.TestLoader;
@@ -29,6 +35,7 @@ public class SingleRunFailReducer {
     ReducerConfig config = new ReducerConfig(1);
     Reducer reducer = new Reducer(config);
     OSMOConfiguration osmoConfig = reducer.getOsmoConfig();
+    if (args.length > 2) osmoConfig.addListener(new ErrorListener());
     TestLoader loader = new TestLoader();
     List<TestScript> scripts = loader.loadTests("demo");
     osmoConfig.setScripts(scripts);
@@ -42,5 +49,62 @@ public class SingleRunFailReducer {
     config.setPopulationSize(100);
     config.setLength(50);
     reducer.search();
+  }
+  
+  private static class ErrorListener implements GenerationListener {
+    @Override
+    public void init(long seed, FSM fsm, OSMOConfiguration config) {
+      
+    }
+
+    @Override
+    public void guard(FSMTransition transition) {
+
+    }
+
+    @Override
+    public void step(TestCaseStep step) {
+
+    }
+
+    @Override
+    public void lastStep(String name) {
+
+    }
+
+    @Override
+    public void pre(FSMTransition transition) {
+
+    }
+
+    @Override
+    public void post(FSMTransition transition) {
+
+    }
+
+    @Override
+    public void testStarted(TestCase test) {
+
+    }
+
+    @Override
+    public void testEnded(TestCase test) {
+
+    }
+
+    @Override
+    public void testError(TestCase test, Throwable error) {
+      error.printStackTrace();
+    }
+
+    @Override
+    public void suiteStarted(TestSuite suite) {
+
+    }
+
+    @Override
+    public void suiteEnded(TestSuite suite) {
+
+    }
   }
 }

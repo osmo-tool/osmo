@@ -27,7 +27,7 @@ public class MainWindow extends Application {
 
   @Override
   public void start(Stage stage) throws Exception {
-    stage.setTitle("OSMO Tester v4.0alpha");
+    stage.setTitle("OSMO Tester v3.4.0");
     state.setStage(stage);
 
     Tab tab1 = new ModelTab(state);

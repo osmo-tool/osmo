@@ -214,6 +214,7 @@ public class Reducer {
   private void fuzz2(ReducerState state, long waitTime) {
     Collection<Runnable> tasks = new ArrayList<>();
     List<TestCase> tests = state.getTests();
+    while (tests.size() < parallelism) tests.addAll(tests);
     for (TestCase test : tests) {
       FuzzerTask task = new FuzzerTask(osmoConfig, test, rand.nextLong(), state);
       tasks.add(task);
