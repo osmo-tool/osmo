@@ -67,7 +67,12 @@ public class TestSequenceListener implements GenerationListener {
   }
 
   @Override
-  public void step(TestCaseStep step) {
+  public void stepStarting(TestCaseStep step) {
+
+  }
+
+  @Override
+  public void stepDone(TestCaseStep step) {
     storeGuards();
     steps.add("t:" + step.getName());
   }

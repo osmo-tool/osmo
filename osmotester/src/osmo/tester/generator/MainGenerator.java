@@ -207,7 +207,7 @@ public class MainGenerator {
     } else {
       log.error(errorMsg, e);
     }
-    
+
     listeners.testError(test, unwrap);
     if (config.shouldStopTestOnError()) {
       suite.storeGeneralState(fsm);
@@ -264,6 +264,7 @@ public class MainGenerator {
   public void execute(FSMTransition transition) {
     //we have to add this first or it will produce failures..
     TestCaseStep step = suite.addStep(transition);
+    listeners.stepStarting(step);
     //store into test step the current state
     step.start();
     invokeAll(transition.getPreMethods(), "pre", transition);
@@ -284,7 +285,7 @@ public class MainGenerator {
       //store into test step the current state, do it here to allow the post methods and listeners to see step state
       suite.storeGeneralState(fsm);
     }
-    listeners.step(step);
+    listeners.stepDone(step);
     invokeAll(transition.getPostMethods(), "post", transition);
     //set end time
     step.end();

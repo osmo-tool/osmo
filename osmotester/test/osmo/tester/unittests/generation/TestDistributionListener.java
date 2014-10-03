@@ -31,7 +31,12 @@ public class TestDistributionListener implements GenerationListener {
   }
 
   @Override
-  public void step(TestCaseStep step) {
+  public void stepStarting(TestCaseStep step) {
+
+  }
+
+  @Override
+  public void stepDone(TestCaseStep step) {
     String name = step.getName();
     Integer count = steps.get(name);
     if (count == null) {

@@ -7,10 +7,10 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
-/** 
+/**
  * To help implement the {@link osmo.tester.generator.listener.GenerationListener} interface with less hassle.
- * 
- * @author Teemu Kanstren 
+ *
+ * @author Teemu Kanstren
  */
 public abstract class AbstractListener implements GenerationListener {
   @Override
@@ -22,7 +22,12 @@ public abstract class AbstractListener implements GenerationListener {
   }
 
   @Override
-  public void step(TestCaseStep step) {
+  public void stepStarting(TestCaseStep step) {
+
+  }
+
+  @Override
+  public void stepDone(TestCaseStep step) {
   }
 
   @Override

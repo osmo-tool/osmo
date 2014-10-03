@@ -8,10 +8,10 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 
-/** 
+/**
  * Helps the manual drive GUI keep track of test generation.
- * 
- * @author Teemu Kanstren 
+ *
+ * @author Teemu Kanstren
  */
 public class GUIGenerationListener implements GenerationListener {
   private final ManualAlgorithm driver;
@@ -29,7 +29,12 @@ public class GUIGenerationListener implements GenerationListener {
   }
 
   @Override
-  public void step(TestCaseStep step) {
+  public void stepStarting(TestCaseStep step) {
+
+  }
+
+  @Override
+  public void stepDone(TestCaseStep step) {
   }
 
   @Override

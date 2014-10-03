@@ -9,11 +9,11 @@ import osmo.tester.model.FSMTransition;
 
 import java.io.PrintStream;
 
-/** 
+/**
  * Prints a trace of test generation on the given output stream, defaults to System.out.
  * Currently prints only taken steps and errors observed.
- * 
- * @author Teemu Kanstren 
+ *
+ * @author Teemu Kanstren
  */
 public class TracePrinter implements GenerationListener {
   private PrintStream out = System.out;
@@ -21,7 +21,7 @@ public class TracePrinter implements GenerationListener {
   private int testIndex = 1;
   /** Number of test step running, used to print indices on trace. */
   private int stepIndex = 1;
-  
+
   @Override
   public void init(long seed, FSM fsm, OSMOConfiguration config) {
   }
@@ -31,7 +31,12 @@ public class TracePrinter implements GenerationListener {
   }
 
   @Override
-  public void step(TestCaseStep step) {
+  public void stepStarting(TestCaseStep step) {
+
+  }
+
+  @Override
+  public void stepDone(TestCaseStep step) {
     String name = step.getName();
     out.println(testIndex+"."+stepIndex+".STEP:"+name.toUpperCase());
     stepIndex++;
