@@ -22,8 +22,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 /**
- * 
- * 
+ *
+ *
  * @author Teemu Kanstren
  */
 public class SingleRunFailReducer {
@@ -50,11 +50,11 @@ public class SingleRunFailReducer {
     config.setLength(50);
     reducer.search();
   }
-  
+
   private static class ErrorListener implements GenerationListener {
     @Override
     public void init(long seed, FSM fsm, OSMOConfiguration config) {
-      
+
     }
 
     @Override
@@ -63,7 +63,12 @@ public class SingleRunFailReducer {
     }
 
     @Override
-    public void step(TestCaseStep step) {
+    public void stepStarting(TestCaseStep step) {
+
+    }
+
+    @Override
+    public void stepDone(TestCaseStep step) {
 
     }
 

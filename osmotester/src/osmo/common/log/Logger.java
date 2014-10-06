@@ -30,6 +30,7 @@ public class Logger {
   private static LogHandler console;
   /** Maps levels to OSMO string definitions. */
   private final static Map<String, Level> levelMap = new HashMap<>();
+  private static boolean initialized = false;
 
   static {
     levelMap.put("off", Level.OFF);
@@ -38,7 +39,7 @@ public class Logger {
     levelMap.put("error", Level.SEVERE);
     levelMap.put("info", Level.INFO);
     initFromFile();
-    Runtime.getRuntime().addShutdownHook(new Thread(file::close));
+    if (file != null) Runtime.getRuntime().addShutdownHook(new Thread(file::close));
   }
 
 
@@ -52,7 +53,7 @@ public class Logger {
     name += clazz.getSimpleName();
     init(name);
   }
-  
+
   private static String squeeze(String orange) {
     String juice = "";
     String[] ps = orange.split("\\.");
@@ -62,7 +63,7 @@ public class Logger {
     return juice;
   }
 
-  private void init(String name) {
+  private synchronized void init(String name) {
     if (!name.startsWith(packageName)) {
       logger = null;
       return;
@@ -95,10 +96,10 @@ public class Logger {
 
       String consoleLogLevel = props.getProperty("log.console.level", "off");
       consoleLevel = toLevel(consoleLogLevel);
-      
+
       String packageFilter = props.getProperty("log.console.package", "");
       packageName = squeeze(packageFilter);
-      
+
     } catch (IOException e) {
       file = null;
       new Logger(Logger.class).debug("Unable to read logging configuration from file '" + configurationFile + "'. Using defaults.");
@@ -137,7 +138,7 @@ public class Logger {
     }
     return false;
   }
-  
+
   public void debug(String msg, Throwable e) {
     if (isOff()) {
       return;

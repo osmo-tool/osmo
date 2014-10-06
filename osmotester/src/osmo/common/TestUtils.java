@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.lang.management.ManagementFactory;
@@ -507,5 +508,12 @@ public class TestUtils {
     list3.addAll(list1);
     list3.removeAll(list2);
     return list3.size() == 0;
+  }
+
+  public static String toString(Throwable t) {
+    StringWriter sw = new StringWriter();
+    PrintWriter pw = new PrintWriter(sw);
+    t.printStackTrace(pw);
+    return sw.toString();
   }
 }
