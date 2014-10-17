@@ -273,11 +273,11 @@ public class MainGenerator {
     try {
       target.invoke();
     } catch (Exception e) {
+      Throwable unwrapped = unwrap(e);
+      listeners.testError(getCurrentTest(), unwrapped);
       if (config.shouldStopTestOnError()) {
         throw e;
       }
-      Throwable unwrapped = unwrap(e);
-      listeners.testError(getCurrentTest(), unwrapped);
     } finally {
       //we store the "custom" state returned by @StateName tagged methods
       //we do it here to allow any post-processing of state value for a step
