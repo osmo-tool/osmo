@@ -45,7 +45,7 @@ public class GreedyTests {
     gc.setRequirementWeight(0);
     oc = new OSMOConfiguration();
   }
-  
+
   @After
   public void resetAfter() {
     TestUtils.endOutputCapture();
@@ -278,6 +278,7 @@ public class GreedyTests {
     ScoreConfiguration config = new ScoreConfiguration();
     config.setLengthWeight(0);
     oc.setTestEndCondition(new LengthProbability(1, 5, 0.1d));
+    oc.setTrackOptions(true);
     ReflectiveModelFactory factory = new ReflectiveModelFactory(CalculatorModel.class);
     oc.setFactory(factory);
     GreedyOptimizer optimizer = new GreedyOptimizer(oc, config);
@@ -292,7 +293,7 @@ public class GreedyTests {
     String expected = TestUtils.getResource(GreedyTests.class, "expected-greedy.txt");
     assertEquals("Greedy report", expected, report);
   }
-  
+
   @Test
   public void timeOut() {
     ScoreConfiguration gc = new ScoreConfiguration();

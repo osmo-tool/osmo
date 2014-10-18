@@ -134,6 +134,7 @@ public class RequirementPrintTests {
   @Test
   public void nothingCoverage() {
     OSMOTester tester = new OSMOTester();
+    tester.getConfig().setTrackOptions(true);
     SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
     factory.add(new RandomValueModel2());
     tester.setModelFactory(factory);
@@ -157,6 +158,7 @@ public class RequirementPrintTests {
   @Test
   public void moreCoverage() {
     OSMOTester tester = new OSMOTester();
+    tester.getConfig().setTrackOptions(true);
     tester.setModelFactory(new ReflectiveModelFactory(CoverageValueModel1.class));
     tester.generate(111);
     String actual = out.toString();
@@ -179,6 +181,6 @@ public class RequirementPrintTests {
             "\n";
     expected = unifyLineSeparators(expected, "\n");
     actual = unifyLineSeparators(actual, "\n");
-    assertEquals("Generator printout for coverage", expected, actual);     
+    assertEquals("Generator printout for coverage", expected, actual);
   }
 }
