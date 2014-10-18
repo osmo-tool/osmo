@@ -31,12 +31,13 @@ public class MultiGreedyTests {
   public void resetAfter() {
     TestUtils.endOutputCapture();
   }
-  
+
   @Test
   public void calculatorOptimization() throws Exception {
     OSMOConfiguration oc = new OSMOConfiguration();
     oc.setTestEndCondition(new LengthProbability(1, 5, 0.2d));
     oc.setFactory(new MyModelFactory());
+    oc.setTrackOptions(true);
     ScoreConfiguration config = new ScoreConfiguration();
     config.setLengthWeight(0);
     MultiGreedy multiGreedy = new MultiGreedy(oc, config, 111, 5);
@@ -47,9 +48,9 @@ public class MultiGreedyTests {
     assertEquals("MultiGreedy test3", "TestCase:[start, increase, increase, increase, increase]", tests.get(2).toString());
     String report = TestUtils.readFile(multiGreedy.createFinalReportPath(), "UTF8");
     String expected = TestUtils.getResource(GreedyTests.class, "expected-multigreedy.txt");
-    assertEquals("Multi-Greedy report", expected, report);  
+    assertEquals("Multi-Greedy report", expected, report);
     }
-  
+
   @Test
   public void maxLength() {
     OSMOConfiguration oc = new OSMOConfiguration();
@@ -88,12 +89,12 @@ public class MultiGreedyTests {
       addHere.add(new CalculatorModel());
     }
   }
-  
+
   private static class MyIterationListener implements IterationListener {
     private int count = 0;
     private int finished = 0;
     private List<TestCase> finalTests = null;
-    
+
     @Override
     public void iterationDone(List<TestCase> tests) {
       count++;

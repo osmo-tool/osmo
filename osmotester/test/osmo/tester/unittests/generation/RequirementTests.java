@@ -10,7 +10,7 @@ import osmo.tester.unittests.testmodels.ValidTestModel2;
 import static junit.framework.Assert.*;
 
 /** @author Teemu Kanstren */
-public class RequirementTests {  
+public class RequirementTests {
   @Test
   public void fullCoverage() {
     Requirements reqs = new Requirements();
@@ -21,6 +21,7 @@ public class RequirementTests {
     SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
     factory.add(new ValidTestModel2(reqs));
     osmo.setModelFactory(factory);
+    osmo.getConfig().setTrackOptions(true);
     osmo.setTestEndCondition(new Length(3));
     osmo.setSuiteEndCondition(new Length(1));
     osmo.generate(333);
@@ -35,6 +36,7 @@ public class RequirementTests {
     reqs.add(ValidTestModel2.REQ_HELLO);
     SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
     OSMOTester osmo = new OSMOTester();
+    osmo.getConfig().setTrackOptions(true);
     factory.add(new ValidTestModel2(reqs));
     osmo.setModelFactory(factory);
     osmo.setTestEndCondition(new Length(10));
@@ -50,6 +52,7 @@ public class RequirementTests {
     Requirements reqs = new Requirements();
     SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
     OSMOTester osmo = new OSMOTester();
+    osmo.getConfig().setTrackOptions(true);
     factory.add(new ValidTestModel2(reqs));
     osmo.setModelFactory(factory);
     osmo.setTestEndCondition(new Length(3));
@@ -68,6 +71,7 @@ public class RequirementTests {
     reqs.add(ValidTestModel2.REQ_WORLD);
     reqs.add("undefined");
     OSMOTester osmo = new OSMOTester();
+    osmo.getConfig().setTrackOptions(true);
     SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
     factory.add(new ValidTestModel2(reqs));
     osmo.setModelFactory(factory);
