@@ -118,6 +118,9 @@ public class ReducerTests {
     String expected = TestUtils.getResource(ReducerTests.class, "expected-reducer3.txt");
     report = TestUtils.unifyLineSeparators(report, "\n");
     expected = TestUtils.unifyLineSeparators(expected, "\n");
+    String[] replaced = TestUtils.replace("##", expected, report);
+    report = replaced[0];
+    expected = replaced[1];
     assertEquals("Reducer report", expected, report);
     List<String> files = TestUtils.listFiles("osmo-output/reducer-111", ".html", false);
     assertEquals("Generated report files", "[final-tests.html]", files.toString());
@@ -198,7 +201,7 @@ public class ReducerTests {
     Collection<String> patterns = fp.getPatterns();
     assertEquals("Precedence patterns", "[A->B, A->C, A->D, A->E, B->D, B->E, C->D, C->E, D->E]", patterns.toString());
   }
-  
+
   @Test
   public void invariants() {
     TestCase test14_1 = createTest14_1();

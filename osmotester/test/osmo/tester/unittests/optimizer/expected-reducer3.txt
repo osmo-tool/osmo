@@ -1,10 +1,10 @@
 Test reduction report for OSMO Tester
 
 Number of tests generated: 0
-Test lengths in iterations: [14, 13, 12, 11]
+Test lengths in iterations: [##UNTIL]##
 Final length: 11
 
-Invariants (for 326 tests)):
+Invariants (for ##UNTIL ##tests)):
 Step counts:
   Step1 : 0-5
   Step4 : 0-5
