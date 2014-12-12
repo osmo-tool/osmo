@@ -38,7 +38,9 @@ public class Logger {
     levelMap.put("error", Level.SEVERE);
     levelMap.put("info", Level.INFO);
     initFromFile();
-    Runtime.getRuntime().addShutdownHook(new Thread(file::close));
+    Runtime runtime = Runtime.getRuntime();
+    System.out.println("Runtime:"+runtime);
+    if (file != null) runtime.addShutdownHook(new Thread(file::close));
   }
 
 
