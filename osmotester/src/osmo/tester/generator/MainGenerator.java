@@ -233,12 +233,12 @@ public class MainGenerator {
   private boolean nextStep() {
     List<FSMTransition> enabled = getEnabled();
     //collect all potential steps for coverage
-    addOptionsFor(suite.getCurrentTest().getCurrentStep(), enabled);
+    if (config.isTrackOptions()) addOptionsFor(suite.getCurrentTest().getCurrentStep(), enabled);
     if (enabled.size() == 0) {
       if (config.shouldFailWhenNoWayForward()) {
         throw new IllegalStateException("No test step available.");
       } else {
-        log.debug("No enabled transitions, ending test (fail is disabled).");
+        log.debug("No enabled steps, ending test (fail is disabled).");
         return false;
       }
     }
@@ -247,7 +247,7 @@ public class MainGenerator {
     //not the best of hacks but.. manual drive ends by returning null
     if (algorithm instanceof ManualAlgorithm && next == null) return false;
 
-    log.debug("Taking transition " + next.getName());
+    log.debug("Taking step " + next.getName());
     execute(next);
     if (checkModelEndConditions()) {
       //stop this test case generation if any end condition returns true
@@ -275,9 +275,10 @@ public class MainGenerator {
     } catch (Exception e) {
       if (config.shouldStopTestOnError()) {
         throw e;
+      } else {
+        Throwable unwrapped = unwrap(e);
+        listeners.testError(getCurrentTest(), unwrapped);
       }
-      Throwable unwrapped = unwrap(e);
-      listeners.testError(getCurrentTest(), unwrapped);
     } finally {
       //we store the "custom" state returned by @StateName tagged methods
       //we do it here to allow any post-processing of state value for a step

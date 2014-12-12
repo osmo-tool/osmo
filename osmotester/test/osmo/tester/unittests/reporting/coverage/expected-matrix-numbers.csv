@@ -19,6 +19,8 @@ Test1,[Red Nosed..],[World],
 Test2,[Dozed, Outside],[],
 
 Overall coverage for all tests:
+Clowns,3
 Clowns,[Red Nosed.., Dozed, Outside]
+Hello,1
 Hello,[World]
 
