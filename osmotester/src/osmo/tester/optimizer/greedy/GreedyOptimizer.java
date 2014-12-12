@@ -179,7 +179,7 @@ public class GreedyOptimizer {
       //timeout is given in seconds so we multiple by 1000 to get milliseconds
       endTime = System.currentTimeMillis() + timeout * 1000;
     }
-    log.info("greedy " + id + " starting up");
+    log.info("greedy " + id + " starting up, population size "+populationSize);
     //to get a shorter test suite, use negative length weight.. in most cases should be no problem
     while (gain >= threshold) {
       long iStart = System.currentTimeMillis();

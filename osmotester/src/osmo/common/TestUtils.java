@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.lang.management.ManagementFactory;
@@ -507,5 +508,32 @@ public class TestUtils {
     list3.addAll(list1);
     list3.removeAll(list2);
     return list3.size() == 0;
+  }
+
+  public static String toString(Throwable t) {
+    StringWriter sw = new StringWriter();
+    PrintWriter pw = new PrintWriter(sw);
+    t.printStackTrace(pw);
+    return sw.toString();
+  }
+
+  public static String[] replace(String separator, String template, String text) {
+    int i1 = template.indexOf(separator);
+    int sl = separator.length();
+    int i2 = template.indexOf(separator, i1 + sl);
+    if (i1 < 0 || i2 < 0) return new String[]{text, template};
+    String content = template.substring(i1+sl, i2);
+    String[] result = {text, null};
+    if (content.startsWith("UNTIL")) {
+      String c = content.substring(5);
+      int i3 = text.indexOf(c, i1);
+      String pre = text.substring(0, i1);
+      String post = text.substring(i3, text.length());
+      result[0] = pre+post;
+      template = template.substring(0, i1)+c+template.substring(i2+sl, template.length());
+      result[1] = template;
+      result = replace(separator, template, result[0]);
+    }
+    return result;
   }
 }

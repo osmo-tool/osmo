@@ -83,7 +83,7 @@ public class ListenerTests {
     osmo.generate(555);
     listener.validate("Generated sequence for test model 2");
   }
-  
+
   @Test
   public void tracePrinter() {
     osmo.addModelObject(new ValidTestModel2(new Requirements()));
@@ -91,6 +91,7 @@ public class ListenerTests {
     osmo.addListener(printer);
     osmo.setTestEndCondition(new Length(3));
     osmo.setSuiteEndCondition(new Length(2));
+    osmo.getConfig().setTrackOptions(true);
     osmo.generate(555);
     String output = TestUtils.getOutput();
     String expected = "1.1.STEP:HELLO\n" +
@@ -131,6 +132,7 @@ public class ListenerTests {
     OSMOConfiguration config = tester.getConfig();
     config.setKeepTests(false);
     config.setStopGenerationOnError(false);
+    config.setStopTestOnError(true);
     FailureCollector collector = new FailureCollector();
     config.addListener(collector);
     tester.addModelObject(model);
