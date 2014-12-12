@@ -1,0 +1,59 @@
+<project name="osmo-mjexamples" default="jar" basedir=".">
+  <property environment="env"/>
+  <property name="prod-src" value="src"/>
+  <property name="test-src" value="test"/>
+  <property name="main-output" value="ant-out"/>
+  <property name="prod-dest" value="${main-output}/production"/>
+  <property name="build.version" value="0.1.0"/>
+  <property name="osmo-common-output" value="../common/ant-out/production"/>
+  <property name="osmo-tester-output" value="../osmotester/ant-out/production"/>
+  <property name="jar.file" value="osmo-mjexamples-v${build.version}.jar"/>
+
+  <path id="class.path">
+    <!--pathelement path="${currentenv.classpath}"/-->
+    <fileset dir="../osmotester/lib">
+      <include name="**/*.jar"/>
+    </fileset>
+    <path location="${prod-dest}"/>
+    <path location="${osmo-common-output}"/>
+    <path location="${osmo-tester-output}"/>
+  </path>
+
+  <!-- CLEAN -->
+  <target name="clean">
+    <echo message="Removing old directory structure..."/>
+    <delete dir="${main-output}"/>
+    <echo message="Removing jar file:${jar.file}"/>
+    <delete file="${jar.file}"/>
+  </target>
+
+  <!-- MK DEPLOY DIR -->
+  <target name="init">
+    <mkdir dir="${prod-dest}"/>
+  </target>
+
+  <target name="compile" depends="init">
+    <echo message="Compiling production..."/>
+    <javac source="7" target="7" debug="true" classpathref="class.path" srcdir="${prod-src}" destdir="${prod-dest}"/>
+    <!--echo message="Compiling tests..."/>
+    <javac source="7" target="7" classpathref="class.path" srcdir="${test-src}" destdir="${test-dest}"/-->
+  </target>
+
+  <target name="jar" depends="clean,compile,copyresources" description="Create jar file">
+    <jar destfile="${jar.file}">
+      <fileset dir="${prod-dest}"/>
+    </jar>
+  </target>
+
+  <target name="copyresources" depends="init,compile">
+    <copy todir="${prod-dest}">
+      <fileset dir="${prod-src}">
+        <include name="**/*.html"/>
+        <include name="**/*.txt"/>
+        <include name="**/*.csv"/>
+        <include name="**/*.xml"/>
+        <include name="**/*.vm"/>
+      </fileset>
+    </copy>
+  </target>
+</project>

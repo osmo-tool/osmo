@@ -1,0 +1,83 @@
+<project name="osmo-visualizer" default="jar" basedir=".">
+  <property environment="env"/>
+  <property name="prod-src" value="src"/>
+  <property name="test-src" value="test"/>
+  <property name="main-output" value="ant-out"/>
+  <property name="prod-dest" value="${main-output}/production"/>
+  <property name="test-dest" value="${main-output}/testing"/>
+  <property name="test-report" value="${main-output}/junit-report"/>
+  <property name="instrumented-dest" value="${main-output}/instrumented"/>
+  <property name="coverage-dir" value="${main-output}/coverage"/>
+  <property name="javadoc-dir" value="${main-output}/docs/api"/>
+  <property name="osmo-tester-output" value="../osmotester/ant-out/production"/>
+  <property name="build.version" value="0.1.0"/>
+  <property name="jar.file" value="osmo-visualizer-v${build.version}.jar"/>
+
+  <path id="class.path">
+    <!--pathelement path="${currentenv.classpath}"/-->
+    <fileset dir="lib">
+      <include name="**/*.jar"/>
+    </fileset>
+    <path location="${prod-dest}"/>
+    <path location="${osmo-tester-output}"/>
+  </path>
+
+  <!-- CLEAN -->
+  <target name="clean">
+    <echo message="Removing old directory structure..."/>
+    <delete dir="${main-output}"/>
+  </target>
+
+  <!-- MK DEPLOY DIR -->
+  <target name="init">
+    <mkdir dir="${prod-dest}"/>
+    <mkdir dir="${test-dest}"/>
+    <mkdir dir="${test-report}"/>
+    <mkdir dir="${instrumented-dest}"/>
+    <mkdir dir="${coverage-dir}"/>
+    <mkdir dir="${javadoc-dir}"/>
+  </target>
+
+  <target name="compile" depends="init">
+    <ant dir="../osmotester" antfile="build.xml" target="jar" inheritAll="false"/>
+    <echo message="Compiling production...${osmo-tester-output}"/>
+    <javac source="7" target="7" debug="true" classpathref="class.path" srcdir="${prod-src}" destdir="${prod-dest}"/>
+    <echo message="Compiling tests..."/>
+    <javac source="7" target="7" classpathref="class.path" srcdir="${test-src}" destdir="${test-dest}"/>
+  </target>
+
+  <target name="jar" depends="compile" description="Create jar file">
+    <jar destfile="${jar.file}" basedir="${prod-dest}"/>
+  </target>
+
+  <target name="test" depends="clean, compile">
+    <junit printsummary="yes" haltonfailure="no">
+      <classpath>
+        <pathelement location="${instrumented-dest}"/>
+        <pathelement location="${test-dest}"/>
+        <path refid="class.path"/>
+      </classpath>
+
+      <formatter type="xml"/>
+
+      <batchtest fork="once" todir="${test-report}">
+        <fileset dir="${test-src}">
+          <include name="**/*Tests.java"/>
+          <exclude name="**/*Interface*.java"/>
+          <exclude name="**/TestObject.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
+
+  </target>
+
+  <target name="javadocs">
+    <javadoc destdir="${javadoc-dir}" author="true" version="true" use="true" windowtitle="OSMO Visualizer API">
+      <packageset dir="src" defaultexcludes="yes">
+        <include name="osmo/visualizer/**"/>
+      </packageset>
+    </javadoc>
+  </target>
+
+  <target name="jenkins" depends="test, javadocs"/>
+</project>

@@ -1,0 +1,862 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gxl xmlns="http://www.metacase.com/gxlGOPRR">
+	<graph id="_3_343" oid="_3_343" type="Graph_OSMO_model_user_3496916370">
+		<slot id="a0y3we" name="Name">
+			<property oid="_3_348" type="Property_Name_user_3496916383"></property>
+			<value>
+				<string>EmailApp</string>
+			</value>
+		</slot>
+		<slot id="a2ypye" name="Generate in folder">
+			<property oid="_3_350" type="Property_FilePath_user_3496930675"></property>
+			<value>
+				<string>C:\osmo\</string>
+			</value>
+		</slot>
+		<slot id="a1yppe" name="Debug">
+			<property oid="_3_352" type="Property_Debug_user_3496930513"></property>
+			<value>
+				<bool>true</bool>
+			</value>
+		</slot>
+		<object id="_3_355" oid="_3_355" type="Object_StartState_user_3496916418"></object>
+		<object id="_3_358" oid="_3_358" type="Object_State_user_3496916528">
+			<slot id="a0y44c" name="Name">
+				<property oid="_3_360" type="Property_Name_user_3496916383"></property>
+				<value>
+					<string>Idle</string>
+				</value>
+			</slot>
+			<slot id="a1atn0" name="weight">
+				<property oid="_3_362" type="Property_weight_user_3497212998"></property>
+				<value>
+					<int>10</int>
+				</value>
+			</slot>
+		</object>
+		<object id="_3_428" oid="_3_428" type="Object_State_user_3496916528">
+			<slot id="a0y44c" name="Name">
+				<property oid="_3_430" type="Property_Name_user_3496916383"></property>
+				<value>
+					<string>Start.</string>
+				</value>
+			</slot>
+			<slot id="a1atn0" name="weight">
+				<property oid="_3_432" type="Property_weight_user_3497212998"></property>
+				<value>
+					<int>10</int>
+				</value>
+			</slot>
+		</object>
+		<object id="_3_466" oid="_3_466" type="Object_State_user_3496916528">
+			<slot id="a0y44c" name="Name">
+				<property oid="_3_468" type="Property_Name_user_3496916383"></property>
+				<value>
+					<string>Mail read view</string>
+				</value>
+			</slot>
+			<slot id="a1atn0" name="weight">
+				<property oid="_3_470" type="Property_weight_user_3497212998"></property>
+				<value>
+					<int>10</int>
+				</value>
+			</slot>
+		</object>
+		<object id="_3_484" oid="_3_484" type="Object_State_user_3496916528">
+			<slot id="a0y44c" name="Name">
+				<property oid="_3_486" type="Property_Name_user_3496916383"></property>
+				<value>
+					<string>Reply view</string>
+				</value>
+			</slot>
+			<slot id="a1atn0" name="weight">
+				<property oid="_3_488" type="Property_weight_user_3497212998"></property>
+				<value>
+					<int>10</int>
+				</value>
+			</slot>
+		</object>
+		<object id="_3_502" oid="_3_502" type="Object_State_user_3496916528">
+			<slot id="a0y44c" name="Name">
+				<property oid="_3_504" type="Property_Name_user_3496916383"></property>
+				<value>
+					<string>Forward view</string>
+				</value>
+			</slot>
+			<slot id="a1atn0" name="weight">
+				<property oid="_3_506" type="Property_weight_user_3497212998"></property>
+				<value>
+					<int>10</int>
+				</value>
+			</slot>
+		</object>
+		<object id="_3_575" oid="_3_575" type="Object_State_user_3496916528">
+			<slot id="a0y44c" name="Name">
+				<property oid="_3_577" type="Property_Name_user_3496916383"></property>
+				<value>
+					<string>Compose view</string>
+				</value>
+			</slot>
+			<slot id="a1atn0" name="weight">
+				<property oid="_3_579" type="Property_weight_user_3497212998"></property>
+				<value>
+					<int>10</int>
+				</value>
+			</slot>
+		</object>
+		<object id="_3_637" oid="_3_637" type="Object_GenerationSetup_user_3496952374">
+			<slot id="a0zng4" name="Name">
+				<property oid="_3_639" type="Property_Name_user_3496916383"></property>
+				<value>
+					<string>Smoke</string>
+				</value>
+			</slot>
+			<slot id="a1zo9t" name="Algorithm">
+				<property oid="_3_641" type="Property_Algorithm_user_3496952912"></property>
+				<value>
+					<string>RandomAlgorithm</string>
+				</value>
+			</slot>
+			<slot id="a2zruy" name="TestCaseEndCondition">
+				<property oid="_3_643" type="Property_TestCaseEndCondition_user_3496955237"></property>
+				<value>
+					<object oid="_3_629" type="Object_Length_user_3496955187">
+						<slot id="a0zrs5" name="Length">
+							<property oid="_3_631" type="Property_Length_user_3496955186"></property>
+							<value>
+								<int>5</int>
+							</value>
+						</slot>
+					</object>
+				</value>
+			</slot>
+			<slot id="a3zsnr" name="TestSuiteEndCondition">
+				<property oid="_3_645" type="Property_TestCaseEndCondition_user_3496955237"></property>
+				<value>
+					<object oid="_3_633" type="Object_Length_user_3496955187">
+						<slot id="a0zrs5" name="Length">
+							<property oid="_3_635" type="Property_Length_user_3496955186"></property>
+							<value>
+								<int>10</int>
+							</value>
+						</slot>
+					</object>
+				</value>
+			</slot>
+		</object>
+		<object id="_3_652" oid="_3_652" type="Object_GenerationSetup_user_3496952374">
+			<slot id="a0zng4" name="Name">
+				<property oid="_3_654" type="Property_Name_user_3496916383"></property>
+				<value>
+					<string>Regression</string>
+				</value>
+			</slot>
+			<slot id="a1zo9t" name="Algorithm">
+				<property oid="_3_656" type="Property_Algorithm_user_3496952912"></property>
+				<value>
+					<string>WeightedRandomAlgorithm</string>
+				</value>
+			</slot>
+			<slot id="a2zruy" name="TestCaseEndCondition">
+				<property oid="_3_658" type="Property_TestCaseEndCondition_user_3496955237"></property>
+				<value>
+					<object id="_3_648" oid="_3_648" type="Object_Length_user_3496955187">
+						<slot id="a0zrs5" name="Length">
+							<property oid="_3_650" type="Property_Length_user_3496955186"></property>
+							<value>
+								<int>100</int>
+							</value>
+						</slot>
+					</object>
+				</value>
+			</slot>
+			<slot id="a3zsnr" name="TestSuiteEndCondition">
+				<property oid="_3_660" type="Property_TestCaseEndCondition_user_3496955237"></property>
+				<value>
+					<object href="#_3_648"></object>
+				</value>
+			</slot>
+		</object>
+		<binding id="_3_441" nextConnectionId="3" oid="_3_441">
+			<relationship oid="_3_435" type="Relationship_FromStartTransition_user_3497016285"></relationship>
+			<connection id="1">
+				<role oid="_3_437" type="Role_From_user_3496916730"></role>
+				<object href="#_3_355"></object>
+			</connection>
+			<connection id="2">
+				<role oid="_3_439" type="Role_To_user_3496916736"></role>
+				<object href="#_3_428"></object>
+			</connection>
+		</binding>
+		<binding id="_3_452" nextConnectionId="3" oid="_3_452">
+			<relationship oid="_3_444" type="Relationship_Connector_user_3496916794">
+				<slot id="a0yohp" name="Name">
+					<property oid="_3_446" type="Property_Name_user_3496916383"></property>
+					<value>
+						<string>Start app</string>
+					</value>
+				</slot>
+			</relationship>
+			<connection id="1">
+				<role oid="_3_448" type="Role_From_user_3496916730"></role>
+				<object href="#_3_428"></object>
+			</connection>
+			<connection id="2">
+				<role oid="_3_450" type="Role_To_user_3496916736"></role>
+				<object href="#_3_358"></object>
+			</connection>
+		</binding>
+		<binding id="_3_463" nextConnectionId="3" oid="_3_463">
+			<relationship oid="_3_455" type="Relationship_Connector_user_3496916794">
+				<slot id="a0yohp" name="Name">
+					<property oid="_3_457" type="Property_Name_user_3496916383"></property>
+					<value>
+						<string>Refresh</string>
+					</value>
+				</slot>
+			</relationship>
+			<connection id="1">
+				<role oid="_3_459" type="Role_From_user_3496916730"></role>
+				<object href="#_3_358"></object>
+			</connection>
+			<connection id="2">
+				<role oid="_3_461" type="Role_To_user_3496916736"></role>
+				<object href="#_3_358"></object>
+			</connection>
+		</binding>
+		<binding id="_3_481" nextConnectionId="3" oid="_3_481">
+			<relationship oid="_3_473" type="Relationship_Connector_user_3496916794">
+				<slot id="a0yohp" name="Name">
+					<property oid="_3_475" type="Property_Name_user_3496916383"></property>
+					<value>
+						<string>Click a mail</string>
+					</value>
+				</slot>
+			</relationship>
+			<connection id="1">
+				<role oid="_3_477" type="Role_From_user_3496916730"></role>
+				<object href="#_3_358"></object>
+			</connection>
+			<connection id="2">
+				<role oid="_3_479" type="Role_To_user_3496916736"></role>
+				<object href="#_3_466"></object>
+			</connection>
+		</binding>
+		<binding id="_3_499" nextConnectionId="3" oid="_3_499">
+			<relationship oid="_3_491" type="Relationship_Connector_user_3496916794">
+				<slot id="a0yohp" name="Name">
+					<property oid="_3_493" type="Property_Name_user_3496916383"></property>
+					<value>
+						<string>Click reply</string>
+					</value>
+				</slot>
+			</relationship>
+			<connection id="1">
+				<role oid="_3_495" type="Role_From_user_3496916730"></role>
+				<object href="#_3_466"></object>
+			</connection>
+			<connection id="2">
+				<role oid="_3_497" type="Role_To_user_3496916736"></role>
+				<object href="#_3_484"></object>
+			</connection>
+		</binding>
+		<binding id="_3_517" nextConnectionId="3" oid="_3_517">
+			<relationship oid="_3_509" type="Relationship_Connector_user_3496916794">
+				<slot id="a0yohp" name="Name">
+					<property oid="_3_511" type="Property_Name_user_3496916383"></property>
+					<value>
+						<string>Click forward</string>
+					</value>
+				</slot>
+			</relationship>
+			<connection id="1">
+				<role oid="_3_513" type="Role_From_user_3496916730"></role>
+				<object href="#_3_466"></object>
+			</connection>
+			<connection id="2">
+				<role oid="_3_515" type="Role_To_user_3496916736"></role>
+				<object href="#_3_502"></object>
+			</connection>
+		</binding>
+		<binding id="_3_528" nextConnectionId="3" oid="_3_528">
+			<relationship oid="_3_520" type="Relationship_Connector_user_3496916794">
+				<slot id="a0yohp" name="Name">
+					<property oid="_3_522" type="Property_Name_user_3496916383"></property>
+					<value>
+						<string>Go back</string>
+					</value>
+				</slot>
+			</relationship>
+			<connection id="1">
+				<role oid="_3_524" type="Role_From_user_3496916730"></role>
+				<object href="#_3_466"></object>
+			</connection>
+			<connection id="2">
+				<role oid="_3_526" type="Role_To_user_3496916736"></role>
+				<object href="#_3_358"></object>
+			</connection>
+		</binding>
+		<binding id="_3_539" nextConnectionId="3" oid="_3_539">
+			<relationship oid="_3_531" type="Relationship_Connector_user_3496916794">
+				<slot id="a0yohp" name="Name">
+					<property oid="_3_533" type="Property_Name_user_3496916383"></property>
+					<value>
+						<string>Send</string>
+					</value>
+				</slot>
+			</relationship>
+			<connection id="1">
+				<role oid="_3_535" type="Role_From_user_3496916730"></role>
+				<object href="#_3_484"></object>
+			</connection>
+			<connection id="2">
+				<role oid="_3_537" type="Role_To_user_3496916736"></role>
+				<object href="#_3_358"></object>
+			</connection>
+		</binding>
+		<binding id="_3_550" nextConnectionId="3" oid="_3_550">
+			<relationship oid="_3_542" type="Relationship_Connector_user_3496916794">
+				<slot id="a0yohp" name="Name">
+					<property oid="_3_544" type="Property_Name_user_3496916383"></property>
+					<value>
+						<string>Discard</string>
+					</value>
+				</slot>
+			</relationship>
+			<connection id="1">
+				<role oid="_3_546" type="Role_From_user_3496916730"></role>
+				<object href="#_3_484"></object>
+			</connection>
+			<connection id="2">
+				<role oid="_3_548" type="Role_To_user_3496916736"></role>
+				<object href="#_3_358"></object>
+			</connection>
+		</binding>
+		<binding id="_3_561" nextConnectionId="3" oid="_3_561">
+			<relationship oid="_3_553" type="Relationship_Connector_user_3496916794">
+				<slot id="a0yohp" name="Name">
+					<property oid="_3_555" type="Property_Name_user_3496916383"></property>
+					<value>
+						<string>Send</string>
+					</value>
+				</slot>
+			</relationship>
+			<connection id="1">
+				<role oid="_3_557" type="Role_From_user_3496916730"></role>
+				<object href="#_3_502"></object>
+			</connection>
+			<connection id="2">
+				<role oid="_3_559" type="Role_To_user_3496916736"></role>
+				<object href="#_3_358"></object>
+			</connection>
+		</binding>
+		<binding id="_3_572" nextConnectionId="3" oid="_3_572">
+			<relationship oid="_3_564" type="Relationship_Connector_user_3496916794">
+				<slot id="a0yohp" name="Name">
+					<property oid="_3_566" type="Property_Name_user_3496916383"></property>
+					<value>
+						<string>Discard</string>
+					</value>
+				</slot>
+			</relationship>
+			<connection id="1">
+				<role oid="_3_568" type="Role_From_user_3496916730"></role>
+				<object href="#_3_502"></object>
+			</connection>
+			<connection id="2">
+				<role oid="_3_570" type="Role_To_user_3496916736"></role>
+				<object href="#_3_358"></object>
+			</connection>
+		</binding>
+		<binding id="_3_590" nextConnectionId="3" oid="_3_590">
+			<relationship oid="_3_582" type="Relationship_Connector_user_3496916794">
+				<slot id="a0yohp" name="Name">
+					<property oid="_3_584" type="Property_Name_user_3496916383"></property>
+					<value>
+						<string>Click compose</string>
+					</value>
+				</slot>
+			</relationship>
+			<connection id="1">
+				<role oid="_3_586" type="Role_From_user_3496916730"></role>
+				<object href="#_3_358"></object>
+			</connection>
+			<connection id="2">
+				<role oid="_3_588" type="Role_To_user_3496916736"></role>
+				<object href="#_3_575"></object>
+			</connection>
+		</binding>
+		<binding id="_3_601" nextConnectionId="3" oid="_3_601">
+			<relationship oid="_3_593" type="Relationship_Connector_user_3496916794">
+				<slot id="a0yohp" name="Name">
+					<property oid="_3_595" type="Property_Name_user_3496916383"></property>
+					<value>
+						<string>Send</string>
+					</value>
+				</slot>
+			</relationship>
+			<connection id="1">
+				<role oid="_3_597" type="Role_From_user_3496916730"></role>
+				<object href="#_3_575"></object>
+			</connection>
+			<connection id="2">
+				<role oid="_3_599" type="Role_To_user_3496916736"></role>
+				<object href="#_3_358"></object>
+			</connection>
+		</binding>
+		<binding id="_3_612" nextConnectionId="3" oid="_3_612">
+			<relationship oid="_3_604" type="Relationship_Connector_user_3496916794">
+				<slot id="a0yohp" name="Name">
+					<property oid="_3_606" type="Property_Name_user_3496916383"></property>
+					<value>
+						<string>Discard</string>
+					</value>
+				</slot>
+			</relationship>
+			<connection id="1">
+				<role oid="_3_608" type="Role_From_user_3496916730"></role>
+				<object href="#_3_575"></object>
+			</connection>
+			<connection id="2">
+				<role oid="_3_610" type="Role_To_user_3496916736"></role>
+				<object href="#_3_358"></object>
+			</connection>
+		</binding>
+		<diagram displayGrid="false" grid="10,10" timeStamp="2011-11-18T20:09:39.861Z" useGrid="true" xmlns="http://www.metacase.com/gxlGOPRRRepr">
+			<graph href="#_3_343" xmlns="http://www.metacase.com/gxlGOPRR"></graph>
+			<objectRepr id="_3_357" place="50,80" scale="1,1">
+				<object href="#_3_355" xmlns="http://www.metacase.com/gxlGOPRR"></object>
+			</objectRepr>
+			<objectRepr id="_3_364" place="220,240" scale="1,1">
+				<object href="#_3_358" xmlns="http://www.metacase.com/gxlGOPRR"></object>
+			</objectRepr>
+			<objectRepr id="_3_434" place="180,80" scale="1,1">
+				<object href="#_3_428" xmlns="http://www.metacase.com/gxlGOPRR"></object>
+			</objectRepr>
+			<objectRepr id="_3_472" place="470,240" scale="1,1">
+				<object href="#_3_466" xmlns="http://www.metacase.com/gxlGOPRR"></object>
+			</objectRepr>
+			<objectRepr id="_3_490" place="470,360" scale="1,1">
+				<object href="#_3_484" xmlns="http://www.metacase.com/gxlGOPRR"></object>
+			</objectRepr>
+			<objectRepr id="_3_508" place="650,360" scale="1,1">
+				<object href="#_3_502" xmlns="http://www.metacase.com/gxlGOPRR"></object>
+			</objectRepr>
+			<objectRepr id="_3_581" place="90,390" scale="1,1">
+				<object href="#_3_575" xmlns="http://www.metacase.com/gxlGOPRR"></object>
+			</objectRepr>
+			<objectRepr place="410,70" scale="1,1">
+				<object href="#_3_637" xmlns="http://www.metacase.com/gxlGOPRR"></object>
+			</objectRepr>
+			<objectRepr place="540,70" scale="1,1">
+				<object href="#_3_652" xmlns="http://www.metacase.com/gxlGOPRR"></object>
+			</objectRepr>
+			<bindingRepr isStraight="true" place="87,80" scale="1,1">
+				<binding href="#_3_441" xmlns="http://www.metacase.com/gxlGOPRR"></binding>
+				<connectionRepr id="1">
+					<objectRepr href="#_3_357"></objectRepr>
+				</connectionRepr>
+				<connectionRepr id="2">
+					<objectRepr href="#_3_434"></objectRepr>
+				</connectionRepr>
+			</bindingRepr>
+			<bindingRepr isStraight="true" place="200,160" scale="1,1">
+				<binding href="#_3_452" xmlns="http://www.metacase.com/gxlGOPRR"></binding>
+				<connectionRepr id="1">
+					<objectRepr href="#_3_434"></objectRepr>
+				</connectionRepr>
+				<connectionRepr id="2">
+					<objectRepr href="#_3_364"></objectRepr>
+				</connectionRepr>
+			</bindingRepr>
+			<bindingRepr isStraight="false" place="120,200" scale="1,1">
+				<binding href="#_3_463" xmlns="http://www.metacase.com/gxlGOPRR"></binding>
+				<connectionRepr id="1">
+					<objectRepr href="#_3_364"></objectRepr>
+				</connectionRepr>
+				<connectionRepr breakpoints="120,240 100,220" id="2">
+					<objectRepr href="#_3_364"></objectRepr>
+				</connectionRepr>
+			</bindingRepr>
+			<bindingRepr isStraight="true" place="345,240" scale="1,1">
+				<binding href="#_3_481" xmlns="http://www.metacase.com/gxlGOPRR"></binding>
+				<connectionRepr id="1">
+					<objectRepr href="#_3_364"></objectRepr>
+				</connectionRepr>
+				<connectionRepr id="2">
+					<objectRepr href="#_3_472"></objectRepr>
+				</connectionRepr>
+			</bindingRepr>
+			<bindingRepr isStraight="true" place="470,300" scale="1,1">
+				<binding href="#_3_499" xmlns="http://www.metacase.com/gxlGOPRR"></binding>
+				<connectionRepr id="1">
+					<objectRepr href="#_3_472"></objectRepr>
+				</connectionRepr>
+				<connectionRepr id="2">
+					<objectRepr href="#_3_490"></objectRepr>
+				</connectionRepr>
+			</bindingRepr>
+			<bindingRepr isStraight="true" place="560,300" scale="1,1">
+				<binding href="#_3_517" xmlns="http://www.metacase.com/gxlGOPRR"></binding>
+				<connectionRepr id="1">
+					<objectRepr href="#_3_472"></objectRepr>
+				</connectionRepr>
+				<connectionRepr id="2">
+					<objectRepr href="#_3_508"></objectRepr>
+				</connectionRepr>
+			</bindingRepr>
+			<bindingRepr isStraight="false" place="340,180" scale="1,1">
+				<binding href="#_3_528" xmlns="http://www.metacase.com/gxlGOPRR"></binding>
+				<connectionRepr id="1">
+					<objectRepr href="#_3_472"></objectRepr>
+				</connectionRepr>
+				<connectionRepr id="2">
+					<objectRepr href="#_3_364"></objectRepr>
+				</connectionRepr>
+			</bindingRepr>
+			<bindingRepr isStraight="true" place="345,300" scale="1,1">
+				<binding href="#_3_539" xmlns="http://www.metacase.com/gxlGOPRR"></binding>
+				<connectionRepr id="1">
+					<objectRepr href="#_3_490"></objectRepr>
+				</connectionRepr>
+				<connectionRepr id="2">
+					<objectRepr href="#_3_364"></objectRepr>
+				</connectionRepr>
+			</bindingRepr>
+			<bindingRepr isStraight="false" place="340,350" scale="1,1">
+				<binding href="#_3_550" xmlns="http://www.metacase.com/gxlGOPRR"></binding>
+				<connectionRepr id="1">
+					<objectRepr href="#_3_490"></objectRepr>
+				</connectionRepr>
+				<connectionRepr id="2">
+					<objectRepr href="#_3_364"></objectRepr>
+				</connectionRepr>
+			</bindingRepr>
+			<bindingRepr isStraight="false" place="540,420" scale="1,1">
+				<binding href="#_3_561" xmlns="http://www.metacase.com/gxlGOPRR"></binding>
+				<connectionRepr id="1">
+					<objectRepr href="#_3_508"></objectRepr>
+				</connectionRepr>
+				<connectionRepr breakpoints="320,420" id="2">
+					<objectRepr href="#_3_364"></objectRepr>
+				</connectionRepr>
+			</bindingRepr>
+			<bindingRepr isStraight="false" place="550,440" scale="1,1">
+				<binding href="#_3_572" xmlns="http://www.metacase.com/gxlGOPRR"></binding>
+				<connectionRepr id="1">
+					<objectRepr href="#_3_508"></objectRepr>
+				</connectionRepr>
+				<connectionRepr breakpoints="320,440" id="2">
+					<objectRepr href="#_3_364"></objectRepr>
+				</connectionRepr>
+			</bindingRepr>
+			<bindingRepr isStraight="true" place="155,315" scale="1,1">
+				<binding href="#_3_590" xmlns="http://www.metacase.com/gxlGOPRR"></binding>
+				<connectionRepr id="1">
+					<objectRepr href="#_3_364"></objectRepr>
+				</connectionRepr>
+				<connectionRepr id="2">
+					<objectRepr href="#_3_581"></objectRepr>
+				</connectionRepr>
+			</bindingRepr>
+			<bindingRepr isStraight="false" place="170,390" scale="1,1">
+				<binding href="#_3_601" xmlns="http://www.metacase.com/gxlGOPRR"></binding>
+				<connectionRepr id="1">
+					<objectRepr href="#_3_581"></objectRepr>
+				</connectionRepr>
+				<connectionRepr id="2">
+					<objectRepr href="#_3_364"></objectRepr>
+				</connectionRepr>
+			</bindingRepr>
+			<bindingRepr isStraight="false" place="210,390" scale="1,1">
+				<binding href="#_3_612" xmlns="http://www.metacase.com/gxlGOPRR"></binding>
+				<connectionRepr id="1">
+					<objectRepr href="#_3_581"></objectRepr>
+				</connectionRepr>
+				<connectionRepr id="2">
+					<objectRepr href="#_3_364"></objectRepr>
+				</connectionRepr>
+			</bindingRepr>
+		</diagram>
+	</graph>
+	<graph id="_3_176" oid="_3_176" type="Graph_OSMO_model_user_3496916370">
+		<slot id="a0y3we" name="Name">
+			<property oid="_3_228" type="Property_Name_user_3496916383"></property>
+			<value>
+				<string>TestModel</string>
+			</value>
+		</slot>
+		<slot id="a2ypye" name="Generate in folder">
+			<property oid="_3_259" type="Property_FilePath_user_3496930675"></property>
+			<value>
+				<string>C:\osmo\</string>
+			</value>
+		</slot>
+		<slot id="a1yppe" name="Debug">
+			<property oid="_3_264" type="Property_Debug_user_3496930513"></property>
+			<value>
+				<bool>true</bool>
+			</value>
+		</slot>
+		<object id="_3_184" oid="_3_184" type="Object_GenerationSetup_user_3496952374">
+			<slot id="a0zng4" name="Name">
+				<property oid="_3_294" type="Property_Name_user_3496916383"></property>
+				<value>
+					<string>aa</string>
+				</value>
+			</slot>
+			<slot id="a1zo9t" name="Algorithm">
+				<property oid="_3_287" type="Property_Algorithm_user_3496952912"></property>
+				<value>
+					<string>RandomAlgorithm</string>
+				</value>
+			</slot>
+			<slot id="a2zruy" name="TestCaseEndCondition">
+				<property oid="_3_209" type="Property_TestCaseEndCondition_user_3496955237"></property>
+				<value>
+					<object oid="_3_204" type="Object_Length_user_3496955187">
+						<slot id="a0zrs5" name="Length">
+							<property oid="_3_198" type="Property_Length_user_3496955186"></property>
+							<value>
+								<int>10</int>
+							</value>
+						</slot>
+					</object>
+				</value>
+			</slot>
+			<slot id="a3zsnr" name="TestSuiteEndCondition">
+				<property oid="_3_239" type="Property_TestCaseEndCondition_user_3496955237"></property>
+				<value>
+					<object oid="_3_252" type="Object_Length_user_3496955187">
+						<slot id="a0zrs5" name="Length">
+							<property oid="_3_245" type="Property_Length_user_3496955186"></property>
+							<value>
+								<int>2</int>
+							</value>
+						</slot>
+					</object>
+				</value>
+			</slot>
+		</object>
+		<object id="_3_223" oid="_3_223" type="Object_StartState_user_3496916418"></object>
+		<object id="_3_226" oid="_3_226" type="Object_State_user_3496916528">
+			<slot id="a0y44c" name="Name">
+				<property oid="_3_285" type="Property_Name_user_3496916383"></property>
+				<value>
+					<string>State2</string>
+				</value>
+			</slot>
+			<slot id="a1atn0" name="weight">
+				<property oid="_3_211" type="Property_weight_user_3497212998"></property>
+				<value>
+					<int>10</int>
+				</value>
+			</slot>
+		</object>
+		<object id="_3_237" oid="_3_237" type="Object_State_user_3496916528">
+			<slot id="a0y44c" name="Name">
+				<property oid="_3_257" type="Property_Name_user_3496916383"></property>
+				<value>
+					<string>State1</string>
+				</value>
+			</slot>
+			<slot id="a1atn0" name="weight">
+				<property oid="_3_202" type="Property_weight_user_3497212998"></property>
+				<value>
+					<int>10</int>
+				</value>
+			</slot>
+		</object>
+		<object id="_3_266" oid="_3_266" type="Object_EndState_user_3496916452"></object>
+		<object id="_3_279" oid="_3_279" type="Object_State_user_3496916528">
+			<slot id="a0y44c" name="Name">
+				<property oid="_3_241" type="Property_Name_user_3496916383"></property>
+				<value>
+					<string>State3</string>
+				</value>
+			</slot>
+			<slot id="a1atn0" name="weight">
+				<property oid="_3_254" type="Property_weight_user_3497212998"></property>
+				<value>
+					<int>10</int>
+				</value>
+			</slot>
+		</object>
+		<binding id="_3_190" nextConnectionId="3" oid="_3_190">
+			<relationship oid="_3_213" type="Relationship_Connector_user_3496916794">
+				<slot id="a0yohp" name="Name">
+					<property oid="_3_281" type="Property_Name_user_3496916383"></property>
+					<value>
+						<string>2_to_3</string>
+					</value>
+				</slot>
+			</relationship>
+			<connection id="1">
+				<role oid="_3_275" type="Role_From_user_3496916730"></role>
+				<object href="#_3_226"></object>
+			</connection>
+			<connection id="2">
+				<role oid="_3_218" type="Role_To_user_3496916736"></role>
+				<object href="#_3_279"></object>
+			</connection>
+		</binding>
+		<binding id="_3_194" nextConnectionId="3" oid="_3_194">
+			<relationship oid="_3_249" type="Relationship_Connector_user_3496916794">
+				<slot id="a0yohp" name="Name">
+					<property oid="_3_200" type="Property_Name_user_3496916383"></property>
+					<value>
+						<string></string>
+					</value>
+				</slot>
+			</relationship>
+			<connection id="1">
+				<role oid="_3_196" type="Role_From_user_3496916730"></role>
+				<object href="#_3_279"></object>
+			</connection>
+			<connection id="2">
+				<role oid="_3_277" type="Role_To_user_3496916736"></role>
+				<object href="#_3_237"></object>
+			</connection>
+		</binding>
+		<binding id="_3_233" nextConnectionId="3" oid="_3_233">
+			<relationship oid="_3_221" type="Relationship_Connector_user_3496916794">
+				<slot id="a0yohp" name="Name">
+					<property oid="_3_292" type="Property_Name_user_3496916383"></property>
+					<value>
+						<string>1_to_2</string>
+					</value>
+				</slot>
+			</relationship>
+			<connection id="1">
+				<role oid="_3_188" type="Role_From_user_3496916730"></role>
+				<object href="#_3_237"></object>
+			</connection>
+			<connection id="2">
+				<role oid="_3_269" type="Role_To_user_3496916736"></role>
+				<object href="#_3_226"></object>
+			</connection>
+		</binding>
+		<binding id="_3_247" nextConnectionId="3" oid="_3_247">
+			<relationship oid="_3_261" type="Relationship_FromStartTransition_user_3497016285"></relationship>
+			<connection id="1">
+				<role oid="_3_181" type="Role_From_user_3496916730"></role>
+				<object href="#_3_223"></object>
+			</connection>
+			<connection id="2">
+				<role oid="_3_192" type="Role_To_user_3496916736"></role>
+				<object href="#_3_237"></object>
+			</connection>
+		</binding>
+		<binding id="_3_273" nextConnectionId="3" oid="_3_273">
+			<relationship oid="_3_290" type="Relationship_Connector_user_3496916794">
+				<slot id="a0yohp" name="Name">
+					<property oid="_3_216" type="Property_Name_user_3496916383"></property>
+					<value>
+						<string>3_to_2</string>
+					</value>
+				</slot>
+			</relationship>
+			<connection id="1">
+				<role oid="_3_235" type="Role_From_user_3496916730"></role>
+				<object href="#_3_279"></object>
+			</connection>
+			<connection id="2">
+				<role oid="_3_186" type="Role_To_user_3496916736"></role>
+				<object href="#_3_226"></object>
+			</connection>
+		</binding>
+		<binding id="_3_283" nextConnectionId="3" oid="_3_283">
+			<relationship oid="_3_271" type="Relationship_Connector_user_3496916794">
+				<slot id="a0yohp" name="Name">
+					<property oid="_3_206" type="Property_Name_user_3496916383"></property>
+					<value>
+						<string>3_to_End</string>
+					</value>
+				</slot>
+			</relationship>
+			<connection id="1">
+				<role oid="_3_230" type="Role_From_user_3496916730"></role>
+				<object href="#_3_279"></object>
+			</connection>
+			<connection id="2">
+				<role oid="_3_243" type="Role_To_user_3496916736"></role>
+				<object href="#_3_266"></object>
+			</connection>
+		</binding>
+		<diagram displayGrid="false" grid="10,10" timeStamp="2011-10-24T10:39:57.000Z" useGrid="true" xmlns="http://www.metacase.com/gxlGOPRRRepr">
+			<graph href="#_3_176" xmlns="http://www.metacase.com/gxlGOPRR"></graph>
+			<objectRepr id="_3_220" place="100,60" scale="1,1">
+				<object href="#_3_223" xmlns="http://www.metacase.com/gxlGOPRR"></object>
+			</objectRepr>
+			<objectRepr id="_3_183" place="100,190" scale="1,1">
+				<object href="#_3_237" xmlns="http://www.metacase.com/gxlGOPRR"></object>
+			</objectRepr>
+			<objectRepr id="_3_263" place="310,150" scale="1,1">
+				<object href="#_3_226" xmlns="http://www.metacase.com/gxlGOPRR"></object>
+			</objectRepr>
+			<objectRepr id="_3_208" place="300,340" scale="1,0.971428">
+				<object href="#_3_279" xmlns="http://www.metacase.com/gxlGOPRR"></object>
+			</objectRepr>
+			<objectRepr id="_3_225" place="120,410" scale="1,1">
+				<object href="#_3_266" xmlns="http://www.metacase.com/gxlGOPRR"></object>
+			</objectRepr>
+			<objectRepr place="460,90" scale="1,1">
+				<object href="#_3_184" xmlns="http://www.metacase.com/gxlGOPRR"></object>
+			</objectRepr>
+			<bindingRepr isStraight="false" place="210,170" scale="1,1">
+				<binding href="#_3_233" xmlns="http://www.metacase.com/gxlGOPRR"></binding>
+				<connectionRepr id="1">
+					<objectRepr href="#_3_183"></objectRepr>
+				</connectionRepr>
+				<connectionRepr id="2">
+					<objectRepr href="#_3_263"></objectRepr>
+				</connectionRepr>
+			</bindingRepr>
+			<bindingRepr isStraight="true" place="305,245" scale="1,1">
+				<binding href="#_3_190" xmlns="http://www.metacase.com/gxlGOPRR"></binding>
+				<connectionRepr id="1">
+					<objectRepr href="#_3_263"></objectRepr>
+				</connectionRepr>
+				<connectionRepr id="2">
+					<objectRepr href="#_3_208"></objectRepr>
+				</connectionRepr>
+			</bindingRepr>
+			<bindingRepr isStraight="true" place="201,265" scale="1,1">
+				<binding href="#_3_194" xmlns="http://www.metacase.com/gxlGOPRR"></binding>
+				<connectionRepr id="1">
+					<objectRepr href="#_3_208"></objectRepr>
+				</connectionRepr>
+				<connectionRepr id="2">
+					<objectRepr href="#_3_183"></objectRepr>
+				</connectionRepr>
+			</bindingRepr>
+			<bindingRepr isStraight="false" place="410,240" scale="1,1">
+				<binding href="#_3_273" xmlns="http://www.metacase.com/gxlGOPRR"></binding>
+				<connectionRepr id="1">
+					<objectRepr href="#_3_208"></objectRepr>
+				</connectionRepr>
+				<connectionRepr id="2">
+					<objectRepr href="#_3_263"></objectRepr>
+				</connectionRepr>
+			</bindingRepr>
+			<bindingRepr isStraight="false" place="190,380" scale="1,1">
+				<binding href="#_3_283" xmlns="http://www.metacase.com/gxlGOPRR"></binding>
+				<connectionRepr id="1">
+					<objectRepr href="#_3_208"></objectRepr>
+				</connectionRepr>
+				<connectionRepr id="2">
+					<objectRepr href="#_3_225"></objectRepr>
+				</connectionRepr>
+			</bindingRepr>
+			<bindingRepr isStraight="false" place="100,112" scale="1,1">
+				<binding href="#_3_247" xmlns="http://www.metacase.com/gxlGOPRR"></binding>
+				<connectionRepr id="1">
+					<objectRepr href="#_3_220"></objectRepr>
+				</connectionRepr>
+				<connectionRepr id="2">
+					<objectRepr href="#_3_183"></objectRepr>
+				</connectionRepr>
+			</bindingRepr>
+		</diagram>
+	</graph>
+</gxl>
