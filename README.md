@@ -6,10 +6,23 @@ Tool for generating and executing test cases.
 Test models are expressed as Java programs, which the test generator executes based on annotations defined in the model.
 The test generator can be configured with different algorithms to generate tests in different ways.
 
+The main point with this approach is to provide:
+- Systematic approach to go through the specification and define it more formally in the form of a test model from
+  which the tool can then be used to automatically generate tests.
+- Automated generation of large number of tests for level of coverage not realistic for manual test creation.
+  The set of coverage elements supported:
+ - Variable values (all or category-partitions)
+ - Covered steps
+ - Covered step-pairs
+ - Covered state values (defined by annotated methods with return values)
+ - Covered state-pairs
+ - Requirements (defined in model as illustrated in the example model below).
+
 Example test model:
 
 ```java
 public class ExampleModel {
+  private final Requirements req = new Requirements();
   @Variable
   private int counter = 0;
 
