@@ -337,25 +337,25 @@ However, we can also define a set of additional attributes such as
 ```
 
 The lines here are the following:
-1. Creates the OSMO Tester test generation engine.
-2. This enables more verbose debug printing in System.out and in a log file. Best done right after creating the generator.
-3. Adds a new model object.
-You can add as many as you like, and they will be combined together where steps, guards, etc.
-are matched across the provided objects.
-Some people call the result a “flattened” model because they are treated as if written inside the same class.
-4. Sets the end condition for ending generation of single test cases.
-The condition used here causes each generated test case to have 3 steps
-(that is, after executing three steps, the generator stops).
-The default condition used, if no end condition is set by the user, is to end after generating a minimum of 1 test step,
-with 5% probability after each test steps.
-5. Sets the end condition object for ending generation of all tests (the test suite).
-The condition used here causes the generator to generate 2 tests.
-The default condition is set to end after generating a minimum of 1 test cases, with 10% probability at each point.
-6. Sets the test generation algorithm.
-By default this is set to a RandomAlgorithm that randomly takes one of the available steps.
-The BalancingAlgorithm used here takes previously uncovered steps if available,
-and balances further choices by giving higher probability to less covered of the available steps and step-pairs.
-7. This invokes the test generation engine to generate tests from the given model objects with the defined configuration.
+ 1. Creates the OSMO Tester test generation engine.
+ 2. This enables more verbose debug printing in System.out and in a log file. Best done right after creating the generator.
+ 3. Adds a new model object.
+ You can add as many as you like, and they will be combined together where steps, guards, etc.
+ are matched across the provided objects.
+ Some people call the result a “flattened” model because they are treated as if written inside the same class.
+ 4. Sets the end condition for ending generation of single test cases.
+ The condition used here causes each generated test case to have 3 steps
+ (that is, after executing three steps, the generator stops).
+ The default condition used, if no end condition is set by the user, is to end after generating a minimum of 1 test step,
+ with 5% probability after each test steps.
+ 5. Sets the end condition object for ending generation of all tests (the test suite).
+ The condition used here causes the generator to generate 2 tests.
+ The default condition is set to end after generating a minimum of 1 test cases, with 10% probability at each point.
+ 6. Sets the test generation algorithm.
+ By default this is set to a RandomAlgorithm that randomly takes one of the available steps.
+ The BalancingAlgorithm used here takes previously uncovered steps if available,
+ and balances further choices by giving higher probability to less covered of the available steps and step-pairs.
+ 7. This invokes the test generation engine to generate tests from the given model objects with the defined configuration.
 
 Special model elements
 ----------------------
