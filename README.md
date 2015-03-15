@@ -72,6 +72,30 @@ The tests can then be executed by configuring the generator such as:
 
 This generates 100 tests, each with 100 steps. Each step is chosen randomly based on the set of enabled steps.
 
+Installing
+----------
+
+I would recommend to download the source, and using the Ant build script under "osmotester" directory to build it.
+There is also some version in the maven repo.
+
+<dependency>
+	<groupId>net.kanstren.osmo</groupId>
+	<artifactId>osmotester</artifactId>
+	<version>3.4.0</version>
+</dependency>
+
+or direct [link](http://central.maven.org/maven2/net/kanstren/osmo/osmotester/3.4.0/osmotester-3.4.0.jar)
+
+Documentation
+-------------
+
+Some documentation exists here:
+
+ - [User guide](https://github.com/mukatee/osmo/blob/master/osmotester/doc/osmo_guide.md)
+ - [Basics tutorial] (https://github.com/mukatee/osmo/blob/master/osmotester/doc/tutorial_basics.md)
+ - [Data tutorial] (https://github.com/mukatee/osmo/blob/master/osmotester/doc/tutorial_data.md)
+ - [Scenarios tutorial] (https://github.com/mukatee/osmo/blob/master/osmotester/doc/tutorial_scenarios.md)
+
 License
 -------
 
