@@ -62,6 +62,7 @@ public class Reducer {
     osmoConfig.setSequenceTraceRequested(false);
     //this also avoids the generator from spamming excess prints
     osmoConfig.setExploring(true);
+    osmoConfig.setPrintExplorationErrors(config.isPrintExplorationErrors());
     //and if we get an error we want to continue and find more errors.. since errors are our targets
     osmoConfig.setStopGenerationOnError(false);
     //using the base seed we create a randomizer to create seeds for all tasks
@@ -91,7 +92,7 @@ public class Reducer {
 
   /**
    * Runs the search for the debugging configuration.
-   * 
+   *
    * @param state To use in search.
    */
   private void debugSearch(ReducerState state) {
@@ -115,9 +116,9 @@ public class Reducer {
     fuzz2(state, iterationTime);
 
     int minimum = state.getMinimum();
-    
+
     state.prune();
-    
+
     if (minimum < config.getLength()) {
       System.out.println("Got down to:" + minimum);
     } else {
@@ -127,7 +128,7 @@ public class Reducer {
 
   /**
    * Runs the search for the requirements configuration.
-   * 
+   *
    * @param state To use in search.
    */
   private void requirementsSearch(ReducerState state) {
@@ -164,7 +165,7 @@ public class Reducer {
 
   /**
    * Write the debug reports for found steps and invariants.
-   * 
+   *
    * @param allSteps All steps in test model, used in test or not.
    * @param state End state for reduction to report.
    */
@@ -190,7 +191,7 @@ public class Reducer {
 
   /**
    * Fuzz tests, that is create random test cases for given configuration.
-   * 
+   *
    * @param state Reduction state to use for fuzzing.
    * @param waitTime Time to wait until signalling stop for fuzz tasks if not stopped yet.
    */

@@ -251,13 +251,13 @@ public class UtilTests {
 
   @Test
   public void listFilesNameOnly() {
-    List<String> files = listFiles("osmo/osmotester/test-data2", "txt", false);
+    List<String> files = listFiles("osmotester/test-data2", "txt", false);
     assertEquals("Files", "[level1.txt]", files.toString());
   }
 
   @Test
   public void listFilesFullPath() {
-    List<String> files = listFiles("osmo/osmotester/test-data1", "txt", true);
+    List<String> files = listFiles("osmotester/test-data1", "txt", true);
     String filename = files.get(0);
     assertTrue("File path should end with file name (afile.txt), was "+filename, filename.endsWith("afile.txt"));
     assertTrue("File should have full path, was "+filename, filename.length() > "afile.txt".length());

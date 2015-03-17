@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Defines a configuration for performing test reduction.
  * Separate from the actual generator configuration which is also used in reduction tasks.
- * 
+ *
  * @author Teemu Kanstren
  */
 public class ReducerConfig {
@@ -32,6 +32,7 @@ public class ReducerConfig {
   private int diversity = 10;
   /** How many requirements we are looking for? If > 0 signals we are doing requirements search. Otherwise it is debug. */
   private int requirementsTarget = 0;
+  private boolean printExplorationErrors = false;
 
   public ReducerConfig(long seed) {
     this.seed = seed;
@@ -43,6 +44,14 @@ public class ReducerConfig {
 
   public void setRequirementsTarget(int requirementsTarget) {
     this.requirementsTarget = requirementsTarget;
+  }
+
+  public boolean isPrintExplorationErrors() {
+    return printExplorationErrors;
+  }
+
+  public void setPrintExplorationErrors(boolean printExplorationErrors) {
+    this.printExplorationErrors = printExplorationErrors;
   }
 
   public int getParallelism() {
