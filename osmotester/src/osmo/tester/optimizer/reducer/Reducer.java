@@ -39,6 +39,7 @@ public class Reducer {
   private final ReducerConfig config;
   /** Used to create random seeds for different tasks. Takes seed itself from reducer config. */
   private Randomizer rand;
+  private TestCase startTest = null;
 
   public Reducer(ReducerConfig config) {
     parallelism = config.getParallelism();
@@ -48,6 +49,10 @@ public class Reducer {
 
   public OSMOConfiguration getOsmoConfig() {
     return osmoConfig;
+  }
+
+  public void setStartTest(TestCase startTest) {
+    this.startTest = startTest;
   }
 
   /**
@@ -78,6 +83,7 @@ public class Reducer {
       allSteps.add(transition.getStringName());
     }
     ReducerState state = new ReducerState(allSteps, config);
+    if (startTest != null) state.addTest(startTest);
 
     if (config.getRequirementsTarget() > 0) {
       requirementsSearch(state);
@@ -100,7 +106,7 @@ public class Reducer {
     state.startInitialSearch();
     long totalTime = config.getTotalUnit().toMillis(config.getTotalTime());
     log.info("Running initial search");
-    fuzz1(state, totalTime);
+//    fuzz1(state, totalTime);
     //need to clear scripts after initial fuzz in order to allow variation in search
     osmoConfig.setScripts(null);
     state.startShortening();

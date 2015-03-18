@@ -19,6 +19,7 @@ public class ReducerMain {
     long seed = Long.parseLong(args[0]);
     System.out.println("Using seed:"+seed);
     ReducerConfig config = new ReducerConfig(seed);
+    config.setPrintExplorationErrors(true);
 //    config.setParallelism(1);
     Reducer reducer = new Reducer(config);
     reducer.setDeleteOldOutput(false);

@@ -17,10 +17,10 @@ public class DebuggingSim {
     GSMModelFactory factory = new GSMModelFactory(System.out);
     //550,4345 = error in test assert, not in explorer..
     for (int i = 1 ; i <= 100 ; i++) {
-      long seed = 45345+i*345; 
+      long seed = 45345+i*345;
       System.out.println(i+":exploring with seed:"+seed);
       ExplorationConfiguration config = new ExplorationConfiguration(factory, 2, seed);
-      config.setVariableWeight("my-state", 5);
+//      config.setVariableWeight("my-state", 5);
       config.setStepWeight(30);
       config.setStepPairWeight(20);
       config.setRequirementWeight(10);
