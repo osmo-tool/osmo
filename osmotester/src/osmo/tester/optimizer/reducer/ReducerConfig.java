@@ -33,6 +33,7 @@ public class ReducerConfig {
   /** How many requirements we are looking for? If > 0 signals we are doing requirements search. Otherwise it is debug. */
   private int requirementsTarget = 0;
   private boolean printExplorationErrors = false;
+  private int targetLength = -1;
 
   public ReducerConfig(long seed) {
     this.seed = seed;
@@ -44,6 +45,14 @@ public class ReducerConfig {
 
   public void setRequirementsTarget(int requirementsTarget) {
     this.requirementsTarget = requirementsTarget;
+  }
+
+  public int getTargetLength() {
+    return targetLength;
+  }
+
+  public void setTargetLength(int targetLength) {
+    this.targetLength = targetLength;
   }
 
   public boolean isPrintExplorationErrors() {

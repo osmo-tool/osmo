@@ -17,6 +17,7 @@ import osmo.tester.optimizer.reducer.debug.invariants.FlexPrecedence;
 import osmo.tester.optimizer.reducer.debug.invariants.NumberOfSteps;
 import osmo.tester.scenario.Scenario;
 import osmo.tester.scenario.Slice;
+import osmo.tester.unittests.ScriptBuilder;
 import osmo.tester.unittests.testmodels.EmptyTestModel1;
 import osmo.tester.unittests.testmodels.ErrorModelProbability;
 import osmo.tester.unittests.testmodels.Model10Debug;
@@ -124,6 +125,43 @@ public class ReducerTests {
     assertEquals("Reducer report", expected, report);
     List<String> files = TestUtils.listFiles("osmo-output/reducer-111", ".html", false);
     assertEquals("Generated report files", "[final-tests.html]", files.toString());
+  }
+
+  @Test
+  public void startTest() throws Exception {
+//    Logger.consoleLevel = Level.FINEST;
+    Logger.packageName = "o.t.o.r";
+    ReducerConfig config = new ReducerConfig(111);
+    config.setParallelism(1);
+    config.setIterationTime(TimeUnit.MINUTES, 10);
+    config.setTargetLength(11);
+    Reducer reducer = new Reducer(config);
+    ScriptBuilder builder = new ScriptBuilder();
+    builder.add(5, "Step4");
+    builder.add(5, "Step6");
+    builder.add(1, "Step8");
+    TestCase test = builder.create(11, new ReflectiveModelFactory(Model10Debug.class));
+    reducer.setStartTest(test);
+    OSMOConfiguration osmoConfig = reducer.getOsmoConfig();
+    osmoConfig.setFactory(new ReflectiveModelFactory(Model10Debug.class));
+    reducer.setDeleteOldOutput(true);
+    config.setPopulationSize(1500);
+    config.setLength(50);
+    config.setTestMode(true);
+    ReducerState state = reducer.search();
+    List<TestCase> tests = state.getTests();
+    TestCase test1 = tests.get(0);
+    String report = TestUtils.readFile("osmo-output/reducer-111/reducer-final.txt", "UTF8");
+    String expected = TestUtils.getResource(ReducerTests.class, "expected-reducer4.txt");
+    report = TestUtils.unifyLineSeparators(report, "\n");
+    expected = TestUtils.unifyLineSeparators(expected, "\n");
+    String[] replaced = TestUtils.replace("##", expected, report);
+    report = replaced[0];
+    expected = replaced[1];
+    assertEquals("Reducer report", expected, report);
+    List<String> files = TestUtils.listFiles("osmo-output/reducer-111", ".html", false);
+    assertEquals("Generated report files", "[final-tests.html]", files.toString());
+    System.out.println("done");
   }
 
   @Test

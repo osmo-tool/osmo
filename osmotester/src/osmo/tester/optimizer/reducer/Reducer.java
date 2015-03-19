@@ -106,7 +106,7 @@ public class Reducer {
     state.startInitialSearch();
     long totalTime = config.getTotalUnit().toMillis(config.getTotalTime());
     log.info("Running initial search");
-//    fuzz1(state, totalTime);
+    if (startTest == null) fuzz1(state, totalTime);
     //need to clear scripts after initial fuzz in order to allow variation in search
     osmoConfig.setScripts(null);
     state.startShortening();
@@ -247,7 +247,7 @@ public class Reducer {
       synchronized (state) {
         log.debug("waiting time " + waitTime);
         //we might have finished before coming here if previous searches were 100% success
-        state.wait(waitTime);
+        if (!state.isDone()) state.wait(waitTime);
       }
       log.info("Notifying state to stop just in case..");
       //if overall timeout instead of reduction, we terminate searches (signal them to stop)

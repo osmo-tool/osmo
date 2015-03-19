@@ -44,7 +44,6 @@ public class ReducerState {
   /** The list of processed requirements so far. The ones that have best test 'found' already. */
   private Collection<String> processedRequirements = new ArrayList<>();
   private boolean foundFailing = false;
-
   private enum ReductionPhase {INITIAL_SEARCH, SHORTENING, FINAL_FUZZ}
   private ReductionPhase phase = ReductionPhase.INITIAL_SEARCH;
 
@@ -136,6 +135,10 @@ public class ReducerState {
 
   public boolean isDone() {
     if (done) return true;
+    if (minimum <= config.getTargetLength()) {
+      endSearch();
+      return true;
+    }
     checkTimeout();
     return done;
   }
