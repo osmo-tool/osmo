@@ -46,6 +46,7 @@ public class ReducerState {
   private boolean foundFailing = false;
   private enum ReductionPhase {INITIAL_SEARCH, SHORTENING, FINAL_FUZZ}
   private ReductionPhase phase = ReductionPhase.INITIAL_SEARCH;
+  private String finalFuzzTimes = "";
 
   /**
    * @param allSteps All steps in the test model.
@@ -67,24 +68,7 @@ public class ReducerState {
   public void startShortening() {
     startTime = System.currentTimeMillis();
     phase = ReductionPhase.SHORTENING;
-//    int shortest = Integer.MAX_VALUE;
-//    List<TestCase> shortList = new ArrayList<>();
-//    for (TestCase test : tests) {
-//      int length = test.getLength();
-//      if (length < shortest) {
-//        shortest = length;
-//        shortList.clear();
-//      }
-//      if (length == shortest) {
-//        shortList.add(test);
-//      }
-//    }
-//    tests.clear();
-//    tests.addAll(shortList);
-//    while (tests.size() > 0 && tests.size() < config.getDiversity()) {
-//      log.info("Only "+tests.size() + " tests, replicating more");
-//      tests.addAll(shortList);
-//    }
+
     //we need to update "minimum" size for later phases even if we still want to keep all sizes at start for diversity
     for (TestCase test : tests) {
       int length = test.getLength();
@@ -113,11 +97,6 @@ public class ReducerState {
     return minimum;
   }
 
-//  public void setStopOnFirst(boolean stopOnFirst) {
-//    this.stopOnFirst = stopOnFirst;
-//  }
-
-
   public TestCase getRequirementTest() {
     return requirementsTests.get(targetRequirement);
   }
@@ -127,15 +106,11 @@ public class ReducerState {
    */
   public void resetDone() {
     this.done = false;
-//    //when searching for requirements, this can be null when starting to look for new req
-//    if (test == null) return;
-    //if we are already at minimum, no need to continue with anything else
-    //checkIfSingleStep();
   }
 
   public boolean isDone() {
     if (done) return true;
-    if (minimum <= config.getTargetLength()) {
+    if (phase == ReductionPhase.SHORTENING && minimum <= config.getTargetLength()) {
       endSearch();
       return true;
     }
@@ -146,19 +121,6 @@ public class ReducerState {
   public boolean isFoundFailing() {
     return foundFailing;
   }
-
-  //
-//  /**
-//   * Sets reduction to "done" status causing tasks to stop at following point.
-//   */
-//  public void finish() {
-//    log.debug("done");
-//    this.done = true;
-//  }
-//
-//  public TestCase getTest() {
-//    return test;
-//  }
 
   /**
    * Add a new "failing" test case to the list of tests, if applicable (not longer than minimum so far).
@@ -211,6 +173,13 @@ public class ReducerState {
     checkMinimum(test);
     //add the new test to the set of found tests for this length
     tests.add(test);
+    long now = System.currentTimeMillis();
+    long diff = now-startTime;
+    finalFuzzTimes += tests.size()+";"+diff+"\n";
+  }
+
+  public String getFinalFuzzTimes() {
+    return finalFuzzTimes;
   }
 
   private void checkMinimum(TestCase test) {
@@ -219,19 +188,13 @@ public class ReducerState {
     if (length < minimum) {
       //starting a new iteration, so store new start time for the iteration
       startTime = System.currentTimeMillis();
-//      //first we write the report for the previous iteration that just finished
-//      Analyzer analyzer = new Analyzer(allSteps, this);
-//      analyzer.analyze();
-//      analyzer.writeReport("reducer-task-" + minimum);
+
       //set new state for the new iteration
       tests.clear();
       hashes.clear();
       minimum = length;
       lengths.add(length);
-//      System.out.println("found smaller:"+minimum);
       log.info("Found smaller:" + minimum);
-      //if we already reached smallest possible set, stop iteration
-      //checkIfSingleStep();
     }
   }
 
@@ -247,19 +210,6 @@ public class ReducerState {
     }
     return hash;
   }
-
-//  /**
-//   * Checks if the current test only consists of repetitions of a single step.
-//   * If so, we consider it already minimal and stop the iteration.
-//   */
-//  private void checkIfSingleStep() {
-//    if (tests.size() == 0) return;
-//    TestCase test = tests.get(0);
-//    List<String> steps = test.getAllStepNames();
-//    HashSet<String> singles = new HashSet<>();
-//    singles.addAll(steps);
-//    if (singles.size() == 1) endSearch();
-//  }
 
   /**
    * Set current iteration to ending and notify any waiting threads.
@@ -317,14 +267,6 @@ public class ReducerState {
   public synchronized void testsDone(int count) {
     testCount.addAndGet(count);
     checkTimeout();
-//    if (startTime > 0) {
-//      //if our reduction iteration has passed its timeout we stop
-//      long now = System.currentTimeMillis();
-//      long diff = now - startTime;
-//      if (diff > timeout) {
-//        endSearch();
-//      }
-//    }
   }
 
   private void checkTimeout() {

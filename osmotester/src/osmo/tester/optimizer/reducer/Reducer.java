@@ -193,6 +193,8 @@ public class Reducer {
     }
     String filename = analyzer.getPath() + "final-tests";
     OSMOTester.writeTrace(filename, traced, config.getSeed(), osmoConfig);
+    String filename2 = analyzer.getPath() + "final-fuzz-times.csv";
+    TestUtils.write(state.getFinalFuzzTimes(), filename2);
   }
 
   /**
