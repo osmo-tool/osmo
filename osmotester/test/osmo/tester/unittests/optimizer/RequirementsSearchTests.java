@@ -32,8 +32,10 @@ public class RequirementsSearchTests {
     osmoConfig.setFactory(factory);
     osmoConfig.setTestEndCondition(new Length(50));
     osmoConfig.setSuiteEndCondition(new Length(20));
-    config.setIterationTime(TimeUnit.SECONDS, 15);
-    config.setTotalTime(TimeUnit.SECONDS, 500);
+    //modified 8apr15
+    config.setInitialTime(TimeUnit.SECONDS, 20);
+    config.setFuzzTime(TimeUnit.SECONDS, 20);
+    config.setShorteningTime(TimeUnit.SECONDS, 20);
     config.setPopulationSize(500);
     config.setLength(50);
     config.setTestMode(true);
@@ -64,8 +66,9 @@ public class RequirementsSearchTests {
     osmoConfig.setFactory(factory);
 //    osmoConfig.setTestEndCondition(new Length(50));
 //    osmoConfig.setSuiteEndCondition(new Length(20));
-    config.setIterationTime(TimeUnit.SECONDS, 5);
-    config.setTotalTime(TimeUnit.SECONDS, 20);
+    config.setInitialTime(TimeUnit.SECONDS, 5);
+    config.setFuzzTime(TimeUnit.SECONDS, 5);
+    config.setShorteningTime(TimeUnit.SECONDS, 5);
     config.setPopulationSize(500);
     config.setLength(10);
     config.setTestMode(true);
@@ -91,8 +94,9 @@ public class RequirementsSearchTests {
     osmoConfig.setFactory(factory);
     osmoConfig.setTestEndCondition(new Length(50));
     osmoConfig.setSuiteEndCondition(new Length(20));
-    config.setIterationTime(TimeUnit.SECONDS, 10);
-    config.setTotalTime(TimeUnit.SECONDS, 50);
+    config.setInitialTime(TimeUnit.SECONDS, 10);
+    config.setFuzzTime(TimeUnit.SECONDS, 10);
+    config.setShorteningTime(TimeUnit.SECONDS, 10);
     config.setPopulationSize(500);
     config.setLength(2);
     config.setTestMode(true);

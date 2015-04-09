@@ -27,7 +27,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 
 import static org.junit.Assert.*;
 
@@ -45,8 +44,9 @@ public class ReducerTests {
     Reducer reducer = new Reducer(config);
     OSMOConfiguration osmoConfig = reducer.getOsmoConfig();
     osmoConfig.setFactory(new ReflectiveModelFactory(EmptyTestModel1.class));
-    config.setIterationTime(TimeUnit.SECONDS, 5);
-    config.setTotalTime(TimeUnit.SECONDS, 10);
+    config.setInitialTime(TimeUnit.SECONDS, 5);
+    config.setFuzzTime(TimeUnit.SECONDS, 5);
+    config.setShorteningTime(TimeUnit.SECONDS, 5);
     config.setPopulationSize(500);
     config.setLength(10);
     ReducerState state = reducer.search();
@@ -68,8 +68,9 @@ public class ReducerTests {
     osmoConfig.setFactory(new ReflectiveModelFactory(ErrorModelProbability.class));
 //    osmoConfig.setTestEndCondition(new Length(50));
 //    osmoConfig.setSuiteEndCondition(new Length(20));
-    config.setIterationTime(TimeUnit.SECONDS, 5);
-    config.setTotalTime(TimeUnit.SECONDS, 5);
+    config.setInitialTime(TimeUnit.SECONDS, 5);
+    config.setFuzzTime(TimeUnit.SECONDS, 5);
+    config.setShorteningTime(TimeUnit.SECONDS, 5);
     config.setPopulationSize(50);
     config.setLength(10);
     config.setTestMode(true);
@@ -94,8 +95,10 @@ public class ReducerTests {
     Logger.packageName = "o.t.o.r";
     ReducerConfig config = new ReducerConfig(111);
     config.setParallelism(1);
-    config.setTotalTime(TimeUnit.SECONDS, 60);
-    config.setIterationTime(TimeUnit.SECONDS, 10);
+    //changed here on 8apr15
+    config.setInitialTime(TimeUnit.SECONDS, 10);
+    config.setFuzzTime(TimeUnit.SECONDS, 10);
+    config.setShorteningTime(TimeUnit.SECONDS, 10);
     Reducer reducer = new Reducer(config);
     OSMOConfiguration osmoConfig = reducer.getOsmoConfig();
     osmoConfig.setFactory(new ReflectiveModelFactory(Model10Debug.class));
@@ -133,7 +136,10 @@ public class ReducerTests {
     Logger.packageName = "o.t.o.r";
     ReducerConfig config = new ReducerConfig(111);
     config.setParallelism(1);
-    config.setIterationTime(TimeUnit.MINUTES, 10);
+    //changed here on 8apr15
+    config.setInitialTime(TimeUnit.MINUTES, 10);
+    config.setFuzzTime(TimeUnit.MINUTES, 10);
+    config.setShorteningTime(TimeUnit.MINUTES, 10);
     config.setTargetLength(11);
     Reducer reducer = new Reducer(config);
     ScriptBuilder builder = new ScriptBuilder();

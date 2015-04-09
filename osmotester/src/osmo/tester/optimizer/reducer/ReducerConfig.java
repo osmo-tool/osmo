@@ -9,14 +9,18 @@ import java.util.concurrent.TimeUnit;
  * @author Teemu Kanstren
  */
 public class ReducerConfig {
-  /** Defines maximum time to run the overall reduction process. */
-  private long totalTime = 1;
-  /** Defines maximum time to run the overall reduction process. */
-  private TimeUnit totalUnit = TimeUnit.HOURS;
   /** Defines maximum time to run a single iteration in a task after finding a test to reduce. */
-  private long iterationTime = 5;
+  private long shorteningTime = 5;
   /** Defines maximum time to run a single iteration in a task after finding a test to reduce. */
-  private TimeUnit iterationUnit = TimeUnit.MINUTES;
+  private TimeUnit shorteningUnit = TimeUnit.MINUTES;
+  /** Defines maximum time to run a single iteration in a task after finding a test to reduce. */
+  private long fuzzTime = 20;
+  /** Defines maximum time to run a single iteration in a task after finding a test to reduce. */
+  private TimeUnit fuzzUnit = TimeUnit.MINUTES;
+  /** Defines maximum time to run a single iteration in a task after finding a test to reduce. */
+  private long initialTime = 20;
+  /** Defines maximum time to run a single iteration in a task after finding a test to reduce. */
+  private TimeUnit initialUnit = TimeUnit.MINUTES;
   /** Number of tests to generate in an iteration for a task. */
   private int populationSize = 500;
   /** Length of a test case to generate in an iteration for a task. */
@@ -86,31 +90,43 @@ public class ReducerConfig {
   public void setPathExtension(String extension) {
     this.extension = extension;
   }
-
-  public long getTotalTime() {
-    return totalTime;
+  public long getShorteningTime() {
+    return shorteningTime;
   }
 
-  public void setTotalTime(TimeUnit unit, long totalTime) {
-    this.totalUnit = unit;
-    this.totalTime = totalTime;
+  public TimeUnit getShorteningUnit() {
+    return shorteningUnit;
   }
 
-  public TimeUnit getTotalUnit() {
-    return totalUnit;
+  public void setShorteningTime(TimeUnit unit, long iterationTime) {
+    this.shorteningUnit = unit;
+    this.shorteningTime = iterationTime;
   }
 
-  public long getIterationTime() {
-    return iterationTime;
+  public long getFuzzTime() {
+    return fuzzTime;
   }
 
-  public TimeUnit getIterationUnit() {
-    return iterationUnit;
+  public TimeUnit getFuzzUnit() {
+    return fuzzUnit;
   }
 
-  public void setIterationTime(TimeUnit unit, long iterationTime) {
-    this.iterationUnit = unit;
-    this.iterationTime = iterationTime;
+  public void setFuzzTime(TimeUnit unit, long iterationTime) {
+    this.fuzzUnit = unit;
+    this.fuzzTime = iterationTime;
+  }
+
+  public long getInitialTime() {
+    return initialTime;
+  }
+
+  public TimeUnit getInitialUnit() {
+    return initialUnit;
+  }
+
+  public void setInitialTime(TimeUnit unit, long iterationTime) {
+    this.initialUnit = unit;
+    this.initialTime = iterationTime;
   }
 
   public int getPopulationSize() {

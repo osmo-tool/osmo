@@ -25,10 +25,9 @@ public class ReducerMain {
     reducer.setDeleteOldOutput(false);
     OSMOConfiguration osmoConfig = reducer.getOsmoConfig();
     osmoConfig.setFactory(new GSMModelFactory(NullPrintStream.stream));
-//    osmoConfig.setTestEndCondition(new Length(50));
-//    osmoConfig.setSuiteEndCondition(new Length(20));
-    config.setIterationTime(TimeUnit.HOURS, 2);
-    config.setTotalTime(TimeUnit.HOURS, 5);
+    config.setInitialTime(TimeUnit.HOURS, 2);
+    config.setFuzzTime(TimeUnit.HOURS, 2);
+    config.setShorteningTime(TimeUnit.HOURS, 2);
     config.setPopulationSize(100);
     config.setLength(50);
     reducer.search();

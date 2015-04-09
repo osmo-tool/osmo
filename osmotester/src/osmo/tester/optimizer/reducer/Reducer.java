@@ -104,9 +104,10 @@ public class Reducer {
   private void debugSearch(ReducerState state) {
     //in the initial fuzzy search, we stop on first found instance. from this we shorten and then fuzz again
     state.startInitialSearch();
-    long totalTime = config.getTotalUnit().toMillis(config.getTotalTime());
+    //TODO: move these timeout sets into state
+    long initialTime= config.getInitialUnit().toMillis(config.getInitialTime());
     log.info("Running initial search");
-    if (startTest == null) fuzz1(state, totalTime);
+    if (startTest == null) fuzz1(state, initialTime);
     //need to clear scripts after initial fuzz in order to allow variation in search
     osmoConfig.setScripts(null);
     state.startShortening();
@@ -115,11 +116,12 @@ public class Reducer {
       return;
     }
     log.info("Running shortening");
-    long iterationTime = config.getIterationUnit().toMillis(config.getIterationTime());
-    shorten(state, iterationTime);
+    long shorteningTime = config.getShorteningUnit().toMillis(config.getShorteningTime());
+    shorten(state, shorteningTime);
     state.startFinalFuzz();
+    long fuzzTime = config.getFuzzUnit().toMillis(config.getFuzzTime());
     log.info("Running final fuzz");
-    fuzz2(state, iterationTime);
+    fuzz2(state, fuzzTime);
 
     int minimum = state.getMinimum();
 
@@ -139,14 +141,14 @@ public class Reducer {
    */
   private void requirementsSearch(ReducerState state) {
     boolean shouldRun = true;
-    long endTime = config.getTotalUnit().toMillis(config.getTotalTime());
+    long fuzzTime = config.getFuzzUnit().toMillis(config.getFuzzTime());
+    long endTime= config.getInitialUnit().toMillis(config.getInitialTime());
     endTime += System.currentTimeMillis();
     while (shouldRun) {
       state.startInitialSearch();
-      long iterationTime = config.getIterationUnit().toMillis(config.getIterationTime());
       log.info("Running initial search with tests:"+state.getTests());
       if (state.getTests().size() == 0) {
-        fuzz1(state, iterationTime);
+        fuzz1(state, fuzzTime);
         if (System.currentTimeMillis() > endTime) {
           //if we find no way to cover anything, we drop out
           break;
@@ -159,8 +161,9 @@ public class Reducer {
       log.debug("Searching with tests: " + state.getTests());
       state.startShortening();
       log.info("Running shortening");
+      long shorteningTime = config.getShorteningUnit().toMillis(config.getShorteningTime());
       //we do not care about finding many options as we just need one for a requirement, thus no fuzz in end
-      shorten(state, iterationTime);
+      shorten(state, shorteningTime);
       log.info("Next requirement");
       //move to next requirement, or stop if all have been processed
       shouldRun = state.nextRequirement();

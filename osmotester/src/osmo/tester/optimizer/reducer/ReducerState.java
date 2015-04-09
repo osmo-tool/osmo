@@ -30,7 +30,7 @@ public class ReducerState {
   /** Time when current iteration started. */
   public long startTime = Long.MIN_VALUE;
   /** Iteration timeout in milliseconds. */
-  private final long timeout;
+  private long timeout = -1;
   /** Current reduction configuration. */
   private final ReducerConfig config;
   /** The latest found test. Used to check for single step length and to set steps to search in next iteration. */
@@ -56,16 +56,17 @@ public class ReducerState {
     this.config = config;
     this.minimum = config.getLength();
     this.allSteps = allSteps;
-    this.timeout = config.getIterationUnit().toMillis(config.getIterationTime());
   }
 
   public void startInitialSearch() {
+    this.timeout = config.getInitialUnit().toMillis(config.getInitialTime());
     startTime = System.currentTimeMillis();
     phase = ReductionPhase.INITIAL_SEARCH;
     resetDone();
   }
 
   public void startShortening() {
+    this.timeout = config.getShorteningUnit().toMillis(config.getShorteningTime());
     startTime = System.currentTimeMillis();
     phase = ReductionPhase.SHORTENING;
 
@@ -84,6 +85,7 @@ public class ReducerState {
   }
 
   public void startFinalFuzz() {
+    this.timeout = config.getFuzzUnit().toMillis(config.getFuzzTime());
     startTime = System.currentTimeMillis();
     phase = ReductionPhase.FINAL_FUZZ;
     resetDone();
@@ -133,15 +135,19 @@ public class ReducerState {
     //if we already have this test, we ignore it
     if (hashes.contains(hash)) return;
     log.info("Adding test:" + test);
+    String phaseId = "unknown";
     switch (phase) {
       case INITIAL_SEARCH:
         addTestInitialSearch(test);
+        phaseId = "initial";
         break;
       case SHORTENING:
         addTestShortening(test);
+        phaseId = "shorten";
         break;
       case FINAL_FUZZ:
         addTestFinalFuzz(test);
+        phaseId = "fuzz";
         break;
       default:
         throw new IllegalStateException("Unknown reduction phase:" + phase);
@@ -150,7 +156,7 @@ public class ReducerState {
     //first we write the report for the previous iteration that just finished
     Analyzer analyzer = new Analyzer(allSteps, this);
     analyzer.analyze();
-    analyzer.writeReport("reducer-task-" + test.getLength());
+    analyzer.writeReport("reducer-task-" + phaseId + "-" + test.getLength());
     hashes.add(hash);
   }
 

@@ -106,7 +106,6 @@ public class Analyzer {
    */
   public String getPath() {
     long seed = config.getSeed();
-    long time = config.getIterationTime();
     String extension = config.getPathExtension();
     if (extension.length() > 0) extension = "-" + extension;
 //    return "osmo-output/reducer-" + seed + "-" + time + extension+"/";

@@ -42,10 +42,9 @@ public class SingleRunFailReducer {
     osmoConfig.setTestEndCondition(new Length(50));
     osmoConfig.setSuiteEndCondition(new Length(1));
     osmoConfig.setFactory(new GSMModelFactory(NullPrintStream.stream));
-    config.setIterationTime(TimeUnit.MINUTES, iterationTime);
-    config.setTotalTime(TimeUnit.MINUTES, totalTime);
-//    config.setIterationTime(TimeUnit.SECONDS, 5);
-//    config.setTotalTime(TimeUnit.SECONDS, 15);
+    config.setInitialTime(TimeUnit.MINUTES, iterationTime);
+    config.setFuzzTime(TimeUnit.MINUTES, iterationTime);
+    config.setShorteningTime(TimeUnit.MINUTES, iterationTime);
     config.setPopulationSize(100);
     config.setLength(50);
     reducer.search();
