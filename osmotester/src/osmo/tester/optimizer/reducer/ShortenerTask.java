@@ -18,9 +18,9 @@ import java.util.Map;
 /**
  * Tries to reduce given test case by removing one step at a time.
  * For example, test has 2 times step A and 3 times step B.
- * This tries to generate a set of tests with 1 A and 3 B. 
+ * This tries to generate a set of tests with 1 A and 3 B.
  * If this does not reach target, it tries with 2 A and 2 B. Repeat for every step.
- * 
+ *
  * @author Teemu Kanstren
  */
 public class ShortenerTask implements Runnable {
@@ -41,7 +41,7 @@ public class ShortenerTask implements Runnable {
   private TestCase previousTest;
 
   /**
-   * 
+   *
    * @param osmoConfig Generator configuration.
    * @param previousTest Previous best test to improve on.
    * @param seed Seed for seeding generators.
@@ -84,6 +84,7 @@ public class ShortenerTask implements Runnable {
         int id = nextId++;
         log.debug("Starting shortener run "+id+" with seed "+seed + " and population "+populationSize);
         tester.generate(seed);
+        state.testsDone(populationSize);
         TestSuite suite = tester.getSuite();
         List<TestCase> tests = suite.getAllTestCases();
 
@@ -110,7 +111,7 @@ public class ShortenerTask implements Runnable {
   /**
    * Creates a scenario that can be used to configure the generator for producing shorter test case with given step
    * having maximum one less instance than before.
-   * 
+   *
    * @param test The test to minimize.
    * @param removeMe We want to have one less of this step in new tests.
    * @return Scenario defining generator configuration for requested test + remove step.

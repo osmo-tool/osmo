@@ -47,6 +47,7 @@ public class ReducerState {
   private enum ReductionPhase {INITIAL_SEARCH, SHORTENING, FINAL_FUZZ}
   private ReductionPhase phase = ReductionPhase.INITIAL_SEARCH;
   private String finalFuzzTimes = "";
+  private boolean needReport = false;
 
   /**
    * @param allSteps All steps in the test model.
@@ -135,29 +136,48 @@ public class ReducerState {
     //if we already have this test, we ignore it
     if (hashes.contains(hash)) return;
     log.info("Adding test:" + test);
-    String phaseId = "unknown";
     switch (phase) {
       case INITIAL_SEARCH:
         addTestInitialSearch(test);
-        phaseId = "initial";
         break;
       case SHORTENING:
         addTestShortening(test);
-        phaseId = "shorten";
         break;
       case FINAL_FUZZ:
         addTestFinalFuzz(test);
-        phaseId = "fuzz";
         break;
       default:
         throw new IllegalStateException("Unknown reduction phase:" + phase);
     }
     foundFailing = true;
+    needReport = true;
+    hashes.add(hash);
+  }
+
+  /**
+   * Write mid-term report on current reduction status if a new test was found in between.
+   */
+  private synchronized void writeReport() {
+    if (!needReport) return;
+    needReport = false;
     //first we write the report for the previous iteration that just finished
+    String phaseId = "unknown";
+    switch (phase) {
+      case INITIAL_SEARCH:
+        phaseId = "initial";
+        break;
+      case SHORTENING:
+        phaseId = "shorten";
+        break;
+      case FINAL_FUZZ:
+        phaseId = "fuzz";
+        break;
+      default:
+        throw new IllegalStateException("Unknown reduction phase:" + phase);
+    }
     Analyzer analyzer = new Analyzer(allSteps, this);
     analyzer.analyze();
-    analyzer.writeReport("reducer-task-" + phaseId + "-" + test.getLength());
-    hashes.add(hash);
+    analyzer.writeReport("reducer-task-" + phaseId + "-" + minimum);
   }
 
   private void addTestInitialSearch(TestCase test) {
@@ -192,6 +212,7 @@ public class ReducerState {
     List<String> steps = test.getAllStepNames();
     int length = steps.size();
     if (length < minimum) {
+      writeReport();
       //starting a new iteration, so store new start time for the iteration
       startTime = System.currentTimeMillis();
 
@@ -222,6 +243,7 @@ public class ReducerState {
    */
   public synchronized void endSearch() {
     done = true;
+    writeReport();
     notifyAll();
   }
 
@@ -273,6 +295,7 @@ public class ReducerState {
   public synchronized void testsDone(int count) {
     testCount.addAndGet(count);
     checkTimeout();
+    writeReport();
   }
 
   private void checkTimeout() {

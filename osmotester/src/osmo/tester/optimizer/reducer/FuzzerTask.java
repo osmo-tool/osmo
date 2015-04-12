@@ -16,10 +16,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Generates randomized test cases using given configuration. 
+ * Generates randomized test cases using given configuration.
  * If used in debugging mode, tries to find a path that throws an Exception.
  * If used in requirements mode, tries to find tests that cover different requirements.
- * 
+ *
  * @author Teemu Kanstren
  */
 public class FuzzerTask implements Runnable {
@@ -93,7 +93,7 @@ public class FuzzerTask implements Runnable {
       for (TestCase test : tests) {
         //if we debug, we ignore passing tests. if we look for requirements we look at them all
         if (!state.getConfig().isRequirementsSearch() && !test.isFailed()) continue;
-        //here we check if this matches what we are looking for. 
+        //here we check if this matches what we are looking for.
         //that is it is shorter than before and in case of requirements it covers the requirement we look for
         //in case of requirements, it also captures any better tests for other requirements
         if (!state.check(test)) continue;
@@ -104,7 +104,7 @@ public class FuzzerTask implements Runnable {
 
   /**
    * Creates a new generator scenario.
-   * 
+   *
    * @param test To use as a basis.
    * @return Configuration for the generator targeting variants of given test.
    */
@@ -116,8 +116,8 @@ public class FuzzerTask implements Runnable {
     NumberOfSteps metric = new NumberOfSteps(test);
     Map<String,Integer> counts = metric.getStepCounts();
     for (String step : steps) {
-//      scenario.addSlice(step, 0, counts.get(step));
-      scenario.addSlice(step, 0, test.getLength());
+      scenario.addSlice(step, 0, counts.get(step));
+//      scenario.addSlice(step, 0, test.getLength());
     }
     return scenario;
   }
