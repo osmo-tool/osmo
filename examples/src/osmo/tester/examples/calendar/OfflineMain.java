@@ -38,7 +38,7 @@ public class OfflineMain {
     osmo.setSuiteEndCondition(new Length(5));
     ModelState state = new ModelState();
     state.setUserCount(3);
-    CalendarScripter scripter = new OfflineScripter(state, "tests.html");
+    OfflineScripter scripter = new OfflineScripter(state, "tests.html");
     SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
     osmo.setModelFactory(factory);
     factory.add(state);
@@ -49,38 +49,11 @@ public class OfflineMain {
     factory.add(new CalendarParticipantModel(state, scripter));
     factory.add(new CalendarErrorHandlingModel(state, scripter));
     osmo.generate(55);
+    scripter.write();
     TestSuite suite = osmo.getSuite();
     FSM fsm = osmo.getFsm();
     HTMLCoverageReporter html = new HTMLCoverageReporter(suite.getCoverage(), suite.getAllTestCases(), fsm);
     String report = html.getTraceabilityMatrix();
     TestUtils.write(report, "coverage.html");
   }
-
-  //time limit = 10 years
-  //add task, random time (DONE)
-  //add event, random time (DONE)
-  //add task, overlapping task (DONE)
-  //add event, overlapping event (DONE)
-  //add event, overlapping task (DONE)
-  //remove chosen event (DONE)
-  //remove events in timeframe
-  //remove chosen task (DONE)
-  //remove tasks in timeframe (IGNORE)
-  //check tasks are always correct (post) (DONE)
-  //check events are always correct (post) (DONE)
-  //remove task that does not exist (DONE)
-  //remove event that does not exist (DONE)
-  //remove events in timeframe where none exist (IGNORE)
-  //remove tasks in timeframe where none exist (IGNORE)
-  //link task to several users (IGNORE)
-  //link event to several users (DONE)
-  //remove task from a single user while linked to others (DONE)
-  //check tasks for all users (DONE)
-  //check events for all users (DONE)
-  //check geteventforday in post, also gettaskforday (IGNORE)
-  //user boundary values for task remove and add (IGNORE)
-  //create specific model object for each boundary (NO BOUNDARY PRESENT, IGNORE)
-  //create more osmo.visualizer.examples of using dataflow objects (IF WE CAN THINK OF SOME)
-  //create example of failing script (DONE)
-  //create example of oracle in transitions (DONE)
 }

@@ -166,8 +166,4 @@ public class OnlineScripter implements CalendarScripter {
 //    System.out.println("attached event:"+event);
     calendarTo.attach(calendarFrom.getEvent(eventId));
   }
-
-  @Override
-  public void write() {
-  }
 }

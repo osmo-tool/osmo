@@ -188,6 +188,12 @@
         <td>$vc.values</td>
       </tr>
 #end
+#foreach ($s in $states)
+      <tr$alt>
+        <th class='testhead' scope='row'>$s.name</th>
+        <td>$s.values</td>
+      </tr>
+#end
     </tbody>
   </table>
 
