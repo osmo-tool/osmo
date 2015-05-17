@@ -95,6 +95,7 @@ Some documentation exists here:
  - [Basics tutorial] (https://github.com/mukatee/osmo/blob/master/osmotester/doc/tutorial_basics.md)
  - [Data tutorial] (https://github.com/mukatee/osmo/blob/master/osmotester/doc/tutorial_data.md)
  - [Scenarios tutorial] (https://github.com/mukatee/osmo/blob/master/osmotester/doc/tutorial_scenarios.md)
+ - [Optimizer tutorial] (https://github.com/mukatee/osmo/blob/master/osmotester/doc/tutorial_optimizer.md)
 
 License
 -------

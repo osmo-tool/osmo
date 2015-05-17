@@ -25,7 +25,6 @@ public class CalendarFactory implements ModelFactory {
     here.add(state);
     here.add(new ExtraState(state));
     here.add(new CalendarMeetingModel(state, scripter, NullPrintStream.stream));
-    here.add(new CalendarFailureModel(state, scripter, NullPrintStream.stream));
     here.add(new CalendarOracleModel(state, scripter, NullPrintStream.stream));
     here.add(new CalendarParticipantModel(state, scripter, NullPrintStream.stream));
     here.add(new CalendarTaskModel(state, scripter, NullPrintStream.stream));

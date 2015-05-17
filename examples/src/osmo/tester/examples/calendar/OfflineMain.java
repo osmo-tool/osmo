@@ -32,15 +32,14 @@ public class OfflineMain {
   public static void main(String[] args) throws Exception {
     OSMOTester osmo = new OSMOTester();
     OSMOConfiguration config = new OSMOConfiguration();
-    config.setUnwrapExceptions(true);
     osmo.setConfig(config);
-    osmo.setTestEndCondition(new Length(5));
-    osmo.setSuiteEndCondition(new Length(5));
+    config.setTestEndCondition(new Length(5));
+    config.setSuiteEndCondition(new Length(5));
     ModelState state = new ModelState();
     state.setUserCount(3);
     OfflineScripter scripter = new OfflineScripter(state, "tests.html");
     SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
-    osmo.setModelFactory(factory);
+    config.setFactory(factory);
     factory.add(state);
     factory.add(new CalendarMeetingModel(state, scripter));
     factory.add(new CalendarOracleModel(state, scripter));

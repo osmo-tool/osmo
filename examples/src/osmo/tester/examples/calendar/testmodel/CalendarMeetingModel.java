@@ -25,7 +25,6 @@ public class CalendarMeetingModel {
   /** The scripter for creating/executing the test cases. */
   private final CalendarScripter scripter;
   private final PrintStream out;
-  private final Requirements reqs = new Requirements();
 
   public CalendarMeetingModel(ModelState state, CalendarScripter scripter) {
     this.state = state;
