@@ -9,7 +9,7 @@ import osmo.tester.annotation.TestStep;
 public class HelloModel1 {
   private int helloCount = 0;
   private int worldCount = 0;
-  
+
   @BeforeTest
   public void startTest() {
     helloCount = 0;
@@ -39,7 +39,8 @@ public class HelloModel1 {
 
   @Guard("world")
   public boolean thisNameIsIrrelevant() {
-    return helloCount > worldCount;  }
+    return helloCount > worldCount;
+  }
 
   @TestStep("world")
   public void sayWorld() {

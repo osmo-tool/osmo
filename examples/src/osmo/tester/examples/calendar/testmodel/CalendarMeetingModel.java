@@ -25,7 +25,6 @@ public class CalendarMeetingModel {
   /** The scripter for creating/executing the test cases. */
   private final CalendarScripter scripter;
   private final PrintStream out;
-  private final Requirements reqs = new Requirements();
 
   public CalendarMeetingModel(ModelState state, CalendarScripter scripter) {
     this.state = state;
@@ -38,24 +37,14 @@ public class CalendarMeetingModel {
     this.scripter = scripter;
     this.out = out;
   }
-  
-  @BeforeSuite
-  public void suiteSetup() {
-    state.init();
-  }
 
   @Description("General test setup")
   @BeforeTest
   public void setup() {
+    state.init();
     scripter.reset();
     state.reset();
     out.println("-NEW TEST");
-  }
-
-  @Description("Write script to file")
-  @AfterSuite
-  public void dump() {
-    scripter.write();
   }
 
   @TestStep("Add Meeting")

@@ -60,7 +60,7 @@ public class ModelState {
 
   /**
    * Used to initialize state before a test suite is generated.
-   * Could be put in constructor as well but demonstrated user of
+   * Could be put in constructor as well but demonstrated user of test init from @BeforeTest.
    */
   public void init() {
     users.clear();

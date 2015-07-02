@@ -213,8 +213,8 @@ public abstract class CoverageMetric {
     List<String> variables = getVariables();
     //makes no sense to put all variable values and states there as they may be way too many
     List<VariableValues> variableValues = getVariableValues(suiteCoverage.getVariableValues());
-//    List<VariableValues> states = getVariableValues(suiteCoverage.getStates());
-//    List<VariableValues> statePairs = getVariableValues(suiteCoverage.getStatePairs());
+    List<VariableValues> states = getVariableValues(suiteCoverage.getStates());
+    List<VariableValues> statePairs = getVariableValues(suiteCoverage.getStatePairs());
 
     vc.put("alt", new CSSHelper());
     vc.put("tests", tc);
@@ -223,8 +223,8 @@ public abstract class CoverageMetric {
     vc.put("step_pair_names", pairs);
     vc.put("variable_names", variables);
     vc.put("variable_values", variableValues);
-//    vc.put("states", states);
-//    vc.put("state_pairs", statePairs);
+    vc.put("states", states);
+    vc.put("state_pairs", statePairs);
 
     StringWriter sw = new StringWriter();
     velocity.mergeTemplate(templateName, "UTF8", vc, sw);

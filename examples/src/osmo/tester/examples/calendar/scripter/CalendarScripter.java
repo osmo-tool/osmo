@@ -81,7 +81,4 @@ public interface CalendarScripter {
    * @param uid   The new user to link it to.
    */
   void linkEventToUser(ModelEvent event, String uid);
-
-  /** Write the script(s) to a file one generation is done (only relevant in offline generation). */
-  void write();
 }

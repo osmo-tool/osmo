@@ -185,7 +185,6 @@ public class OfflineScripter implements CalendarScripter {
     scripter.addStep("Link Event to User", tUidRef, sUidRef, eventId);
   }
 
-  @Override
   public void write() {
     try {
       Writer output = new BufferedWriter(new FileWriter(fileName));

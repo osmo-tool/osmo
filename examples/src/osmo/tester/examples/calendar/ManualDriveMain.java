@@ -35,7 +35,7 @@ public class ManualDriveMain {
 //    osmo.setSuiteEndCondition(new Length(2));
     ModelState state = new ModelState();
 //    CalendarScripter scripter = new OnlineScripter();
-    CalendarScripter scripter = new OfflineScripter(state, "tests.html");
+    OfflineScripter scripter = new OfflineScripter(state, "tests.html");
     SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
     osmo.setModelFactory(factory);
     factory.add(new CalendarMeetingModel(state, scripter));
@@ -49,5 +49,6 @@ public class ManualDriveMain {
 //    factory.add(new CalendarFailureModel(state, scripter));
     //osmo.setValueScripter(new ScriptedValueProvider());
     osmo.generate(111);
+    scripter.write();
   }
 }

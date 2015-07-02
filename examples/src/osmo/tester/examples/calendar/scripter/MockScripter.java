@@ -46,8 +46,4 @@ public class MockScripter implements CalendarScripter {
   @Override
   public void linkEventToUser(ModelEvent event, String uid) {
   }
-
-  @Override
-  public void write() {
-  }
 }
