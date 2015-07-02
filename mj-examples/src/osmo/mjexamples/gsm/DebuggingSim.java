@@ -15,7 +15,7 @@ public class DebuggingSim {
     Logger.consoleLevel = Level.INFO;
     OSMOExplorer explorer = new OSMOExplorer();
     GSMModelFactory factory = new GSMModelFactory(System.out);
-    //550,4345 = error in test assert, not in explorer..
+    //550,4345 = e in test assert, not in explorer..
     for (int i = 1 ; i <= 100 ; i++) {
       long seed = 45345+i*345;
       System.out.println(i+":exploring with seed:"+seed);

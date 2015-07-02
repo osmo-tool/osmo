@@ -36,7 +36,7 @@ public class VariableParser implements AnnotationParser {
       throw new RuntimeException("Failed to check variable type for " + field.getName(), e);
     }
     result.getFsm().addModelVariable(var);
-    log.debug("Parsed variable:" + annotationName);
+    log.d("Parsed variable:" + annotationName);
     return errors;
   }
 

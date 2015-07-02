@@ -39,7 +39,7 @@ public class PostParser implements AnnotationParser {
     String prefix = parameters.getPrefix();
     String group = parameters.getClassAnnotation(Group.class);
     for (String targetName : targetNames) {
-      log.debug("Parsing post '" + targetName + "'");
+      log.d("Parsing post '" + targetName + "'");
       if (targetName.equals(Guard.DEFAULT)) {
         //If no name is given to pre/post but a group is defined for their class, we use that as our target
         if (group.length() > 0) {
@@ -58,11 +58,11 @@ public class PostParser implements AnnotationParser {
         fsm.addGenericPost(target);
         //generic post should not be have their own transition or it will fail the FSM check since it is a guard
         //without a transition
-        log.debug("added generic post:" + targetName);
+        log.d("added generic post:" + targetName);
         continue;
       }
       TransitionName tName = new TransitionName(prefix, targetName);
-      log.debug("created specific post:" + targetName);
+      log.d("created specific post:" + targetName);
       fsm.addSpecificPost(tName, target);
     }
     return errors;

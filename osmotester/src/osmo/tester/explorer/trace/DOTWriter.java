@@ -68,7 +68,7 @@ public class DOTWriter {
       Runtime.getRuntime().exec(command);
     } catch (IOException e) {
       String errorMsg = "Failed to run DOT. Have you installed Graphviz and put it on path?";
-      log.error(errorMsg, e);
+      log.e(errorMsg, e);
       throw new RuntimeException(errorMsg, e);
     }
   }
@@ -126,7 +126,7 @@ public class DOTWriter {
       Path file = Paths.get(dirPath + "/" + fileName + ".dot");
       Files.write(file, content.getBytes("UTF8"), StandardOpenOption.CREATE_NEW);
     } catch (IOException e) {
-      log.error("Unable to open graph file for writing", e);
+      log.e("Unable to open graph file for writing", e);
       throw new RuntimeException(e);
     }
   }

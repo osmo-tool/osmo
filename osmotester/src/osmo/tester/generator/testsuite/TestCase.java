@@ -140,7 +140,7 @@ public class TestCase {
    */
   public TestCaseStep addStep(FSMTransition transition) {
     TestCaseStep step = new TestCaseStep(this, transition, nextStepId++);
-    log.debug("Added step:" + step);
+    log.d("Added step:" + step);
     steps.add(step);
     currentStep = step;
     return step;

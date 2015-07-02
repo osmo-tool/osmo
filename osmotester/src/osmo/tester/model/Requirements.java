@@ -34,7 +34,7 @@ public class Requirements {
   }
 
   public void setTestSuite(TestSuite testSuite) {
-    log.debug("Setting test suite:" + testSuite);
+    log.d("Setting test suite:" + testSuite);
     this.testSuite = testSuite;
     fillCoverage(testSuite.getCoverage());
   }
@@ -51,7 +51,7 @@ public class Requirements {
    */
   public void add(Object requirement) {
     if (requirement == null) {
-      log.warn("NULL value given as requirement. Is that intended?");
+      log.w("NULL value given as requirement. Is that intended?");
     }
     String name = ""+requirement;
     //check if already exists
@@ -68,7 +68,7 @@ public class Requirements {
    */
   public void covered(Object requirement) {
     if (requirement == null) {
-      log.warn("NULL value given as requirement. Is that intended?");
+      log.w("NULL value given as requirement. Is that intended?");
     }
     String name = "" + requirement;
     covered.add(name);

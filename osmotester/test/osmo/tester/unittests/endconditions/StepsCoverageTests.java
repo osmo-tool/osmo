@@ -184,7 +184,7 @@ public class StepsCoverageTests {
       fail("Generation with coverage for non-existent test step (transition) should fail.");
     } catch (IllegalStateException e) {
       //Expected
-      assertEquals("Reported error", "Impossible coverage requirements, defined steps [non-existent] not found.", e.getMessage());
+      assertEquals("Reported e", "Impossible coverage requirements, defined steps [non-existent] not found.", e.getMessage());
     }
   }
 

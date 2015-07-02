@@ -90,7 +90,7 @@ public class MainParser {
    * @return The model structure with references to the object instances.
    */
   public ParserResult parse(long seed, ModelFactory factory, TestSuite suite) {
-    log.debug("parsing");
+    log.d("parsing");
     FSM fsm = new FSM();
     ParserResult result = new ParserResult(fsm);
     ParserParameters parameters = new ParserParameters();
@@ -127,13 +127,13 @@ public class MainParser {
     String errors = "";
     for (Annotation annotation : annotations) {
       Class<? extends Annotation> annotationClass = annotation.annotationType();
-      log.debug("class annotation:" + annotationClass);
+      log.d("class annotation:" + annotationClass);
       AnnotationParser parser = annotationParsers.get(annotationClass);
       if (parser == null) {
         //unsupported annotation (e.g. for some completely different tool)
         continue;
       }
-      log.debug("parser:" + parser);
+      log.d("parser:" + parser);
       //set the annotation itself as a parameter to the used parser object
       parameters.setAnnotation(annotation);
       //and finally parse it
@@ -151,11 +151,11 @@ public class MainParser {
     Object obj = parameters.getModel();
     //first we find all declared fields of any scope and type (private, protected, ...)
     Collection<Field> fields = getAllFields(obj.getClass());
-    log.debug("fields " + fields.size());
+    log.d("fields " + fields.size());
     String errors = "";
     //now we loop through all fields defined in the model object
     for (Field field : fields) {
-      log.debug("field:" + field);
+      log.d("field:" + field);
       //set the field to be accessible from the parser objects
       parameters.setField(field);
       Annotation[] annotations = field.getAnnotations();
@@ -163,13 +163,13 @@ public class MainParser {
       //loop through all defined annotations for each field
       for (Annotation annotation : annotations) {
         Class<? extends Annotation> annotationClass = annotation.annotationType();
-        log.debug("field annotation:" + annotationClass);
+        log.d("field annotation:" + annotationClass);
         AnnotationParser parser = annotationParsers.get(annotationClass);
         if (parser == null) {
           //unsupported annotation (e.g. for some completely different tool)
           continue;
         }
-        log.debug("parser:" + parser);
+        log.d("parser:" + parser);
         //set the annotation itself as a parameter to the used parser object
         parameters.setAnnotation(annotation);
         //and finally parse it
@@ -182,13 +182,13 @@ public class MainParser {
   }
 
   private String parseField(Field field, ParserResult result, ParserParameters parameters, String errors) {
-    log.debug("parsefield");
+    log.d("parsefield");
     Class fieldClass = field.getType();
     for (Class parserType : fieldParsers.keySet()) {
       if (parserType.isAssignableFrom(fieldClass)) {
         AnnotationParser fieldParser = fieldParsers.get(parserType);
         if (fieldParser != null) {
-          log.debug("field parser invocation:" + parameters);
+          log.d("field parser invocation:" + parameters);
           errors += fieldParser.parse(result, parameters);
         }
       }
@@ -217,23 +217,23 @@ public class MainParser {
     //first we get all methods defined in the test model object (also all scopes -> private, protected, ...)
     Collection<Method> methods = getAllMethods(obj.getClass());
     //there are always some methods inherited from java.lang.Object so we checking them here is pointless. FSM.check will do it
-    log.debug("methods " + methods.size());
+    log.d("methods " + methods.size());
     String errors = "";
     //loop through all the methods defined in the given object
     for (Method method : methods) {
-      log.debug("method:" + method);
+      log.d("method:" + method);
       parameters.setMethod(method);
       Annotation[] annotations = method.getAnnotations();
       //check all annotations for supported ones, use the given object to process them
       for (Annotation annotation : annotations) {
         Class<? extends Annotation> annotationClass = annotation.annotationType();
-        log.debug("class:" + annotationClass);
+        log.d("class:" + annotationClass);
         AnnotationParser parser = annotationParsers.get(annotationClass);
         if (parser == null) {
           //unsupported annotation (e.g. for some completely different aspect)
           continue;
         }
-        log.debug("parser:" + parser);
+        log.d("parser:" + parser);
         //set the annotation itself as a parameter to the used parser object
         parameters.setAnnotation(annotation);
         //and finally parse it

@@ -179,19 +179,19 @@ public class GreedyOptimizer {
       //timeout is given in seconds so we multiple by 1000 to get milliseconds
       endTime = System.currentTimeMillis() + timeout * 1000;
     }
-    log.info("greedy " + id + " starting up, population size "+populationSize);
+    log.i("greedy " + id + " starting up, population size " + populationSize);
     //to get a shorter test suite, use negative length weight.. in most cases should be no problem
     while (gain >= threshold) {
       long iStart = System.currentTimeMillis();
-      log.info(id + ":starting iteration " + iteration);
+      log.i(id + ":starting iteration " + iteration);
       iteration++;
 
       for (int i = 0; i < populationSize; i++) {
-        log.debug("creating test case " + i);
+        log.d("creating test case " + i);
         TestCase testCase = generator.nextTest();
         suite.add(testCase);
       }
-      log.info(id + ":sorting and pruning iteration results");
+      log.i(id + ":sorting and pruning iteration results");
       suite = sortAndPrune(suite, scoreCalculator, max);
       //we process each iteration to produce a list of how it was overall progressing
       report.process(suite);
@@ -206,14 +206,14 @@ public class GreedyOptimizer {
       }
 
       long diff = System.currentTimeMillis() - iStart;
-      log.info(id + ":iteration time:(" + iteration + ")" + diff + " gain:" + gain);
+      log.i(id + ":iteration time:(" + iteration + ")" + diff + " gain:" + gain);
 //      System.err.println(id + ":iteration time:(" + iteration + ")" + diff + " gain:" + gain);
       if (endTime > 0 && endTime < System.currentTimeMillis()) {
-        log.info("Generation timed out");
+        log.i("Generation timed out");
         break;
       }
     }
-    if (gain < threshold) log.info("gain under threshold (" + gain + " vs " + threshold + ")");
+    if (gain < threshold) log.i("gain under threshold (" + gain + " vs " + threshold + ")");
     generator.endSuite();
   }
 
@@ -229,11 +229,11 @@ public class GreedyOptimizer {
       System.out.println(MultiOSMO.ERROR_MSG);
     }
     if (config.getLengthWeight() > 0) {
-      log.warn("Length weight was defined as > 0, reset to 0.");
+      log.w("Length weight was defined as > 0, reset to 0.");
       //we do not use positive length weight as it would potentially go on for ever..
       config.setLengthWeight(0);
     }
-    if (threshold < 1) log.warn("Threshold is " + threshold + ", which is impossible to reach. Are you sure?");
+    if (threshold < 1) log.w("Threshold is " + threshold + ", which is impossible to reach. Are you sure?");
   }
 
   private MainGenerator configure(long seed) {
@@ -248,7 +248,7 @@ public class GreedyOptimizer {
     endCondition.init(seed, fsm, osmoConfig);
     tester.setTestEndCondition(endCondition);
     config.validate(fsm);
-    log.debug("greedy configuration validated");
+    log.d("greedy configuration validated");
     return generator;
   }
 
@@ -262,8 +262,8 @@ public class GreedyOptimizer {
     TestUtils.write(totalCsv, createReportPath());
     long end = System.currentTimeMillis();
     long diff = end - start;
-    log.info("GreedyOptimizer " + id + " generated " + generationCount + " tests.");
-    log.info("Resulting suite has " + resultSize + " tests. Generation time " + diff + " millis");
+    log.i("GreedyOptimizer " + id + " generated " + generationCount + " tests.");
+    log.i("Resulting suite has " + resultSize + " tests. Generation time " + diff + " millis");
   }
 
   public String createReportPath() {
@@ -328,7 +328,7 @@ public class GreedyOptimizer {
       test.switchToClonedCoverage();
       steps += test.getCoverage().getTotalSteps();
     }
-    log.info("loops in sort:" + times + ", tests:" + suite.size() + ", steps:" + steps);
+    log.i("loops in sort:" + times + ", tests:" + suite.size() + ", steps:" + steps);
     return suite;
   }
 

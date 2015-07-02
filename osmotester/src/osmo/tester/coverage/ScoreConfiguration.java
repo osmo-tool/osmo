@@ -57,7 +57,7 @@ public class ScoreConfiguration {
    * @param fsm The model to check against.
    */
   public void validate(FSM fsm) {
-    log.debug("validating against:" + fsm);
+    log.d("validating against:" + fsm);
     Collection<VariableField> coverageVariables = fsm.getModelVariables();
     Collection<String> variableNames = new ArrayList<>();
     for (VariableField field : coverageVariables) {
@@ -68,7 +68,7 @@ public class ScoreConfiguration {
       variableNames.add(method.getVariableName());
       variableNames.add(method.getPairName());
     }
-    log.debug("FSM variables for coverage:" + variableNames);
+    log.d("FSM variables for coverage:" + variableNames);
     //use a hashset to avoid duplicates
     Collection<String> notFound = new LinkedHashSet<>();
     for (String name : valueWeights.keySet()) {
@@ -84,7 +84,7 @@ public class ScoreConfiguration {
     List<String> sortMe = new ArrayList<>();
     sortMe.addAll(notFound);
     Collections.sort(sortMe);
-    log.debug("Some required variables not found:" + sortMe);
+    log.d("Some required variables not found:" + sortMe);
     throw new IllegalArgumentException("Following coverage variables not found in the model:" + sortMe);
   }
 

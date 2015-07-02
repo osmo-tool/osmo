@@ -40,7 +40,7 @@ public class PreParser implements AnnotationParser {
     String prefix = parameters.getPrefix();
     String group = parameters.getClassAnnotation(Group.class);
     for (String targetName : targetNames) {
-      log.debug("Parsing pre-method '" + targetName + "'");
+      log.d("Parsing pre-method '" + targetName + "'");
       if (targetName.equals(Guard.DEFAULT)) {
         //If no name is given to pre/post but a group is defined for their class, we use that as our target
         if (group.length() > 0) {

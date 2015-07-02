@@ -85,13 +85,13 @@ public class MainGenerator {
 
   /** Invoked to start the test generation using the configured parameters. */
   public void generate() {
-    log.debug("starting generation");
+    log.d("starting generation");
     config.initialize(seed, fsm);
     initSuite();
     while (!shouldEndSuite()) {
       nextTest();
     }
-    log.debug("Ending suite");
+    log.d("Ending suite");
     endSuite();
   }
 
@@ -144,14 +144,14 @@ public class MainGenerator {
     previousStep = null;
     createModelObjects();
     algorithm.initTest(seed);
-    log.debug("Starting new test generation");
+    log.d("Starting new test generation");
     beforeTest();
     TestCase test = suite.getCurrentTest();
     while (!shouldEndTest()) {
       try {
         boolean shouldContinue = nextStep();
         if (!shouldContinue) {
-          log.debug("Ending test case");
+          log.d("Ending test case");
           break;
         }
       } catch (RuntimeException | AssertionError e) {
@@ -166,7 +166,7 @@ public class MainGenerator {
       handleError(test, e);
     }
     afterTest();
-    log.debug("Finished new test generation");
+    log.d("Finished new test generation");
     return test;
   }
 
@@ -203,9 +203,9 @@ public class MainGenerator {
     Throwable unwrap = unwrap(e);
     String errorMsg = "Error in test generation:" + unwrap.getMessage();
     if (config.isExploring()) {
-      if (config.isPrintExplorationErrors()) log.warn(errorMsg, e);
+      if (config.isPrintExplorationErrors()) log.w(errorMsg, e);
     } else {
-      log.error(errorMsg, e);
+      log.e(errorMsg, e);
     }
 
     listeners.testError(test, unwrap);
@@ -222,7 +222,7 @@ public class MainGenerator {
     } else {
       unwrap.printStackTrace();
     }
-    log.debug("Skipped test error due to settings (no fail when error)", e);
+    log.d("Skipped test e due to settings (no fail when e)", e);
   }
 
   /**
@@ -238,7 +238,7 @@ public class MainGenerator {
       if (config.shouldFailWhenNoWayForward()) {
         throw new IllegalStateException("No test step available.");
       } else {
-        log.debug("No enabled steps, ending test (fail is disabled).");
+        log.d("No enabled steps, ending test (fail is disabled).");
         return false;
       }
     }
@@ -247,7 +247,7 @@ public class MainGenerator {
     //not the best of hacks but.. manual drive ends by returning null
     if (algorithm instanceof ManualAlgorithm && next == null) return false;
 
-    log.debug("Taking step " + next.getName());
+    log.d("Taking step " + next.getName());
     execute(next);
     if (checkModelEndConditions()) {
       //stop this test case generation if any end condition returns true
@@ -313,14 +313,14 @@ public class MainGenerator {
       String value = coverage.invoke(step);
       String name = coverage.getVariableName();
       suite.addUserCoverage(name, value);
-      log.debug("new coverage: " + name + "=" + value);
+      log.d("new coverage: " + name + "=" + value);
     }
   }
 
   /** Handles suite shutdown. Should be called after all tests have been generated. */
   public void endSuite() {
     afterSuite();
-    log.debug("Finished test suite generation");
+    log.d("Finished test suite generation");
   }
 
   /**
@@ -363,7 +363,7 @@ public class MainGenerator {
     for (InvocationTarget ec : endConditions) {
       Boolean result = (Boolean) ec.invoke();
       if (result) {
-        log.debug("model @EndCondition signalled to stop");
+        log.d("model @EndCondition signalled to stop");
         return true;
       }
     }
@@ -373,7 +373,7 @@ public class MainGenerator {
   /** Initializes the test suite with valid values and invokes @BeforeSuite before test generation is started. */
   public void initSuite() {
     if (suite == null) {
-      log.debug("No suite object defined. Creating new.");
+      log.d("No suite object defined. Creating new.");
       //use the setSuite method to also initialize the suite object missing state
       suite = new TestSuite();
     }

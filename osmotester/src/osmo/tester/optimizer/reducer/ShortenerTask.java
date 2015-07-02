@@ -58,7 +58,7 @@ public class ShortenerTask implements Runnable {
   @Override
   public void run() {
     state.resetDone();
-    log.debug("Starting new shortener");
+    log.d("Starting new shortener");
     while (!state.isDone()) {
       //TestCase previousTest = state.getTest();
       //create a list of untried steps as all the steps in the test case. then try to remove each one at a time.
@@ -76,20 +76,20 @@ public class ShortenerTask implements Runnable {
         tester.setConfig(osmoConfig);
         tester.setPrintCoverage(false);
         int newMinimum = previousTest.getLength()-1;
-        log.debug("removed:"+removeMe+" size now:"+newMinimum+" remaining:"+untried);
+        log.d("removed:" + removeMe + " size now:" + newMinimum + " remaining:" + untried);
         tester.setTestEndCondition(new Length(newMinimum));
         //we need to try many as there can be many combinations possible
         tester.setSuiteEndCondition(new Length(populationSize));
         long seed = seeder.nextLong();
         int id = nextId++;
-        log.debug("Starting shortener run "+id+" with seed "+seed + " and population "+populationSize);
+        log.d("Starting shortener run " + id + " with seed " + seed + " and population " + populationSize);
         tester.generate(seed);
         state.testsDone(populationSize);
         TestSuite suite = tester.getSuite();
         List<TestCase> tests = suite.getAllTestCases();
 
         for (TestCase test : tests) {
-          //if we debug, we ignore passing tests. if we look for requirements we look at them all
+          //if we d, we ignore passing tests. if we look for requirements we look at them all
           if (!state.getConfig().isRequirementsSearch() && !test.isFailed()) continue;
           if (!state.check(test)) {
             //in debugging mode this should never happen, in requirements mode can happen often
@@ -99,7 +99,7 @@ public class ShortenerTask implements Runnable {
           state.addTest(test);
           untried.clear();
         }
-        log.debug("Finished with step "+removeMe);
+        log.d("Finished with step " + removeMe);
       }
 //      //if we did not find anything shorter, we finish
 //      if (!found) {

@@ -84,7 +84,7 @@ public class OSMOTester {
   /** Invoke this to perform actual test generation from the given model, with the given algorithms and strategies. 
    * @param seed Generation seed to initialized the test case seeds.*/
   public void generate(long seed) {
-    log.debug("generator starting up");
+    log.d("generator starting up");
     generator = initGenerator(seed);
     generator.generate();
     if (!printCoverage) return;
@@ -137,7 +137,7 @@ public class OSMOTester {
     try {
       trace.write(tests, filename+".html");
     } catch (Exception e) {
-      log.error("Failed to write trace", e);
+      log.e("Failed to write trace", e);
     }
   }
 
@@ -201,9 +201,9 @@ public class OSMOTester {
   }
 
   /**
-   * If true, debug information is printed to console and file.
+   * If true, d information is printed to console and file.
    *
-   * @param debug True for debug information, false for no such information.
+   * @param debug True for d information, false for no such information.
    */
   public void setDebug(boolean debug) {
     if (debug) Logger.consoleLevel = Level.FINE;

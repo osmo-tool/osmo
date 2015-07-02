@@ -261,7 +261,7 @@ public class SimCard {
       status_PIN_block = B_Status.Unblocked;
       result = Status_Word.sw_9000;
       if (status_en == E_Status.Disabled) {
-        // Sep 2007: corrected this error from the B and UML/OCL models.
+        // Sep 2007: corrected this e from the B and UML/OCL models.
         // (The B model did not model enabled/disabled PINs, and the
         //  UML/OCL model set status_en to Disabled rather than Enabled.)
         // status_en = E_Status.Disabled; /*@REQ: Unblock5 @*/

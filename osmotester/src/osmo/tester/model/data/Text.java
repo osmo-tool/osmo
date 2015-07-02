@@ -121,7 +121,7 @@ public class Text extends SearchableInput<String> {
       length = rand.nextInt(min, max);
     } else {
       if (zeroSize && !zeroDone) {
-        log.debug("Giving zero length");
+        log.d("Giving zero length");
         zeroDone = true;
         previousLength = 0;
         return 0;

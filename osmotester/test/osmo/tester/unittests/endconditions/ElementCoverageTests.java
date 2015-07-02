@@ -218,7 +218,7 @@ public class ElementCoverageTests {
       fail("Generation with coverage for to many test steps (transitions) should fail.");
     } catch (IllegalArgumentException e) {
       //Expected
-      assertEquals("Reported error", "Too many steps requested (model has 3, requested 5).", e.getMessage());
+      assertEquals("Reported e", "Too many steps requested (model has 3, requested 5).", e.getMessage());
     }
   }
 
@@ -234,7 +234,7 @@ public class ElementCoverageTests {
       fail("Generation with coverage for too many test step pairs should fail.");
     } catch (IllegalArgumentException e) {
       //Expected
-      assertEquals("Reported error", "Too many pairs requested (model has 10, requested 11).", e.getMessage());
+      assertEquals("Reported e", "Too many pairs requested (model has 10, requested 11).", e.getMessage());
     }
   }
 
@@ -252,7 +252,7 @@ public class ElementCoverageTests {
       fail("Generation with coverage for too many test step pairs should fail.");
     } catch (IllegalArgumentException e) {
       //Expected
-      assertEquals("Reported error", "Too many requirements requested (model has 2, requested 3).", e.getMessage());
+      assertEquals("Reported e", "Too many requirements requested (model has 2, requested 3).", e.getMessage());
     }
   }
 

@@ -117,12 +117,12 @@ public class MainExplorer implements Runnable {
     PathExplorer explorer = new PathExplorer(state, config.getDepth()-1, trace, enabled, script, explorationPool);
     List<TestCase> testCases = explorationPool.invoke(explorer);
     if (shouldStop || testCases == null) {
-      log.debug("Exploration has stopped on the fly.");
+      log.d("Exploration has stopped on the fly.");
       return;
     }
     if (testCases.size() == 0) {
       //this can happen if test end condition hits with 0 transitions available in the future
-      log.debug("No test cases to choose from. Assuming empty set, where no transition enabled.");
+      log.d("No test cases to choose from. Assuming empty set, where no transition enabled.");
       shouldStop = true;
       return;
     }
@@ -152,7 +152,7 @@ public class MainExplorer implements Runnable {
       try {
         wait();
       } catch (InterruptedException e) {
-        log.error("Wait interrupted", e);
+        log.e("Wait interrupted", e);
       }
     }
     return result;
@@ -168,13 +168,13 @@ public class MainExplorer implements Runnable {
    * @return The name of the transition chosen as the best next step.
    */
   public String findBest(List<TestCase> from) {
-    log.debug("finding best from:" + from);
+    log.d("finding best from:" + from);
 
     collectMetrics(from);
 //    calculateAddedCoverages(from, 0);
     List<TestCase> choices = pruneBest(from, -1);
 
-    log.debug("pruned:"+choices);
+    log.d("pruned:" + choices);
     return findBestFrom(choices, script.size());
   }
 

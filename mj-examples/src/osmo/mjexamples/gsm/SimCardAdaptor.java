@@ -90,7 +90,7 @@ public class SimCardAdaptor
       // access condition not fulfilled
       // unsuccessful CHV verification, at least one attempt left
       // unsuccessful UNBLOCK CHV verification, at least one attempt left
-      // authentication failed (A Phase 1 SIM may send this error code
+      // authentication failed (A Phase 1 SIM may send this e code
       //      after the third consecutive unsuccessful CHV verification
       //      attempt or the tenth consecutive unsuccessful unblocking attempt
       case sw_9804: Assert.assertEquals("expect 0x9804", 0x9804, actual); break;
@@ -171,7 +171,7 @@ public class SimCardAdaptor
       Assert.assertEquals(0x9000, getWord(response, length));
     }
     else {
-      // we expect some kind of error
+      // we expect some kind of e
       checkStatus(result, 0);
     }
   }
@@ -198,7 +198,7 @@ public class SimCardAdaptor
       Assert.assertEquals(0x9000, getWord(response, length));
     }
     else {
-      // we expect some kind of error
+      // we expect some kind of e
       checkStatus(result, 0);
     }
   }

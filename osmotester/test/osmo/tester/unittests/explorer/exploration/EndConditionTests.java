@@ -20,7 +20,7 @@ public class EndConditionTests {
     } catch (IllegalArgumentException e) {
       String expected = "Invalid exploration configuration:" + ln;
       expected += "Exploration requires defining either minimum suite length or minimum suite score." + ln;
-      assertEquals("Invalid error for no suite minimum", expected, e.getMessage());
+      assertEquals("Invalid e for no suite minimum", expected, e.getMessage());
     }
   }
 
@@ -35,7 +35,7 @@ public class EndConditionTests {
       String expected = "Invalid exploration configuration:" + ln;
       expected += "Exploration requires defining either minimum suite length or minimum suite score." + ln;
       expected += "Exploration requires defining either minimum test length or minimum test score." + ln;
-      assertEquals("Invalid error for no test and suite minimum", expected, e.getMessage());
+      assertEquals("Invalid e for no test and suite minimum", expected, e.getMessage());
     }
   }
 }

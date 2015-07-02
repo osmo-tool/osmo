@@ -136,12 +136,23 @@ public class UtilTests {
   }
 
   @Test
-  public void createFloat() {
+  public void createFloatWithoutBounds() {
+    Collection<Float> values = new ArrayList<>();
+    for (int x = 0; x < 1000; x++) {
+      float i = cFloat();
+      values.add(i);
+      assertTrue("Value should be between 0-1:"+i, i > 0 && i < 1);
+    }
+    assertTrue("Over 500 different values expected (" + values.size() + ")", values.size() > 500);
+  }
+
+  @Test
+  public void createFloatWithBounds() {
     Collection<Float> values = new ArrayList<>();
     for (int x = 0; x < 1000; x++) {
       float i = cFloat(5f, 6f);
       values.add(i);
-      assertTrue("Value should be between 5-6", i > 5 && i < 6);
+      assertTrue("Value should be between 5-6:"+i, i > 5 && i < 6);
     }
     assertTrue("Over 500 different values expected (" + values.size() + ")", values.size() > 500);
   }

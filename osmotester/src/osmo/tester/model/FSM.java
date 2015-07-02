@@ -72,7 +72,7 @@ public class FSM {
    * @return A transition object for the requested name.
    */
   public FSMTransition createTransition(TransitionName name, int weight) {
-    log.debug("Creating transition: " + name + " weight:" + weight);
+    log.d("Creating transition: " + name + " weight:" + weight);
     FSMTransition transition = transitions.get(name);
     if (transition != null) {
       //we can come here from guard, post, or transition creation. however, only transitions define weights
@@ -84,7 +84,7 @@ public class FSM {
     transition = new FSMTransition(name);
     transition.setWeight(weight);
     transitions.put(name, transition);
-    log.debug("Transition created");
+    log.d("Transition created");
     return transition;
   }
 
@@ -98,7 +98,7 @@ public class FSM {
   public void checkFSM(String errors) {
 //    if (checked) return;
 //    checked = true;
-    log.debug("Checking FSM validity");
+    log.d("Checking FSM validity");
     if (transitions.size() == 0) {
       errors += "No test steps found in given model object. Model cannot be processed.\n";
     }
@@ -107,10 +107,10 @@ public class FSM {
     for (FSMTransition transition : transitions.values()) {
       InvocationTarget target = transition.getTransition();
       TransitionName name = transition.getName();
-      log.debug("Checking test step:" + name);
+      log.d("Checking test step:" + name);
       if (target == null) {
         errors += "Test step without invocation target" + name + "\n";
-        log.debug("Error: Found transition without invocation target - " + name);
+        log.d("Error: Found transition without invocation target - " + name);
       }
       errors = addGenericElements(transition, errors);
       errors = addSpecificGuards(transition, errors);
@@ -135,7 +135,7 @@ public class FSM {
     if (errors.length() > 0) {
       throw new IllegalStateException("Invalid test model:\n" + errors);
     }
-    log.debug("FSM checked");
+    log.d("FSM checked");
   }
 
   private String checkGuards(List<FSMGuard> guards, String errors, String errorMsg) {
@@ -143,7 +143,7 @@ public class FSM {
       if (guard.getCount() == 0) {
         TransitionName name = guard.getName();
         //length 0 is the case where user has used what is considered camelcase notation but has not given valid name
-        //since that should have been caught already before, we do not add another error for it here
+        //since that should have been caught already before, we do not add another e for it here
         //TODO: tests for these
         if (name.toString().length() == 0) return errors;
         errors += errorMsg+" without matching step:" + name +".\n";
@@ -156,8 +156,8 @@ public class FSM {
    * Add generic guards and pre- post- methods to all test steps.
    *
    * @param step       The test step to check.
-   * @param errors     The current error message string.
-   * @return The error msg string given with possible new errors appended.
+   * @param errors     The current e message string.
+   * @return The e msg string given with possible new errors appended.
    */
   private String addGenericElements(FSMTransition step, String errors) {
     //we add all generic guards to the set of guards for this step. doing it here includes them in the checks
@@ -186,7 +186,7 @@ public class FSM {
     for (FSMGuard guard : specificGuards) {
       TransitionName guardName = guard.getName();
       if (name.equals(guardName) || groupName.equals(guardName)) {
-        log.debug("Adding guard "+guardName+" to transition "+name);
+        log.d("Adding guard " + guardName + " to transition " + name);
         transition.addGuard(guard.getTarget());
         guard.found();
       }
@@ -207,7 +207,7 @@ public class FSM {
     for (FSMGuard pre : specificPre) {
       TransitionName preName = pre.getName();
       if (name.equals(preName) || groupName.equals(preName)) {
-        log.debug("Adding pre "+preName+" to transition "+name);
+        log.d("Adding pre " + preName + " to transition " + name);
         transition.addPre(pre.getTarget());
         pre.found();
       }
@@ -215,7 +215,7 @@ public class FSM {
     for (FSMGuard post : specificPost) {
       TransitionName postName = post.getName();
       if (name.equals(postName) || groupName.equals(postName)) {
-        log.debug("Adding post "+postName+" to transition "+name);
+        log.d("Adding post " + postName + " to transition " + name);
         transition.addPost(post.getTarget());
         post.found();
       }
@@ -236,7 +236,7 @@ public class FSM {
     for (FSMGuard guard : negatedGuards) {
       TransitionName guardName = guard.getName();
       if (name.shouldNegationApply(guardName) || groupName.shouldNegationApply(guardName)) {
-        log.debug("Adding negated guard "+guardName+" to transition "+name);
+        log.d("Adding negated guard " + guardName + " to transition " + name);
         transition.addGuard(guard.getTarget());
         guard.found();
       }

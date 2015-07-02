@@ -48,7 +48,7 @@ public class ManualScriptWriter {
       }
       fw.newLine();
     } catch (IOException e) {
-      log.error("Error writing script to file", e);
+      log.e("Error writing script to file", e);
       throw new RuntimeException("Error writing script to file", e);
     } finally {
       if (fw != null) {

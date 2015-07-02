@@ -37,7 +37,7 @@ public class MultiGreedy {
   private final ExecutorService greedyPool;
   /** The test model. */
   private FSM fsm = null;
-  /** Optimizer timeout. See {@link GreedyOptimizer} for more info. */
+  /** Optimizer timeout. See {@link GreedyOptimizer} for more i. */
   private int timeout = -1;
   /** For configuring the test generator. */
   private final OSMOConfiguration osmoConfig;
@@ -142,14 +142,14 @@ public class MultiGreedy {
     long start = System.currentTimeMillis();
     List<TestCase> tests = generate();
 
-    log.info("sorting set from all optimizers");
+    log.i("sorting set from all optimizers");
     //this does the final round of optimization for the set received from all optimizers..
     tests = GreedyOptimizer.sortAndPrune(tests, calculator, max);
 
     writeFinalReport(tests, rand.getSeed());
     updateRequirements(tests);
 
-    log.info("search done");
+    log.i("search done");
     long end = System.currentTimeMillis();
     long seconds = (end-start)/1000;
     System.out.println("duration of search: "+seconds+"s.");
@@ -167,7 +167,7 @@ public class MultiGreedy {
    * @return Combined set of all generated tests from all optimizers.
    */
   private List<TestCase> generate() {
-    log.info("Starting search with " + optimizerCount + " optimizers");
+    log.i("Starting search with " + optimizerCount + " optimizers");
     Collection<Future<Collection<TestCase>>> futures = new ArrayList<>();
 
     runOptimizers(futures);
@@ -175,7 +175,7 @@ public class MultiGreedy {
     
     allTests = trimToMax(allTests);
 
-    log.info("optimizers done");
+    log.i("optimizers done");
     greedyPool.shutdown();
     collectReportData();
     
@@ -210,7 +210,7 @@ public class MultiGreedy {
       }
       GreedyTask task = new GreedyTask(optimizer, rand.nextLong(), populationSize);
       Future<Collection<TestCase>> future = greedyPool.submit(task);
-      log.debug("task submitted to pool");
+      log.d("task submitted to pool");
       futures.add(future);
       optimizers.add(optimizer);
     }

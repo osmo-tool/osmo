@@ -58,7 +58,7 @@ public class Analyzer {
     invariants = new Invariants(allSteps);
     for (TestCase test : tests) {
       invariants.process(test);
-      log.debug("Processed:"+test);
+      log.d("Processed:" + test);
     }
     return invariants;
   }

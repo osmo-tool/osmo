@@ -32,7 +32,7 @@ public class Probability implements EndCondition {
 
   public boolean endNow(TestSuite suite, FSM fsm) {
     double v = rand.nextDouble();
-    log.debug("value " + v + " threshold " + threshold);
+    log.d("value " + v + " threshold " + threshold);
     return v <= threshold;
   }
 

@@ -18,7 +18,7 @@ import java.lang.annotation.Target;
  * Of these "value" and "name" refer to the same property, the name of the test step. 
  * This is what is used to map the test step to the associated guards.
  * The second alternative to mapping steps to guards is through the {@link Group} annotation.
- * If both "value" and "name" are defined, "name" dominates. If neither is defined, an error is given.
+ * If both "value" and "name" are defined, "name" dominates. If neither is defined, an e is given.
  * <p>
  * The weight attribute allows one to give weights to test steps. 
  * Weighted algorithms (such as {@link osmo.tester.generator.algorithm.WeightedBalancingAlgorithm}) aim to take

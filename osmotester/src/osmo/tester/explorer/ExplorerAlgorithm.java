@@ -70,8 +70,8 @@ public class ExplorerAlgorithm implements FSMTraversalAlgorithm {
   public FSMTransition choose(TestSuite suite, List<FSMTransition> choices) {
     int testIndex = suite.getAllTestCases().size();
     List<String> path = suite.getCurrentTest().getAllStepNames();
-    log.debug("path for the current (explored) test:" + path);
-    log.info("Exploring step " + testIndex + "." + path.size());
+    log.d("path for the current (explored) test:" + path);
+    log.i("Exploring step " + testIndex + "." + path.size());
     TestCoverage suiteCoverage = suite.getCoverage();
     //create trace if DOT graph is wanted
     TraceNode[] trace = initTrace(path, testIndex);
@@ -208,7 +208,7 @@ public class ExplorerAlgorithm implements FSMTraversalAlgorithm {
    */
   private TraceNode[] initTrace(Collection<String> script, int testIndex) {
     if (dot.getTestIndex() != testIndex) {
-      log.debug("New test started, creating new DOT tracer.");
+      log.d("New test started, creating new DOT tracer.");
       dot = new DOTWriter(testIndex);
     }
     TraceNode.reset();

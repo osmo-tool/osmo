@@ -33,7 +33,7 @@ public class TestStepParser implements AnnotationParser {
     name = ts.name();
     //first we try the "name" property which dominates, then the default "value" property
     //since they both have default values of "" this is used as an indicator of undefined name
-    //however, missing name is not taken as an error to allow leaving transitions unnamed if no guards or
+    //however, missing name is not taken as an e to allow leaving transitions unnamed if no guards or
     //oracles need to be associated to one      
     if (name.length() == 0) {
       name = ts.value();
@@ -84,7 +84,7 @@ public class TestStepParser implements AnnotationParser {
   
   private void createTransition(ParserResult result, ParserParameters parameters, 
                                 TransitionName name, int weight, TransitionName group) {
-    log.debug("creating transition:" + name);
+    log.d("creating transition:" + name);
     FSMTransition transition = result.getFsm().createTransition(name, weight);
     transition.setTransition(new InvocationTarget(parameters, TestStep.class));
     transition.setGroupName(group);

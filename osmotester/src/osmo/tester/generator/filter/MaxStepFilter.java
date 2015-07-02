@@ -58,7 +58,7 @@ public class MaxStepFilter implements StepFilter {
         continue;
       }
       if (count >= max) {
-        log.debug("Removing transition '" + name + "' due to filtering.");
+        log.d("Removing transition '" + name + "' due to filtering.");
         i.remove();
       }
     }

@@ -38,7 +38,7 @@ public class StepCoverage implements EndCondition {
 
   @Override
   public boolean endSuite(TestSuite suite, FSM fsm) {
-    log.debug("suite check");
+    log.d("suite check");
     List<TestCase> allTests = suite.getAllTestCases();
     Collection<String> steps = new ArrayList<>();
     for (TestCase test : allTests) {
@@ -56,12 +56,12 @@ public class StepCoverage implements EndCondition {
    */
   private boolean checkRequiredSteps(Collection<String> steps) {
     Collection<String> remaining = new ArrayList<>();
-    log.debug("steps:" + steps);
+    log.d("steps:" + steps);
     remaining.addAll(required);
     for (String step : steps) {
       remaining.remove(step);
     }
-    log.debug("remaining:" + remaining);
+    log.d("remaining:" + remaining);
     return remaining.size() == 0;
   }
 
@@ -82,7 +82,7 @@ public class StepCoverage implements EndCondition {
 
   @Override
   public boolean endTest(TestSuite suite, FSM fsm) {
-    log.debug("test check");
+    log.d("test check");
     TestCase test = suite.getCurrentTest();
     Collection<String> steps = stepsFor(test);
     return checkRequiredSteps(steps);

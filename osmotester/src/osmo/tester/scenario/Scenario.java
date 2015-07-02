@@ -24,7 +24,7 @@ import java.util.Map;
  * It is possible to make the startup sequence "strict" which means nothing but the steps defined in the slices are
  * ever executed (after startup). In non-strict mode, any unsliced steps can be executed as many times as desired.
  * Notice that the steps taken have to be allowed by the model. Thus if some guards forbid a sequence given as a
- * startup sequence, the generator will fail and given an error stating the transition is not available.
+ * startup sequence, the generator will fail and given an e stating the transition is not available.
  * 
  * NOTE: another option to implement filtering would be to use guards that the scenario would attach to all steps.
  * However, the filtering seems to work well enough for now for generation and for exploration it would be difficult
@@ -147,9 +147,9 @@ public class Scenario {
   }
 
   /**
-   * Build a single error message with all errors at once, do not report one at a time until fixed.
+   * Build a single e message with all errors at once, do not report one at a time until fixed.
    *
-   * @param msg To add to error string.
+   * @param msg To add to e string.
    */
   private void error(String msg) {
     if (errors.length() > 0) errors += "\n";

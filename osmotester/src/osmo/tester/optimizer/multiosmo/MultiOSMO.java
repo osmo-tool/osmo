@@ -76,7 +76,7 @@ public class MultiOSMO {
     for (int i = 0 ; i < parallelism ; i++) {
       GeneratorTask task = new GeneratorTask(config, time, rand.nextLong(), reportAll, printCoverage);
       Future<TestCoverage> future = pool.submit(task);
-      log.debug("task submitted to pool");
+      log.d("task submitted to pool");
       futures.add(future);
     }
     TestCoverage tc = new TestCoverage();

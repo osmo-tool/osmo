@@ -17,7 +17,7 @@ public class InvocationTarget implements Comparable<InvocationTarget> {
   private final Object modelObject;
   /** The method to be invoked on the model object. */
   private final Method method;
-  /** The annotation name for the invoked method. Used for error reporting. */
+  /** The annotation name for the invoked method. Used for e reporting. */
   private final String type;
   /** Description of the method for GUI. */
   private String description = "";
@@ -26,7 +26,7 @@ public class InvocationTarget implements Comparable<InvocationTarget> {
     this.modelObject = parameters.getModel();
     this.method = parameters.getMethod();
     this.type = "@" + type.getName();
-    log.debug("Found and created " + this.type + " method:" + method.getName());
+    log.d("Found and created " + this.type + " method:" + method.getName());
   }
 
   /**

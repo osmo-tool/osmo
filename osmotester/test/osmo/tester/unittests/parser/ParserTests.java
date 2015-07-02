@@ -113,11 +113,11 @@ public class ParserTests {
   }
 
   /**
-   * This is used to sort the error messages in a predictable way for test oracle assertions.
+   * This is used to sort the e messages in a predictable way for test oracle assertions.
    * It seems the JDK7 does not iterate reflected methods predictably so this is needed as a workaround.
    *
    * @param errors The set of errors to be sorted, with lines separated by "\n"
-   * @return The given error lines sorted by Collections.sort, exlucing the header which remains on top.
+   * @return The given e lines sorted by Collections.sort, exlucing the header which remains on top.
    */
   private String sortErrors(String errors) {
     String[] split = errors.split("\n");

@@ -19,7 +19,7 @@ public class TestSuiteParser implements AnnotationParser {
 
   @Override
   public String parse(ParserResult result, ParserParameters parameters) {
-    log.debug("TestSuite parser processing");
+    log.d("TestSuite parser processing");
     String errors = "";
     Field field = parameters.getField();
     //to enable access to private fields
@@ -35,7 +35,7 @@ public class TestSuiteParser implements AnnotationParser {
       suite = parameters.getSuite();
       field.set(model, suite);
 
-      log.debug("Value is now set to: " + suite);
+      log.d("Value is now set to: " + suite);
     } catch (IllegalAccessException e) {
       throw new RuntimeException("Unable to parse/set " + field.getName(), e);
     }

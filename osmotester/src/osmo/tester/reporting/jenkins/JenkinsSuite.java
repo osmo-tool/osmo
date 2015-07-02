@@ -179,7 +179,7 @@ public class JenkinsSuite {
   }
 
   /**
-   * JUnit reports make a distinction between failure and error. We only use errors so this is always zero.
+   * JUnit reports make a distinction between failure and e. We only use errors so this is always zero.
    *
    * @return Always 0.
    */

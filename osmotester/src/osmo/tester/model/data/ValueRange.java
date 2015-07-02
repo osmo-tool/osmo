@@ -148,7 +148,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
   private void post() {
     history.add(choice);
     record((T) choice);
-    log.debug("Value:" + choice);
+    log.d("Value:" + choice);
   }
 
   /**
@@ -272,7 +272,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
     if (n > 1000) {
       throw new IllegalStateException("Currently only 1000 values in coverage are supported. You request " + n + ".");
     }
-    log.debug("Number of options:" + n);
+    log.d("Number of options:" + n);
     Number min = this.min;
     Number max = this.max;
     Collection<T> options = new ArrayList<>();

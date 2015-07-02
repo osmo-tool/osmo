@@ -52,7 +52,7 @@ public class FuzzerTask implements Runnable {
     try {
       runrun();
     } catch (Exception e) {
-      log.error("Failed to run reducer task", e);
+      log.e("Failed to run reducer task", e);
     }
   }
 
@@ -60,7 +60,7 @@ public class FuzzerTask implements Runnable {
    * Task main execution delegates here. To allow cleaner implementation if exceptions need to be thrown.
    */
   public void runrun() {
-    log.info("Starting fuzz task");
+    log.i("Starting fuzz task");
     while (!state.isDone()) {
       if (state.isFoundFailing()) {
         config.setScripts(null);
@@ -84,14 +84,14 @@ public class FuzzerTask implements Runnable {
       //create new seed for our new test generator
       long seed = seeder.nextLong();
       int id = nextId++;
-      log.debug("Starting fuzzer "+id+" with seed "+seed + " and population "+populationSize);
+      log.d("Starting fuzzer " + id + " with seed " + seed + " and population " + populationSize);
       tester.generate(seed);
       //update counter for how many tests overall have been generated
       state.testsDone(populationSize);
       TestSuite suite = tester.getSuite();
       List<TestCase> tests = suite.getAllTestCases();
       for (TestCase test : tests) {
-        //if we debug, we ignore passing tests. if we look for requirements we look at them all
+        //if we d, we ignore passing tests. if we look for requirements we look at them all
         if (!state.getConfig().isRequirementsSearch() && !test.isFailed()) continue;
         //here we check if this matches what we are looking for.
         //that is it is shorter than before and in case of requirements it covers the requirement we look for

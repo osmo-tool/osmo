@@ -187,7 +187,7 @@ public class TestSuite {
     if (requirements == null) {
       //the requirements are initialized if an instance was found in the model objects
       //otherwise we create a new one so functionality for requirements checks does not crash
-      log.debug("No requirements object defined. Creating new.");
+      log.d("No requirements object defined. Creating new.");
       requirements = new Requirements();
     }
     this.requirements = requirements;

@@ -87,8 +87,8 @@ public class MultiOSMOTests {
     config.setSuiteEndCondition(new Length(2));
     TestCoverage tc = mosmo.generate(new Time(1), false, false);
     int steps = tc.getTotalSteps();
-    assertTrue("Number of generated steps from MOSMO should be less than 120 (generators (2) x steps (30) x tests (2) configured) due to assertion error in model, was "+steps, steps < 1200);
-    assertTrue("Number of generated steps from MOSMO should be divisible by 2 due to error in step 2", steps %2 == 0);
+    assertTrue("Number of generated steps from MOSMO should be less than 120 (generators (2) x steps (30) x tests (2) configured) due to assertion e in model, was "+steps, steps < 1200);
+    assertTrue("Number of generated steps from MOSMO should be divisible by 2 due to e in step 2", steps %2 == 0);
     //if we run long test sets, the value is bigger due to some JVM optimizations. just one test is shorter
     assertTrue("Number of generated steps from MOSMO should be 12 to 20([6, 8, 10] x 2) was " + steps, 12 <= steps && steps <= 20);
   }

@@ -1,6 +1,10 @@
 package osmo.common;
 
-/** @author Teemu Kanstren */
+/**
+ * TODO: remove this
+ *
+ * @author Teemu Kanstren
+ */
 public class OSMOException extends RuntimeException {
   public OSMOException() {
   }

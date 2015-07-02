@@ -105,7 +105,9 @@ public class TestUtils {
   }
 
   /**
-   * @return A random value.
+   * Generic random values, not initialiazed and thus not deterministic across runs.
+   *
+   * @return A random value between 0 (inclusive) and 1 (exclusive).
    */
   public static float cFloat() {
     return random.nextFloat();

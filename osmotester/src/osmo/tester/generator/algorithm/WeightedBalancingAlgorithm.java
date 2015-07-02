@@ -53,7 +53,7 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
 
   @Override
   public FSMTransition choose(TestSuite suite, List<FSMTransition> choices) {
-    log.debug("choosing from:" + choices);
+    log.d("choosing from:" + choices);
     //count weighted score for all transitions taken so far as well as any new choices
     Map<FSMTransition, Double> scoreMap = countScore(choices);
 
@@ -124,7 +124,7 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
         min = coverage.get(name);
       }
     }
-    log.debug("coverage" + coverage);
+    log.d("coverage" + coverage);
     Map<FSMTransition, Double> scores = new LinkedHashMap<>();
     //then we count step score by dividing its weight by its coverage value
     Set<String> transitions = coverage.keySet();
@@ -143,7 +143,7 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
       score /= coverage.get(transition.getStringName());
       scores.put(transition, score);
     }
-    log.debug("weighted scores:" + scores);
+    log.d("weighted scores:" + scores);
     return scores;
   }
 

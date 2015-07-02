@@ -49,7 +49,7 @@ public class TestCaseStep {
     this.parent = parent;
     this.transitionName = transition.getStringName();
     if (transition.getTransition() == null) {
-      log.debug("NULL transition object, assuming unit test in progress..");
+      log.d("NULL transition object, assuming unit test in progress..");
       this.modelObjectName = transition.toString();
     } else {
       this.modelObjectName = transition.getModelObjectName();

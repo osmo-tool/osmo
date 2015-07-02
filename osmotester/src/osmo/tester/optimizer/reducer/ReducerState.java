@@ -78,10 +78,10 @@ public class ReducerState {
     }
     //TODO: write some tests to see this initial set works as intended and longer ones are not removed
     while (tests.size() > 0 && tests.size() < config.getDiversity()) {
-      log.info("Only " + tests.size() + " tests, replicating more");
+      log.i("Only " + tests.size() + " tests, replicating more");
       tests.addAll(tests);
     }
-    log.info("Number of tests in start of shortening " + tests.size());
+    log.i("Number of tests in start of shortening " + tests.size());
     resetDone();
   }
 
@@ -135,7 +135,7 @@ public class ReducerState {
     Long hash = testHash(test);
     //if we already have this test, we ignore it
     if (hashes.contains(hash)) return;
-    log.info("Adding test:" + test);
+    log.i("Adding test:" + test);
     switch (phase) {
       case INITIAL_SEARCH:
         addTestInitialSearch(test);
@@ -184,7 +184,7 @@ public class ReducerState {
     //add the new test to the set of initial tests
     tests.add(test);
     if (tests.size() == config.getDiversity()) {
-      log.info("Diversity target reached, stopping iteration.");
+      log.i("Diversity target reached, stopping iteration.");
       endSearch();
     }
   }
@@ -221,7 +221,7 @@ public class ReducerState {
       hashes.clear();
       minimum = length;
       lengths.add(length);
-      log.info("Found smaller:" + minimum);
+      log.i("Found smaller:" + minimum);
     }
   }
 
@@ -248,7 +248,7 @@ public class ReducerState {
   }
 
   /**
-   * For debug mode, gives list of all tests for shortest length.
+   * For d mode, gives list of all tests for shortest length.
    * For requirements, gives the tests found for different requirements.
    *
    * @return The tests.
@@ -303,7 +303,7 @@ public class ReducerState {
     long now = System.currentTimeMillis();
     long diff = now - startTime;
     if (diff > timeout) {
-      log.info("Iteration timed out");
+      log.i("Iteration timed out");
       endSearch();
     }
   }
@@ -321,10 +321,10 @@ public class ReducerState {
 
   /**
    * Check given test if it is smaller than current minimum.
-   * In debug mode, coming here the test should be a failed one already so no need to check for that.
+   * In d mode, coming here the test should be a failed one already so no need to check for that.
    *
    * @param test to check.
-   * @return true If given test was better match to search (shorter for debug, shorter + covers target for reqs).
+   * @return true If given test was better match to search (shorter for d, shorter + covers target for reqs).
    */
   public boolean check(TestCase test) {
     if (config.isRequirementsSearch()) {
@@ -356,7 +356,7 @@ public class ReducerState {
       }
       if (targetRequirement == null && !processedRequirements.contains(requirement)) {
         targetRequirement = requirement;
-        log.debug("Targeting requirement:" + targetRequirement);
+        log.d("Targeting requirement:" + targetRequirement);
       }
     }
     //if our target was not in the list, we did not find a better one
@@ -375,7 +375,7 @@ public class ReducerState {
   public synchronized boolean nextRequirement() {
     if (targetRequirement != null) {
       processedRequirements.add(targetRequirement);
-      log.info("Processed req:" + targetRequirement);
+      log.i("Processed req:" + targetRequirement);
     }
     tests.clear();
     hashes.clear();
@@ -396,7 +396,7 @@ public class ReducerState {
     else minimum = Integer.MAX_VALUE;
 
     targetRequirement = next;
-    log.debug("New req target:" + next + " -- tests:" + tests);
+    log.d("New req target:" + next + " -- tests:" + tests);
     return processedRequirements.size() < config.getRequirementsTarget();
   }
 }

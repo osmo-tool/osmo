@@ -125,7 +125,7 @@ public class ExplorationEndCondition implements EndCondition {
       if (!scenarioEndCondition.endTest(suite, fsm)) return false;
     }
     if (isTimedOut()) {
-      log.debug("Exploration timeout");
+      log.d("Exploration timeout");
       return true;
     }
 
@@ -133,7 +133,7 @@ public class ExplorationEndCondition implements EndCondition {
     int testSteps = suite.currentSteps();
     if (max > 0) {
       if (testSteps >= max) {
-        log.debug("test over maximum length");
+        log.d("test over maximum length");
         return true;
       }
     }
@@ -150,7 +150,7 @@ public class ExplorationEndCondition implements EndCondition {
 
     if (plateauThreshold > 0) {
       if (isTestPlateau(suite, config.getTestPlateauLength())) {
-        log.debug("test has plateaued");
+        log.d("test has plateaued");
         return checkProbability(mySeed);
       }
     }
@@ -184,7 +184,7 @@ public class ExplorationEndCondition implements EndCondition {
     Randomizer rand = new Randomizer(mySeed);
     //finally we go with random values to allow progress beyond end if so desired
     double v = rand.nextDouble();
-    log.debug("randomizing..:"+v);
+    log.d("randomizing..:" + v);
     return v < fallbackProbability;
   }  
 

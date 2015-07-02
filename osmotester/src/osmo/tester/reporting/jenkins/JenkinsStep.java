@@ -19,7 +19,7 @@ public class JenkinsStep {
   private long startTime;
   /** When the step ended. */
   private long endTime;
-  /** Was there an error executing this step? */
+  /** Was there an e executing this step? */
   private Exception error = null;
   /** Next ID for this step. */
   private static final AtomicInteger nextId = new AtomicInteger(0);
@@ -54,7 +54,7 @@ public class JenkinsStep {
   }
 
   /**
-   * If there was an error in executing this step, return a stacktrace for the error.
+   * If there was an e in executing this step, return a stacktrace for the e.
    *
    * @return Stacktrace or null.
    */

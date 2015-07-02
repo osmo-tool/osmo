@@ -36,7 +36,7 @@ public class ReflectiveModelFactory implements ModelFactory {
       try {
         models.add(aClass.newInstance());
       } catch (Exception e) {
-        log.error("Failed to create a model class instance. Exiting.", e);
+        log.e("Failed to create a model class instance. Exiting.", e);
         e.printStackTrace();
         throw new RuntimeException(e);
       }

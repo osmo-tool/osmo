@@ -117,7 +117,7 @@ public class JenkinsReportGenerator implements GenerationListener {
   public void suiteEnded(TestSuite suite) {
     this.suite.end();
     if (filename == null) {
-      log.debug("No filename defined, not writing jenkins report to file");
+      log.d("No filename defined, not writing jenkins report to file");
       return;
     }
     if (steps) {

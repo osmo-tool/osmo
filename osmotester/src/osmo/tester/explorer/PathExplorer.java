@@ -55,7 +55,7 @@ public class PathExplorer extends RecursiveTask<List<TestCase>> {
    */
   @Override
   protected List<TestCase> compute() {
-//    log.debug("Starting path exploration");
+//    log.d("Starting path exploration");
     Collection<String> toExplore = new ArrayList<>();
     for (FSMTransition transition : targets) {
       toExplore.add(transition.getStringName());
@@ -131,14 +131,14 @@ public class PathExplorer extends RecursiveTask<List<TestCase>> {
     if (ec.endTest(suite, null)) {
       //this cannot be exactly defined since we do not know the score of the following steps before exploring them
       //for this reason, we just check if the test should end or not
-      log.debug("Depth trimmed due to end condition wanting to stop");
+      log.d("Depth trimmed due to end condition wanting to stop");
       return 0;
     }
     Collection<InvocationTarget> fsmECs = generator.getFsm().getEndConditions();
     for (InvocationTarget fsmEC : fsmECs) {
       Boolean result = (Boolean) fsmEC.invoke();
       if (result) {
-        log.debug("model @EndCondition signalled to stop");
+        log.d("model @EndCondition signalled to stop");
         return 0;
       }
     }

@@ -127,7 +127,7 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
         i.remove();
       }
     }
-    log.debug("uncovered options:" + options);
+    log.d("uncovered options:" + options);
     //options now contains all previously uncovered transitions
     if (options.size() > 0) {
       return rand.oneOf(options);
@@ -173,7 +173,7 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
         uncoveredSP.remove(t);
       }
     }
-    log.debug("Uncovered SP:" + uncoveredSP);
+    log.d("Uncovered SP:" + uncoveredSP);
     if (uncoveredSP.size() > 0) {
       return rand.oneOf(uncoveredSP);
     }

@@ -38,7 +38,7 @@ public class ScoreCalculator {
       score += varValues.size() * config.getVariableWeight(name);
     }
     score += tc.getRequirements().size() * config.getRequirementWeight();
-    log.debug("calculated score:" + score);
+    log.d("calculated score:" + score);
     return score;
   }
 
@@ -73,7 +73,7 @@ public class ScoreCalculator {
     int oldScore = calculateScore(tc1);
     int newScore = calculateScore(tc3);
     int added = newScore - oldScore;
-    log.debug("added score:" + added);
+    log.d("added score:" + added);
     return added;
   }
 }

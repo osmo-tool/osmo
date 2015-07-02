@@ -5,13 +5,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
-import java.util.logging.Handler;
 import java.util.logging.Level;
 
 /**
- * The main class used to create log files describing OSMOTester behaviour.
+ * The main entry point for writing logs. Create one in each class, just like many of the regular logging frameworks.
  * It is intended to encapsulate logging functionality with less complexity in configuration than general frameworks.
  *
  * @author Teemu Kanstren
@@ -19,18 +17,20 @@ import java.util.logging.Level;
 public class Logger {
   /** We delegate to the JDK logging interface. */
   private java.util.logging.Logger logger;
-  /** File logging level. */
+  /** File logging level. Defaults to nothing being printed.*/
   public static Level fileLevel = null;
-  /** Console logging level. */
+  /** Console logging level. Defaults to errors being printed. */
   public static Level consoleLevel = Level.SEVERE;
   /** Package filter, only this and subpackages are logged. */
   public static String packageName = "";
   /** Log file handler, shared to keep from creating numerous log files. */
   private static FileHandler file;
+  /** Console file handler. Writes to system.out. */
   private static LogHandler console;
   /** Maps levels to OSMO string definitions. */
   private final static Map<String, Level> levelMap = new HashMap<>();
-  private static boolean initialized = false;
+  /** If true, we use Java Util Logging configuration. */
+  private static boolean useJul = false;
 
   static {
     levelMap.put("off", Level.OFF);
@@ -44,16 +44,29 @@ public class Logger {
 
 
   /**
-   * Constructor.
+   * Use this to create a logger for each class.
+   * Takes the given class, compresses the package name and uses the result as the logging identifier.
+   * For example, "foo.bar.X" becomes "f.b.X".
    *
    * @param clazz The class for which logging is performed.
    */
   public Logger(Class clazz) {
     String name = squeeze(clazz.getPackage().getName());
     name += clazz.getSimpleName();
-    init(name);
+    if (useJul) initJUL(name);
+    else init(name);
   }
 
+  private void initJUL(String name) {
+    logger = java.util.logging.Logger.getLogger(name);
+  }
+
+  /**
+   * Turns package names into shortened version. For example, "foo.bar.X" becomes "f.b.".
+   *
+   * @param orange The package name to compress.
+   * @return The compressed version.
+   */
   private static String squeeze(String orange) {
     String juice = "";
     String[] ps = orange.split("\\.");
@@ -64,6 +77,7 @@ public class Logger {
   }
 
   private synchronized void init(String name) {
+    //check if we are configured to log this package name
     if (!name.startsWith(packageName)) {
       logger = null;
       return;
@@ -81,11 +95,12 @@ public class Logger {
   }
 
   public static void initFromFile() {
-    String configurationFile = "osmo-logging.properties";
+    String configurationFile = "osmo-tester.properties";
     try {
       FileInputStream fis = new FileInputStream(configurationFile);
       Properties props = new Properties();
       props.load(fis);
+      useJul = Boolean.parseBoolean(props.getProperty("log.jdk", "false"));
       String logfile = props.getProperty("log.file.name", "osmo.log");
       String fileLogLevel = props.getProperty("log.file.level", "off");
       fileLevel = toLevel(fileLogLevel);
@@ -102,7 +117,7 @@ public class Logger {
 
     } catch (IOException e) {
       file = null;
-      new Logger(Logger.class).debug("Unable to read logging configuration from file '" + configurationFile + "'. Using defaults.");
+      new Logger(Logger.class).d("Unable to read logging configuration from file '" + configurationFile + "'. Using defaults.");
 //      System.err.println("Unable to read logging configuration from file '" + configurationFile + "'. Using defaults.");
 //      e.printStackTrace(System.err);
     }
@@ -118,11 +133,11 @@ public class Logger {
   }
 
   /**
-   * Prints debug level messages. If debug level is not enabled, nothing is printed.
+   * Prints d level messages. If d level is not enabled, nothing is printed.
    *
    * @param msg The message to be printed.
    */
-  public void debug(String msg) {
+  public void d(String msg) {
     if (isOff()) {
       return;
     }
@@ -130,6 +145,7 @@ public class Logger {
   }
 
   private boolean isOff() {
+    if (useJul) return false;
     if (consoleLevel == Level.OFF && fileLevel == Level.OFF) {
       return true;
     }
@@ -139,7 +155,7 @@ public class Logger {
     return false;
   }
 
-  public void debug(String msg, Throwable e) {
+  public void d(String msg, Throwable e) {
     if (isOff()) {
       return;
     }
@@ -151,7 +167,7 @@ public class Logger {
    *
    * @param msg The message to be printed.
    */
-  public void warn(String msg) {
+  public void w(String msg) {
     if (isOff()) {
       return;
     }
@@ -163,7 +179,7 @@ public class Logger {
    *
    * @param msg The message to be printed.
    */
-  public void warn(String msg, Throwable e) {
+  public void w(String msg, Throwable e) {
     if (isOff()) {
       return;
     }
@@ -171,11 +187,11 @@ public class Logger {
   }
 
   /**
-   * Prints information level messages. If info level is not enabled, nothing is printed.
+   * Prints information level messages. If i level is not enabled, nothing is printed.
    *
    * @param msg The message to be printed.
    */
-  public void info(String msg) {
+  public void i(String msg) {
     if (isOff()) {
       return;
     }
@@ -183,12 +199,12 @@ public class Logger {
   }
 
   /**
-   * Prints error messages, including exception stacktrace.
+   * Prints e messages, including exception stacktrace.
    *
-   * @param msg The error message to print.
+   * @param msg The e message to print.
    * @param e   The exception to print.
    */
-  public void error(String msg, Throwable e) {
+  public void e(String msg, Throwable e) {
     if (isOff()) {
       return;
     }
@@ -196,11 +212,11 @@ public class Logger {
   }
 
   /**
-   * Prints error messages.
+   * Prints e messages.
    *
-   * @param msg The error message to print.
+   * @param msg The e message to print.
    */
-  public void error(String msg) {
+  public void e(String msg) {
     if (isOff()) {
       return;
     }

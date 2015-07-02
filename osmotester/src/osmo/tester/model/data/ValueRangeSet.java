@@ -75,7 +75,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
    * @param max Upper bound (maximum value) of the partition.
    */
   public void addPartition(Number min, Number max) {
-    log.debug("Adding partition min(" + min + ") max(" + max + ")");
+    log.d("Adding partition min(" + min + ") max(" + max + ")");
     validateRange(min, max);
     ValueRange range = null;
     if (min instanceof Integer) {
@@ -100,7 +100,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
    * @param max  Upper bound (maximum value) of the partition.
    */
   public void addPartition(Class<T> type, Number min, Number max) {
-    log.debug("Adding partition min(" + min + ") max(" + max + ")");
+    log.d("Adding partition min(" + min + ") max(" + max + ")");
     validateRange(min, max);
     ValueRange<T> range = new ValueRange<>(type, min, max);
     range.setSeed(rand.getSeed());
@@ -121,7 +121,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
    * @param max Upper bound (maximum value) of the partition.
    */
   public void removePartition(double min, double max) {
-    log.debug("Removing partition min(" + min + ") max(" + max + ")");
+    log.d("Removing partition min(" + min + ") max(" + max + ")");
     partitions.remove(new ValueRange(min, max));
   }
 

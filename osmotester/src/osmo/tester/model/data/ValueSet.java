@@ -126,7 +126,7 @@ public class ValueSet<T> extends SearchableInput<T> {
   
   private void post() {
     history.add(choice);
-    //log.debug("Value:"+next);
+    //log.d("Value:"+next);
     record(choice);
   }
 

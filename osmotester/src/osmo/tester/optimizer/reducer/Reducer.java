@@ -20,7 +20,7 @@ import java.util.concurrent.Future;
 
 /**
  * Runs a search for specific target in the model and once found, tries to reduce the path to it to minimal.
- * In debug mode, the target is to find a part of the model that throws an exception.
+ * In d mode, the target is to find a part of the model that throws an exception.
  * In requirements mode, the target is to find shortest paths to all requirements, one for each.
  *
  * @author Teemu Kanstren
@@ -68,7 +68,7 @@ public class Reducer {
     //this also avoids the generator from spamming excess prints
     osmoConfig.setExploring(true);
     osmoConfig.setPrintExplorationErrors(config.isPrintExplorationErrors());
-    //and if we get an error we want to continue and find more errors.. since errors are our targets
+    //and if we get an e we want to continue and find more errors.. since errors are our targets
     osmoConfig.setStopGenerationOnError(false);
     //using the base seed we create a randomizer to create seeds for all tasks
     rand = new Randomizer(config.getSeed());
@@ -106,7 +106,7 @@ public class Reducer {
     state.startInitialSearch();
     //TODO: move these timeout sets into state
     long initialTime= config.getInitialUnit().toMillis(config.getInitialTime());
-    log.info("Running initial search");
+    log.i("Running initial search");
     if (startTest == null) fuzz1(state, initialTime);
     //need to clear scripts after initial fuzz in order to allow variation in search
     osmoConfig.setScripts(null);
@@ -115,12 +115,12 @@ public class Reducer {
       System.out.println("Could not find any test.");
       return;
     }
-    log.info("Running shortening");
+    log.i("Running shortening");
     long shorteningTime = config.getShorteningUnit().toMillis(config.getShorteningTime());
     shorten(state, shorteningTime);
     state.startFinalFuzz();
     long fuzzTime = config.getFuzzUnit().toMillis(config.getFuzzTime());
-    log.info("Running final fuzz");
+    log.i("Running final fuzz");
     fuzz2(state, fuzzTime);
 
     int minimum = state.getMinimum();
@@ -146,7 +146,7 @@ public class Reducer {
     endTime += System.currentTimeMillis();
     while (shouldRun) {
       state.startInitialSearch();
-      log.info("Running initial search with tests:"+state.getTests());
+      log.i("Running initial search with tests:" + state.getTests());
       if (state.getTests().size() == 0) {
         fuzz1(state, fuzzTime);
         if (System.currentTimeMillis() > endTime) {
@@ -158,22 +158,22 @@ public class Reducer {
       }
       //need to clear scripts after initial fuzz in order to allow variation in search
       osmoConfig.setScripts(null);
-      log.debug("Searching with tests: " + state.getTests());
+      log.d("Searching with tests: " + state.getTests());
       state.startShortening();
-      log.info("Running shortening");
+      log.i("Running shortening");
       long shorteningTime = config.getShorteningUnit().toMillis(config.getShorteningTime());
       //we do not care about finding many options as we just need one for a requirement, thus no fuzz in end
       shorten(state, shorteningTime);
-      log.info("Next requirement");
+      log.i("Next requirement");
       //move to next requirement, or stop if all have been processed
       shouldRun = state.nextRequirement();
-      log.debug("Search continue status:" + shouldRun);
+      log.d("Search continue status:" + shouldRun);
     }
     state.prune();
   }
 
   /**
-   * Write the debug reports for found steps and invariants.
+   * Write the d reports for found steps and invariants.
    *
    * @param allSteps All steps in test model, used in test or not.
    * @param state End state for reduction to report.
@@ -208,7 +208,7 @@ public class Reducer {
    */
   private void fuzz1(ReducerState state, long waitTime) {
     Collection<Runnable> tasks = new ArrayList<>();
-    //in debug mode the requirements tests are not set, thus this becomes null as expected
+    //in d mode the requirements tests are not set, thus this becomes null as expected
     TestCase test = state.getRequirementTest();
     for (int i = 0; i < parallelism; i++) {
       FuzzerTask task = new FuzzerTask(osmoConfig, test, rand.nextLong(), state);
@@ -244,21 +244,21 @@ public class Reducer {
     Collection<Future> futures = new ArrayList<>();
     for (Runnable task : tasks) {
       Future future = pool.submit(task);
-      log.debug("task submitted to pool");
+      log.d("task submitted to pool");
       futures.add(future);
     }
     try {
       //wait for search to finish
       synchronized (state) {
-        log.debug("waiting time " + waitTime);
+        log.d("waiting time " + waitTime);
         //we might have finished before coming here if previous searches were 100% success
         if (!state.isDone()) state.wait(waitTime);
       }
-      log.info("Notifying state to stop just in case..");
+      log.i("Notifying state to stop just in case..");
       //if overall timeout instead of reduction, we terminate searches (signal them to stop)
       state.endSearch();
     } catch (InterruptedException e) {
-      log.debug("Could not sleep", e);
+      log.d("Could not sleep", e);
     }
     //here we wait for the tasks to finish properly
     for (Future future : futures) {

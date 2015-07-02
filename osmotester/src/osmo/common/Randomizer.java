@@ -7,20 +7,29 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * This class is similar to {@link TestUtils} but allows one to use specific configuration (random seed).
+ * This class is similar to the static methods provided in {@link TestUtils} but allows use os specific random seed.
  *
  * @author Teemu Kanstren
  */
 public class Randomizer {
   /** Used for random number generation. */
   private Random random = new Random();
-  /** The seed in use. */
+  /** The seed for this instance. Defaults to system time. */
   private long seed = System.currentTimeMillis();
 
+  /**
+   * Use this to define a specific randomization seed (to produce deterministic values over different runs).
+   *
+   * @param seed The randomization seed to use.
+   */
   public Randomizer(long seed) {
     setSeed(seed);
   }
 
+  /**
+   * This uses the system time as the randomization seed.
+   * This means different runs will not be deterministic but each produce different choices/values.
+   */
   public Randomizer() {
     setSeed(seed);
   }
@@ -30,9 +39,10 @@ public class Randomizer {
   }
 
   /**
-   * Creates a new Random value generator initialized with the given seed value.
+   * Initialize with the given seed value.
+   * To avoid producing similar first values for different seeds, the initial set of few values is taken and discarded here.
    *
-   * @param seed Seed for the new random generator.
+   * @param seed The seed to use.
    */
   public void setSeed(long seed) {
     this.seed = seed;
@@ -44,13 +54,15 @@ public class Randomizer {
   }
 
   /**
-   * @return A random value.
+   * @return A random integer value.
    */
   public int nextInt() {
     return random.nextInt();
   }
 
   /**
+   * TODO: change this to generate values between Integer.MIN_VALUE and Integer.MAX_VALUE
+   *
    * @param min Minimum for the generated value.
    * @param max Maximum for the generated value.
    * @return Random integer between the given bounds, bounds included.

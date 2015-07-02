@@ -39,10 +39,10 @@ public class StepTests {
   @Test
   public void errorFormatting() {
     try {
-      throw new IllegalArgumentException("Test error");
+      throw new IllegalArgumentException("Test e");
     } catch (IllegalArgumentException e) {
       step.setError(e);
-      String expected = "java.lang.IllegalArgumentException: Test error";
+      String expected = "java.lang.IllegalArgumentException: Test e";
       assertTrue("Error formatted", step.getError().startsWith(expected));
     }
   }

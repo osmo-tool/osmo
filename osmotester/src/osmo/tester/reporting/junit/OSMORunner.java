@@ -53,7 +53,7 @@ public class OSMORunner extends BlockJUnit4ClassRunner {
    * to OSMO Tester for generation.
    *
    * @return The set of tests.
-   * @throws Exception If there is an error (ooh)..
+   * @throws Exception If there is an e (ooh)..
    */
   protected Collection<? extends FrameworkMethod> computeOSMOTests() throws Exception {
     List<FrameworkMethod> factories = getTestClass().getAnnotatedMethods(OSMOConfigurationProvider.class);

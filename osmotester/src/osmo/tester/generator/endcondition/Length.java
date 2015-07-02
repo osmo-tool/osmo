@@ -33,7 +33,7 @@ public class Length implements EndCondition {
   @Override
   public boolean endSuite(TestSuite suite, FSM fsm) {
     int suiteLength = suite.currentTestNumber();
-    log.debug("finished tests:" + suiteLength + " current steps:" + suite.currentSteps());
+    log.d("finished tests:" + suiteLength + " current steps:" + suite.currentSteps());
     //suite maintains length of size + 1, but at this point the previous one has just ended, or so we think..
     return suiteLength >= length;
   }
@@ -41,7 +41,7 @@ public class Length implements EndCondition {
   @Override
   public boolean endTest(TestSuite suite, FSM fsm) {
     int currentSteps = suite.currentSteps();
-    log.debug(" et:" + suite.getAllTestCases().size() + " c:" + currentSteps);
+    log.d(" et:" + suite.getAllTestCases().size() + " c:" + currentSteps);
     return currentSteps >= length;
   }
 
