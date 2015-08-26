@@ -91,7 +91,7 @@ public class FuzzerTask implements Runnable {
       TestSuite suite = tester.getSuite();
       List<TestCase> tests = suite.getAllTestCases();
       for (TestCase test : tests) {
-        //if we d, we ignore passing tests. if we look for requirements we look at them all
+        //if we debug, we ignore passing tests. if we look for requirements we look at them all
         if (!state.getConfig().isRequirementsSearch() && !test.isFailed()) continue;
         //here we check if this matches what we are looking for.
         //that is it is shorter than before and in case of requirements it covers the requirement we look for
@@ -116,8 +116,8 @@ public class FuzzerTask implements Runnable {
     NumberOfSteps metric = new NumberOfSteps(test);
     Map<String,Integer> counts = metric.getStepCounts();
     for (String step : steps) {
-      scenario.addSlice(step, 0, counts.get(step));
-//      scenario.addSlice(step, 0, test.getLength());
+      if (state.getConfig().isStrictReduction()) scenario.addSlice(step, 0, counts.get(step));
+      else scenario.addSlice(step, 0, test.getLength());
     }
     return scenario;
   }

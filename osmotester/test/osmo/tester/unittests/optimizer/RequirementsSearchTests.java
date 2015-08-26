@@ -33,10 +33,10 @@ public class RequirementsSearchTests {
     osmoConfig.setTestEndCondition(new Length(50));
     osmoConfig.setSuiteEndCondition(new Length(20));
     //modified 8apr15
-    config.setInitialTime(TimeUnit.SECONDS, 20);
-    config.setFuzzTime(TimeUnit.SECONDS, 20);
-    config.setShorteningTime(TimeUnit.SECONDS, 20);
-    config.setPopulationSize(500);
+//    config.setInitialTime(TimeUnit.SECONDS, 40);
+    config.setFuzzTime(TimeUnit.SECONDS, 5);
+    config.setShorteningTime(TimeUnit.SECONDS, 5);
+    config.setPopulationSize(100);
     config.setLength(50);
     config.setTestMode(true);
     config.setRequirementsTarget(4);
@@ -54,7 +54,7 @@ public class RequirementsSearchTests {
   }
 
   @Test
-  public void model10find1() {
+  public void model10find2() {
 //    Logger.consoleLevel = Level.FINEST;
 //    Logger.fileLevel = Level.FINEST;
     Logger.packageName = "o.t.o.r";
@@ -64,12 +64,9 @@ public class RequirementsSearchTests {
     Reducer reducer = new Reducer(config);
     OSMOConfiguration osmoConfig = reducer.getOsmoConfig();
     osmoConfig.setFactory(factory);
-//    osmoConfig.setTestEndCondition(new Length(50));
-//    osmoConfig.setSuiteEndCondition(new Length(20));
-    config.setInitialTime(TimeUnit.SECONDS, 5);
     config.setFuzzTime(TimeUnit.SECONDS, 5);
     config.setShorteningTime(TimeUnit.SECONDS, 5);
-    config.setPopulationSize(500);
+    config.setPopulationSize(100);
     config.setLength(10);
     config.setTestMode(true);
     config.setRequirementsTarget(4);
@@ -79,7 +76,7 @@ public class RequirementsSearchTests {
     TestCase x3 = tests.get("X3");
     assertEquals("Req X3 length", 3, x3.getLength());
     TestCase xy5 = tests.get("X&Y 5");
-    assertEquals("Req X&Y 5 length", 7, xy5.getLength());
+    assertEquals("Req X&Y 5 length", 6, xy5.getLength());
   }
 
   @Test

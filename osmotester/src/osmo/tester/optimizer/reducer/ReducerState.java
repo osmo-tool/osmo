@@ -370,7 +370,7 @@ public class ReducerState {
    * is found as part of search for the other requirements.
    * However, no attempt to "shorten" the test explicitly has been made until it is explicitly "processed".
    *
-   * @return True if target number of requirements has been covered already.
+   * @return False if we are done, true if we should continue.
    */
   public synchronized boolean nextRequirement() {
     if (targetRequirement != null) {
@@ -397,6 +397,10 @@ public class ReducerState {
 
     targetRequirement = next;
     log.d("New req target:" + next + " -- tests:" + tests);
+    if (next == null) {
+      log.i("Found no requirement to process next, exiting");
+      return false;
+    }
     return processedRequirements.size() < config.getRequirementsTarget();
   }
 }
