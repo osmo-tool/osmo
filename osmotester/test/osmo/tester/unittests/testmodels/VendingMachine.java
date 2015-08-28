@@ -1,5 +1,6 @@
 package osmo.tester.unittests.testmodels;
 
+import osmo.common.Randomizer;
 import osmo.tester.OSMOTester;
 import osmo.tester.annotation.*;
 import osmo.tester.generator.testsuite.TestSuite;
@@ -9,7 +10,9 @@ import osmo.tester.reporting.coverage.CSVCoverageReporter;
 
 import java.io.PrintStream;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Teemu Kanstren.
@@ -24,14 +27,30 @@ public class VendingMachine {
   private static final String C20 = "20cents";
   private static final String C50 = "50cents";
   private static final String VEND = "vend";
+  private static final Randomizer priceRand = new Randomizer();
   private static final ValueSet<String> items = new ValueSet<>(
           "Banana", "Pepper", "Bell Pepper", "Cucumber", "Daikon", "Carrot", "Turnip", "Parsnip", "Potato", "Corn",
           "Sheep", "Piglet", "Zombie", "Pigman", "Creeper", "Horse", "Dog", "Chicken", "Cat", "Spider", "Skeleton",
           "Milkshake", "Orange Juice", "Apple Juice", "Milk", "Chocolate Milk", "Chocolate bar", "Gummy bears",
           "Coke", "Spite", "Fanta", "Pepsi", "Mountain Dew", "Perrier", "Pellegrino", "Vichy", "Beer", "Wine",
           "Doughnut", "Cinnabon", "Cookie", "Twinkie");
-  private static final ValueSet<String> adjectives = new ValueSet<>("Big", "Regular", "Small", "Fluffy", "Spotted",
+  private static final ValueSet<String> properties = new ValueSet<>("Big", "Regular", "Small", "Fluffy", "Spotted",
           "White", "Blue", "Red", "Green", "Yellow", "Orange", "Purple", "Brown", "Turqoise", "Pink");
+  private static final Map<String, Float> machine = new HashMap<>();
+
+  static {
+    while (machine.size() < 100) {
+      String property = properties.random();
+      String item = items.random();
+      String newItem = property + " " + item;
+      if (!machine.containsKey(newItem)) {
+        int price = priceRand.nextInt(1, 50);
+        price *= 5;
+        float newPrice = price/100;
+        machine.put(newItem, newPrice);
+      }
+    }
+  }
 
   public VendingMachine() {
     req.add(C10);
