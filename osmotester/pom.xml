@@ -140,5 +140,15 @@
           <exclude>**/*.java</exclude>
         </excludes>
       </resource>
-    </resources>  </build>
+    </resources>
+    <testResources>
+      <testResource>
+        <directory>test</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </testResource>
+    </testResources>
+  </build>
 </project>
+
