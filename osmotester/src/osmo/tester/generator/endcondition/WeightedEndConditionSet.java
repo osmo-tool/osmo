@@ -75,9 +75,19 @@ public class WeightedEndConditionSet implements EndCondition {
   @Override
   public void init(long seed, FSM fsm, OSMOConfiguration config) {
     //use seed for selection to give deterministic tests
+    //note that the generator should pick a new seed for each  test and call this with that seed, resulting in different choices per test
     Randomizer rand = new Randomizer(seed);
     int index = rand.rawWeightedRandomFrom(weights);
     this.ec = endConditions.get(index);
     ec.init(seed, fsm, config);
+  }
+
+  @Override
+  public EndCondition cloneMe() {
+    WeightedEndConditionSet clone = new WeightedEndConditionSet(weights.get(0), endConditions.get(0).cloneMe(), weights.get(1), endConditions.get(1).cloneMe());
+    for (int i = 2 ; i < endConditions.size() ; i++) {
+      clone.addEndCondition(weights.get(i), endConditions.get(i).cloneMe());
+    }
+    return clone;
   }
 }

@@ -122,6 +122,11 @@ public class Issue32to36 {
     public void init(long seed, FSM fsm, OSMOConfiguration config) {
       initialized = true;
     }
+
+    @Override
+    public EndCondition cloneMe() {
+      return this;
+    }
   }
   
   private static class MyModelFactory implements ModelFactory {

@@ -17,7 +17,7 @@ import osmo.tester.model.TestModels;
 import java.io.PrintStream;
 
 /**
- * A test model with tags that can all be covered.
+ * A test model with reqs that can all be covered.
  *
  * @author Teemu Kanstren
  */

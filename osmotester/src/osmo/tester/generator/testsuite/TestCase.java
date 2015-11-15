@@ -72,6 +72,16 @@ public class TestCase {
   }
 
   /**
+   * Adds a covered value to this test case.
+   *
+   * @param variableName Name of the model variable for which we add the value.
+   * @param value The value covered.
+   */
+  public void addCoverage(String variableName, String value) {
+    coverage.addUserCoverage(variableName, value);
+  }
+
+  /**
    * This is the step currently being generated. Once the test step generation starts (before @Pre is invoked) this
    * is already set to the step to be generated (that is, before the actual step code is executed).
    * 

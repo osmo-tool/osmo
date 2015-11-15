@@ -3,54 +3,34 @@ package osmo.tester.unittests.testmodels;
 import osmo.common.Randomizer;
 import osmo.tester.OSMOTester;
 import osmo.tester.annotation.*;
+import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
 import osmo.tester.model.data.ValueSet;
 import osmo.tester.reporting.coverage.CSVCoverageReporter;
+import sun.swing.BakedArrayList;
 
 import java.io.PrintStream;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Teemu Kanstren.
  */
 public class VendingMachine {
-  private Scripter scripter;
+  private Scripter scripter = new Scripter();
+  @Variable
   private int coins = 0;
+  @Variable
   private int bottles = 10;
   private TestSuite testSuite = null;
+  private TestCase test = null;
+  private Randomizer rand = new Randomizer();
   private final Requirements req = new Requirements();
   private static final String C10 = "10cents";
   private static final String C20 = "20cents";
   private static final String C50 = "50cents";
   private static final String VEND = "vend";
-  private static final Randomizer priceRand = new Randomizer();
-  private static final ValueSet<String> items = new ValueSet<>(
-          "Banana", "Pepper", "Bell Pepper", "Cucumber", "Daikon", "Carrot", "Turnip", "Parsnip", "Potato", "Corn",
-          "Sheep", "Piglet", "Zombie", "Pigman", "Creeper", "Horse", "Dog", "Chicken", "Cat", "Spider", "Skeleton",
-          "Milkshake", "Orange Juice", "Apple Juice", "Milk", "Chocolate Milk", "Chocolate bar", "Gummy bears",
-          "Coke", "Spite", "Fanta", "Pepsi", "Mountain Dew", "Perrier", "Pellegrino", "Vichy", "Beer", "Wine",
-          "Doughnut", "Cinnabon", "Cookie", "Twinkie");
-  private static final ValueSet<String> properties = new ValueSet<>("Big", "Regular", "Small", "Fluffy", "Spotted",
-          "White", "Blue", "Red", "Green", "Yellow", "Orange", "Purple", "Brown", "Turqoise", "Pink");
-  private static final Map<String, Float> machine = new HashMap<>();
-
-  static {
-    while (machine.size() < 100) {
-      String property = properties.random();
-      String item = items.random();
-      String newItem = property + " " + item;
-      if (!machine.containsKey(newItem)) {
-        int price = priceRand.nextInt(1, 50);
-        price *= 5;
-        float newPrice = price/100;
-        machine.put(newItem, newPrice);
-      }
-    }
-  }
+  private Machine machine = new Machine(rand);
 
   public VendingMachine() {
     req.add(C10);
@@ -59,7 +39,7 @@ public class VendingMachine {
     req.add(VEND);
   }
 
-  @Guard
+  @Guard("all")
   public boolean gotBottles() {
     return bottles > 0;
   }
@@ -68,7 +48,14 @@ public class VendingMachine {
   public void start() {
     coins = 0;
     bottles = 10;
+    machine.prepare();
+    this.test = testSuite.getCurrentTest();
     int tests = testSuite.getAllTestCases().size() + 1;
+  }
+
+  @AfterTest
+  public void storeTest() {
+    test.setAttribute("script", scripter.script);
   }
 
   @AfterSuite
@@ -103,13 +90,15 @@ public class VendingMachine {
 
   @Guard(VEND)
   public boolean allowVend() {
-    return coins >= 100;
+    return machine.canVend(coins);
   }
 
   @TestStep(VEND)
   public void vend() {
-    scripter.step("VEND (" + bottles + ")");
-    coins -= 100;
+    Item item = machine.random(coins, rand);
+    scripter.step("VEND (" + bottles + ") - "+ item.name);
+    test.addCoverage("item", item.name);
+    coins -= item.cost;
     bottles--;
     req.covered(VEND);
   }
@@ -119,7 +108,7 @@ public class VendingMachine {
     return bottles <= 0;
   }
 
-  @Post
+  @Post("all")
   public void checkState() {
     scripter.step("CHECK(bottles == " + bottles + ")");
     scripter.step("CHECK(coins == " + coins + ")");
@@ -128,12 +117,14 @@ public class VendingMachine {
   public static void main(String[] args) {
     OSMOTester tester = new OSMOTester();
     tester.addModelObject(new VendingMachine());
-    tester.generate(25);
+    tester.generate(29);
 
     //Print coverage metric
     TestSuite suite = tester.getSuite();
     CSVCoverageReporter csv = new CSVCoverageReporter(suite.getCoverage(), suite.getAllTestCases(), tester.getFsm());
     System.out.println("\n" + csv.getStepCounts());
+    System.out.println("\n" + suite.getCoverage().getStates());
+    System.out.println("\n" + suite.getCoverage().getStatePairs());
   }
 
   private static class Scripter {
@@ -141,6 +132,96 @@ public class VendingMachine {
 
     public void step(String step) {
       script += step+"\n";
+    }
+  }
+
+  private static class Machine {
+    private final ValueSet<String> items = new ValueSet<>(
+            "Banana", "Pepper", "Bell Pepper", "Cucumber", "Daikon", "Carrot", "Turnip", "Parsnip", "Potato", "Corn",
+            "Sheep", "Piglet", "Zombie", "Pigman", "Creeper", "Horse", "Dog", "Chicken", "Cat", "Spider", "Skeleton",
+            "Milkshake", "Orange Juice", "Apple Juice", "Milk", "Chocolate Milk", "Chocolate bar", "Gummy bears",
+            "Coke", "Spite", "Fanta", "Pepsi", "Mountain Dew", "Perrier", "Pellegrino", "Vichy", "Beer", "Wine",
+            "Doughnut", "Cinnabon", "Cookie", "Twinkie");
+    private final ValueSet<String> properties = new ValueSet<>("Big", "Regular", "Small", "Fluffy", "Spotted",
+            "White", "Blue", "Red", "Green", "Yellow", "Orange", "Purple", "Brown", "Turqoise", "Pink");
+
+    private final List<Item> content = new ArrayList<>();
+    private final Map<Integer, Integer> itemsForCoins = new LinkedHashMap<>();
+    private final Randomizer rand;
+
+    public Machine(Randomizer rand) {
+      this.rand = rand;
+    }
+
+    public void prepare() {
+      long seed = rand.getSeed();
+      items.setSeed(seed);
+      properties.setSeed(seed);
+      createContent();
+      Collections.sort(content);
+      int coin = 5;
+      int index = 1;
+      for (Item item : content) {
+        while (coin < item.cost) {
+          itemsForCoins.put(coin, index);
+          coin += 5;
+        }
+      }
+    }
+
+    private void createContent() {
+      items.setSeed(rand.getSeed());
+      properties.setSeed(rand.getSeed());
+      while (content.size() < 100) {
+        String property = properties.random();
+        String item = items.random();
+        String newItem = property + " " + item;
+        if (!contains(newItem)) {
+          int price = rand.nextInt(1, 50);
+          price *= 5;
+          put(newItem, price);
+        }
+      }
+    }
+
+    public void put(String name, int cost) {
+      content.add(new Item(name, cost));
+    }
+
+    public int size() {
+      return content.size();
+    }
+
+    public Item random(int coins, Randomizer rand) {
+      Integer max = itemsForCoins.get(coins);
+      if (max == null) max = items.size()-1;
+      return content.get(rand.nextInt(0, max));
+    }
+
+    public boolean contains(String name) {
+      for (Item item : content) {
+        if (item.name.equals(name)) return true;
+      }
+      return false;
+    }
+
+    public boolean canVend(int coins) {
+      return content.get(0).cost <= coins;
+    }
+  }
+
+  private static class Item implements Comparable<Item> {
+    public final String name;
+    public final int cost;
+
+    public Item(String name, int cost) {
+      this.name = name;
+      this.cost = cost;
+    }
+
+    @Override
+    public int compareTo(Item o) {
+      return o.cost - cost;
     }
   }
 }

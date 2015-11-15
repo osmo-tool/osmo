@@ -117,4 +117,10 @@ public class StepCoverage implements EndCondition {
             "required=" + required +
             '}';
   }
+
+  @Override
+  public EndCondition cloneMe() {
+    //we have no state to initialize so can just return self
+    return this;
+  }
 }
