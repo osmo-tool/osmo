@@ -55,7 +55,7 @@ public class MainExplorer implements Runnable {
   private long starttime = 0;
   /** To measure exploration time. */
   private long endtime = 0;
-  /** Longest test length in current exploration. Used as max limiter for pruning. 
+  /** Longest test length in current exploration. Used as max limiter for pruning.
    * Note that some may be shorter but in that case should achieve same score faster as we only look at highest scorers. */
   private int longest = 0;
 
@@ -132,7 +132,7 @@ public class MainExplorer implements Runnable {
 
   /**
    * When exploration threads have finished, this is used to set the result and notify waiting components.
-   * 
+   *
    * @param result The name of the chosen test step to be executed next.
    */
   private synchronized void setResult(String result) {
@@ -142,9 +142,9 @@ public class MainExplorer implements Runnable {
   }
 
   /**
-   * Provides access to the exploration result. 
+   * Provides access to the exploration result.
    * If one is not yet available, waits for the exploration threads to finish.
-   * 
+   *
    * @return The name of the chosen test step to execute next.
    */
   public synchronized String getResult() {
@@ -180,7 +180,7 @@ public class MainExplorer implements Runnable {
 
   /**
    * Collect all coverage values that could have been covered by the different explored paths.
-   * 
+   *
    * @param from Where to look for the coverage metrics.
    */
   private void collectMetrics(List<TestCase> from) {
@@ -265,7 +265,7 @@ public class MainExplorer implements Runnable {
     if (longest > (count+1) && optimum.size() > 1) {
       return findBestFrom(optimum, count + 1);
     }
-  
+
     List<FSMTransition> choices = new ArrayList<>();
     int index = script.size();
     for (TestCase tc : optimum) {
@@ -279,7 +279,7 @@ public class MainExplorer implements Runnable {
     long seed = config.getSeed() + salt;
     FSMTraversalAlgorithm fallback = config.getFallback(seed, fsm);
     FSMTransition choice = fallback.choose(suite, choices);
-    
+
     return choice.getStringName();
   }
 

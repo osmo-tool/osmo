@@ -71,7 +71,7 @@ public class PathExplorer extends RecursiveTask<List<TestCase>> {
         PathExplorer explorer = forkExplorer(explore, child, generator, newDepth);
         children.add(explorer);
       } else {
-        //we only come here once there is no depth left to go deeper. thus the end result is that the set of 
+        //we only come here once there is no depth left to go deeper. thus the end result is that the set of
         //concrete test cases returned is a set of the deepest test cases according to the original configuration
         TestCase test = generator.getCurrentTest();
         result.add(test);

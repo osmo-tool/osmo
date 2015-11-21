@@ -18,8 +18,7 @@ import java.util.Map;
  */
 public class TestCoverage {
   private static final Logger log = new Logger(TestCoverage.class);
-  /** The list of test steps covered, in order, including duplicates. */
-//  private Collection<String> steps = new ArrayList<>();
+  /** Number of times each step has been covered. */
   private Map<String, Integer> stepCount = new LinkedHashMap<>();
   /** The set of step pairs covered. */
   private Collection<String> stepPairs = new LinkedHashSet<>();
@@ -35,8 +34,11 @@ public class TestCoverage {
   private Map<String, Collection<String>> coverageValues = new LinkedHashMap<>();
   /** Set of covered transitions between coverage values, or pairs of observed user coverage values. */
   private Map<String, Collection<String>> coverageValuePairs = new LinkedHashMap<>();
+  /** Previously taken step, used for pair coverage. */
   private String previousStep = FSM.START_STEP_NAME;
+  /** Previous values for user defined coverage values. Used for pair coverage. */
   private Map<String, String> previousCoverageValues = new LinkedHashMap<>();
+  /** Total number of steps taken in all tests. */
   private int totalSteps = 0;
 
   /** Start with an empty set. */
@@ -90,7 +92,7 @@ public class TestCoverage {
     previousStep = name;
     totalSteps++;
   }
-  
+
   private void increaseStepCount(String name, int by) {
     Integer count = stepCount.get(name);
     if (count == null) count = 0;
@@ -189,7 +191,7 @@ public class TestCoverage {
 
   /**
    * This is only called to add coverage to a test suite coverage, meaning we can add all together every time.
-   * 
+   *
    * @param from Add from here.
    * @param to   Add to here.
    */
