@@ -212,9 +212,9 @@ public abstract class CoverageMetric {
     List<String> reqs = getRequirements();
     List<String> variables = getVariables();
     //makes no sense to put all variable values and states there as they may be way too many
-    List<VariableValues> variableValues = getVariableValues(suiteCoverage.getVariableValues());
-    List<VariableValues> states = getVariableValues(suiteCoverage.getStates());
-    List<VariableValues> statePairs = getVariableValues(suiteCoverage.getStatePairs());
+    List<VariableValues> variableValues = getVariableValues();
+    List<VariableValues> states = getStates();
+    List<VariableValues> statePairs = getStatePairs();
 
     vc.put("alt", new CSSHelper());
     vc.put("tests", tc);
@@ -305,5 +305,17 @@ public abstract class CoverageMetric {
       result.add(new VariableValues(name, variables.get(name)));
     }
     return result;
+  }
+
+  public List<VariableValues> getVariableValues() {
+    return getVariableValues(suiteCoverage.getVariableValues());
+  }
+
+  public List<VariableValues> getStates() {
+    return getVariableValues(suiteCoverage.getStates());
+  }
+
+  public List<VariableValues> getStatePairs() {
+    return getVariableValues(suiteCoverage.getStatePairs());
   }
 }

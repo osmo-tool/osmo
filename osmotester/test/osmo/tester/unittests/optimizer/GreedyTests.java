@@ -79,7 +79,7 @@ public class GreedyTests {
     suite.endTest();
 
     gc.setRequirementWeight(1);
-    List<TestCase> tests = GreedyOptimizer.sortAndPrune(suite.getAllTestCases(), new ScoreCalculator(gc), 0);
+    List<TestCase> tests = GreedyOptimizer.sortAndPrune(1, suite.getAllTestCases(), new ScoreCalculator(gc), 0);
     assertEquals("Number of tests should be reduced after pruning useless ones.", 2, tests.size());
     TestCase testCase1 = tests.get(0);
     TestCase testCase2 = tests.get(1);
@@ -94,7 +94,7 @@ public class GreedyTests {
   public void requirementOptimizer3TestsWithOverlap() {
     gc.setRequirementWeight(1);
     TestSuite suite = createSuite1();
-    List<TestCase> tests = GreedyOptimizer.sortAndPrune(suite.getAllTestCases(), new ScoreCalculator(gc), 0);
+    List<TestCase> tests = GreedyOptimizer.sortAndPrune(1, suite.getAllTestCases(), new ScoreCalculator(gc), 0);
     assertEquals("Number of tests should be reduced after pruning useless ones.", 1, tests.size());
     TestCase testCase1 = tests.get(0);
     Collection<String> reqs1 = testCase1.getCoverage().getRequirements();
@@ -108,7 +108,7 @@ public class GreedyTests {
     //GreedyOptimizer optimizer = new GreedyOptimizer(oc, gc);
     gc.setRequirementWeight(1);
     TestSuite suite = createSuite2();
-    List<TestCase> tests = GreedyOptimizer.sortAndPrune(suite.getAllTestCases(), new ScoreCalculator(gc), 0);
+    List<TestCase> tests = GreedyOptimizer.sortAndPrune(1, suite.getAllTestCases(), new ScoreCalculator(gc), 0);
     assertEquals("Number of tests after optimization should match that of before.", 3, tests.size());
     TestCase testCase1 = tests.get(0);
     TestCase testCase2 = tests.get(1);
@@ -128,7 +128,7 @@ public class GreedyTests {
     gc.setStateWeight(1);
     gc.setStatePairWeight(100);
     TestSuite suite = createSuite3();
-    List<TestCase> tests = GreedyOptimizer.sortAndPrune(suite.getAllTestCases(), new ScoreCalculator(gc), 0);
+    List<TestCase> tests = GreedyOptimizer.sortAndPrune(1, suite.getAllTestCases(), new ScoreCalculator(gc), 0);
     assertEquals("Number of tests after sort and prune", 3, tests.size());
     assertEquals("Coverage score", 705, scoreFor(tests));
   }
@@ -222,7 +222,7 @@ public class GreedyTests {
   public void stepOptimizer3TestsNoOverlap() {
     TestSuite suite = createSuite1();
     gc.setStepWeight(1);
-    List<TestCase> tests = GreedyOptimizer.sortAndPrune(suite.getAllTestCases(), new ScoreCalculator(gc), 0);
+    List<TestCase> tests = GreedyOptimizer.sortAndPrune(1, suite.getAllTestCases(), new ScoreCalculator(gc), 0);
     assertEquals("Number of tests after optimization should match that of before.", 3, tests.size());
     TestCase testCase1 = tests.get(0);
     TestCase testCase2 = tests.get(1);
@@ -240,7 +240,7 @@ public class GreedyTests {
   public void stepOptimizer3TestsWithOverlap() {
     TestSuite suite = createSuite2();
     gc.setStepWeight(1);
-    List<TestCase> tests = GreedyOptimizer.sortAndPrune(suite.getAllTestCases(), new ScoreCalculator(gc), 0);
+    List<TestCase> tests = GreedyOptimizer.sortAndPrune(1, suite.getAllTestCases(), new ScoreCalculator(gc), 0);
     assertEquals("Number of tests should be reduced after pruning useless ones.", 1, tests.size());
     TestCase testCase1 = tests.get(0);
     Collection<String> transitions1 = testCase1.getCoveredSteps();
@@ -253,7 +253,7 @@ public class GreedyTests {
     TestSuite suite = createSuite2();
     gc.setStepWeight(1);
     gc.setRequirementWeight(4);
-    List<TestCase> tests = GreedyOptimizer.sortAndPrune(suite.getAllTestCases(), new ScoreCalculator(gc), 0);
+    List<TestCase> tests = GreedyOptimizer.sortAndPrune(1, suite.getAllTestCases(), new ScoreCalculator(gc), 0);
     assertEquals("Number of tests after optimization should match that of before.", 3, tests.size());
     TestCase testCase1 = tests.get(0);
     TestCase testCase2 = tests.get(1);

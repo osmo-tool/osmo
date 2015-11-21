@@ -4,6 +4,7 @@ import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -54,13 +55,8 @@ public class Time implements EndCondition {
   public void init(long seed, FSM fsm, OSMOConfiguration config) {
     shouldEnd = false;
     ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
-    Runnable end = new Runnable() {
-      @Override
-      public void run() {
-        shouldEnd = true;
-      }
-    };
-    executor.schedule(end, delay, timeUnit);
+    Runnable task = () -> shouldEnd = true;
+    executor.schedule(task, delay, timeUnit);
   }
 
   public long getDelay() {
@@ -77,5 +73,11 @@ public class Time implements EndCondition {
             "delay=" + delay +
             ", timeUnit=" + timeUnit +
             '}';
+  }
+
+  @Override
+  public EndCondition cloneMe() {
+    //we need a copy as running the same instance in parallel would break on the shared timer task and shared boolean end condition
+    return new Time(delay, timeUnit);
   }
 }

@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 import static org.junit.Assert.*;
 
@@ -91,9 +92,10 @@ public class ReducerTests {
 
   @Test
   public void model10() throws Exception {
-//    Logger.consoleLevel = Level.FINEST;
+    Logger.consoleLevel = Level.INFO;
     Logger.packageName = "o.t.o.r";
     ReducerConfig config = new ReducerConfig(111);
+    config.setStrictReduction(false);
     config.setParallelism(1);
     //changed here on 8apr15
     config.setInitialTime(TimeUnit.SECONDS, 10);
@@ -138,7 +140,7 @@ public class ReducerTests {
     config.setParallelism(1);
     //changed here on 8apr15
     config.setInitialTime(TimeUnit.MINUTES, 10);
-    config.setFuzzTime(TimeUnit.MINUTES, 10);
+    config.setFuzzTime(TimeUnit.SECONDS, 5);
     config.setShorteningTime(TimeUnit.MINUTES, 10);
     config.setTargetLength(11);
     Reducer reducer = new Reducer(config);
@@ -189,10 +191,10 @@ public class ReducerTests {
     }
     assertEquals("Slice 1 name", "hello1", slice1.getStepName());
     assertEquals("Slice 1 min", 0, slice1.getMin());
-    assertEquals("Slice 1 max", 3, slice1.getMax());
+    assertEquals("Slice 1 max", 1, slice1.getMax());
     assertEquals("Slice 2 name", "hello2", slice2.getStepName());
     assertEquals("Slice 2 min", 0, slice2.getMin());
-    assertEquals("Slice 2 max", 3, slice2.getMax());
+    assertEquals("Slice 2 max", 2, slice2.getMax());
   }
 
   @Test

@@ -271,5 +271,13 @@ public class ExplorationEndCondition implements EndCondition {
     //is the added value more than the given threshold?
     return diff < config.getTestPlateauThreshold();
   }
+
+  @Override
+  public EndCondition cloneMe() {
+    ExplorationEndCondition clone = new ExplorationEndCondition(this.config, this.suiteCoverage, this.exploring);
+    clone.seed = this.seed;
+    clone.rand = new Randomizer(this.seed);
+    return clone;
+  }
 }
  

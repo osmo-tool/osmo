@@ -55,4 +55,10 @@ public class Length implements EndCondition {
             "length=" + length +
             '}';
   }
+
+  @Override
+  public EndCondition cloneMe() {
+    //we have no state to initialize so can just return self
+    return this;
+  }
 }

@@ -39,4 +39,9 @@ public class ManualEndCondition implements EndCondition {
   @Override
   public void init(long seed, FSM fsm, OSMOConfiguration config) {
   }
+
+  @Override
+  public EndCondition cloneMe() {
+    return this;
+  }
 }

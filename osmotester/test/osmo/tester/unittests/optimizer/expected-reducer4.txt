@@ -11,18 +11,18 @@ Step counts:
   Step8 : 1
 Final steps: [Step8]
 
-Strict precedences (3):
-  Step4->Step6
+Strict precedences (2):
   Step4->Step8
   Step6->Step8
 
-Flex precedences (3):
-  Step4->Step6
+Flex precedences (2):
   Step4->Step8
   Step6->Step8
 
 Shared sequences:
-  [Step4, Step4, Step4, Step4, Step4, Step6, Step6, Step6, Step6, Step6, Step8]
+  [Step4, Step4]
+  [Step6]
+  [Step8]
 
 Missing steps:
   Step1

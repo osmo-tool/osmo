@@ -71,15 +71,15 @@ public class OSMOConfiguration implements ModelFactory {
   private boolean keepTests = true;
   /** If defined, only these specific tests are "generated" and executed and nothing else. */
   private List<TestScript> scripts = null;
-  /** If true, tracks possible step-pairs. Can take lot of CPU on big models. */
+  /** If true, tracks possible step-pairs. Can take lot of resources on big models. */
   private boolean trackOptions = false;
 
   public OSMOConfiguration() {
   }
 
   public OSMOConfiguration(OSMOConfiguration cloneMe) {
-    this.testCaseEndCondition = cloneMe.testCaseEndCondition;
-    this.suiteEndCondition = cloneMe.suiteEndCondition;
+    this.testCaseEndCondition = cloneMe.testCaseEndCondition.cloneMe();
+    this.suiteEndCondition = cloneMe.suiteEndCondition.cloneMe();
     this.algorithm = cloneMe.algorithm;
     this.filters = cloneMe.filters;
     this.listeners = cloneMe.listeners;
@@ -358,5 +358,9 @@ public class OSMOConfiguration implements ModelFactory {
 
   public void setTrackOptions(boolean trackOptions) {
     this.trackOptions = trackOptions;
+  }
+
+  public OSMOConfiguration cloneMe() {
+    return null;
   }
 }

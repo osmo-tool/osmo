@@ -57,4 +57,13 @@ public class Or implements EndCondition {
             "conditions=" + (conditions == null ? null : Arrays.asList(conditions)) +
             '}';
   }
-}
+
+  @Override
+  public EndCondition cloneMe() {
+    EndCondition[] clones = new EndCondition[conditions.length];
+    for (int i = 0 ; i < conditions.length ; i++) {
+      clones[i] = conditions[i].cloneMe();
+    }
+    Or clone = new Or(clones);
+    return clone;
+  }}

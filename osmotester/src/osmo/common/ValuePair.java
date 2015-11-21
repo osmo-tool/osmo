@@ -19,4 +19,5 @@ public class ValuePair <T> {
 
   public T getValue2() {
     return value2;
-  }}
+  }
+}

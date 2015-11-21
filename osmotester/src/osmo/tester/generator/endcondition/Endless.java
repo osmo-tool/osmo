@@ -24,4 +24,10 @@ public class Endless implements EndCondition {
   @Override
   public void init(long seed, FSM fsm, OSMOConfiguration config) {
   }
+
+  @Override
+  public EndCondition cloneMe() {
+    //we have no state to initialize so can just return self
+    return this;
+  }
 }

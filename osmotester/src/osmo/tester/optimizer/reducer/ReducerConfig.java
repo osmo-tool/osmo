@@ -38,6 +38,7 @@ public class ReducerConfig {
   private int requirementsTarget = 0;
   private boolean printExplorationErrors = false;
   private int targetLength = -1;
+  private boolean strictReduction = true;
 
   public ReducerConfig(long seed) {
     this.seed = seed;
@@ -159,5 +160,13 @@ public class ReducerConfig {
 
   public boolean isRequirementsSearch() {
     return requirementsTarget > 0;
+  }
+
+  public void setStrictReduction(boolean strictReduction) {
+    this.strictReduction = strictReduction;
+  }
+
+  public boolean isStrictReduction() {
+    return strictReduction;
   }
 }

@@ -57,6 +57,8 @@ public class GreedyOptimizer {
   private final ScoreCalculator scoreCalculator;
   /** How much does an iteration need to gain in score to go for another iteration? Defaults to 1. */
   private int threshold = 1;
+  /** Maximum number of iterations to run. 0 means to run forever (until threshold or timeout). */
+  private int maxIterations = 0;
   /** Seconds until the search times out. Timeout is checked between iterations and refers to how long overall generation progresses. */
   private long timeout = -1;
   /** For tracking all the path options encountered. */
@@ -102,6 +104,14 @@ public class GreedyOptimizer {
    */
   public void setMax(int max) {
     this.max = max;
+  }
+
+  public int getMaxIterations() {
+    return maxIterations;
+  }
+
+  public void setMaxIterations(int maxIterations) {
+    this.maxIterations = maxIterations;
   }
 
   public void enableDataTrace() {
@@ -181,7 +191,7 @@ public class GreedyOptimizer {
     }
     log.i("greedy " + id + " starting up, population size " + populationSize);
     //to get a shorter test suite, use negative length weight.. in most cases should be no problem
-    while (gain >= threshold) {
+    while (shouldRun(gain, iteration)) {
       long iStart = System.currentTimeMillis();
       log.i(id + ":starting iteration " + iteration);
       iteration++;
@@ -192,7 +202,7 @@ public class GreedyOptimizer {
         suite.add(testCase);
       }
       log.i(id + ":sorting and pruning iteration results");
-      suite = sortAndPrune(suite, scoreCalculator, max);
+      suite = sortAndPrune(id, suite, scoreCalculator, max);
       //we process each iteration to produce a list of how it was overall progressing
       report.process(suite);
       TestCoverage suiteCoverage = new TestCoverage(suite);
@@ -215,6 +225,14 @@ public class GreedyOptimizer {
     }
     if (gain < threshold) log.i("gain under threshold (" + gain + " vs " + threshold + ")");
     generator.endSuite();
+  }
+
+  private boolean shouldRun(int gain, int iterations) {
+    if (maxIterations > 0) {
+      if (iterations >= maxIterations) return false;
+    }
+    if (gain < threshold) return false;
+    return true;
   }
 
   private void updateRequirementsCoverage(TestCoverage suiteCoverage) {
@@ -279,7 +297,7 @@ public class GreedyOptimizer {
    * @param max Maximum number of tests to include in results.
    * @return Greedily sorted suite of requested size.
    */
-  public static List<TestCase> sortAndPrune(List<TestCase> from, ScoreCalculator calculator, int max) {
+  public static List<TestCase> sortAndPrune(int id, List<TestCase> from, ScoreCalculator calculator, int max) {
     //this sort is here to ensure deterministic results (as far as sequence of steps and scores go..)
     Collections.sort(from, new TestSorter());
     List<TestCase> suite = new ArrayList<>();
@@ -328,7 +346,7 @@ public class GreedyOptimizer {
       test.switchToClonedCoverage();
       steps += test.getCoverage().getTotalSteps();
     }
-    log.i("loops in sort:" + times + ", tests:" + suite.size() + ", steps:" + steps);
+    log.i(id+":loops in sort:" + times + ", tests:" + suite.size() + ", steps:" + steps);
     return suite;
   }
 

@@ -4,7 +4,7 @@ import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
 
 /**
- * This model runs steps in an order where the lest covered is not always enabled.
+ * This model runs steps in an order where most steps are disabled after being taken several times but also require specific initial steps to start.
  *
  * @author Teemu Kanstren
  */

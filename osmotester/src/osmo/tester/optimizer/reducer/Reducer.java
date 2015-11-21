@@ -142,28 +142,20 @@ public class Reducer {
   private void requirementsSearch(ReducerState state) {
     boolean shouldRun = true;
     long fuzzTime = config.getFuzzUnit().toMillis(config.getFuzzTime());
-    long endTime= config.getInitialUnit().toMillis(config.getInitialTime());
-    endTime += System.currentTimeMillis();
+    long shorteningTime = config.getShorteningUnit().toMillis(config.getShorteningTime());
     while (shouldRun) {
       state.startInitialSearch();
       log.i("Running initial search with tests:" + state.getTests());
-      if (state.getTests().size() == 0) {
-        fuzz1(state, fuzzTime);
-        if (System.currentTimeMillis() > endTime) {
-          //if we find no way to cover anything, we drop out
-          break;
-        } else {
-          continue;
-        }
+      fuzz1(state, fuzzTime);
+      if (state.getTests().size() > 0) {
+        //need to clear scripts after initial fuzz in order to allow variation in search
+        osmoConfig.setScripts(null);
+        log.d("Searching with tests: " + state.getTests());
+        state.startShortening();
+        log.i("Running shortening");
+        //we do not care about finding many options as we just need one for a requirement, thus no fuzz in end
+        shorten(state, shorteningTime);
       }
-      //need to clear scripts after initial fuzz in order to allow variation in search
-      osmoConfig.setScripts(null);
-      log.d("Searching with tests: " + state.getTests());
-      state.startShortening();
-      log.i("Running shortening");
-      long shorteningTime = config.getShorteningUnit().toMillis(config.getShorteningTime());
-      //we do not care about finding many options as we just need one for a requirement, thus no fuzz in end
-      shorten(state, shorteningTime);
       log.i("Next requirement");
       //move to next requirement, or stop if all have been processed
       shouldRun = state.nextRequirement();

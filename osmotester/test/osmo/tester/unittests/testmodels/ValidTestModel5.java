@@ -11,15 +11,15 @@ import osmo.tester.model.Requirements;
 import java.io.PrintStream;
 
 /**
- * A test model with tags that can all be covered.
+ * A test model with reqs that can all be covered.
  *
  * @author Teemu Kanstren
  */
 public class ValidTestModel5 {
   private final Requirements req = new Requirements();
-  public static final String TAG_HELLO = "hello";
-  public static final String TAG_WORLD = "world";
-  public static final String TAG_EPIX = "epix";
+  public static final String REQ_HELLO = "hello";
+  public static final String REQ_WORLD = "world";
+  public static final String REQ_EPIX = "epix";
   private final PrintStream out;
 
   public ValidTestModel5(PrintStream out) {
@@ -33,34 +33,34 @@ public class ValidTestModel5 {
 
   @Guard("hello")
   public boolean helloCheck() {
-    return !req.isCovered(TAG_HELLO) && !req.isCovered(TAG_WORLD) && !req.isCovered(TAG_EPIX);
+    return !req.isCovered(REQ_HELLO) && !req.isCovered(REQ_WORLD) && !req.isCovered(REQ_EPIX);
   }
 
   @TestStep("hello")
   public void transition1() {
-    req.covered(TAG_HELLO);
+    req.covered(REQ_HELLO);
     out.print(":hello");
   }
 
   @Guard("world")
   public boolean worldCheck() {
-    return req.isCovered(TAG_HELLO) && !req.isCovered(TAG_WORLD) && !req.isCovered(TAG_EPIX);
+    return req.isCovered(REQ_HELLO) && !req.isCovered(REQ_WORLD) && !req.isCovered(REQ_EPIX);
   }
 
   @TestStep("world")
   public void epix() {
-    req.covered(TAG_WORLD);
+    req.covered(REQ_WORLD);
     out.print(":world");
   }
 
   @Guard("epixx")
   public boolean kitted() {
-    return req.isCovered(TAG_WORLD);
+    return req.isCovered(REQ_WORLD);
   }
 
   @TestStep("epixx")
   public void epixx() {
-    req.covered(TAG_EPIX);
+    req.covered(REQ_EPIX);
     out.print(":epixx");
   }
 

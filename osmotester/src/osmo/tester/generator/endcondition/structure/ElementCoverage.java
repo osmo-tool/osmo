@@ -46,4 +46,10 @@ public class ElementCoverage implements EndCondition {
   public void init(long seed, FSM fsm, OSMOConfiguration config) {
     requirement.init(fsm);
   }
+
+  @Override
+  public EndCondition cloneMe() {
+    //we have no state to initialize so can just return self
+    return this;
+  }
 }

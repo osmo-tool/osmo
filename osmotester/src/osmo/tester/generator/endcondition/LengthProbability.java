@@ -88,4 +88,11 @@ public class LengthProbability implements EndCondition {
   public double getProbability() {
     return probability;
   }
+
+  @Override
+  public EndCondition cloneMe() {
+    LengthProbability clone = new LengthProbability(min, max, probability);
+    clone.delegate = this.delegate.cloneMe();
+    return clone;
+  }
 }

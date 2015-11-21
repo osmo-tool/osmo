@@ -36,5 +36,12 @@ public interface EndCondition {
    * @param config The configuration for the generator session.
    */
   public void init(long seed, FSM fsm, OSMOConfiguration config);
+
+  /**
+   * Clone self along with all configuration parameters.
+   *
+   * @return The new clone.
+   */
+  public EndCondition cloneMe();
 }
 

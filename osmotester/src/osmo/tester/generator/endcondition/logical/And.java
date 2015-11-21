@@ -57,4 +57,14 @@ public class And implements EndCondition {
             "conditions=" + (conditions == null ? null : Arrays.asList(conditions)) +
             '}';
   }
+
+  @Override
+  public EndCondition cloneMe() {
+    EndCondition[] clones = new EndCondition[conditions.length];
+    for (int i = 0 ; i < conditions.length ; i++) {
+      clones[i] = conditions[i].cloneMe();
+    }
+    And clone = new And(clones);
+    return clone;
+  }
 }

@@ -62,6 +62,8 @@ public class MultiGreedy {
   private final String midPath;
   /** If > 0 defines the maximum number of tests to return. */
   private int max = 0;
+  /** Maximum number of iterations to run before stopping generation. */
+  private int maxIterations = 0;
   /** Score threshold to stop generation if we do not gain more than this. */
   private int threshold = 1;
   /** Listeners to be notified about finishing some iterations or all generation. */
@@ -123,6 +125,14 @@ public class MultiGreedy {
     this.deleteOldOutput = deleteOldOutput;
   }
 
+  public int getMaxIterations() {
+    return maxIterations;
+  }
+
+  public void setMaxIterations(int maxIterations) {
+    this.maxIterations = maxIterations;
+  }
+
   public int getPopulationSize() {
     return populationSize;
   }
@@ -144,7 +154,9 @@ public class MultiGreedy {
 
     log.i("sorting set from all optimizers");
     //this does the final round of optimization for the set received from all optimizers..
-    tests = GreedyOptimizer.sortAndPrune(tests, calculator, max);
+    tests = GreedyOptimizer.sortAndPrune(-1, tests, calculator, max);
+
+    tests = trimToMax(tests);
 
     writeFinalReport(tests, rand.getSeed());
     updateRequirements(tests);
@@ -172,8 +184,6 @@ public class MultiGreedy {
 
     runOptimizers(futures);
     List<TestCase> allTests = collectAllTests(futures);
-    
-    allTests = trimToMax(allTests);
 
     log.i("optimizers done");
     greedyPool.shutdown();
@@ -193,18 +203,19 @@ public class MultiGreedy {
   }
 
   /**
-   * Starts all optimizers runnning in the thread pool.
+   * Starts all optimizers running in the thread pool.
    * 
    * @param futures    Collects here all the {@link Future} objects for the running {@link GreedyTask} instances.
    */
   private void runOptimizers(Collection<Future<Collection<TestCase>>> futures) {
     for (int i = 0 ; i < optimizerCount ; i++) {
-      GreedyOptimizer optimizer = new GreedyOptimizer(osmoConfig, optimizerConfig);
+      GreedyOptimizer optimizer = new GreedyOptimizer(new OSMOConfiguration(osmoConfig), optimizerConfig);
       optimizer.setMidPath(midPath);
       optimizer.setSubStatus(true);
       if (dataTrace) optimizer.enableDataTrace();
       optimizer.setTimeout(timeout);
       optimizer.setThreshold(threshold);
+      optimizer.setMaxIterations(maxIterations);
       for (IterationListener listener : listeners) {
         optimizer.addIterationListener(listener);
       }
