@@ -78,13 +78,15 @@ Installing
 I would recommend to download the source, and using the Ant build script under "osmotester" directory to build it.
 There is also some version in the maven repo.
 
+```xml
 <dependency>
 	<groupId>net.kanstren.osmo</groupId>
 	<artifactId>osmotester</artifactId>
-	<version>3.4.0</version>
+	<version>3.5.0</version>
 </dependency>
+```
 
-or direct [link](http://central.maven.org/maven2/net/kanstren/osmo/osmotester/3.4.0/osmotester-3.4.0.jar)
+or direct [link](http://central.maven.org/maven2/net/kanstren/osmo/osmotester/3.5.0/osmotester-3.5.0.jar)
 
 Documentation
 -------------

@@ -14,7 +14,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-  
+
   <licenses>
     <license>
       <name>GNU Lesser General Public License, version 2.1</name>
@@ -42,7 +42,7 @@
       <timezone>Europe/Helsinki</timezone>
     </developer>
   </developers>
-  
+
   <dependencies>
     <dependency>
       <groupId>org.apache.velocity</groupId>
@@ -106,7 +106,7 @@
           <execution>
             <id>attach-sources</id>
             <goals>
-              <goal>jar-no-fork</goal>
+              <goal>jar</goal>
             </goals>
           </execution>
         </executions>

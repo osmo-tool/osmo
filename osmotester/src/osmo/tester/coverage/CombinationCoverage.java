@@ -8,13 +8,13 @@ import java.util.List;
 
 /**
  * Provides a variable value that represents a combination of the given set of other variables.
- * To use, create a field in the class with this type and pass references to the variables to combine. 
+ * To use, create a field in the class with this type and pass references to the variables to combine.
  * This is represented to the generator as a {@link VariableValue} object, which leads it to store the value
  * of this object after any step is executed.
- * The way this happens is that the value() method is invoked, which then asks the referenced objects for their
+ * When the value() method is invoked, it asks the referenced objects for their
  * values and combines these to produce a new value as their combination.
  * The combined value is a combination of all referenced values with "{@literal &}" character in between.
- * 
+ *
  * To have the annotated variable tracked for coverage, annotate using {@link osmo.tester.annotation.Variable} as usual.
  *
  * @author Teemu Kanstren
@@ -43,7 +43,7 @@ public class CombinationCoverage implements VariableValue<String> {
   /**
    * This is where the combined value is provided. It is the values of given variables concatenated with the char "{@literal &}"
    * in between.
-   * 
+   *
    * @return The value to store for coverage.
    */
   @Override
@@ -58,7 +58,7 @@ public class CombinationCoverage implements VariableValue<String> {
 
   /**
    * Access to the combined variables.
-   * 
+   *
    * @return List of variables that are being combined.
    */
   public List<VariableValue> getInputs() {

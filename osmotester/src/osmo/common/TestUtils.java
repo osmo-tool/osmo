@@ -468,9 +468,14 @@ public class TestUtils {
     }
   }
 
+  /** The stream used to capture text printed to system.out. */
   private static OutputStream out = null;
+  /** The original system.out stream to recover after stopping output capture. */
   private static PrintStream sout = null;
 
+  /**
+   * Starts capturing text printed to system.out. Use getOutput() and endOutputCapture() with this.
+   */
   public static void startOutputCapture() {
     sout = System.out;
     out = new ByteArrayOutputStream(1000);
@@ -478,14 +483,27 @@ public class TestUtils {
     System.setOut(ps);
   }
 
+  /**
+   * @return The text captured from system.out.
+   */
   public static String getOutput() {
     return out.toString();
   }
 
+  /**
+   * Restores system.out stream when print capture is finished.
+   */
   public static void endOutputCapture() {
     if (sout != null) System.setOut(sout);
   }
 
+  /**
+   * Reads the contents of a text file, returning a string for the contents.
+   *
+   * @param path Where to read the file from.
+   * @param encoding The character encoding of the file.
+   * @return The contents. If there is an error, an exception is thrown.
+   */
   public static String readFile(String path, String encoding) {
     try {
       byte [] data = Files.readAllBytes(Paths.get(path));
@@ -495,6 +513,14 @@ public class TestUtils {
     }
   }
 
+  /**
+   * Reads the contents of a text file, returning a string for the contents.
+   *
+   * @param path Where to read the file from.
+   * @param encoding The character encoding of the file.
+   * @param fail If true, any error will cause an exception to be thrown. If false, null is returned on error.
+   * @return The contents or null/exception on failure to read/decode the text.
+   */
   public static String readFile(String path, String encoding, boolean fail) {
     try {
       byte [] data = Files.readAllBytes(Paths.get(path));
@@ -505,6 +531,14 @@ public class TestUtils {
     }
   }
 
+  /**
+   * Checks if the two given lists contain the exact same items (as identified by their equals() method).
+   * Ignores ordering, so the items in either list can be in any order as long as they are the same and equal in size.
+   *
+   * @param list1 First list to compare.
+   * @param list2 Second list to compare.
+   * @return True if the given lists are the same size and contain the same items (ignoring ordering).
+   */
   public static boolean checkContainsSame(List<? extends Object> list1, Collection<? extends Object> list2) {
     if (list1.size() != list2.size()) return false;
     Collection<Object> list3 = new ArrayList<>();
@@ -513,6 +547,13 @@ public class TestUtils {
     return list3.size() == 0;
   }
 
+  /**
+   * Creates a string representation for a stack trace for an exception.
+   * For logging, failure analysis, etc.
+   *
+   * @param t The throwable for which to create the string.
+   * @return The stack trace as string.
+   */
   public static String toString(Throwable t) {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw);
@@ -520,6 +561,27 @@ public class TestUtils {
     return sw.toString();
   }
 
+  /**
+   * Removes a part of given string.
+   * Text to remove is identified by user defined separator tokens, between which everything is removed.
+   * For example, consider a call such as
+   *
+   * replace("##", "[xx:xx:xx ##UNTIL]## o.c.LogTests", "[08.07.15 15:23:09] o.c.LogTests F").
+   *
+   * This results in a string "[08.07.15 ] o.c.LogTests F".
+   *
+   * In this example, ## is used to contain the control information.
+   * "UNTIL]" defines that we want to remove everything until the "]" string is observed after the prefix.
+   * The prefix in this case is the first 10 characters "[xx:xx:xx ".
+   * Their actual content makes no difference, as it is in effect just an index into the string.
+   * However, using above type of expression makes it easier to read.
+   * The rest of the string is untouched, meaning the template can be only part of the beginning of the string to replace.
+   *
+   * @param separator Used to find the control sequence where to replace stuff.
+   * @param template Defines the template for where to remove text.
+   * @param text The text where we want to remove something.
+   * @return An array where the first item is the resulting text with parts removed. Second is the given template.
+   */
   public static String[] replace(String separator, String template, String text) {
     int i1 = template.indexOf(separator);
     int sl = separator.length();
