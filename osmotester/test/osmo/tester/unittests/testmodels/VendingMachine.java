@@ -8,7 +8,6 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.Requirements;
 import osmo.tester.model.data.ValueSet;
 import osmo.tester.reporting.coverage.CSVCoverageReporter;
-import sun.swing.BakedArrayList;
 
 import java.io.PrintStream;
 import java.util.*;

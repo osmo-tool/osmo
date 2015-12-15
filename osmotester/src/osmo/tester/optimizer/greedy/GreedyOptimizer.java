@@ -299,6 +299,7 @@ public class GreedyOptimizer {
    */
   public static List<TestCase> sortAndPrune(int id, List<TestCase> from, ScoreCalculator calculator, int max) {
     //this sort is here to ensure deterministic results (as far as sequence of steps and scores go..)
+    //TODO: optimize the sort based on something other than full .tostring
     Collections.sort(from, new TestSorter());
     List<TestCase> suite = new ArrayList<>();
 
@@ -329,6 +330,7 @@ public class GreedyOptimizer {
       best = found;
       bestCoverage = best.getCoverage();
 //      System.out.println("best:"+bestScore);
+      //TODO: check if possible to optimize this removal
       from.remove(best);
       suite.add(best);
       //if max length for suite defined, we do not go beyond that

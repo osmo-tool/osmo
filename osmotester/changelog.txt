@@ -131,5 +131,11 @@ v3.4.0 20/8/2014
 -removed common module, moved into osmotester module
 -updated maven build
 -upload to maven central
+v3.5.0 15/11/2015
+-upload new version to maven central with all accumulated fixes
+-fixed multigreedy to be deterministic
+-fixed reducer to be more effective
+-cleaned up some excess code
+-fixed various other issues
 
 

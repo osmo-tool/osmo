@@ -321,6 +321,7 @@ public class TestCoverage {
    */
   public void removeAll(TestCoverage in) {
 //    steps.removeAll(in.steps);
+    //TODO: optimize removes by seeing if list is redone too many times (every remove)
     singles.removeAll((in.singles));
     stepPairs.removeAll(in.stepPairs);
     reqs.removeAll(in.reqs);
