@@ -30,7 +30,8 @@ We run the OSMO Tester generator as a normal Java program and pass it the model 
 ```java
 public class Main {
   public static void main(String[] args) {
-    OSMOTester tester = new OSMOTester(new HelloModel());
+    OSMOTester tester = new OSMOTester();
+    tester.addModelObject(new HelloModel());
     tester.generate(52);
   }
 }
@@ -110,11 +111,13 @@ Length can also be specified explicitly by configuration:
 ```java
 public class Main3 {
   public static void main(String[] args) {
-    OSMOConfiguration.setSeed(52);
-    OSMOTester tester = new OSMOTester(new HelloModel());
-    tester.addTestEndCondition(new Length(5));
-    tester.addSuiteEndCondition(new Length(2));
-    tester.generate();
+    OSMOConfiguration config = new OSMOConfiguration();
+    config.setTestEndCondition(new Length(5));
+    config.setSuiteEndCondition(new Length(2));
+    config.addModelObject(new HelloModel2());
+    OSMOTester tester = new OSMOTester();
+    tester.setConfig(config);
+    tester.generate(52);
   }
 }
 ```
@@ -146,11 +149,13 @@ It is also possible to combine several into one:
 ```java
 public class Main4 {
   public static void main(String[] args) {
-    OSMOConfiguration.setSeed(52);
-    OSMOTester tester = new OSMOTester(new HelloModel2());
-    tester.addTestEndCondition(new And(new Length(5), new Probability(0.33)));
-    tester.addSuiteEndCondition(new Length(6));
-    tester.generate();
+    OSMOConfiguration config = new OSMOConfiguration();
+    config.setTestEndCondition(new Length(5));
+    config.setSuiteEndCondition(new Length(2));
+    config.addModelObject(new HelloModel2());
+    OSMOTester tester = new OSMOTester();
+    tester.setConfig(config);
+    tester.generate(52);
   }
 }
 ```
