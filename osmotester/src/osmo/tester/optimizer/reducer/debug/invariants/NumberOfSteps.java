@@ -27,10 +27,7 @@ public class NumberOfSteps {
   }
   
   private void process(String step) {
-    Integer count = stepCounts.get(step);
-    if (count == null) {
-      count = 0;
-    }
+    int count = stepCounts.getOrDefault(step, 0);
     count++;
     stepCounts.put(step, count);
   }

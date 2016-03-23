@@ -49,6 +49,8 @@ public class ErrorHandlingTests {
     } catch (RuntimeException e) {
       assertEquals("@BeforeTest fail", e.getCause().getCause().getMessage());
     }
+    String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
+    assertEquals("@OnError for a guard", "guard", error);
   }
 
   @Test
@@ -65,6 +67,8 @@ public class ErrorHandlingTests {
     } catch (RuntimeException e) {
       assertEquals("@BeforeTest fail", e.getCause().getCause().getMessage());
     }
+    String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
+    assertEquals("@OnError for a guard", "guard", error);
   }
 
   @Test
@@ -80,6 +84,8 @@ public class ErrorHandlingTests {
     } catch (RuntimeException e) {
       assertEquals("@BeforeSuite fail", e.getCause().getCause().getMessage());
     }
+    String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
+    assertEquals("@OnError for a guard", "guard", error);
   }
 
   @Test
@@ -96,6 +102,8 @@ public class ErrorHandlingTests {
     } catch (RuntimeException e) {
       assertEquals("@BeforeSuite fail", e.getCause().getCause().getMessage());
     }
+    String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
+    assertEquals("@OnError for a guard", "guard", error);
   }
 
   @Test
@@ -111,6 +119,8 @@ public class ErrorHandlingTests {
     } catch (RuntimeException e) {
       assertEquals("@AfterTest fail", e.getCause().getCause().getMessage());
     }
+    String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
+    assertEquals("@OnError for a guard", "guard", error);
   }
 
   @Test
@@ -127,6 +137,8 @@ public class ErrorHandlingTests {
     } catch (RuntimeException e) {
       assertEquals("@AfterTest fail", e.getCause().getCause().getMessage());
     }
+    String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
+    assertEquals("@OnError for a guard", "guard", error);
   }
 
   @Test
@@ -142,6 +154,8 @@ public class ErrorHandlingTests {
     } catch (RuntimeException e) {
       assertEquals("@AfterSuite fail", e.getCause().getCause().getMessage());
     }
+    String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
+    assertEquals("@OnError for a guard", "guard", error);
   }
 
   @Test
@@ -158,6 +172,8 @@ public class ErrorHandlingTests {
     } catch (RuntimeException e) {
       assertEquals("@AfterSuite fail", e.getCause().getCause().getMessage());
     }
+    String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
+    assertEquals("@OnError for a guard", "guard", error);
   }
 
   @Test
@@ -173,6 +189,8 @@ public class ErrorHandlingTests {
     } catch (RuntimeException e) {
       assertEquals("@Guard fail", e.getMessage());
     }
+    String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
+    assertEquals("@OnError for a guard", "guard", error);
   }
 
   @Test
@@ -191,6 +209,8 @@ public class ErrorHandlingTests {
       assertEquals("@Guard fail", e.getMessage());
     }
     listener.validate("@Guard with trap");
+    String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
+    assertEquals("@OnError for a guard", "guard", error);
   }
 
   @Test
@@ -206,6 +226,8 @@ public class ErrorHandlingTests {
     } catch (RuntimeException e) {
       assertEquals("Error in test generation:@TestStep assert fail", e.getMessage());
     }
+    String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
+    assertEquals("@OnError for a guard", "guard", error);
   }
 
   @Test
@@ -222,6 +244,8 @@ public class ErrorHandlingTests {
     osmo.setSuiteEndCondition(length1);
     osmo.generate(100);
     listener.validate("@TestStep with trap");
+    String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
+    assertEquals("@OnError for a guard", "guard", error);
   }
 
   @Test
@@ -237,6 +261,8 @@ public class ErrorHandlingTests {
     } catch (RuntimeException e) {
       assertEquals("@Pre fail", e.getMessage());
     }
+    String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
+    assertEquals("@OnError for a guard", "guard", error);
   }
 
   @Test
@@ -255,6 +281,8 @@ public class ErrorHandlingTests {
       assertEquals("@Pre fail", e.getMessage());
     }
     listener.validate("@Pre with trap");
+    String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
+    assertEquals("@OnError for a guard", "guard", error);
   }
 
   @Test
@@ -270,6 +298,8 @@ public class ErrorHandlingTests {
     } catch (RuntimeException e) {
       assertEquals("Error in test generation:@Post fail", e.getMessage());
     }
+    String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
+    assertEquals("@OnError for a guard", "guard", error);
   }
 
   @Test
@@ -284,6 +314,8 @@ public class ErrorHandlingTests {
     osmo.setSuiteEndCondition(length1);
     osmo.generate(100);
     listener.validate("@Post with trap");
+    String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
+    assertEquals("@OnError for a guard", "guard", error);
   }
 
   @Test
@@ -299,6 +331,8 @@ public class ErrorHandlingTests {
     } catch (RuntimeException e) {
       assertEquals("@EndCondition fail", e.getMessage());
     }
+    String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
+    assertEquals("@OnError for a guard", "guard", error);
   }
 
   @Test
@@ -317,5 +351,7 @@ public class ErrorHandlingTests {
       assertEquals("@EndCondition fail", e.getMessage());
     }
     listener.validate("@EndCondition with trap");
+    String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
+    assertEquals("@OnError for a guard", "guard", error);
   }
 }

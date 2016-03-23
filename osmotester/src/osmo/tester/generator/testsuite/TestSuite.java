@@ -48,16 +48,16 @@ public class TestSuite {
 
   /**
    * Gives the number of the test case currently being generated.
-   * 
+   *
    * @return Number of previous tests in suite + 1;
    */
   public int currentTestNumber() {
     return testCount;
   }
 
-  /** 
+  /**
    * Start a new test case.
-   * 
+   *
    * @param seed Randomization seed for new test case.
    * @return The test case object to use for generating new test case.
    */
@@ -113,6 +113,15 @@ public class TestSuite {
    */
   public TestCase getCurrentTest() {
     return current;
+  }
+
+  /**
+   * Access to the last test case generated so far.
+   *
+   * @return The last test case so far.
+   */
+  public TestCase getLastTest() {
+    return testCases.get(testCases.size() - 1);
   }
 
   /**
@@ -180,7 +189,7 @@ public class TestSuite {
 
   /**
    * Create requirements object if user did not provide one, and initialize whichever one is used with required values.
-   * 
+   *
    * @param requirements User provided requirements, if any.
    */
   public void initRequirements(Requirements requirements) {
@@ -239,7 +248,7 @@ public class TestSuite {
   public void coveredRequirement(String name) {
     testCoverage.coveredRequirement(name);
   }
-  
+
   public void enableParameterTracking() {
     trackParameters = true;
   }

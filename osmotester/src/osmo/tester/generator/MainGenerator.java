@@ -196,9 +196,9 @@ public class MainGenerator {
 
   private void handleError(TestCase test, Throwable e) {
     test.setFailed(true);
-    TestCaseStep step = suite.getCurrentTest().getCurrentStep();
+    TestCaseStep step = test.getCurrentStep();
     if (step != null) {
-      test.getCurrentStep().setFailed(true);
+      step.setFailed(true);
     }
     Throwable unwrap = unwrap(e);
     String errorMsg = "Error in test generation:" + unwrap.getMessage();
@@ -209,6 +209,7 @@ public class MainGenerator {
     }
 
     listeners.testError(test, unwrap);
+    invokeAll(fsm.getOnErrors());
     if (config.shouldStopTestOnError()) {
       suite.storeGeneralState(fsm);
       if (!config.shouldStopGenerationOnError()) return;
@@ -278,6 +279,7 @@ public class MainGenerator {
       } else {
         Throwable unwrapped = unwrap(e);
         listeners.testError(getCurrentTest(), unwrapped);
+        invokeAll(fsm.getOnErrors());
       }
     } finally {
       //we store the "custom" state returned by @StateName tagged methods

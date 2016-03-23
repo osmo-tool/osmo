@@ -45,6 +45,8 @@ public class FSM {
   private Collection<InvocationTarget> afterSuites = new ArrayList<>();
   /** List of model end conditions defining when to stop test generation (single test, not suite). */
   private Collection<InvocationTarget> endConditions = new ArrayList<>();
+  /** List of methods to invoke when there is an error in test generation/execution. */
+  private Collection<InvocationTarget> onErrors = new ArrayList<>();
   /** List of methods to invoke when entering exploration mode */
   private Collection<InvocationTarget> explorationEnablers = new ArrayList<>();
   /** List of method to invoke when entering generation mode. */
@@ -419,5 +421,13 @@ public class FSM {
 
   public Collection<CoverageMethod> getCoverageMethods() {
     return coverageValues;
+  }
+
+  public void addOnError(InvocationTarget target) {
+    onErrors.add(target);
+  }
+
+  public Collection<InvocationTarget> getOnErrors() {
+    return onErrors;
   }
 }

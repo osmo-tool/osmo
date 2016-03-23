@@ -1,18 +1,13 @@
 package osmo.tester.unittests.testmodels;
 
-import osmo.tester.annotation.AfterSuite;
-import osmo.tester.annotation.AfterTest;
-import osmo.tester.annotation.BeforeSuite;
-import osmo.tester.annotation.BeforeTest;
-import osmo.tester.annotation.EndCondition;
-import osmo.tester.annotation.Guard;
-import osmo.tester.annotation.LastStep;
-import osmo.tester.annotation.Post;
-import osmo.tester.annotation.Pre;
-import osmo.tester.annotation.TestStep;
+import osmo.tester.annotation.*;
+import osmo.tester.generator.testsuite.TestCase;
+import osmo.tester.generator.testsuite.TestSuite;
 
 /** @author Teemu Kanstren */
 public class ErrorModel5 {
+  private TestSuite suite;
+
   @BeforeTest
   public void start1() {
   }
@@ -55,5 +50,11 @@ public class ErrorModel5 {
   @EndCondition
   public boolean end1() {
     return false;
+  }
+
+  @OnError
+  public void error() {
+    TestCase test = suite.getCurrentTest();
+    test.setAttribute("error", test.getCurrentStep().getName());
   }
 }

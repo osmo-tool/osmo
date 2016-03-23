@@ -43,6 +43,7 @@ public class ModelPrinter {
     report += "AfterTests: "+targetsToString(fsm.getAfterTests());
     report += "Last Steps: "+targetsToString(fsm.getLastSteps());
     report += "Model EndConditions: "+targetsToString(fsm.getEndConditions());
+    report += "On Errors: "+targetsToString(fsm.getOnErrors());
     report += "Exploration Enablers: "+targetsToString(fsm.getExplorationEnablers());
     report += "Generation Enablers: "+targetsToString(fsm.getGenerationEnablers());
 
