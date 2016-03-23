@@ -56,7 +56,7 @@ public class ExplorationHelper {
       execute(generator, step);
     }
     if (endTest) {
-      generator.afterTest();
+      generator.afterTest(generator.getCurrentTest());
     }
   }
 

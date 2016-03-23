@@ -34,12 +34,22 @@ public class TestSuite {
   private boolean keepTests = true;
   /** Number of tests that have passed through. Even if tests are not kept. And note that parallel suites will differ.. */
   private int testCount = 0;
+  /** Has the suite been finished? */
+  private boolean ended = false;
 
   public TestSuite(TestCoverage coverage) {
     this.coverage = coverage;
   }
 
   public TestSuite() {
+  }
+
+  public boolean isEnded() {
+    return ended;
+  }
+
+  public void setEnded(boolean ended) {
+    this.ended = ended;
   }
 
   public void setKeepTests(boolean keepTests) {

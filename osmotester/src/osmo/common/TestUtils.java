@@ -399,6 +399,32 @@ public class TestUtils {
   }
 
   /**
+   * Provide a list of all sub-directories (non-recursive) in given directory.
+   * Type is identified by suffix. For example type "png" gives list of files ending with ".png".
+   *
+   * @param path     The path where to look for the directories.
+   * @param fullPath If true, returns full path of files. Otherwise just the file name.
+   * @return The list of files found.
+   */
+  public static List<String> listDirs(String path, boolean fullPath) {
+    File folder = new File(path);
+    if (!folder.exists()) throw new IllegalArgumentException("Given path does not exist:" + path);
+    File[] directoryList = folder.listFiles();
+    List<String> dirs = new ArrayList<>();
+
+    for (File file : directoryList) {
+      if (file.isDirectory()) {
+        String name = file.getName();
+        if (fullPath) {
+          dirs.add(file.getAbsolutePath());
+        } else {
+          dirs.add(name);
+        }
+      }
+    }
+    return dirs;
+  }
+  /**
    * Recursively deletes the given path (file or directory).
    *
    * @param path The root folder to delete.

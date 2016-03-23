@@ -5,11 +5,11 @@
   <groupId>net.kanstren.osmo</groupId>
   <artifactId>osmotester</artifactId>
   <packaging>jar</packaging>
-  <version>3.5.0</version>
+  <version>3.6.0</version>
 
   <name>OSMO Tester</name>
   <description>Model Based Test Tool (Java library)</description>
-  <url>https://code.google.com/p/osmo/</url>
+  <url>https://github.com/mukatee/osmo/</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

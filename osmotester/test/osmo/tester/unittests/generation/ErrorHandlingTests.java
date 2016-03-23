@@ -49,8 +49,8 @@ public class ErrorHandlingTests {
     } catch (RuntimeException e) {
       assertEquals("@BeforeTest fail", e.getCause().getCause().getMessage());
     }
-    String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
-    assertEquals("@OnError for a guard", "guard", error);
+    String error = (String) osmo.getSuite().getCurrentTest().getAttribute("error");
+    assertEquals("@OnError for a test failing on @BeforeTest should not be invoked", null, error);
   }
 
   @Test
@@ -67,8 +67,8 @@ public class ErrorHandlingTests {
     } catch (RuntimeException e) {
       assertEquals("@BeforeTest fail", e.getCause().getCause().getMessage());
     }
-    String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
-    assertEquals("@OnError for a guard", "guard", error);
+    String error = (String) osmo.getSuite().getCurrentTest().getAttribute("error");
+    assertEquals("@OnError for a test failing on @BeforeTest should not be invoked", null, error);
   }
 
   @Test
@@ -84,8 +84,7 @@ public class ErrorHandlingTests {
     } catch (RuntimeException e) {
       assertEquals("@BeforeSuite fail", e.getCause().getCause().getMessage());
     }
-    String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
-    assertEquals("@OnError for a guard", "guard", error);
+    //this should not pass first test creation, so ignore it for @OnError
   }
 
   @Test
@@ -102,8 +101,7 @@ public class ErrorHandlingTests {
     } catch (RuntimeException e) {
       assertEquals("@BeforeSuite fail", e.getCause().getCause().getMessage());
     }
-    String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
-    assertEquals("@OnError for a guard", "guard", error);
+    //this should not pass first test creation, so ignore it for @OnError
   }
 
   @Test
@@ -117,10 +115,10 @@ public class ErrorHandlingTests {
       osmo.generate(100);
       fail("Throwing an exception without trap should propagate.");
     } catch (RuntimeException e) {
-      assertEquals("@AfterTest fail", e.getCause().getCause().getMessage());
+      assertEquals("@AfterTest fail", e.getMessage());
     }
-    String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
-    assertEquals("@OnError for a guard", "guard", error);
+    String error = (String) osmo.getSuite().getCurrentTest().getAttribute("error");
+    assertEquals("@OnError for a test failing on @AfterTest should be invoked", "hello", error);
   }
 
   @Test
@@ -133,12 +131,11 @@ public class ErrorHandlingTests {
     osmo.setSuiteEndCondition(length1);
     try {
       osmo.generate(100);
-      fail("Trap should not catch @AfterTest");
     } catch (RuntimeException e) {
-      assertEquals("@AfterTest fail", e.getCause().getCause().getMessage());
+      fail("Trap should catch @AfterTest");
     }
     String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
-    assertEquals("@OnError for a guard", "guard", error);
+    assertEquals("@OnError for a test failing on @AfterTest should be invoked", "hello", error);
   }
 
   @Test
@@ -155,7 +152,7 @@ public class ErrorHandlingTests {
       assertEquals("@AfterSuite fail", e.getCause().getCause().getMessage());
     }
     String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
-    assertEquals("@OnError for a guard", "guard", error);
+    assertEquals("@OnError for a test failing on @AfterSuite should not be invoked", null, error);
   }
 
   @Test
@@ -173,7 +170,7 @@ public class ErrorHandlingTests {
       assertEquals("@AfterSuite fail", e.getCause().getCause().getMessage());
     }
     String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
-    assertEquals("@OnError for a guard", "guard", error);
+    assertEquals("@OnError for a test failing on @AfterSuite should not be invoked", null, error);
   }
 
   @Test
@@ -227,7 +224,7 @@ public class ErrorHandlingTests {
       assertEquals("Error in test generation:@TestStep assert fail", e.getMessage());
     }
     String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
-    assertEquals("@OnError for a guard", "guard", error);
+    assertEquals("@OnError should be invoked on @TestStep failure", "hello", error);
   }
 
   @Test
@@ -245,7 +242,7 @@ public class ErrorHandlingTests {
     osmo.generate(100);
     listener.validate("@TestStep with trap");
     String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
-    assertEquals("@OnError for a guard", "guard", error);
+    assertEquals("@OnError should be invoked on @TestStep failure", "hello", error);
   }
 
   @Test
@@ -262,7 +259,7 @@ public class ErrorHandlingTests {
       assertEquals("@Pre fail", e.getMessage());
     }
     String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
-    assertEquals("@OnError for a guard", "guard", error);
+    assertEquals("@OnError should be invoked on @Pre failure", "hello", error);
   }
 
   @Test
@@ -282,7 +279,7 @@ public class ErrorHandlingTests {
     }
     listener.validate("@Pre with trap");
     String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
-    assertEquals("@OnError for a guard", "guard", error);
+    assertEquals("@OnError should be invoked on @Pre failure", "hello", error);
   }
 
   @Test
@@ -299,7 +296,7 @@ public class ErrorHandlingTests {
       assertEquals("Error in test generation:@Post fail", e.getMessage());
     }
     String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
-    assertEquals("@OnError for a guard", "guard", error);
+    assertEquals("@OnError should be invoked on @Post failure", "hello", error);
   }
 
   @Test
@@ -315,7 +312,7 @@ public class ErrorHandlingTests {
     osmo.generate(100);
     listener.validate("@Post with trap");
     String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
-    assertEquals("@OnError for a guard", "guard", error);
+    assertEquals("@OnError should be invoked on @Post failure", "hello", error);
   }
 
   @Test
@@ -332,7 +329,7 @@ public class ErrorHandlingTests {
       assertEquals("@EndCondition fail", e.getMessage());
     }
     String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
-    assertEquals("@OnError for a guard", "guard", error);
+    assertEquals("@OnError should be invoked on @EndCondition failure", "hello", error);
   }
 
   @Test
@@ -352,6 +349,6 @@ public class ErrorHandlingTests {
     }
     listener.validate("@EndCondition with trap");
     String error = (String) osmo.getSuite().getLastTest().getAttribute("error");
-    assertEquals("@OnError for a guard", "guard", error);
+    assertEquals("@OnError should be invoked on @EndCondition failure", "hello", error);
   }
 }

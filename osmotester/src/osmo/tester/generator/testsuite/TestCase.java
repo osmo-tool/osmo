@@ -40,10 +40,19 @@ public class TestCase {
   private TestCoverage coverage = new TestCoverage();
   private TestCoverage coverageClone = null;
   private final long seed;
+  private boolean ended = false;
 
   public TestCase(long seed) {
     this.id = nextId.getAndIncrement();
     this.seed = seed;
+  }
+
+  public boolean isEnded() {
+    return ended;
+  }
+
+  public void setEnded(boolean ended) {
+    this.ended = ended;
   }
 
   /**

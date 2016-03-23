@@ -1,6 +1,7 @@
 package osmo.tester.unittests.testmodels;
 
 import osmo.tester.annotation.Guard;
+import osmo.tester.annotation.OnError;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.generator.testsuite.TestSuite;
 
@@ -34,5 +35,10 @@ public class ValidTestModel1 {
   @Guard("epixx")
   public boolean kitted() {
     return false;
+  }
+
+  @OnError
+  public void error() {
+
   }
 }

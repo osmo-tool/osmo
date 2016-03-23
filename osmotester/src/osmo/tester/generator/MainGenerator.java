@@ -165,7 +165,11 @@ public class MainGenerator {
     } catch (RuntimeException | AssertionError e) {
       handleError(test, e);
     }
-    afterTest();
+    try {
+      afterTest(test);
+    } catch (RuntimeException | AssertionError e) {
+      handleError(test, e);
+    }
     log.d("Finished new test generation");
     return test;
   }
@@ -214,7 +218,7 @@ public class MainGenerator {
       suite.storeGeneralState(fsm);
       if (!config.shouldStopGenerationOnError()) return;
       //this is done here as aftertest is also invoked by the generator is we do not stop whole generation
-      afterTest();
+      afterTest(test);
       afterSuite();
       if (unwrap instanceof RuntimeException) {
         throw (RuntimeException) unwrap;
@@ -223,7 +227,7 @@ public class MainGenerator {
     } else {
       unwrap.printStackTrace();
     }
-    log.d("Skipped test e due to settings (no fail when e)", e);
+    log.d("Skipped test error due to settings (no fail when error)", e);
   }
 
   /**
@@ -391,6 +395,8 @@ public class MainGenerator {
 
   /** For @AfterSuite annotations. */
   protected void afterSuite() {
+    if (suite.isEnded()) return;
+    suite.setEnded(true);
     Collection<InvocationTarget> afters = fsm.getAfterSuites();
     invokeAll(afters);
     listeners.suiteEnded(suite);
@@ -414,13 +420,19 @@ public class MainGenerator {
   }
 
   /** For @AfterTest annotations. */
-  public void afterTest() {
+  public void afterTest(TestCase test) {
+    if (test.isEnded()) return;
+    test.setEnded(true);
     Collection<InvocationTarget> afters = fsm.getAfterTests();
-    invokeAll(afters);
-    TestCase current = suite.getCurrentTest();
+    try {
+      invokeAll(afters);
+    } catch (RuntimeException | AssertionError e) {
+      handleError(test, e);
+    }
+//    TestCase current = suite.getCurrentTest();
     //update history
     suite.endTest();
-    listeners.testEnded(current);
+    listeners.testEnded(test);
   }
 
   /**

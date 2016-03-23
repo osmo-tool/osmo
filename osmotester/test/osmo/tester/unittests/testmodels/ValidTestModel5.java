@@ -4,6 +4,7 @@ import osmo.tester.annotation.BeforeTest;
 import osmo.tester.annotation.EndCondition;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.LastStep;
+import osmo.tester.annotation.OnError;
 import osmo.tester.annotation.Post;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.model.Requirements;
@@ -82,6 +83,11 @@ public class ValidTestModel5 {
   @LastStep
   public void last() {
     out.print(":last");
+  }
+
+  @OnError
+  public void error() {
+
   }
 
   @EndCondition
