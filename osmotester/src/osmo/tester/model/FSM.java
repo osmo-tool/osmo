@@ -97,12 +97,12 @@ public class FSM {
    *
    * @param errors Errors to report in addition to those found here.
    */
-  public void checkFSM(String errors) {
+  public void checkFSM(StringBuilder errors) {
 //    if (checked) return;
 //    checked = true;
     log.d("Checking FSM validity");
     if (transitions.size() == 0) {
-      errors += "No test steps found in given model object. Model cannot be processed.\n";
+      errors.append("No test steps found in given model object. Model cannot be processed.\n");
     }
     List<String> transitionNames = new ArrayList<>();
     List<String> groupNames = new ArrayList<>();
@@ -111,13 +111,13 @@ public class FSM {
       TransitionName name = transition.getName();
       log.d("Checking test step:" + name);
       if (target == null) {
-        errors += "Test step without invocation target" + name + "\n";
+        errors.append("Test step without invocation target" + name + "\n");
         log.d("Error: Found transition without invocation target - " + name);
       }
-      errors = addGenericElements(transition, errors);
-      errors = addSpecificGuards(transition, errors);
-      errors = addSpecificPrePosts(transition, errors);
-      errors = addNegatedGuards(transition, errors);
+      addGenericElements(transition, errors);
+      addSpecificGuards(transition, errors);
+      addSpecificPrePosts(transition, errors);
+      addNegatedGuards(transition, errors);
       transition.sort();
       transitionNames.add(transition.getStringName());
       String groupName = transition.getGroupName().toString();
@@ -125,13 +125,13 @@ public class FSM {
         groupNames.add(groupName);
       }
     }
-    errors = checkGuards(specificGuards, errors, "@Guard");
-    errors = checkGuards(negatedGuards, errors, "Negation");
-    errors = checkGuards(specificPre, errors, "@Pre");
-    errors = checkGuards(specificPost, errors, "@Post");
+    checkGuards(specificGuards, errors, "@Guard");
+    checkGuards(negatedGuards, errors, "Negation");
+    checkGuards(specificPre, errors, "@Pre");
+    checkGuards(specificPost, errors, "@Post");
     for (String groupName : groupNames) {
       if (transitionNames.contains(groupName)) {
-        errors += "Group name same as a step name ("+groupName+"). Must be different.\n";
+        errors.append("Group name same as a step name ("+groupName+"). Must be different.\n");
       }
     }
     if (errors.length() > 0) {
@@ -140,28 +140,26 @@ public class FSM {
     log.d("FSM checked");
   }
 
-  private String checkGuards(List<FSMGuard> guards, String errors, String errorMsg) {
+  private void checkGuards(List<FSMGuard> guards, StringBuilder errors, String errorMsg) {
     for (FSMGuard guard : guards) {
       if (guard.getCount() == 0) {
         TransitionName name = guard.getName();
         //length 0 is the case where user has used what is considered camelcase notation but has not given valid name
         //since that should have been caught already before, we do not add another e for it here
         //TODO: tests for these
-        if (name.toString().length() == 0) return errors;
-        errors += errorMsg+" without matching step:" + name +".\n";
+        if (name.toString().length() == 0) return;
+        errors.append(errorMsg+" without matching step:" + name +".\n");
       }
     }
-    return errors;
   }
 
   /**
    * Add generic guards and pre- post- methods to all test steps.
    *
    * @param step       The test step to check.
-   * @param errors     The current e message string.
-   * @return The e msg string given with possible new errors appended.
+   * @param errors     The current error message string.
    */
-  private String addGenericElements(FSMTransition step, String errors) {
+  private void addGenericElements(FSMTransition step, StringBuilder errors) {
     //we add all generic guards to the set of guards for this step. doing it here includes them in the checks
     for (InvocationTarget guard : genericGuards) {
       step.addGuard(guard);
@@ -172,7 +170,6 @@ public class FSM {
     for (InvocationTarget post : genericPost) {
       step.addPost(post);
     }
-    return errors;
   }
 
   /**
@@ -180,9 +177,8 @@ public class FSM {
    *
    * @param transition The transition to process.
    * @param errors Possible errors so far.
-   * @return The old and new errors.
    */
-  private String addSpecificGuards(FSMTransition transition, String errors) {
+  private void addSpecificGuards(FSMTransition transition, StringBuilder errors) {
     TransitionName name = transition.getName();
     TransitionName groupName = transition.getGroupName();
     for (FSMGuard guard : specificGuards) {
@@ -193,7 +189,6 @@ public class FSM {
         guard.found();
       }
     }
-    return errors;
   }
 
   /**
@@ -201,9 +196,8 @@ public class FSM {
    *
    * @param transition The transition to process.
    * @param errors Possible errors so far.
-   * @return The old and new errors.
    */
-  private String addSpecificPrePosts(FSMTransition transition, String errors) {
+  private void addSpecificPrePosts(FSMTransition transition, StringBuilder errors) {
     TransitionName name = transition.getName();
     TransitionName groupName = transition.getGroupName();
     for (FSMGuard pre : specificPre) {
@@ -222,7 +216,6 @@ public class FSM {
         post.found();
       }
     }
-    return errors;
   }
 
   /**
@@ -232,7 +225,7 @@ public class FSM {
    * @param errors Possible errors so far.
    * @return The old and new errors.
    */
-  private String addNegatedGuards(FSMTransition transition, String errors) {
+  private void addNegatedGuards(FSMTransition transition, StringBuilder errors) {
     TransitionName name = transition.getName();
     TransitionName groupName = transition.getGroupName();
     for (FSMGuard guard : negatedGuards) {
@@ -243,7 +236,6 @@ public class FSM {
         guard.found();
       }
     }
-    return errors;
   }
 
   public FSMTransition getTransition(TransitionName name) {

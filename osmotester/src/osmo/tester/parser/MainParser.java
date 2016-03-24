@@ -2,6 +2,7 @@ package osmo.tester.parser;
 
 import osmo.common.Randomizer;
 import osmo.common.log.Logger;
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.annotation.*;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
@@ -40,8 +41,11 @@ public class MainParser {
   private final Map<Class<? extends Annotation>, AnnotationParser> annotationParsers = new LinkedHashMap<>();
   /** Key = Annotation type, Value = The parser object for that annotation. */
   private final Map<Class, AnnotationParser> fieldParsers = new LinkedHashMap<>();
+  /** Generator configuration, can have also impact on parsing, mainly if method based naming is used. */
+  private final OSMOConfiguration config;
 
-  public MainParser() {
+  public MainParser(OSMOConfiguration config) {
+    this.config = config;
     //we set up the parser objects for the different annotation types
     annotationParsers.put(TestStep.class, new TestStepParser());
     annotationParsers.put(Guard.class, new GuardParser());
@@ -51,7 +55,7 @@ public class MainParser {
     annotationParsers.put(AfterSuite.class, new AfterSuiteParser());
     annotationParsers.put(BeforeSuite.class, new BeforeSuiteParser());
     annotationParsers.put(Pre.class, new PreParser());
-    annotationParsers.put(BeforeStep.class, new BeforeStepParser());
+    annotationParsers.put(BeforeStep.class, new PreParser());
     annotationParsers.put(Post.class, new PostParser());
     annotationParsers.put(AfterStep.class, new AfterStepParser());
     annotationParsers.put(EndCondition.class, new EndConditionParser());
@@ -84,11 +88,12 @@ public class MainParser {
     ParserParameters parameters = new ParserParameters();
     parameters.setSuite(suite);
     parameters.setSeed(seed);
-    String errors = "";
+    parameters.setConfig(config);
+    StringBuilder errors = new StringBuilder();
     TestModels models = new TestModels();
     factory.createModelObjects(models);
     if (models.size() == 0) {
-      errors += "No model objects given. Cannot generate anything.\n";
+      errors.append("No model objects given. Cannot generate anything.\n");
     }
     for (ModelObject mo : models.getModels()) {
       parameters.reset();
@@ -97,11 +102,11 @@ public class MainParser {
       Object obj = mo.getObject();
       parameters.setModel(obj);
       //first we parse generic annotations from class level
-      errors += parseClass(result, parameters);
+      parseClass(result, parameters, errors);
       //next we check any annotated fields that are relevant
-      errors += parseFields(result, parameters);
+      parseFields(result, parameters, errors);
       //finally we check any annotated methods that are relevant
-      errors += parseMethods(result, parameters);
+      parseMethods(result, parameters, errors);
     }
     //finally we check that the generated FSM itself is valid
     fsm.checkFSM(errors);
@@ -109,10 +114,9 @@ public class MainParser {
     return result;
   }
 
-  private String parseClass(ParserResult result, ParserParameters parameters) {
+  private void parseClass(ParserResult result, ParserParameters parameters, StringBuilder errors) {
     Class clazz = parameters.getModelClass();
     Annotation[] annotations = clazz.getAnnotations();
-    String errors = "";
     for (Annotation annotation : annotations) {
       Class<? extends Annotation> annotationClass = annotation.annotationType();
       log.d("class annotation:" + annotationClass);
@@ -125,9 +129,8 @@ public class MainParser {
       //set the annotation itself as a parameter to the used parser object
       parameters.setAnnotation(annotation);
       //and finally parse it
-      errors += parser.parse(result, parameters);
+      parser.parse(result, parameters, errors);
     }
-    return errors;
   }
   /**
    * Parse the relevant annotated fields and pass these to correct {@link AnnotationParser} objects.
@@ -135,12 +138,11 @@ public class MainParser {
    * @param result The parse results will be provided here.
    * @return A string listing all found errors.
    */
-  private String parseFields(ParserResult result, ParserParameters parameters) {
+  private void parseFields(ParserResult result, ParserParameters parameters, StringBuilder errors) {
     Object obj = parameters.getModel();
     //first we find all declared fields of any scope and type (private, protected, ...)
     Collection<Field> fields = getAllFields(obj.getClass());
     log.d("fields " + fields.size());
-    String errors = "";
     //now we loop through all fields defined in the model object
     for (Field field : fields) {
       log.d("field:" + field);
@@ -161,15 +163,14 @@ public class MainParser {
         //set the annotation itself as a parameter to the used parser object
         parameters.setAnnotation(annotation);
         //and finally parse it
-        errors += parser.parse(result, parameters);
+        parser.parse(result, parameters, errors);
       }
       //parse specific types of fields, without annotations (searchableinput)
-      errors = parseField(field, result, parameters, errors);
+      parseField(field, result, parameters, errors);
     }
-    return errors;
   }
 
-  private String parseField(Field field, ParserResult result, ParserParameters parameters, String errors) {
+  private void parseField(Field field, ParserResult result, ParserParameters parameters, StringBuilder errors) {
     log.d("parsefield");
     Class fieldClass = field.getType();
     for (Class parserType : fieldParsers.keySet()) {
@@ -177,11 +178,10 @@ public class MainParser {
         AnnotationParser fieldParser = fieldParsers.get(parserType);
         if (fieldParser != null) {
           log.d("field parser invocation:" + parameters);
-          errors += fieldParser.parse(result, parameters);
+          fieldParser.parse(result, parameters, errors);
         }
       }
     }
-    return errors;
   }
 
   public static Collection<Field> getAllFields(Class clazz) {
@@ -200,13 +200,12 @@ public class MainParser {
    * @param result This is where the parsing results are given.
    * @return String representing any errors encountered.
    */
-  private String parseMethods(ParserResult result, ParserParameters parameters) {
+  private void parseMethods(ParserResult result, ParserParameters parameters, StringBuilder errors) {
     Object obj = parameters.getModel();
     //first we get all methods defined in the test model object (also all scopes -> private, protected, ...)
     Collection<Method> methods = getAllMethods(obj.getClass());
     //there are always some methods inherited from java.lang.Object so we checking them here is pointless. FSM.check will do it
     log.d("methods " + methods.size());
-    String errors = "";
     //loop through all the methods defined in the given object
     for (Method method : methods) {
       log.d("method:" + method);
@@ -225,10 +224,9 @@ public class MainParser {
         //set the annotation itself as a parameter to the used parser object
         parameters.setAnnotation(annotation);
         //and finally parse it
-        errors += parser.parse(result, parameters);
+        parser.parse(result, parameters, errors);
       }
     }
-    return errors;
   }
 
   private Collection<Method> getAllMethods(Class clazz) {

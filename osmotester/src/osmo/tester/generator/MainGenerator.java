@@ -126,7 +126,7 @@ public class MainGenerator {
     //re-parse the model, which causes re-creation of the model objects and as such creates the new references
     //to the new object instances. invocationtargets for guards, steps, etc. need updating and this is needed for that.
     //also, we need to recreate the parser to avoid complaints about overlapping requirements definitions etc.
-    MainParser parser = new MainParser();
+    MainParser parser = new MainParser(config);
     ParserResult result = parser.parse(seed, config, suite);
     fsm = result.getFsm();
     invokeAll(fsm.getGenerationEnablers());

@@ -73,6 +73,8 @@ public class OSMOConfiguration implements ModelFactory {
   private List<TestScript> scripts = null;
   /** If true, tracks possible step-pairs. Can take lot of resources on big models. */
   private boolean trackOptions = false;
+  /** Are we using method based step naming? */
+  private boolean methodBasedNaming = false;
 
   public OSMOConfiguration() {
   }
@@ -362,5 +364,13 @@ public class OSMOConfiguration implements ModelFactory {
 
   public OSMOConfiguration cloneMe() {
     return null;
+  }
+
+  public boolean isMethodBasedNaming() {
+    return methodBasedNaming;
+  }
+
+  public void setMethodBasedNaming(boolean methodBasedNaming) {
+    this.methodBasedNaming = methodBasedNaming;
   }
 }

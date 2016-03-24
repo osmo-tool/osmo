@@ -20,23 +20,22 @@ public class CoverageValueParser implements AnnotationParser {
   private static final Logger log = new Logger(CoverageValueParser.class);
 
   @Override
-  public String parse(ParserResult result, ParserParameters parameters) {
+  public void parse(ParserResult result, ParserParameters parameters, StringBuilder errors) {
     CoverageValue cv = (CoverageValue) parameters.getAnnotation();
 
     Method method = parameters.getMethod();
-    String errors = "";
     Class<?> returnType = method.getReturnType();
     String name = "@"+CoverageValue.class.getSimpleName();
     if (returnType != String.class) {
-      errors += "Invalid return type for "+name+" in (\"" + method.getName() + "()\"):" + returnType + ". Should be String.\n";
+      errors.append("Invalid return type for "+name+" in (\"" + method.getName() + "()\"):" + returnType + ". Should be String.\n");
     }
     Class<?>[] parameterTypes = method.getParameterTypes();
     if (parameterTypes.length != 1) {
-      errors += name +" methods must have 1 parameter ("+TestCaseStep.class+"): \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n";
+      errors.append(name +" methods must have 1 parameter ("+TestCaseStep.class+"): \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n");
     }
       
     if (parameterTypes.length > 0 && parameterTypes[0] != TestCaseStep.class) {
-      errors += name +" parameter must be of type "+TestCaseStep.class+": \"" + method.getName() + "()\" has type " + parameterTypes[0]+"\n";
+      errors.append(name +" parameter must be of type "+TestCaseStep.class+": \"" + method.getName() + "()\" has type " + parameterTypes[0]+"\n");
     }
     
     String variableName = cv.value();
@@ -51,6 +50,5 @@ public class CoverageValueParser implements AnnotationParser {
 
     CoverageMethod cm = new CoverageMethod(variableName, new InvocationTarget(parameters, CoverageValue.class));
     result.getFsm().addCoverageMethod(cm);
-    return errors;
   }
 }

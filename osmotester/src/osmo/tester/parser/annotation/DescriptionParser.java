@@ -14,10 +14,9 @@ import osmo.tester.parser.ParserResult;
 public class DescriptionParser implements AnnotationParser {
   
   @Override
-  public String parse(ParserResult result, ParserParameters parameters) {
+  public void parse(ParserResult result, ParserParameters parameters, StringBuilder errors) {
     Description annotation = (Description) parameters.getAnnotation();
     String text = annotation.value();
     result.addDescription(new InvocationTarget(parameters, Description.class), text);
-    return "";
   }
 }

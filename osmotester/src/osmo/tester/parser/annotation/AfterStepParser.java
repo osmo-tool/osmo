@@ -23,15 +23,14 @@ public class AfterStepParser implements AnnotationParser {
   private static final Logger log = new Logger(AfterStepParser.class);
 
   @Override
-  public String parse(ParserResult result, ParserParameters parameters) {
+  public void parse(ParserResult result, ParserParameters parameters, StringBuilder errors) {
     AfterStep post = (AfterStep) parameters.getAnnotation();
 
     Method method = parameters.getMethod();
-    String errors = "";
     String aName = "@"+AfterStep.class.getSimpleName();
     Class<?>[] parameterTypes = method.getParameterTypes();
     if (parameterTypes.length > 0) {
-      errors += aName+" methods are not allowed to have any parameters: \"" + method.getName() + "()\" has " + parameterTypes.length + ".\n";
+      errors.append(aName+" methods are not allowed to have any parameters: \"" + method.getName() + "()\" has " + parameterTypes.length + ".\n");
     }
 
     InvocationTarget target = new InvocationTarget(parameters, AfterStep.class);
@@ -51,7 +50,7 @@ public class AfterStepParser implements AnnotationParser {
           if (targetName.length() == 0) {
             String msg = aName + " method name must be of format xX when using method based naming: " + methodName;
             msg += ". Or if using generic association, name \"all\" must be used.\n";
-            errors += msg;
+            errors.append(msg);
           }
         }
       }
@@ -66,6 +65,5 @@ public class AfterStepParser implements AnnotationParser {
       log.d("created specific post:" + targetName);
       fsm.addSpecificPost(tName, target);
     }
-    return errors;
   }
 }

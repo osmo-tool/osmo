@@ -16,8 +16,7 @@ import java.util.Collection;
  */
 public class SearchableInputParser implements AnnotationParser {
   @Override
-  public String parse(ParserResult result, ParserParameters parameters) {
-    String errors = "";
+  public void parse(ParserResult result, ParserParameters parameters, StringBuilder errors) {
     Field field = parameters.getField();
     field.setAccessible(true);
     Object model = parameters.getModel();
@@ -26,7 +25,8 @@ public class SearchableInputParser implements AnnotationParser {
     try {
       input = (SearchableInput) field.get(model);
       if (input == null) {
-        return name+" must be initialized when defined:" + field.getName() + ".\n";
+        errors.append(name+" must be initialized when defined:" + field.getName() + ".\n");
+        return;
       }
     } catch (IllegalAccessException e) {
       throw new RuntimeException("Unable to parse "+name+" object " + field.getName(), e);
@@ -47,6 +47,5 @@ public class SearchableInputParser implements AnnotationParser {
         }
       }
     }
-    return errors;
   }
 }

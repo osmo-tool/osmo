@@ -2,6 +2,7 @@ package osmo.tester.parser.annotation;
 
 import osmo.common.log.Logger;
 import osmo.tester.annotation.Group;
+import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.TestStep;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.InvocationTarget;
@@ -19,11 +20,9 @@ import java.lang.reflect.Method;
  */
 public class TestStepParser implements AnnotationParser {
   private static final Logger log = new Logger(TestStepParser.class);
-  private String errors = "";
 
   @Override
-  public String parse(ParserResult result, ParserParameters parameters) {
-    errors = "";
+  public void parse(ParserResult result, ParserParameters parameters, StringBuilder errors) {
     String type = "";
     Object annotation = parameters.getAnnotation();
     String name = null;
@@ -47,36 +46,34 @@ public class TestStepParser implements AnnotationParser {
     if (name.length() == 0) {
       name = parseName(parameters.getMethod().getName());
     }
-    TransitionName tName = checkName(name, result, parameters);
+    TransitionName tName = checkName(name, result, parameters, errors);
     TransitionName groupName = new TransitionName(parameters.getPrefix(), group);
     if (tName == null) {
-      return errors;
+      return;
     }
     createTransition(result, parameters, tName, weight, groupName);
 
     Method method = parameters.getMethod();
     Class<?>[] parameterTypes = method.getParameterTypes();
     if (parameterTypes.length > 0) {
-      errors += "@" + type + " methods are not allowed to have parameters: \"" + 
-              method.getName() + "()\" has " + parameterTypes.length + " parameters.\n";
+      errors.append("@" + type + " methods are not allowed to have parameters: \"" +
+              method.getName() + "()\" has " + parameterTypes.length + " parameters.\n");
     }
-
-    return errors;
   }
 
-  private TransitionName checkName(String name, ParserResult result, ParserParameters parameters) {
+  private TransitionName checkName(String name, ParserResult result, ParserParameters parameters, StringBuilder errors) {
     if (name.length() == 0) {
-      errors += "Test step must have a name. Define the \"name\" or \"value\" property.\n";
+      errors.append("Test step must have a name. Define the \"name\" or \"value\" property.\n");
       return null;
     }
     if (name.equals("all")) {
-      errors += "Test step name \"all\" is reserved. Choose another.\n";
+      errors.append("Test step name \"all\" is reserved. Choose another.\n");
       return null;
     }
     String prefix = parameters.getPrefix();
     TransitionName tName = new TransitionName(prefix, name);
     if (result.getFsm().getTransition(tName) != null) {
-      errors += "Test step name must be unique. '"+tName+"' given several times.\n";
+      errors.append("Test step name must be unique. '"+tName+"' given several times.\n");
       return null;
     }
     return tName;

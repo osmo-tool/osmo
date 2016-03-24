@@ -28,6 +28,7 @@ public class CoverageValueMethodTests {
   @Before
   public void testSetup() {
     osmo = new OSMOTester();
+    osmo.getConfig().setMethodBasedNaming(true);
   }
 
   @Test

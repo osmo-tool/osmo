@@ -18,15 +18,13 @@ public class BeforeSuiteParser implements AnnotationParser {
   private static final Logger log = new Logger(BeforeSuiteParser.class);
 
   @Override
-  public String parse(ParserResult result, ParserParameters parameters) {
+  public void parse(ParserResult result, ParserParameters parameters, StringBuilder errors) {
     BeforeSuite before = (BeforeSuite) parameters.getAnnotation();
     result.getFsm().addBeforeSuite(new InvocationTarget(parameters, BeforeSuite.class));
     Method method = parameters.getMethod();
-    String errors = "";
     Class<?>[] parameterTypes = method.getParameterTypes();
     if (parameterTypes.length > 0) {
-      errors += "@" + BeforeSuite.class.getSimpleName() + " methods are not allowed to have parameters: \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n";
+      errors.append("@" + BeforeSuite.class.getSimpleName() + " methods are not allowed to have parameters: \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n");
     }
-    return errors;
   }
 }

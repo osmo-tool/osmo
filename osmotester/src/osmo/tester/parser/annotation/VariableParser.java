@@ -18,8 +18,7 @@ public class VariableParser implements AnnotationParser {
   private static final Logger log = new Logger(VariableParser.class);
 
   @Override
-  public String parse(ParserResult result, ParserParameters parameters) {
-    String errors = "";
+  public void parse(ParserResult result, ParserParameters parameters, StringBuilder errors) {
     String annotationName = "@" + Variable.class.getSimpleName();
 //    Variable annotation = (Variable) parameters.getAnnotation();
     Field field = parameters.getField();
@@ -37,7 +36,6 @@ public class VariableParser implements AnnotationParser {
     }
     result.getFsm().addModelVariable(var);
     log.d("Parsed variable:" + annotationName);
-    return errors;
   }
 
 }

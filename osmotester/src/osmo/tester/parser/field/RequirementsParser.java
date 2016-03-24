@@ -19,8 +19,7 @@ public class RequirementsParser implements AnnotationParser {
   private Requirements req = null;
 
   @Override
-  public String parse(ParserResult result, ParserParameters parameters) {
-    String errors = "";
+  public void parse(ParserResult result, ParserParameters parameters, StringBuilder errors) {
     Field field = parameters.getField();
     //to enable access to private fields
     field.setAccessible(true);
@@ -29,17 +28,16 @@ public class RequirementsParser implements AnnotationParser {
     try {
       Requirements req = (Requirements) field.get(model);
       if (req == null) {
-        errors += name+" object was null, which is not allowed.\n";
-        return errors;
+        errors.append(name+" object was null, which is not allowed.\n");
+        return;
       }
       if (this.req != null && this.req != req) {
-        errors += "Only one "+name+" object instance allowed in the model.\n";
+        errors.append("Only one "+name+" object instance allowed in the model.\n");
       }
       result.setRequirements(req);
       this.req = req;
     } catch (IllegalAccessException e) {
       throw new RuntimeException("Unable to parse/set "+name+" object:"+field.getName(), e);
     }
-    return errors;
   }
 }

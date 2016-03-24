@@ -61,8 +61,6 @@ public class Randomizer {
   }
 
   /**
-   * TODO: change this to generate values between Integer.MIN_VALUE and Integer.MAX_VALUE
-   *
    * @param min Minimum for the generated value.
    * @param max Maximum for the generated value.
    * @return Random integer between the given bounds, bounds included.
@@ -194,7 +192,6 @@ public class Randomizer {
       total += weight;
       totals.add(total);
     }
-//    System.out.println("weights:"+totals+" total:"+total);
     return sumWeightedRandomFrom(totals);
   }
 

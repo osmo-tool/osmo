@@ -54,11 +54,11 @@ public class GroupModel1 {
     return false;
   }
 
-  @Pre
+  @Pre("big-group")
   public void ohnoes() {
   }
 
-  @Post
+  @Post("big-group")
   public void ohnoes2() {
   }
 }

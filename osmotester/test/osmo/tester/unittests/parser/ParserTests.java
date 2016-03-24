@@ -32,14 +32,16 @@ import static junit.framework.Assert.*;
 /** @author Teemu Kanstren */
 public class ParserTests {
   private MainParser parser = null;
+  private OSMOConfiguration config;
 
   @Before
   public void setup() {
-    parser = new MainParser();
+    config = new OSMOConfiguration();
+    config.setMethodBasedNaming(true);
+    parser = new MainParser(config);
   }
 
   private OSMOConfiguration conf(Object... modelObjects) {
-    OSMOConfiguration config = new OSMOConfiguration();
     SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
     config.setFactory(factory);
     for (Object mo : modelObjects) {
@@ -49,7 +51,7 @@ public class ParserTests {
   }
 
   @Test
-  public void testModel1() throws Exception {
+  public void testModel1WithMethodNaming() throws Exception {
     EmptyTestModel1 model = new EmptyTestModel1();
     ParserResult result = parser.parse(1, conf(model), new TestSuite());
     FSM fsm = result.getFsm();
@@ -61,6 +63,27 @@ public class ParserTests {
     assertTransitionPresent(fsm, "hello", 1, 2);
     assertTransitionPresent(fsm, "world", 3, 1);
     assertTransitionPresent(fsm, "epixx", 3, 3);
+    assertEquals("Number of end conditions", 2, fsm.getEndConditions().size());
+    assertEquals("Number of generation enablers", 1, fsm.getGenerationEnablers().size());
+    assertEquals("Number of exploration enablers", 1, fsm.getExplorationEnablers().size());
+    assertNotNull("Should have TestSuite set", model.getHistory());
+  }
+
+  @Test
+  public void testModel1WithoutMethodNaming() throws Exception {
+    config.setMethodBasedNaming(false);
+    parser = new MainParser(config);
+    EmptyTestModel1 model = new EmptyTestModel1();
+    ParserResult result = parser.parse(1, conf(model), new TestSuite());
+    FSM fsm = result.getFsm();
+    assertEquals("Number of @Before methods", 2, fsm.getBeforeTests().size());
+    assertEquals("Number of @BeforeSuite methods", 1, fsm.getBeforeSuites().size());
+    assertEquals("Number of @After methods", 1, fsm.getAfterTests().size());
+    assertEquals("Number of @AfterSuite methods", 1, fsm.getAfterSuites().size());
+    //these also test for the correct number of guards
+    assertTransitionPresent(fsm, "hello", 3, 2);
+    assertTransitionPresent(fsm, "world", 3, 1);
+    assertTransitionPresent(fsm, "epixx", 5, 3);
     assertEquals("Number of end conditions", 2, fsm.getEndConditions().size());
     assertEquals("Number of generation enablers", 1, fsm.getGenerationEnablers().size());
     assertEquals("Number of exploration enablers", 1, fsm.getExplorationEnablers().size());
@@ -186,7 +209,7 @@ public class ParserTests {
   }
   
   @Test
-  public void testPartialModels() {
+  public void testPartialModelsWithMethodNaming() {
     Requirements req = new Requirements();
     PartialModel1 model1 = new PartialModel1(req, null);
     PartialModel2 model2 = new PartialModel2(req, null);
@@ -208,11 +231,35 @@ public class ParserTests {
   }
 
   @Test
+  public void testPartialModelsWithoutMethodNaming() {
+    config.setMethodBasedNaming(false);
+    parser = new MainParser(config);
+    Requirements req = new Requirements();
+    PartialModel1 model1 = new PartialModel1(req, null);
+    PartialModel2 model2 = new PartialModel2(req, null);
+    ParserResult result = parser.parse(1, conf(model1, model2), new TestSuite());
+    FSM fsm = result.getFsm();
+    assertEquals("Number of @BeforeTest methods", 2, fsm.getBeforeTests().size());
+    assertEquals("Number of @BeforeSuite methods", 2, fsm.getBeforeSuites().size());
+    assertEquals("Number of @AfterTest methods", 2, fsm.getAfterTests().size());
+    assertEquals("Number of @AfterSuite methods", 1, fsm.getAfterSuites().size());
+    assertEquals("Number of @ExplorationEnabler methods", 2, fsm.getExplorationEnablers().size());
+    assertEquals("Number of @GenerationEnabler methods", 1, fsm.getGenerationEnablers().size());
+    assertNotNull("@StateDescription method", fsm.getCoverageMethods());
+    //these also test for the correct number of guards
+    assertTransitionPresent(fsm, "Hello", 1, 3);
+    assertTransitionPresent(fsm, "world", 4, 3);
+    assertTransitionPresent(fsm, "epixx", 3, 3);
+    assertEquals("Number of end conditions", 2, fsm.getEndConditions().size());
+    assertNotNull("Should have TestSuite set", model1.getHistory());
+  }
+
+  @Test
   public void noMethods() {
     try {
       ParserResult result = parser.parse(1, conf(new Object()), new TestSuite());
       FSM fsm = result.getFsm();
-      fsm.checkFSM("");
+      fsm.checkFSM(new StringBuilder());
       fail("Should throw exception when no transition methods are available.");
     } catch (Exception e) {
       String msg = e.getMessage();

@@ -1,5 +1,6 @@
 package osmo.tester.parser;
 
+import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestSuite;
 
 import java.lang.annotation.Annotation;
@@ -35,6 +36,8 @@ public class ParserParameters {
   private TestSuite suite = null;
   /** Randomization seed. */
   private Long seed = null;
+  /** Generator (and parser configuration). */
+  private OSMOConfiguration config;
 
   public Object getModel() {
     return model;
@@ -118,5 +121,17 @@ public class ParserParameters {
   public void reset() {
     classAnnotations.clear();
     fieldAnnotations.clear();
+  }
+
+  public void setConfig(OSMOConfiguration config) {
+    this.config = config;
+  }
+
+  public OSMOConfiguration getConfig() {
+    return config;
+  }
+
+  public boolean isMethodBasedNaming() {
+    return config.isMethodBasedNaming();
   }
 }

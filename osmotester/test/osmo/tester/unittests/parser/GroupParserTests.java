@@ -20,14 +20,16 @@ import static junit.framework.Assert.*;
 /** @author Teemu Kanstren */
 public class GroupParserTests {
   private MainParser parser = null;
+  private OSMOConfiguration config = null;
 
   @Before
   public void setup() {
-    parser = new MainParser();
+    config = new OSMOConfiguration();
+    config.setMethodBasedNaming(true);
+    parser = new MainParser(config);
   }
 
   private OSMOConfiguration conf(Object... modelObjects) {
-    OSMOConfiguration config = new OSMOConfiguration();
     SingleInstanceModelFactory factory = new SingleInstanceModelFactory();
     config.setFactory(factory);
     for (Object mo : modelObjects) {

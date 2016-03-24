@@ -18,21 +18,19 @@ public class ExplorationEnablerParser implements AnnotationParser {
   private static final Logger log = new Logger(ExplorationEnablerParser.class);
 
   @Override
-  public String parse(ParserResult result, ParserParameters parameters) {
+  public void parse(ParserResult result, ParserParameters parameters, StringBuilder errors) {
     ExplorationEnabler enabler = (ExplorationEnabler) parameters.getAnnotation();
     Method method = parameters.getMethod();
-    String errors = "";
     Class<?> returnType = method.getReturnType();
     String name = "@" + ExplorationEnabler.class.getSimpleName();
     if (returnType != void.class && returnType != Void.class) {
-      errors += "Invalid return type for " + name + " (\"" + method.getName() + "()\"):" + returnType + ".\n";
+      errors.append("Invalid return type for " + name + " (\"" + method.getName() + "()\"):" + returnType + ".\n");
     }
     Class<?>[] parameterTypes = method.getParameterTypes();
     if (parameterTypes.length > 0) {
-      errors += name + " methods are not allowed to have parameters: \"" + method.getName() + "()\" has " +
-              parameterTypes.length + " parameters.\n";
+      errors.append(name + " methods are not allowed to have parameters: \"" + method.getName() + "()\" has " +
+              parameterTypes.length + " parameters.\n");
     }
     result.getFsm().addExplorationEnabler(new InvocationTarget(parameters, ExplorationEnabler.class));
-    return errors;
   }
 }

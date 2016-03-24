@@ -14,8 +14,7 @@ import java.lang.reflect.Field;
  */
 public class RandomizerParser implements AnnotationParser {
   @Override
-  public String parse(ParserResult result, ParserParameters parameters) {
-    String errors = "";
+  public void parse(ParserResult result, ParserParameters parameters, StringBuilder errors) {
     Field field = parameters.getField();
     field.setAccessible(true);
     Object model = parameters.getModel();
@@ -24,13 +23,13 @@ public class RandomizerParser implements AnnotationParser {
     try {
       rand = (Randomizer) field.get(model);
       if (rand == null) {
-        return name+" must be initialized when defined:" + field.getName() + ".\n";
+        errors.append(name+" must be initialized when defined:" + field.getName() + ".\n");
+        return;
       }
     } catch (IllegalAccessException e) {
       throw new RuntimeException("Unable to parse "+name+" object " + field.getName(), e);
     }
     Long seed = parameters.getSeed();
     rand.setSeed(seed);
-    return errors;
   }
 }

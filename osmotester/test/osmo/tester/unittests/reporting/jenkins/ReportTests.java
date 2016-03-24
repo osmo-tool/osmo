@@ -37,6 +37,7 @@ public class ReportTests {
       file.delete();
     }
     tester = new OSMOTester();
+    tester.getConfig().setMethodBasedNaming(true);
     SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
     format.setTimeZone(TimeZone.getTimeZone("UTC"));
     JenkinsSuite.format = format;

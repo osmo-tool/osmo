@@ -16,5 +16,5 @@ public interface AnnotationParser {
    * @param parameters The information for the annotation parser.
    * @return Error messages from the parser.
    */
-  public String parse(ParserResult result, ParserParameters parameters);
+  public void parse(ParserResult result, ParserParameters parameters, StringBuilder errors);
 }

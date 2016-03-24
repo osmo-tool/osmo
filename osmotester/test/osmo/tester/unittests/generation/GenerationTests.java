@@ -45,6 +45,7 @@ public class GenerationTests {
   @Before
   public void testSetup() {
     osmo = new OSMOTester();
+    osmo.getConfig().setMethodBasedNaming(true);
   }
 
   @Test

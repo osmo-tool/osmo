@@ -74,7 +74,7 @@ public class Reducer {
     rand = new Randomizer(config.getSeed());
 
     //we need a list of all possible step names in the model to build reports in the end
-    MainParser parser = new MainParser();
+    MainParser parser = new MainParser(osmoConfig);
     ParserResult parserResult = parser.parse(0, osmoConfig.getFactory(), null);
     FSM fsm = parserResult.getFsm();
     Collection<FSMTransition> transitions = fsm.getTransitions();

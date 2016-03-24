@@ -18,9 +18,8 @@ public class TestSuiteParser implements AnnotationParser {
   private static final Logger log = new Logger(TestSuiteParser.class);
 
   @Override
-  public String parse(ParserResult result, ParserParameters parameters) {
+  public void parse(ParserResult result, ParserParameters parameters, StringBuilder errors) {
     log.d("TestSuite parser processing");
-    String errors = "";
     Field field = parameters.getField();
     //to enable access to private fields
     field.setAccessible(true);
@@ -29,8 +28,8 @@ public class TestSuiteParser implements AnnotationParser {
     try {
       TestSuite suite = (TestSuite) field.get(model);
       if (suite != null) {
-        errors += name+" value was not null, which is not allowed.\n";
-        return errors;
+        errors.append(name+" value was not null, which is not allowed.\n");
+        return;
       }
       suite = parameters.getSuite();
       field.set(model, suite);
@@ -39,6 +38,5 @@ public class TestSuiteParser implements AnnotationParser {
     } catch (IllegalAccessException e) {
       throw new RuntimeException("Unable to parse/set " + field.getName(), e);
     }
-    return errors;
   }
 }

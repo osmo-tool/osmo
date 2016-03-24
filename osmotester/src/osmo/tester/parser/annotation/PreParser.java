@@ -1,7 +1,7 @@
 package osmo.tester.parser.annotation;
 
 import osmo.common.log.Logger;
-import osmo.tester.annotation.Group;
+import osmo.tester.annotation.BeforeStep;
 import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Pre;
 import osmo.tester.model.FSM;
@@ -14,7 +14,7 @@ import osmo.tester.parser.ParserResult;
 import java.lang.reflect.Method;
 
 /**
- * Parses {@link osmo.tester.annotation.Pre} annotations from the given model object.
+ * Parses {@link osmo.tester.annotation.Pre} and {@link osmo.tester.annotation.BeforeStep} annotations from the given model object.
  *
  * @author Teemu Kanstren
  */
@@ -22,48 +22,42 @@ public class PreParser implements AnnotationParser {
   private static final Logger log = new Logger(PreParser.class);
 
   @Override
-  public String parse(ParserResult result, ParserParameters parameters) {
-    Pre pre = (Pre) parameters.getAnnotation();
-
-    Method method = parameters.getMethod();
-    String errors = "";
-    Class<?>[] parameterTypes = method.getParameterTypes();
-    String aName = "@"+Pre.class.getSimpleName();
-    //return types are not checked because the make no difference for invocation
-    if (parameterTypes.length > 0) {
-      errors += aName+" methods are not allowed to have parameters: \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n";
+  public void parse(ParserResult result, ParserParameters parameters, StringBuilder errors) {
+    Object annotation = parameters.getAnnotation();
+    Class type = null;
+    String[] targetNames = null;
+    if (annotation instanceof Pre) {
+      Pre pre = (Pre) annotation;
+      targetNames = pre.value();
+      type = Pre.class;
+    } else {
+      BeforeStep bs = (BeforeStep) annotation;
+      targetNames = bs.value();
+      type = BeforeStep.class;
     }
 
-    InvocationTarget target = new InvocationTarget(parameters, Pre.class);
+    Method method = parameters.getMethod();
+    Class<?>[] parameterTypes = method.getParameterTypes();
+    String aName = "@" + type.getSimpleName();
+    //return types are not checked because the make no difference for invocation
+    if (parameterTypes.length > 0) {
+      errors.append(aName).append(" methods are not allowed to have parameters: \"" + method.getName() + "()\" has " +
+          parameterTypes.length + " parameters.\n");
+    }
+
+    InvocationTarget target = new InvocationTarget(parameters, type);
     FSM fsm = result.getFsm();
-    String[] targetNames = pre.value();
     String prefix = parameters.getPrefix();
-    String group = parameters.getClassAnnotation(Group.class);
     for (String targetName : targetNames) {
-      log.d("Parsing pre-method '" + targetName + "'");
-      if (targetName.equals(Guard.DEFAULT)) {
-        //If no name is given to pre/post but a group is defined for their class, we use that as our target
-        if (group.length() > 0) {
-          targetName = group;
-        } else {
-          String methodName = parameters.getMethod().getName();
-          targetName = GuardParser.findNameFrom(methodName);
-          if (targetName.length() == 0) {
-            String msg = aName + " method name must be of format xX when using method based naming: " + methodName;
-            msg += ". Or if using generic association, name \"all\" must be used.\n";
-            errors += msg;
-          }
-        }
-      }
+      log.d("Parsing " + aName + "-method '" + targetName + "'");
+      targetName = GuardParser.checkMethodName(targetName, parameters, errors, aName);
       if (targetName.equals("all")) {
         fsm.addGenericPre(target);
-        //generic pre-methods should not be have their own transition or it will fail the FSM check since it is a guard
-        //without a transition
+        //generic pre-methods should not have their own transition or it will fail the FSM check since it is a guard without a transition
         continue;
       }
       TransitionName tName = new TransitionName(prefix, targetName);
       fsm.addSpecificPre(tName, target);
     }
-    return errors;
   }
 }
