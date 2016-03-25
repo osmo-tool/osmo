@@ -111,10 +111,10 @@ public class OSMOTester {
   /**
    * This needs to be synchronized or the reports written and system.out can be messed up.
    * 
-   * @param filename
-   * @param tests
-   * @param seed
-   * @param config
+   * @param filename The base file path to write the results trace in.
+   * @param tests The tests to write the trace for.
+   * @param seed The generation seed used.
+   * @param config Configuration used.
    */
   public static synchronized void writeTrace(String filename, List<TestCase> tests, long seed, OSMOConfiguration config) {
     createHtmlTrace(filename, tests);

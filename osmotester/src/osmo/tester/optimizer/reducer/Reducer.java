@@ -57,6 +57,7 @@ public class Reducer {
 
   /**
    * Starts search using the given generation configuration and given number of parallel threads.
+   * @return Final reducer state, contains information on how the reduction finished.
    */
   public ReducerState search() {
     check();

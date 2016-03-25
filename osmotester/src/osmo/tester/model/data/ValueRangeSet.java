@@ -44,7 +44,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
 
   /**
    * 
-   * @param strategy
+   * @param strategy The generation strategy to use (see static fields).
    * @deprecated use the direct methods..
    */
   public void setStrategy(int strategy) {

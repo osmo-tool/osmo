@@ -23,6 +23,7 @@ public class ScoreCalculator {
   /**
    * Calculates the coverage score for the data represented in this coverage object with the given score configuration.
    *
+   * @param tc The coverage to calculate score for.
    * @return The score for the set described in this object.
    */
   public int calculateScore(TestCoverage tc) {

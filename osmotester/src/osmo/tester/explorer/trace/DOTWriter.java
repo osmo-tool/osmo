@@ -116,6 +116,7 @@ public class DOTWriter {
   /**
    * Write the given content to the given file in the trace directory.
    *
+   * @param dirPath Path to use for directory to put the file in.
    * @param fileName The name of file to write (trace path index).
    * @param content  What to write to file.
    */

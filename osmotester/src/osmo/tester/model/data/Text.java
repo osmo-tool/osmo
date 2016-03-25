@@ -64,6 +64,7 @@ public class Text extends SearchableInput<String> {
    * inserted instead of valid value.
    *
    * @param invalidProbability Value between 0 (0%) and 1 (100%).
+   * @return Selft reference for chaining.
    */
   public Text setInvalidProbability(float invalidProbability) {
     if (invalidProbability < 0 || invalidProbability > 1) {

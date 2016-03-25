@@ -292,6 +292,7 @@ public class GreedyOptimizer {
   /**
    * Same as createSortedSet(int howMany) but does not generate the tests, uses the given set as source instead.
    *
+   * @param id The generator id (when several in parallel).
    * @param from The source set to pick from.
    * @param calculator For calculating coverage score.
    * @param max Maximum number of tests to include in results.

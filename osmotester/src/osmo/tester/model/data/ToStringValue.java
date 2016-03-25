@@ -5,13 +5,14 @@ import osmo.tester.model.VariableValue;
 /**
  * This can be used to provide a {@literal @}Variable value that always is recorded before and after
  * a step (transition) as a variable value.
- * <p>
+ * <br>
  * Example:
  * {@code private AtomicInteger hello = new AtomicInteger(0);}
  *
  * {@code @Variable private ToStringValue helloValue = new ToStringValue(hello);}
- * <p>
- * <p>
+ * <br>
+ *
+ * <br>
  * This will result in one  variable being stored named "helloValue". At each point the string representation of "hello"
  * is modified, it will be stored as coverage value.
  *

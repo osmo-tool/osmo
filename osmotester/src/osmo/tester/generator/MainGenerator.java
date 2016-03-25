@@ -419,7 +419,11 @@ public class MainGenerator {
     return test;
   }
 
-  /** For @AfterTest annotations. */
+  /**
+   * For @AfterTest annotations.
+   *
+   * @param test Test case we just ran.
+   */
   public void afterTest(TestCase test) {
     if (test.isEnded()) return;
     test.setEnded(true);

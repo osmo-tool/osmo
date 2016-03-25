@@ -99,26 +99,41 @@ public class CharSet extends SearchableInput<Character> {
    * Removes the XML tag start and end characters from generation ("{@literal <}" and "{@literal >}") to allow for the
    * generation of data that can be embedded in XML files.
    * Note that it can still produce some invalid options, so be careful out there..
+   *
+   * @return Self reference to enable chaining.
    */
   public CharSet enableXml() {
     reduceBy("<>");
     return this;
   }
 
-  /** Sets the set of generated characters to contain only a-z,A-Z,0-9. */
+  /**
+   * Sets the set of generated characters to contain only a-z,A-Z,0-9.
+   *
+   * @return Self reference to enable chaining.
+   */
   public CharSet asciiLettersAndNumbersOnly() {
     validChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     invalidChars += "åäöÅÄÖ,.<>!\"#%&/()=?´`{[]}\\¨^~';:|-_*-+= ";
     return this;
   }
 
-  /** Sets the set of generated characters to contain only a-z,A-Z,0-9. */
+  /**
+   * Sets the set of generated characters to contain only a-z,A-Z,0-9.
+   *
+   * @return Self reference to enable chaining.
+   */
   public CharSet numbersOnly() {
     validChars = "0123456789";
     invalidChars += "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZåäöÅÄÖ,.<>!\"#%&/()=?´`{[]}\\¨^~';:|-_*-+= ";
     return this;
   }
 
+  /**
+   *
+   * @param validChars The characters to use for the valid char set.
+   * @return Self reference to enable chaining.
+   */
   public CharSet custom(String validChars) {
     this.validChars = validChars;
     return this;

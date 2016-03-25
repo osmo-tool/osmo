@@ -215,6 +215,7 @@ public class TestUtils {
   }
 
   /**
+   * @param <T> Object type for the array.
    * @param array The list of items where to pick one from.
    * @return A randomly picked item from the given list.
    */
@@ -223,6 +224,7 @@ public class TestUtils {
   }
 
   /**
+   * @param <T> Object type for the collection.
    * @param array The list of items where to pick one from.
    * @return A randomly picked item from the given list.
    */
@@ -233,6 +235,7 @@ public class TestUtils {
   /**
    * Picks the minimum number from the given collection. The items in the collection must be types of {@link Number}.
    *
+   * @param <T> Object type for the collection.
    * @param array The list of items where to pick the value from.
    * @return The minimum numeric value from the given collection.
    */

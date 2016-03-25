@@ -97,7 +97,11 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
   private final ManualEndCondition mec = new ManualEndCondition();
   private String historyText = "";
 
-  /** Create the frame. */
+  /**
+   * Create the GUI.
+   *
+   * @param tester The test generator.
+   */
   public ManualAlgorithm(OSMOTester tester) {
     OSMOConfiguration config = tester.getConfig();
     config.setManual(true);
