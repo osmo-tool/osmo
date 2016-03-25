@@ -88,8 +88,8 @@ Dependency:
 
 or direct [link](http://central.maven.org/maven2/net/kanstren/osmo/osmotester/3.5.0/osmotester-3.5.0.jar)
 
-There should be no real dependencies to use the core generator, so just the jar will do most of the time.
-Some of the reports use Velocity, and some of the JUnit integration uses JUnit. But those should not be strict requirements.
+The required core dependencies should be only Log4J2 (api and core jars).
+Some of the reports use Velocity, and some of the JUnit integration uses JUnit. But those should not be strict requirements if you do not use those features.
 
 Documentation
 -------------
