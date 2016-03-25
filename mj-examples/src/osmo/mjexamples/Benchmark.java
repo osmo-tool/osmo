@@ -1,7 +1,6 @@
 package osmo.mjexamples;
 
 import osmo.common.NullPrintStream;
-import osmo.common.log.Logger;
 import osmo.mjexamples.gsm.GSMModelFactory;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.coverage.ScoreConfiguration;
@@ -17,7 +16,6 @@ import java.util.logging.Level;
 /** @author Teemu Kanstren */
 public class Benchmark {
   public static void main(String[] args) {
-    Logger.consoleLevel = Level.INFO;
     Collection<Long> times = new ArrayList<>();
     long sum = 0;
     int RUNS = 10;

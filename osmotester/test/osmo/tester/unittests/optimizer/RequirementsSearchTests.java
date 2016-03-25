@@ -1,7 +1,7 @@
 package osmo.tester.unittests.optimizer;
 
 import org.junit.Test;
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.testsuite.TestCase;
@@ -22,8 +22,6 @@ import static org.junit.Assert.*;
 public class RequirementsSearchTests {
   @Test
   public void model10find4() {
-    Logger.consoleLevel = Level.FINEST;
-    Logger.packageName = "o.t.o.r";
     Model10Factory factory = new Model10Factory();
     ReducerConfig config = new ReducerConfig(111);
     config.setParallelism(1);
@@ -55,9 +53,6 @@ public class RequirementsSearchTests {
 
   @Test
   public void model10find2() {
-//    Logger.consoleLevel = Level.FINEST;
-//    Logger.fileLevel = Level.FINEST;
-    Logger.packageName = "o.t.o.r";
     Model10Factory factory = new Model10Factory();
     ReducerConfig config = new ReducerConfig(111);
     config.setParallelism(1);
@@ -81,8 +76,6 @@ public class RequirementsSearchTests {
 
   @Test
   public void model10find0() {
-    Logger.consoleLevel = Level.FINEST;
-    Logger.packageName = "o.t.o.r";
     Model10Factory factory = new Model10Factory();
     ReducerConfig config = new ReducerConfig(111);
     config.setParallelism(1);
@@ -101,8 +94,5 @@ public class RequirementsSearchTests {
     ReducerState state = reducer.search();
     Map<String,TestCase> tests = state.getRequirementsTests();
     assertEquals("Number of requirements tests", 0, tests.size());
-//    TestCase x3 = tests.get("X3");
-    //we only expect to find this one as 10 is too short for others (unless you are super lucky)
-//    assertEquals("Req X3 length", 3, x3.getLength());
   }
 }

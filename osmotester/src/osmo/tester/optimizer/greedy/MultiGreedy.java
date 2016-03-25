@@ -2,7 +2,7 @@ package osmo.tester.optimizer.greedy;
 
 import osmo.common.Randomizer;
 import osmo.common.TestUtils;
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.coverage.ScoreConfiguration;

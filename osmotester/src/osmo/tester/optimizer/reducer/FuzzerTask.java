@@ -1,7 +1,7 @@
 package osmo.tester.optimizer.reducer;
 
 import osmo.common.Randomizer;
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.Length;

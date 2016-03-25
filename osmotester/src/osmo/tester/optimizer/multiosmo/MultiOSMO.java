@@ -1,7 +1,7 @@
 package osmo.tester.optimizer.multiosmo;
 
 import osmo.common.Randomizer;
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.SingleInstanceModelFactory;

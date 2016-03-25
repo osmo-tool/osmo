@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- status here refers to how much internal debug information log4j prints out (e.g., loaded log4j components). -->
+<Configuration status="WARN">
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5p %c{1.} - %msg%n"/>
+    </Console>
+    <RollingFile name="RollingFile" immediateFlush="false" fileName="logs/osmo.log" filePattern="logs/%d{MM-dd-yyyy}-%i.log.gz">
+      <!-- %d is for date and time, p is for log level, %c{1.} is to print loggers name with initial package names shortened to one letter and dots between,
+           %t prints the current thread, %m is the message and %n is the line feed. %-5p from above is to right-pad to five chars minimum as needed. -->
+      <PatternLayout pattern="%d{DEFAULT} %p %c{1.} [%t] %m%n"/>
+      <Policies>
+        <TimeBasedTriggeringPolicy />
+        <SizeBasedTriggeringPolicy size="100MB"/>
+      </Policies>
+      <DefaultRolloverStrategy max="5"/>
+    </RollingFile>
+  </Appenders>
+  <Loggers>
+    <!--Root level="trace"-->
+    <Root level="INFO">
+      <AppenderRef ref="Console"/>
+      <AppenderRef ref="RollingFile"/>
+    </Root>
+  </Loggers>
+</Configuration>

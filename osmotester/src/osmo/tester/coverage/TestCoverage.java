@@ -1,6 +1,6 @@
 package osmo.tester.coverage;
 
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;

@@ -1,6 +1,6 @@
 package osmo.tester.model.data;
 
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.gui.manualdrive.ValueSetGUI;
 

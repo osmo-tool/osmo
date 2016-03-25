@@ -1,6 +1,6 @@
 package osmo.tester.generator.endcondition.structure;
 
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.testsuite.TestCase;

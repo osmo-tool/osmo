@@ -1,6 +1,6 @@
 package osmo.tester.gui.manualdrive;
 
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;

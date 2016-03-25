@@ -75,8 +75,8 @@ This generates 100 tests, each with 100 steps. Each step is chosen randomly base
 Installing
 ----------
 
-I would recommend to download the source, and using the Ant build script under "osmotester" directory to build it.
-There is also some version in the maven repo.
+Currently the suggested method is to use the Maven repository. Either as a dependency or download the jar file from the repository.
+Dependency:
 
 ```xml
 <dependency>
@@ -87,6 +87,9 @@ There is also some version in the maven repo.
 ```
 
 or direct [link](http://central.maven.org/maven2/net/kanstren/osmo/osmotester/3.5.0/osmotester-3.5.0.jar)
+
+There should be no real dependencies to use the core generator, so just the jar will do most of the time.
+Some of the reports use Velocity, and some of the JUnit integration uses JUnit. But those should not be strict requirements.
 
 Documentation
 -------------

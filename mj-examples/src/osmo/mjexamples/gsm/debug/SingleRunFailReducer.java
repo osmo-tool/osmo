@@ -1,10 +1,9 @@
 package osmo.mjexamples.gsm.debug;
 
 import osmo.common.NullPrintStream;
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.mjexamples.gsm.GSMModelFactory;
 import osmo.tester.OSMOConfiguration;
-import osmo.tester.OSMOTester;
 import osmo.tester.generator.endcondition.Length;
 import osmo.tester.generator.listener.GenerationListener;
 import osmo.tester.generator.testsuite.TestCase;
@@ -28,8 +27,6 @@ import java.util.logging.Level;
  */
 public class SingleRunFailReducer {
   public static void main(String[] args) {
-    Logger.consoleLevel = Level.INFO;
-    Logger.packageName = "o.t.o.r";
     long iterationTime = Long.parseLong(args[0]);
     long totalTime = Long.parseLong(args[1]);
     ReducerConfig config = new ReducerConfig(1);

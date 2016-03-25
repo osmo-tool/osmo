@@ -1,6 +1,6 @@
 package osmo.tester.explorer;
 
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.MainGenerator;

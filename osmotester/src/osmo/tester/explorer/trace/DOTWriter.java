@@ -1,7 +1,7 @@
 package osmo.tester.explorer.trace;
 
 import osmo.common.TestUtils;
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;

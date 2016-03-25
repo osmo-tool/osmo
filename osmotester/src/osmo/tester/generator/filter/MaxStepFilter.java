@@ -1,6 +1,6 @@
 package osmo.tester.generator.filter;
 
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;

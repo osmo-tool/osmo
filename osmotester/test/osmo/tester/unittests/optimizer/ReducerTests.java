@@ -2,7 +2,7 @@ package osmo.tester.unittests.optimizer;
 
 import org.junit.Test;
 import osmo.common.TestUtils;
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.ReflectiveModelFactory;
 import osmo.tester.generator.testsuite.TestCase;
@@ -37,9 +37,6 @@ import static org.junit.Assert.*;
 public class ReducerTests {
   @Test
   public void nothingFound() throws Exception {
-//    Logger.fileLevel = Level.FINEST;
-//    Logger.consoleLevel = Level.FINEST;
-    Logger.packageName = "o.t.o.r";
     ReducerConfig config = new ReducerConfig(111);
     config.setParallelism(1);
     Reducer reducer = new Reducer(config);
@@ -59,16 +56,12 @@ public class ReducerTests {
 
   @Test
   public void probableModel() throws Exception {
-//    Logger.consoleLevel = Level.FINEST;
-    Logger.packageName = "o.t.o.r";
     TestUtils.recursiveDelete("osmo-output");
     ReducerConfig config = new ReducerConfig(111);
     config.setParallelism(1);
     Reducer reducer = new Reducer(config);
     OSMOConfiguration osmoConfig = reducer.getOsmoConfig();
     osmoConfig.setFactory(new ReflectiveModelFactory(ErrorModelProbability.class));
-//    osmoConfig.setTestEndCondition(new Length(50));
-//    osmoConfig.setSuiteEndCondition(new Length(20));
     config.setInitialTime(TimeUnit.SECONDS, 5);
     config.setFuzzTime(TimeUnit.SECONDS, 5);
     config.setShorteningTime(TimeUnit.SECONDS, 5);
@@ -92,8 +85,6 @@ public class ReducerTests {
 
   @Test
   public void model10() throws Exception {
-    Logger.consoleLevel = Level.INFO;
-    Logger.packageName = "o.t.o.r";
     ReducerConfig config = new ReducerConfig(111);
     config.setStrictReduction(false);
     config.setParallelism(1);
@@ -134,8 +125,6 @@ public class ReducerTests {
 
   @Test
   public void startTest() throws Exception {
-//    Logger.consoleLevel = Level.FINEST;
-    Logger.packageName = "o.t.o.r";
     ReducerConfig config = new ReducerConfig(111);
     config.setParallelism(1);
     //changed here on 8apr15
@@ -169,7 +158,6 @@ public class ReducerTests {
     assertEquals("Reducer report", expected, report);
     List<String> files = TestUtils.listFiles("osmo-output/reducer-111", ".html", false);
     assertEquals("Generated report files", "[final-tests.html]", files.toString());
-    System.out.println("done");
   }
 
   @Test

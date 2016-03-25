@@ -1,7 +1,7 @@
 package osmo.tester.explorer;
 
 import osmo.common.Randomizer;
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.coverage.TestCoverage;

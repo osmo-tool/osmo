@@ -108,7 +108,6 @@ public class CalculatorModel2 {
     OSMOTester tester = new OSMOTester();
     tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel2.class));
     tester.setAlgorithm(new RandomAlgorithm());
-    tester.setDebug(true);
     tester.setSuiteEndCondition(new Length(10));
     tester.setTestEndCondition(new Length(10));
     tester.generate(55);

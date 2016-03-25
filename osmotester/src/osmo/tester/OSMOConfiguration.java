@@ -100,6 +100,7 @@ public class OSMOConfiguration implements ModelFactory {
     this.keepTests = cloneMe.keepTests;
     this.scripts = cloneMe.scripts;
     this.trackOptions = cloneMe.trackOptions;
+    this.methodBasedNaming = cloneMe.methodBasedNaming;
   }
 
   public boolean isKeepTests() {

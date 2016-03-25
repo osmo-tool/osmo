@@ -1,6 +1,6 @@
 package osmo.tester.parser.field;
 
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.model.Requirements;
 import osmo.tester.parser.AnnotationParser;
 import osmo.tester.parser.ParserParameters;

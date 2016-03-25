@@ -1,12 +1,8 @@
 package osmo.tester.parser.annotation;
 
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.annotation.AfterStep;
-import osmo.tester.annotation.BeforeStep;
-import osmo.tester.annotation.Group;
-import osmo.tester.annotation.Guard;
 import osmo.tester.annotation.Post;
-import osmo.tester.annotation.Pre;
 import osmo.tester.model.FSM;
 import osmo.tester.model.InvocationTarget;
 import osmo.tester.model.TransitionName;

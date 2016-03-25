@@ -1,7 +1,7 @@
 package osmo.tester.model;
 
 import osmo.common.OSMOException;
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.parser.ParserParameters;
 
 import java.lang.reflect.Method;

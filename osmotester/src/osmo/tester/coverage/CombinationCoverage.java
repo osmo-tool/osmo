@@ -1,6 +1,6 @@
 package osmo.tester.coverage;
 
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.model.VariableValue;
 
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package osmo.tester.model;
 
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;

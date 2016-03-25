@@ -1,6 +1,6 @@
 package osmo.mjexamples.ecinema;
 
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.annotation.BeforeTest;
@@ -435,7 +435,6 @@ public class ECinemaV2 {
   }
 
   public static void mainE(String[] args) {
-    Logger.consoleLevel = Level.INFO;
     ExplorerAlgorithm.trackCoverage = true;
     long seed = Long.parseLong(args[0]);
     int cores = Integer.parseInt(args[1]);
@@ -462,7 +461,6 @@ public class ECinemaV2 {
   }
 
   public static void main(String[] args) {
-    Logger.consoleLevel = Level.INFO;
     long seed = Long.parseLong(args[0]);
     int cores = Integer.parseInt(args[1]);
     int population = Integer.parseInt(args[2]);

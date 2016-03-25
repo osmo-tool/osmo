@@ -1,7 +1,7 @@
 package osmo.tester;
 
 import osmo.common.TestUtils;
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.coverage.ScoreConfiguration;
 import osmo.tester.coverage.TestCoverage;
@@ -198,16 +198,6 @@ public class OSMOTester {
    */
   public void setAlgorithm(FSMTraversalAlgorithm algorithm) {
     config.setAlgorithm(algorithm);
-  }
-
-  /**
-   * If true, d information is printed to console and file.
-   *
-   * @param debug True for d information, false for no such information.
-   */
-  public void setDebug(boolean debug) {
-    if (debug) Logger.consoleLevel = Level.FINE;
-     else Logger.consoleLevel = Level.INFO;
   }
 
   public void addListener(GenerationListener listener) {

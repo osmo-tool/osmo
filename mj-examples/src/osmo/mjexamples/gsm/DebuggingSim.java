@@ -1,6 +1,6 @@
 package osmo.mjexamples.gsm;
 
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.explorer.ExplorationConfiguration;
 import osmo.tester.explorer.OSMOExplorer;
 import osmo.tester.model.ModelFactory;
@@ -12,7 +12,6 @@ import java.util.logging.Level;
 /** @author Teemu Kanstren */
 public class DebuggingSim {
   public static void main(String[] args) {
-    Logger.consoleLevel = Level.INFO;
     OSMOExplorer explorer = new OSMOExplorer();
     GSMModelFactory factory = new GSMModelFactory(System.out);
     //550,4345 = e in test assert, not in explorer..

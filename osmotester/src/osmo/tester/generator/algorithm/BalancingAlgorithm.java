@@ -1,7 +1,7 @@
 package osmo.tester.generator.algorithm;
 
 import osmo.common.Randomizer;
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.generator.testsuite.TestSuite;

@@ -3,7 +3,7 @@ package osmo.tester.optimizer.reducer;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import osmo.common.TestUtils;
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.optimizer.reducer.debug.Invariants;
 

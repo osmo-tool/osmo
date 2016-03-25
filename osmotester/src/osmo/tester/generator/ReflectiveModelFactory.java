@@ -1,6 +1,6 @@
 package osmo.tester.generator;
 
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.model.ModelFactory;
 import osmo.tester.model.TestModels;
 

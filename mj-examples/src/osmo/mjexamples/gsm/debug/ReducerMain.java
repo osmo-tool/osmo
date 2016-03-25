@@ -1,7 +1,7 @@
 package osmo.mjexamples.gsm.debug;
 
 import osmo.common.NullPrintStream;
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.mjexamples.gsm.GSMModelFactory;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.optimizer.reducer.Reducer;
@@ -15,7 +15,6 @@ import java.util.logging.Level;
  */
 public class ReducerMain {
   public static void main(String[] args) {
-    Logger.consoleLevel = Level.INFO;
     long seed = Long.parseLong(args[0]);
     System.out.println("Using seed:"+seed);
     ReducerConfig config = new ReducerConfig(seed);

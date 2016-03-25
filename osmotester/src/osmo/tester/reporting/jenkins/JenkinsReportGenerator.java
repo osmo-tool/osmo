@@ -2,7 +2,7 @@ package osmo.tester.reporting.jenkins;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.filter.StepFilter;

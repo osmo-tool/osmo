@@ -1,7 +1,7 @@
 package osmo.tester.generator;
 
 import osmo.common.OSMOException;
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;

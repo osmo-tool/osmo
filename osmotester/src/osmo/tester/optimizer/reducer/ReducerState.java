@@ -1,6 +1,6 @@
 package osmo.tester.optimizer.reducer;
 
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.generator.testsuite.TestCase;
 
 import java.util.*;

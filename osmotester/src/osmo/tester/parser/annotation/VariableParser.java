@@ -1,6 +1,6 @@
 package osmo.tester.parser.annotation;
 
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.annotation.Variable;
 import osmo.tester.model.VariableField;
 import osmo.tester.parser.AnnotationParser;

@@ -1,7 +1,7 @@
 package osmo.tester.parser;
 
 import osmo.common.Randomizer;
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.annotation.*;
 import osmo.tester.generator.testsuite.TestSuite;

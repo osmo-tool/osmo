@@ -1,6 +1,6 @@
 package osmo.tester.parser.annotation;
 
-import osmo.common.log.Logger;
+import osmo.common.Logger;
 import osmo.tester.annotation.CoverageValue;
 import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.model.CoverageMethod;
