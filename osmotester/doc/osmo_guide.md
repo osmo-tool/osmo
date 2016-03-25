@@ -100,9 +100,9 @@ public class VendingExample {
 
   @TestStep("vend")
   public void vend() {
-    scripter.step("VEND ("+bottles+")");
+    scripter.step("VEND ("+items+")");
     cents -= 100;
-    bottles--;
+    items--;
   }
 
   @EndCondition
@@ -117,7 +117,8 @@ public class VendingExample {
   }
 
   public static void main(String[] args) {
-    OSMOTester tester = new OSMOTester(new VendingExample());
+    OSMOTester tester = new OSMOTester();
+    tester.addModelObject(new VendingExample());
     tester.generate(55);
   }
 }
@@ -317,7 +318,8 @@ a test generation algorithm, and enabling or disabling debug logging.
 In Listing 1 the test generation is initiated with the following the following fragment:
 ```java
   public static void main(String[] args) {
-    OSMOTester tester = new OSMOTester(new VendingExample());
+    OSMOTester tester = new OSMOTester();
+    tester.addModelObject(new VendingExample());
     tester.generate(55);
   }
 ```
