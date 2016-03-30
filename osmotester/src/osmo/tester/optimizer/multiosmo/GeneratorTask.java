@@ -17,59 +17,57 @@ import java.util.concurrent.Callable;
  * 
  * @author Teemu Kanstren 
  */
-public class GeneratorTask implements Callable<TestCoverage> {
+public class GeneratorTask implements Callable<GeneratorTask.Result> {
   /** The generator configuration. */
   private final OSMOConfiguration config;
   /** Base seed randomizer for the generators running in this task. */
   private final Randomizer seeder;
   /** The minimum time the iterations need to run. */
   private final Time time;
-  /** A unique ID for this task, for writing traces. */
+  /** A unique ID for this task. */
   private final int id;
   /** Next ID for next parallel task.. */
   private static volatile int nextId = 1;
-  /** Write generator traces for the generated tests? */
-  private final boolean traceAll;
-  /** Print coverage in the end? */
-  private final boolean printCoverage;
 
-  public GeneratorTask(OSMOConfiguration config, Time time, long seed, boolean traceAll, boolean printCoverage) {
+  public GeneratorTask(OSMOConfiguration config, Time time, long seed) {
     this.config = config;
     this.seeder = new Randomizer(seed);
     this.time = time;
     this.id = nextId++;
-    this.traceAll = traceAll;
-    this.printCoverage = printCoverage;
   }
 
   @Override
-  public TestCoverage call() throws Exception {
-    TestCoverage tc = new TestCoverage();
+  public GeneratorTask.Result call() throws Exception {
+    GeneratorTask.Result result = new GeneratorTask.Result();
     time.init(0, null, config);
-    int i = 1;
     while (!time.endTest(null, null)) {
       OSMOTester tester = new OSMOTester();
       tester.setConfig(config);
-      tester.setPrintCoverage(printCoverage);
       long seed = seeder.nextLong();
       tester.generate(seed);
-      TestSuite suite = tester.getSuite();
-      List<TestCase> tests = suite.getAllTestCases();
-      TestCoverage tc2 = new TestCoverage(tests);
-      tc.addCoverage(tc2);
-      if (traceAll) {
-        OSMOTester.writeTrace("osmo-output/mosmo-task-"+id+"-i-"+i, tests, seed, config);
-      } else {
-        List<TestCase> failed = new ArrayList<>();
-        for (TestCase test : tests) {
-          if (test.isFailed()) {
-            failed.add(test);
-          }
-        }
-        if (failed.size() > 0) OSMOTester.writeTrace("osmo-output/mosmo-task-"+id+"-i-"+i, failed, seed, config);
-      }
-      i++;
+      List<TestCase> tests = tester.getSuite().getAllTestCases();
+      result.addTests(tests);
     }
-    return tc;
+    return result;
+  }
+
+  public static class Result {
+    private final List<TestCase> tests = new ArrayList<>();
+    private final TestCoverage tc = new TestCoverage();
+
+    public void addTests(List<TestCase> tests) {
+      this.tests.addAll(tests);
+      for (TestCase test : tests) {
+        tc.addCoverage(test.getCoverage());
+      }
+    }
+
+    public List<TestCase> getTests() {
+      return tests;
+    }
+
+    public TestCoverage getCoverage() {
+      return tc;
+    }
   }
 }

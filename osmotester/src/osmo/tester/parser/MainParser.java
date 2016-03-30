@@ -57,7 +57,7 @@ public class MainParser {
     annotationParsers.put(Pre.class, new PreParser());
     annotationParsers.put(BeforeStep.class, new PreParser());
     annotationParsers.put(Post.class, new PostParser());
-    annotationParsers.put(AfterStep.class, new AfterStepParser());
+    annotationParsers.put(AfterStep.class, new PostParser());
     annotationParsers.put(EndCondition.class, new EndConditionParser());
     annotationParsers.put(OnError.class, new OnErrorParser());
     annotationParsers.put(CoverageValue.class, new CoverageValueParser());

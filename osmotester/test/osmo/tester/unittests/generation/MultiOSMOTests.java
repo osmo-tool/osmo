@@ -11,6 +11,7 @@ import osmo.tester.generator.endcondition.Time;
 import osmo.tester.model.ModelFactory;
 import osmo.tester.model.Requirements;
 import osmo.tester.model.TestModels;
+import osmo.tester.optimizer.multiosmo.GeneratorTask;
 import osmo.tester.optimizer.multiosmo.MultiOSMO;
 import osmo.tester.unittests.testmodels.ErrorModelSleepy;
 import osmo.tester.unittests.testmodels.ValidTestModel2;
@@ -29,10 +30,10 @@ public class MultiOSMOTests {
   @Test
   public void defaultFactory() {
     TestUtils.recursiveDelete("osmo-output");
-    MultiOSMO mosmo = new MultiOSMO(4, 444);
+    MultiOSMO mosmo = new MultiOSMO(4);
     TestUtils.startOutputCapture();
     try {
-      mosmo.generate(new Time(1), true, true);
+      mosmo.generate(new Time(1), 444);
       fail("Generation without any model objects should fail.");
     } catch (Exception e) {
       //expected
@@ -45,13 +46,13 @@ public class MultiOSMOTests {
   public void generate4() throws Exception {
     Thread.sleep(100);
     TestUtils.recursiveDelete("osmo-output");
-    MultiOSMO mosmo = new MultiOSMO(4, 444);
+    MultiOSMO mosmo = new MultiOSMO(4);
     OSMOConfiguration config = mosmo.getConfig();
     config.setSequenceTraceRequested(true);
     config.setFactory(new MyModelFactory());
     config.setTestEndCondition(new Length(10));
     config.setSuiteEndCondition(new Time(2));
-    mosmo.generate(new Time(1), true, true);
+    mosmo.generate(new Time(1), 444);
 //    List<String> reports = TestUtils.listFiles("osmo-output", ".csv", false);
 //    assertEquals("Number of reports generated", 4, reports.size());
     List<String> traces = TestUtils.listFiles("osmo-output", ".html", false);
@@ -64,13 +65,13 @@ public class MultiOSMOTests {
   @Test
   public void generate4times3() {
     TestUtils.recursiveDelete("osmo-output");
-    MultiOSMO mosmo = new MultiOSMO(4, 444);
+    MultiOSMO mosmo = new MultiOSMO(4);
     OSMOConfiguration config = mosmo.getConfig();
     config.setSequenceTraceRequested(true);
     config.setFactory(new MyModelFactory());
     config.setTestEndCondition(new Length(10));
     config.setSuiteEndCondition(new Time(2));
-    mosmo.generate(new Time(6), true, true);
+    mosmo.generate(new Time(6), 444);
     List<String> reports = TestUtils.listFiles("osmo-output", ".csv", false);
     assertEquals("Number of reports generated", 5, reports.size());
     List<String> traces = TestUtils.listFiles("osmo-output", ".html", false);
@@ -79,14 +80,15 @@ public class MultiOSMOTests {
   
   @Test
   public void errorInTest() {
-    MultiOSMO mosmo = new MultiOSMO(2, 444);
+    MultiOSMO mosmo = new MultiOSMO(2);
     OSMOConfiguration config = mosmo.getConfig();
     config.setSequenceTraceRequested(true);
     config.setFactory(new ErrorModelFactory());
     config.setTestEndCondition(new Length(30));
     config.setSuiteEndCondition(new Length(2));
-    TestCoverage tc = mosmo.generate(new Time(1), false, false);
-    int steps = tc.getTotalSteps();
+    config.setStopGenerationOnError(false);
+    GeneratorTask.Result result = mosmo.generate(new Time(1), 444);
+    int steps = result.getCoverage().getTotalSteps();
     assertTrue("Number of generated steps from MOSMO should be less than 120 (generators (2) x steps (30) x tests (2) configured) due to assertion e in model, was "+steps, steps < 1200);
     assertTrue("Number of generated steps from MOSMO should be divisible by 2 due to e in step 2", steps %2 == 0);
     //if we run long test sets, the value is bigger due to some JVM optimizations. just one test is shorter

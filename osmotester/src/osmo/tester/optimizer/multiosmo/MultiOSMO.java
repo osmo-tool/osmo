@@ -38,20 +38,16 @@ public class MultiOSMO {
   private final int parallelism;
   /** The thread pool for running the generator tasks. */
   private final ExecutorService pool;
-  /** The seed for creating more random seeds for the generators. */
-  private final long seed;
   public static final String ERROR_MSG = "WARNING: Using factory of type " + SingleInstanceModelFactory.class + ", which means all parallel tasks share the object instances.";
 
-  public MultiOSMO(long seed) {
+  public MultiOSMO() {
     parallelism = Runtime.getRuntime().availableProcessors();
     pool = Executors.newFixedThreadPool(parallelism);
-    this.seed = seed;
   }
 
-  public MultiOSMO(int parallelism, long seed) {
+  public MultiOSMO(int parallelism) {
     this.parallelism = parallelism;
     pool = Executors.newFixedThreadPool(parallelism);
-    this.seed = seed;
   }
 
   public OSMOConfiguration getConfig() {
@@ -60,37 +56,32 @@ public class MultiOSMO {
 
   /**
    * Starts generation using the given generation configuration and given number of parallel threads.
-   * 
+   *
+   * @param seed The seed for creating more random seeds for the generators.
    * @param time The minimum time to run iterations.
-   * @param reportAll Write generator traces to file for all generators?
-   * @param printCoverage Do we want each generator to print achieved coverage in the end?
    * @return The coverage for generated tests.
    */
-  public TestCoverage generate(Time time, boolean reportAll, boolean printCoverage) {
+  public GeneratorTask.Result generate(Time time, long seed) {
     check();
-    config.setSequenceTraceRequested(false);
-    config.setExploring(true);
-    config.setStopGenerationOnError(false);
-    Collection<Future<TestCoverage>> futures = new ArrayList<>();
+    Collection<Future<GeneratorTask.Result>> futures = new ArrayList<>();
     Randomizer rand = new Randomizer(seed);
     for (int i = 0 ; i < parallelism ; i++) {
-      GeneratorTask task = new GeneratorTask(config, time, rand.nextLong(), reportAll, printCoverage);
-      Future<TestCoverage> future = pool.submit(task);
+      GeneratorTask task = new GeneratorTask(config, time, rand.nextLong());
+      Future<GeneratorTask.Result> future = pool.submit(task);
       log.d("task submitted to pool");
       futures.add(future);
     }
-    TestCoverage tc = new TestCoverage();
-    for (Future<TestCoverage> future : futures) {
+    GeneratorTask.Result result = new GeneratorTask.Result();
+    for (Future<GeneratorTask.Result> future : futures) {
       try {
-        TestCoverage ftc = future.get();
-        tc.addCoverage(ftc);
+        GeneratorTask.Result ftc = future.get();
+        result.addTests(ftc.getTests());
       } catch (Exception e) {
         throw new RuntimeException("Failed to run a (Multi) OSMOTester", e);
       }
     }
     pool.shutdown();
-    //TODO: write summary to file
-    return tc;
+    return result;
   }
   
   private void check() {

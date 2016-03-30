@@ -63,6 +63,8 @@ public class MainGenerator {
   private final FSMTraversalAlgorithm algorithm;
   private List<TestScript> scripts = null;
   private TestScript script = null;
+  /** Tracks if we are processing an error, so if we get an error while processing an error we do not recursively do it forever. */
+  private boolean inError = false;
 
   /**
    * @param seed   The base seed to use for randomization during generation.
@@ -141,6 +143,7 @@ public class MainGenerator {
    * @return The generated test case.
    */
   public TestCase nextTest() {
+    inError = false;
     previousStep = null;
     createModelObjects();
     algorithm.initTest(seed);
@@ -199,6 +202,7 @@ public class MainGenerator {
   }
 
   private void handleError(TestCase test, Throwable e) {
+    inError = true;
     test.setFailed(true);
     TestCaseStep step = test.getCurrentStep();
     if (step != null) {
@@ -212,14 +216,25 @@ public class MainGenerator {
       log.e(errorMsg, e);
     }
 
-    listeners.testError(test, unwrap);
-    invokeAll(fsm.getOnErrors());
+    try {
+      //TODO: tests for error listeners and onError items that throw
+      listeners.testError(test, unwrap);
+    } catch (Exception e1) {
+      log.e("Error in invoking listeners for errors..", e);
+    }
+    try {
+      invokeAll(fsm.getOnErrors());
+    } catch (Exception e1) {
+      log.e("Error in invoking @OnError..", e);
+    }
+
     if (config.shouldStopTestOnError()) {
       suite.storeGeneralState(fsm);
       if (!config.shouldStopGenerationOnError()) return;
       //this is done here as aftertest is also invoked by the generator is we do not stop whole generation
       afterTest(test);
       afterSuite();
+      inError = false;
       if (unwrap instanceof RuntimeException) {
         throw (RuntimeException) unwrap;
       }
@@ -227,6 +242,7 @@ public class MainGenerator {
     } else {
       unwrap.printStackTrace();
     }
+    inError = false;
     log.d("Skipped test error due to settings (no fail when error)", e);
   }
 
@@ -398,7 +414,7 @@ public class MainGenerator {
     if (suite.isEnded()) return;
     suite.setEnded(true);
     Collection<InvocationTarget> afters = fsm.getAfterSuites();
-    invokeAll(afters);
+    if (!inError) invokeAll(afters);
     listeners.suiteEnded(suite);
   }
 
@@ -431,7 +447,7 @@ public class MainGenerator {
     try {
       invokeAll(afters);
     } catch (RuntimeException | AssertionError e) {
-      handleError(test, e);
+      if (!inError) handleError(test, e);
     }
 //    TestCase current = suite.getCurrentTest();
     //update history
