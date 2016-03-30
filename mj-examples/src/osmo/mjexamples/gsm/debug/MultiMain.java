@@ -14,11 +14,11 @@ import java.util.concurrent.TimeUnit;
  */
 public class MultiMain {
   public static void main(String[] args) {
-    MultiOSMO osmo = new MultiOSMO(0x555);
+    MultiOSMO osmo = new MultiOSMO();
     OSMOConfiguration config = osmo.getConfig();
     config.setFactory(new GSMModelFactory(NullPrintStream.stream));
     config.setTestEndCondition(new Length(50));
     config.setSuiteEndCondition(new Length(20));
-    osmo.generate(new Time(10, TimeUnit.HOURS), false, false);
+    osmo.generate(new Time(10, TimeUnit.HOURS), 0x555);
   }
 }

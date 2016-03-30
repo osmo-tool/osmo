@@ -6,6 +6,7 @@ import osmo.mjexamples.gsm.GSMModelFactory;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.optimizer.reducer.Reducer;
 import osmo.tester.optimizer.reducer.ReducerConfig;
+import osmo.tester.optimizer.reducer.ReducerState;
 
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -24,11 +25,12 @@ public class ReducerMain {
     reducer.setDeleteOldOutput(false);
     OSMOConfiguration osmoConfig = reducer.getOsmoConfig();
     osmoConfig.setFactory(new GSMModelFactory(NullPrintStream.stream));
-    config.setInitialTime(TimeUnit.HOURS, 2);
-    config.setFuzzTime(TimeUnit.HOURS, 2);
-    config.setShorteningTime(TimeUnit.HOURS, 2);
+    config.setInitialTime(TimeUnit.MINUTES, 1);
+    config.setFuzzTime(TimeUnit.MINUTES, 1);
+    config.setShorteningTime(TimeUnit.MINUTES, 1);
     config.setPopulationSize(100);
     config.setLength(50);
-    reducer.search();
+    ReducerState state = reducer.search();
+
   }
 }
