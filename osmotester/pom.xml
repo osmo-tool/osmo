@@ -93,6 +93,23 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>2.5</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>logs</directory>
+						</fileset>
+						<fileset>
+							<directory>osmo-output</directory>
+						</fileset>
+						<fileset>
+						    <directory>.</directory>
+							<includes>
+								<include>jenkins-test.xml</include>
+								<include>test-matrix.html</include>
+							</includes>
+						</fileset>
+					</filesets>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -150,6 +167,16 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.16</version>
+				<configuration>
+					<includes>
+						<!-- Custom OSMO pattern -->
+						<include>**/*Tests.java</include>
+						<!-- Default surefire patterns -->
+						<include>**/Test*.java</include>
+						<include>**/*Test.java</include>
+						<include>**/*TestCase.java</include>
+					</includes>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
