@@ -1,6 +1,12 @@
 # Created by https://www.gitignore.io/api/maven,eclipse,jetbrains,netbeans,osx
 # with the addition of an OSMO related exclusion to the Eclipse section.
 
+### OSMO ###
+jenkins-test.xml
+logs/
+test-matrix.html
+
+
 ### Maven ###
 target/
 pom.xml.tag

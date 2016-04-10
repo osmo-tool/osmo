@@ -1,0 +1,3 @@
+To deploy this project to Maven Central
+mvn release:clean release:prepare -B
+mvn release:perform -Darguments=-Dgpg.passphrase=PASSWORD
