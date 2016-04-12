@@ -276,6 +276,21 @@
 					<exclude>**/*.java</exclude>
 				</excludes>
 			</testResource>
+			<testResource>
+				<directory>.</directory>
+				<includes>
+					<include>license.txt</include>
+				</includes>
+			</testResource>
+			<testResource>
+				<directory>test-data1</directory>
+			</testResource>
+			<testResource>
+				<directory>test-data2</directory>
+			</testResource>
+			<testResource>
+				<directory>osmo-output</directory>
+			</testResource>
 		</testResources>
 	</build>
 	<reporting>
