@@ -278,6 +278,11 @@ public class TestUtils {
     return getResource(is);
   }
 
+  public static InputStream getResourceStream(Class c, String name) {
+    InputStream is = c.getResourceAsStream(name);
+    return is;
+  }
+
   public static String getResource(InputStream in) {
     StringBuilder text = new StringBuilder();
     try (Scanner scanner = new Scanner(in, "UTF-8")) {

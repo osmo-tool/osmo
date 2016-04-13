@@ -46,7 +46,7 @@ public class ReportTests {
   @Test
   public void calculatorSteps() {
     tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
-    JenkinsReportGenerator listener = new JenkinsReportGenerator(null, true);
+    JenkinsReportGenerator listener = new JenkinsReportGenerator(null, true, true);
     tester.addListener(listener);
     tester.generate(333);
     listener.getSuite().setStartTime(0);
@@ -61,7 +61,7 @@ public class ReportTests {
   @Test
   public void calculatorTests() {
     tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
-    JenkinsReportGenerator listener = new JenkinsReportGenerator(null, true);
+    JenkinsReportGenerator listener = new JenkinsReportGenerator(null, true, true);
     listener.enableTestMode();
     tester.addListener(listener);
     tester.generate(333);
@@ -83,7 +83,7 @@ public class ReportTests {
     factory.add(p1);
     factory.add(p2);
     tester.setModelFactory(factory);
-    JenkinsReportGenerator listener = new JenkinsReportGenerator(null, false);
+    JenkinsReportGenerator listener = new JenkinsReportGenerator(null, false, true);
     listener.enableTestMode();
     tester.addListener(listener);
     tester.generate(333);
@@ -105,7 +105,7 @@ public class ReportTests {
     factory.add(p1);
     factory.add(p2);
     tester.setModelFactory(factory);
-    JenkinsReportGenerator listener = new JenkinsReportGenerator(null, false);
+    JenkinsReportGenerator listener = new JenkinsReportGenerator(null, false, true);
     listener.enableTestMode();
     tester.addListener(listener);
     tester.generate(333);
@@ -121,7 +121,7 @@ public class ReportTests {
   @Test
   public void writeSteps() throws Exception {
     tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
-    JenkinsReportGenerator listener = new JenkinsReportGenerator(filename, true);
+    JenkinsReportGenerator listener = new JenkinsReportGenerator(filename, true, true);
     listener.getSuite().setStartTime(0);
     listener.getSuite().setEndTime(3234);
     tester.addListener(listener);
@@ -146,7 +146,7 @@ public class ReportTests {
   @Test
   public void writeTests() throws Exception {
     tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
-    JenkinsReportGenerator listener = new JenkinsReportGenerator(filename, false);
+    JenkinsReportGenerator listener = new JenkinsReportGenerator(filename, false, true);
     listener.enableTestMode();
     tester.addListener(listener);
     listener.getSuite().setStartTime(1234);
@@ -161,7 +161,7 @@ public class ReportTests {
   @Test
   public void error5Tests() throws Exception {
     tester.setModelFactory(new ReflectiveModelFactory(ErrorModel5.class));
-    JenkinsReportGenerator listener = new JenkinsReportGenerator(filename, false);
+    JenkinsReportGenerator listener = new JenkinsReportGenerator(filename, false, true);
     tester.addListener(listener);
     listener.getSuite().setStartTime(1234);
     listener.getSuite().setEndTime(3234);
@@ -180,7 +180,7 @@ public class ReportTests {
   @Ignore
   public void errorTests() throws Exception {
     tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
-    JenkinsReportGenerator listener = new JenkinsReportGenerator(filename, false);
+    JenkinsReportGenerator listener = new JenkinsReportGenerator(filename, false, true);
     tester.addListener(listener);
     tester.generate(333);
     listener.getSuite().setStartTime(1234);

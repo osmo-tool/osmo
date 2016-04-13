@@ -115,8 +115,9 @@ public class JenkinsSuite {
    * Adds a test case to this suite.
    *
    * @param test The executed test.
+   * @param testMode If true, the step duration is set to 0 [endtime = starttime] (to enable deterministic unit tests).
    */
-  public void add(TestCase test) {
+  public void add(TestCase test, boolean testMode) {
     JenkinsTest newTest = new JenkinsTest(testing);
     JenkinsStep.resetId();
     List<TestCaseStep> steps = test.getSteps();
@@ -128,7 +129,11 @@ public class JenkinsSuite {
       //add the step to the jenkins test
       JenkinsStep jenkinsStep = new JenkinsStep(className, newTest, stepName);
       jenkinsStep.setStartTime(step.getStartTime());
-      jenkinsStep.setEndTime(step.getEndTime());
+      if (testMode) {
+        jenkinsStep.setEndTime(step.getStartTime());
+      } else {
+        jenkinsStep.setEndTime(step.getEndTime());
+      }
       newTest.add(jenkinsStep);
     }
     tests.add(newTest);

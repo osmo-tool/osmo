@@ -47,7 +47,10 @@ public class JenkinsReportGenerator implements GenerationListener {
   private final boolean steps;
   /** Seed used in test generation. */
   private Long seed = null;
+  /** The test model used to generate the tests. */
   private FSM fsm;
+  /** If we are in a test mode, we set times for all steps to 0 to enable deterministic test reporting and asserts. */
+  private boolean testMode = false;
 
   /**
    * @param filename The name of the report file.
@@ -56,6 +59,17 @@ public class JenkinsReportGenerator implements GenerationListener {
   public JenkinsReportGenerator(String filename, boolean steps) {
     this.filename = filename;
     this.steps = steps;
+  }
+
+  /**
+   * @param filename The name of the report file.
+   * @param steps    If true, the report describes generated test steps as test cases, else generated tests as test cases.
+   * @param testMode If true, the step duration is set to 0 (to enable deterministic unit tests).
+   */
+  public JenkinsReportGenerator(String filename, boolean steps, boolean testMode) {
+    this.filename = filename;
+    this.steps = steps;
+    this.testMode = testMode;
   }
 
   public void enableTestMode() {
@@ -100,7 +114,7 @@ public class JenkinsReportGenerator implements GenerationListener {
 
   @Override
   public void testEnded(TestCase test) {
-    suite.add(test);
+    suite.add(test, testMode);
   }
 
   @Override
