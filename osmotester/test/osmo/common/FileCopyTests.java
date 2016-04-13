@@ -21,7 +21,7 @@ public class FileCopyTests {
 
   @Test
   public void fileCopy() throws Exception {
-    TestUtils.copyFiles("osmotester/license.txt", targetDir);
+    TestUtils.copyFiles("license.txt", targetDir);
     File file = new File(targetDir+"/license.txt");
     assertTrue("File should be copied", file.exists());
     assertTrue("File should be .. a file!", file.isFile());
@@ -29,7 +29,7 @@ public class FileCopyTests {
 
   @Test
   public void dirCopy() throws Exception {
-    TestUtils.copyFiles("osmotester/test-data1", targetDir);
+    TestUtils.copyFiles("test-data1", targetDir);
     File file = new File(targetDir+"/afile.txt");
     assertTrue("File should be copied", file.exists());
     assertTrue("File should be .. a file!", file.isFile());
@@ -40,7 +40,7 @@ public class FileCopyTests {
 
   @Test
   public void nestedDirCopy() throws Exception {
-    TestUtils.copyFiles("osmotester/test-data2", targetDir);
+    TestUtils.copyFiles("test-data2", targetDir);
     File file = new File(targetDir+"/level1.txt");
     assertTrue("File should be copied", file.exists());
     assertTrue("File should be .. a file!", file.isFile());
@@ -64,9 +64,9 @@ public class FileCopyTests {
 
   @Test
   public void invalidTarget() throws Exception {
-    TestUtils.copyFiles("osmotester/license.txt", targetDir);
+    TestUtils.copyFiles("license.txt", targetDir);
     try {
-      TestUtils.copyFiles("osmotester/license.txt", targetDir+"/license.txt");
+      TestUtils.copyFiles("license.txt", targetDir+"/license.txt");
       fail("Invalid target should fail copy.");
     } catch (IllegalArgumentException e) {
       assertEquals("Msg for invalid source to copy", "Cannot copy to 'test-target-dir/license.txt', target exists and is not a directory.", e.getMessage());
