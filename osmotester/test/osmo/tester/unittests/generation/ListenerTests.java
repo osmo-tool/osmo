@@ -141,10 +141,11 @@ public class ListenerTests {
     List<TestCase> tests = suite.getAllTestCases();
     assertEquals("Number of tests in generator", 0, tests.size());
     assertEquals("Number of collected failures", 7, collector.getFailed().size());
-    TestUtils.recursiveDelete("osmo-output");
-    collector.writeTrace("osmo-output");
+    final String listenerFolder = "osmo-output/listener";
+    TestUtils.recursiveDelete(listenerFolder);
+    collector.writeTrace(listenerFolder);
     TestLoader loader = new TestLoader();
-    List<TestScript> scripts = loader.loadTests("osmo-output");
+    List<TestScript> scripts = loader.loadTests(listenerFolder);
     assertEquals("Number of loaded tests", 7, scripts.size());
   }
 }
