@@ -1,0 +1,33 @@
+Test reduction report for OSMO Tester
+
+Number of tests generated: 0
+Test lengths in iterations: [##UNTIL]##
+Final length: 11
+
+Invariants (for ##UNTIL ##tests)):
+Step counts:
+  Step1 : 0-5
+  Step4 : 0-5
+  Step6 : 0-5
+  Step7 : 0-5
+  Step8 : 1
+Final steps: [Step8]
+
+Strict precedences (0):
+
+Flex precedences (4):
+  Step1->Step8
+  Step4->Step8
+  Step6->Step8
+  Step7->Step8
+
+Shared sequences:
+  [Step8]
+
+Missing steps:
+  Step10
+  Step2
+  Step3
+  Step5
+  Step9
+

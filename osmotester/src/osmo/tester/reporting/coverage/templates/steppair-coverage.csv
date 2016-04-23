@@ -1,4 +1,0 @@
-From->To,Count
-#foreach ($tp in $step-pairs)
-$tp.value,$tp.count
-#end

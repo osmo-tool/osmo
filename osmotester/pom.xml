@@ -259,11 +259,9 @@
 				</executions>
 			</plugin>
 		</plugins>
-		<sourceDirectory>src/</sourceDirectory>
-		<testSourceDirectory>test/</testSourceDirectory>
 		<resources>
 			<resource>
-				<directory>src</directory>
+				<directory>${project.build.sourceDirectory}</directory>
 				<excludes>
 					<exclude>**/*.java</exclude>
 				</excludes>
@@ -271,7 +269,7 @@
 		</resources>
 		<testResources>
 			<testResource>
-				<directory>test</directory>
+				<directory>${project.build.testSourceDirectory}</directory>
 				<excludes>
 					<exclude>**/*.java</exclude>
 				</excludes>

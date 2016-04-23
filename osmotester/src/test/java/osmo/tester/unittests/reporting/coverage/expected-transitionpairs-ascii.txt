@@ -1,0 +1,10 @@
+.osmo.tester.start.step->one  2
+one->two                      2
+five->six                     1
+four->five                    1
+seven->eight                  1
+six->seven                    1
+three->four                   1
+two->five                     1
+two->three                    1
+

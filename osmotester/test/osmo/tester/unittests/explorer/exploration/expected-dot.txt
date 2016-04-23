@@ -1,9 +1,0 @@
-digraph path1_1 {
-properties [shape=box, label="depth=2\ncurrent = root"]root -> increase_1
-edge [color=red]
-increase_1 -> decrease_1
-edge [color=black]
-increase_1 -> increase_2
-edge [color=red]
-increase_2 -> decrease_2
-}

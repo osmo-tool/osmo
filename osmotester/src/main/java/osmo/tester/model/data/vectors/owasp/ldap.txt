@@ -1,0 +1,25 @@
+#LDAP injection vectors
+#taken from OWASP Testing Guide v3 Appendix C: Fuzz vectors:
+#https://www.owasp.org/index.php/OWASP_Testing_Guide_Appendix_C:_Fuzz_Vectors
+#which defines the license (on April 2012) as:
+#Creative Commons 3.0: http://creativecommons.org/licenses/by-sa/3.0/
+|
+!
+(
+)
+%28
+%29
+&
+%26
+%21
+%7C
+*|
+%2A%7C
+*(|(mail=*))
+%2A%28%7C%28mail%3D%2A%29%29
+*(|(objectclass=*))
+%2A%28%7C%28objectclass%3D%2A%29%29
+*()|%26'
+admin*
+admin*)((|userPassword=*)
+*)(uid=*))(|(uid=*

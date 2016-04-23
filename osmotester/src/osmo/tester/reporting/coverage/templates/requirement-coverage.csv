@@ -1,4 +1,0 @@
-Name,Count
-#foreach ($r in $requirements)
-$r.name,$r.count
-#end
