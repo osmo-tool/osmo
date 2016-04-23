@@ -1,5 +1,10 @@
 package osmo.tester.unittests.generation;
 
+import static java.util.Arrays.stream;
+
+import java.io.File;
+
+import org.junit.Before;
 import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -22,6 +27,14 @@ import static org.junit.Assert.*;
 
 /** @author Teemu Kanstren */
 public class MultiOSMOTests {
+  private static final String OUTPUT_FOLDER = "osmo-output";
+
+  @Before
+  public void clearFiles() {
+    final File outputFolder = new File(OUTPUT_FOLDER);
+    stream(outputFolder.listFiles()).forEach(file -> file.delete());
+  }
+
   @After
   public void restore() {
     TestUtils.endOutputCapture();
@@ -29,7 +42,6 @@ public class MultiOSMOTests {
   
   @Test
   public void defaultFactory() {
-    TestUtils.recursiveDelete("osmo-output");
     MultiOSMO mosmo = new MultiOSMO(4);
     TestUtils.startOutputCapture();
     try {
@@ -45,7 +57,6 @@ public class MultiOSMOTests {
   @Test
   public void generate4() throws Exception {
     Thread.sleep(100);
-    TestUtils.recursiveDelete("osmo-output");
     MultiOSMO mosmo = new MultiOSMO(4);
     OSMOConfiguration config = mosmo.getConfig();
     config.setSequenceTraceRequested(true);
@@ -53,18 +64,17 @@ public class MultiOSMOTests {
     config.setTestEndCondition(new Length(10));
     config.setSuiteEndCondition(new Time(2));
     mosmo.generate(new Time(1), 444);
-//    List<String> reports = TestUtils.listFiles("osmo-output", ".csv", false);
+//    List<String> reports = TestUtils.listFiles(OUTPUT_FOLDER, ".csv", false);
 //    assertEquals("Number of reports generated", 4, reports.size());
-    List<String> traces = TestUtils.listFiles("osmo-output", ".html", false);
+    List<String> traces = TestUtils.listFiles(OUTPUT_FOLDER, ".html", false);
     assertEquals("Number of HTML traces generated", 4, traces.size());
-    List<String> xmls = TestUtils.listFiles("osmo-output", ".xml", false);
+    List<String> xmls = TestUtils.listFiles(OUTPUT_FOLDER, ".xml", false);
     assertEquals("Number of XML traces generated", 4, xmls.size());
   }
 
   @Ignore
   @Test
   public void generate4times3() {
-    TestUtils.recursiveDelete("osmo-output");
     MultiOSMO mosmo = new MultiOSMO(4);
     OSMOConfiguration config = mosmo.getConfig();
     config.setSequenceTraceRequested(true);
@@ -72,9 +82,9 @@ public class MultiOSMOTests {
     config.setTestEndCondition(new Length(10));
     config.setSuiteEndCondition(new Time(2));
     mosmo.generate(new Time(6), 444);
-    List<String> reports = TestUtils.listFiles("osmo-output", ".csv", false);
+    List<String> reports = TestUtils.listFiles(OUTPUT_FOLDER, ".csv", false);
     assertEquals("Number of reports generated", 5, reports.size());
-    List<String> traces = TestUtils.listFiles("osmo-output", ".html", false);
+    List<String> traces = TestUtils.listFiles(OUTPUT_FOLDER, ".html", false);
     assertEquals("Number of traces generated", 4, traces.size());
   }
   

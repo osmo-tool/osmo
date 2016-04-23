@@ -35,6 +35,8 @@ import static org.junit.Assert.*;
  * @author Teemu Kanstren
  */
 public class ReducerTests {
+  private static final String REDUCER_FOLDER = "osmo-output/reducer-111";
+	
   @Test
   public void nothingFound() throws Exception {
     ReducerConfig config = new ReducerConfig(111);
@@ -56,7 +58,7 @@ public class ReducerTests {
 
   @Test
   public void probableModel() throws Exception {
-    TestUtils.recursiveDelete("osmo-output");
+    TestUtils.recursiveDelete(REDUCER_FOLDER);
     ReducerConfig config = new ReducerConfig(111);
     config.setParallelism(1);
     Reducer reducer = new Reducer(config);
@@ -74,17 +76,18 @@ public class ReducerTests {
     TestCase test1 = tests.get(0);
     assertEquals("Final test length", 1, test1.getAllStepNames().size());
     assertEquals("Iteration lengths", "[]", state.getLengths().toString());
-    String report = TestUtils.readFile("osmo-output/reducer-111/reducer-final.txt", "UTF8");
+    String report = TestUtils.readFile(REDUCER_FOLDER + "/reducer-final.txt", "UTF8");
     String expected = TestUtils.getResource(ReducerTests.class, "expected-reducer.txt");
     report = TestUtils.unifyLineSeparators(report, "\n");
     expected = TestUtils.unifyLineSeparators(expected, "\n");
     assertEquals("Reducer report", expected, report);
-    List<String> files = TestUtils.listFiles("osmo-output/reducer-111", ".html", false);
+    List<String> files = TestUtils.listFiles(REDUCER_FOLDER, ".html", false);
     assertEquals("Generated report files", "[final-tests.html]", files.toString());
   }
 
   @Test
   public void model10() throws Exception {
+    TestUtils.recursiveDelete(REDUCER_FOLDER);
     ReducerConfig config = new ReducerConfig(111);
     config.setStrictReduction(false);
     config.setParallelism(1);
@@ -111,7 +114,7 @@ public class ReducerTests {
     //although it would be possible to have others as well..
     // assertEquals("Final test length", 11, test1.getAllStepNames().size());
     // assertEquals("Iteration lengths", "[25, 22, 17, 14, 13, 12, 11]", state.getLengths().toString());
-    String report = TestUtils.readFile("osmo-output/reducer-111/reducer-final.txt", "UTF8");
+    String report = TestUtils.readFile(REDUCER_FOLDER + "/reducer-final.txt", "UTF8");
     String expected = TestUtils.getResource(ReducerTests.class, "expected-reducer3.txt");
     report = TestUtils.unifyLineSeparators(report, "\n");
     expected = TestUtils.unifyLineSeparators(expected, "\n");
@@ -119,12 +122,13 @@ public class ReducerTests {
     report = replaced[0];
     expected = replaced[1];
     assertEquals("Reducer report", expected, report);
-    List<String> files = TestUtils.listFiles("osmo-output/reducer-111", ".html", false);
+    List<String> files = TestUtils.listFiles(REDUCER_FOLDER, ".html", false);
     assertEquals("Generated report files", "[final-tests.html]", files.toString());
   }
 
   @Test
   public void startTest() throws Exception {
+    TestUtils.recursiveDelete(REDUCER_FOLDER);
     ReducerConfig config = new ReducerConfig(111);
     config.setParallelism(1);
     //changed here on 8apr15
@@ -148,7 +152,7 @@ public class ReducerTests {
     ReducerState state = reducer.search();
     List<TestCase> tests = state.getTests();
     TestCase test1 = tests.get(0);
-    String report = TestUtils.readFile("osmo-output/reducer-111/reducer-final.txt", "UTF8");
+    String report = TestUtils.readFile(REDUCER_FOLDER + "/reducer-final.txt", "UTF8");
     String expected = TestUtils.getResource(ReducerTests.class, "expected-reducer4.txt");
     report = TestUtils.unifyLineSeparators(report, "\n");
     expected = TestUtils.unifyLineSeparators(expected, "\n");
@@ -156,7 +160,7 @@ public class ReducerTests {
     report = replaced[0];
     expected = replaced[1];
     assertEquals("Reducer report", expected, report);
-    List<String> files = TestUtils.listFiles("osmo-output/reducer-111", ".html", false);
+    List<String> files = TestUtils.listFiles(REDUCER_FOLDER, ".html", false);
     assertEquals("Generated report files", "[final-tests.html]", files.toString());
   }
 
