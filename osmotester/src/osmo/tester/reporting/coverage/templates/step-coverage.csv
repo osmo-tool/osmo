@@ -1,4 +1,0 @@
-Name,Count
-#foreach ($t in $steps)
-$t.value,$t.count
-#end

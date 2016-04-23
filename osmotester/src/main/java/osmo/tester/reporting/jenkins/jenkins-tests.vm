@@ -1,0 +1,19 @@
+<testsuite name="$suite.name" timestamp="$suite.startTime" hostname="OSMO rules" tests="$suite.testCount" failures="$suite.failureCount" errors="$suite.errorCount" time="$suite.duration">
+  <properties>
+#foreach ($property in $properties)
+    <property name="$property.name" value="$property.value"/>
+#end
+  </properties>
+#foreach ($test in $suite.tests)
+  <testcase name="$test.name" classname="$test.className" time="$test.duration">
+#if ($test.error)
+    <error message="string" type="string">$test.error</error>
+#end
+#if ($test.failure)
+    <failure message="string" type="string">$test.failure</failure>
+#end
+  </testcase>
+#end
+  <system-out>$suite.systemOut</system-out>
+  <system-err>$suite.systemErr</system-err>
+</testsuite>

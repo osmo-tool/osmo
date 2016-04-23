@@ -1,0 +1,17 @@
+<html>
+<head></head>
+<body>
+<table border="1">
+  <tr>
+    <td>Name</td>
+    <td>Count</td>
+  </tr>
+#foreach ($r in $requirements)
+  <tr>
+    <td>$r.name</td>
+    <td>$r.count</td>
+  </tr>
+#end
+</table>
+</body>
+</html>

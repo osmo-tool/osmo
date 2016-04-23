@@ -1,0 +1,270 @@
+<html>
+<head>
+  <style type="text/css">
+    .osmo-table
+    {
+      font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+      border-collapse:collapse;
+    }
+    .osmo-table th
+    {
+      font-size:1.1em;
+      text-align:left;
+      padding-top:5px;
+      padding-bottom:4px;
+      background-color:#A7C942;
+      color:#ffffff;
+    }
+    .osmo-table th.colhead
+    {
+      font-size:1.1em;
+      text-align:left;
+      padding-top:5px;
+      padding-bottom:4px;
+      background-color:#A7C942;
+      color:#ffffff;
+      border-bottom: 2px solid #333;
+    }
+    .osmo-table th.corner
+    {
+      font-size:1.1em;
+      text-align:left;
+      padding-top:5px;
+      padding-bottom:4px;
+      background-color:#A7C942;
+      color:#ffffff;
+      border-bottom: 2px solid #333;
+      border-right: 2px solid #333;
+    }
+    .osmo-table td, .osmo-table th[scope=row]
+    {
+      font-size:1em;
+      border:1px solid #98bf21;
+      padding:3px 7px 2px 7px;
+    }
+    .osmo-table th.testhead
+    {
+      font-size:1.1em;
+      text-align:left;
+      padding-top:5px;
+      padding-bottom:4px;
+      background-color:#B8DA53;
+      color:#ffffff;
+      border-right: 2px solid #333;
+    }
+    .osmo-table tr.alt td
+    {
+      color:#000000;
+      background-color:#EAF2D3;
+    }
+    .osmo-table tr:hover th[scope=row], .osmo-table tr:hover td
+    {
+      background-color: #632a2a;
+      color: #fff;
+    }
+    .osmo-table caption
+    {
+      caption-side: top;
+      font-size: 0.9em;
+      font-style: bold;
+      text-align: center;
+      padding: 0.5em 0;
+    }
+  </style>
+</head>
+<body>
+  <table class="osmo-table" border="1">
+    <caption>The number of times a given test case includes a given step:</caption>
+    <thead>
+      <tr>
+        <th class='corner' scope='col' rowspan='2'>Test ID</th>
+        <th scope='col' colspan='4'>Step coverage</th>
+      </tr>
+      <tr>
+        <th class='colhead' scope='col'>Step1</th>
+        <th class='colhead' scope='col'>Step2</th>
+        <th class='colhead' scope='col'>Step3</th>
+        <th class='colhead' scope='col'>Step4</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th class='testhead' scope='row'>Test1</th>
+        <td>2</td>
+        <td>3</td>
+        <td>0</td>
+        <td>0</td>
+      </tr>
+      <tr class='alt'>
+        <th class='testhead' scope='row'>Test2</th>
+        <td>4</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <th class='testhead' scope='row'>Test3</th>
+        <td>2</td>
+        <td>3</td>
+        <td>0</td>
+        <td>0</td>
+      </tr>
+      <tr class='alt'>
+        <th class='testhead' scope='row'>Test4</th>
+        <td>1</td>
+        <td>4</td>
+        <td>0</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <th class='testhead' scope='row'>Test5</th>
+        <td>4</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="osmo-table" border="1">
+    <caption>The number of times a given test case includes a given requirement:</caption>
+    <thead>
+      <tr>
+        <th class='corner' scope='col' rowspan='2'>Test ID</th>
+        <th scope='col' colspan='0'>Requirement coverage</th>
+      </tr>
+      <tr>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class='alt'>
+        <th class='testhead' scope='row'>Test1</th>
+      </tr>
+      <tr>
+        <th class='testhead' scope='row'>Test2</th>
+      </tr>
+      <tr class='alt'>
+        <th class='testhead' scope='row'>Test3</th>
+      </tr>
+      <tr>
+        <th class='testhead' scope='row'>Test4</th>
+      </tr>
+      <tr class='alt'>
+        <th class='testhead' scope='row'>Test5</th>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="osmo-table" border="1">
+    <caption>The number of times a given test case includes a given step pair (T1->T2, T2 occurred after T1):</caption>
+    <thead>
+      <tr>
+        <th class='corner' scope='col' rowspan='2'>Test ID</th>
+        <th scope='col' colspan='5'>Step-pair coverage</th>
+      </tr>
+      <tr>
+        <th class='colhead' scope='col'>.osmo.tester.start.step->Step1</th>
+        <th class='colhead' scope='col'>Step1->Step1</th>
+        <th class='colhead' scope='col'>Step1->Step2</th>
+        <th class='colhead' scope='col'>Step2->Step1</th>
+        <th class='colhead' scope='col'>Step2->Step2</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th class='testhead' scope='row'>Test1</th>
+        <td>1</td>
+        <td>0</td>
+        <td>2</td>
+        <td>1</td>
+        <td>1</td>
+      </tr>
+      <tr class='alt'>
+        <th class='testhead' scope='row'>Test2</th>
+        <td>1</td>
+        <td>2</td>
+        <td>1</td>
+        <td>1</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <th class='testhead' scope='row'>Test3</th>
+        <td>1</td>
+        <td>0</td>
+        <td>2</td>
+        <td>1</td>
+        <td>1</td>
+      </tr>
+      <tr class='alt'>
+        <th class='testhead' scope='row'>Test4</th>
+        <td>1</td>
+        <td>0</td>
+        <td>1</td>
+        <td>0</td>
+        <td>3</td>
+      </tr>
+      <tr>
+        <th class='testhead' scope='row'>Test5</th>
+        <td>1</td>
+        <td>3</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="osmo-table" border="1">
+    <caption>The set of values for model variables in a given test case:</caption>
+    <thead>
+      <tr>
+        <th class='corner' scope='col' rowspan='2'>Test ID</th>
+        <th scope='col' colspan='1'>Variable coverage</th>
+      </tr>
+      <tr>
+        <th class='colhead' scope='col'>user</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class='alt'>
+        <th class='testhead' scope='row'>Test1</th>
+        <td>[guest, bob]</td>
+      </tr>
+      <tr>
+        <th class='testhead' scope='row'>Test2</th>
+        <td>[guest, bob]</td>
+      </tr>
+      <tr class='alt'>
+        <th class='testhead' scope='row'>Test3</th>
+        <td>[guest, bob]</td>
+      </tr>
+      <tr>
+        <th class='testhead' scope='row'>Test4</th>
+        <td>[guest, bob]</td>
+      </tr>
+      <tr class='alt'>
+        <th class='testhead' scope='row'>Test5</th>
+        <td>[guest, bob]</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="osmo-table" border="1">
+    <caption>Overall coverage for all tests:</caption>
+    <thead>
+      <tr>
+        <th class='corner' scope='col' rowspan='2'>Variable</th>
+        <th scope='col' colspan='1'>Values observed</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th class='testhead' scope='row'>user</th>
+        <td>[guest, bob]</td>
+      </tr>
+    </tbody>
+  </table>
+
+</body>
+</html>
+
