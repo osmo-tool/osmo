@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 
 /**
@@ -150,18 +151,40 @@ public class ReducerTests {
     config.setLength(50);
     config.setTestMode(true);
     ReducerState state = reducer.search();
-    List<TestCase> tests = state.getTests();
-    TestCase test1 = tests.get(0);
-    String report = TestUtils.readFile(REDUCER_FOLDER + "/reducer-final.txt", "UTF8");
-    String expected = TestUtils.getResource(ReducerTests.class, "expected-reducer4.txt");
-    report = TestUtils.unifyLineSeparators(report, "\n");
-    expected = TestUtils.unifyLineSeparators(expected, "\n");
-    String[] replaced = TestUtils.replace("##", expected, report);
-    report = replaced[0];
-    expected = replaced[1];
-    assertEquals("Reducer report", expected, report);
-    List<String> files = TestUtils.listFiles(REDUCER_FOLDER, ".html", false);
-    assertEquals("Generated report files", "[final-tests.html]", files.toString());
+    Analyzer analyzer = state.getAnalyzer();
+    Invariants invariants = analyzer.analyze();
+    assertThat(invariants.getFlexPrecedences())
+        .hasSize(2)
+        .contains("Step4->Step8")
+        .contains("Step6->Step8");
+    assertThat(invariants.getStrictPrecedences())
+        .hasSize(2)
+        .contains("Step4->Step8")
+        .contains("Step6->Step8");
+    assertThat(invariants.getLastSteps())
+        .hasSize(1)
+        .contains("Step8");
+    assertThat(invariants.getMissingSteps())
+        .hasSize(7)
+        .contains("Step1")
+        .contains("Step2")
+        .contains("Step3")
+        .contains("Step5")
+        .contains("Step7")
+        .contains("Step9")
+        .contains("Step10");
+    assertThat(invariants.getUsedStepCounts())
+        .hasSize(3)
+        .contains("Step4 : 5")
+        .contains("Step6 : 5")
+        .contains("Step8 : 1");
+    Collection<String> sequences = invariants.getSequences();
+    assertThat(sequences)
+        .hasSize(3)
+        .contains("[Step6]")
+        .contains("[Step8]");
+    boolean test4Seq = sequences.contains("[Step4]") || sequences.contains("[Step4, Step4]");
+    assertTrue("Step4 should be once or twice", test4Seq);
   }
 
   @Test

@@ -96,6 +96,10 @@ public class ReducerState {
     return config;
   }
 
+  public Analyzer getAnalyzer() {
+    return new Analyzer(allSteps, this);
+  }
+
   public synchronized int getMinimum() {
     return minimum;
   }
