@@ -11,6 +11,7 @@ import osmo.tester.scripter.internal.TestScript;
 import osmo.tester.scripter.internal.TestWriter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -75,8 +76,11 @@ public class WriterLoaderTests {
     writer.write(test2);
 
     List<TestScript> scripts = loader.loadTests(TEMP_DIR);
+    List<String> scriptTxts = new ArrayList<>();
+    scripts.forEach(ts -> scriptTxts.add(ts.toString()));
+    Collections.sort(scriptTxts, Collections.reverseOrder());
     assertEquals("Number of loaded scripts", 2, scripts.size());
-    assertEquals("Scripts", "[TestScript{seed=5555555555, steps=[login, send message, logout]}, TestScript{seed=-99, steps=[tweet, tweet, insta, cave]}]", scripts.toString());
+    assertEquals("Scripts", "[TestScript{seed=5555555555, steps=[login, send message, logout]}, TestScript{seed=-99, steps=[tweet, tweet, insta, cave]}]", scriptTxts.toString());
   }
 
   @Test
@@ -98,6 +102,9 @@ public class WriterLoaderTests {
     writer.write(suite);
 
     List<TestScript> scripts = loader.loadTests(TEMP_DIR);
+    List<String> scriptTxts = new ArrayList<>();
+    scripts.forEach(ts -> scriptTxts.add(ts.toString()));
+    Collections.sort(scriptTxts, Collections.reverseOrder());
     assertEquals("Number of loaded scripts", 2, scripts.size());
     assertEquals("Scripts", "[TestScript{seed=5555555555, steps=[login, send message, logout]}, TestScript{seed=-99, steps=[tweet, tweet, insta, cave]}]", scripts.toString());
   }

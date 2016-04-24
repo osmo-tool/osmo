@@ -5,10 +5,12 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 import static osmo.common.TestUtils.*;
 
@@ -269,9 +271,12 @@ public class UtilTests {
   @Test
   public void listFilesFullPath() {
     List<String> files = listFiles("test-data1", "txt", true);
-    String filename = files.get(0);
-    assertTrue("File path should end with file name (afile.txt), was "+filename, filename.endsWith("afile.txt"));
-    assertTrue("File should have full path, was "+filename, filename.length() > "afile.txt".length());
+    Collections.sort(files);
+    String filename1 = files.get(0);
+    String filename2 = files.get(1);
+    assertThat(filename1).endsWith("afile.txt");
+    assertThat(filename2).endsWith("afile2.txt");
+    assertTrue("File should have full path, was "+ filename1, filename1.length() > "afile.txt".length());
   }
 
   @Test
