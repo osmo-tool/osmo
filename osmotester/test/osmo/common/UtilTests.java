@@ -3,12 +3,16 @@ package osmo.common;
 import junit.framework.Assert;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import static java.util.Arrays.stream;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 import static osmo.common.TestUtils.*;
 
@@ -268,10 +272,10 @@ public class UtilTests {
 
   @Test
   public void listFilesFullPath() {
-    List<String> files = listFiles("test-data1", "txt", true);
-    String filename = files.get(0);
-    assertTrue("File path should end with file name (afile.txt), was "+filename, filename.endsWith("afile.txt"));
-    assertTrue("File should have full path, was "+filename, filename.length() > "afile.txt".length());
+    final File folder = new File("test-data1");
+    final List<String> files = listFiles(folder.getName(), "txt", true);
+    final List<String> expected = stream(folder.listFiles()).map(File::getAbsolutePath).collect(Collectors.toList());
+    assertThat(files).containsAll(expected);
   }
 
   @Test
