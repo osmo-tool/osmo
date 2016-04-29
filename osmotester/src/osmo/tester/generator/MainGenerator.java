@@ -312,6 +312,7 @@ public class MainGenerator {
     invokeAll(transition.getPostMethods(), "post", transition);
     //set end time
     step.end();
+    suite.addStepStat(step);
     previousStep = step;
     calculateAddedCoverage(step);
   }

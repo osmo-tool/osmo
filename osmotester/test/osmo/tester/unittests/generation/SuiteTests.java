@@ -1,5 +1,7 @@
 package osmo.tester.unittests.generation;
 
+import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
+import org.assertj.core.data.Percentage;
 import org.junit.Test;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
@@ -10,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import static junit.framework.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /** @author Teemu Kanstren */
 public class SuiteTests {
@@ -168,5 +171,46 @@ public class SuiteTests {
     assertEquals("Stored value for var1", "value1.2, value1.3", var1);
     var2 = values.get("var2");
     assertEquals("Stored value for var2", "value2.1", var2);
+  }
+
+  @Test
+  public void stats() {
+    TestSuite suite = new TestSuite();
+    suite.startTest(1);
+    addStep(suite, "step1", 100, 200);
+    assertSuiteStepStat(suite, "step1", 100, 0);
+    assertTestStepStat(suite, "step1", 100, 0);
+
+    addStep(suite, "step2", 200, 250);
+    assertSuiteStepStat(suite, "step2", 50, 0);
+    assertTestStepStat(suite, "step2", 50, 0);
+
+    suite.endTest();
+    suite.startTest(2);
+    addStep(suite, "step1", 500, 700);
+    assertSuiteStepStat(suite, "step1", 150, 70.7);
+    assertTestStepStat(suite, "step1", 200, 0);
+
+  }
+
+  private void addStep(TestSuite suite, String name, int start, int end) {
+    TestCaseStep step = suite.addStep(new FSMTransition(name));
+    step.setStartTime(start);
+    step.setEndTime(end);
+    suite.addStepStat(step);
+  }
+
+  private void assertSuiteStepStat(TestSuite suite, String name, double mean, double std) {
+    SummaryStatistics stats = suite.statsForStep(name);
+    assertThat(stats).isNotNull();
+    assertThat(stats.getMean()).isEqualTo(mean);
+    assertThat(stats.getStandardDeviation()).isCloseTo(std, Percentage.withPercentage(0.02));
+  }
+
+  private void assertTestStepStat(TestSuite suite, String name, double mean, double std) {
+    SummaryStatistics stats = suite.getCurrentTest().statsFor(name);
+    assertThat(stats).isNotNull();
+    assertThat(stats.getMean()).isEqualTo(mean);
+    assertThat(stats.getStandardDeviation()).isCloseTo(std, Percentage.withPercentage(0.02));
   }
 }

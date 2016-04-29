@@ -1,5 +1,6 @@
 package osmo.tester.generator.testsuite;
 
+import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import osmo.common.Logger;
 import osmo.tester.coverage.TestCoverage;
 import osmo.tester.model.FSM;
@@ -9,7 +10,9 @@ import osmo.tester.model.VariableField;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Describes the test suite being generated.
@@ -36,6 +39,10 @@ public class TestSuite {
   private int testCount = 0;
   /** Has the suite been finished? */
   private boolean ended = false;
+  /** Timing statistics for different steps in generation. */
+  private Map<String, SummaryStatistics> stepStats = new HashMap<>();
+  /** Timing statistics for different test in generation. */
+  private SummaryStatistics suiteStats = new SummaryStatistics();
 
   public TestSuite(TestCoverage coverage) {
     this.coverage = coverage;
@@ -85,6 +92,8 @@ public class TestSuite {
     if (keepTests) testCases.add(current);
     current = null;
     coverage.addCoverage(testCoverage);
+    long duration = current.getDuration();
+    suiteStats.addValue(duration);
   }
 
   /**
@@ -261,5 +270,39 @@ public class TestSuite {
 
   public void enableParameterTracking() {
     trackParameters = true;
+  }
+
+  /**
+   * Add timing stats for given test, calculating from its start and end time.
+   *
+   * @param step To add stats for.
+   */
+  public void addStepStat(TestCaseStep step) {
+    SummaryStatistics stats = stepStats.computeIfAbsent(step.getName(), n -> new SummaryStatistics());
+    long diff = step.getEndTime() - step.getStartTime();
+    stats.addValue(diff);
+    getCurrentTest().addStepStat(step);
+  }
+
+  /**
+   * @return Timing statisctics for all steps. Key = step name, value = stats for the step.
+   */
+  public Map<String, SummaryStatistics> getStepStats() {
+    return stepStats;
+  }
+
+  /**
+   * @param stepName To get stats for.
+   * @return Stats for step with given name, null if not found.
+   */
+  public SummaryStatistics statsForStep(String stepName) {
+    return stepStats.get(stepName);
+  }
+
+  /**
+   * @return Overall timing statistics for all tests.
+   */
+  public SummaryStatistics getSuiteStats() {
+    return suiteStats;
   }
 }

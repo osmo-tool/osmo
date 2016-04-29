@@ -97,6 +97,24 @@ public class TestCaseStep {
     return endTime;
   }
 
+  /**
+   * For testing only, allows setting start time for execution.
+   *
+   * @param startTime Value to set.
+   */
+  public void setStartTime(long startTime) {
+    this.startTime = startTime;
+  }
+
+  /**
+   * For testing only, allows setting end time for execution.
+   *
+   * @param endTime Value to set.
+   */
+  public void setEndTime(long endTime) {
+    this.endTime = endTime;
+  }
+
   public String getModelObjectName() {
     return modelObjectName;
   }
