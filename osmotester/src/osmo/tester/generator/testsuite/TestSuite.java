@@ -90,10 +90,10 @@ public class TestSuite {
     testCount++;
     current.setEndTime(System.currentTimeMillis());
     if (keepTests) testCases.add(current);
-    current = null;
     coverage.addCoverage(testCoverage);
     long duration = current.getDuration();
     suiteStats.addValue(duration);
+    current = null;
   }
 
   /**
