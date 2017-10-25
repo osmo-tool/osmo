@@ -86,25 +86,31 @@ public class OSMOTester {
   public void generate(long seed) {
     log.d("generator starting up");
     generator = initGenerator(seed);
-    generator.generate();
-    if (!printCoverage) return;
-    TestSuite suite = generator.getSuite();
-    List<TestCase> tests = suite.getAllTestCases();
-    System.out.println("generated " + tests.size() + " tests.\n");
-    TestCoverage tc = new TestCoverage(tests);
-    String coverage = tc.coverageString(fsm, generator.getPossibleStepPairs(), null, null, null, false);
-    System.out.println(coverage);
-    Requirements requirements = suite.getRequirements();
-    if (!requirements.isEmpty()) {
-      System.out.println();
-      System.out.println(requirements.printCoverage());
-    }
-    String filename = "osmo-output/osmo-" + seed;
-    if (config.isSequenceTraceRequested()) {
-      writeTrace(filename, tests, seed, config);
-    }
-    if (!config.isExploring()) {
-      writeCoverageReport(filename, tests);
+    try{
+      generator.generate();
+    }catch (Exception e){
+      throw e;
+    }finally {
+      if(printCoverage){
+        TestSuite suite = generator.getSuite();
+        List<TestCase> tests = suite.getAllTestCases();
+        System.out.println("generated " + tests.size() + " tests.\n");
+        TestCoverage tc = new TestCoverage(tests);
+        String coverage = tc.coverageString(fsm, generator.getPossibleStepPairs(), null, null, null, false);
+        System.out.println(coverage);
+        Requirements requirements = suite.getRequirements();
+        if (!requirements.isEmpty()) {
+          System.out.println();
+          System.out.println(requirements.printCoverage());
+        }
+        String filename = "osmo-output/osmo-" + seed;
+        if (config.isSequenceTraceRequested()) {
+          writeTrace(filename, tests, seed, config);
+        }
+        if (!config.isExploring()) {
+          writeCoverageReport(filename, tests);
+        }
+      }
     }
   }
 
