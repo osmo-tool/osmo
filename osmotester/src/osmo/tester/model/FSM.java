@@ -111,7 +111,7 @@ public class FSM {
       TransitionName name = transition.getName();
       log.d("Checking test step:" + name);
       if (target == null) {
-        errors.append("Test step without invocation target" + name + "\n");
+        errors.append("Test step without invocation target").append(name).append("\n");
         log.d("Error: Found transition without invocation target - " + name);
       }
       addGenericElements(transition, errors);
@@ -131,7 +131,7 @@ public class FSM {
     checkGuards(specificPost, errors, "@Post");
     for (String groupName : groupNames) {
       if (transitionNames.contains(groupName)) {
-        errors.append("Group name same as a step name ("+groupName+"). Must be different.\n");
+        errors.append("Group name same as a step name (").append(groupName).append("). Must be different.\n");
       }
     }
     if (errors.length() > 0) {
@@ -148,7 +148,7 @@ public class FSM {
         //since that should have been caught already before, we do not add another e for it here
         //TODO: tests for these
         if (name.toString().length() == 0) return;
-        errors.append(errorMsg+" without matching step:" + name +".\n");
+        errors.append(errorMsg).append(" without matching step:").append(name).append(".\n");
       }
     }
   }

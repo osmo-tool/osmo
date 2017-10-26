@@ -23,7 +23,7 @@ public class RandomizerParser implements AnnotationParser {
     try {
       rand = (Randomizer) field.get(model);
       if (rand == null) {
-        errors.append(name+" must be initialized when defined:" + field.getName() + ".\n");
+        errors.append(name).append(" must be initialized when defined:").append(field.getName()).append(".\n");
         return;
       }
     } catch (IllegalAccessException e) {

@@ -27,15 +27,18 @@ public class CoverageValueParser implements AnnotationParser {
     Class<?> returnType = method.getReturnType();
     String name = "@"+CoverageValue.class.getSimpleName();
     if (returnType != String.class) {
-      errors.append("Invalid return type for "+name+" in (\"" + method.getName() + "()\"):" + returnType + ". Should be String.\n");
+      errors.append("Invalid return type for ").append(name).append(" in (\"").append(method.getName()).append("()\")" +
+              ":").append(returnType).append(". Should be String.\n");
     }
     Class<?>[] parameterTypes = method.getParameterTypes();
     if (parameterTypes.length != 1) {
-      errors.append(name +" methods must have 1 parameter ("+TestCaseStep.class+"): \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n");
+      errors.append(name).append(" methods must have 1 parameter (").append(TestCaseStep.class).append("): \"")
+              .append(method.getName()).append("()\" has ").append(parameterTypes.length).append(" parameters.\n");
     }
       
     if (parameterTypes.length > 0 && parameterTypes[0] != TestCaseStep.class) {
-      errors.append(name +" parameter must be of type "+TestCaseStep.class+": \"" + method.getName() + "()\" has type " + parameterTypes[0]+"\n");
+      errors.append(name).append(" parameter must be of type ").append(TestCaseStep.class).append(": \"").append
+              (method.getName()).append("()\" has type ").append(parameterTypes[0]).append("\n");
     }
     
     String variableName = cv.value();

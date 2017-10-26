@@ -306,11 +306,11 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
    * @return That many spaces.
    */
   private String getSpaces(int a) {
-    String ret = "";
+    StringBuilder ret = new StringBuilder();
     for (int i = 0 ; i < a ; i++) {
-      ret += " ";
+      ret.append(" ");
     }
-    return ret;
+    return ret.toString();
   }
 
   /**
@@ -324,27 +324,27 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     coverage.addCoverage(suite.getCoverage());
     coverage.addCoverage(suite.getCurrentTest().getCoverage());
     Map<String, Integer> a = coverage.getStepCoverage();
-    String ret = "Number of times steps taken:\n";
+    StringBuilder ret = new StringBuilder("Number of times steps taken:\n");
     for (String t : a.keySet()) {
-      ret += t + getSpaces(30 - t.length()) + "\t" + a.get(t) + "\n";
+      ret.append(t).append(getSpaces(30 - t.length())).append("\t").append(a.get(t)).append("\n");
     }
 
-    ret += "\nNumber of times variables used:\n";
+    ret.append("\nNumber of times variables used:\n");
     Map<String, Collection<String>> values = coverage.getVariableValues();
     for (String t : values.keySet()) {
-      ret += t + getSpaces(30 - t.length()) + "\t" + values.get(t).size() + "\n";
+      ret.append(t).append(getSpaces(30 - t.length())).append("\t").append(values.get(t).size()).append("\n");
     }
     
-    return ret;
+    return ret.toString();
   }
 
   private String stateText() {
-    String text = "";
+    StringBuilder text = new StringBuilder();
     Collection<VariableField> variables = fsm.getModelVariables();
     for (VariableField variable : variables) {
-      text += variable.getName() + ": " + variable.getValue() + "\n";
+      text.append(variable.getName()).append(": ").append(variable.getValue()).append("\n");
     }
-    return text;
+    return text.toString();
   }
 
   /** Just waiting that user make the selection to the next transition */

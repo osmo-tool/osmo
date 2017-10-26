@@ -35,8 +35,8 @@ public class CharSet extends SearchableInput<Character> {
    */
   public void reduceBy(String charsToRemove) {
     char[] r = charsToRemove.toCharArray();
-    String result = "";
-    String removed = "";
+    StringBuilder result = new StringBuilder();
+    StringBuilder removed = new StringBuilder();
     char[] array = validChars.toCharArray();
     for (char c : array) {
       boolean found = false;
@@ -47,12 +47,12 @@ public class CharSet extends SearchableInput<Character> {
         }
       }
       if (!found) {
-        result += c;
+        result.append(c);
       } else {
-        removed += c;
+        removed.append(c);
       }
     }
-    validChars = result;
+    validChars = result.toString();
     invalidChars += removed;
   }
 

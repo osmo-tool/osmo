@@ -26,13 +26,13 @@ public class TestWriter {
   }
 
   public void write(TestCase test) {
-    String output = "";
-    output += "#OSMO Tester test case. Format v0.1.\n";
-    output += "seed:" + test.getSeed() + "\n";
+    StringBuilder output = new StringBuilder();
+    output.append("#OSMO Tester test case. Format v0.1.\n");
+    output.append("seed:").append(test.getSeed()).append("\n");
     List<String> stepNames = test.getAllStepNames();
     for (String step : stepNames) {
-      output += step + "\n";
+      output.append(step).append("\n");
     }
-    TestUtils.write(output, outputDir+"/"+test.getName()+".tc");
+    TestUtils.write(output.toString(), outputDir+"/"+test.getName()+".tc");
   }
 }

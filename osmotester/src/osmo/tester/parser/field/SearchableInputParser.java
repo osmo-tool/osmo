@@ -25,7 +25,7 @@ public class SearchableInputParser implements AnnotationParser {
     try {
       input = (SearchableInput) field.get(model);
       if (input == null) {
-        errors.append(name+" must be initialized when defined:" + field.getName() + ".\n");
+        errors.append(name).append(" must be initialized when defined:").append(field.getName()).append(".\n");
         return;
       }
     } catch (IllegalAccessException e) {
