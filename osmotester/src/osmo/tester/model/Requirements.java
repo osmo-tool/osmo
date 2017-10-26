@@ -168,8 +168,6 @@ public class Requirements {
       final MessageFormat format = new MessageFormat("Total unique requirements = {0}/{1} ({2}%) requirements.");
       Object args = new Object[]{n, total, p};
       result += format.format(args);
-    } else {
-//      out.append("No requirements were defined (with the add() method) so no percentage is calculated.");
     }
     return result;
   }

@@ -20,7 +20,6 @@ public class VariableParser implements AnnotationParser {
   @Override
   public void parse(ParserResult result, ParserParameters parameters, StringBuilder errors) {
     String annotationName = "@" + Variable.class.getSimpleName();
-//    Variable annotation = (Variable) parameters.getAnnotation();
     Field field = parameters.getField();
     //we bypass the private etc. modifiers to access it
     field.setAccessible(true);

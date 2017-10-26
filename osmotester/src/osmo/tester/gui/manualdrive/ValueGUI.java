@@ -110,9 +110,6 @@ public abstract class ValueGUI extends JDialog {
   public Object next() {
     observed = false;
     setVisible(true);
-//    if (!observed) {
-//      input.record(value);
-//    }
     return value;
   }
 

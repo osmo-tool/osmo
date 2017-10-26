@@ -34,9 +34,6 @@ public class ReducerState {
   /** Current reduction configuration. */
   private final ReducerConfig config;
   /** The latest found test. Used to check for single step length and to set steps to search in next iteration. */
-//  private TestCase test = null;
-//  /** Stop when first option found? Used for initial search. */
-//  private boolean stopOnFirst = false;
   /** If doing requirements search, the requirement we are currently aiming for. */
   private String targetRequirement = null;
   /** Key = requirement name, Value = best test for that requirement. */

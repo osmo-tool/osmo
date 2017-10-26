@@ -207,7 +207,6 @@ public class Randomizer {
   public int sumWeightedRandomFrom(List<Integer> summedTotals) {
     int total = summedTotals.get(summedTotals.size()-1);
     int target = nextInt(1, total);
-//    System.out.println("target:"+target);
     int choice = Collections.binarySearch(summedTotals, target);
     if (choice < 0) {
       //Java binary search returns negative index values if there is no direct match, with additional -1 added on top

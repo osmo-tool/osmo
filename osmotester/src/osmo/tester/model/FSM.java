@@ -59,7 +59,6 @@ public class FSM {
   private Collection<CoverageMethod> coverageValues = new ArrayList<>();
   /** Name of the start step (before anything else). */
   public static final String START_STEP_NAME = ".osmo.tester.start.step";
-//  private static boolean checked = false;
 
   /** Constructor. And a useful comment. */
   public FSM() {
@@ -98,8 +97,6 @@ public class FSM {
    * @param errors Errors to report in addition to those found here.
    */
   public void checkFSM(StringBuilder errors) {
-//    if (checked) return;
-//    checked = true;
     log.d("Checking FSM validity");
     if (transitions.size() == 0) {
       errors.append("No test steps found in given model object. Model cannot be processed.\n");

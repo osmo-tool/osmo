@@ -164,7 +164,6 @@ public class OSMOTester {
     if (config.isDataTraceRequested()) suite.enableParameterTracking();
     MainGenerator generator = new MainGenerator(seed, suite, config);
     fsm = generator.getFsm();
-//    config.initialize(seed, fsm);
     return generator;
   }
 

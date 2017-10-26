@@ -171,7 +171,6 @@ public class MainExplorer implements Runnable {
     log.d("finding best from:" + from);
 
     collectMetrics(from);
-//    calculateAddedCoverages(from, 0);
     List<TestCase> choices = pruneBest(from, -1);
 
     log.d("pruned:" + choices);
@@ -258,7 +257,6 @@ public class MainExplorer implements Runnable {
    * @return The chosen best transition for next step.
    */
   public String findBestFrom(List<TestCase> from, int count) {
-//    calculateAddedCoverages(from, count);
 
     List<TestCase> optimum = pruneBest(from, count);
 

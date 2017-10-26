@@ -217,7 +217,6 @@ public class GreedyOptimizer {
 
       long diff = System.currentTimeMillis() - iStart;
       log.i(id + ":iteration time:(" + iteration + ")" + diff + " gain:" + gain);
-//      System.err.println(id + ":iteration time:(" + iteration + ")" + diff + " gain:" + gain);
       if (endTime > 0 && endTime < System.currentTimeMillis()) {
         log.i("Generation timed out");
         break;
@@ -329,7 +328,6 @@ public class GreedyOptimizer {
       }
       best = found;
       bestCoverage = best.getCoverage();
-//      System.out.println("best:"+bestScore);
       //TODO: check if possible to optimize this removal
       from.remove(best);
       suite.add(best);

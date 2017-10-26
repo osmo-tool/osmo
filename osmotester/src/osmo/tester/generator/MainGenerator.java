@@ -396,7 +396,6 @@ public class MainGenerator {
       //use the setSuite method to also initialize the suite object missing state
       suite = new TestSuite();
     }
-//    suite.reset();
     suite.initRequirements(reqs);
     //re-get since suite might have initialized it if it was null
     reqs = suite.getRequirements();
@@ -446,7 +445,6 @@ public class MainGenerator {
     } catch (RuntimeException | AssertionError e) {
       if (!inError) handleError(test, e);
     }
-//    TestCase current = suite.getCurrentTest();
     //update history
     suite.endTest();
     listeners.testEnded(test);
