@@ -237,12 +237,7 @@ public class MainParser {
     }
     Collections.addAll(methods, clazz.getMethods());
     //sort them by names and hope for a more deterministic result..
-    Collections.sort(methods, new Comparator<Method>() {
-      @Override
-      public int compare(Method o1, Method o2) {
-        return o1.getName().compareTo(o2.getName());
-      }
-    });
+    Collections.sort(methods, (o1, o2) -> o1.getName().compareTo(o2.getName()));
     return methods;
   }
 }

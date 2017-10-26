@@ -39,45 +39,36 @@ public abstract class ValueGUI extends JDialog {
     pane.add(new JLabel(createValueLabel()), BorderLayout.NORTH);
     pane.add(createValueComponent(), BorderLayout.CENTER);
     JButton ok = new JButton("OK");
-    ok.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        value = value();
-        if (value == null) {
-          //invalid input observed
-          return;
-        }
-        setVisible(false);
-        synchronized (ValueGUI.this) {
-          ValueGUI.this.notify();
-        }
+    ok.addActionListener(e -> {
+      value = value();
+      if (value == null) {
+        //invalid input observed
+        return;
+      }
+      setVisible(false);
+      synchronized (ValueGUI.this) {
+        ValueGUI.this.notify();
       }
     });
     JButton skip = new JButton("Skip");
-    skip.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        //setting value to null should cause the underlying object to generate the value
-        value = null;
-        setVisible(false);
-        observed = true;
-        synchronized (ValueGUI.this) {
-          ValueGUI.this.notify();
-        }
+    skip.addActionListener(e -> {
+      //setting value to null should cause the underlying object to generate the value
+      value = null;
+      setVisible(false);
+      observed = true;
+      synchronized (ValueGUI.this) {
+        ValueGUI.this.notify();
       }
     });
     JButton auto = new JButton("Auto");
-    auto.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        ValueGUI.this.input.disableGUI();
-        //setting value to null should cause the underlying object to generate the value
-        value = null;
-        setVisible(false);
-        observed = true;
-        synchronized (ValueGUI.this) {
-          ValueGUI.this.notify();
-        }
+    auto.addActionListener(e -> {
+      ValueGUI.this.input.disableGUI();
+      //setting value to null should cause the underlying object to generate the value
+      value = null;
+      setVisible(false);
+      observed = true;
+      synchronized (ValueGUI.this) {
+        ValueGUI.this.notify();
       }
     });
     JPanel panel = new JPanel(new FlowLayout());

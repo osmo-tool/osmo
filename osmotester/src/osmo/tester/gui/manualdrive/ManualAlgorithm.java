@@ -123,30 +123,27 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     JLabel lblNextStep = new JLabel("Next Step");
     JLabel lblTraceability = new JLabel("Metrics");
 
-    autoPlayButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        //Auto play action handling
-        try {
-          Integer.parseInt(autoPlayDelayTextPane.getText());
-        } catch (Exception e2) {
-          return;
-        }
+    autoPlayButton.addActionListener(e -> {
+      //Auto play action handling
+      try {
+        Integer.parseInt(autoPlayDelayTextPane.getText());
+      } catch (Exception e2) {
+        return;
+      }
 
-        if (lockAutoplay) {
-          lockAutoplay = false;
-          return;
-        }
+      if (lockAutoplay) {
+        lockAutoplay = false;
+        return;
+      }
 
-        if (autoplay) {
-          autoplay = false;
-          lockAutoplay = true;
-          autoPlayButton.setText("Start autoplay");
-        } else {
-          autoplay = true;
-          lockAutoplay = true;
-          autoPlayButton.setText("Stop autoplay");
-        }
+      if (autoplay) {
+        autoplay = false;
+        lockAutoplay = true;
+        autoPlayButton.setText("Start autoplay");
+      } else {
+        autoplay = true;
+        lockAutoplay = true;
+        autoPlayButton.setText("Stop autoplay");
       }
     });
 
@@ -198,29 +195,17 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
 
     algorithmComboBox.setModel(new DefaultComboBoxModel(new String[]{"RandomAlgorithm", "BalancingRandomAlgorithm", "WeightedAlgorithm"}));
 
-    btnEndTest.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        System.out.println("end test pressed");
-        mec.setEndTest(true);
-      }
-
+    btnEndTest.addActionListener(e -> {
+      System.out.println("end test pressed");
+      mec.setEndTest(true);
     });
 
-    btnEndSuite.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        mec.setEndSuite(true);
-        mec.setEndTest(true);
-      }
+    btnEndSuite.addActionListener(e -> {
+      mec.setEndSuite(true);
+      mec.setEndTest(true);
     });
 
-    btnWriteScript.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        writeScript();
-      }
-    });
+    btnWriteScript.addActionListener(e -> writeScript());
     GroupLayout gl_contentPane = new GroupLayout(contentPane);
     gl_contentPane.setHorizontalGroup(
             gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -300,14 +285,12 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
   public void run(TestSuite suite) {
     if (!running) {
       ManualAlgorithm.suite = suite;
-      EventQueue.invokeLater(new Runnable() {
-        public void run() {
-          try {
-            setVisible(true);
-            running = true;
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
+      EventQueue.invokeLater(() -> {
+        try {
+          setVisible(true);
+          running = true;
+        } catch (Exception e) {
+          e.printStackTrace();
         }
       });
 
@@ -373,7 +356,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
         try {
           temp = Integer.parseInt(autoPlayDelayTextPane.getText());
           lock.wait(temp);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
       } else {
         do {
@@ -401,7 +384,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
   private void sleep(int ms) {
     try {
       Thread.sleep(ms);
-    } catch (InterruptedException e) {
+    } catch (InterruptedException ignored) {
 
     }
   }
