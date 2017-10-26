@@ -279,8 +279,7 @@ public class TestUtils {
   }
 
   public static InputStream getResourceStream(Class c, String name) {
-    InputStream is = c.getResourceAsStream(name);
-    return is;
+    return c.getResourceAsStream(name);
   }
 
   public static String getResource(InputStream in) {
@@ -573,7 +572,7 @@ public class TestUtils {
    * @param list2 Second list to compare.
    * @return True if the given lists are the same size and contain the same items (ignoring ordering).
    */
-  public static boolean checkContainsSame(List<? extends Object> list1, Collection<? extends Object> list2) {
+  public static boolean checkContainsSame(List<?> list1, Collection<?> list2) {
     if (list1.size() != list2.size()) return false;
     Collection<Object> list3 = new ArrayList<>();
     list3.addAll(list1);

@@ -101,8 +101,7 @@ public class ElementCoverageRequirement {
     TestCoverage coverage = suite.getCoverage();
     if (pairs > 0 && pairs > coverage.getStepPairs().size()) return false;
     if (requirements > 0 && requirements > coverage.getRequirements().size()) return false;
-    if (steps > 0 && steps > coverage.getSingles().size()) return false;
-    return true;
+      return steps <= 0 || steps <= coverage.getSingles().size();
   }
 
   /**
@@ -115,8 +114,7 @@ public class ElementCoverageRequirement {
     TestCoverage tc = test.getCoverage();
     if (requirements > 0 && requirements > tc.getRequirements().size()) return false;
     if (steps > 0 && steps > tc.getSingles().size()) return false;
-    if (pairs > 0 && pairs > tc.getStepPairs().size()) return false;
-    return true;
+      return pairs <= 0 || pairs <= tc.getStepPairs().size();
   }
 
   /**

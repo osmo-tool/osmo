@@ -73,9 +73,7 @@ public class MEOop  implements java.io.Serializable {
         }
         __equalsCalc = obj;
         boolean _equals;
-        _equals = true && 
-            this.areaID == other.getAreaID() &&
-            this.objectID == other.getObjectID();
+        _equals = this.areaID == other.getAreaID() && this.objectID == other.getObjectID();
         __equalsCalc = null;
         return _equals;
     }

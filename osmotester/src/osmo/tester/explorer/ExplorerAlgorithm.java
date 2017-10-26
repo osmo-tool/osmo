@@ -245,8 +245,7 @@ public class ExplorerAlgorithm implements FSMTraversalAlgorithm {
 
   @Override
   public FSMTraversalAlgorithm cloneMe() {
-    ExplorerAlgorithm clone = new ExplorerAlgorithm(config);
-    return clone;
+    return new ExplorerAlgorithm(config);
   }
 }
 

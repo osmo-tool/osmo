@@ -45,9 +45,7 @@ public class FSMGuard {
     FSMGuard that = (FSMGuard) o;
 
     if (name != null ? !name.equals(that.name) : that.name != null) return false;
-    if (target != null ? !target.equals(that.target) : that.target != null) return false;
-
-    return true;
+    return target != null ? target.equals(that.target) : that.target == null;
   }
 
   @Override

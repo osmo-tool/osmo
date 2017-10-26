@@ -270,11 +270,7 @@ public class MainGenerator {
 
     log.d("Taking step " + next.getName());
     execute(next);
-    if (checkModelEndConditions()) {
-      //stop this test case generation if any end condition returns true
-      return false;
-    }
-    return true;
+    return !checkModelEndConditions();
   }
 
   /**

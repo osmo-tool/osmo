@@ -83,8 +83,7 @@ public class DOTWriter {
   private String createPropertyBox(int depth, String current) {
     String label = "depth=" + depth + "\\n";
     label += "current = " + current;
-    String box = "properties [shape=box, label=\"" + label + "\"]";
-    return box;
+      return "properties [shape=box, label=\"" + label + "\"]";
   }
 
   /**

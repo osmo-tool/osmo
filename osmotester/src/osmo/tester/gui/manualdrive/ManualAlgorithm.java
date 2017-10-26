@@ -374,7 +374,6 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
           temp = Integer.parseInt(autoPlayDelayTextPane.getText());
           lock.wait(temp);
         } catch (Exception e) {
-          return;
         }
       } else {
         do {

@@ -6,7 +6,6 @@ import org.junit.runners.model.InitializationError;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.OSMOTester;
 import osmo.tester.generator.MainGenerator;
-import osmo.tester.reporting.junit.JUnitGenerationListener;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;

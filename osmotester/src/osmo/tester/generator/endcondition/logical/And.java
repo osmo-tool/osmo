@@ -64,7 +64,6 @@ public class And implements EndCondition {
     for (int i = 0 ; i < conditions.length ; i++) {
       clones[i] = conditions[i].cloneMe();
     }
-    And clone = new And(clones);
-    return clone;
+      return new And(clones);
   }
 }

@@ -42,7 +42,6 @@ public class MetaEditAPIHelper {
       port.refresh(graph);
     } catch (RemoteException e) {
       printError("Cannot connect to the MetaEdit API");
-      return;
     }
   }
   
@@ -68,7 +67,6 @@ public class MetaEditAPIHelper {
         port.animate(graph, object);
       } catch (RemoteException e) {
         printError("Cannot connect to the MetaEdit API");
-        return;
       }
   }
   
@@ -94,7 +92,6 @@ public class MetaEditAPIHelper {
       MEAny temp = port.setValueAt(receiver, propIndex, value);
     } catch (RemoteException e) {
       printError("ERROR"+e.toString());
-      return;
     }
   }
   

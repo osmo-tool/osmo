@@ -202,7 +202,6 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
 
   @Override
   public FSMTraversalAlgorithm cloneMe() {
-    BalancingAlgorithm clone = new BalancingAlgorithm();
-    return clone;
+      return new BalancingAlgorithm();
   }
 }

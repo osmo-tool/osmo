@@ -104,8 +104,7 @@ public class TestSuite {
    */
   public TestCaseStep addStep(FSMTransition transition) {
     testCoverage.addStep(transition.getStringName());
-    TestCaseStep step = current.addStep(transition);
-    return step;
+      return current.addStep(transition);
   }
 
   /**
@@ -183,10 +182,7 @@ public class TestSuite {
         return true;
       }
     }
-    if (current != null && testContains(current, transition)) {
-      return true;
-    }
-    return false;
+      return current != null && testContains(current, transition);
   }
 
   /**

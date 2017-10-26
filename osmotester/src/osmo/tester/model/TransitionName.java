@@ -39,9 +39,7 @@ public class TransitionName {
     if (name.length() == 0) return false;
     
     if (name != null ? !name.equalsIgnoreCase(that.name) : that.name != null) return false;
-    if (prefix != null ? !prefix.equalsIgnoreCase(that.prefix) : that.prefix != null) return false;
-
-    return true;
+      return prefix != null ? prefix.equalsIgnoreCase(that.prefix) : that.prefix == null;
   }
 
   @Override

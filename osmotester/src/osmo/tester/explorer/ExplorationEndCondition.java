@@ -194,10 +194,7 @@ public class ExplorationEndCondition implements EndCondition {
     }
     long now = System.currentTimeMillis();
     long diff = now - startTime;
-    if (diff > config.getTimeout() * 1000) {
-      return true;
-    }
-    return false;
+      return diff > config.getTimeout() * 1000;
   }
 
   @Override

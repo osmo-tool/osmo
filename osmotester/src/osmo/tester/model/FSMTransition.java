@@ -110,9 +110,7 @@ public class FSMTransition implements Comparable<FSMTransition> {
 
     FSMTransition that = (FSMTransition) o;
 
-    if (name != null ? !name.equals(that.name) : that.name != null) return false;
-
-    return true;
+    return name != null ? name.equals(that.name) : that.name == null;
   }
 
   @Override

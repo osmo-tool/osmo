@@ -253,9 +253,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
 
     if (increment != null ? !increment.equals(that.increment) : that.increment != null) return false;
     if (max != null ? !max.equals(that.max) : that.max != null) return false;
-    if (min != null ? !min.equals(that.min) : that.min != null) return false;
-
-    return true;
+      return min != null ? min.equals(that.min) : that.min == null;
   }
 
   @Override

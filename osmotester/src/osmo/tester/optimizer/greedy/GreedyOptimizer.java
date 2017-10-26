@@ -231,8 +231,7 @@ public class GreedyOptimizer {
     if (maxIterations > 0) {
       if (iterations >= maxIterations) return false;
     }
-    if (gain < threshold) return false;
-    return true;
+      return gain >= threshold;
   }
 
   private void updateRequirementsCoverage(TestCoverage suiteCoverage) {
