@@ -221,7 +221,7 @@ public class MainExplorer implements Runnable {
       int length = test.getAllStepNames().size();
       //this can happen if some test is shorter but gets same score, e.g. end condition ends sooner and all score 0
       if (count >= length) continue;
-      TestCaseStep step = null;
+      TestCaseStep step;
       if (count < 0) {
         step = test.getCurrentStep();
       } else {

@@ -23,8 +23,8 @@ public class PreParser implements AnnotationParser {
   @Override
   public void parse(ParserResult result, ParserParameters parameters, StringBuilder errors) {
     Object annotation = parameters.getAnnotation();
-    Class type = null;
-    String[] targetNames = null;
+    Class type;
+    String[] targetNames;
     if (annotation instanceof Pre) {
       Pre pre = (Pre) annotation;
       targetNames = pre.value();

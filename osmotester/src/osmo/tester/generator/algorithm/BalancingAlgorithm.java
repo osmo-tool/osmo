@@ -41,7 +41,7 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
   @Override
   public FSMTransition choose(TestSuite suite, List<FSMTransition> choices) {
     TestCaseStep ts = suite.getCurrentTest().getCurrentStep();
-    String previous = null;
+    String previous;
     if (ts != null) {
       previous = ts.getName();
     } else {

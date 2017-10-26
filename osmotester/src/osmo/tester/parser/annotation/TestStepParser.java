@@ -22,10 +22,10 @@ public class TestStepParser implements AnnotationParser {
 
   @Override
   public void parse(ParserResult result, ParserParameters parameters, StringBuilder errors) {
-    String type = "";
+    String type;
     Object annotation = parameters.getAnnotation();
-    String name = null;
-    int weight = 0;
+    String name;
+    int weight;
     String group = parameters.getClassAnnotation(Group.class);
     TestStep ts = (TestStep) annotation;
     name = ts.name();

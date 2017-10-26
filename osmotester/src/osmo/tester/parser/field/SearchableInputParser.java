@@ -21,7 +21,7 @@ public class SearchableInputParser implements AnnotationParser {
     field.setAccessible(true);
     Object model = parameters.getModel();
     String name = SearchableInput.class.getSimpleName();
-    SearchableInput input = null;
+    SearchableInput input;
     try {
       input = (SearchableInput) field.get(model);
       if (input == null) {

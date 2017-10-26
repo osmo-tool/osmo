@@ -352,7 +352,7 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
     synchronized (lock) {
       choiceFromList = null;
       if (autoplay) {
-        int temp = 0;
+        int temp;
         try {
           temp = Integer.parseInt(autoPlayDelayTextPane.getText());
           lock.wait(temp);

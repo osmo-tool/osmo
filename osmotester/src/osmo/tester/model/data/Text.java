@@ -117,7 +117,7 @@ public class Text extends SearchableInput<String> {
    * @return Length defined.
    */
   private int length() {
-    int length = -1;
+    int length;
     if (!invalid) {
       length = rand.nextInt(min, max);
     } else {

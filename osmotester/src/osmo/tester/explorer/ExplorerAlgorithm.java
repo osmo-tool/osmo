@@ -76,7 +76,7 @@ public class ExplorerAlgorithm implements FSMTraversalAlgorithm {
     //create trace if DOT graph is wanted
     TraceNode[] trace = initTrace(path, testIndex);
     ExplorationState state = new ExplorationState(config, suiteCoverage);
-    String choice = null;
+    String choice;
     if (choices.size() == 1) {
       //this handles the scenario startup, where there is always just one choice (and other similar scenarios)
       choice = choices.get(0).getStringName();

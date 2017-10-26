@@ -165,7 +165,7 @@ public class ReducerState {
     if (!needReport) return;
     needReport = false;
     //first we write the report for the previous iteration that just finished
-    String phaseId = "unknown";
+    String phaseId;
     switch (phase) {
       case INITIAL_SEARCH:
         phaseId = "initial";

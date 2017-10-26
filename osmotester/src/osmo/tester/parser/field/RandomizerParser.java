@@ -19,7 +19,7 @@ public class RandomizerParser implements AnnotationParser {
     field.setAccessible(true);
     Object model = parameters.getModel();
     String name = Randomizer.class.getSimpleName();
-    Randomizer rand = null;
+    Randomizer rand;
     try {
       rand = (Randomizer) field.get(model);
       if (rand == null) {
