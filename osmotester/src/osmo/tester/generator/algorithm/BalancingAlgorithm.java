@@ -120,13 +120,8 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
     Map<String, Integer> coverage = tc.getStepCoverage();
     Collection<FSMTransition> options = new LinkedHashSet<>();
     options.addAll(choices);
-    for (Iterator<FSMTransition> i = options.iterator() ; i.hasNext() ; ) {
-      FSMTransition next = i.next();
-      if (coverage.containsKey(next.getStringName())) {
-        //it was covered..
-        i.remove();
-      }
-    }
+      //it was covered..
+      options.removeIf(next -> coverage.containsKey(next.getStringName()));
     log.d("uncovered options:" + options);
     //options now contains all previously uncovered transitions
     if (options.size() > 0) {

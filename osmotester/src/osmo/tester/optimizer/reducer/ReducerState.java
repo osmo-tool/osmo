@@ -276,10 +276,7 @@ public class ReducerState {
    * If a later phase manages to improve, this would not be required.
    */
   public void prune() {
-    for (Iterator<TestCase> i = tests.iterator(); i.hasNext(); ) {
-      TestCase test = i.next();
-      if (test.getLength() > minimum) i.remove();
-    }
+    tests.removeIf(test -> test.getLength() > minimum);
   }
 
   public Map<String, TestCase> getRequirementsTests() {

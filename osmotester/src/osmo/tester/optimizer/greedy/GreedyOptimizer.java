@@ -300,7 +300,7 @@ public class GreedyOptimizer {
   public static List<TestCase> sortAndPrune(int id, List<TestCase> from, ScoreCalculator calculator, int max) {
     //this sort is here to ensure deterministic results (as far as sequence of steps and scores go..)
     //TODO: optimize the sort based on something other than full .tostring
-    Collections.sort(from, new TestSorter());
+    from.sort(new TestSorter());
     List<TestCase> suite = new ArrayList<>();
 
     //first we need to clone the coverage so we can reuse it later since first loop removes items from it

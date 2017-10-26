@@ -97,10 +97,7 @@ public class ScenarioFilter {
    */
   private void filterStartup(List<FSMTransition> enabled, List<String> stepsSoFar) {
     String now = scenario.getStartup().get(stepsSoFar.size());
-    for (Iterator<FSMTransition> i = enabled.iterator() ; i.hasNext() ; ) {
-      FSMTransition t = i.next();
-      if (!t.getStringName().equals(now)) i.remove();
-    }
+    enabled.removeIf(t -> !t.getStringName().equals(now));
   }
   
 }
