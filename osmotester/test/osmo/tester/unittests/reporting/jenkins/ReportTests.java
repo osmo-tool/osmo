@@ -177,6 +177,25 @@ public class ReportTests {
     assertEquals("Jenkins report for tests", expected, actual);
   }
 
+  @Test
+  public void error5Tests2() throws Exception {
+    tester.setModelFactory(new ReflectiveModelFactory(ErrorModel5.class));
+    JenkinsReportGenerator listener = new JenkinsReportGenerator(filename, true, true);
+    tester.addListener(listener);
+    listener.getSuite().setStartTime(1234);
+    listener.getSuite().setEndTime(3234);
+    try {
+      tester.generate(333);
+      fail("Expected failure not observed.");
+    } catch (Exception e) {
+      //this should happen..
+    }
+    String expected = getResource(ReportTests.class, "expected-error5-steps2.txt");
+    expected = unifyLineSeparators(expected, "\n");
+    String actual = readFile(filename);
+    assertEquals("Jenkins report for tests", expected, actual);
+  }
+
   @Ignore
   public void errorTests() throws Exception {
     tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));

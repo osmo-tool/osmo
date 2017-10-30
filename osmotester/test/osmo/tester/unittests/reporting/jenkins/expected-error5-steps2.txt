@@ -1,4 +1,4 @@
-<testsuite name="OSMO Test Suite" timestamp="01.01.1970 00:00:01" hostname="OSMO rules" tests="1" failures="0" errors="1" time="2.00">
+<testsuite name="OSMO Test Suite" timestamp="01.01.1970 00:00:01" hostname="OSMO rules" tests="4" failures="0" errors="1" time="2.00">
   <properties>
     <property name="Algorithm" value="osmo.tester.generator.algorithm.RandomAlgorithm"/>
     <property name="Listener" value="osmo.tester.reporting.jenkins.JenkinsReportGenerator"/>
@@ -7,7 +7,13 @@
     <property name="Suite End Condition" value="And{conditions=[Length{length=1}, Probability{threshold=0.05}]}"/>
     <property name="Test Case End Condition" value="And{conditions=[Length{length=1}, Probability{threshold=0.1}]}"/>
   </properties>
-  <testcase name="Test1" classname="[osmo.tester.unittests.testmodels.ErrorModel5]" time="0.01">
+  <testcase name="Test1_step_1_hello" classname="osmo.tester.unittests.testmodels.ErrorModel5" time="0.00">
+  </testcase>
+  <testcase name="Test1_step_2_hello" classname="osmo.tester.unittests.testmodels.ErrorModel5" time="0.00">
+  </testcase>
+  <testcase name="Test1_step_3_hello" classname="osmo.tester.unittests.testmodels.ErrorModel5" time="0.00">
+  </testcase>
+  <testcase name="Test1_step_4_hello" classname="osmo.tester.unittests.testmodels.ErrorModel5" time="0.00">
     <error message="string" type="string">java.lang.Exception: java.lang.AssertionError: @TestStep assert fail
 	at osmo.tester.reporting.jenkins.JenkinsReportGenerator.testError(JenkinsReportGenerator.java:125)
 	at osmo.tester.generator.listener.GenerationListenerList.testError(GenerationListenerList.java:108)
@@ -15,7 +21,7 @@
 	at osmo.tester.generator.MainGenerator.nextTest(MainGenerator.java:161)
 	at osmo.tester.generator.MainGenerator.generate(MainGenerator.java:94)
 	at osmo.tester.OSMOTester.generate(OSMOTester.java:90)
-	at osmo.tester.unittests.reporting.jenkins.ReportTests.error5Tests(ReportTests.java:169)
+	at osmo.tester.unittests.reporting.jenkins.ReportTests.error5Tests2(ReportTests.java:188)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
