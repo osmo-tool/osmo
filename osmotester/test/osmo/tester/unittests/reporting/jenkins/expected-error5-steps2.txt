@@ -21,7 +21,8 @@
 	at osmo.tester.generator.MainGenerator.nextTest(MainGenerator.java:161)
 	at osmo.tester.generator.MainGenerator.generate(MainGenerator.java:94)
 	at osmo.tester.OSMOTester.generate(OSMOTester.java:90)
-	at osmo.tester.unittests.reporting.jenkins.ReportTests.error5Tests2(ReportTests.java:191)
+	at osmo.tester.unittests.reporting.jenkins.ReportTests.testError(ReportTests.java:179)
+	at osmo.tester.unittests.reporting.jenkins.ReportTests.error5Tests2(ReportTests.java:168)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -55,7 +56,7 @@ Caused by: java.lang.AssertionError: @TestStep assert fail
 	at osmo.tester.generator.MainGenerator.execute(MainGenerator.java:291)
 	at osmo.tester.generator.MainGenerator.nextStep(MainGenerator.java:272)
 	at osmo.tester.generator.MainGenerator.nextTest(MainGenerator.java:155)
-	... 26 more
+	... 27 more
 </error>
   </testcase>
   <system-out></system-out>
