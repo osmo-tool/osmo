@@ -165,12 +165,15 @@ public class ReportTests {
     tester.addListener(listener);
     listener.getSuite().setStartTime(1234);
     listener.getSuite().setEndTime(3234);
+    boolean exceptionHappened = false;
     try {
       tester.generate(333);
       fail("Expected failure not observed.");
     } catch (Exception e) {
       //this should happen..
+      exceptionHappened = true;
     }
+    assertTrue(exceptionHappened);
     String expected = getResource(ReportTests.class, "expected-error5-steps.txt");
     expected = unifyLineSeparators(expected, "\n");
     String actual = readFile(filename);
@@ -184,12 +187,15 @@ public class ReportTests {
     tester.addListener(listener);
     listener.getSuite().setStartTime(1234);
     listener.getSuite().setEndTime(3234);
+    boolean exceptionHappened = false;
     try {
       tester.generate(333);
       fail("Expected failure not observed.");
     } catch (Exception e) {
       //this should happen..
+      exceptionHappened = true;
     }
+    assertTrue(exceptionHappened);
     String expected = getResource(ReportTests.class, "expected-error5-steps2.txt");
     expected = unifyLineSeparators(expected, "\n");
     String actual = readFile(filename);

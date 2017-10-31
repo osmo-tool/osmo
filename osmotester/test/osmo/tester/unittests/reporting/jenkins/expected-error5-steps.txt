@@ -15,7 +15,7 @@
 	at osmo.tester.generator.MainGenerator.nextTest(MainGenerator.java:161)
 	at osmo.tester.generator.MainGenerator.generate(MainGenerator.java:94)
 	at osmo.tester.OSMOTester.generate(OSMOTester.java:90)
-	at osmo.tester.unittests.reporting.jenkins.ReportTests.error5Tests(ReportTests.java:169)
+	at osmo.tester.unittests.reporting.jenkins.ReportTests.error5Tests(ReportTests.java:170)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
