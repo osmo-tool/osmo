@@ -34,9 +34,6 @@ public class ReducerState {
   /** Current reduction configuration. */
   private final ReducerConfig config;
   /** The latest found test. Used to check for single step length and to set steps to search in next iteration. */
-//  private TestCase test = null;
-//  /** Stop when first option found? Used for initial search. */
-//  private boolean stopOnFirst = false;
   /** If doing requirements search, the requirement we are currently aiming for. */
   private String targetRequirement = null;
   /** Key = requirement name, Value = best test for that requirement. */
@@ -165,7 +162,7 @@ public class ReducerState {
     if (!needReport) return;
     needReport = false;
     //first we write the report for the previous iteration that just finished
-    String phaseId = "unknown";
+    String phaseId;
     switch (phase) {
       case INITIAL_SEARCH:
         phaseId = "initial";
@@ -276,10 +273,7 @@ public class ReducerState {
    * If a later phase manages to improve, this would not be required.
    */
   public void prune() {
-    for (Iterator<TestCase> i = tests.iterator(); i.hasNext(); ) {
-      TestCase test = i.next();
-      if (test.getLength() > minimum) i.remove();
-    }
+    tests.removeIf(test -> test.getLength() > minimum);
   }
 
   public Map<String, TestCase> getRequirementsTests() {

@@ -55,7 +55,6 @@ public class PathExplorer extends RecursiveTask<List<TestCase>> {
    */
   @Override
   protected List<TestCase> compute() {
-//    log.d("Starting path exploration");
     Collection<String> toExplore = new ArrayList<>();
     for (FSMTransition transition : targets) {
       toExplore.add(transition.getStringName());

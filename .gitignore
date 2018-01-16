@@ -5,7 +5,7 @@
 jenkins-test.xml
 logs/
 test-matrix.html
-
+osmotester/example/
 
 ### Maven ###
 target/

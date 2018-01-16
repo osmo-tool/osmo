@@ -22,10 +22,10 @@ public class TestStepParser implements AnnotationParser {
 
   @Override
   public void parse(ParserResult result, ParserParameters parameters, StringBuilder errors) {
-    String type = "";
+    String type;
     Object annotation = parameters.getAnnotation();
-    String name = null;
-    int weight = 0;
+    String name;
+    int weight;
     String group = parameters.getClassAnnotation(Group.class);
     TestStep ts = (TestStep) annotation;
     name = ts.name();
@@ -55,8 +55,8 @@ public class TestStepParser implements AnnotationParser {
     Method method = parameters.getMethod();
     Class<?>[] parameterTypes = method.getParameterTypes();
     if (parameterTypes.length > 0) {
-      errors.append("@" + type + " methods are not allowed to have parameters: \"" +
-              method.getName() + "()\" has " + parameterTypes.length + " parameters.\n");
+      errors.append("@").append(type).append(" methods are not allowed to have parameters: \"").append(method.getName
+              ()).append("()\" has ").append(parameterTypes.length).append(" parameters.\n");
     }
   }
 
@@ -72,7 +72,7 @@ public class TestStepParser implements AnnotationParser {
     String prefix = parameters.getPrefix();
     TransitionName tName = new TransitionName(prefix, name);
     if (result.getFsm().getTransition(tName) != null) {
-      errors.append("Test step name must be unique. '"+tName+"' given several times.\n");
+      errors.append("Test step name must be unique. '").append(tName).append("' given several times.\n");
       return null;
     }
     return tName;

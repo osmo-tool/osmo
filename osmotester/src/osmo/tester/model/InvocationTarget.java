@@ -81,9 +81,7 @@ public class InvocationTarget implements Comparable<InvocationTarget> {
 
     if (method != null ? !method.equals(that.method) : that.method != null) return false;
     if (modelObject != null ? !modelObject.equals(that.modelObject) : that.modelObject != null) return false;
-    if (type != null ? !type.equals(that.type) : that.type != null) return false;
-
-    return true;
+    return type != null ? type.equals(that.type) : that.type == null;
   }
 
   @Override

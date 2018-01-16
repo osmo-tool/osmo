@@ -52,6 +52,8 @@ public class JenkinsReportGenerator implements GenerationListener {
   /** If we are in a test mode, we set times for all steps to 0 to enable deterministic test reporting and asserts. */
   private boolean testMode = false;
 
+  private Exception exception = null;
+
   /**
    * @param filename The name of the report file.
    * @param steps    If true, the report describes generated test steps as test cases, else generated tests as test cases.
@@ -114,12 +116,13 @@ public class JenkinsReportGenerator implements GenerationListener {
 
   @Override
   public void testEnded(TestCase test) {
-    suite.add(test, testMode);
+    suite.add(test, testMode, exception);
+    exception = null;
   }
 
   @Override
   public void testError(TestCase test, Throwable error) {
-
+    exception = new Exception(error);
   }
 
   @Override

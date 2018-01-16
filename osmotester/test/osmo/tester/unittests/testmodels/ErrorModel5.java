@@ -7,6 +7,7 @@ import osmo.tester.generator.testsuite.TestSuite;
 /** @author Teemu Kanstren */
 public class ErrorModel5 {
   private TestSuite suite;
+  private int counter = 0;
 
   @BeforeTest
   public void start1() {
@@ -26,7 +27,10 @@ public class ErrorModel5 {
 
   @TestStep("hello")
   public void transition1() {
-    throw new AssertionError("@TestStep assert fail");
+    counter++;
+    if(counter > 3){
+      throw new AssertionError("@TestStep assert fail");
+    }
   }
 
   @Guard("hello")

@@ -276,10 +276,6 @@ public class Reducer {
       ShortenerTask task = new ShortenerTask(osmoConfig, test, rand.nextLong(), state);
       tasks.add(task);
     }
-//    for (int i = 0; i < parallelism; i++) {
-//      ShortenerTask task = new ShortenerTask(osmoConfig, rand.nextLong(), state);
-//      tasks.add(task);
-//    }
     runTasks(tasks, state, waitTime);
   }
 

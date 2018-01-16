@@ -24,7 +24,9 @@ public class BeforeTestParser implements AnnotationParser {
     Method method = parameters.getMethod();
     Class<?>[] parameterTypes = method.getParameterTypes();
     if (parameterTypes.length > 0) {
-      errors.append("@" + BeforeTest.class.getSimpleName() + " methods are not allowed to have parameters: \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n");
+      errors.append("@").append(BeforeTest.class.getSimpleName()).append(" methods are not allowed to have " +
+              "parameters: \"").append(method.getName()).append("()\" has ").append(parameterTypes.length).append(" " +
+              "parameters.\n");
     }
   }
 }

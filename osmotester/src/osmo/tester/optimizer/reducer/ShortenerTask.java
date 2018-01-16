@@ -129,10 +129,6 @@ public class ShortenerTask implements Runnable {
         int size = previousTest.getAllStepNames().size();
         Integer count = sizeCounts.getOrDefault(size, 0);
         sizeCounts.put(size, count);
-//      //if we did not find anything shorter, we finish
-//      if (!found) {
-//        state.finish();
-//      }
         }
     }
   }

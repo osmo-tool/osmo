@@ -68,8 +68,7 @@ public class Probability implements EndCondition {
 
   @Override
   public EndCondition cloneMe() {
-    Probability clone = new Probability(threshold);
-//    clone.rand = new Randomizer(this.rand.getSeed());
-    return clone;
+      //    clone.rand = new Randomizer(this.rand.getSeed());
+    return new Probability(threshold);
   }
 }

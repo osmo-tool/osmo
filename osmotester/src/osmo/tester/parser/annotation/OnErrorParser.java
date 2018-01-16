@@ -25,11 +25,13 @@ public class OnErrorParser implements AnnotationParser {
     Class<?> returnType = method.getReturnType();
     String name = OnError.class.getSimpleName();
     if (returnType != void.class && returnType != Void.class) {
-      errors.append("Invalid return type for @" + name + " (\"" + method.getName() + "()\"):" + returnType + ". Should be void.\n");
+      errors.append("Invalid return type for @").append(name).append(" (\"").append(method.getName()).append("()\")" +
+              ":").append(returnType).append(". Should be void.\n");
     }
     Class<?>[] parameterTypes = method.getParameterTypes();
     if (parameterTypes.length > 0) {
-      errors.append("@" + name + " methods are not allowed to have parameters: \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n");
+      errors.append("@").append(name).append(" methods are not allowed to have parameters: \"").append(method.getName
+              ()).append("()\" has ").append(parameterTypes.length).append(" parameters.\n");
     }
     result.getFsm().addOnError(new InvocationTarget(parameters, OnError.class));
   }

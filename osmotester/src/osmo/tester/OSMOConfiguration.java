@@ -298,13 +298,13 @@ public class OSMOConfiguration implements ModelFactory {
       return;
     }
     si.setChecked(true);
-    if (manual == true) {
+    if (manual) {
       si.enableGUI();
     }
   }
 
   public void setManual(boolean manual) {
-    this.manual = manual;
+    OSMOConfiguration.manual = manual;
   }
 
   public boolean isSequenceTraceRequested() {

@@ -41,7 +41,7 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
   @Override
   public FSMTransition choose(TestSuite suite, List<FSMTransition> choices) {
     TestCaseStep ts = suite.getCurrentTest().getCurrentStep();
-    String previous = null;
+    String previous;
     if (ts != null) {
       previous = ts.getName();
     } else {
@@ -120,13 +120,8 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
     Map<String, Integer> coverage = tc.getStepCoverage();
     Collection<FSMTransition> options = new LinkedHashSet<>();
     options.addAll(choices);
-    for (Iterator<FSMTransition> i = options.iterator() ; i.hasNext() ; ) {
-      FSMTransition next = i.next();
-      if (coverage.containsKey(next.getStringName())) {
-        //it was covered..
-        i.remove();
-      }
-    }
+      //it was covered..
+      options.removeIf(next -> coverage.containsKey(next.getStringName()));
     log.d("uncovered options:" + options);
     //options now contains all previously uncovered transitions
     if (options.size() > 0) {
@@ -202,7 +197,6 @@ public class BalancingAlgorithm implements FSMTraversalAlgorithm {
 
   @Override
   public FSMTraversalAlgorithm cloneMe() {
-    BalancingAlgorithm clone = new BalancingAlgorithm();
-    return clone;
+      return new BalancingAlgorithm();
   }
 }

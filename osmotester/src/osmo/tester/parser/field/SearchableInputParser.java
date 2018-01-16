@@ -21,11 +21,11 @@ public class SearchableInputParser implements AnnotationParser {
     field.setAccessible(true);
     Object model = parameters.getModel();
     String name = SearchableInput.class.getSimpleName();
-    SearchableInput input = null;
+    SearchableInput input;
     try {
       input = (SearchableInput) field.get(model);
       if (input == null) {
-        errors.append(name+" must be initialized when defined:" + field.getName() + ".\n");
+        errors.append(name).append(" must be initialized when defined:").append(field.getName()).append(".\n");
         return;
       }
     } catch (IllegalAccessException e) {

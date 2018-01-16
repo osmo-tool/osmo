@@ -159,7 +159,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
   public T loop() {
     pre();
     if (choice == null) {
-      Number last = min;
+      Number last;
       if (!history.isEmpty()) {
         //get the previous value
         last = history.get(history.size() - 1);
@@ -253,9 +253,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
 
     if (increment != null ? !increment.equals(that.increment) : that.increment != null) return false;
     if (max != null ? !max.equals(that.max) : that.max != null) return false;
-    if (min != null ? !min.equals(that.min) : that.min != null) return false;
-
-    return true;
+      return min != null ? min.equals(that.min) : that.min == null;
   }
 
   @Override
@@ -277,7 +275,7 @@ public class ValueRange<T extends Number> extends SearchableInput<T> {
     Number max = this.max;
     Collection<T> options = new ArrayList<>();
     while (max.doubleValue() >= min.doubleValue()) {
-      T value = null;
+      T value;
       switch (type) {
         case INT:
           value = (T) new Integer(min.intValue());

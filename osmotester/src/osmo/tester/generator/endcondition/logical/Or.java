@@ -64,6 +64,5 @@ public class Or implements EndCondition {
     for (int i = 0 ; i < conditions.length ; i++) {
       clones[i] = conditions[i].cloneMe();
     }
-    Or clone = new Or(clones);
-    return clone;
+      return new Or(clones);
   }}

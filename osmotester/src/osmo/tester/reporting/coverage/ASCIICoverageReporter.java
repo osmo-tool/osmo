@@ -29,21 +29,21 @@ public class ASCIICoverageReporter extends CoverageMetric {
       }
     }
 
-    String ret = "";
+    StringBuilder ret = new StringBuilder();
     for (ValueCount t : coverage) {
-      ret += t.getValue();
-      ret += getSpaces(longest - t.getValue().length() + 2);
-      ret += t.getCount() + "\n";
+      ret.append(t.getValue());
+      ret.append(getSpaces(longest - t.getValue().length() + 2));
+      ret.append(t.getCount()).append("\n");
     }
-    return ret;
+    return ret.toString();
   }
 
   private String getSpaces(int a) {
-    String ret = "";
+    StringBuilder ret = new StringBuilder();
     for (int i = 0 ; i < a ; i++) {
-      ret += " ";
+      ret.append(" ");
     }
-    return ret;
+    return ret.toString();
   }
 
   /**
@@ -66,14 +66,14 @@ public class ASCIICoverageReporter extends CoverageMetric {
       }
     }
 
-    String ret = "";
+    StringBuilder ret = new StringBuilder();
     for (ValueCount t : tpc) {
-      ret += t.getValue();
-      ret += getSpaces(max - t.getValue().length() + 2);
-      ret += t.getCount() + "\n";
+      ret.append(t.getValue());
+      ret.append(getSpaces(max - t.getValue().length() + 2));
+      ret.append(t.getCount()).append("\n");
 
     }
-    return ret;
+    return ret.toString();
 
   }
 
@@ -96,23 +96,23 @@ public class ASCIICoverageReporter extends CoverageMetric {
     }
 
     String corner = "Coverage\\TC";
-    String ret = corner + getSpaces(max - corner.length() + 2);
+    StringBuilder ret = new StringBuilder(corner + getSpaces(max - corner.length() + 2));
     for (int i = 0 ; i < tests.size() ; i++) {
-      ret += "|" + i;
+      ret.append("|").append(i);
     }
-    ret += "|\n";
+    ret.append("|\n");
     for (String t : all) {
-      ret += t + getSpaces(max - t.length() + 2);
+      ret.append(t).append(getSpaces(max - t.length() + 2));
       for (TestCase tc : tests) {
         Collection<String> temp = tc.getCoveredSteps();
         if (temp.contains(t))
-          ret += "|x";
+          ret.append("|x");
         else
-          ret += "| ";
+          ret.append("| ");
       }
-      ret += "|\n";
+      ret.append("|\n");
     }
 
-    return ret;
+    return ret.toString();
   }
 }

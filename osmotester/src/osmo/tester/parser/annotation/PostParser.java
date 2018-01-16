@@ -23,8 +23,8 @@ public class PostParser implements AnnotationParser {
   @Override
   public void parse(ParserResult result, ParserParameters parameters, StringBuilder errors) {
     Object annotation = parameters.getAnnotation();
-    Class type = null;
-    String[] targetNames = null;
+    Class type;
+    String[] targetNames;
     if (annotation instanceof Post) {
       Post post = (Post) annotation;
       targetNames = post.value();
@@ -39,7 +39,8 @@ public class PostParser implements AnnotationParser {
     String aName = "@"+type.getSimpleName();
     Class<?>[] parameterTypes = method.getParameterTypes();
     if (parameterTypes.length > 0) {
-      errors.append(aName+" methods are not allowed to have any parameters: \"" + method.getName() + "()\" has " + parameterTypes.length + ".\n");
+      errors.append(aName).append(" methods are not allowed to have any parameters: \"").append(method.getName())
+              .append("()\" has ").append(parameterTypes.length).append(".\n");
     }
 
     InvocationTarget target = new InvocationTarget(parameters, Post.class);

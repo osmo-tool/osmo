@@ -42,9 +42,7 @@ public class ValueCount implements Comparable<ValueCount> {
     ValueCount that = (ValueCount) o;
 
     if (count != that.count) return false;
-    if (!value.equals(that.value)) return false;
-
-    return true;
+      return value.equals(that.value);
   }
 
   @Override

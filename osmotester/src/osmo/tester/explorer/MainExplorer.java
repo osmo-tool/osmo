@@ -171,7 +171,6 @@ public class MainExplorer implements Runnable {
     log.d("finding best from:" + from);
 
     collectMetrics(from);
-//    calculateAddedCoverages(from, 0);
     List<TestCase> choices = pruneBest(from, -1);
 
     log.d("pruned:" + choices);
@@ -221,7 +220,7 @@ public class MainExplorer implements Runnable {
       int length = test.getAllStepNames().size();
       //this can happen if some test is shorter but gets same score, e.g. end condition ends sooner and all score 0
       if (count >= length) continue;
-      TestCaseStep step = null;
+      TestCaseStep step;
       if (count < 0) {
         step = test.getCurrentStep();
       } else {
@@ -258,7 +257,6 @@ public class MainExplorer implements Runnable {
    * @return The chosen best transition for next step.
    */
   public String findBestFrom(List<TestCase> from, int count) {
-//    calculateAddedCoverages(from, count);
 
     List<TestCase> optimum = pruneBest(from, count);
 

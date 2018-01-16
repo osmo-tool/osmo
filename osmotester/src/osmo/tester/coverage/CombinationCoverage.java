@@ -48,12 +48,12 @@ public class CombinationCoverage implements VariableValue<String> {
    */
   @Override
   public String value() {
-    String result = "";
+    StringBuilder result = new StringBuilder();
     for (VariableValue input : inputs) {
-      if (result.length() > 0) result +="&";
-      result += ""+input.value();
+      if (result.length() > 0) result.append("&");
+      result.append("").append(input.value());
     }
-    return result;
+    return result.toString();
   }
 
   /**

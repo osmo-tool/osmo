@@ -73,13 +73,9 @@ public class MEAny  implements java.io.Serializable {
         }
         __equalsCalc = obj;
         boolean _equals;
-        _equals = true && 
-            ((this.meType==null && other.getMeType()==null) || 
-             (this.meType!=null &&
-              this.meType.equals(other.getMeType()))) &&
-            ((this.meValue==null && other.getMeValue()==null) || 
-             (this.meValue!=null &&
-              this.meValue.equals(other.getMeValue())));
+        _equals = ((this.meType == null && other.getMeType() == null) || (this.meType != null && this.meType.equals
+                (other.getMeType()))) && ((this.meValue == null && other.getMeValue() == null) || (this.meValue !=
+                null && this.meValue.equals(other.getMeValue())));
         __equalsCalc = null;
         return _equals;
     }

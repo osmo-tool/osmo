@@ -23,7 +23,9 @@ public class AfterSuiteParser implements AnnotationParser {
     Method method = parameters.getMethod();
     Class<?>[] parameterTypes = method.getParameterTypes();
     if (parameterTypes.length > 0) {
-      errors.append("@" + AfterSuite.class.getSimpleName() + " methods are not allowed to have parameters: \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n");
+      errors.append("@").append(AfterSuite.class.getSimpleName()).append(" methods are not allowed to have " +
+              "parameters: \"").append(method.getName()).append("()\" has ").append(parameterTypes.length).append(" " +
+              "parameters.\n");
     }
     result.getFsm().addAfterSuite(new InvocationTarget(parameters, AfterSuite.class));
   }

@@ -77,7 +77,7 @@ public class ValueRangeSet<T extends Number> extends SearchableInput<T> {
   public void addPartition(Number min, Number max) {
     log.d("Adding partition min(" + min + ") max(" + max + ")");
     validateRange(min, max);
-    ValueRange range = null;
+    ValueRange range;
     if (min instanceof Integer) {
       range = new ValueRange<>(Integer.class, min, max);
     } else if (min instanceof Long) {

@@ -83,8 +83,7 @@ public class DOTWriter {
   private String createPropertyBox(int depth, String current) {
     String label = "depth=" + depth + "\\n";
     label += "current = " + current;
-    String box = "properties [shape=box, label=\"" + label + "\"]";
-    return box;
+      return "properties [shape=box, label=\"" + label + "\"]";
   }
 
   /**
@@ -96,21 +95,21 @@ public class DOTWriter {
    */
   private String textFor(TraceNode node) {
     List<TraceNode> children = node.getChildren();
-    String output = "";
+    StringBuilder output = new StringBuilder();
     boolean exploring = false;
     for (TraceNode child : children) {
       if (exploring != child.isExploring()) {
         exploring = child.isExploring();
         if (exploring) {
-          output += "edge [color=red]" + ln;
+          output.append("edge [color=red]").append(ln);
         } else {
-          output += "edge [color=black]" + ln;
+          output.append("edge [color=black]").append(ln);
         }
       }
-      output += node.getName() + " -> " + child.getName() + ln;
-      output += textFor(child);
+      output.append(node.getName()).append(" -> ").append(child.getName()).append(ln);
+      output.append(textFor(child));
     }
-    return output;
+    return output.toString();
   }
 
   /**

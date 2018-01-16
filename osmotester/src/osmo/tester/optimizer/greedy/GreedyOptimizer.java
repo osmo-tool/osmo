@@ -217,7 +217,6 @@ public class GreedyOptimizer {
 
       long diff = System.currentTimeMillis() - iStart;
       log.i(id + ":iteration time:(" + iteration + ")" + diff + " gain:" + gain);
-//      System.err.println(id + ":iteration time:(" + iteration + ")" + diff + " gain:" + gain);
       if (endTime > 0 && endTime < System.currentTimeMillis()) {
         log.i("Generation timed out");
         break;
@@ -231,8 +230,7 @@ public class GreedyOptimizer {
     if (maxIterations > 0) {
       if (iterations >= maxIterations) return false;
     }
-    if (gain < threshold) return false;
-    return true;
+      return gain >= threshold;
   }
 
   private void updateRequirementsCoverage(TestCoverage suiteCoverage) {
@@ -301,7 +299,7 @@ public class GreedyOptimizer {
   public static List<TestCase> sortAndPrune(int id, List<TestCase> from, ScoreCalculator calculator, int max) {
     //this sort is here to ensure deterministic results (as far as sequence of steps and scores go..)
     //TODO: optimize the sort based on something other than full .tostring
-    Collections.sort(from, new TestSorter());
+    from.sort(new TestSorter());
     List<TestCase> suite = new ArrayList<>();
 
     //first we need to clone the coverage so we can reuse it later since first loop removes items from it
@@ -330,7 +328,6 @@ public class GreedyOptimizer {
       }
       best = found;
       bestCoverage = best.getCoverage();
-//      System.out.println("best:"+bestScore);
       //TODO: check if possible to optimize this removal
       from.remove(best);
       suite.add(best);

@@ -33,57 +33,57 @@ public class ModelPrinter {
   }
 
   public String write() {
-    String report = "";
+    StringBuilder report = new StringBuilder();
     MainGenerator generator = new MainGenerator(0, new TestSuite(), config);
     FSM fsm = generator.getFsm();
 
-    report += "BeforeSuites: "+targetsToString(fsm.getBeforeSuites());
-    report += "AfterSuites: "+targetsToString(fsm.getAfterSuites());
-    report += "BeforeTests: "+targetsToString(fsm.getBeforeTests());
-    report += "AfterTests: "+targetsToString(fsm.getAfterTests());
-    report += "Last Steps: "+targetsToString(fsm.getLastSteps());
-    report += "Model EndConditions: "+targetsToString(fsm.getEndConditions());
-    report += "On Errors: "+targetsToString(fsm.getOnErrors());
-    report += "Exploration Enablers: "+targetsToString(fsm.getExplorationEnablers());
-    report += "Generation Enablers: "+targetsToString(fsm.getGenerationEnablers());
+    report.append("BeforeSuites: ").append(targetsToString(fsm.getBeforeSuites()));
+    report.append("AfterSuites: ").append(targetsToString(fsm.getAfterSuites()));
+    report.append("BeforeTests: ").append(targetsToString(fsm.getBeforeTests()));
+    report.append("AfterTests: ").append(targetsToString(fsm.getAfterTests()));
+    report.append("Last Steps: ").append(targetsToString(fsm.getLastSteps()));
+    report.append("Model EndConditions: ").append(targetsToString(fsm.getEndConditions()));
+    report.append("On Errors: ").append(targetsToString(fsm.getOnErrors()));
+    report.append("Exploration Enablers: ").append(targetsToString(fsm.getExplorationEnablers()));
+    report.append("Generation Enablers: ").append(targetsToString(fsm.getGenerationEnablers()));
 
-    report += "Coverage Value Methods: ";
+    report.append("Coverage Value Methods: ");
     Collection<CoverageMethod> coverageMethods = fsm.getCoverageMethods();
     for (CoverageMethod cm : coverageMethods) {
-      report += cm.getVariableName();
+      report.append(cm.getVariableName());
       Method method = cm.getInvocationTarget().getMethod();
       String[] split = method.toGenericString().split(" ");
       String target = split[2];
-      report+="["+target+"], ";
+      report.append("[").append(target).append("], ");
     }
-    report += "\n";
+    report.append("\n");
 
     Requirements requirements = fsm.getRequirements();
-    report += "Requirements: "+ requirements;
+    report.append("Requirements: ").append(requirements);
     if (requirements != null) {
-      report += " ("+requirements.getRequirements()+")";
+      report.append(" (").append(requirements.getRequirements()).append(")");
     }
-    report += "\n";
+    report.append("\n");
 
     Collection<VariableField> variables = fsm.getModelVariables();
-    report += "Variables: ";
+    report.append("Variables: ");
     for (VariableField variable : variables) {
-      report += variable.getName()+", ";
+      report.append(variable.getName()).append(", ");
     }
-    report += "\n";
+    report.append("\n");
 
-    report += "\n";
+    report.append("\n");
 
     Collection<FSMTransition> transitions = fsm.getTransitions();
     for (FSMTransition t : transitions) {
-      report += "STEP: "+t.getStringName()+", WEIGHT="+t.getWeight()+"\n";
-      report += "GUARDS: "+targetsToString(t.getGuards());
-      report += "GROUP: "+t.getGroupName()+"\n";
-      report += "POST: "+targetsToString(t.getPostMethods());
-      report += "PRE: "+targetsToString(t.getPreMethods());
-      report += "\n";
+      report.append("STEP: ").append(t.getStringName()).append(", WEIGHT=").append(t.getWeight()).append("\n");
+      report.append("GUARDS: ").append(targetsToString(t.getGuards()));
+      report.append("GROUP: ").append(t.getGroupName()).append("\n");
+      report.append("POST: ").append(targetsToString(t.getPostMethods()));
+      report.append("PRE: ").append(targetsToString(t.getPreMethods()));
+      report.append("\n");
     }
-    return report;
+    return report.toString();
   }
 
   /**
@@ -93,14 +93,14 @@ public class ModelPrinter {
    * @return String list with ", " in the end.
    */
   private String targetsToString(Collection<InvocationTarget> targets) {
-    String result = "";
+    StringBuilder result = new StringBuilder();
     for (InvocationTarget target : targets) {
       Method method = target.getMethod();
       String[] split = method.toGenericString().split(" ");
       String name = split[2];
-      result += name +", ";
+      result.append(name).append(", ");
     }
-    result += "\n";
-    return result;
+    result.append("\n");
+    return result.toString();
   }
 }

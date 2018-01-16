@@ -23,8 +23,8 @@ public class PreParser implements AnnotationParser {
   @Override
   public void parse(ParserResult result, ParserParameters parameters, StringBuilder errors) {
     Object annotation = parameters.getAnnotation();
-    Class type = null;
-    String[] targetNames = null;
+    Class type;
+    String[] targetNames;
     if (annotation instanceof Pre) {
       Pre pre = (Pre) annotation;
       targetNames = pre.value();
@@ -40,8 +40,8 @@ public class PreParser implements AnnotationParser {
     String aName = "@" + type.getSimpleName();
     //return types are not checked because the make no difference for invocation
     if (parameterTypes.length > 0) {
-      errors.append(aName).append(" methods are not allowed to have parameters: \"" + method.getName() + "()\" has " +
-          parameterTypes.length + " parameters.\n");
+      errors.append(aName).append(" methods are not allowed to have parameters: \"").append(method.getName()).append
+              ("()\" has ").append(parameterTypes.length).append(" parameters.\n");
     }
 
     InvocationTarget target = new InvocationTarget(parameters, type);

@@ -194,10 +194,7 @@ public class ExplorationEndCondition implements EndCondition {
     }
     long now = System.currentTimeMillis();
     long diff = now - startTime;
-    if (diff > config.getTimeout() * 1000) {
-      return true;
-    }
-    return false;
+      return diff > config.getTimeout() * 1000;
   }
 
   @Override
@@ -234,7 +231,6 @@ public class ExplorationEndCondition implements EndCondition {
     int before = scoreCalculator.calculateScore(cloneTC);
     int after = scoreCalculator.calculateScore(suiteCoverage);
     int diff = after - before;
-//    int diff = scoreCalculator.addedFitnessFor(suiteCoverage, newTests);
     //is the added value more than the given threshold?
     return diff < config.getSuitePlateauThreshold();
   }
@@ -263,10 +259,6 @@ public class ExplorationEndCondition implements EndCondition {
     } 
     int now = currentTest.getCurrentStep().getAddedCoverage();
     int before = currentTest.getSteps().get(index).getAddedCoverage();
-//    TestCoverage coverage = suite.getCoverage();
-//    int now = scoreCalculator.addedScoreFor(coverage, currentTest);
-////    int before = scoreCalculator.addedScoreFor(coverage, currentTest, length-steps);
-//    int before = scoreCalculator.addedScoreFor(coverage, currentTest);
     int diff = now - before;
     //is the added value more than the given threshold?
     return diff < config.getTestPlateauThreshold();

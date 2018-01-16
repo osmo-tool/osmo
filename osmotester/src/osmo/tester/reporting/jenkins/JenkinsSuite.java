@@ -44,7 +44,7 @@ public class JenkinsSuite {
   private Long testStartTime = null;
   /** For testing only. Overrider normal end time if defined. */
   private Long testEndTime = null;
-  /** If we are testing ourselves we report 0 for duration to get deterministic test cases. */ 
+  /** If we are testing ourselves we report 0 for duration to get deterministic test cases. */
   private boolean testing = false;
 
   public JenkinsSuite(String name, boolean testing) {
@@ -118,6 +118,16 @@ public class JenkinsSuite {
    * @param testMode If true, the step duration is set to 0 [endtime = starttime] (to enable deterministic unit tests).
    */
   public void add(TestCase test, boolean testMode) {
+    add(test, testMode, null);
+  }
+
+    /**
+     * Adds a test case to this suite.
+     *
+     * @param test The executed test.
+     * @param testMode If true, the step duration is set to 0 [endtime = starttime] (to enable deterministic unit tests).
+     */
+  public void add(TestCase test, boolean testMode, Exception error) {
     JenkinsTest newTest = new JenkinsTest(testing);
     JenkinsStep.resetId();
     List<TestCaseStep> steps = test.getSteps();
@@ -133,6 +143,10 @@ public class JenkinsSuite {
         jenkinsStep.setEndTime(step.getStartTime());
       } else {
         jenkinsStep.setEndTime(step.getEndTime());
+      }
+      if(error != null && step.equals(test.getCurrentStep())){
+        // Set error in current step
+        jenkinsStep.setError(error);
       }
       newTest.add(jenkinsStep);
     }

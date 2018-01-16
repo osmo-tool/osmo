@@ -28,7 +28,7 @@ public class TestSuiteParser implements AnnotationParser {
     try {
       TestSuite suite = (TestSuite) field.get(model);
       if (suite != null) {
-        errors.append(name+" value was not null, which is not allowed.\n");
+        errors.append(name).append(" value was not null, which is not allowed.\n");
         return;
       }
       suite = parameters.getSuite();

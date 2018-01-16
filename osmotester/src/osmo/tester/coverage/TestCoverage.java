@@ -86,7 +86,6 @@ public class TestCoverage {
   /** @param name The name of step to add. */
   public synchronized void addStep(String name) {
     increaseStepCount(name, 1);
-//    steps.add(name);
     singles.add(name);
     stepPairs.add(previousStep + "->" + name);
     previousStep = name;
@@ -202,7 +201,6 @@ public class TestCoverage {
       to.increaseStepCount(name, from.stepCount.get(name));
     }
 
-//    to.steps.addAll(from.steps);
     to.reqs.addAll(from.reqs);
     to.singles.addAll(from.singles);
     to.variables.addAll(from.variables);
@@ -322,7 +320,6 @@ public class TestCoverage {
    * @param in The items to remove from this set.
    */
   public void removeAll(TestCoverage in) {
-//    steps.removeAll(in.steps);
     //TODO: optimize removes by seeing if list is redone too many times (every remove)
     singles.removeAll((in.singles));
     stepPairs.removeAll(in.stepPairs);

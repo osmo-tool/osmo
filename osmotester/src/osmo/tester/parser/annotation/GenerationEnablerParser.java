@@ -24,12 +24,13 @@ public class GenerationEnablerParser implements AnnotationParser {
     Class<?> returnType = method.getReturnType();
     String name = "@" + GenerationEnabler.class.getSimpleName();
     if (returnType != void.class && returnType != Void.class) {
-      errors.append("Invalid return type for " + name + " (\"" + method.getName() + "()\"):" + returnType + ".\n");
+      errors.append("Invalid return type for ").append(name).append(" (\"").append(method.getName()).append("()\"):")
+              .append(returnType).append(".\n");
     }
     Class<?>[] parameterTypes = method.getParameterTypes();
     if (parameterTypes.length > 0) {
-      errors.append(name + " methods are not allowed to have parameters: \"" + method.getName() + "()\" has " +
-              parameterTypes.length + " parameters.\n");
+      errors.append(name).append(" methods are not allowed to have parameters: \"").append(method.getName()).append("" +
+              "()\" has ").append(parameterTypes.length).append(" parameters.\n");
     }
 
     result.getFsm().addGenerationEnabler(new InvocationTarget(parameters, GenerationEnabler.class));

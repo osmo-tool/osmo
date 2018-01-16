@@ -28,11 +28,13 @@ public class GuardParser implements AnnotationParser {
     String aName = "@"+Guard.class.getSimpleName();
     Class<?> returnType = method.getReturnType();
     if (returnType != boolean.class && returnType != Boolean.class) {
-      errors.append("Invalid return type for guard (\"" + method.getName() + "()\"):" + returnType + ".\n");
+      errors.append("Invalid return type for guard (\"").append(method.getName()).append("()\"):").append(returnType)
+              .append(".\n");
     }
     Class<?>[] parameterTypes = method.getParameterTypes();
     if (parameterTypes.length > 0) {
-      errors.append("Guard methods are not allowed to have parameters: \"" + method.getName() + "()\" has " + parameterTypes.length + " parameters.\n");
+      errors.append("Guard methods are not allowed to have parameters: \"").append(method.getName()).append("()\" has" +
+              " ").append(parameterTypes.length).append(" parameters.\n");
     }
 
     String[] transitionNames = g.value();
@@ -48,7 +50,7 @@ public class GuardParser implements AnnotationParser {
         //it should also have no other associations defined, as they should be already part of it all
         if (transitionNames.length > 1) {
           errors.append("A guard that is associated with 'all' transitions should not have any other associations defined. ");
-          errors.append("One had " + Arrays.asList(transitionNames) + " as a list of associations.");
+          errors.append("One had ").append(Arrays.asList(transitionNames)).append(" as a list of associations.");
         }
         return;
       }

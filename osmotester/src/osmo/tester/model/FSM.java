@@ -59,7 +59,6 @@ public class FSM {
   private Collection<CoverageMethod> coverageValues = new ArrayList<>();
   /** Name of the start step (before anything else). */
   public static final String START_STEP_NAME = ".osmo.tester.start.step";
-//  private static boolean checked = false;
 
   /** Constructor. And a useful comment. */
   public FSM() {
@@ -98,8 +97,6 @@ public class FSM {
    * @param errors Errors to report in addition to those found here.
    */
   public void checkFSM(StringBuilder errors) {
-//    if (checked) return;
-//    checked = true;
     log.d("Checking FSM validity");
     if (transitions.size() == 0) {
       errors.append("No test steps found in given model object. Model cannot be processed.\n");
@@ -111,7 +108,7 @@ public class FSM {
       TransitionName name = transition.getName();
       log.d("Checking test step:" + name);
       if (target == null) {
-        errors.append("Test step without invocation target" + name + "\n");
+        errors.append("Test step without invocation target").append(name).append("\n");
         log.d("Error: Found transition without invocation target - " + name);
       }
       addGenericElements(transition, errors);
@@ -131,7 +128,7 @@ public class FSM {
     checkGuards(specificPost, errors, "@Post");
     for (String groupName : groupNames) {
       if (transitionNames.contains(groupName)) {
-        errors.append("Group name same as a step name ("+groupName+"). Must be different.\n");
+        errors.append("Group name same as a step name (").append(groupName).append("). Must be different.\n");
       }
     }
     if (errors.length() > 0) {
@@ -148,7 +145,7 @@ public class FSM {
         //since that should have been caught already before, we do not add another e for it here
         //TODO: tests for these
         if (name.toString().length() == 0) return;
-        errors.append(errorMsg+" without matching step:" + name +".\n");
+        errors.append(errorMsg).append(" without matching step:").append(name).append(".\n");
       }
     }
   }

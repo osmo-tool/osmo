@@ -32,6 +32,15 @@ public class JenkinsTest {
     this.testing = testing;
   }
 
+  public String getError(){
+    for(JenkinsStep step: steps){
+      if(step.getError() != null){
+        return step.getError();
+      }
+    }
+    return null;
+  }
+
   /**
    * Add a step to this test case, in order.
    *

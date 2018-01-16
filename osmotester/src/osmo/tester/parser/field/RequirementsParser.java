@@ -28,11 +28,11 @@ public class RequirementsParser implements AnnotationParser {
     try {
       Requirements req = (Requirements) field.get(model);
       if (req == null) {
-        errors.append(name+" object was null, which is not allowed.\n");
+        errors.append(name).append(" object was null, which is not allowed.\n");
         return;
       }
       if (this.req != null && this.req != req) {
-        errors.append("Only one "+name+" object instance allowed in the model.\n");
+        errors.append("Only one ").append(name).append(" object instance allowed in the model.\n");
       }
       result.setRequirements(req);
       this.req = req;

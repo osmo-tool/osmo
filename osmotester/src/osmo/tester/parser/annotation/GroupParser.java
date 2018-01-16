@@ -21,11 +21,11 @@ public class GroupParser implements AnnotationParser {
     //this name is also used to store/access the annotation by class type elsewhere so we cannot add @ to it
     String name = Group.class.getSimpleName();
     if (value == null) {
-      errors.append("@"+name + " value cannot be null.\n");
+      errors.append("@").append(name).append(" value cannot be null.\n");
       return;
     }
     if (value.length() == 0) {
-      errors.append("@"+name + " must have name.\n");
+      errors.append("@").append(name).append(" must have name.\n");
       return;
     }
     parameters.addClassAnnotation(name, value); 
