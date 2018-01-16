@@ -9,6 +9,7 @@ import osmo.tester.generator.SingleInstanceModelFactory;
 import osmo.tester.model.Requirements;
 import osmo.tester.reporting.jenkins.JenkinsReportGenerator;
 import osmo.tester.reporting.jenkins.JenkinsSuite;
+import osmo.tester.reporting.jenkins.JenkinsTest;
 import osmo.tester.unittests.testmodels.CalculatorModel;
 import osmo.tester.unittests.testmodels.ErrorModel5;
 import osmo.tester.unittests.testmodels.PartialModel1;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Scanner;
 import java.util.TimeZone;
 
@@ -171,6 +173,7 @@ public class ReportTests {
   private void testError(boolean reportSteps, String actualFileName) throws Exception{
     tester.setModelFactory(new ReflectiveModelFactory(ErrorModel5.class));
     JenkinsReportGenerator listener = new JenkinsReportGenerator(filename, reportSteps, true);
+    listener.enableTestMode();
     tester.addListener(listener);
     listener.getSuite().setStartTime(1234);
     listener.getSuite().setEndTime(3234);
@@ -185,8 +188,17 @@ public class ReportTests {
     assertTrue(exceptionHappened);
     String expected = unifyLineSeparators(getResource(ReportTests.class, actualFileName), "\n");
     expected = unifyLineSeparators(expected, "\n");
+    expected = unifyErrorString(expected);
     String actual = readFile(filename);
+    actual = unifyErrorString(actual);
     assertEquals("Jenkins report for tests", expected, actual);
+  }
+
+  public String unifyErrorString(String original) {
+    int end = original.indexOf("</error");
+    int start = original.indexOf("osmo.tester.OSMOTester.generate");
+    String reduced = original.substring(0, start) + original.substring(end, original.length());
+    return reduced;
   }
 
   @Ignore

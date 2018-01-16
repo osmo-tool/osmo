@@ -128,7 +128,7 @@ public class JenkinsSuite {
      * @param testMode If true, the step duration is set to 0 [endtime = starttime] (to enable deterministic unit tests).
      */
   public void add(TestCase test, boolean testMode, Exception error) {
-    JenkinsTest newTest = new JenkinsTest(testing);
+    JenkinsTest newTest = new JenkinsTest(testMode);
     JenkinsStep.resetId();
     List<TestCaseStep> steps = test.getSteps();
     for (TestCaseStep step : steps) {

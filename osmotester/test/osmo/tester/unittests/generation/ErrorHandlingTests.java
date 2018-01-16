@@ -213,7 +213,7 @@ public class ErrorHandlingTests {
   @Test
   public void transitionWithoutTrap() {
     osmo.setModelFactory(new ReflectiveModelFactory(ErrorModel5.class));
-    Length length3 = new Length(3);
+    Length length3 = new Length(4);
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
@@ -232,10 +232,11 @@ public class ErrorHandlingTests {
     listener.setTracePrePost(true);
     listener.addExpected("suite-start", "start", "g:hello", "pre:hello", "t:hello", "post:hello");
     listener.addExpected("g:hello", "pre:hello", "t:hello", "post:hello");
+    listener.addExpected("g:hello", "pre:hello", "t:hello", "post:hello");
     listener.addExpected("g:hello", "pre:hello", "t:hello", "post:hello", "ls:lastStepStanding", "end", "suite-end");
     osmo.setModelFactory(new ReflectiveModelFactory(ErrorModel5.class));
     config.setStopTestOnError(false);
-    Length length3 = new Length(3);
+    Length length3 = new Length(4);
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
