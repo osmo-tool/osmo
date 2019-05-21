@@ -85,7 +85,7 @@ public class WriterLoaderTests {
 
   @Test
   public void writeAndLoadSuite() {
-    TestCase test1 = new TestCase(5555555555l);
+    TestCase test1 = new TestCase(5555555555L);
     test1.addStep(new FSMTransition("login"));
     test1.addStep(new FSMTransition("send message"));
     test1.addStep(new FSMTransition("logout"));

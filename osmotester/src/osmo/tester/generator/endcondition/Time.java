@@ -5,6 +5,7 @@ import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSM;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -54,7 +55,12 @@ public class Time implements EndCondition {
   @Override
   public void init(long seed, FSM fsm, OSMOConfiguration config) {
     shouldEnd = false;
-    ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
+    ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1,
+        runnable -> {
+          Thread t = Executors.defaultThreadFactory().newThread(runnable);
+          t.setDaemon(true);
+          return t;
+        });
     Runnable task = () -> shouldEnd = true;
     executor.schedule(task, delay, timeUnit);
   }
