@@ -37,6 +37,7 @@ public class WriterLoaderTests {
     System.gc();
     Thread.sleep(100);
     TestUtils.recursiveDelete(TEMP_DIR);
+    Thread.sleep(100);
   }
   
   @Test
@@ -106,6 +107,6 @@ public class WriterLoaderTests {
     scripts.forEach(ts -> scriptTxts.add(ts.toString()));
     Collections.sort(scriptTxts, Collections.reverseOrder());
     assertEquals("Number of loaded scripts", 2, scripts.size());
-    assertEquals("Scripts", "[TestScript{seed=5555555555, steps=[login, send message, logout]}, TestScript{seed=-99, steps=[tweet, tweet, insta, cave]}]", scripts.toString());
+    assertEquals("Scripts", "[TestScript{seed=5555555555, steps=[login, send message, logout]}, TestScript{seed=-99, steps=[tweet, tweet, insta, cave]}]", scriptTxts.toString());
   }
 }
