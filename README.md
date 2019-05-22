@@ -82,7 +82,7 @@ Dependency:
 <dependency>
 	<groupId>net.kanstren.osmo</groupId>
 	<artifactId>osmotester</artifactId>
-	<version>3.5.0</version>
+	<version>3.7.1</version>
 </dependency>
 ```
 
