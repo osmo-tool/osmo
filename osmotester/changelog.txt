@@ -137,5 +137,10 @@ v3.5.0 15/11/2015
 -fixed reducer to be more effective
 -cleaned up some excess code
 -fixed various other issues
+3.6.0 09/09/2017
+3.7.0 16/01/2018
+3.7.1 22/05/2019
+-Fixed issue in Time endcondition stopping generator exit on finish
+
 
 
