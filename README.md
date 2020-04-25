@@ -86,7 +86,7 @@ Dependency:
 </dependency>
 ```
 
-or direct [link](http://central.maven.org/maven2/net/kanstren/osmo/osmotester/3.5.0/osmotester-3.5.0.jar)
+or direct [link](http://central.maven.org/maven2/net/kanstren/osmo/osmotester/3.7.1/osmotester-3.7.1.jar)
 
 The required core dependencies should be only Log4J2 (api and core jars).
 Some of the reports use Velocity, and some of the JUnit integration uses JUnit. But those should not be strict requirements if you do not use those features.
