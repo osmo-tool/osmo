@@ -6,12 +6,12 @@
       <td>Pair</td>
       <td>Count</td>
     </tr>
-#foreach ($tp in $step-pairs)
+{{#step-pairs}}
     <tr>
-      <td>$tp.value</td>
-      <td>$tp.count</td>
+      <td>{{{value}}}</td>
+      <td>{{count}}</td>
     </tr>
-#end
+{{/step-pairs}}
   </table>
 </body>
 </html>

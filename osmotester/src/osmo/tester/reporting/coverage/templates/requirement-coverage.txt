@@ -6,12 +6,12 @@
     <td>Name</td>
     <td>Count</td>
   </tr>
-#foreach ($r in $requirements)
+{{#requirements}}
   <tr>
-    <td>$r.name</td>
-    <td>$r.count</td>
+    <td>{{name}}</td>
+    <td>{{count}}</td>
   </tr>
-#end
+{{/requirements}}
 </table>
 </body>
 </html>

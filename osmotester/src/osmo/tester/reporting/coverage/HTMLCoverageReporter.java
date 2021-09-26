@@ -30,7 +30,7 @@ public class HTMLCoverageReporter extends CoverageMetric {
   }
 
   public String getTraceabilityMatrix() {
-    return super.getTraceabilityMatrix("osmo/tester/reporting/coverage/templates/coverage-matrix.txt");
+    return super.getTraceabilityMatrix("osmo/tester/reporting/coverage/templates/coverage-matrix.html.mustache");
   }
 
 }

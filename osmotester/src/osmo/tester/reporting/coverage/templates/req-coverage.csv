@@ -1,4 +1,4 @@
 Name,Count
-#foreach ($r in $reqs)
-$r.name,$r.count
-#end
+{{#reqs}}
+{{name}},{{count}}
+{{/reqs}}

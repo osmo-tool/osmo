@@ -1,0 +1,32 @@
+Test reduction report for OSMO Tester
+
+Number of tests generated: {{testCount}}
+Test lengths in iterations: {{lengths}}
+Final length: {{finalLength}}
+
+Invariants (for {{shortests}} tests)):
+Step counts:
+{{#stepCounts}}
+  {{{.}}}
+{{/stepCounts}}
+Final steps: {{finalSteps}}
+
+Strict precedences ({{s_precedences.size}}):
+{{#s_precedences}}
+  {{{.}}}
+{{/s_precedences}}
+
+Flex precedences ({{f_precedences.size}}):
+{{#f_precedences}}
+  {{{.}}}
+{{/f_precedences}}
+
+Shared sequences:
+{{#sequences}}
+  {{{.}}}
+{{/sequences}}
+
+Missing steps:
+{{#missingSteps}}
+  {{{.}}}
+{{/missingSteps}}

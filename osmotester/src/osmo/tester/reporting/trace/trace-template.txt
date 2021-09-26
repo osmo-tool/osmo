@@ -145,44 +145,45 @@
   </style>
 </head>
 <body>
-#foreach ($test in $tests)
-#if ($test.failed)
-  <table class="fail-table" border="1" name="trace-table $test.id">
-#else
-  <table class="test-table" border="1" name="trace-table $test.id">
-#end
-    <caption>Test Generation Trace for $test.name [$test.seed]</caption>
+{{#tests}}
+{{#failed}}
+  <table class="fail-table" border="1" name="trace-table {{id}}">
+{{/failed}}
+{{^failed}}
+  <table class="test-table" border="1" name="trace-table {{id}}">
+{{/failed}}
+    <caption>Test Generation Trace for {{name}} [{{seed}}]</caption>
     <thead>
       <tr>
         <th class='corner'>Step</th>
-        <th colspan='$test.parameterCount' class='colhead'>Parameters</th>
+        <th colspan='{{parameterCount}}' class='colhead'>Parameters</th>
       </tr>
     </thead>
     <tbody>
-#foreach ($step in $test.steps)
+{{#steps}}
       <tr>
-        <th class='testhead' rowspan='2'>${test.id}.${step.id}:${step.name}</th>
-#if ($test.parameterCount == 0)
+        <th class='testhead' rowspan='2'>{{testId}}.{{id}}:{{name}}</th>
+{{^hasParameters}}
       </tr>
       <tr>
         <td/>
       </tr>
-#end
-#if ($test.parameterCount > 0)
-#foreach ($param in $step.htmlValues)
-        <th class='testhead'>$param.value1</th>
-#end
+{{/hasParameters}}
+{{#hasParameters}}
+{{#htmlValues}}
+        <th class='testhead'>{{value1}}</th>
+{{/htmlValues}}
       </tr>
       <tr>
-#foreach ($param in $step.htmlValues)
-        <td>$param.value2</td>
-#end
+{{#htmlValues}}
+        <td>{{value2}}</td>
+{{/htmlValues}}
       </tr>
-#end
-#end
+{{/hasParameters}}
+{{/steps}}
     </tbody>
   </table>
   <p/>
-#end
+{{/tests}}
 </body>
 </html>

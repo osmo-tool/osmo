@@ -6,12 +6,12 @@
       <td>Name</td>
       <td>Count</td>
     </tr>
-#foreach ($t in $steps)
+{{#steps}}
     <tr>
-      <td>$t.value</td>
-      <td>$t.count</td>
+      <td>{{value}}</td>
+      <td>{{count}}</td>
     </tr>
-#end
+{{/steps}}
   </table>
 </body>
 </html>

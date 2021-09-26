@@ -1,6 +1,6 @@
 <html>
 <head>
-  <style type="text/css">
+  <style>
     #tests
     {
     empty-cells:show;
@@ -95,7 +95,7 @@
   </tr>
   <tr>
     <td>Library</td>
-    <td>$library</td>
+    <td>{{library}}</td>
     <td></td>
     <td></td>
   </tr>
@@ -108,36 +108,35 @@
     <th>Value</th>
     <th>Value</th>
   </tr>
-#foreach ($var in $variables)
-  <tr$css.tableClass>
-    <td>$var.key</td>
-    <td>$var.value</td>
+{{#variables}}
+  <tr{{{css.tableClass}}}>
+    <td>{{key}}</td>
+    <td>{{value}}</td>
     <td></td>
     <td></td>
   </tr>
-#end
+{{/variables}}
 </table>
 <br/>
 <table id="tests">
   <tr class="alt">
     <th>Test Case</th>
     <th>Action</th>
-#foreach ($arg_header in $argument_headers)
-    <th>$arg_header</th>
-#end
+{{#argument_headers}}
+    <th>{{.}}</th>
+{{/argument_headers}}
   </tr>
-$css.reset()
-#foreach ($test in $tests)
-#foreach ($step in $test.steps)
-  <tr$css.tableClass>
-    <td>$test.name</td>
-    <td>$step.action</td>
-#foreach ($param in $step.parameters)
-    <td>$param</td>
-#end
+{{#tests}}
+{{#steps}}
+  <tr{{{css.tableClass}}}>
+    <td>{{name}}</td>
+    <td>{{action}}</td>
+{{#parameters}}
+    <td>{{.}}</td>
+{{/parameters}}
   </tr>
-#end
-#end
+{{/steps}}
+{{/tests}}
 </table>
 </body>
 </html>

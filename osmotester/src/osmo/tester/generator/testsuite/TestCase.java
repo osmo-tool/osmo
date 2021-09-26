@@ -1,6 +1,5 @@
 package osmo.tester.generator.testsuite;
 
-import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import osmo.common.Logger;
 import osmo.tester.coverage.TestCoverage;
 import osmo.tester.model.FSMTransition;
@@ -44,7 +43,7 @@ public class TestCase {
   private final long seed;
   private boolean ended = false;
   /** Timing statistics for different steps in generation. */
-  private Map<String, SummaryStatistics> stepStats = new HashMap<>();
+  private Map<String, TestStatistics> stepStats = new HashMap<>();
 
   public TestCase(long seed) {
     this.id = nextId.getAndIncrement();
@@ -78,6 +77,14 @@ public class TestCase {
   /** @return Unique id for this test case. */
   public int getId() {
     return id;
+  }
+
+  public int getTestId() {
+    return getId();
+  }
+
+  public boolean hasParameters() {
+    return getParameterCount() > 0;
   }
 
   public TestCoverage getCoverage() {
@@ -170,7 +177,7 @@ public class TestCase {
   }
 
   public void addStepStat(TestCaseStep step) {
-    SummaryStatistics stats = stepStats.computeIfAbsent(step.getName(), n -> new SummaryStatistics());
+    TestStatistics stats = stepStats.computeIfAbsent(step.getName(), n -> new TestStatistics());
     long diff = step.getEndTime() - step.getStartTime();
     stats.addValue(diff);
   }
@@ -271,7 +278,7 @@ public class TestCase {
   /**
    * @return Timing statisctics for all steps. Key = step name, value = stats for the step.
    */
-  public Map<String, SummaryStatistics> getStepStats() {
+  public Map<String, TestStatistics> getStepStats() {
     return stepStats;
   }
 
@@ -279,7 +286,7 @@ public class TestCase {
    * @param stepName To get stats for.
    * @return Stats for step with given name, null if not found.
    */
-  public SummaryStatistics statsFor(String stepName) {
+  public TestStatistics statsFor(String stepName) {
     return stepStats.get(stepName);
   }
 }

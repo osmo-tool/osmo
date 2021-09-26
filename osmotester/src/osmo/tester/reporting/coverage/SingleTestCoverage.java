@@ -3,11 +3,7 @@ package osmo.tester.reporting.coverage;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.model.FSM;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Coverage values for a single test case (as opposed to suite in {@link osmo.tester.coverage.TestCoverage}.
@@ -26,15 +22,17 @@ public class SingleTestCoverage {
   /** Key=transition pair name ("T1->T2"), value=times covered in this test. */
   private final Map<String, Integer> pairCount = new LinkedHashMap<>();
   /** Key=variable name, value=values covered in this test. */
-  private final Map<String, Collection<Object>> variableValues = new LinkedHashMap<>();
+  private final Map<String, Collection<String>> variableValues = new LinkedHashMap<>();
+  private final CoverageMetric parent;
 
   /**
    * Counts and collects the coverage of the given test.
    *
    * @param tc The test for which to get the coverage.
    */
-  public SingleTestCoverage(TestCase tc) {
+  public SingleTestCoverage(TestCase tc, CoverageMetric parent) {
     this.name = tc.getName();
+    this.parent = parent;
     countRequirements(tc);
     countSteps(tc);
     collectVariableValues(tc);
@@ -52,6 +50,15 @@ public class SingleTestCoverage {
     }
   }
 
+  public List<RequirementCount> allReqCounts() {
+    List<RequirementCount> counts = new ArrayList<>();
+    List<String> reqNames = parent.getRequirements();
+    for (String reqName : reqNames) {
+      counts.add(new RequirementCount(reqName, reqCount(reqName)));
+    }
+    return counts;
+  }
+
   /**
    * Count the number of times each step and step pair has been covered in a given test case.
    * If coverage is 0, nothing is given for that step/pair.
@@ -67,6 +74,15 @@ public class SingleTestCoverage {
       incrementCountFor(pairCount, pair);
       previous = name;
     }
+  }
+
+  public List<RequirementCount> allStepCounts() {
+    List<RequirementCount> counts = new ArrayList<>();
+    List<String> stepNames = parent.getSteps();
+    for (String stepName : stepNames) {
+      counts.add(new RequirementCount(stepName, stepCount(stepName)));
+    }
+    return counts;
   }
 
   /**
@@ -92,7 +108,7 @@ public class SingleTestCoverage {
   private void collectVariableValues(TestCase tc) {
     Map<String, Collection<String>> variables = tc.getCoverage().getVariableValues();
     for (String var : variables.keySet()) {
-      Collection<Object> values = variableValues.get(var);
+      Collection<String> values = variableValues.get(var);
       if (values == null) {
         values = new LinkedHashSet<>();
         variableValues.put(var, values);
@@ -153,6 +169,15 @@ public class SingleTestCoverage {
     return countFor(pairCount, pair);
   }
 
+  public List<RequirementCount> allPairCounts() {
+    List<RequirementCount> counts = new ArrayList<>();
+    List<String> pairNames = parent.getStepPairs();
+    for (String pairName : pairNames) {
+      counts.add(new RequirementCount(pairName, pairCount(pairName)));
+    }
+    return counts;
+  }
+
   /**
    * Used in reporting via Velocity templates.
    * Gives the values that were covered for the given variable in this test case.
@@ -160,10 +185,19 @@ public class SingleTestCoverage {
    * @param variable The name of the variable to get the values for.
    * @return The values covered in this test case.
    */
-  public Collection<Object> variableCoverage(String variable) {
-    Collection<Object> values = variableValues.get(variable);
+  public Collection<String> variableCoverage(String variable) {
+    Collection<String> values = variableValues.get(variable);
     if (values != null) return values;
     return Collections.EMPTY_LIST;
+  }
+
+  public List<VariableValues> allVariables() {
+    List<VariableValues> counts = new ArrayList<>();
+    List<String> variableNames = parent.getVariables();
+    for (String varName : variableNames) {
+      counts.add(new VariableValues(varName, variableCoverage(varName)));
+    }
+    return counts;
   }
 
   public Collection<String> variableNames() {

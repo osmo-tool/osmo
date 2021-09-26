@@ -30,10 +30,10 @@ public class CSVCoverageReporter extends CoverageMetric {
   }
 
   public String getTraceabilityMatrix() {
-    return super.getTraceabilityMatrix("osmo/tester/reporting/coverage/templates/coverage-matrix.csv");
+    return super.getTraceabilityMatrix("osmo/tester/reporting/coverage/templates/coverage-matrix.csv.mustache");
   }
 
   public String getTraceabilityNumberMatrix() {
-    return super.getTraceabilityMatrix("osmo/tester/reporting/coverage/templates/coverage-matrix-numbers.csv");
+    return super.getTraceabilityMatrix("osmo/tester/reporting/coverage/templates/coverage-matrix-numbers.csv.mustache");
   }
 }

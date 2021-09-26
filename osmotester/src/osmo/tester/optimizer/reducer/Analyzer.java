@@ -1,14 +1,14 @@
 package osmo.tester.optimizer.reducer;
 
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
 import osmo.common.TestUtils;
 import osmo.common.Logger;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.optimizer.reducer.debug.Invariants;
+import osmo.tester.reporting.coverage.CoverageMetric;
 
-import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Analyzes a set of traces for invariants and writes reports.
@@ -79,24 +79,21 @@ public class Analyzer {
    */
   public String createReport() {
     if (state.getTests().size() == 0) return "No failing tests found.";
-    VelocityEngine velocity = new VelocityEngine();
-    VelocityContext vc = new VelocityContext();
-    vc.put("testCount", state.getTestCount());
-    vc.put("lengths", state.getLengths());
-    vc.put("finalLength", state.getTests().get(0).getAllStepNames().size());
-    vc.put("shortests", state.getTests().size());
-    vc.put("stepCounts", invariants.getUsedStepCounts());
-    vc.put("missingSteps", invariants.getMissingSteps());
-    vc.put("finalSteps", invariants.getLastSteps());
-    vc.put("s_precedences", invariants.getStrictPrecedences());
-    vc.put("f_precedences", invariants.getFlexPrecedences());
-    vc.put("sequences", invariants.getSequences());
 
-    velocity.setProperty("resource.loader", "class");
-    velocity.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
-    StringWriter sw = new StringWriter();
-    velocity.mergeTemplate("osmo/tester/optimizer/reducer/template.vm", "UTF8", vc, sw);
-    return sw.toString();
+    Map<String, Object> context = new HashMap<>();
+    context.put("testCount", state.getTestCount());
+    context.put("lengths", state.getLengths());
+    context.put("finalLength", state.getTests().get(0).getAllStepNames().size());
+    context.put("shortests", state.getTests().size());
+    context.put("stepCounts", invariants.getUsedStepCounts());
+    context.put("missingSteps", invariants.getMissingSteps());
+    context.put("finalSteps", invariants.getLastSteps());
+    context.put("s_precedences", invariants.getStrictPrecedences());
+    context.put("f_precedences", invariants.getFlexPrecedences());
+    context.put("sequences", invariants.getSequences());
+
+    String templateName = "osmo/tester/optimizer/reducer/template.mustache";
+    return CoverageMetric.mustacheIt(context, templateName);
   }
 
   /**

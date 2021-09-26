@@ -29,6 +29,7 @@ public class CSSHelper {
 
   @Override
   public String toString() {
-    return getTableClass();
+    String tableClass = getTableClass();
+    return tableClass;
   }
 }

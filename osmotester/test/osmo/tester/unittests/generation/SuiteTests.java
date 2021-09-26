@@ -1,10 +1,10 @@
 package osmo.tester.unittests.generation;
 
-import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.assertj.core.data.Percentage;
 import org.junit.Test;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
+import osmo.tester.generator.testsuite.TestStatistics;
 import osmo.tester.generator.testsuite.TestSuite;
 import osmo.tester.model.FSMTransition;
 
@@ -188,7 +188,7 @@ public class SuiteTests {
     suite.endTest();
     suite.startTest(2);
     addStep(suite, "step1", 500, 700);
-    assertSuiteStepStat(suite, "step1", 150, 70.7);
+    assertSuiteStepStat(suite, "step1", 150, 50.0);
     assertTestStepStat(suite, "step1", 200, 0);
 
   }
@@ -201,14 +201,14 @@ public class SuiteTests {
   }
 
   private void assertSuiteStepStat(TestSuite suite, String name, double mean, double std) {
-    SummaryStatistics stats = suite.statsForStep(name);
+    TestStatistics stats = suite.statsForStep(name);
     assertThat(stats).isNotNull();
     assertThat(stats.getMean()).isEqualTo(mean);
     assertThat(stats.getStandardDeviation()).isCloseTo(std, Percentage.withPercentage(0.02));
   }
 
   private void assertTestStepStat(TestSuite suite, String name, double mean, double std) {
-    SummaryStatistics stats = suite.getCurrentTest().statsFor(name);
+    TestStatistics stats = suite.getCurrentTest().statsFor(name);
     assertThat(stats).isNotNull();
     assertThat(stats.getMean()).isEqualTo(mean);
     assertThat(stats.getStandardDeviation()).isCloseTo(std, Percentage.withPercentage(0.02));

@@ -1,7 +1,10 @@
 package osmo.tester.reporting.coverage;
 
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
+import com.github.mustachejava.DefaultMustacheFactory;
+import com.github.mustachejava.Mustache;
+import com.github.mustachejava.MustacheFactory;
+import osmo.common.Logger;
+import osmo.tester.OSMOTester;
 import osmo.tester.coverage.TestCoverage;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
@@ -10,14 +13,9 @@ import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
 import osmo.tester.scripter.robotframework.CSSHelper;
 
+import java.io.IOException;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class provides means to generate coverage metric reports from generated tests.
@@ -25,22 +23,17 @@ import java.util.Map;
  * @author Teemu Kanstrén, Olli-Pekka Puolitaival
  */
 public abstract class CoverageMetric {
+  private static final Logger log = new Logger(OSMOTester.class);
   /** Coverage for the tests. */
   protected final TestCoverage suiteCoverage;
   /** The parsed model for test generation. */
   protected final FSM fsm;
   protected final Collection<TestCase> tests;
-  /** For template to report generation. */
-  private VelocityEngine velocity = new VelocityEngine();
-  /** For storing template variables. */
-  private VelocityContext vc = new VelocityContext();
 
   public CoverageMetric(TestCoverage suiteCoverage, Collection<TestCase> tests, FSM fsm) {
     this.fsm = fsm;
     this.suiteCoverage = suiteCoverage;
     this.tests = tests;
-    velocity.setProperty("resource.loader", "class");
-    velocity.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
   }
 
   /**
@@ -150,16 +143,32 @@ public abstract class CoverageMetric {
   /**
    * Creates a step coverage count table, showing how many times each step has been taken in the test suite.
    *
-   * @param templateName The name of Velocity template to format the results.
+   * @param templateName The name of Mustache template to format the results.
    * @return Step coverage formatted with given template.
    */
   public String getStepCounts(String templateName) {
     List<ValueCount> counts = countSteps();
 
-    vc.put("steps", counts);
+    Map<String, Object> context = new HashMap<>();
+    context.put("steps", counts);
+    return mustacheIt(context, templateName);
+  }
 
+  public static String mustacheIt(Map<String, Object> context, String templateName) {
+    DefaultMustacheFactory mf = new DefaultMustacheFactory();
+//    Reader reader = new StringReader(TestUtils.getResource(CoverageMetric.class, templatename));
+    //mustache docs are not very clear on what the name is for but lets go with this until someone tells better
+//    Mustache mustache = mf.compile(reader, templateName);
+    Mustache mustache = mf.compile(templateName);
     StringWriter sw = new StringWriter();
-    velocity.mergeTemplate(templateName, "UTF8", vc, sw);
+
+    try {
+      mustache.execute(sw, context).flush();
+    } catch (IOException e) {
+      log.e("Failed to process Mustache template: "+e.getMessage());
+      throw new RuntimeException(e);
+    }
+
     return sw.toString();
   }
 
@@ -173,11 +182,9 @@ public abstract class CoverageMetric {
     List<ValueCount> tpc = countStepPairs();
     Collections.sort(tpc);
 
-    vc.put("step-pairs", tpc);
-
-    StringWriter sw = new StringWriter();
-    velocity.mergeTemplate(templateName, "UTF8", vc, sw);
-    return sw.toString();
+    Map<String, Object> context = new HashMap<>();
+    context.put("step-pairs", tpc);
+    return mustacheIt(context, templateName);
   }
 
   /**
@@ -191,11 +198,9 @@ public abstract class CoverageMetric {
     List<RequirementCount> tpc = countRequirements();
     Collections.sort(tpc);
 
-    vc.put("reqs", tpc);
-
-    StringWriter sw = new StringWriter();
-    velocity.mergeTemplate(templateName, "UTF8", vc, sw);
-    return sw.toString();
+    Map<String, Object> context = new HashMap<>();
+    context.put("reqs", tpc);
+    return mustacheIt(context, templateName);
   }
 
   /**
@@ -206,7 +211,7 @@ public abstract class CoverageMetric {
    * @return The formatted traceability matrix.
    */
   public String getTraceabilityMatrix(String templateName) {
-    List<SingleTestCoverage> tc = getTestCoverage();
+    List<SingleTestCoverage> tests = getTestCoverage();
     List<String> steps = getSteps();
     List<String> pairs = getStepPairs();
     List<String> reqs = getRequirements();
@@ -216,22 +221,26 @@ public abstract class CoverageMetric {
     List<VariableValues> states = getStates();
     List<VariableValues> statePairs = getStatePairs();
 
-    vc.put("alt", new CSSHelper());
-    vc.put("tests", tc);
-    vc.put("req_names", reqs);
-    vc.put("step_names", steps);
-    vc.put("step_pair_names", pairs);
-    vc.put("variable_names", variables);
-    vc.put("variable_values", variableValues);
-    vc.put("states", states);
-    vc.put("state_pairs", statePairs);
+    Map<String, Object> context = new HashMap<>();
+    context.put("alt", new CSSHelper());
+//    context.put("alt", "HELLO");
+    context.put("tests", tests);
+    context.put("req_names", reqs);
+    context.put("step_names", steps);
+    context.put("step_pair_names", pairs);
+    context.put("variable_names", variables);
+    context.put("variable_values", variableValues);
+    context.put("states", states);
+    context.put("state_pairs", statePairs);
+    context.put("step_count", steps.size());
+    context.put("req_count", reqs.size());
+    context.put("pair_count", pairs.size());
+    context.put("variable_count", variables.size());
 
-    StringWriter sw = new StringWriter();
-    velocity.mergeTemplate(templateName, "UTF8", vc, sw);
-    return sw.toString();
+    return mustacheIt(context, templateName);
   }
 
-  private List<String> getVariables() {
+  protected List<String> getVariables() {
     List<String> variables = new ArrayList<>();
     variables.addAll(suiteCoverage.getVariables());
     Collections.sort(variables);
@@ -241,7 +250,7 @@ public abstract class CoverageMetric {
   private List<SingleTestCoverage> getTestCoverage() {
     List<SingleTestCoverage> result = new ArrayList<>();
     for (TestCase test : tests) {
-      result.add(new SingleTestCoverage(test));
+      result.add(new SingleTestCoverage(test, this));
     }
     return result;
   }
@@ -251,7 +260,7 @@ public abstract class CoverageMetric {
    *
    * @return The step names.
    */
-  private List<String> getSteps() {
+  protected List<String> getSteps() {
     List<String> result = new ArrayList<>();
     Collection<FSMTransition> transitions = fsm.getTransitions();
     for (FSMTransition transition : transitions) {
@@ -266,7 +275,7 @@ public abstract class CoverageMetric {
    *
    * @return The pair names, with steps separated by "-{@literal >}".
    */
-  private List<String> getStepPairs() {
+  protected List<String> getStepPairs() {
     List<String> result = new ArrayList<>();
     Collection<String> pairs = suiteCoverage.getStepPairs();
     result.addAll(pairs);
@@ -279,7 +288,7 @@ public abstract class CoverageMetric {
    *
    * @return The requirement names.
    */
-  private List<String> getRequirements() {
+  protected List<String> getRequirements() {
     Collection<String> temp = new LinkedHashSet<>();
     Requirements fsmReqs = fsm.getRequirements();
     temp.addAll(fsmReqs.getRequirements());

@@ -1,0 +1,19 @@
+<testsuite name="{{suite.name}}" timestamp="{{suite.startTime}}" hostname="OSMO rules" tests="{{suite.stepCount}}" failures="{{suite.failureCount}}" errors="{{suite.errorCount}}" time="{{suite.duration}}">
+  <properties>
+{{#properties}}
+    <property name="{{name}}" value="{{{value}}}"/>
+{{/properties}}
+  </properties>
+{{#suite.steps}}
+  <testcase name="{{name}}" classname="{{className}}" time="{{duration}}">
+{{#error}}
+    <error message="string" type="string">{{{.}}} </error>
+{{/error}}
+{{#failure}}
+    <failure message="string" type="string">{{{.}}}</failure>
+{{/failure}}
+  </testcase>
+{{/suite.steps}}
+  <system-out>{{{suite.systemOut}}}</system-out>
+  <system-err>{{{suite.systemErr}}}</system-err>
+</testsuite>

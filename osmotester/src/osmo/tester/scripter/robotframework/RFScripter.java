@@ -1,13 +1,9 @@
 package osmo.tester.scripter.robotframework;
 
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
+import osmo.tester.reporting.coverage.CoverageMetric;
 
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Creates scripts that can be executed with the Robot Framework.
@@ -17,10 +13,6 @@ import java.util.Map;
 public class RFScripter {
   /** Test library to be used by Robot Framework */
   private String testLibrary;
-  /** For template->script generation. */
-  private VelocityEngine velocity = new VelocityEngine();
-  /** For storing template variables. */
-  private VelocityContext vc = new VelocityContext();
   /** The test case variables. */
   private Map<String, String> variables = new LinkedHashMap<>();
   /** The test cases to be generated. */
@@ -91,16 +83,15 @@ public class RFScripter {
     if (!tests.contains(currentTest)) {
       tests.add(currentTest);
     }
-    vc.put("library", testLibrary);
-    vc.put("argument_headers", getArgumentHeaders());
-    vc.put("variables", variables.entrySet());
-    vc.put("css", new CSSHelper());
-    vc.put("tests", tests);
-    velocity.setProperty("resource.loader", "class");
-    velocity.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
-    StringWriter sw = new StringWriter();
-    velocity.mergeTemplate("osmo/tester/scripter/robotframework/script.vm", "UTF8", vc, sw);
-    return sw.toString();
+    String templateName = "osmo/tester/scripter/robotframework/script.vm";
+    Map<String, Object> context = new HashMap<>();
+    context.put("library", testLibrary);
+    context.put("argument_headers", getArgumentHeaders());
+    context.put("variables", variables.entrySet());
+    context.put("css", new CSSHelper());
+    context.put("tests", tests);
+    return CoverageMetric.mustacheIt(context, templateName);
+
   }
 
   /**

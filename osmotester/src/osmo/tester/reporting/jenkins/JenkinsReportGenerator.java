@@ -1,8 +1,7 @@
 package osmo.tester.reporting.jenkins;
 
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
 import osmo.common.Logger;
+import osmo.common.TestUtils;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.filter.StepFilter;
@@ -14,14 +13,14 @@ import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.TestModels;
 import osmo.tester.parser.ModelObject;
+import osmo.tester.reporting.coverage.CoverageMetric;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 
 /**
  * Listens to OSMO Tester test generation and builds a test report suitable for the Jenkins JUnit reporting task.
@@ -33,10 +32,6 @@ import java.util.Collection;
  */
 public class JenkinsReportGenerator implements GenerationListener {
   private static final Logger log = new Logger(JenkinsReportGenerator.class);
-  /** For template->report generation. */
-  private VelocityEngine velocity = new VelocityEngine();
-  /** For storing template variables. */
-  private VelocityContext vc = new VelocityContext();
   /** We use the generation configuration to provide us with properties to the test report. */
   private OSMOConfiguration config = null;
   /** The Jenkins (Ant) report format requires a name for the test suite. */
@@ -72,6 +67,18 @@ public class JenkinsReportGenerator implements GenerationListener {
     this.filename = filename;
     this.steps = steps;
     this.testMode = testMode;
+  }
+
+  private static void createJenkinsReport(String filename, List<TestCase> tests, long seed, OSMOConfiguration config) {
+    JenkinsReportGenerator jenkins = new JenkinsReportGenerator(null, false);
+    jenkins.init(seed, null, config);
+    jenkins.suiteStarted(null);
+    for (TestCase test : tests) {
+      jenkins.testEnded(test);
+    }
+    jenkins.suiteEnded(null);
+    String report = jenkins.generateTestReport();
+    TestUtils.write(report, filename + ".xml");
   }
 
   public void enableTestMode() {
@@ -194,21 +201,19 @@ public class JenkinsReportGenerator implements GenerationListener {
   /**
    * Generates a report for generated tests using the given template.
    * The templates are loaded from classpath in the same package as this class.
-   * Apache Velocity is used to merge the template with generated tests.
+   * Mustache is used to merge the template with generated tests.
    * Property "suite" contains the test suite generated.
-   * Property "properties" contain miscellamous properties about test generation configuration.
+   * Property "properties" contain miscellaneous properties about test generation configuration.
    *
-   * @param templateName The velocity template name to use for the report.
+   * @param templateNamePostfix The template name path to use for the report.
    * @return The generated report.
    */
-  public String generateReport(String templateName) {
-    vc.put("suite", suite);
-    vc.put("properties", fillProperties());
-    velocity.setProperty("resource.loader", "class");
-    velocity.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
-    StringWriter sw = new StringWriter();
-    velocity.mergeTemplate("osmo/tester/reporting/jenkins/jenkins-" + templateName + ".vm", "UTF8", vc, sw);
-    return sw.toString();
+  public String generateReport(String templateNamePostfix) {
+    String templateName = "osmo/tester/reporting/jenkins/jenkins-" + templateNamePostfix + ".mustache";
+    Map<String, Object> context = new HashMap<>();
+    context.put("suite", suite);
+    context.put("properties", fillProperties());
+    return CoverageMetric.mustacheIt(context, templateName);
   }
 
   private static final String NULL = "Null";

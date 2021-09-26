@@ -1,0 +1,29 @@
+The number of times a given test case includes a given step:
+Test ID,{{#step_names}}{{.}},{{/step_names}}
+{{#tests}}
+{{name}},{{#allStepCounts}}{{count}},{{/allStepCounts}}
+{{/tests}}
+
+The number of times a given test case includes a given requirement:
+Test ID,{{#req_names}}{{.}},{{/req_names}}
+{{#tests}}
+{{name}},{{#allReqCounts}}{{count}},{{/allReqCounts}}
+{{/tests}}
+
+The number of times a given test case includes a given step pair (T1->T2, T2 occurred after T1):
+Test ID,{{#step_pair_names}}{{{.}}},{{/step_pair_names}}
+{{#tests}}
+{{name}},{{#allPairCounts}}{{count}},{{/allPairCounts}}
+{{/tests}}
+
+The set of values for model variables in a given test case:
+Test ID,{{#variable_names}}{{.}},{{/variable_names}}
+{{#tests}}
+{{name}},{{#allVariables}}{{values}},{{/allVariables}}
+{{/tests}}
+
+Overall coverage for all tests:
+{{#variable_values}}
+{{name}},{{values.size}}
+{{name}},{{values}}
+{{/variable_values}}
