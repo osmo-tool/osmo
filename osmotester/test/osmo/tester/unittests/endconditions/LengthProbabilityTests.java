@@ -30,7 +30,7 @@ public class LengthProbabilityTests {
 
   @Test
   public void length1WithProbability() {
-    testWith(4, 5, 1, 5, 0.1d);
+    testWith(5, 5, 1, 5, 0.1d);
   }
 
   @Test

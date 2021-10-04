@@ -70,12 +70,12 @@ public class CoverageWithStateTests {
     GreedyOptimizer osmo = new GreedyOptimizer(oc, config);
     GenerationResults results = osmo.search(2000, 333);
     TestCoverage tc = results.getCoverage();
-    assertEquals("Number of generated tests", 5, results.getTests().size());
+    assertEquals("Number of generated tests", 4, results.getTests().size());
     Map<String, Collection<String>> variables = tc.getVariableValues();
     //1 value = 10
     assertEquals("Variable coverage", "[on paras]", variables.get("teemu").toString());
     //4 values = 40
-    assertEquals("Variable coverage", "[many, one, null, two]", variables.get("rangeRange").toString());
+    assertEquals("Variable coverage", "[two, null, one, many]", variables.get("rangeRange").toString());
     //2 values = 20
     assertEquals("Variable coverage", "[null, many]", variables.get("range2Range").toString());
     //32 values = 320
@@ -87,12 +87,12 @@ public class CoverageWithStateTests {
     //2 values = 100
     assertEquals("Covered states", "{stateName=[state2, state1]}", tc.getStates().toString());
     //6 values = 240
-    assertEquals("Covered state pairs", "{stateName-pair=[osmo.tester.START_STATE->state2, state2->state1, state1->state1, state1->state2, state2->state2, osmo.tester.START_STATE->state1]}", tc.getStatePairs().toString());
+    assertEquals("Covered state pairs", "{stateName-pair=[osmo.tester.START_STATE->state2, state2->state2, state2->state1, state1->state1, state1->state2, osmo.tester.START_STATE->state1]}", tc.getStatePairs().toString());
     
     ScoreCalculator sc = new ScoreCalculator(config);
     //see comments above for values
     //10+40+20+320+100+240=70+320+340=70+660=710-76 (steps) = 654
-    assertEquals("Coverage score", 654, sc.calculateScore(tc));
+    assertEquals("Coverage score", 680, sc.calculateScore(tc));
   }
 //  Expected :[
 //  keijo&many&many, keijo&many&null, keijo&null&many, keijo&null&null, keijo&one&many, keijo&two&many, keijo&two&null, --keijo&one&null,
@@ -128,7 +128,7 @@ public class CoverageWithStateTests {
     ScoreCalculator scorer = new ScoreCalculator(config);
     assertEquals("Number of tests", 6, tests.size());
     assertEquals("Test steps", "TestCase:[t1, t2, t3, t4]", tests.iterator().next().toString());
-    assertEquals("Values covered", "{range=[1, 3, 4]}", tc.getVariableValues().toString());
+    assertEquals("Values covered", "{range=[3, 4, 5, 2]}", tc.getVariableValues().toString());
 //    //there are 16 state-pairs and 4 states, so it is a total of 24*10
     assertEquals("Coverage score", 240, scorer.calculateScore(tc));
   }
@@ -168,6 +168,6 @@ public class CoverageWithStateTests {
     tc.addCoverage(results.getTests().get(0).getCoverage());
     ScoreCalculator sc = new ScoreCalculator(config);
     assertEquals("Coverage score", 27, sc.calculateScore(tc));
-    assertEquals("Covered values", "[many, one, zero]", tc.getVariableValues().get("rc2").toString());
+    assertEquals("Covered values", "[many, zero, one]", tc.getVariableValues().get("rc2").toString());
   }
 }

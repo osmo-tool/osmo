@@ -29,10 +29,10 @@ public class WeightedDistributionTests {
 
   @Test
   public void randomLength1000() {
-    listener.setExpected("bob1", 108);
-    listener.setExpected("bob2", 191);
-    listener.setExpected("bob3", 298);
-    listener.setExpected("bob4", 403);
+    listener.setExpected("bob1", 113);
+    listener.setExpected("bob2", 204);
+    listener.setExpected("bob3", 308);
+    listener.setExpected("bob4", 375);
     osmo.setModelFactory(new ReflectiveModelFactory(WeightedModel1.class));
     Length length4 = new Length(1000);
     Length length1 = new Length(1);
@@ -55,10 +55,10 @@ public class WeightedDistributionTests {
 
   @Test
   public void balancingLength1000() {
-    listener.setExpected("bob1", 1622);
-    listener.setExpected("bob2", 2290);
-    listener.setExpected("bob3", 2799);
-    listener.setExpected("bob4", 3289);
+    listener.setExpected("bob1", 1655);
+    listener.setExpected("bob2", 2311);
+    listener.setExpected("bob3", 2783);
+    listener.setExpected("bob4", 3251);
     osmo.setModelFactory(new ReflectiveModelFactory(WeightedModel1.class));
     Length length4 = new Length(10000);
     Length length1 = new Length(1);
@@ -81,10 +81,10 @@ public class WeightedDistributionTests {
 
   @Test
   public void randomLength200Suite6() {
-    listener.setExpected("bob1", 125);
-    listener.setExpected("bob2", 236);
-    listener.setExpected("bob3", 326);
-    listener.setExpected("bob4", 513);
+    listener.setExpected("bob1", 109);
+    listener.setExpected("bob2", 247);
+    listener.setExpected("bob3", 365);
+    listener.setExpected("bob4", 479);
     osmo.setModelFactory(new ReflectiveModelFactory(WeightedModel1.class));
     Length length4 = new Length(200);
     Length length1 = new Length(6);
@@ -107,10 +107,10 @@ public class WeightedDistributionTests {
 
   @Test
   public void balancingLength200Suite6() {
-    listener.setExpected("bob1", 205);
-    listener.setExpected("bob2", 269);
-    listener.setExpected("bob3", 320);
-    listener.setExpected("bob4", 406);
+    listener.setExpected("bob1", 191);
+    listener.setExpected("bob2", 281);
+    listener.setExpected("bob3", 329);
+    listener.setExpected("bob4", 399);
     osmo.setModelFactory(new ReflectiveModelFactory(WeightedModel1.class));
     Length length4 = new Length(200);
     Length length1 = new Length(6);

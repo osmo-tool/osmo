@@ -123,7 +123,11 @@ public class TestSequenceListener implements GenerationListener {
   }
 
   public void validate(String msg) {
-    assertEquals(msg, expected, steps);
+    String expectedStr = ""+expected;
+    expectedStr = expectedStr.replace(",", "\n");
+    String stepsStr = ""+steps;
+    stepsStr = stepsStr.replace(",", "\n");
+    assertEquals(msg, expectedStr, stepsStr);
   }
 
   public Collection<String> getSteps() {

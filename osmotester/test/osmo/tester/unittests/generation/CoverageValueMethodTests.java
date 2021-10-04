@@ -44,7 +44,7 @@ public class CoverageValueMethodTests {
     osmo.generate(115);
     TestSuite suite = osmo.getSuite();
     assertEquals("State over generation with no state defined", "{}", suite.getCoverage().getStates().toString());
-    assertEquals("Sequence of steps", "[t3, t4, t1]", suite.getAllTestCases().get(0).getSteps().toString());
+    assertEquals("Sequence of steps", "[t2, t4, t2]", suite.getAllTestCases().get(0).getSteps().toString());
   }
 
   @Test
@@ -123,15 +123,15 @@ public class CoverageValueMethodTests {
     Length length1 = new Length(1);
     osmo.setTestEndCondition(length3);
     osmo.setSuiteEndCondition(length1);
-    osmo.generate(222);
+    osmo.generate(2222); //(currently) this test needs a seed that triggers step 3, which uses the range variable :)
 
     TestSuite suite = osmo.getSuite();
-    String expected = "{my-state=[1, 2, 3]}";
+    String expected = "{my-state=[3, 4]}";
     assertEquals("State when generating", expected, suite.getCoverage().getStates().toString());
 
     Map<String, Collection<String>> testVariables = suite.getCoverage().getVariableValues();
     assertEquals("Number of test variables", 1, testVariables.size());
-    expected = "{range=[1]}";
+    expected = "{range=[2]}";
     assertEquals("Test variables", expected, testVariables.toString());
   }
 }

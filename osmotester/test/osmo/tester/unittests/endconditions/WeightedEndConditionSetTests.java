@@ -26,8 +26,8 @@ public class WeightedEndConditionSetTests {
   public void twoLengths() {
     List<Integer> twoList = new ArrayList<>();
     List<Integer> twentyLIst = new ArrayList<>();
-    Randomizer rand = new Randomizer(1111);
-    for (int i = 0 ; i < 100 ; i++) {
+    Randomizer rand = new Randomizer(100);
+    for (int i = 0 ; i < 1000 ; i++) {
       OSMOTester tester = new OSMOTester();
       tester.setPrintCoverage(false);
       tester.setModelFactory(new CounterFactory());
@@ -53,14 +53,15 @@ public class WeightedEndConditionSetTests {
     double sum20 = 0;
     for (Integer two : twoList) {
       sum2 += two;
+
     }
     double avg2 = sum2 / twoList.size();
     for (Integer twenty : twentyLIst) {
       sum20 += twenty;
     }
     double avg20 = sum20 / twentyLIst.size();
-    assertEquals("Average number of tests of length 2", 2f, avg2, 0.2);
-    assertEquals("Average number of tests of length 20", 18f, avg20, 0.2);
+    assertEquals("Average number of tests of length 2", 2f, avg2, 0.05);
+    assertEquals("Average number of tests of length 20", 18f, avg20, 0.05);
   }
 
   @Test
@@ -86,6 +87,6 @@ public class WeightedEndConditionSetTests {
     }
     double avgLength = sum/lengths.size();
     System.out.println(lengths);
-    assertEquals("Average test length", 9f, avgLength, 0);
+    assertEquals("Average test length", 10f, avgLength, 0);
   }
 }

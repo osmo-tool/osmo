@@ -162,15 +162,15 @@ public class ExplorationTests {
     config.setMaxSuiteLength(10);
     config.setFallbackProbability(0.2);
     osmo.explore(config);
-    assertSuiteScore(1350);
-    assertTestCount(5);
-    //NOTE: the first test is only explorer in depth until minimum score is achieved. after this it is probabilistic ending and only depth 1 exploration, which produces fluctuation
-    assertTestSequence(0, "[increase, increase, increase, increase, increase, decrease, increase, increase, increase, increase, increase]");
-    assertTestSequence(1, "[increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase]");
+    assertSuiteScore(1900);
+    assertTestCount(7);
+    //NOTE: the first test is only explored in depth until minimum score is achieved. after this it is probabilistic ending and only depth 1 exploration, which produces fluctuation
+    assertTestSequence(0, "[increase, increase, increase, increase, increase, decrease, increase, increase, increase, increase, increase, increase, increase, increase]");
+    assertTestSequence(1, "[increase, increase, increase, decrease, decrease, increase, increase, decrease, increase, decrease, increase, decrease, increase, increase, increase, increase, increase, increase, increase]");
     //NOTE: the following score 0 and thus are fully random
-    assertTestSequence(2, "[increase, increase, increase, decrease, decrease, increase, increase, decrease, increase, decrease, increase, decrease, increase, increase, decrease, decrease, increase, decrease, decrease]");
-    assertTestSequence(3, "[increase, increase, increase, decrease, increase, decrease, increase, decrease, increase, decrease, increase, decrease, increase, increase, decrease, increase, increase, increase, increase, increase, increase, increase]");
-    assertTestSequence(4, "[increase, increase, increase, increase, increase, decrease, increase, decrease, increase, decrease, increase, decrease, increase, decrease, increase, increase, increase, increase, increase, increase]");
+    assertTestSequence(2, "[increase, increase, increase, decrease, increase, decrease, increase, decrease, increase, decrease, increase, decrease, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase]");
+    assertTestSequence(3, "[increase, increase, increase, increase, decrease, increase, decrease, increase, decrease, increase, decrease, increase, decrease, increase, decrease, increase, increase, increase, increase, increase]");
+    assertTestSequence(4, "[increase, increase, decrease, increase, increase, increase, increase, decrease, increase, decrease, increase, decrease, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase, increase]");
     long end = System.currentTimeMillis();
 //    long diff = end-start;
 //    System.out.println("plateau time:"+diff);

@@ -104,8 +104,8 @@
       </tr>
       <tr>
         <th class='testhead' scope='row'>Test3</th>
-        <td>2</td>
         <td>3</td>
+        <td>2</td>
         <td>0</td>
         <td>0</td>
       </tr>
@@ -118,8 +118,8 @@
       </tr>
       <tr>
         <th class='testhead' scope='row'>Test5</th>
-        <td>4</td>
-        <td>1</td>
+        <td>5</td>
+        <td>0</td>
         <td>0</td>
         <td>0</td>
       </tr>
@@ -190,8 +190,8 @@
       <tr>
         <th class='testhead' scope='row'>Test3</th>
         <td>1</td>
-        <td>0</td>
-        <td>2</td>
+        <td>1</td>
+        <td>1</td>
         <td>1</td>
         <td>1</td>
       </tr>
@@ -206,8 +206,8 @@
       <tr>
         <th class='testhead' scope='row'>Test5</th>
         <td>1</td>
-        <td>3</td>
-        <td>1</td>
+        <td>4</td>
+        <td>0</td>
         <td>0</td>
         <td>0</td>
       </tr>
@@ -244,7 +244,7 @@
       </tr>
       <tr class='alt'>
         <th class='testhead' scope='row'>Test5</th>
-        <td>[guest, bob]</td>
+        <td>[guest]</td>
       </tr>
     </tbody>
   </table>

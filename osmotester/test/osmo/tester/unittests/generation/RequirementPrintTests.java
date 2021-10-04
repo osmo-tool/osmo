@@ -140,14 +140,14 @@ public class RequirementPrintTests {
     tester.setModelFactory(factory);
     tester.generate(111);
     String actual = out.toString();
-    String expected = "generated 55 tests.\n" +
+    String expected = "generated 5 tests.\n" +
             "\n" +
             "Covered elements:\n" +
-            "Total steps: 451\n" +
+            "Total steps: 73\n" +
             "Unique steps: 3 (of 3)\n" +
-            "Unique step-pairs: 12 (of 12)\n" +
+            "Unique step-pairs: 11 (of 12) missing:[.osmo.tester.start.step->Step2]\n" +
             "Unique requirements: 0\n" +
-            "Variable values: 159\n" +
+            "Variable values: 34\n" +
             "Unique coverage-values: 0\n" +
             "Unique coverage-value-pairs: 0\n";
     expected = unifyLineSeparators(expected, "\n");
@@ -162,10 +162,10 @@ public class RequirementPrintTests {
     tester.setModelFactory(new ReflectiveModelFactory(CoverageValueModel1.class));
     tester.generate(111);
     String actual = out.toString();
-    String expected = "generated 55 tests.\n" +
+    String expected = "generated 5 tests.\n" +
             "\n" +
             "Covered elements:\n" +
-            "Total steps: 451\n" +
+            "Total steps: 73\n" +
             "Unique steps: 3 (of 3)\n" +
             "Unique step-pairs: 4 (of 4)\n" +
             "Unique requirements: 3\n" +
@@ -176,7 +176,7 @@ public class RequirementPrintTests {
             "Requirements:[]\n" +
             //reason why we do not cover "epixx" requirement is because the model resets this between tests
             //dont ask me why, someday it must've seemed clever for this model.
-            "Covered:[hello, world]\n" +
+            "Covered:[epix, hello, world]\n" +
             "Not covered:[]\n"+
             "\n";
     expected = unifyLineSeparators(expected, "\n");

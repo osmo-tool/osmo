@@ -183,8 +183,8 @@ public class Randomizer {
    * @return Random index into the list according to the lists.
    */
   public int rawWeightedRandomFrom(List<Integer> weights) {
-    List<Integer> totals = new ArrayList<>();
-    int total = 0;
+    List<Long> totals = new ArrayList<>();
+    long total = 0;
     for (Integer weight : weights) {
       if (weight <= 0) {
         throw new IllegalArgumentException("Weight must be > 0. Was "+weight+".");
@@ -204,9 +204,9 @@ public class Randomizer {
    * @param summedTotals The summed weights as described above.
    * @return Random index into the list according to the weights.
    */
-  public int sumWeightedRandomFrom(List<Integer> summedTotals) {
-    int total = summedTotals.get(summedTotals.size()-1);
-    int target = nextInt(1, total);
+  public int sumWeightedRandomFrom(List<Long> summedTotals) {
+    long total = summedTotals.get(summedTotals.size()-1);
+    long target = nextLong(1, total);
     int choice = Collections.binarySearch(summedTotals, target);
     if (choice < 0) {
       //Java binary search returns negative index values if there is no direct match, with additional -1 added on top

@@ -2,6 +2,7 @@ package osmo.tester.generator;
 
 import osmo.common.OSMOException;
 import osmo.common.Logger;
+import osmo.common.Randomizer;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.coverage.ScoreCalculator;
 import osmo.tester.generator.algorithm.FSMTraversalAlgorithm;
@@ -56,6 +57,8 @@ public class MainGenerator {
   private Collection<String> possiblePairs = new LinkedHashSet<>();
   /** The base seed to use for test generation. Each new test case gets a different seed based on this. */
   private final long baseSeed;
+  /** To create test seeds from the baseSeed. */
+  private final Randomizer seedRandomizer;
   /** The seed for the current test case being generated. */
   private Long seed = null;
   /** Forces the generator to follow the defined scenario by removing any steps from enabled list not allowed by scenario. */
@@ -73,6 +76,7 @@ public class MainGenerator {
    */
   public MainGenerator(long seed, TestSuite suite, OSMOConfiguration config) {
     this.baseSeed = seed;
+    this.seedRandomizer = new Randomizer(baseSeed);
     this.seed = baseSeed;
     this.suite = suite;
     this.config = config;
@@ -116,7 +120,7 @@ public class MainGenerator {
   private void createModelObjects() {
     int salt = suite.getCoverage().getTotalSteps();
     //create a new seed for the new test case
-    seed = baseSeed + salt;
+    seed = seedRandomizer.nextLong(); //baseSeed + salt;
     if (scripts != null) {
       script = scripts.get(suite.getAllTestCases().size());
       seed = script.getSeed();

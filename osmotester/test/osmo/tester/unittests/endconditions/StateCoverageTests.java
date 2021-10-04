@@ -65,7 +65,7 @@ public class StateCoverageTests {
     tester.generate(55);
     List<TestCase> history = tester.getSuite().getAllTestCases();
     assertEquals("Number of tests generated", 5, history.size());
-    String expected = "[TestCase:[t3], TestCase:[t3], TestCase:[t2], TestCase:[t1], TestCase:[t4]]";
+    String expected = "[TestCase:[t4], TestCase:[t4], TestCase:[t2], TestCase:[t3], TestCase:[t1]]";
     assertEquals(expected, history.toString());
   }
 }

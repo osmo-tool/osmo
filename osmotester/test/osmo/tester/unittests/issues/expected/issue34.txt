@@ -146,7 +146,7 @@
 </head>
 <body>
   <table class="test-table" border="1" name="trace-table 1">
-    <caption>Test Generation Trace for Test1 [333]</caption>
+    <caption>Test Generation Trace for Test1 [6084542585210067024]</caption>
     <thead>
       <tr>
         <th class='corner'>Step</th>
@@ -193,7 +193,7 @@
   </table>
   <p/>
   <table class="test-table" border="1" name="trace-table 2">
-    <caption>Test Generation Trace for Test2 [338]</caption>
+    <caption>Test Generation Trace for Test2 [-2133629401371164667]</caption>
     <thead>
       <tr>
         <th class='corner'>Step</th>
@@ -240,7 +240,7 @@
   </table>
   <p/>
   <table class="test-table" border="1" name="trace-table 3">
-    <caption>Test Generation Trace for Test3 [343]</caption>
+    <caption>Test Generation Trace for Test3 [-3119484561051954879]</caption>
     <thead>
       <tr>
         <th class='corner'>Step</th>
@@ -256,11 +256,11 @@
         <td>guest</td>
       </tr>
       <tr>
-        <th class='testhead' rowspan='2'>3.2:Step2</th>
+        <th class='testhead' rowspan='2'>3.2:Step1</th>
         <th class='testhead'>user</th>
       </tr>
       <tr>
-        <td>bob</td>
+        <td>guest</td>
       </tr>
       <tr>
         <th class='testhead' rowspan='2'>3.3:Step2</th>
@@ -270,24 +270,24 @@
         <td>bob</td>
       </tr>
       <tr>
-        <th class='testhead' rowspan='2'>3.4:Step1</th>
-        <th class='testhead'>user</th>
-      </tr>
-      <tr>
-        <td>guest</td>
-      </tr>
-      <tr>
-        <th class='testhead' rowspan='2'>3.5:Step2</th>
+        <th class='testhead' rowspan='2'>3.4:Step2</th>
         <th class='testhead'>user</th>
       </tr>
       <tr>
         <td>bob</td>
       </tr>
+      <tr>
+        <th class='testhead' rowspan='2'>3.5:Step1</th>
+        <th class='testhead'>user</th>
+      </tr>
+      <tr>
+        <td>guest</td>
+      </tr>
     </tbody>
   </table>
   <p/>
   <table class="test-table" border="1" name="trace-table 4">
-    <caption>Test Generation Trace for Test4 [348]</caption>
+    <caption>Test Generation Trace for Test4 [656174231754866806]</caption>
     <thead>
       <tr>
         <th class='corner'>Step</th>
@@ -334,7 +334,7 @@
   </table>
   <p/>
   <table class="test-table" border="1" name="trace-table 5">
-    <caption>Test Generation Trace for Test5 [353]</caption>
+    <caption>Test Generation Trace for Test5 [-5442460386740181749]</caption>
     <thead>
       <tr>
         <th class='corner'>Step</th>
@@ -371,11 +371,11 @@
         <td>guest</td>
       </tr>
       <tr>
-        <th class='testhead' rowspan='2'>5.5:Step2</th>
+        <th class='testhead' rowspan='2'>5.5:Step1</th>
         <th class='testhead'>user</th>
       </tr>
       <tr>
-        <td>bob</td>
+        <td>guest</td>
       </tr>
     </tbody>
   </table>

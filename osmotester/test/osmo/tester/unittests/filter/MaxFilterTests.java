@@ -61,7 +61,7 @@ public class MaxFilterTests {
     osmo.addFilter(filter);
     config.setFailWhenNoWayForward(false);
     osmo.generate(123);
-    assertSteps(":hello:last:last:last:last:last:last:last:last:last:last:last:last:last:last:last:last:last:last:last:last:last:last:last:last:last");
+    assertSteps(":hello:last:last:last:last:last:last:last:last:last:last:last:last:last:last");
   }
 
   private void assertSteps(String expected) {
@@ -107,7 +107,7 @@ public class MaxFilterTests {
     osmo.setTestEndCondition(new Length(20));
     osmo.setSuiteEndCondition(new Length(1));
     osmo.generate(123);
-    listener.addExpected("suite-start", "start", "t:t4", "t:t2", "t:t4", "t:t3", "t:t2", "t:t4", "t:t1", "t:t3", "t:t4",
+    listener.addExpected("suite-start", "start", "t:t3", "t:t3", "t:t1", "t:t2", "t:t2", "t:t4", "t:t4", "t:t4", "t:t4",
             "t:t4", "t:t4", "t:t4", "t:t4", "t:t4", "t:t4", "t:t4", "t:t4", "t:t4", "t:t4", "t:t4", "ls:check", "end", "suite-end");
     listener.validate("1 allowed transition with alternatives");
   }

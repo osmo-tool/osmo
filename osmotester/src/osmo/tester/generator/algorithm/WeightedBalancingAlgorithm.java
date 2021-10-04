@@ -81,7 +81,13 @@ public class WeightedBalancingAlgorithm implements FSMTraversalAlgorithm {
     //create a suitable argument list for rawWeightedRandomFrom
     List<Integer> scores = new ArrayList<>();
     for (double tempScore : tempScores) {
-      scores.add((int) (Math.round(tempScore)));
+      long val = Math.round(tempScore);
+      int intVal = Integer.MAX_VALUE;
+      if (val < Integer.MAX_VALUE) {
+        intVal = (int) val;
+      }
+      scores.add(intVal);
+      //scores.add((int) (Math.round(tempScore)));
     }
 
     //find the choice

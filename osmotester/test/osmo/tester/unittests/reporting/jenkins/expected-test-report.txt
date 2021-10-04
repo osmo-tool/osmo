@@ -1,9 +1,9 @@
-<testsuite name="OSMO Test Suite" timestamp="01.01.1970 00:00:01" hostname="OSMO rules" tests="5" failures="0" errors="0" time="2.00">
+<testsuite name="OSMO Test Suite" timestamp="01.01.1970 00:00:01" hostname="OSMO rules" tests="16" failures="0" errors="0" time="2.00">
   <properties>
     <property name="Algorithm" value="osmo.tester.generator.algorithm.RandomAlgorithm"/>
     <property name="Listener" value="osmo.tester.reporting.jenkins.JenkinsReportGenerator"/>
     <property name="Model Object" value="osmo.tester.unittests.testmodels.CalculatorModel"/>
-    <property name="Seed" value="333"/>
+    <property name="Seed" value="-8811822948555199407"/>
     <property name="Suite End Condition" value="And{conditions=[Length{length=1}, Probability{threshold=0.05}]}"/>
     <property name="Test Case End Condition" value="And{conditions=[Length{length=1}, Probability{threshold=0.1}]}"/>
   </properties>
@@ -17,36 +17,197 @@
   </testcase>
   <testcase name="Test5" classname="[osmo.tester.unittests.testmodels.CalculatorModel]" time="0.00">
   </testcase>
+  <testcase name="Test6" classname="[osmo.tester.unittests.testmodels.CalculatorModel]" time="0.00">
+  </testcase>
+  <testcase name="Test7" classname="[osmo.tester.unittests.testmodels.CalculatorModel]" time="0.00">
+  </testcase>
+  <testcase name="Test8" classname="[osmo.tester.unittests.testmodels.CalculatorModel]" time="0.00">
+  </testcase>
+  <testcase name="Test9" classname="[osmo.tester.unittests.testmodels.CalculatorModel]" time="0.00">
+  </testcase>
+  <testcase name="Test10" classname="[osmo.tester.unittests.testmodels.CalculatorModel]" time="0.00">
+  </testcase>
+  <testcase name="Test11" classname="[osmo.tester.unittests.testmodels.CalculatorModel]" time="0.00">
+  </testcase>
+  <testcase name="Test12" classname="[osmo.tester.unittests.testmodels.CalculatorModel]" time="0.00">
+  </testcase>
+  <testcase name="Test13" classname="[osmo.tester.unittests.testmodels.CalculatorModel]" time="0.00">
+  </testcase>
+  <testcase name="Test14" classname="[osmo.tester.unittests.testmodels.CalculatorModel]" time="0.00">
+  </testcase>
+  <testcase name="Test15" classname="[osmo.tester.unittests.testmodels.CalculatorModel]" time="0.00">
+  </testcase>
+  <testcase name="Test16" classname="[osmo.tester.unittests.testmodels.CalculatorModel]" time="0.00">
+  </testcase>
   <system-out>first
 Starting new test case 1
 S:0
 + 2
 + 3
-+ 4
-- 3
 Test case ended
 Starting new test case 2
 S:0
 + 2
 - 1
++ 2
++ 3
+- 2
+- 1
++ 2
++ 3
 Test case ended
 Starting new test case 3
+S:0
++ 2
+- 1
++ 2
++ 3
+- 2
+Test case ended
+Starting new test case 4
+S:0
++ 2
++ 3
++ 4
+- 3
+- 2
+- 1
++ 2
+Test case ended
+Starting new test case 5
+S:0
++ 2
++ 3
++ 4
+Test case ended
+Starting new test case 6
 S:0
 + 2
 + 3
 - 2
 + 3
+Test case ended
+Starting new test case 7
+S:0
++ 2
+- 1
++ 2
++ 3
+- 2
+- 1
++ 2
+- 1
++ 2
++ 3
++ 4
+- 3
++ 4
++ 5
++ 6
++ 7
+- 6
+Test case ended
+Starting new test case 8
+S:0
++ 2
+Test case ended
+Starting new test case 9
+S:0
++ 2
++ 3
+Test case ended
+Starting new test case 10
+S:0
++ 2
+Test case ended
+Starting new test case 11
+S:0
++ 2
+- 1
++ 2
++ 3
++ 4
+- 3
+- 2
+- 1
++ 2
++ 3
++ 4
+- 3
+- 2
++ 3
++ 4
++ 5
+- 4
++ 5
++ 6
+- 5
++ 6
+- 5
+- 4
+- 3
 + 4
 Test case ended
-Starting new test case 4
+Starting new test case 12
 S:0
 + 2
++ 3
++ 4
+- 3
++ 4
+- 3
+- 2
++ 3
+- 2
++ 3
++ 4
+Test case ended
+Starting new test case 13
+S:0
++ 2
++ 3
+- 2
+- 1
++ 2
+Test case ended
+Starting new test case 14
+S:0
++ 2
+- 1
++ 2
+- 1
++ 2
++ 3
+- 2
 - 1
 Test case ended
-Starting new test case 5
+Starting new test case 15
 S:0
 + 2
 - 1
++ 2
+- 1
++ 2
++ 3
++ 4
++ 5
+- 4
++ 5
++ 6
++ 7
++ 8
++ 9
+- 8
++ 9
++ 10
++ 11
++ 12
+Test case ended
+Starting new test case 16
+S:0
++ 2
++ 3
++ 4
 Test case ended
 last
 </system-out>

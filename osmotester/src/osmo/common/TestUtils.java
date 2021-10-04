@@ -202,7 +202,7 @@ public class TestUtils {
    * @param summedTotals see same method in Randomizer.
    * @return see same method in Randomizer.
    */
-  public static int sumWeightedRandomFrom(List<Integer> summedTotals) {
+  public static int sumWeightedRandomFrom(List<Long> summedTotals) {
     return random.sumWeightedRandomFrom(summedTotals);
   }
 

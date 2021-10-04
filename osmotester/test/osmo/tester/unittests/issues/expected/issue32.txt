@@ -12,10 +12,10 @@ Step1
 Step1
 RESET
 Step1
+Step1
 Step2:true
 Step2:true
 Step1
-Step2:true
 RESET
 Step1
 Step2:true
@@ -27,5 +27,5 @@ Step1
 Step1
 Step1
 Step1
-Step2:true
+Step1
 

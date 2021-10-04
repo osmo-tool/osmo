@@ -39,8 +39,8 @@ public class VariableTests {
     TestSuite suite = model.getSuite();
     List<TestCase> tests = suite.getAllTestCases();
     TestCase test = tests.get(0);
-    String expectedSet = "[v1, v2, v3]";
-    String expectedRange = "[5, 3, 1, 4, 2]";
+    String expectedSet = "[v1, v3, v2]";
+    String expectedRange = "[3, 2, 1, 4]";
     String expectedHello = "[MyTV 1, MyTV 2, MyTV 3, MyTV 4, MyTV 5, MyTV 6, MyTV 7, MyTV 8, MyTV 9, MyTV 10]";
     assertModel2Values(test, expectedSet, expectedRange, expectedHello);
   }
@@ -56,13 +56,13 @@ public class VariableTests {
     TestSuite suite = osmo.getSuite();
     List<TestCase> tests = suite.getAllTestCases();
     TestCase test = tests.get(0);
-    String expectedSet = "[v1, v2, v3]";
-    String expectedRange = "[5, 3, 1, 4, 2]";
+    String expectedSet = "[v1, v3, v2]";
+    String expectedRange = "[3, 2, 1, 4]";
     String expectedHello = "[MyTV 1, MyTV 2, MyTV 3, MyTV 4, MyTV 5, MyTV 6, MyTV 7, MyTV 8, MyTV 9]";
     assertModel2Values(test, expectedSet, expectedRange, expectedHello);
     test = tests.get(1);
-    expectedSet = "[v3, v2, v1]";
-    expectedRange = "[1, 3, 5, 2]";
+    expectedSet = "[v3, v1, v2]";
+    expectedRange = "[1, 2, 3, 5]";
     expectedHello = "[MyTV 10, MyTV 11, MyTV 12, MyTV 13, MyTV 14, MyTV 15, MyTV 16, MyTV 17, MyTV 18]";
     assertModel2Values(test, expectedSet, expectedRange, expectedHello);
   }
