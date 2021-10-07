@@ -1,3 +1,7 @@
 To deploy this project to Maven Central
 mvn release:clean release:prepare -B
 mvn release:perform -Darguments=-Dgpg.passphrase=PASSWORD
+
+To deploy locally:
+mvn install:install-file -Dfile=myfile.jar -DgroupId=com.example -DartifactId=myartifact -Dversion=0.1 -Dpackaging=jar
+

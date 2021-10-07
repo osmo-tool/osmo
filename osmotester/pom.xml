@@ -5,7 +5,7 @@
 	<groupId>net.kanstren.osmo</groupId>
 	<artifactId>osmotester</artifactId>
 	<packaging>jar</packaging>
-	<version>3.7.1</version>
+	<version>3.8.0</version>
 	<name>OSMO Tester</name>
 	<description>Model Based Test Tool (Java library)</description>
 	<url>https://github.com/mukatee/osmo/</url>
@@ -86,20 +86,6 @@
 		</repository>
 	</distributionManagement>
 	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>versions-maven-plugin</artifactId>
-					<version>2.2</version>
-				</plugin>
-				<plugin>
-					<groupId>org.jacoco</groupId>
-					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.7.0.201403182114</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
