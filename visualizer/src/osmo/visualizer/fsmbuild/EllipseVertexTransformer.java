@@ -19,4 +19,9 @@ public class EllipseVertexTransformer extends AbstractVertexShapeTransformer<Str
   public Shape transform(String name) {
     return factory.getEllipse(name);
   }
+
+  @Override
+  public Shape apply(String s) {
+    return null;
+  }
 }
