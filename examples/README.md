@@ -1,6 +1,6 @@
 # About
 
-This sub-project contains a few simple visualization helpers to view OSMO models.
+This sub-project contains a some examples of different model types for OSMO Tester.
 
 Requires the OSMO Tester accessible for use.
 If the latest changes are not on Maven Central, 
