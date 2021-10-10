@@ -25,17 +25,13 @@ jobs:
       - name: Install DOT
         run: sudo apt install -y graphviz
 
-      - name: Build and run tests for OSMO Tester
+      - name: Build, install, and run tests for OSMO Tester
         working-directory: ./osmotester
         run: mvn -B install --file pom.xml
 
-      - name: Build and run tests for OSMO Tester
-        working-directory: ./osmotester
-        run: mvn -B package --file pom.xml
-
-      - name: Build Visualizer
+      - name: Build and install Visualizer codes
         working-directory: ./visualizer
-        run: mvn -B package --file pom.xml
+        run: mvn -B install --file pom.xml
 
       - name: Build Examples
         working-directory: ./examples
