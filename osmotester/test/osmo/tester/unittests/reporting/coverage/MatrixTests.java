@@ -85,7 +85,7 @@ public class MatrixTests {
 
   @Test
   public void htmlMatrix() throws Exception {
-    String expected = getResource(MatrixTests.class, "expected-matrix.txt");
+    String expected = getResource(MatrixTests.class, "expected-matrix.html");
     HTMLCoverageReporter html = new HTMLCoverageReporter(suite.getCoverage(), suite.getAllTestCases(), fsm);
     String actual = html.getTraceabilityMatrix();
     TestUtils.write(actual, "test-matrix.html");

@@ -153,7 +153,8 @@ public class ReducerTests {
     ReducerState state = reducer.search();
     Analyzer analyzer = state.getAnalyzer();
     Invariants invariants = analyzer.analyze();
-    assertThat(invariants.getFlexPrecedences())
+    //assertj gives strange error if not casting this to list :/
+    assertThat((List)invariants.getFlexPrecedences())
         .hasSize(2)
         .contains("Step4->Step8")
         .contains("Step6->Step8");

@@ -54,7 +54,7 @@ public class ReportTests {
     listener.getSuite().setStartTime(0);
     listener.getSuite().setEndTime(3234);
     String actual = listener.generateStepReport();
-    String expected = getResource(ReportTests.class, "expected-step-report.txt");
+    String expected = getResource(ReportTests.class, "expected-step-report.xml");
     actual = unifyLineSeparators(actual, "\n");
     expected = unifyLineSeparators(expected, "\n");
     assertEquals("Jenkins report for steps", expected, actual);
@@ -70,7 +70,7 @@ public class ReportTests {
     listener.getSuite().setStartTime(1234);
     listener.getSuite().setEndTime(3234);
     String actual = listener.generateTestReport();
-    String expected = getResource(ReportTests.class, "expected-test-report.txt");
+    String expected = getResource(ReportTests.class, "expected-test-report.xml");
     actual = unifyLineSeparators(actual, "\n");
     expected = unifyLineSeparators(expected, "\n");
     assertEquals("Jenkins report for tests", expected, actual);
@@ -92,7 +92,7 @@ public class ReportTests {
     listener.getSuite().setStartTime(1234);
     listener.getSuite().setEndTime(3234);
     String actual = listener.generateStepReport();
-    String expected = getResource(ReportTests.class, "expected-2step-report.txt");
+    String expected = getResource(ReportTests.class, "expected-2step-report.xml");
     actual = unifyLineSeparators(actual, "\n");
     expected = unifyLineSeparators(expected, "\n");
     assertEquals("Jenkins report for steps", expected, actual);
@@ -114,7 +114,7 @@ public class ReportTests {
     listener.getSuite().setStartTime(1234);
     listener.getSuite().setEndTime(3234);
     String actual = listener.generateTestReport();
-    String expected = getResource(ReportTests.class, "expected-2test-report.txt");
+    String expected = getResource(ReportTests.class, "expected-2test-report.xml");
     actual = unifyLineSeparators(actual, "\n");
     expected = unifyLineSeparators(expected, "\n");
     assertEquals("Jenkins report for tests", expected, actual);
@@ -128,7 +128,7 @@ public class ReportTests {
     listener.getSuite().setEndTime(3234);
     tester.addListener(listener);
     tester.generate(333);
-    String expected = getResource(ReportTests.class, "expected-step-report.txt");
+    String expected = getResource(ReportTests.class, "expected-step-report.xml");
     String actual = readFile(filename);
     expected = unifyLineSeparators(expected, "\n");
     assertEquals("Jenkins report for steps", expected, actual);
@@ -154,7 +154,7 @@ public class ReportTests {
     listener.getSuite().setStartTime(1234);
     listener.getSuite().setEndTime(3234);
     tester.generate(333);
-    String expected = getResource(ReportTests.class, "expected-test-report.txt");
+    String expected = getResource(ReportTests.class, "expected-test-report.xml");
     expected = unifyLineSeparators(expected, "\n");
     String actual = readFile(filename);
     assertEquals("Jenkins report for tests", expected, actual);
@@ -162,12 +162,12 @@ public class ReportTests {
 
   @Test
   public void error5Tests() throws Exception {
-    testError(false,"expected-error5-steps.txt");
+    testError(false,"expected-error5-steps.xml");
   }
 
   @Test
   public void error5Tests2() throws Exception {
-    testError(true,"expected-error5-steps2.txt");
+    testError(true,"expected-error5-steps2.xml");
   }
 
   private void testError(boolean reportSteps, String actualFileName) throws Exception{
@@ -210,7 +210,7 @@ public class ReportTests {
     listener.getSuite().setStartTime(1234);
     listener.getSuite().setEndTime(3234);
     listener.writeTestReport();
-    String expected = getResource(ReportTests.class, "expected-test-report.txt");
+    String expected = getResource(ReportTests.class, "expected-test-report.xml");
     expected = unifyLineSeparators(expected, "\n");
     String actual = readFile(filename);
     assertEquals("Jenkins report for tests", expected, actual);

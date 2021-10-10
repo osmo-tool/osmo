@@ -28,7 +28,7 @@ public class TraceGenerationTests {
   @Test
   public void testNoSteps() throws Exception {
     suite.startTest(1);
-    assertTrace(suite, "expected-no-steps.txt");
+    assertTrace(suite, "expected-no-steps.html");
   }
 
   private void assertTrace(TestSuite suite, String filename) {
@@ -46,7 +46,7 @@ public class TraceGenerationTests {
     FSMTransition login = new FSMTransition("Login");
     TestCaseStep loginStep = suite.addStep(login);
     suite.endTest();
-    assertTrace(suite, "expected-one-step-no-params.txt");
+    assertTrace(suite, "expected-one-step-no-params.html");
   }
 
   @Test
@@ -60,7 +60,7 @@ public class TraceGenerationTests {
     loginStep.addValue("Funny", "not so");
     loginStep.addValue("Address", "Rock of Gelato, 3rd rock from the Sun");
     suite.endTest();
-    assertTrace(suite, "expected-one-step-with-params.txt");
+    assertTrace(suite, "expected-one-step-with-params.html");
   }
 
   @Test
@@ -82,7 +82,7 @@ public class TraceGenerationTests {
     buyStep.addValue("Price", "$5");
 
     suite.endTest();
-    assertTrace(suite, "expected-two-steps-with-params.txt");
+    assertTrace(suite, "expected-two-steps-with-params.html");
   }
 
   @Test
@@ -123,7 +123,7 @@ public class TraceGenerationTests {
     buyStep2.addValue("Quantity", "3");
     buyStep2.addValue("Price", "$5");
 
-    assertTrace(suite, "expected-two-tests-with-params.txt");
+    assertTrace(suite, "expected-two-tests-with-params.html");
   }
 
   @Test
@@ -135,7 +135,7 @@ public class TraceGenerationTests {
     tester.setSuiteEndCondition(new Length(3));
     tester.generate(5);
     TestSuite suite = tester.getSuite();
-    assertTrace(suite, "expected-generator-trace.txt");
+    assertTrace(suite, "expected-generator-trace.html");
   }
 
   @Test
@@ -148,6 +148,6 @@ public class TraceGenerationTests {
     tester.generate(5);
     TestSuite suite = tester.getSuite();
     suite.getAllTestCases().get(1).setFailed(true);
-    assertTrace(suite, "expected-generator-fail-trace.txt");
+    assertTrace(suite, "expected-generator-fail-trace.html");
   }
 }

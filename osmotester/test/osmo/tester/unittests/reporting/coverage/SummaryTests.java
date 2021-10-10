@@ -105,7 +105,7 @@ public class SummaryTests {
 
   @Test
   public void htmlTransitions() {
-    String expected = getResource(getClass(), "expected-transitions.txt");
+    String expected = getResource(getClass(), "expected-transitions.html");
     expected = unifyLineSeparators(expected, "\n");
     HTMLCoverageReporter html = new HTMLCoverageReporter(suite.getCoverage(), suite.getAllTestCases(), fsm);
     String actual = html.getStepCounts();
@@ -120,7 +120,7 @@ public class SummaryTests {
 
   @Test
   public void htmlTransitionPairs() {
-    String expected = getResource(getClass(), "expected-transitionpairs.txt");
+    String expected = getResource(getClass(), "expected-transitionpairs.html");
     expected = unifyLineSeparators(expected, "\n");
     HTMLCoverageReporter html = new HTMLCoverageReporter(suite.getCoverage(), suite.getAllTestCases(), fsm);
     String actual = html.getStepPairCounts();
@@ -135,7 +135,7 @@ public class SummaryTests {
 
   @Test
   public void htmlRequirements() {
-    String expected = getResource(getClass(), "expected-requirements.txt");
+    String expected = getResource(getClass(), "expected-requirements.html");
     expected = unifyLineSeparators(expected, "\n");
     HTMLCoverageReporter html = new HTMLCoverageReporter(suite.getCoverage(), suite.getAllTestCases(), fsm);
     String actual = html.getRequirementCounts();
