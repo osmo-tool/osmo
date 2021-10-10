@@ -27,6 +27,10 @@ jobs:
 
       - name: Build and run tests for OSMO Tester
         working-directory: ./osmotester
+        run: mvn -B install --file pom.xml
+
+      - name: Build and run tests for OSMO Tester
+        working-directory: ./osmotester
         run: mvn -B package --file pom.xml
 
       - name: Build Visualizer
