@@ -1,5 +1,7 @@
 package osmo.tester.reporting.jenkins;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Locale;
@@ -65,8 +67,12 @@ public class JenkinsStep {
     ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
     PrintStream psOut = new PrintStream(out);
     error.printStackTrace(psOut);
-    return out.toString();
+    String errors = out.toString();
+    errors = StringEscapeUtils.escapeXml11(errors);
+    return errors;
   }
+
+  //TODO: template also refers to "failure", is it still relevant?
 
   /** @param startTime Time (in milliseconds) when step execution was started. */
   public void setStartTime(long startTime) {

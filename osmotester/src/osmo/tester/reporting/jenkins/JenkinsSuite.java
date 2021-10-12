@@ -1,5 +1,6 @@
 package osmo.tester.reporting.jenkins;
 
+import org.apache.commons.text.StringEscapeUtils;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.generator.testsuite.TestCaseStep;
 
@@ -79,11 +80,15 @@ public class JenkinsSuite {
   }
 
   public String getSystemOut() {
-    return out.toString();
+    String output = out.toString();
+    output = StringEscapeUtils.escapeXml11(output);
+    return output;
   }
 
   public String getSystemErr() {
-    return err.toString();
+    String errors = err.toString();
+    errors = StringEscapeUtils.escapeXml11(errors);
+    return errors;
   }
 
   public long getStartMillis() {

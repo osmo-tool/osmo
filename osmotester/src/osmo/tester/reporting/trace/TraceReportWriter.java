@@ -1,14 +1,9 @@
 package osmo.tester.reporting.trace;
 
-import com.github.mustachejava.DefaultMustacheFactory;
-import com.github.mustachejava.Mustache;
-import com.github.mustachejava.MustacheFactory;
 import osmo.common.TestUtils;
 import osmo.tester.generator.testsuite.TestCase;
-import osmo.tester.reporting.coverage.CoverageMetric;
+import osmo.tester.reporting.Mustachio;
 
-import java.io.IOException;
-import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +25,6 @@ public class TraceReportWriter {
     String templateName = "osmo/tester/reporting/trace/trace-template.txt";
     Map<String, Object> context = new HashMap<>();
     context.put("tests", tests);
-    return CoverageMetric.mustacheIt(context, templateName);
+    return Mustachio.mustacheIt(context, templateName);
   }
 }

@@ -1,7 +1,7 @@
 package osmo.tester.reporting.jenkins;
 
+import org.apache.commons.text.StringEscapeUtils;
 import osmo.common.Logger;
-import osmo.common.TestUtils;
 import osmo.tester.OSMOConfiguration;
 import osmo.tester.generator.endcondition.EndCondition;
 import osmo.tester.generator.filter.StepFilter;
@@ -13,12 +13,11 @@ import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.TestModels;
 import osmo.tester.parser.ModelObject;
-import osmo.tester.reporting.coverage.CoverageMetric;
+import osmo.tester.reporting.Mustachio;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.util.*;
 
@@ -69,17 +68,17 @@ public class JenkinsReportGenerator implements GenerationListener {
     this.testMode = testMode;
   }
 
-  private static void createJenkinsReport(String filename, List<TestCase> tests, long seed, OSMOConfiguration config) {
-    JenkinsReportGenerator jenkins = new JenkinsReportGenerator(null, false);
-    jenkins.init(seed, null, config);
-    jenkins.suiteStarted(null);
-    for (TestCase test : tests) {
-      jenkins.testEnded(test);
-    }
-    jenkins.suiteEnded(null);
-    String report = jenkins.generateTestReport();
-    TestUtils.write(report, filename + ".xml");
-  }
+//  private static void createJenkinsReport(String filename, List<TestCase> tests, long seed, OSMOConfiguration config) {
+//    JenkinsReportGenerator jenkins = new JenkinsReportGenerator(null, false);
+//    jenkins.init(seed, null, config);
+//    jenkins.suiteStarted(null);
+//    for (TestCase test : tests) {
+//      jenkins.testEnded(test);
+//    }
+//    jenkins.suiteEnded(null);
+//    String report = jenkins.generateTestReport();
+//    TestUtils.write(report, filename + ".xml");
+//  }
 
   public void enableTestMode() {
     suite = new JenkinsSuite("OSMO Test Suite", true);
@@ -213,7 +212,7 @@ public class JenkinsReportGenerator implements GenerationListener {
     Map<String, Object> context = new HashMap<>();
     context.put("suite", suite);
     context.put("properties", fillProperties());
-    return CoverageMetric.mustacheIt(context, templateName);
+    return Mustachio.mustacheIt(context, templateName);
   }
 
   private static final String NULL = "Null";
@@ -260,6 +259,14 @@ public class JenkinsReportGenerator implements GenerationListener {
     properties.add(new Property(SUITE_END_CONDITION, suiteEndCondition.toString()));
     EndCondition testEndCondition = config.getTestCaseEndCondition();
     properties.add(new Property(TEST_CASE_END_CONDITION, testEndCondition.toString()));
+    Collection<Property> propertiesXmlSafe = new ArrayList<>();
+    for (Property property : properties) {
+      String name = property.getName();
+      name = StringEscapeUtils.escapeXml11(name);
+      String value = property.getValue();
+      value = StringEscapeUtils.escapeXml11(value);
+      propertiesXmlSafe.add(new Property(name, value));
+    }
     return properties;
   }
 

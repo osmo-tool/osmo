@@ -1,8 +1,5 @@
 package osmo.tester.reporting.coverage;
 
-import com.github.mustachejava.DefaultMustacheFactory;
-import com.github.mustachejava.Mustache;
-import com.github.mustachejava.MustacheFactory;
 import osmo.common.Logger;
 import osmo.tester.OSMOTester;
 import osmo.tester.coverage.TestCoverage;
@@ -11,10 +8,9 @@ import osmo.tester.generator.testsuite.TestCaseStep;
 import osmo.tester.model.FSM;
 import osmo.tester.model.FSMTransition;
 import osmo.tester.model.Requirements;
+import osmo.tester.reporting.Mustachio;
 import osmo.tester.scripter.robotframework.CSSHelper;
 
-import java.io.IOException;
-import java.io.StringWriter;
 import java.util.*;
 
 /**
@@ -23,7 +19,7 @@ import java.util.*;
  * @author Teemu Kanstrén, Olli-Pekka Puolitaival
  */
 public abstract class CoverageMetric {
-  private static final Logger log = new Logger(OSMOTester.class);
+  private static final Logger log = new Logger(CoverageMetric.class);
   /** Coverage for the tests. */
   protected final TestCoverage suiteCoverage;
   /** The parsed model for test generation. */
@@ -151,25 +147,7 @@ public abstract class CoverageMetric {
 
     Map<String, Object> context = new HashMap<>();
     context.put("steps", counts);
-    return mustacheIt(context, templateName);
-  }
-
-  public static String mustacheIt(Map<String, Object> context, String templateName) {
-    DefaultMustacheFactory mf = new DefaultMustacheFactory();
-//    Reader reader = new StringReader(TestUtils.getResource(CoverageMetric.class, templatename));
-    //mustache docs are not very clear on what the name is for but lets go with this until someone tells better
-//    Mustache mustache = mf.compile(reader, templateName);
-    Mustache mustache = mf.compile(templateName);
-    StringWriter sw = new StringWriter();
-
-    try {
-      mustache.execute(sw, context).flush();
-    } catch (IOException e) {
-      log.e("Failed to process Mustache template: "+e.getMessage());
-      throw new RuntimeException(e);
-    }
-
-    return sw.toString();
+    return Mustachio.mustacheIt(context, templateName);
   }
 
   /**
@@ -184,7 +162,7 @@ public abstract class CoverageMetric {
 
     Map<String, Object> context = new HashMap<>();
     context.put("step-pairs", tpc);
-    return mustacheIt(context, templateName);
+    return Mustachio.mustacheIt(context, templateName);
   }
 
   /**
@@ -200,7 +178,7 @@ public abstract class CoverageMetric {
 
     Map<String, Object> context = new HashMap<>();
     context.put("reqs", tpc);
-    return mustacheIt(context, templateName);
+    return Mustachio.mustacheIt(context, templateName);
   }
 
   /**
@@ -237,7 +215,7 @@ public abstract class CoverageMetric {
     context.put("pair_count", pairs.size());
     context.put("variable_count", variables.size());
 
-    return mustacheIt(context, templateName);
+    return Mustachio.mustacheIt(context, templateName);
   }
 
   protected List<String> getVariables() {

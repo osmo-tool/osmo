@@ -4,7 +4,7 @@ import osmo.common.TestUtils;
 import osmo.common.Logger;
 import osmo.tester.generator.testsuite.TestCase;
 import osmo.tester.optimizer.reducer.debug.Invariants;
-import osmo.tester.reporting.coverage.CoverageMetric;
+import osmo.tester.reporting.Mustachio;
 
 import java.util.HashMap;
 import java.util.List;
@@ -93,7 +93,7 @@ public class Analyzer {
     context.put("sequences", invariants.getSequences());
 
     String templateName = "osmo/tester/optimizer/reducer/template.mustache";
-    return CoverageMetric.mustacheIt(context, templateName);
+    return Mustachio.mustacheIt(context, templateName);
   }
 
   /**

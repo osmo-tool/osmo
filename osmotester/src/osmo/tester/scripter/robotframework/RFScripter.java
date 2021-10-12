@@ -1,8 +1,7 @@
 package osmo.tester.scripter.robotframework;
 
-import osmo.tester.reporting.coverage.CoverageMetric;
+import osmo.tester.reporting.Mustachio;
 
-import java.io.StringWriter;
 import java.util.*;
 
 /**
@@ -90,7 +89,7 @@ public class RFScripter {
     context.put("variables", variables.entrySet());
     context.put("css", new CSSHelper());
     context.put("tests", tests);
-    return CoverageMetric.mustacheIt(context, templateName);
+    return Mustachio.mustacheIt(context, templateName);
 
   }
 

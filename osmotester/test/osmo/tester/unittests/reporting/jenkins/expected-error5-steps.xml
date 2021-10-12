@@ -11,7 +11,7 @@
   </testcase>
   <testcase name="Test2" classname="[osmo.tester.unittests.testmodels.ErrorModel5]" time="0.00">
     <error message="string" type="string">java.lang.Exception: java.lang.AssertionError: @TestStep assert fail
-	at osmo.tester.reporting.jenkins.JenkinsReportGenerator.testError(JenkinsReportGenerator.java:132)
+	at osmo.tester.reporting.jenkins.JenkinsReportGenerator.testError(JenkinsReportGenerator.java:131)
 	at osmo.tester.generator.listener.GenerationListenerList.testError(GenerationListenerList.java:108)
 	at osmo.tester.generator.MainGenerator.handleError(MainGenerator.java:225)
 	at osmo.tester.generator.MainGenerator.nextTest(MainGenerator.java:165)
