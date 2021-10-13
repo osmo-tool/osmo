@@ -210,7 +210,7 @@
 &lt;add&gt;4&lt;/add&gt;
 &lt;/test&gt;
 &lt;/suite&gt;
-  </system-out>
+</system-out>
   <system-err></system-err>
 </testsuite>
 
