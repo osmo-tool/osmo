@@ -1,0 +1,216 @@
+<testsuite name="OSMO Test Suite" timestamp="01.01.1970 00:00:01" hostname="OSMO rules" tests="16" failures="0" errors="0" time="2.00">
+  <properties>
+    <property name="Algorithm" value="osmo.tester.generator.algorithm.RandomAlgorithm"/>
+    <property name="Listener" value="osmo.tester.reporting.jenkins.JenkinsReportGenerator"/>
+    <property name="Model Object" value="osmo.tester.unittests.testmodels.CalculatorModelXmlOutput"/>
+    <property name="Seed" value="-8811822948555199407"/>
+    <property name="Suite End Condition" value="And{conditions=[Length{length=1}, Probability{threshold=0.05}]}"/>
+    <property name="Test Case End Condition" value="And{conditions=[Length{length=1}, Probability{threshold=0.1}]}"/>
+  </properties>
+  <testcase name="Test1" classname="[osmo.tester.unittests.testmodels.CalculatorModelXmlOutput]" time="0.00">
+  </testcase>
+  <testcase name="Test2" classname="[osmo.tester.unittests.testmodels.CalculatorModelXmlOutput]" time="0.00">
+  </testcase>
+  <testcase name="Test3" classname="[osmo.tester.unittests.testmodels.CalculatorModelXmlOutput]" time="0.00">
+  </testcase>
+  <testcase name="Test4" classname="[osmo.tester.unittests.testmodels.CalculatorModelXmlOutput]" time="0.00">
+  </testcase>
+  <testcase name="Test5" classname="[osmo.tester.unittests.testmodels.CalculatorModelXmlOutput]" time="0.00">
+  </testcase>
+  <testcase name="Test6" classname="[osmo.tester.unittests.testmodels.CalculatorModelXmlOutput]" time="0.00">
+  </testcase>
+  <testcase name="Test7" classname="[osmo.tester.unittests.testmodels.CalculatorModelXmlOutput]" time="0.00">
+  </testcase>
+  <testcase name="Test8" classname="[osmo.tester.unittests.testmodels.CalculatorModelXmlOutput]" time="0.00">
+  </testcase>
+  <testcase name="Test9" classname="[osmo.tester.unittests.testmodels.CalculatorModelXmlOutput]" time="0.00">
+  </testcase>
+  <testcase name="Test10" classname="[osmo.tester.unittests.testmodels.CalculatorModelXmlOutput]" time="0.00">
+  </testcase>
+  <testcase name="Test11" classname="[osmo.tester.unittests.testmodels.CalculatorModelXmlOutput]" time="0.00">
+  </testcase>
+  <testcase name="Test12" classname="[osmo.tester.unittests.testmodels.CalculatorModelXmlOutput]" time="0.00">
+  </testcase>
+  <testcase name="Test13" classname="[osmo.tester.unittests.testmodels.CalculatorModelXmlOutput]" time="0.00">
+  </testcase>
+  <testcase name="Test14" classname="[osmo.tester.unittests.testmodels.CalculatorModelXmlOutput]" time="0.00">
+  </testcase>
+  <testcase name="Test15" classname="[osmo.tester.unittests.testmodels.CalculatorModelXmlOutput]" time="0.00">
+  </testcase>
+  <testcase name="Test16" classname="[osmo.tester.unittests.testmodels.CalculatorModelXmlOutput]" time="0.00">
+  </testcase>
+  <system-out>&lt;suite&gt;
+&lt;test&gt;&lt;id&gt;1&lt;/id&gt;
+&lt;start&gt;0&lt;/start&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;add&gt;3&lt;/add&gt;
+&lt;/test&gt;
+&lt;test&gt;&lt;id&gt;2&lt;/id&gt;
+&lt;start&gt;0&lt;/start&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;sub&gt;1&lt;/sub&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;add&gt;3&lt;/add&gt;
+&lt;sub&gt;2&lt;/sub&gt;
+&lt;sub&gt;1&lt;/sub&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;add&gt;3&lt;/add&gt;
+&lt;/test&gt;
+&lt;test&gt;&lt;id&gt;3&lt;/id&gt;
+&lt;start&gt;0&lt;/start&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;sub&gt;1&lt;/sub&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;add&gt;3&lt;/add&gt;
+&lt;sub&gt;2&lt;/sub&gt;
+&lt;/test&gt;
+&lt;test&gt;&lt;id&gt;4&lt;/id&gt;
+&lt;start&gt;0&lt;/start&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;add&gt;3&lt;/add&gt;
+&lt;add&gt;4&lt;/add&gt;
+&lt;sub&gt;3&lt;/sub&gt;
+&lt;sub&gt;2&lt;/sub&gt;
+&lt;sub&gt;1&lt;/sub&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;/test&gt;
+&lt;test&gt;&lt;id&gt;5&lt;/id&gt;
+&lt;start&gt;0&lt;/start&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;add&gt;3&lt;/add&gt;
+&lt;add&gt;4&lt;/add&gt;
+&lt;/test&gt;
+&lt;test&gt;&lt;id&gt;6&lt;/id&gt;
+&lt;start&gt;0&lt;/start&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;add&gt;3&lt;/add&gt;
+&lt;sub&gt;2&lt;/sub&gt;
+&lt;add&gt;3&lt;/add&gt;
+&lt;/test&gt;
+&lt;test&gt;&lt;id&gt;7&lt;/id&gt;
+&lt;start&gt;0&lt;/start&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;sub&gt;1&lt;/sub&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;add&gt;3&lt;/add&gt;
+&lt;sub&gt;2&lt;/sub&gt;
+&lt;sub&gt;1&lt;/sub&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;sub&gt;1&lt;/sub&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;add&gt;3&lt;/add&gt;
+&lt;add&gt;4&lt;/add&gt;
+&lt;sub&gt;3&lt;/sub&gt;
+&lt;add&gt;4&lt;/add&gt;
+&lt;add&gt;5&lt;/add&gt;
+&lt;add&gt;6&lt;/add&gt;
+&lt;add&gt;7&lt;/add&gt;
+&lt;sub&gt;6&lt;/sub&gt;
+&lt;/test&gt;
+&lt;test&gt;&lt;id&gt;8&lt;/id&gt;
+&lt;start&gt;0&lt;/start&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;/test&gt;
+&lt;test&gt;&lt;id&gt;9&lt;/id&gt;
+&lt;start&gt;0&lt;/start&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;add&gt;3&lt;/add&gt;
+&lt;/test&gt;
+&lt;test&gt;&lt;id&gt;10&lt;/id&gt;
+&lt;start&gt;0&lt;/start&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;/test&gt;
+&lt;test&gt;&lt;id&gt;11&lt;/id&gt;
+&lt;start&gt;0&lt;/start&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;sub&gt;1&lt;/sub&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;add&gt;3&lt;/add&gt;
+&lt;add&gt;4&lt;/add&gt;
+&lt;sub&gt;3&lt;/sub&gt;
+&lt;sub&gt;2&lt;/sub&gt;
+&lt;sub&gt;1&lt;/sub&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;add&gt;3&lt;/add&gt;
+&lt;add&gt;4&lt;/add&gt;
+&lt;sub&gt;3&lt;/sub&gt;
+&lt;sub&gt;2&lt;/sub&gt;
+&lt;add&gt;3&lt;/add&gt;
+&lt;add&gt;4&lt;/add&gt;
+&lt;add&gt;5&lt;/add&gt;
+&lt;sub&gt;4&lt;/sub&gt;
+&lt;add&gt;5&lt;/add&gt;
+&lt;add&gt;6&lt;/add&gt;
+&lt;sub&gt;5&lt;/sub&gt;
+&lt;add&gt;6&lt;/add&gt;
+&lt;sub&gt;5&lt;/sub&gt;
+&lt;sub&gt;4&lt;/sub&gt;
+&lt;sub&gt;3&lt;/sub&gt;
+&lt;add&gt;4&lt;/add&gt;
+&lt;/test&gt;
+&lt;test&gt;&lt;id&gt;12&lt;/id&gt;
+&lt;start&gt;0&lt;/start&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;add&gt;3&lt;/add&gt;
+&lt;add&gt;4&lt;/add&gt;
+&lt;sub&gt;3&lt;/sub&gt;
+&lt;add&gt;4&lt;/add&gt;
+&lt;sub&gt;3&lt;/sub&gt;
+&lt;sub&gt;2&lt;/sub&gt;
+&lt;add&gt;3&lt;/add&gt;
+&lt;sub&gt;2&lt;/sub&gt;
+&lt;add&gt;3&lt;/add&gt;
+&lt;add&gt;4&lt;/add&gt;
+&lt;/test&gt;
+&lt;test&gt;&lt;id&gt;13&lt;/id&gt;
+&lt;start&gt;0&lt;/start&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;add&gt;3&lt;/add&gt;
+&lt;sub&gt;2&lt;/sub&gt;
+&lt;sub&gt;1&lt;/sub&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;/test&gt;
+&lt;test&gt;&lt;id&gt;14&lt;/id&gt;
+&lt;start&gt;0&lt;/start&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;sub&gt;1&lt;/sub&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;sub&gt;1&lt;/sub&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;add&gt;3&lt;/add&gt;
+&lt;sub&gt;2&lt;/sub&gt;
+&lt;sub&gt;1&lt;/sub&gt;
+&lt;/test&gt;
+&lt;test&gt;&lt;id&gt;15&lt;/id&gt;
+&lt;start&gt;0&lt;/start&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;sub&gt;1&lt;/sub&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;sub&gt;1&lt;/sub&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;add&gt;3&lt;/add&gt;
+&lt;add&gt;4&lt;/add&gt;
+&lt;add&gt;5&lt;/add&gt;
+&lt;sub&gt;4&lt;/sub&gt;
+&lt;add&gt;5&lt;/add&gt;
+&lt;add&gt;6&lt;/add&gt;
+&lt;add&gt;7&lt;/add&gt;
+&lt;add&gt;8&lt;/add&gt;
+&lt;add&gt;9&lt;/add&gt;
+&lt;sub&gt;8&lt;/sub&gt;
+&lt;add&gt;9&lt;/add&gt;
+&lt;add&gt;10&lt;/add&gt;
+&lt;add&gt;11&lt;/add&gt;
+&lt;add&gt;12&lt;/add&gt;
+&lt;/test&gt;
+&lt;test&gt;&lt;id&gt;16&lt;/id&gt;
+&lt;start&gt;0&lt;/start&gt;
+&lt;add&gt;2&lt;/add&gt;
+&lt;add&gt;3&lt;/add&gt;
+&lt;add&gt;4&lt;/add&gt;
+&lt;/test&gt;
+&lt;/suite&gt;
+  </system-out>
+  <system-err></system-err>
+</testsuite>
+

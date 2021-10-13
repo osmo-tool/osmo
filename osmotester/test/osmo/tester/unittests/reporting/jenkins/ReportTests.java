@@ -10,10 +10,7 @@ import osmo.tester.model.Requirements;
 import osmo.tester.reporting.jenkins.JenkinsReportGenerator;
 import osmo.tester.reporting.jenkins.JenkinsSuite;
 import osmo.tester.reporting.jenkins.JenkinsTest;
-import osmo.tester.unittests.testmodels.CalculatorModel;
-import osmo.tester.unittests.testmodels.ErrorModel5;
-import osmo.tester.unittests.testmodels.PartialModel1;
-import osmo.tester.unittests.testmodels.PartialModel2;
+import osmo.tester.unittests.testmodels.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -201,7 +198,8 @@ public class ReportTests {
     return reduced;
   }
 
-  @Ignore
+  //@Ignore ?
+  @Test
   public void errorTests() throws Exception {
     tester.setModelFactory(new ReflectiveModelFactory(CalculatorModel.class));
     JenkinsReportGenerator listener = new JenkinsReportGenerator(filename, false, true);
@@ -211,6 +209,21 @@ public class ReportTests {
     listener.getSuite().setEndTime(3234);
     listener.writeTestReport();
     String expected = getResource(ReportTests.class, "expected-test-report.xml");
+    expected = unifyLineSeparators(expected, "\n");
+    String actual = readFile(filename);
+    assertEquals("Jenkins report for tests", expected, actual);
+  }
+
+  @Test
+  public void xmlEscaping() throws Exception {
+    tester.setModelFactory(new ReflectiveModelFactory(CalculatorModelXmlOutput.class));
+    JenkinsReportGenerator listener = new JenkinsReportGenerator(filename, false, true);
+    tester.addListener(listener);
+    tester.generate(333);
+    listener.getSuite().setStartTime(1234);
+    listener.getSuite().setEndTime(3234);
+    listener.writeTestReport();
+    String expected = getResource(ReportTests.class, "expected-xml-test-report.xml");
     expected = unifyLineSeparators(expected, "\n");
     String actual = readFile(filename);
     assertEquals("Jenkins report for tests", expected, actual);
