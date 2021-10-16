@@ -48,13 +48,13 @@ HELLO
 HELLO
 HELLO
 HELLO
-generated 3 tests.
+generated 10 tests.
 ```
 
-Notice that the generate() method takes as a parameter the seed for random values.
+Notice that the _generate()_ method takes as a parameter the seed for random values.
 This is needed to produce deterministic values.
 If you want to different results every time, you can use a dynamic seed such as System.currentTimeMillis().
-Basically, the output shown above tells us that the generator produced 3 test cases from the model.
+Basically, the output shown above tells us that the generator produced 10 test cases from the model.
 Since they all just print “HELLO” on the console and nothing in between,
 all the printouts look like a long list where the text is merged into one single long list.
 To show which "HELLO" belongs to which test, we can modify the model as:
@@ -85,17 +85,31 @@ TEST START
 HELLO
 HELLO
 HELLO
-TEST END
-TEST START
+HELLO
+HELLO
+HELLO
+HELLO
+HELLO
+HELLO
+HELLO
+HELLO
+HELLO
+HELLO
+HELLO
+HELLO
+HELLO
+HELLO
 HELLO
 HELLO
 TEST END
 TEST START
 HELLO
-HELLO
-HELLO
 TEST END
-generated 3 tests.
+TEST START
+HELLO
+HELLO
+...
+generated 10 tests.
 ```
 
 The @BeforeTest and @AfterTest can be used for tasks such as setting up and tearing down (cleanup) generated test cases.
@@ -111,11 +125,12 @@ Length can also be specified explicitly by configuration:
 ```java
 public class Main3 {
   public static void main(String[] args) {
+    OSMOTester tester = new OSMOTester();
+    tester.addModelObject(new HelloModel());
     OSMOConfiguration config = new OSMOConfiguration();
     config.setTestEndCondition(new Length(5));
     config.setSuiteEndCondition(new Length(2));
-    config.addModelObject(new HelloModel2());
-    OSMOTester tester = new OSMOTester();
+    config.addModelObject(new HelloModel());
     tester.setConfig(config);
     tester.generate(52);
   }
@@ -150,9 +165,13 @@ It is also possible to combine several into one:
 public class Main4 {
   public static void main(String[] args) {
     OSMOConfiguration config = new OSMOConfiguration();
-    config.setTestEndCondition(new Length(5));
+    int minLength = 5;
+    int maxLength = 10;
+    config.setTestEndCondition(new Or(new And(new Length(minLength), new Probability(0.33)), new Length(maxLength)));
+    //above is same as this:
+    //config.setTestEndCondition(new LengthProbability(5, 0.33));
     config.setSuiteEndCondition(new Length(2));
-    config.addModelObject(new HelloModel2());
+    config.addModelObject(new HelloModel());
     OSMOTester tester = new OSMOTester();
     tester.setConfig(config);
     tester.generate(52);
@@ -163,7 +182,7 @@ public class Main4 {
 This results in test cases with a minimum length of 5 and after that ending with a probability of 33%.
 From the program viewpoint, it requires both conditions to be true so that length is at least 5 and
 generating a random value between 0 and 1 gives a result smaller than 0.33.
-The suite should have exact number of 6 test cases. The output is left as an exercise to the reader.
+The suite should have exact number of 2 test cases. The output is left as an exercise to the reader.
 
 Of course, a set of basic end conditions such as this already exist in the OSMO Tester code base ready for use.
 However, new ones can be added as required (e.g., domain specific) and as illustrated above.
@@ -252,15 +271,28 @@ public class HelloModel4 {
   }
 
   @TestStep
-  public void sayWorld() {
+  public void world() {
     System.out.println("WORLD");
+  }
+
+  public static void main(String[] args) {
+    OSMOConfiguration config = new OSMOConfiguration();
+    //method based naming parameter defines to make world() the test-step name,
+    //matched by the guard name from allowWorld()
+    config.setMethodBasedNaming(true);
+    config.setSuiteEndCondition(new Length(2));
+    config.addModelObject(new HelloModel());
+    OSMOTester tester = new OSMOTester();
+    tester.setConfig(config);
+    tester.generate(55);
   }
 }
 ```
 
 The guard could also be written as @Guard(“world”), and the step as @TestStep(“world”).
 The guard is associated to the step by the name attribute.
-If there is no name for the annotation, the name is parsed from the method name.
+If method-based naming is enabled, 
+and there is no name for the annotation, the name is parsed from the method name.
 For guard it is the part forward from first uppercase letter.
 For step it is the whole method name as is as shown before.
 Matching elements by their names is case insensitive.
@@ -324,8 +356,9 @@ public class HelloModel5 {
   public boolean gWorld() {
     return helloCount > worldCount;
   }
+
   @TestStep
-  public void sayWorld() {
+  public void World() {
     System.out.println("WORLD");
     worldCount++;
   }
