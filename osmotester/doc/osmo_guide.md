@@ -46,81 +46,104 @@ There are three rules:
 Here is an example model in OSMO Tester notation for the vending machine:
 
 ```java
+import osmo.tester.OSMOTester;
+import osmo.tester.annotation.AfterSuite;
+import osmo.tester.annotation.BeforeTest;
+import osmo.tester.annotation.EndCondition;
+import osmo.tester.annotation.Guard;
+import osmo.tester.annotation.Post;
+import osmo.tester.annotation.TestStep;
+import osmo.tester.generator.testsuite.TestSuite;
+
+import java.io.PrintStream;
+
 public class VendingExample {
-  private final Scripter scripter;
-  private int cents = 0;
-  private int items = 10;
-  private TestSuite suite;
+ private final Scripter scripter;
+ private int cents = 0;
+ private int items = 10;
+ private TestSuite suite;
 
-  public VendingExample() {
-    scripter = new Scripter(System.out);
+ public VendingExample() {
+  scripter = new Scripter(System.out);
+ }
+
+ @Guard("all")
+ public boolean gotItems() {
+  return items > 0;
+ }
+
+ @BeforeTest
+ public void start() {
+  cents = 0;
+  items = 10;
+  int tests = suite.getAllTestCases().size()+1;
+  System.out.println("Starting test: "+tests);
+ }
+
+ @AfterSuite
+ public void done() {
+  int tests = suite.getAllTestCases().size()+1;
+  System.out.println("Total tests generated: "+tests);
+ }
+
+ @TestStep("10c")
+ public void insert10cents() {
+  scripter.step("INSERT 10");
+  cents += 10;
+ }
+
+ @TestStep("20c")
+ public void insert20cents() {
+  scripter.step("INSERT 20");
+  cents += 20;
+ }
+
+ @TestStep("50c")
+ public void insert50cents() {
+  scripter.step("INSERT 50");
+  cents += 50;
+ }
+
+ @Guard("vend")
+ public boolean allowVend() {
+  return cents >= 100;
+ }
+
+ @TestStep("vend")
+ public void vend() {
+  scripter.step("VEND ("+items+")");
+  cents -= 100;
+  items--;
+ }
+
+ @EndCondition
+ public boolean end() {
+  return items <= 0;
+ }
+
+ @Post("all")
+ public void checkState() {
+  scripter.step("CHECK(items == "+items+")");
+  scripter.step("CHECK(cents == "+ cents +")");
+ }
+
+ public static void main(String[] args) {
+  OSMOTester tester = new OSMOTester();
+  tester.addModelObject(new VendingExample());
+  tester.generate(55);
+ }
+
+ private static class Scripter {
+  private PrintStream out;
+
+  public Scripter(PrintStream out) {
+   this.out = out;
   }
 
-  @Guard(“all”)
-  public boolean gotItems() {
-    return items > 0;
+  public void step(String name) {
+   out.println("STEP: "+name);
   }
-
-  @BeforeTest
-  public void start() {
-    cents = 0;
-    items = 10;
-    int tests = suite.getTestCases().size()+1;
-    System.out.println(“Starting test:”+tests);
-  }
-
-  @AfterSuite
-  public void done() {
-    int tests = suite.getTestCases().size()+1;
-    System.out.println(“Total tests generated:”+tests);
-  }
-
-  @TestStep("10c")
-  public void insert10cents() {
-    scripter.step("INSERT 10");
-    cents += 10;
-  }
-
-  @TestStep("20c")
-  public void insert20cents() {
-    scripter.step("INSERT 20");
-    cents += 20;
-  }
-
-  @TestStep("50c")
-  public void insert50cents() {
-    scripter.step("INSERT 50");
-    cents += 50;
-  }
-
-  @Guard("vend")
-  public boolean allowVend() {
-    return cents >= 100;
-  }
-
-  @TestStep("vend")
-  public void vend() {
-    scripter.step("VEND ("+items+")");
-    cents -= 100;
-    items--;
-  }
-
-  @EndCondition
-  public boolean end() {
-    return items <= 0;
-  }
-
-  @Post(“all”)
-  public void checkState() {
-    scripter.step("CHECK(items == "+items+")");
-    scripter.step("CHECK(cents == "+ cents +")");
-  }
-
-  public static void main(String[] args) {
-    OSMOTester tester = new OSMOTester();
-    tester.addModelObject(new VendingExample());
-    tester.generate(55);
-  }
+ }
 }
 ```
 
@@ -315,7 +338,7 @@ Besides the annotations, it is also possible to configure OSMO Tester using a se
 This includes defining a test suite end condition, a test case end condition,
 a test generation algorithm, and enabling or disabling debug logging.
 
-In Listing 1 the test generation is initiated with the following the following fragment:
+In Listing 1 the test generation is initiated with the following fragment:
 ```java
   public static void main(String[] args) {
     OSMOTester tester = new OSMOTester();
@@ -327,37 +350,35 @@ In Listing 1 the test generation is initiated with the following the following f
 However, we can also define a set of additional attributes such as
 ```java
   public static void main(String[] args) {
-1    OSMOTester osmo = new OSMOTester();
-2    osmo.setDebug(true);
-3    osmo.addModelObject(new VendingExample());
-4    osmo.addTestEndCondition(new Length(3));
-5    osmo.addSuiteCondition(new Length(2));
-6    osmo.setAlgorithm(new BalancingAlgorithm());
-7    osmo.generate(100);
+1.      OSMOTester osmo = new OSMOTester();
+2.      osmo.addModelObject(new VendingExample());
+3.      osmo.setTestEndCondition(new Length(3));
+4.      osmo.setSuiteEndCondition(new Length(2));
+5.      osmo.setAlgorithm(new BalancingAlgorithm());
+6.      osmo.generate(100);
   }
 }
 ```
 
 The lines here are the following:
  1. Creates the OSMO Tester test generation engine.
- 2. This enables more verbose debug printing in System.out and in a log file. Best done right after creating the generator.
- 3. Adds a new model object.
+ 2. Adds a new model object.
  You can add as many as you like, and they will be combined together where steps, guards, etc.
  are matched across the provided objects.
  Some people call the result a “flattened” model because they are treated as if written inside the same class.
- 4. Sets the end condition for ending generation of single test cases.
+ 3. Sets the end condition for ending generation of single test cases.
  The condition used here causes each generated test case to have 3 steps
  (that is, after executing three steps, the generator stops).
  The default condition used, if no end condition is set by the user, is to end after generating a minimum of 1 test step,
  with 5% probability after each test steps.
- 5. Sets the end condition object for ending generation of all tests (the test suite).
+ 4. Sets the end condition object for ending generation of all tests (the test suite).
  The condition used here causes the generator to generate 2 tests.
  The default condition is set to end after generating a minimum of 1 test cases, with 10% probability at each point.
- 6. Sets the test generation algorithm.
+ 5. Sets the test generation algorithm.
  By default this is set to a RandomAlgorithm that randomly takes one of the available steps.
  The BalancingAlgorithm used here takes previously uncovered steps if available,
  and balances further choices by giving higher probability to less covered of the available steps and step-pairs.
- 7. This invokes the test generation engine to generate tests from the given model objects with the defined configuration.
+ 6. This invokes the test generation engine to generate tests from the given model objects with the defined configuration.
 
 Special model elements
 ----------------------
@@ -389,12 +410,11 @@ We can also use requirement tags in the model to ensure that one of the generate
 a case where all bottles have been emptied in the vending machine:
 ```java
   private int bottles = 10;
-  @RequirementsField
   private Requirements req = new Requirements();
 ...
   public VendingExample() {
     scripter = new Scripter(System.out);
-    req.add(“all bottles vended”);
+    req.add("all bottles vended");
   }
 ...
   @TestStep("vend")
@@ -403,7 +423,7 @@ a case where all bottles have been emptied in the vending machine:
     coins -= 100;
     bottles--;
     if (bottles == 0) {
-      req.covered(“all bottles vended”);
+      req.covered("all bottles vended");
     }
   }
 ```
@@ -417,8 +437,8 @@ In most cases, they can even be added during generation but this is not guarante
 In order for test generation to continue until this requirement is covered,
 we can apply a matching test generation algorithm:
 ```java
-    CoverageRequirement req = new CoverageRequirement(0, 0, 1);
-    osmo.addSuiteEndCondition(new CoverageEndCondition(req));
+    ElementCoverageRequirement req = new ElementCoverageRequirement(0, 0, 1);
+    osmo.setSuiteEndCondition(new ElementCoverage(req));
 ```
 With this, the test suite generation will go on until the requirement is covered.
 Note that this can mean it going on forever if the combinations are incorrect (such as length of 3 for a test case,
@@ -437,7 +457,7 @@ maximum of 10 steps and stop at any step between 5 and 10 with the probability o
   EndCondition min = new Length(5);
   EndCondition max = new Or(new Length(10), new Probability(0.25d));
   EndCondition minMax = new And(min, max);
-  osmo.addTestEndCondition(minMax);
+  osmo.setTestEndCondition(minMax);
 ```
 This can be rather confusing which is why the default set of provided end conditions tries to cover the common cases.
 It is also possible for you to write your own end condition by extending the EndCondition class,
@@ -469,7 +489,7 @@ The generator will then store each variable value for every test step.
 The value of the variable is taken as the object value or if the object implements the VariableValue interface,
 then by invoking that interface.
 The name used for the variable is either the field name from the code or the parameter given to annotation.
-
+
 Report builders
 ---------------
 There are some components in the osmo.tester.reporting package that can generate various types of reports for you.
@@ -479,8 +499,9 @@ These reporters work in different ways, either studying the information stored i
 by giving you and interface to store data while the tests are executed.
 Coverage reports are based on coverage data stored in the TestSuite object. Here is an example:
 ```java
-  CSV csv = new CSV(test, testCoverage, fsm);
-  String report = csv.getStepCounts();
+    TestSuite suite = osmo.getSuite();
+    CSVCoverageReporter csv = new CSVCoverageReporter(suite.getCoverage(), suite.getAllTestCases(), osmo.getFsm());
+    String report = csv.getStepCounts();
 ```
 
 This will create the report that is stored in the “report” variable.
@@ -531,17 +552,20 @@ The following is an example of running the offline optimizer:
 ```java
   /** An example of running the greedy offline optimizer. */
   public static void main(String[] args) {
+    OSMOConfiguration osmoConfig = new OSMOConfiguration();
+    osmoConfig.setTestEndCondition(new LengthProbability(1, 10, 0.1d));
+    osmoConfig.setFactory(new ReflectiveModelFactory(CalculatorModel.class));
     ScoreConfiguration sc = new ScoreConfiguration();
     //define neutral length, high requirements score and some custom state score
     sc.setLengthWeight(0);
     sc.setRequirementWeight(100);
     sc.setStateWeight(50);
-    GreedyOptimizer optimizer = new GreedyOptimizer(sc,
-                                     new LengthProbability(1, 10, 0.1d), 234);
-    optimizer.addModelClass(CalculatorModel.class);
+    GreedyOptimizer optimizer = new GreedyOptimizer(osmoConfig, sc);
     //stop if a new test case cannot get minimum of 50 score
     optimizer.setThreshold(50);
-    List<TestCase> tests = optimizer.search();
+    long seed = 234;
+    GenerationResults results = optimizer.search(seed);
+    List<TestCase> tests = results.getTests();
     //..now do what you wish with your tests
   }
 ```
@@ -582,7 +606,7 @@ Once this is defined, use it to initialize the explorer itself and run test gene
   }
 
   private static ExplorationConfiguration createConfiguration() {
-    MyModelFactory factory = new MyModelFactory(System.out);
+    ReflectiveModelFactory factory = new ReflectiveModelFactory(CalculatorModel.class);
     ExplorationConfiguration config = new ExplorationConfiguration(factory, 5, 55);
     config.setFallbackProbability(1d);
     config.setMinTestLength(10);
@@ -623,9 +647,9 @@ You can use these both with the basic test generator as well as the explorer.
 The following shows an example for the basic generator:
 
 ```java
-    tester = new OSMOTester();
-    config = tester.getConfig();
-    scenario = new Scenario(false);
+    OSMOTester tester = new OSMOTester();
+    OSMOConfiguration config = tester.getConfig();
+    Scenario scenario = new Scenario(false);
     scenario.addStartup("start", "increase", "increase", "increase", "increase");
     config.addModelObject(new CalculatorModel(NullPrintStream.stream));
     config.setScenario(scenario);
@@ -652,10 +676,10 @@ To define scenarios for the explorer,
 the process is the same but you need to configure the scenarios into the ExplorationConfiguration.
 
 ```java
-    CounterFactory factory = new CounterFactory();
-    config = new ExplorationConfiguration(factory, 2, 444);
-    explorer = new OSMOExplorer();
-    scenario = new Scenario(false);
+    ModelFactory factory = new ReflectiveModelFactory(CalculatorModel.factory);
+    ExplorationConfiguration config = new ExplorationConfiguration(factory, 2, 444);
+    OSMOExplorer explorer = new OSMOExplorer();
+    Scenario scenario = new Scenario(false);
     scenario.addStartup("start", "increase", "increase", "increase", "increase");
     config.setScenario(scenario);
     config.setFactory(factory);

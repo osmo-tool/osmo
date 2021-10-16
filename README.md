@@ -21,6 +21,15 @@ The main point with this approach is to provide:
 Example test model:
 
 ```java
+import osmo.tester.OSMOTester;
+import osmo.tester.annotation.BeforeTest;
+import osmo.tester.annotation.Guard;
+import osmo.tester.annotation.TestStep;
+import osmo.tester.annotation.Variable;
+import osmo.tester.generator.algorithm.RandomAlgorithm;
+import osmo.tester.generator.endcondition.Length;
+import osmo.tester.model.Requirements;
+
 public class ExampleModel {
   private final Requirements req = new Requirements();
   @Variable
@@ -38,21 +47,21 @@ public class ExampleModel {
 
   @TestStep("decrease")
   public void decreaseState() {
-    req.covered(REQ_DECREASE);
+    req.covered("REQ_DECREASE");
     counter--;
     System.out.println("- " + counter);
   }
 
   @Guard("increase")
   public boolean shallWeIncrease() {
-    return counter > 0;
+    return counter >= 0;
   }
 
   @TestStep("increase")
   public void increaseState() {
-    req.covered(REQ_INCREASE);
+    req.covered("REQ_INCREASE");
     counter++;
-    out.println("+ " + counter);
+    System.out.println("+ " + counter);
   }
 }
 ```
