@@ -45,7 +45,7 @@ public class HelloModel {
   }
 
   @Guard("world")
-  public boolean earth() {
+  public boolean blockWorld() {
     return helloCount > worldCount;
   }
 
@@ -57,7 +57,7 @@ public class HelloModel {
 }
 ```
 
-This is what was used to run it:
+This can be used to run it:
 
 ```java
 public class Main {
@@ -146,7 +146,7 @@ In the first phase the “name” variable gets either the value “teemu” or 
 The “world” variable gets either the value “mars” or “venus” with a 50% chance.
 As the models are Java programs they can make use of any of the Java language features and libraries.
 
-Running this provides the following output:
+Running this provides the following type of output:
 
 ```
 TEST START
@@ -282,7 +282,7 @@ public class HelloModel3 {
 ```
 
 This creates one data variable called “text” and configures it to produce text with length between 3 and 7 characters
-and containing only valid ASCII letters and numbers:
+and containing only valid ASCII letters and numbers, resulting in something like this:
 
 ```java
 TEST START
@@ -303,9 +303,7 @@ generated 2 tests.
 ```
 
 Beyond just getting different values from a ValueSet, it is also possible to reserve and free items in the set.
-This is especially useful when we need more than one value from a set to perform an action or
-a related set of actions (inside a test step or spread over several),
-while wanting to maintain that each item we get is unique.
+This can be useful, for example, in ensuring we pick unique users from a random set.
 Take the following as an example:
 
 ```java
