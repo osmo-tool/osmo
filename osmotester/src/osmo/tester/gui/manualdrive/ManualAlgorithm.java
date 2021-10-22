@@ -498,6 +498,6 @@ public class ManualAlgorithm extends JFrame implements FSMTraversalAlgorithm {
 
   @Override
   public FSMTraversalAlgorithm cloneMe() {
-    return null;
+    return this;
   }
 }

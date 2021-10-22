@@ -32,6 +32,7 @@ public class ManualDriveMain {
   public static void main(String[] args) {
     OSMOTester osmo = new OSMOTester();
     osmo.setAlgorithm(new ManualAlgorithm(osmo));
+    osmo.getConfig().setDataTraceRequested(true);
 //    osmo.setSuiteEndCondition(new Length(2));
     ModelState state = new ModelState();
 //    CalendarScripter scripter = new OnlineScripter();
@@ -45,7 +46,7 @@ public class ManualDriveMain {
     factory.add(new CalendarParticipantModel(state, scripter));
 //    factory.add(new CalendarErrorHandlingModel(state, scripter));
     factory.add(state);
-    osmo.addListener(new FSMBuildVisualizer());
+//    osmo.addListener(new FSMBuildVisualizer());
 //    factory.add(new CalendarFailureModel(state, scripter));
     //osmo.setValueScripter(new ScriptedValueProvider());
     osmo.generate(111);

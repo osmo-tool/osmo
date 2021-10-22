@@ -17,7 +17,10 @@ import java.util.List;
  */
 public class Main {
   public static void main(String[] args) {
-    long seed = Long.parseLong(args[0]);
+    long seed = System.currentTimeMillis();
+    if (args.length > 0) {
+      seed = Long.parseLong(args[0]);
+    }
     OSMOConfiguration oc = new OSMOConfiguration();
     oc.setFactory(new CalendarFactory());
     EndCondition ec1 = new LengthProbability(1, 0.5);

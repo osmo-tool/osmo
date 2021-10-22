@@ -1,6 +1,7 @@
 # About
 
 This sub-project contains a few simple visualization helpers to view OSMO models.
+NOTE: this component is currently not maintained. Most of the visualizer code would need updates to work properly.
 
 Requires the OSMO Tester accessible for use.
 If the latest changes are not on Maven Central, 
