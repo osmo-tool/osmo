@@ -29,6 +29,7 @@ public class SingleTestCoverage {
    * Counts and collects the coverage of the given test.
    *
    * @param tc The test for which to get the coverage.
+   * @param parent The metric collector aggregating test coverages.
    */
   public SingleTestCoverage(TestCase tc, CoverageMetric parent) {
     this.name = tc.getName();

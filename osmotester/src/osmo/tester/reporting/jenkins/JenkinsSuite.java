@@ -131,6 +131,7 @@ public class JenkinsSuite {
      *
      * @param test The executed test.
      * @param testMode If true, the step duration is set to 0 [endtime = starttime] (to enable deterministic unit tests).
+     * @param error Any error that occurred during this test run.
      */
   public void add(TestCase test, boolean testMode, Exception error) {
     JenkinsTest newTest = new JenkinsTest(testMode);
