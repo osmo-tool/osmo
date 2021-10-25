@@ -141,6 +141,12 @@ v3.5.0 15/11/2015
 3.7.0 16/01/2018
 3.7.1 22/05/2019
 -Fixed issue in Time endcondition stopping generator exit on finish
-
-
+3.8.0
+-replace velocity templates with mustache
+-reduce external dependencies
+-fix for weightedbalancingalgorithm int overflow issue #62
+-make suite seed randomization more random, especially on parallel generators (multi-greedy etc)
+-fix examples to provide code better matching the current API
+-fix jenkins xml escape issue #63
+-other minor fixes
 
