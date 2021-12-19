@@ -1,7 +1,11 @@
-To deploy this project to Maven Central
-mvn release:clean release:prepare -B
-mvn release:perform -Darguments=-Dgpg.passphrase=PASSWORD
+maven central: mvn clean deploy
 
-To deploy locally:
-mvn install:install-file -Dfile=myfile.jar -DgroupId=com.example -DartifactId=myartifact -Dversion=0.1 -Dpackaging=jar
+locally: mvn install
 
+~/.m2/settings.xml needs to have sonatype login details
+
+mvnrepository.com is apparently not always in sync with maven central, just shows info about it:
+https://mvnrepository.com/artifact/net.kanstren.osmo/osmotester
+
+check here if upload is synced to maven central:
+https://repo1.maven.org/maven2/net/kanstren/
