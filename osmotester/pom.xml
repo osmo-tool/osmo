@@ -5,19 +5,21 @@
     <groupId>net.kanstren.osmo</groupId>
     <artifactId>osmotester</artifactId>
     <packaging>jar</packaging>
-    <version>3.8.0</version>
+    <version>3.8.1</version>
     <name>OSMO Tester</name>
     <description>Model Based Test Tool (Java library)</description>
     <url>https://github.com/mukatee/osmo/</url>
     <prerequisites>
         <maven>3.0.4</maven>
     </prerequisites>
+
     <properties>
         <encoding>UTF-8</encoding>
         <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <ignoreTestResults>false</ignoreTestResults>
     </properties>
+
     <licenses>
         <license>
             <name>GNU Lesser General Public License, version 2.1</name>
@@ -25,12 +27,14 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
     <scm>
         <url>https://github.com/mukatee/osmo</url>
         <connection>scm:git:git://github.com/mukatee/osmo.git</connection>
         <developerConnection>scm:git:git://github.com/mukatee/osmo.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
+
     <developers>
         <developer>
             <id>tkanstren</id>
@@ -46,6 +50,7 @@
             <timezone>Europe/Helsinki</timezone>
         </developer>
     </developers>
+
     <dependencies>
         <dependency>
             <groupId>com.github.spullara.mustache.java</groupId>
@@ -66,12 +71,12 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
-            <version>2.14.1</version>
+            <version>2.17.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.14.1</version>
+            <version>2.17.0</version>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
